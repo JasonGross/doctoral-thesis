@@ -1,0 +1,52 @@
+Thesis-writing
+
+- Outline of chapters:
+  - Tentative title: Performance Engineering of Proof-Based Software Synthesis Systems
+  - Inspirational quote:
+    - Tentative: The most common mistake in performance engineering is to blindly optimize without profiling; you most often spend your time optimizing parts that aren't actually bottlenecks.  (heavily paraphrased, reconstructed from memory of what Charles Leiserson said in 6.172)
+    - Tentative: premature optimization is the root of all evil - Knuth
+  - Introduction (???)
+    - Mention domains: math/CT and program transformation
+    - Case studies: parsers, fiat-crypto, CT library
+  - Why does performance in proof systems matter?
+    - Example from math / CT
+    - Examples from parsers
+    - Examples from fiat-crypto
+  - How does Coq fail to perform adequately?
+    - Descriptions of the order in which things fail?
+  - Design-based fixes
+    - Abstraction barriers
+      - e.g., f (fst x) (snd x) where fst x := let (a, b) := x in a; vs let (a, b) := x in f a b.
+    - When and how to use dependent types painlessly
+      - The extremes are relatively easy:
+        - Total separation between proofs and programs, so that programs are simply typed, works relatively well
+        - Pre-existing mathematics, where objects are fully bundled with proofs and never need to be separated from them, also works relatively well
+        - The rule of thumb in the middle: it is painful to recombine proofs and programs after you separate them; if you are doing it to define an opaque transformation that acts on proof-carrying code, that is okay, but if you cannot make that abstraction barrier, enormous pain results.
+          - For example, if you have length-indexed lists and want to index into them with elements of a finite type, things are fine until you need to divorce the index from its proof of finiteness.  If you, for example, want to index into, say, the concatenation of two lists, with an index into the first of the lists, then you will likely run into trouble, because you are trying to consider the index separately from its proof of finitude, but you have to recombine them to do the indexing.
+          - More examples from the rewriter?
+    - more stuff from CT performance paper / presentation
+  - Tooling fixes (improvements in Coq)
+  - Reflective Program Transformation
+    - related work (incl. RTac)
+    - reification variants
+    - reflective well-formedness?
+    - description of constructed tool
+    - case study: fiat-crypto
+    - case study: parsers?
+  - more???
+- Goals & Musings
+  - Intended Audience: Adam, Andres; also implicitly, anyone who is undertaking a large project in Coq
+  - Goal: If you grock my thesis, you should be able to predict where dependent types will be painful and where they will be helpful (in all intensional dependent type theories); able to predict where things will be slow (in Coq) and have a sense of how to speed things up; and able to understand how to move program transformation, evaluation, rewriting, etc, into the VM a la the rewriter I describe.
+  - Many aims for deciding how to design projects
+    - For example:
+      - Ease of maintainability
+      - Ease of creation
+      - Functionality (and correctness)
+      - Ease of use
+      - etc
+    - We focus primarily on ease of creation, and somewhat on maintainability.  Perhaps surprisingly, it can be quite hard to get something working at all in Coq, and can be much harder to get something that compiles in a reasonable amount of time.
+    - Some overlap between performance of compile-time and maintainability (namely, good abstraction barriers)
+    - 
+  - 
+  - 
+

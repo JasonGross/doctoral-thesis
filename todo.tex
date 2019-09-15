@@ -1,0 +1,35 @@
+\makeatletter
+\iffinal
+\let\finalwarning=\errmessage
+\else
+\let\finalwarning=\@latex@warning
+\fi
+\newcommand{\todo}[1]{%
+\finalwarning{TODO: \detokenize{#1}}%
+\textcolor{red}{[\textbf{TODO:} #1]}}%
+\newcommand{\todoask}[1]{%
+\finalwarning{QUESTION FOR ADAM: \detokenize{#1}}%
+\textcolor{purple}{[\textbf{QUESTION FOR ADAM:} #1]}}%
+\newcommand{\colorifzero}[3]{%
+\ifnum#1=0\relax
+\expandafter\@firstoftwo
+\else
+\expandafter\@secondoftwo
+\fi
+{\textcolor{#2}{#3}}%
+{#3}%
+}%
+\makeatother
+\newcommand{\editedtext}[2][0]{\colorifzero{#1}{blue}{#2}}%
+\newcommand{\newtext}[2][0]{\colorifzero{#1}{blue}{#2}}%
+\iffinal
+\else
+\pagenumbering{roman}
+
+\todo{Run `make update-thesis' before submission to update the date on the cover page}
+
+\todo{change \string\finalfalse\space to \string\finaltrue}
+
+\cleardoublepage
+\pagenumbering{arabic}
+\fi

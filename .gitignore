@@ -1,6 +1,8 @@
 ## Misc Files
 *~
 *#
+*.pdf
+*.atfi
 
 ## Core latex/pdflatex auxiliary files:
 *.aux
@@ -244,3 +246,24 @@ TSWLatexianTemp*
 
 # generated if using elsarticle.cls
 *.spl
+
+# download-packages target
+*.drv
+*.dtx
+*.ins
+*.bbx
+*.cbx
+*.lbx
+*.def
+*.cfg
+*.bst
+mathtools.sty
+mhsetup.sty
+mathtools.zip
+/mathtools/
+biblatex.sty
+biblatex.zip
+/biblatex/
+etoolbox.sty
+etoolbox.tex
+logreq.sty

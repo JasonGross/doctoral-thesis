@@ -1,7 +1,7 @@
 Thesis-writing
 
 - Outline of chapters:
-  - Tentative title: Performance Engineering of Proof-Based Software Synthesis Systems
+  - Tentative title: Performance Engineering of Proof-Based Software ??? Systems
   - Inspirational quote:
     - Tentative: The most common mistake in performance engineering is to blindly optimize without profiling; you most often spend your time optimizing parts that aren't actually bottlenecks.  (heavily paraphrased, reconstructed from memory of what Charles Leiserson said in 6.172)
     - Tentative: premature optimization is the root of all evil - Knuth
@@ -33,6 +33,7 @@ Thesis-writing
     - description of constructed tool
     - case study: fiat-crypto
     - case study: parsers?
+  - Extended Description of the Rewriter
   - more???
 - Goals & Musings
   - Intended Audience: Adam, Andres; also implicitly, anyone who is undertaking a large project in Coq
@@ -46,7 +47,6 @@ Thesis-writing
       - etc
     - We focus primarily on ease of creation, and somewhat on maintainability.  Perhaps surprisingly, it can be quite hard to get something working at all in Coq, and can be much harder to get something that compiles in a reasonable amount of time.
     - Some overlap between performance of compile-time and maintainability (namely, good abstraction barriers)
-    - 
-  - 
-  - 
-
+    -
+  -
+  -

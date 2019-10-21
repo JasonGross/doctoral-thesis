@@ -235,11 +235,19 @@ $(PROPOSAL_PDFS): $(PROPOSAL_TEXS)
 
 %.pdf: %.tex.d
 
-%.pdf: %.tex
+$(THESIS_PDFS) : %.pdf : %.tex
 	@ echo "PDFLATEX (run 1)"
 	@ pdflatex -synctex=1 -enable-write18 $(OTHERFLAGS) $<
 	@ echo "BIBTEX"
 	@ bibtex ${<:.tex=.aux}
+	@ echo "PDFLATEX (run 2)"
+	@ pdflatex -synctex=1 -interaction=nonstopmode $(OTHERFLAGS) -enable-write18 $< 2>&1 >/dev/null || true
+	@ echo "PDFLATEX (run 3)"
+	@ pdflatex -synctex=1 $(OTHERFLAGS) $<
+
+$(PROPOSAL_PDFS) : %.pdf : %.tex
+	@ echo "PDFLATEX (run 1)"
+	@ pdflatex -synctex=1 -enable-write18 $(OTHERFLAGS) $<
 	@ echo "PDFLATEX (run 2)"
 	@ pdflatex -synctex=1 -interaction=nonstopmode $(OTHERFLAGS) -enable-write18 $< 2>&1 >/dev/null || true
 	@ echo "PDFLATEX (run 3)"

@@ -25,12 +25,12 @@ deploy:
   provider: pages
   skip_cleanup: true
   github_token: $GITHUB_TOKEN
-  local_dir: nightly
+  local_dir: deploy
   on:
     branch: master
 
 script: make OTHERFLAGS="-interaction=nonstopmode"
 
 after_success:
-  - mkdir -p nightly
-  - cp -f jgross-thesis-proposal.pdf jgross-thesis.pdf nightly/
+  - mkdir -p deploy/nightly
+  - cp -f jgross-thesis-proposal.pdf jgross-thesis.pdf deploy/nightly/

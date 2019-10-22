@@ -5,7 +5,7 @@ PROPOSAL_PDFS = jgross-thesis-proposal.pdf
 THESIS_PDFS = jgross-thesis.pdf
 MAIN_TEXS = $(patsubst \include{%},%.tex,$(filter \include{%},$(shell cat main-files.tex jgross-thesis.tex)))
 THESIS_TEXS = packages.tex contents.tex mitthesis.cls abstract.tex cover.tex new-date.tex todo.tex main-files.tex $(MAIN_TEXS)
-PROPOSAL_TEXS = new-date-proposal.tex
+PROPOSAL_TEXS = new-date-proposal.tex abstract-proposal.tex
 PDFS = $(PROPOSAL_PDFS) $(THESIS_PDFS)
 
 OBERDIEK = accsupp aliascnt alphalph askinclude atbegshi atenddvi attachfile2 atveryend auxhook bigintcalc bitset bmpsize bookmark catchfile centernot chemarr classlist colonequals dvipscol embedfile engord enparen eolgrab epstopdf etexcmds fibnum flags gettitlestring grfext grffile hobsub hologo holtxdoc hopatch hycolor hypbmsec hypcap hypdestopt hypdoc hypgotoe hyphsubst ifdraft iflang ifluatex ifpdf ifvtex infwarerr inputenx intcalc kvdefinekeys kvoptions kvsetkeys letltxmacro listingsutf8 ltxcmds luacolor luatex magicnum makerobust mleftright pagegrid pagesel pdfcol pdfcolfoot pdfcolmk pdfcolparallel pdfcolparcolumns pdfcrypt pdfescape pdflscape pdfrender pdftexcmds picture pmboxdraw protecteddef refcount rerunfilecheck resizegather rotchiffre scrindex selinput setouterhbox settobox soulutf8 stackrel stampinclude stringenc tabularht tabularkv telprint thepdfnumber transparent twoopt uniquecounter zref

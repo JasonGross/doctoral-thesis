@@ -329,10 +329,26 @@ Comments: \\
 
 \section{Background}
 
-i. A brief summary of the background of the problem up to the present must be included
-giving evidence by reference or otherwise that you have become familiar with this
-background. In discussing the present status of the problem, you should make evident the
-extent to which the proposed solution is novel and/or an improvement.
+Proof automation is important for verification of large software systems in Coq, as well as for proofs in large-scale mathematical libraries.
+Verification is human-developer-hour intensive, and automation allows engineers to construct larger proofs with less per-proof time investment.
+In verifying large software systems, automation is necessary for building general-purpose libraries which allow proving things about many different programs without having to write the proofs for each new program from scratch.
+In both software and math, automation allows code-reuse and permits factoring out common patterns and proof strategies and permits reasoning at a higher level of abstraction.
+
+Unfortunately, as automation gets more complex or has to deal with more complex goals, the time spent compiling the proof script becomes significant, both repeatedly as the engineer updates their code and works interactively to prove a goal.
+The edit-compile-debug loop available when proof automation takes less than a tenth of a second is very, very different from the experience when each tactic takes multiple hours to run.
+Moreover, some proof automation simply stops working as the goals get large enough, failing to finish even after hundreds of hours unless carefully tuned to avoid performance issues.
+
+Optimization in Coq is especially hard for a couple of reasons.
+Coq has a lot of magic.
+In most languages, you optimize the code, and the types are just there to catch mistakes;
+in Coq, you have to performance-optimize both the code and the types, simultaneously, whenever dependent types are in use.
+In most languages, leaky abstraction barriers cause pain only to the user;
+in Coq leaky abstraction barriers also incur a performance overhead every time they are used.
+
+I propose to lay out a map of common Coq performance issues, describe methods and guidelines for working around these performance issues discovered in the course of doing research, and present the research as case-studies.
+The primary case studies will be the formalization of category theory in Coq, a rudimentary parser-synthesizer, and the synthesis of efficient verified C code for field arithmetic used in cryptographic primitives.
+I will also present a novel way of performing reification, which is a method of constructing abstract syntax trees for terms, used for taking advantage of Coq's computation in employing verified proof procedures or code transformations within the context of larger proofs.
+Finally, I will present a verified tool developed in the course of research for replacing proof-producing rewriting and slow custom reduction strategies with a faster reflective method which combines normalization by evaluation with pattern matching complication for reflective rewriting.
 
 \section{Timeline}
 \begin{itemize}

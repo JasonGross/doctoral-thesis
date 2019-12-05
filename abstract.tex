@@ -23,3 +23,9 @@ We present lessons drawn from the case-studies of a category-theory library, a p
 
 \todo{Fix runon sentence}
 The central new contribution presented by this thesis, beyond hopefully providing a roadmap to avoid slowness in large Coq developments, is a reflective framework for partial evaluation and rewriting which, in addition to being used to compile a code-generator for field arithmetic cryptographic primitives which generates the code currently used in Google Chrome, can serve as a template for a possibly replacement for tactics such as \texttt{rewrite}, \texttt{rewrite\_strat}, \texttt{autorewrite}, \texttt{simpl}, and \texttt{cbn} which achieves much better performance by running in Coq's VM while still allowing the flexibility of equational reasoning.
+
+
+\todo{Maybe instead use the alternative from the thesis-proposal?}
+The proposed research is a study of performance issues that come up in engineering large-scale proof-based systems in Coq.
+The thesis presents lessons learned about achieving acceptable performance in Coq in the course of case-studies on formalizing category theory, developing a parser synthesizer, and constructing a verified compiler for synthesizing efficient low-level cryptographic primitives.
+We also present a novel method of simple and fast reification, and a prototype tool for faster rewriting and customizable reduction which does not require extending Coq's trusted code base.

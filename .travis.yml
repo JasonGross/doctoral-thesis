@@ -29,7 +29,7 @@ deploy:
   on:
     branch: master
 
-script: make OTHERFLAGS="-interaction=nonstopmode"
+script: make OTHERFLAGS="-interaction=nonstopmode" && make todo
 
 after_success:
   - mkdir -p deploy/nightly

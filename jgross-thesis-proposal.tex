@@ -420,13 +420,13 @@ Unlike most programming languages, the design of an API in Gallina has an enormo
 
 The thesis will cover some broad design principles, and then talk about a couple of miscellaneous design choices that don't seem to fit into any of the design patterns we describe.
 
-\subsection{Abstraction barriers}
+\subsubsection{Abstraction barriers}
 The most important rule is to \emph{not have leaky abstraction barriers}.
 In Coq, a leaky abstraction barrier is a case where you want to call a function that takes a term of type \texttt{T} on a term which has type \texttt{T'} when \texttt{T} and \texttt{T'} \emph{are not syntactically equal}.
 Generally in these cases you let the type-checker perform unification, and sweep the details under the rug.
 If you are very careful, this can work, but most of the time Coq ends up spending a lot of time unifying types, when things are big enough.
 
-\subsection{When and how to use dependent types painlessly}
+\subsubsection{When and how to use dependent types painlessly}
 The extremes are relatively easy:
 \begin{itemize}
 \item Total separation between proofs and programs, so that programs are simply typed, works relatively well
@@ -435,12 +435,12 @@ The extremes are relatively easy:
 \item For example, if you have length-indexed lists and want to index into them with elements of a finite type, things are fine until you need to divorce the index from its proof of finiteness.  If you, for example, want to index into, say, the concatenation of two lists, with an index into the first of the lists, then you will likely run into trouble, because you are trying to consider the index separately from its proof of finitude, but you have to recombine them to do the indexing.
 \end{itemize}
 
-\subsection{Arguments vs.~fields and packed records}
+\subsubsection{Arguments vs.~fields and packed records}
 There are two (or more) ways of designing hierarchies of mathematical objects.
 Roughly the distinction corresponds to different ways to answer the question ``should we store information primarily in the type, or primarily in the term?''
 Frequently information stored in the type ends up duplicated, both in the term, and in functions manipulating this type, and in types built upon this type, resulting in quadratic blowup.
 
-\subsection{Proof by duality as proof by unification}
+\subsubsection{Proof by duality as proof by unification}
 One notable exception to the assertion about never having leaky abstraction barriers is when you can offload \emph{all} of the interesting work into the unification engine.
 One example of this is \emph{proof by reflection}, mentioned in \autoref{sec:proof-by-reflection}.
 Another example is a perhaps novel contribution of the category theory library I created, proof by duality as proof by unification.

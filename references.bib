@@ -1,0 +1,48 @@
+% Encoding: UTF-8
+
+@InProceedings{ReflectionTACS97,
+  Title                    = {Using reflection to build efficient and certified decision procedures},
+  Author                   = {Boutin, Samuel},
+  Booktitle                = {Theoretical Aspects of Computer Software},
+  Year                     = {1997},
+
+  Address                  = {Berlin, Heidelberg},
+  Editor                   = {Abadi, Mart{\'i}n and Ito, Takayasu},
+  Pages                    = {515--529},
+  Publisher                = {Springer Berlin Heidelberg},
+
+  ISBN                     = {978-3-540-69530-1}
+}
+
+@InProceedings{reification-by-parametricity,
+  Title                    = {Reification by Parametricity: Fast Setup for Proof by Reflection, in Two Lines of {L}tac},
+  Author                   = {Jason Gross and Andres Erbsen and Adam Chlipala},
+  Booktitle                = {Proceedings of the \href{https://itp2018.inria.fr/}{9th International Conference on Interactive Theorem Proving (ITP'18)}},
+  Year                     = {2018},
+  Month                    = {July},
+
+  Abstract                 = {We present a new strategy for performing reification in Coq.
+That is, we show how to generate first-class abstract syntax trees from ``native'' terms of Coq's logic, suitable as inputs to verified compilers or procedures in the \emph{proof-by-reflection} style.
+Our new strategy, based on simple generalization of subterms as variables, is straightforward, short, and fast.
+In its pure form, it is only complete for constants and function applications, but ``let'' binders, eliminators, lambdas, and quantifiers can be accommodated through lightweight coding conventions or preprocessing.
+
+We survey the existing methods of reification across multiple Coq metaprogramming facilities, describing various design choices and tricks that can be used to speed them up, as well as various limitations.
+We report benchmarking results for 18 variants, in addition to our own, finding that our own reification outperforms 16 of these methods in all cases, and one additional method in some cases; writing an OCaml plugin is the only method tested to be faster.
+Our method is the most concise of the strategies we considered, reifying terms using only two to four lines of \texttt{Ltac}---beyond lists of the identifiers to reify and their reified variants.
+Additionally, our strategy automatically provides error messages that are no less helpful than Coq's own error messages.},
+  Artifact-github          = {https://github.com/mit-plv/reification-by-parametricity},
+  Artifact-tar-gz          = {https://people.csail.mit.edu/jgross/personal-website/papers/2018-reification-by-parametricity-itp-camera-ready-supplementary.tar.gz},
+  Original-url             = {https://people.csail.mit.edu/jgross/personal-website/papers/2018-reification-by-parametricity-itp-draft.pdf},
+  Owner                    = {Jason},
+  Url                      = {https://people.csail.mit.edu/jgross/personal-website/papers/2018-reification-by-parametricity-itp-camera-ready.pdf}
+}
+
+@InProceedings{FiatCryptoSP19,
+author = {Andres Erbsen and Jade Philipoom and Jason Gross and Robert Sloan and Adam Chlipala},
+title = {Simple High-Level Code For Cryptographic Arithmetic -- With Proofs, Without Compromises},
+booktitle = {IEEE Security \& Privacy},
+month = may,
+year = {2019},
+location = {San Francisco, CA, USA},
+url = {http://adam.chlipala.net/papers/FiatCryptoSP19/}
+}

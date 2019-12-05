@@ -386,11 +386,123 @@ Finally, I will present a verified tool developed in the course of research for 
 
 \section{The Parts in More Detail}
 
+The subsections in this section provide a brief outline of the proposed chapters in my thesis, with some context about where the information is coming from.
 
+\subsection{A survey of the landscape of slowness in Coq}
 
-%IF this is uncommented, update the Makefile
-%\bibliographystyle{plain}
+The first project I did was formalizing a category theory library in Coq.
+This was an interesting starting point for learning Coq and for becoming acquainted with the performance landscape of Coq for a couple of reasons.
+Because category theory is already on the formal end of mathematics, most of what I did was just figuring out how to translate from existing well-pinned-down formulations of things into Coq.
+At the same time, because category theory is so general, there were often multiple equivalent ways of specifying things, and I got to see what the effects of various choices were, while still being constrained by the mathematics.
+Finally, category theory is foundational in a way that stresses the expressivity of dependent type theories, especially around universes (Coq's mechanism for avoiding paradoxes involving the set of all sets that don't contain themselves and similar).
+
+Broadly, there are five sorts of things that result in slowness in Coq, all of which fall under the heading of Coq ``doing too much stuff.''
+\begin{itemize}
+\item
+  Sometimes we end up accidentally having Coq do the same things repeatedly (e.g., repeatedly typechecking the same term which may show up as an argument to many constructors)
+\item
+  Sometimes we end up having Coq compute something when we didn't have to (e.g., eagerly evaluating recursive calls even when their results are never used)
+\item
+  Sometimes there's overhead from using one portion of Coq rather than a different one (e.g., using \texttt{cbv} rather than \texttt{vm\_compute}, using \texttt{Ltac} rather than \texttt{Gallina} or \texttt{OCaml})
+\item
+  Sometimes there's an algorithmic inefficiency in the Ltac or Gallina code being computed (e.g., using unary \texttt{nat}s rather than binary \textt{N}s for comparing large natural numbers (such as 256))
+\item
+  Sometimes there's an inefficiency in the Coq codebase itself (e.g., many of the bugs fixed by Pierre-Marie P\'edrot tagged with ``performance'')
+\end{itemize}
+
+Most of the bottlenecks fall into type checking, term building, unification, or normalization, but there are a couple of other notable categories.
+In proofs with large contexts many steps which modify the goal, management of the contexts of existential variables can become a bottleneck.
+In some parts of the Coq system, context management more generally when under many binders can be a bottleneck.
+
+\subsection{Lessons in design of APIs of Gallina libraries}
+
+Unlike most programming languages, the design of an API in Gallina has an enormous impact on compile-time performance.
+
+The thesis will cover some broad design principles, and then talk about a couple of miscellaneous design choices that don't seem to fit into any of the design patterns we describe.
+
+\subsection{Abstraction barriers}
+The most important rule is to \emph{not have leaky abstraction barriers}.
+In Coq, a leaky abstraction barrier is a case where you want to call a function that takes a term of type \texttt{T} on a term which has type \texttt{T'} when \texttt{T} and \texttt{T'} \emph{are not syntactically equal}.
+Generally in these cases you let the type-checker perform unification, and sweep the details under the rug.
+If you are very careful, this can work, but most of the time Coq ends up spending a lot of time unifying types, when things are big enough.
+
+\subsection{When and how to use dependent types painlessly}
+The extremes are relatively easy:
+\begin{itemize}
+\item Total separation between proofs and programs, so that programs are simply typed, works relatively well
+\item Pre-existing mathematics, where objects are fully bundled with proofs and never need to be separated from them, also works relatively well
+\item The rule of thumb in the middle: it is painful to recombine proofs and programs after you separate them; if you are doing it to define an opaque transformation that acts on proof-carrying code, that is okay, but if you cannot make that abstraction barrier, enormous pain results.
+\item For example, if you have length-indexed lists and want to index into them with elements of a finite type, things are fine until you need to divorce the index from its proof of finiteness.  If you, for example, want to index into, say, the concatenation of two lists, with an index into the first of the lists, then you will likely run into trouble, because you are trying to consider the index separately from its proof of finitude, but you have to recombine them to do the indexing.
+\end{itemize}
+
+\subsection{Arguments vs.~fields and packed records}
+There are two (or more) ways of designing hierarchies of mathematical objects.
+Roughly the distinction corresponds to different ways to answer the question ``should we store information primarily in the type, or primarily in the term?''
+Frequently information stored in the type ends up duplicated, both in the term, and in functions manipulating this type, and in types built upon this type, resulting in quadratic blowup.
+
+\subsection{Proof by duality as proof by unification}
+One notable exception to the assertion about never having leaky abstraction barriers is when you can offload \emph{all} of the interesting work into the unification engine.
+One example of this is \emph{proof by reflection}, mentioned in \autoref{sec:proof-by-reflection}.
+Another example is a perhaps novel contribution of the category theory library I created, proof by duality as proof by unification.
+
+In category theory, there is a notion called ``duality'' which roughly means ``flip all the arrows to point in the other direction.''
+It's possible to get Coq's unification engine to do this automatically, allowing de-duplication of code, often cutting build-time in half (because you only have to run the typechecker on a generalized notion of ``arrow'' once, rather than on both directions of arrow separately).
+
+\subsection{Lessons in possible changes to Coq's type theory, implementation, and tooling}
+
+Coq has had many changes over the course of my PhD which have improved performance, some of which I will talk about as generalizable proof assistant design choices that have performance implications.
+Notable examples of design options that have performance implications include primitive projections and universe polymorphism for code de-duplication, higher inductive types / quotient types and internalized parametricity (not actually included in Coq yet) for offloading work into the metatheory, equality reflection, judgmentally irrelevant propositions, and hashconsing.
+
+Additionally, the thesis may talk about some tools that I worked on for enabling better profiling of Coq code; a profiler is one of the most useful tools an engineer can have for improving performance.
+
+\subsection{Proof by Reflection} \label{sec:proof-by-reflection}
+
+(Note that much of this section is quoted from \emph{Reification by Parametricity: Fast Setup for Proof by Reflection, in Two Lines of {L}tac}~\cite{reification-by-parametricity}.)
+
+Proof by reflection~\cite{ReflectionTACS97} is an established method for employing verified proof procedures, within larger proofs.
+There are a number of benefits to using verified functional programs written in the proof assistant's logic, instead of tactic scripts.
+We can often prove that procedures always terminate without attempting fallacious proof steps, and perhaps we can even prove that a procedure gives logically complete answers, for instance telling us definitively whether a proposition is true or false.
+In contrast, tactic-based procedures may encounter runtime errors or loop forever.
+As a consequence, those procedures must output proof terms, justifying their decisions, and these terms can grow large, making for slower proving and requiring transmission of large proof terms to be checked slowly by others.
+A verified procedure need not generate a certificate for each invocation.
+
+The starting point for proof by reflection is \emph{reification}: translating a ``native'' term of the logic into an explicit abstract syntax tree.
+We may then feed that tree to verified procedures or any other functional programs in the logic.
+The benefits listed above are particularly appealing in domains where goals are very large.
+For instance, consider verification of large software systems, where we might want to reify thousands of lines of source code.
+Popular methods turn out to be surprisingly slow, often to the point where, counter-intuitively, the majority of proof-execution time is spent in reification -- unless the proof engineer invests in writing a plugin directly in the proof assistant's metalanguage (e.g., OCaml for Coq).
+
+Proof by reflection shows up in two or three ways in my thesis.
+
+The zeroth way will be a recounting of existing knowledge proof by reflection, with an eye towards how it can be used for performance gains.
+
+I will also describe how reification can be both simpler and faster than with previously-standard methods using what I've termed \emph{reification by parametricity}.
+Perhaps surprisingly, we can reify terms almost entirely through reduction in the logic, with a small amount of tactic code for setup and no ML programming.
+
+The final way reflective automation shows up is in the next section, \autoref{sec:rewriting}.
+
+\subsection{A Framework for Building Verified Partial Evaluators} \label{sec:rewriting}
+
+(Note that much of this section is quoted from our draft paper \emph{A Framework for Building Verified Partial Evaluators}.)
+
+\emph{Partial evaluation} is a classic technique for generating lean, customized code from libraries that start with more bells and whistles.
+It is also an attractive approach to creation of \emph{formally verified} systems, where theorems can be proved about libraries, yielding correctness of all specializations ``for free.''
+However, it can be challenging to make library specialization both performant and trustworthy.
+My thesis will present a new approach (new as-of the paper this result was originally described in), prototyped in the Coq proof assistant, which supports specialization at the speed of native-code execution, without adding to the trusted code base.
+Our extensible engine, which combines the traditional concepts of tailored term reduction and automatic rewriting from hint databases, is also of interest to replace these ingredients in proof assistants' proof checkers and tactic engines, at the same time as it supports extraction to standalone compilers from library parameters to specialized code.
+
+In some sense, this section will describe the central new contribution presented by my thesis, this prototype framework for rewriting and partial evaluation.
+The prototype framework is already used in the project that spawned it, Fiat Cryptography~\cite{FiatCryptoSP19}, a Coq library that generates code for big-integer modular arithmetic at the heart of elliptic-curve cryptography algorithms.
+(I spent a number of years of my PhD working on the Fiat Cryptography project.)
+This domain-specific compiler has been adopted, for instance, in the Chrome Web browser, such that about half of all HTTPS connections from browsers are now initiated using code generated (with proof) by Fiat Cryptography.
+However, Fiat Cryptography was only used successfully to build C code for the two most widely used curves (P-256 and Curve25519).
+Their method of partial evaluation timed out trying to compile code for the third most widely used curve (P-384).
+The rewriting and partial evaluation framework allows it to generate code for P-384, as well as much larger curves.
+
+However, the framework is still only a \emph{prototype}, in the sense that the performance results suggest that a framework like it could replace tactics such as \texttt{rewrite}, \texttt{autorewrite}, \texttt{rewrite\_strat}, \texttt{simpl}, and \texttt{cbn} to a great performance improvement, but there is still much engineering work left to adequately replace these tactics in their full generality.
+
+\bibliographystyle{plain}
 %\nocite{*}
-%\bibliography{references}
+\bibliography{references}
 
 \end{document}

@@ -248,13 +248,16 @@ $(THESIS_PDFS) : %.pdf : %.tex
 $(PROPOSAL_PDFS) : %.pdf : %.tex
 	@ echo "PDFLATEX (run 1)"
 	@ pdflatex -synctex=1 -enable-write18 $(OTHERFLAGS) $<
+	@ echo "BIBTEX"
+	@ bibtex ${<:.tex=.aux}
 	@ echo "PDFLATEX (run 2)"
 	@ pdflatex -synctex=1 -interaction=nonstopmode $(OTHERFLAGS) -enable-write18 $< 2>&1 >/dev/null || true
 	@ echo "PDFLATEX (run 3)"
 	@ pdflatex -synctex=1 $(OTHERFLAGS) $<
 
+# pdflatex -synctex=1 -interaction=nonstopmode -enable-write18 jgross-thesis.tex 2>&1
 todo: jgross-thesis.pdf
-	pdflatex -synctex=1 -interaction=nonstopmode -enable-write18 jgross-thesis.tex 2>&1 | grep -C 10 '^LaTeX Warning:\|on input line' | tr '\n' '&' | sed s'/\&//g' | sed s'/\(on input line[^\.]*\.\)/\1\&/g' | tr '&' '\n' | grep -o 'LaTeX Warning:.*' | grep -o 'TODO.*\|QUESTION.*' | grep --color=auto 'TODO:\|QUESTION FOR ADAM:'
+	cat jgross-thesis.log | grep -C 10 '^LaTeX Warning:\|on input line' | tr '\n' '&' | sed s'/\&//g' | sed s'/\(on input line[^\.]*\.\)/\1\&/g' | tr '&' '\n' | grep -o 'LaTeX Warning:.*' | grep -o 'TODO.*\|QUESTION.*' | grep --color=auto 'TODO:\|QUESTION FOR ADAM:'
 
 clean:
 	rm -f *.aux *.out *.nav *.toc *.vrb $(PDFS) *.snm *.log *.bbl *.blg *.tex.d *.run.xml

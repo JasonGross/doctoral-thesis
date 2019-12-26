@@ -345,7 +345,7 @@ in Coq, you have to performance-optimize both the code and the types, simultaneo
 In most languages, leaky abstraction barriers cause pain only to the user;
 in Coq leaky abstraction barriers also incur a performance overhead every time they are used.
 
-I propose to lay out a map of common Coq performance issues, describe methods and guidelines for working around these performance issues discovered in the course of doing research, and present the research as case-studies.
+I propose to lay out a map of common Coq performance issues, talk about where these issues likely stem from fundamental design issues or tradeoffs in designing proof assistants (as opposed to being accidents of Coq's history), describe methods and guidelines for working around these performance issues discovered in the course of doing research, and present the research as case-studies.
 The primary case studies will be the formalization of category theory in Coq, a rudimentary parser-synthesizer, and the synthesis of efficient verified C code for field arithmetic used in cryptographic primitives.
 I will also present a novel way of performing reification, which is a method of constructing abstract syntax trees for terms, used for taking advantage of Coq's computation in employing verified proof procedures or code transformations within the context of larger proofs.
 Finally, I will present a verified tool developed in the course of research for replacing proof-producing rewriting and slow custom reduction strategies with a faster reflective method which combines normalization by evaluation with pattern matching complication for reflective rewriting.
@@ -411,12 +411,13 @@ Broadly, there are five sorts of things that result in slowness in Coq, all of w
 \end{itemize}
 
 Most of the bottlenecks fall into type checking, term building, unification, or normalization, but there are a couple of other notable categories.
-In proofs with large contexts many steps which modify the goal, management of the contexts of existential variables can become a bottleneck.
+In proofs with large contexts many steps which modify the goal, management of the contexts of existential variables can become a bottleneck; it's not clear to me how much of this is specific to Coq and how much of this shows up in other designs of proof assistants.
 In some parts of the Coq system, context management more generally when under many binders can be a bottleneck.
 
 \subsection{Lessons in design of APIs of Gallina libraries}
 
 Unlike most programming languages, the design of an API in Gallina has an enormous impact on compile-time performance.
+I hypothesize that this is true in all dependently typed programming languages and proof assistants where arbitrary amounts of computation can happen during typechecking.
 
 The thesis will cover some broad design principles, and then talk about a couple of miscellaneous design choices that don't seem to fit into any of the design patterns we describe.
 

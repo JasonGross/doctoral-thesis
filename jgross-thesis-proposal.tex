@@ -339,13 +339,18 @@ The edit-compile-debug loop available when proof automation takes less than a te
 Moreover, some proof automation simply stops working as the goals get large enough, failing to finish even after hundreds of hours unless carefully tuned to avoid performance issues.
 
 Optimization in Coq is especially hard for a couple of reasons.
-Coq has a lot of magic.
-In most languages, you optimize the code, and the types are just there to catch mistakes;
-in Coq, you have to performance-optimize both the code and the types, simultaneously, whenever dependent types are in use.
+Coq has many heuristics which are tuned for making some cases performant, but which result in puzzling differences in performance on other similar cases.
+In most languages, only the code needs to be optimized, and the types are just there to catch mistakes;
+in Coq, the code and the types must be performance-optimized simultaneously, whenever dependent types are in use.
 In most languages, leaky abstraction barriers cause pain only to the user;
 in Coq leaky abstraction barriers also incur a performance overhead every time they are used.
 
-I propose to lay out a map of common Coq performance issues, talk about where these issues likely stem from fundamental design issues or tradeoffs in designing proof assistants (as opposed to being accidents of Coq's history), describe methods and guidelines for working around these performance issues discovered in the course of doing research, and present the research as case-studies.
+I propose to lay out a map of performance bottlenecks in Coq which can be used to inform future improvement and design of proof assistants.
+The map will divide the primary performance bottlenecks into three main categories: repeated computation around dependent types, large proof traces, and needless duplicative work.
+I will describe the trade-offs which seem to be in play in each case and propose solutions drawn from extensive experience in building large-scale projects in Coq, which will be presented as case-studies.
+Some of the solutions will take the form design principles for users, with examples and evidince from various developments and performance tests.
+Other solutions take the form of prototype frameworks, tactics, or libraries which demonstrate a way to solve a particular performance bottleneck without compromising on the trade-off at play.
+
 The primary case studies will be the formalization of category theory in Coq, a rudimentary parser-synthesizer, and the synthesis of efficient verified C code for field arithmetic used in cryptographic primitives.
 I will also present a novel way of performing reification, which is a method of constructing abstract syntax trees for terms, used for taking advantage of Coq's computation in employing verified proof procedures or code transformations within the context of larger proofs.
 Finally, I will present a verified tool developed in the course of research for replacing proof-producing rewriting and slow custom reduction strategies with a faster reflective method which combines normalization by evaluation with pattern matching complication for reflective rewriting.
@@ -388,7 +393,7 @@ Finally, I will present a verified tool developed in the course of research for 
 
 The subsections in this section provide a brief outline of the proposed chapters in my thesis, with some context about where the information is coming from.
 
-\subsection{A survey of the landscape of slowness in Coq}
+\subsection{A map of the landscape of performance bottlenecks in Coq}
 
 The first project I did was formalizing a category theory library in Coq.
 This was an interesting starting point for learning Coq and for becoming acquainted with the performance landscape of Coq for a couple of reasons.
@@ -396,23 +401,16 @@ Because category theory is already on the formal end of mathematics, most of wha
 At the same time, because category theory is so general, there were often multiple equivalent ways of specifying things, and I got to see what the effects of various choices were, while still being constrained by the mathematics.
 Finally, category theory is foundational in a way that stresses the expressivity of dependent type theories, especially around universes (Coq's mechanism for avoiding paradoxes involving the set of all sets that don't contain themselves and similar).
 
-Broadly, there are five sorts of things that result in slowness in Coq, all of which fall under the heading of Coq ``doing too much stuff.''
+Broadly, most performance bottlenecks in Coq which are not merely an accident of history (such as an algorithmic inefficiency in Coq's implementation, or in the code written by a user) fall into one of three categories:
 \begin{itemize}
 \item
-  Sometimes we end up accidentally having Coq do the same things repeatedly (e.g., repeatedly typechecking the same term which may show up as an argument to many constructors)
+  Repeated computation involved in type-checking with dependent types (e.g., repeatedly typechecking the same term which may show up as an argument to many constructors, just to make the types line up; repeatedly verifying that two terms are convertible)
 \item
-  Sometimes we end up having Coq compute something when we didn't have to (e.g., eagerly evaluating recursive calls even when their results are never used)
+  Generation and checking of enormous proof traces for transformations not in the trusted kernel
 \item
-  Sometimes there's overhead from using one portion of Coq rather than a different one (e.g., using \texttt{cbv} rather than \texttt{vm\_compute}, using \texttt{Ltac} rather than \texttt{Gallina} or \texttt{OCaml})
-\item
-  Sometimes there's an algorithmic inefficiency in the Ltac or Gallina code being computed (e.g., using unary \texttt{nat}s rather than binary \texttt{N}s for comparing large natural numbers (such as 256))
-\item
-  Sometimes there's an inefficiency in the Coq codebase itself (e.g., many of the bugs fixed by Pierre-Marie P\'edrot tagged with ``performance'')
+  Duplicative work (e.g., interpreted languages, near-identical proofs, redoing pattern-matching work)
 \end{itemize}
 
-Most of the bottlenecks fall into type checking, term building, unification, or normalization, but there are a couple of other notable categories.
-In proofs with large contexts many steps which modify the goal, management of the contexts of existential variables can become a bottleneck; it's not clear to me how much of this is specific to Coq and how much of this shows up in other designs of proof assistants.
-In some parts of the Coq system, context management more generally when under many binders can be a bottleneck.
 
 \subsection{Lessons in design of APIs of Gallina libraries}
 
@@ -423,17 +421,17 @@ The thesis will cover some broad design principles, and then talk about a couple
 
 \subsubsection{Abstraction barriers}
 The most important rule is to \emph{not have leaky abstraction barriers}.
-In Coq, a leaky abstraction barrier is a case where you want to call a function that takes a term of type \texttt{T} on a term which has type \texttt{T'} when \texttt{T} and \texttt{T'} \emph{are not syntactically equal}.
-Generally in these cases you let the type-checker perform unification, and sweep the details under the rug.
-If you are very careful, this can work, but most of the time Coq ends up spending a lot of time unifying types, when things are big enough.
+In Coq, a leaky abstraction barrier is a case where a function that takes a term of type \texttt{T} is called on a term which has type \texttt{T'} when \texttt{T} and \texttt{T'} \emph{are not syntactically equal}.
+Generally in these cases one lets the type-checker perform unification, and sweeps the details under the rug.
+If great care is taken, this can work, but most of the time Coq ends up spending a lot of time unifying types, when things are big enough.
 
 \subsubsection{When and how to use dependent types painlessly}
 The extremes are relatively easy:
 \begin{itemize}
 \item Total separation between proofs and programs, so that programs are simply typed, works relatively well
 \item Pre-existing mathematics, where objects are fully bundled with proofs and never need to be separated from them, also works relatively well
-\item The rule of thumb in the middle: it is painful to recombine proofs and programs after you separate them; if you are doing it to define an opaque transformation that acts on proof-carrying code, that is okay, but if you cannot make that abstraction barrier, enormous pain results.
-\item For example, if you have length-indexed lists and want to index into them with elements of a finite type, things are fine until you need to divorce the index from its proof of finiteness.  If you, for example, want to index into, say, the concatenation of two lists, with an index into the first of the lists, then you will likely run into trouble, because you are trying to consider the index separately from its proof of finitude, but you have to recombine them to do the indexing.
+\item The rule of thumb in the middle: it is painful to recombine proofs and programs after separating them; it's okay to do it to define an opaque transformation that acts on proof-carrying code, but if the abstraction barrier is not perfect, enormous pain results.
+\item For example, consider length-indexed lists and indexing into them with elements of a finite type: things are fine until the index is divorced from its proof of finiteness.  For example, to index into the concatenation of two lists, with an index that is known to be valid for the first of the lists, the result is pain.  The reason, I will explain, is that to do this indexing the index is first being considered separately from its proof of finitude, and then recombined in order to do the actual indexing.
 \end{itemize}
 
 \subsubsection{Arguments vs.~fields and packed records}
@@ -442,12 +440,12 @@ Roughly the distinction corresponds to different ways to answer the question ``s
 Frequently information stored in the type ends up duplicated, both in the term, and in functions manipulating this type, and in types built upon this type, resulting in quadratic blowup.
 
 \subsubsection{Proof by duality as proof by unification}
-One notable exception to the assertion about never having leaky abstraction barriers is when you can offload \emph{all} of the interesting work into the unification engine.
-One example of this is \emph{proof by reflection}, mentioned in \autoref{sec:proof-by-reflection}.
+One notable exception to the assertion about never having leaky abstraction barriers is when \emph{all} of the interesting work can be offloaded into the unification engine, thereby eliminating the duplicative work of checking proofs more than needed.
+One example of this is \emph{proof by reflection}, mentioned in \autoref{sec:proof-by-reflection}; this eliminates needless checking of proof traces.
 Another example is a perhaps novel contribution of the category theory library I created, proof by duality as proof by unification.
 
 In category theory, there is a notion called ``duality'' which roughly means ``flip all the arrows to point in the other direction.''
-It's possible to get Coq's unification engine to do this automatically, allowing de-duplication of code, often cutting build-time in half (because you only have to run the typechecker on a generalized notion of ``arrow'' once, rather than on both directions of arrow separately).
+It's possible to get Coq's unification engine to do this automatically, allowing de-duplication of code, often cutting build-time in half (because then the typechecker runs on a generalized notion of ``arrow'' once, rather than on both directions of arrow separately).
 
 \subsection{Lessons in possible changes to Coq's type theory, implementation, and tooling}
 

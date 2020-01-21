@@ -348,7 +348,7 @@ in Coq leaky abstraction barriers also incur a performance overhead every time t
 I propose to lay out a map of performance bottlenecks in Coq which can be used to inform future improvement and design of proof assistants.
 The map will divide the primary performance bottlenecks into three main categories: repeated computation around dependent types, large proof traces, and needless duplicative work.
 I will describe the trade-offs which seem to be in play in each case and propose solutions drawn from extensive experience in building large-scale projects in Coq, which will be presented as case-studies.
-Some of the solutions will take the form design principles for users, with examples and evidince from various developments and performance tests.
+Some of the solutions will take the form design principles for users, with examples and evidence from various developments and performance tests.
 Other solutions take the form of prototype frameworks, tactics, or libraries which demonstrate a way to solve a particular performance bottleneck without compromising on the trade-off at play.
 
 The primary case studies will be the formalization of category theory in Coq, a rudimentary parser-synthesizer, and the synthesis of efficient verified C code for field arithmetic used in cryptographic primitives.
@@ -404,7 +404,7 @@ Finally, category theory is foundational in a way that stresses the expressivity
 Broadly, most performance bottlenecks in Coq which are not merely an accident of history (such as an algorithmic inefficiency in Coq's implementation, or in the code written by a user) fall into one of three categories:
 \begin{itemize}
 \item
-  Repeated computation involved in type-checking with dependent types (e.g., repeatedly typechecking the same term which may show up as an argument to many constructors, just to make the types line up; repeatedly verifying that two terms are convertible)
+  Repeated computation involved in type-checking with dependent types (e.g., repeatedly type checking the same term which may show up as an argument to many constructors, just to make the types line up; repeatedly verifying that two terms are convertible)
 \item
   Generation and checking of enormous proof traces for transformations not in the trusted kernel
 \item
@@ -415,7 +415,7 @@ Broadly, most performance bottlenecks in Coq which are not merely an accident of
 \subsection{Lessons in design of APIs of Gallina libraries}
 
 Unlike most programming languages, the design of an API in Gallina has an enormous impact on compile-time performance.
-I hypothesize that this is true in all dependently typed programming languages and proof assistants where arbitrary amounts of computation can happen during typechecking.
+I hypothesize that this is true in all dependently typed programming languages and proof assistants where arbitrary amounts of computation can happen during type checking.
 
 The thesis will cover some broad design principles, and then talk about a couple of miscellaneous design choices that don't seem to fit into any of the design patterns we describe.
 
@@ -445,12 +445,12 @@ One example of this is \emph{proof by reflection}, mentioned in \autoref{sec:pro
 Another example is a perhaps novel contribution of the category theory library I created, proof by duality as proof by unification.
 
 In category theory, there is a notion called ``duality'' which roughly means ``flip all the arrows to point in the other direction.''
-It's possible to get Coq's unification engine to do this automatically, allowing de-duplication of code, often cutting build-time in half (because then the typechecker runs on a generalized notion of ``arrow'' once, rather than on both directions of arrow separately).
+It's possible to get Coq's unification engine to do this automatically, allowing deduplication of code, often cutting build-time in half (because then the type checker runs on a generalized notion of ``arrow'' once, rather than on both directions of arrow separately).
 
 \subsection{Lessons in possible changes to Coq's type theory, implementation, and tooling}
 
 Coq has had many changes over the course of my PhD which have improved performance, some of which I will talk about as generalizable proof assistant design choices that have performance implications.
-Notable examples of design options that have performance implications include primitive projections and universe polymorphism for code de-duplication, higher inductive types / quotient types and internalized parametricity (not actually included in Coq yet) for offloading work into the metatheory, equality reflection, judgmentally irrelevant propositions, and hashconsing.
+Notable examples of design options that have performance implications include primitive projections and universe polymorphism for code deduplication, higher inductive types / quotient types and internalized parametricity (not actually included in Coq yet) for offloading work into the metatheory, equality reflection, judgmentally irrelevant propositions, and hash consing.
 
 Additionally, the thesis may talk about some tools that I worked on for enabling better profiling of Coq code; a profiler is one of the most useful tools an engineer can have for improving performance.
 

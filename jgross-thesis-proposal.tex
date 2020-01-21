@@ -397,8 +397,8 @@ The subsections in this section provide a brief outline of the proposed chapters
 
 The first project I did was formalizing a category theory library in Coq.
 This was an interesting starting point for learning Coq and for becoming acquainted with the performance landscape of Coq for a couple of reasons.
-Because category theory is already on the formal end of mathematics, most of what I did was just figuring out how to translate from existing well-pinned-down formulations of things into Coq.
-At the same time, because category theory is so general, there were often multiple equivalent ways of specifying things, and I got to see what the effects of various choices were, while still being constrained by the mathematics.
+Because category theory is already on the formal end of mathematics, most of what I did was just figuring out how to translate from existing well-pinned-down formulations into Coq.
+At the same time, because category theory is so general, there were often multiple equivalent ways of specifying constructions, and I got to see what the effects of various choices were, while still being constrained by the mathematics.
 Finally, category theory is foundational in a way that stresses the expressivity of dependent type theories, especially around universes (Coq's mechanism for avoiding paradoxes involving the set of all sets that don't contain themselves and similar).
 
 Broadly, most performance bottlenecks in Coq which are not merely an accident of history (such as an algorithmic inefficiency in Coq's implementation, or in the code written by a user) fall into one of three categories:
@@ -423,7 +423,7 @@ The thesis will cover some broad design principles, and then talk about a couple
 The most important rule is to \emph{not have leaky abstraction barriers}.
 In Coq, a leaky abstraction barrier is a case where a function that takes a term of type \texttt{T} is called on a term which has type \texttt{T'} when \texttt{T} and \texttt{T'} \emph{are not syntactically equal}.
 Generally in these cases one lets the type-checker perform unification, and sweeps the details under the rug.
-If great care is taken, this can work, but most of the time Coq ends up spending a lot of time unifying types, when things are big enough.
+If great care is taken, this can work, but most of the time Coq ends up spending a lot of time unifying types, when terms are big enough.
 
 \subsubsection{When and how to use dependent types painlessly}
 The extremes are relatively easy:
@@ -431,7 +431,7 @@ The extremes are relatively easy:
 \item Total separation between proofs and programs, so that programs are simply typed, works relatively well
 \item Pre-existing mathematics, where objects are fully bundled with proofs and never need to be separated from them, also works relatively well
 \item The rule of thumb in the middle: it is painful to recombine proofs and programs after separating them; it's okay to do it to define an opaque transformation that acts on proof-carrying code, but if the abstraction barrier is not perfect, enormous pain results.
-\item For example, consider length-indexed lists and indexing into them with elements of a finite type: things are fine until the index is divorced from its proof of finiteness.  For example, to index into the concatenation of two lists, with an index that is known to be valid for the first of the lists, the result is pain.  The reason, I will explain, is that to do this indexing the index is first being considered separately from its proof of finitude, and then recombined in order to do the actual indexing.
+\item For example, consider length-indexed lists and indexing into them with elements of a finite type: problems arise only once the index is divorced from its proof of finiteness.  For example, to index into the concatenation of two lists, with an index that is known to be valid for the first of the lists, the result is pain.  The reason, I will explain, is that to do this indexing the index is first being considered separately from its proof of finitude, and then recombined in order to do the actual indexing.
 \end{itemize}
 
 \subsubsection{Arguments vs.~fields and packed records}

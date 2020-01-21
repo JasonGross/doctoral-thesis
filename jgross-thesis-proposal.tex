@@ -494,8 +494,8 @@ In some sense, this section will describe the central new contribution presented
 The prototype framework is already used in the project that spawned it, Fiat Cryptography~\cite{FiatCryptoSP19}, a Coq library that generates code for big-integer modular arithmetic at the heart of elliptic-curve cryptography algorithms.
 (I spent a number of years of my PhD working on the Fiat Cryptography project.)
 This domain-specific compiler has been adopted, for instance, in the Chrome Web browser, such that about half of all HTTPS connections from browsers are now initiated using code generated (with proof) by Fiat Cryptography.
-However, Fiat Cryptography was only used successfully to build C code for the two most widely used curves (P-256 and Curve25519).
-Their method of partial evaluation timed out trying to compile code for the third most widely used curve (P-384).
+However, Fiat Cryptography, prior to integration of the rewriting and partial evaluation framework, was only used successfully to build C code for the two most widely used curves (P-256 and Curve25519).
+Our initial method of partial evaluation timed out trying to compile code for the third most widely used curve (P-384).
 The rewriting and partial evaluation framework allows it to generate code for P-384, as well as much larger curves.
 
 However, the framework is still only a \emph{prototype}, in the sense that the performance results suggest that a framework like it could replace tactics such as \texttt{rewrite}, \texttt{autorewrite}, \texttt{rewrite\_strat}, \texttt{simpl}, and \texttt{cbn} to a great performance improvement, but there is still much engineering work left to adequately replace these tactics in their full generality.

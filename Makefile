@@ -43,11 +43,11 @@ proposal: $(PROPOSAL_PDFS)
 thesis: $(THESIS_PDFS)
 
 update-thesis::
-	echo "\\thesisdate{`date +'%B %-d, %Y'`}" > new-date.tex
+	echo '\\thesisdate{'"`date +'%B %-d, %Y'`}" > new-date.tex
 	$(MAKE) thesis
 
 update-proposal::
-	echo "\\newcommand{\\proposaldate}{`date +'%B %-d, %Y'`}" > new-date-proposal.tex
+	echo '\\newcommand{\\proposaldate}{'"`date +'%B %-d, %Y'`}" > new-date-proposal.tex
 	$(MAKE) proposal
 
 download-packages: mathtools.sty mhsetup.sty etoolbox.sty biblatex.sty logreq.sty

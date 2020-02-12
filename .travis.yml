@@ -11,16 +11,6 @@ addons:
     - sed
     - grep
 
-install:
- - travis_retry wget http://mirrors.ctan.org/macros/latex/contrib/xcolor.zip && unzip xcolor.zip && mv xcolor/*.{dtx,ins} ./ && latex xcolor.ins
- - travis_retry wget http://mirrors.ctan.org/macros/latex/contrib/bussproofs/bussproofs.sty
- - travis_retry wget http://mirrors.ctan.org/macros/latex/contrib/mathtools.zip && unzip mathtools.zip && (cd mathtools && for i in *.dtx; do (mv $i ../ && cd .. && tex $i); done)
- - travis_retry wget http://mirrors.ctan.org/macros/latex/contrib/etoolbox/etoolbox.sty http://mirrors.ctan.org/macros/latex/contrib/etoolbox/etoolbox.def http://mirrors.ctan.org/macros/latex/contrib/etoolbox/etoolbox.tex
- - travis_retry wget http://mirrors.ctan.org/macros/generic/xstring/xstring.sty http://mirrors.ctan.org/macros/generic/xstring/xstring.tex
- - travis_retry wget http://mirrors.ctan.org/macros/generic/diagrams/xypic.zip && unzip xypic.zip && (find xypic -name "*.sty" -o -name "*.tex" -o -name "*.map" -o -name "*.afm" -o -name "*.enc" -o -name "*.mf" -o -name "*.pfm" -o -name "*.pro" -o -name "*.tfm" -o -name "*.pfb" | xargs mv -t ./)
- - travis_retry wget http://mirrors.ctan.org/macros/latex/contrib/biblatex.zip && unzip biblatex.zip && (find biblatex -name "*.sty" -o -name "*.bbx" -o -name "*.bst" -o -name "*.cbx" -o -name "*.cfg" -o -name "*.csf" -o -name "*.def" -o -name "*.lbx" | xargs mv -t ./)
- - travis_retry wget http://mirrors.ctan.org/macros/latex/contrib/logreq/logreq.sty http://mirrors.ctan.org/macros/latex/contrib/logreq/logreq.def
-
 deploy:
   provider: pages
   skip_cleanup: true

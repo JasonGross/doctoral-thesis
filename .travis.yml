@@ -6,6 +6,7 @@ addons:
   apt:
     packages:
     - texlive
+    - texlive-latex-extra
     - texlive-science
     - wget
     - curl

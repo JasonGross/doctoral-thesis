@@ -1,4 +1,44 @@
-\chapter{How does Coq fail to perform adequately?} \label{ch:perf-failures}
+\chapter{The unique challenges of performance in type-theoretic proof assistants} \label{ch:perf-failures}
+
+The first bit is about what makes performance in proof assistants and Coq challenging. In most languages, or in most most areas, the performance story is that you do a thing and you make it fast on your toy examples and you do larger examples and hopefully it's still fast and then you do much larger examples and maybe it gets a bit slow and maybe for the largest of examples you need to like let it run overnight or something. 
+
+The experience in Coq frequently is that you do something and you get it to work on your toy examples and it's fast and you do slightly larger examples and it's still kind of fast. But like noticeable and then you do somewhat larger examples and now it's like slow and annoying but still okay and then you make your examples a little bit longer and. 
+
+Maybe it won't finish for a week. Or longer okay, oh like. Like I ran into a case where I had a thing and it worked and for the larger examples it would maybe take I don't know an hour to and then there were some examples that. Did finish after about four thousand hours. 
+
+Um, Was it wait four thousand no sorry not four thousand hours four thousand seconds okay, yeah that's more reasonable out of time yeah like four thousand seconds, oh. But. There were other larger examples that didn't finish even after like nine hundred hours, ah, yes hours, oh wow. So like four a month. 
+
+I think that's about how long I left them running okay just out of curiosities to see which ones would finish. Maybe it was 40,000 seconds that some of the medium-sized ones finished in anyway, it was some like ridiculous amount like like you got a bunch of them that would finish reasonably quickly and then the next ones would like much much slower completely unreasonable amounts of time. 
+
+And this is sort of common in cock where you'll get something and it'll work and if it works then you just leave it and then you try to scale your thing and now suddenly you've hit sudden you've hit one of many instances of quadratic or exponential behavior and now your thing is. 
+
+Unclear if it'll finish in a year, okay? Oh. And. This is performance of compile time by the way, this is like performance of how long it takes to check proofs if you're writing programs and you want to prove things about them, like how your programs perform is subject to the same optimization techniques as other languages, but the issue that you have a question no go on the issue with using those techniques for how your proofs perform is that usually most languages either a library is slow. 
+
+And you like know it's slow and it has like known performance characteristics or the code that you were as slow. Here. There are many many bits of the compiler that usually just work and most the time you don't need to care about how they work they just work until they don't. 
+
+So why don't they work ah, so there's various reasons, um, one of them is that the cocktail team is under staffed okay like. So okay, so here's here's a performance issue that has not yet been solved. I went to the cocktail team and I was like this thing is quadratic in ah, the number of arguments to the function like what you're doing underneath the function should not be quadratic and how many arguments there are to the function. 
+
+Okay. 
+
+Hmm yeah the one of the cocktails looked at it there were actually two different parts and I was like both of these things are quadratic in the number of arguments the function cognitive team looked at it and was like, oh there's different sources of quadraticness in the two different things and the reason for the worse. 
+
+Source of quadraticness was that when you refer to? Variables, they you do it by number. And so when you have a closure when you have a like. Function object that is like waiting for extra arguments, but it like refers to some of the arguments that exist and you like move it beneath more binders, you need to update all the numbers. 
+
+So you're doing it a second time. But the way that they update all the numbers is every time they move beneath one binder they have a thing a thunk that's waiting that says when you go to look at this function bump all the numbers by one. I see and then you move it under another binder and you add another thumbs that says when you go to look at this function bump all the numbers by one so when you put it on their end binders n times, you say plus one plus on plus one plus one plus yeah and then it's quadratic yeah. 
+
+And no one realizes this because this part of the system is pretty fast and no one was dealing with functions that had a hundred or a thousand arguments. And so this part of the system went unstressed in order to find that this is the issue you need to know how to you need to like know the slowness you need to know what it's slow in you need to know what the algorithm is doing and for like complicated software that relies on. 
+
+Like down to your mouth, this is not always trivial. If it's in a part of the code base that needs to be trusted then if you make any changes like they need to like you need to get them correct or else you trusted so caucus split into two parts, there's the part of the system that ah is called the kernel or the trusted code base. 
+
+And once you get a proof this part will be like yup. I believe the proof for like nope your proof is bad. And then there's the other part that is like here's magic and it will make purse for you, okay, you're like I have an arithmetic expression please prove that it's true and there's a bit in this other part that's like I know how to prove arithmetic expressions and it gives the arithmetic expression and then it generates a certificate or proof that this other trusted part tracks and if the part generating the arithmetic proof is wrong then the users come complaining to you that you have a bug. 
+
+If the part checking the proofs is wrong. Then you don't see the bug and now suddenly your users can prove anything they want. And the system is no longer trustworthy right and so for that bit of it you need to be very careful with any changes you make. So there's this like cornucopia issues that makes like improving the performance in these sorts of systems a bit tricky. 
+
+Ah. 
+
+And this part of my thesis. I will like. Point to a couple of other like a sort of palette of like examples of ah, slowness issues that come in come up and talk that are sort of heard to tell where exactly they come from. Hmm. 
+
+
 
 \todo{this chapter}
 

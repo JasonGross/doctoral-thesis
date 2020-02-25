@@ -1,0 +1,124 @@
+\chapter{Reflective Program Transformation} \label{ch:reflection}
+
+So the next section is on an sort of the other main thing that you one of the other main things maybe the other main thing that you want to do your structure because you want to do you're recording this right? I'm recording this yeah, but my dearly new structure because of structure that I have is. 
+
+Not very structurally, what do you mean? I mean, it's helpful you ask these questions and I'm like, oh, I'll probably need to explain this bit here that bet there okay, yeah. Like I'll probably try to get Google to transcribe this and then edit it a bit and turn it into an outline. 
+
+So thank you more words to say no. I get all the words you're saying you have so much stuff maybe um, so the other thing you might want to do in caulk is. A program transformation or rewriting so this is like sometimes you have one. Program and you want to turn it into another program typical example of this is your writing a compiler. 
+
+Or you have some things and you know that some other some things are equal and you want to like replace things with other equal things you want to do like equational reasoning. 
+
+Right? And all custom built-in tactics for this and they work on small examples and they don't scale. And they're sort of notorious for not scaling. And there are a number. Of ways in which they don't scale some of which are probably just artifacts of how they're designed some of which are issues with how things are set up. 
+
+Some of which are potentially fundamental issues to doing this sort of thing. And. 
+
+The. Solution that I will be proposing in my thesis. Is that it turns out that you can do all of this program transformation rewriting stuff by shoving it into the part shoving it all into the type level. Serving it all into the part of like this part of the system that's been heavily optimized for a particular type of computation. 
+
+So what is it in before you shove it into the type level, right? So I talked before about two different parts of the trusted good base with the kernel and this large bit around it. And previously there in this large bit around it. And so what this looks like is that you're like I have this equation. 
+
+Please take my thing, maybe it's an expression, maybe it's a program whatever and transform this bit to this other bet. And caucus like okay, I know that those two bits are the same. Let me generate a proof that you're like program with the first bit is equal to your program with that bit changed. 
+
+We had it cloud generate this. Ah, there's a standard way of generating it. Okay, it has one of the built-in tactics tactics or things that generate proofs. It knows how to generate this sort of proof. And that's fine when you're doing one step. But maybe you have a program that's a couple hundred lines long. 
+
+Or thousand lines long and maybe you wanted to like one transformation in each of the lines and so you're doing like a thousand transformations, which is like should be reasonable. I will as an aside the like main project that I've worked on uses needs code sharing and student program transformations with code sharing. 
+
+What does that mean? So you're like let x be a plus a and then let y be x plus x then let's z by plus y and you have a bunch of these and if you inline to all of them then your program blows up in size. And so we want to do maybe you had like an extra plus zero on all of these. 
+
+You want to get rid of the plus zeroes without inlining everything. And like caulk has ways of generating fruits like this. But their quadratic and how many are like each individual transformation is linear in the number of variables, you've allocated above it. Which makes it quadratic in the leg or like makes it a product of how many lines you have and how many transformations you're doing, right? 
+
+Which and the like quadratic factor is you're like okay, it's quadratic, but like how bad is the quadratic? And adding up each of them, what is it like one plus two and then the next one is three or is it the next one's four oh because you're doing everything that the second one did and it's it's like one plus two plus three plus okay, oh but like the quantity like if the scaling factor is like a nanosecond yeah and you're dealing with a couple thousand you're like couple thousand nanoseconds, whatever. 
+
+If the skeleton factor is a minute, you're like couple thousand minutes or like thousand squared minutes that's pretty terrible yeah and so the scaling factors work out so that like, 50 to 100 lines, you hit like about a minute. And the programs that we worked with went from about 90 lines up to about 900 lines see so if you hit a minute at like 90 lines, you're not gonna be able to handle 900. 
+
+So that's that's sort of what the section is about. Oh what we see outside of the specific example of like inlining this thing where you referring it's oh well, so you need to not inline it but you're doing like arbitrary code transformations, okay this program. And the tool that I have let's you do like there's somewhere restrictions on what kind of programs you can handle and it's a research prototype so there's a bunch of restrictions there mostly engineering work. 
+
+I think to lift. But it puts all of the work in the in the like fast part of caulk the running time is constant sorry the not to run it the proof size is constant in the number of steps. It's like linear and how many lines of code you have hmm right so before we had a quadratically sized proof because every step had its own proof that encoded the entire program right and so you chain all these together and you'd be sad. 
+
+It's unclear whether or not this is actually the quadratic bottleneck in. The existing parts of the system like it's a real hard to diagnose. Like what exactly the issue is for musings that I will hopefully mention in the initial section where I was like palliative things that are hard like another thing that makes it hard is that caulk is written as like a big mutual recursive block which is like you keep jumping around between functions and so looking at like where am I spending my time is real hard to pin down because you're like well all the functions and like even. 
+
+So even if you know what function you're spending time and it's not necessarily. Easy to tie to like user level things because maybe you're spending a lot of time type checking this quadratically sized proof and like making sure that things light up. Or maybe the. Like could transformation equational rewriting bit generated a proof term that used more power than it needed to like use the more type level computation and so you're spending a lot of time exploring bad roots. 
+
+Unclear. 
+
+Or maybe you're spending a lot of time in a completely different part of the stuff like there's some other parts of the system that are quadratic or cubic in like how many lines of yeah like how many variables you have for stupid reasons. That are nevertheless very hard to fix. 
+
+Ah. 
+
+And like so like here's another example that will probably go into the first section. Sometimes you want to introduce you want to like do things underneath a bunch of variables. And. 
+
+Every time you do a thing you need to create a new goal state. And you need to relate it to the old goal state. And this has cost that's something like linear in how many variables exist in the goal state. And. So then if you want to introduce a bunch of things if you do have one out of time, you'll be creating one new goal state for each variable and each one will have cost linear and how many variables were above it and now oops it's quadratic to introduce and variables and do something underneath them that's sad there might actually be another linear factor here. 
+
+I think it might end up being cubic. Yeah and so like being modular in a bunch of places like runs real hard against being fast. 
+
+Yeah. So anyway back to this this part of the system of doing program transformation, so I'm going to present the like new tool that I have. I probably will have a section that's like if you're looking to implement your own purposes, then that is like incorporating this here the details of all the things that went into like building this tool. 
+
+If your user that's looking to use this you don't the section is not for you. Another bit that will show up in this section. Is sorry I just remembered another bit for the previous section maybe I'll say that first the previous section the one about how to design your API is about conversion one thing that I will probably mention is a neat trick where you can convince caulk that two different theorems are actually the same and can have the same proof. 
+
+What do you mean convince call? Ah, if you. Design your theorem very carefully then you can make it so that caulk the like bit where you're like conquer these two things the same are the types the same. If you design things very carefully, you can get cock to say yes for two different theorems and then one cox is yes, you can say look. 
+
+I have the same proof for both them. So this is not true no it is true right so so this the sort of thing you do this with um, so in category theory you have objects and you have errors between them. And there's a common thing that you do in category theory where you're like if I flip all the arrows around. 
+
+Nothing changes. And so if you're very careful about how you set things up in caulk you can flip all the arrows arrows around and say cock did anything change cock will say like nope nothing changed. 
+
+Um, but if you're not careful then it doesn't work. 
+
+Uh, yeah, so that was an extra bit for the previous section extra bit and the second section the program transformation one. Is that I'm hung up in a probably not useful but you can change one of the errors or like it's set up in such a way like there's like one exception or something what do you mean like there's a break it like if there's like one function that you can this is mathematics there aren't exceptions there's like one function like okay, so you're taking something that has in verses all around. 
+
+It's not something that has inverses it's your. Your putting on it's like like when you put on upside-down classes. You're putting on arrow flippy glasses. How are you flipping the arrows okay, so here's a definition of what it means to be the empty set okay to be the empty set is to have exactly one function from you to any other set. 
+
+Here's a okay, so now let's flip all the iris. What does it mean if there's exactly one function to you from every other set? Now you're the one element so. 
+
+Any theorem that is a sufficiently abstract to be cast in terms of arbitrary categories. If it applies to the one element set there is another version of the theorem that applies to the empty set. 
+
+Okay. That sounds a little bit better but I have made full sense of it but that's on me go on it's a pretty cool trick yeah and it's more cool that I can convince talk to do all the work in a that. I don't have to do any of it so back to the program transformation section. 
+
+Sorry. I was just considering that I had told zoom to record separate audio for each of us for this call hearing to see if I'm sad about that. Why would you be sad about that if I want to transcribe it and it's missing things. I guess I can combine the audio files in audacity, it'll be fine. 
+
+Anyway, so the section about program transformation. One of the steps that you have to do is you want to take your meaning of the program and turn it into a syntax tree. What does that mean so the meaning of the program might be something like take these two numbers and add them and here's how addition is defined the syntax tree might be? 
+
+You have a function node called plus and it is applied to two arguments and one of them is the variable with this name and the other one is the variable with that name yeah isn't that what the whole thing is anyway what oh. So. Are you writing the first thing like are you writing the meaning of the program are you asking called to generate you you write the meaning and you ask our quote the syntax tree is? 
+
+How does clock generate that free you have to tell clock out a generator okay, um and the default the like obvious way of doing this is slow. For disturbingly similar reasons to how Python is slow. Because if you write it in the language of proof, script automation, you end up doing lots of things that you don't actually need to be doing. 
+
+Like you end up. Making lots of intermediate goals and you end up spending a lot of time checking that things are the same over and over and over again. It's just hard to avoid in this language. You could spend more time writing in a better language. Or. For most of these kinds of problems. 
+
+The part of the system that lets you do proof by induction. Can be repurposed to turn meanings into syntax trees. So one key component of doing induction is you're like caulk I want to do induction on this thing and here is the theorem that I'm trying to prove and cock needs to find all the instances of that thing in the theorem and be like in all of these places the induction variable shows up. 
+
+And this is kind of similar. You're like, please find all the places with addition and replace it with the addition node. Please find all the places with subtraction and replace it with the subtraction node. And so you can leverage this facility that was there for doing things like induction. 
+
+To do to give you abstract syntax trees out of programs. I see. It's pretty cute and it's also blazingly fast. Me. 
+
+Ah. So the tactic is called pattern. Okay, but the I've named the method of doing this reification by parametricity. And reification is the you turn a per you turn the meaning of a program into the abstract syntax tree. And parametricity is the. It's about how. 
+
+When you have very little information about things there's sort of only one thing you can do with them. I'm like, I have a function and it takes two types. A and B. And it takes in a thing of type A and it's the thing of type B. They returns the thing of type A. 
+
+And you're like well, obviously it's just returning first one. That's sort of the only thing I can do. And I'm like well. 
+
+If. You're in Haskell. Done or so if you're in Python then you can do something sneaky like say well if they're the same type then return the second one and otherwise return the first one but if you're in a nice language like caulk that's what's called parametric then you're not allowed to do that and really the only thing you can do is return the first one. 
+
+Why does it matter? Oh we're sort of taking advantage of the fact that what you do is it's allowed to depend on. These sorts of. Details that you're not supposed to be able to look at okay, oh that if you claim to do something for all types, you have to do it the same for all types, you're not allowed to do it differently for some types then for other ones, this is part of the. 
+
+This is part of the mathematics of caulk. 
+
+What's this what? Um, is it the way coffee setup versus to call custom code okay and you trust that it implements the mathematics and then you also trust or prove that you hope that the mathematics is correct? And people write papers about the mathematics, they don't write papers about the code. 
+
+You you ideally you should prove that they could match us the math right with some people working on that. 
+
+But yeah like like one of the bits of the the the trusted part is like, how do you check that two things are the same? And like in particular how do you do this quickly and like what how do you just if you're like checking that two things are the same and you want to know whether to do computation on the left or on the right, how do you decide which one to do first and like this is not a thing that shows up in the mathematics. 
+
+But it is a thing that shows up in the trusted code base. Yeah. 
+
+Okay, so I think to finish up what I was saying were. Relying on the fact that you don't get to do different things depending on different types to let us like swap all of the things out for different things. That you can notice are different. 
+
+\todo{this chapter}
+\section{related work (incl. RTac)}
+
+\section{reification variants (including reification by parametricity)}
+
+\section{reflective well-formedness?}
+
+\section{description of constructed tool (rewriter)}
+
+\section{case study: fiat-crypto}
+
+\section{case study: parsers?}

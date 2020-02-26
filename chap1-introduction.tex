@@ -20,6 +20,19 @@ Coq and proof assistance are important. Performance in them is important, especi
 
 And I want to paint a picture of what the unique challenges are.  There are two main areas in the existing system that I want to call attention to, in regards to performance bottlenecks.  I will describe them, and describe the performance issues, and propose some reasons about why there might be performance bottlenecks, and describe solutions for them. And maybe also there'll be another section that has some miscellaneous other performance bottlenecks.
 
+
+\todo{where does this description of Coq's design go?}
+\section{Coq's design}
+Coq is split into two parts.
+
+There's the part of the system that is called the kernel or the trusted code base.
+Once you get a proof this part will be like ``yup, I believe the proof'' or like ``nope your proof is bad.''
+And then there's the other part that is like ``here's magic and it will make proof for you.''
+You're like ``I have an arithmetic expression please prove that it's true'' and there's a bit in this other part that's like ``I know how to prove arithmetic expressions'' and it gets the arithmetic expression and then it generates a certificate or proof that this other trusted part checks.
+If the part generating the arithmetic proof is wrong then the users come complaining to you that you have a bug. 
+If the part checking the proofs is wrong, then you don't see the bug and now suddenly your users can prove anything they want.
+And the system is no longer trustworthy right and so for that bit of it you need to be very careful with any changes you make.
+
 %\begin{itemize}
 %  \item Mention domains: math/CT and program transformation
 %  \item Case studies: parsers, fiat-crypto, CT library

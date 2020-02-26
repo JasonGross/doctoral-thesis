@@ -1,12 +1,15 @@
 \chapter{Design-based fixes} \label{ch:design} \label{ch:api-design}
 
-Okay, so that's the like introduction introduction and like. Palate of slowness. The next section is one of the two big sections on like components of the system that is important for performance and this section is geared at users of proof assistance mainly. And. This is about how to design your APIs. 
+The next section is one of the two big sections on like components of the system that is important for performance and this section is geared at users of proof assistance mainly.
+This is about how to design your APIs. 
 
-How to design the like interface of functions that you're doing so. Most a lot of languages have a type system this is things that are like if you have a function that takes a string and you pass it an integer you want to know that you made a mistake. 
+How to design the interface of functions that you're writing.
 
-And caulk cock has this on steroids because not only can you say this function takes an integer where this function takes a string you can also say things like this function takes if this. Turing machine holds an element of the one element set and if this turning machine does not halt an element of the empty cell, you can't quite say that but you can say if it holds within n steps see you can say this takes a number n and the turing machine t and if, T holds within n steps then it takes an element of the one element set and if t does not hold with an end steps that it takes an element of the empty set what is the utility is this kind of precision, oh this lets you pass around troops. 
+Many languages have a type system; this is used to deal with things like, if you have a function that takes a string and you pass it an integer you want to know that you made a mistake. 
 
-Like just by virtue of being able to call the function you have a proof that some fact is true. Right okay, so it's like a computation like means to make things more efficient than oh it's it's a source of power. It's like. Let's you write functions about that like taken proofs that you and like let's you write functions that prove things correct it let's you do things like this is a function that takes an approved that ah, This list is not empty and it's out of proof that like if you append that list to itself the resulting list is not empty. 
+And Coq has this on steroids, because not only can you say ``this function takes an integer and this function takes a string'' you can also say things ``like this function takes if this Turing machine halts then an element of the one element set, and if this Turing machine does not halt then an element of the empty set.''  You can't quite say that but you can say ``if it halts within $n$ steps'' so you can say ``this takes a number $n$ and the Turing machine $T$ and if $T$ halts within $n$ steps then it takes an element of the one element set and if $T$ does not halt within $n$ steps then it takes an element of the empty set.''
+
+What is the utility? This lets you pass around proofs.  Like just by virtue of being able to call the function you have a proof that some fact is true.  It's a source of power. It lets you write functions about that take in proofs and lets you write functions that prove things correct.  It lets you do things like ``this is a function that takes a proof that this list is not empty and spits out of proof that if you append that list to itself the resulting list is not empty.''
 
 This is useful why because you want to prove things. Okay, for example. Maybe you want to say. This function takes in a C program. It takes in. A function that's describes the behavior of the C program and it takes an approved that the C program matches the behavior of the function. 
 

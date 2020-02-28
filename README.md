@@ -5,3 +5,5 @@
 [The Thesis Proposal](//jasongross.github.io/doctoral-thesis/nightly/jgross-thesis-proposal.pdf)
 
 [The Thesis](//jasongross.github.io/doctoral-thesis/nightly/jgross-thesis.pdf)
+
+[![TODO List](//jasongross.github.io/doctoral-thesis/nightly/todo.svg)](https://jasongross.github.io/doctoral-thesis/nightly/todo.svg)

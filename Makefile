@@ -23,10 +23,12 @@ V = 0
 Q_0 := @
 Q_1 :=
 Q = $(Q_$(V))
+HIDE = $(Q)
 
-VECHO_0 := @echo
-VECHO_1 := @true
+VECHO_0 := @echo ""
+VECHO_1 := @true ""
 VECHO = $(VECHO_$(V))
+SHOW = $(VECHO)
 
 WGET_0 = @ echo "WGET $(1)"; wget --no-check-certificate -N $(2) 2>/dev/null
 WGET_1 = wget --no-check-certificate -N $(2)
@@ -259,24 +261,24 @@ rewriting/PerfData.mk:
 %.pdf: %.tex.d
 
 $(THESIS_PDFS) : %.pdf : %.tex
-	@ echo "PDFLATEX (run 1)"
-	@ $(PDFLATEX) $(LATEXFLAGS) $(OTHERFLAGS) $<
-#	@ echo "BIBTEX"
-#	@ bibtex ${<:.tex=.aux}
-	@ echo "PDFLATEX (run 2)"
-	@ $(PDFLATEX) $(LATEXFLAGS) $(OTHERFLAGS) --interaction=nonstopmode $< 2>&1 >/dev/null || true
-	@ echo "PDFLATEX (run 3)"
-	@ $(PDFLATEX) $(LATEXFLAGS) $(OTHERFLAGS) $<
+	$(SHOW)"PDFLATEX (run 1)"
+	$(HIDE)$(PDFLATEX) $(LATEXFLAGS) $(OTHERFLAGS) $<
+	$(SHOW)"BIBER"
+	$(HIDE)biber ${<:.tex=}
+	$(SHOW)"PDFLATEX (run 2)"
+	$(HIDE)$(PDFLATEX) $(LATEXFLAGS) $(OTHERFLAGS) --interaction=nonstopmode $< 2>&1 >/dev/null || true
+	$(SHOW)"PDFLATEX (run 3)"
+	$(HIDE)$(PDFLATEX) $(LATEXFLAGS) $(OTHERFLAGS) $<
 
 $(PROPOSAL_PDFS) : %.pdf : %.tex
-	@ echo "PDFLATEX (run 1)"
-	@ $(PDFLATEX) $(LATEXFLAGS) $(OTHERFLAGS) $<
-	@ echo "BIBTEX"
-	@ bibtex ${<:.tex=.aux}
-	@ echo "PDFLATEX (run 2)"
-	@ $(PDFLATEX) $(LATEXFLAGS) $(OTHERFLAGS) --interaction=nonstopmode $< 2>&1 >/dev/null || true
-	@ echo "PDFLATEX (run 3)"
-	@ $(PDFLATEX) $(LATEXFLAGS) $(OTHERFLAGS) $<
+	$(SHOW)"PDFLATEX (run 1)"
+	$(HIDE)$(PDFLATEX) $(LATEXFLAGS) $(OTHERFLAGS) $<
+	$(SHOW)"BIBTEX"
+	$(HIDE)bibtex ${<:.tex=.aux}
+	$(SHOW)"PDFLATEX (run 2)"
+	$(HIDE)$(PDFLATEX) $(LATEXFLAGS) $(OTHERFLAGS) --interaction=nonstopmode $< 2>&1 >/dev/null || true
+	$(SHOW)"PDFLATEX (run 3)"
+	$(HIDE)$(PDFLATEX) $(LATEXFLAGS) $(OTHERFLAGS) $<
 
 # pdflatex -synctex=1 -interaction=nonstopmode -enable-write18 jgross-thesis.tex 2>&1
 todo: jgross-thesis.pdf

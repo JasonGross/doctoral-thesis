@@ -4,12 +4,18 @@
 \else
 \let\finalwarning=\@latex@warning
 \fi
+\ifx\@onlypreamble\@notprerr% (document)
+\newcommand{\NowOrAtBeginDocument}[1]{#1}%
+\else% (preamble)
+\newcommand{\NowOrAtBeginDocument}[1]{\AtBeginDocument{#1}}%
+\AtBeginDocument{\renewcommand{\NowOrAtBeginDocument}[1]{#1}}%
+\fi
 \newcommand{\todo}[1]{%
 \finalwarning{TODO: \detokenize{#1}}%
-\textcolor{red}{[\textbf{TODO:} #1]}}%
+\NowOrAtBeginDocument{\textcolor{red}{[\textbf{TODO:} #1]}}}%
 \newcommand{\todoask}[1]{%
 \finalwarning{QUESTION FOR ADAM: \detokenize{#1}}%
-\textcolor{purple}{[\textbf{QUESTION FOR ADAM:} #1]}}%
+\NowOrAtBeginDocument{\textcolor{purple}{[\textbf{QUESTION FOR ADAM:} #1]}}}%
 \newcommand{\colorifzero}[3]{%
 \ifnum#1=0\relax
 \expandafter\@firstoftwo
@@ -24,6 +30,7 @@
 \newcommand{\newtext}[2][0]{\colorifzero{#1}{blue}{#2}}%
 \iffinal
 \else
+\NowOrAtBeginDocument{%
 \pagenumbering{roman}
 
 \todo{Run `make update-thesis' before submission to update the date on the cover page}
@@ -32,4 +39,5 @@
 
 \cleardoublepage
 \pagenumbering{arabic}
+}%
 \fi

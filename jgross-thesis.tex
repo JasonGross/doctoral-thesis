@@ -33,15 +33,22 @@
 \usepackage{cmap}
 \usepackage[T1]{fontenc}
 \pagestyle{plain}
+
+\newif\iffinal
+\finalfalse
+
 \input{packages}
 
 %% This bit allows you to either specify only the files which you wish to
 %% process, or `all' to process all files which you \include.
 %% Krishna Sethuraman (1990).
-
+\usepackage{excludeonly}
 \def\files{all}
+\def\excludefiles{rewriting}
 \def\all{all}
-\ifx\files\all \typeout{Including all files.} \else \typeout{Including only \files.} \includeonly{\files} \fi
+\def\nofiles{}
+\ifx\files\all \typeout{Including all files.} \else \typeout{Including only \files.} \todo{Make sure to include all files} \includeonly{\files} \fi
+\ifx\excludefiles\nofiles \typeout{Exlcuding no files.} \else \typeout{Exlcuding only \excludefiles.} \todo{Make sure to exclude no files} \excludeonly{\excludefiles} \fi
 
 \newlength{\initialparskip}
 \newlength{\newparskip}
@@ -74,9 +81,6 @@
 
 \addbibresource{references.bib}
 
-\newif\iffinal
-\finalfalse
-
 \iffinal
 \renewcommand{\textcolor}[2]{#2}
 \fi
@@ -88,8 +92,6 @@
 \special{papersize=8.5in,11in}
 \setlength{\pdfpageheight}{\paperheight}
 \setlength{\pdfpagewidth}{\paperwidth}
-
-\input{todo}
 
 \include{cover}
 % Some departments (e.g. 5) require an additional signature page.  See

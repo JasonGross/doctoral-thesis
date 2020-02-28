@@ -281,8 +281,15 @@ $(PROPOSAL_PDFS) : %.pdf : %.tex
 	$(HIDE)$(PDFLATEX) $(LATEXFLAGS) $(OTHERFLAGS) $<
 
 # pdflatex -synctex=1 -interaction=nonstopmode -enable-write18 jgross-thesis.tex 2>&1
+MAKE_TODO := cat jgross-thesis.log | grep -C 10 '^LaTeX Warning:\|on input line' | tr '\r' '&' | tr '\n' '&' | sed s'/\&//g' | sed s'/\(on input line[^\.]*\.\)/\1\&/g' | tr '&' '\n' | grep -o 'LaTeX Warning:.*' | grep -o 'TODO.*\|QUESTION.*' | grep --color=auto 'TODO:\|QUESTION FOR ADAM:'
+.PHONY: todo
 todo: jgross-thesis.pdf
-	cat jgross-thesis.log | grep -C 10 '^LaTeX Warning:\|on input line' | tr '\r' '&' | tr '\n' '&' | sed s'/\&//g' | sed s'/\(on input line[^\.]*\.\)/\1\&/g' | tr '&' '\n' | grep -o 'LaTeX Warning:.*' | grep -o 'TODO.*\|QUESTION.*' | grep --color=auto 'TODO:\|QUESTION FOR ADAM:'
+	$(MAKE_TODO)
+
+todo.svg: jgross-thesis.pdf Makefile
+	echo '<svg xmlns="http://www.w3.org/2000/svg"><text x="0" y="0">' > $@
+	$(MAKE_TODO) | sed s'|^\(.*\)$$|<tspan x="0" dy="1.2em">\1</tspan>|g' >> $@
+	echo '</text></svg>' >> $@
 
 clean:
 	rm -f *.aux *.out *.nav *.toc *.vrb $(PDFS) *.snm *.log *.bbl *.blg *.tex.d *.run.xml

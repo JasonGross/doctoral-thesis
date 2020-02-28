@@ -22,8 +22,8 @@ deploy:
   on:
     branch: master
 
-script: make OTHERFLAGS="-interaction=nonstopmode" && make todo
+script: make OTHERFLAGS="-interaction=nonstopmode" && make todo && make todo.svg
 
 after_success:
   - mkdir -p deploy/nightly
-  - cp -f jgross-thesis-proposal.pdf jgross-thesis.pdf deploy/nightly/
+  - cp -f jgross-thesis-proposal.pdf jgross-thesis.pdf todo.svg deploy/nightly/

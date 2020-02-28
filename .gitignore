@@ -273,3 +273,4 @@ logreq.sty
 # misc generated files
 /references-lower.bib
 *.md5
+/todo.svg

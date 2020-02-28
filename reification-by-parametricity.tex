@@ -40,7 +40,7 @@ We benchmark our approach against 18 competitors in \autoref{sec:perf}.
 Basic Coq proofs are often written as lists of steps such as \texttt{induction} on some structure, \texttt{rewrite} using a known equivalence, or \texttt{unfold} of a definition.
 Very quickly, proofs can become long and tedious, both to write and to read, and hence Coq provides \Ltac, a scripting language for proofs.
 As theorems and proofs grow in complexity, users frequently run into performance and maintainability issues with \Ltac.
-Consider the case where we want to prove that a large algebraic expression, involving many \letin\space expressions, is even:
+Consider the case where we want to prove that a large algebraic expression, involving many \letindots\space expressions, is even:
 \begin{verbatim}
 Inductive is_even : nat -> Prop :=
 | even_O : is_even O
@@ -50,7 +50,7 @@ Goal is_even (let x := 100 * 100 * 100 * 100 in
               y * y * y * y).
 \end{verbatim}
 Coq stack-overflows if we try to reduce this goal.
-As a workaround, we might write a lemma that talks about evenness of \letin, plus one about evenness of multiplication, and we might then write a tactic that composes such lemmas.
+As a workaround, we might write a lemma that talks about evenness of \letindots, plus one about evenness of multiplication, and we might then write a tactic that composes such lemmas.
 
 Even on smaller terms, though, proof size can quickly become an issue.
 If we give a naive proof that 7000 is even, the proof term will contain all of the even numbers between 0 and 7000, giving a proof-term-size blow-up at least quadratic in size (recalling that natural numbers are represented in unary; the challenges remain for more efficient base encodings).
@@ -64,8 +64,8 @@ Proof terms, in a sense, are traces of a proof script.
 They provide Coq's kernel with a term that it can check to verify that no illegal steps were taken.
 Listing every step results in large traces.
 
-\begin{wrapfigure}[9]{r}{4.75cm}
-\vspace{-33pt}
+\begin{wrapfigure}[9]{r}{5cm}
+%\vspace{-33pt}
 \begin{verbatim}
 Fixpoint check_is_even
    (n : nat) : bool
@@ -76,7 +76,7 @@ Fixpoint check_is_even
        => check_is_even n
      end.
 \end{verbatim}
-\vspace{-18pt}
+%\vspace{-18pt}
 \caption{Evenness Checking}\label{fig:check-is-even}
 \end{wrapfigure}
 The idea of reflective automation is that, if we can get a formal encoding of our goal, plus an algorithm to \emph{check} the property we care about, then we can do much better than storing the entire trace of the program.
@@ -105,14 +105,14 @@ Sometimes, to achieve faster proofs, we must be able to tell, for example, wheth
 %}
 
 \begin{wrapfigure}[4]{r}{5cm}
-\vspace{-45pt}
+%\vspace{-45pt}
 \begin{verbatim}
 Inductive expr :=
 | NatO : expr
 | NatS (x : expr) : expr
 | NatMul (x y : expr) : expr.
 \end{verbatim}
-\vspace{-15pt}
+%\vspace{-15pt}
 \caption{Simple Expressions}\label{fig:inductive-expr-no-letin}
 \end{wrapfigure}
 
@@ -152,7 +152,7 @@ Given a tactic \texttt{Reify} to produce a reified term from a \verb|nat|, we ca
 It is instant on the last example.%, \texttt{10 * 10 * 10 * 10 * 10 * 10 * 10 * 10 * 10}.
 
 Before we proceed to reification, we will introduce one more complexity.
-If we want to support our initial example with \letin\space efficiently, we must also have \texttt{let}-expressions.
+If we want to support our initial example with \letindots\space efficiently, we must also have \texttt{let}-expressions.
 Our current procedure that inlines \texttt{let}-expressions takes 19 seconds, for example, on \texttt{let x0 := 10 * 10 in let x1 := x0 * x0 in \ldots\space let x24 := x23 * x23 in x24}.
 The choices of representation include higher-order abstract syntax (HOAS)~\cite{HOAS}, parametric higher-order abstract syntax (PHOAS)~\cite{PhoasICFP08}, and de Bruijn indices~\cite{DeBruijn}.
 The PHOAS representation is particularly convenient.
@@ -208,7 +208,7 @@ We implemented reification in 18 different ways, using 6 different metaprogrammi
 Unfortunately, all methods we surveyed become drastically more complicated or slower (and usually both) when adapted to reify terms with variable bindings such as \texttt{let}-\texttt{in} or \texttt{$\lambda$} nodes.
 
 \begin{wrapfigure}[10]{r}{6.4cm}
-\vspace{-11pt}
+%\vspace{-11pt}
 \begin{verbatim}
 Ltac f v x := (* reify var term *)
   lazymatch x with
@@ -220,7 +220,7 @@ Ltac f v x := (* reify var term *)
              constr:(@NatMul v X Y)
   end.
 \end{verbatim}
-\vspace{-20pt}
+%\vspace{-20pt}
 \caption{Reification Without Binders in \Ltac}\label{fig:ltac-reify-nobinders}
 \end{wrapfigure}
 
@@ -234,8 +234,8 @@ with significant aspects of the design being driven by surprising behaviors, mis
 We propose factoring reification into two passes, both of which essentially have robust, built-in implementations in Coq: \emph{abstraction} or \emph{generalization}, and \emph{substitution} or \emph{specialization}.
 
 
-\begin{wrapfigure}[10]{r}{6.5cm}
-    \vspace{-40pt}
+\begin{wrapfigure}[10]{r}{7cm}
+%    \vspace{-40pt}
     \[
     \xymatrix{
         \txt{term}
@@ -252,7 +252,7 @@ We propose factoring reification into two passes, both of which essentially have
         \ar@<-1ex>[uur]|{\txt{\rotatebox{40}{specialize}}}
     }
     \]
-    \vspace{-20pt}
+%    \vspace{-20pt}
     \caption{Abstraction and Reification}\label{fig:denote-reify}
 \end{wrapfigure}
 
@@ -355,15 +355,15 @@ For example, we might have a function that reduces to a term with a variable num
     More realistically, we might have a function that represents big numbers using multiple words of a user-specified width.
     In this case, we may want to specialize the procedure to a couple of different bitwidths, then reifying the resulting partially reduced term.%
 }
-We might have an inductive type that counts the number of \letin\space nodes we want in our output.
+We might have an inductive type that counts the number of \letindots\space nodes we want in our output.
 \label{sec:count-def}
 \begin{verbatim}
 Inductive count := none | one_more (how_many : count).
 \end{verbatim}
 It is important that this type be syntactically distinct from $\mathbb N$ for reasons we will see shortly.
 
-\begin{wrapfigure}[3]{r}{6.5cm}
-    \vspace{-33pt}
+\begin{wrapfigure}[3]{r}{7cm}
+%    \vspace{-33pt}
     \[
     \xymatrix@C=1pt{
         \txt{unreduced term \\ (big $1$ $n$)} \ar[d]_{\txt{\\reduce}} \\
@@ -381,7 +381,7 @@ It is important that this type be syntactically distinct from $\mathbb N$ for re
         \ar@<-1ex>[uur]|{\txt{\rotatebox{52}{specialize}}}
     }
     \]
-    \vspace{-10pt}
+%    \vspace{-10pt}
     \caption{Abstraction, Reification, Reduction} \label{fig:reduce-denote-reify}
 \end{wrapfigure}
 
@@ -563,8 +563,8 @@ Additionally, this method is much more concise than nearly every other method we
 We will emphasize here that this strategy shines when the initial term is small, the partially computed terms are big (and there are many of them), and the operations to evaluate are mostly well-separated by types (e.g., evaluate all of the \texttt{count} operations and none of the \texttt{nat} ones).
 
 %Although this strategy allows fusing partial evaluation with reification, it does not work if the term needs CPS conversion before partial evaluation, and the method is somewhat painful (but workable) if the term is already CPS-converted and involves higher-order or type-level quantification.
-%It only works if the precise application-node structure of the term is not important; if every application node (or \texttt{match} or \letin) needs to show up in the syntax tree, our approach is not a good match.
-This strategy is not directly applicable for reification of \texttt{match} (rather than eliminators) or \letin\space (rather than a definition that unfolds to \letin), \texttt{forall} (rather than a definition that unfolds to \texttt{forall}), or when reification should not be modulo $\beta\iota\zeta$-reduction.
+%It only works if the precise application-node structure of the term is not important; if every application node (or \texttt{match} or \letindots) needs to show up in the syntax tree, our approach is not a good match.
+This strategy is not directly applicable for reification of \texttt{match} (rather than eliminators) or \letindots\space (rather than a definition that unfolds to \letindots), \texttt{forall} (rather than a definition that unfolds to \texttt{forall}), or when reification should not be modulo $\beta\iota\zeta$-reduction.
 
 \section{Performance Comparison} \label{sec:perf}
 We have done a performance comparison of the various methods of reification to the PHOAS language \texttt{@expr var} from \autoref{sec:phoas-expr-def} in Coq 8.7.1.
@@ -600,7 +600,7 @@ Sorted from slowest to fastest, most of the labels in \autoref{fig:graph-reif-no
   \item
     We have four variants starting with ``CanonicalStructures'' here.
     The Flat variants reify to \texttt{@expr nat} rather than to \texttt{forall var, @expr var} and benefit from fewer function binders and application nodes.
-    The HOAS variants do not include a case for \letin\space nodes, while the PHOAS variants do.
+    The HOAS variants do not include a case for \letindots\space nodes, while the PHOAS variants do.
     Unlike most other reification methods, there is a significant cost associated with handling more sorts of identifiers in canonical structures.
 \end{itemize}
 
@@ -629,8 +629,8 @@ In Coq 8.8, this lookup will be $\log n$, and so reification will become even fa
 
 We identify one remaining open question with this method that has the potential of removing the next largest bottleneck in reification: using reduction to show that the reified term is correct.
 
-\begin{wrapfigure}[9]{r}{7.5cm}
-\vspace{-36pt}
+\begin{wrapfigure}[9]{r}{8cm}
+%\vspace{-36pt}
 \[
 \xymatrix@R=0.5em@C=0em{
     \txt{unreduced term} \ar[d]^{\delta} \\
@@ -648,7 +648,7 @@ We identify one remaining open question with this method that has the potential 
     \ar@<1ex>[uur]%^{\rotatebox{40}{\llap{\text{application\hspace*{-2em}}}}}
 }
 \]
-\vspace{-18pt}
+%\vspace{-18pt}
 \caption{Completing the commutative triangle}\label{fig:reify-denote-parametricity}
 \end{wrapfigure}
 Recall our reification procedure and the associated diagram, from \autoref{sec:expanded-reif-diagram}.

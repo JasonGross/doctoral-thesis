@@ -282,7 +282,7 @@ $(PROPOSAL_PDFS) : %.pdf : %.tex
 
 # pdflatex -synctex=1 -interaction=nonstopmode -enable-write18 jgross-thesis.tex 2>&1
 todo: jgross-thesis.pdf
-	cat jgross-thesis.log | grep -C 10 '^LaTeX Warning:\|on input line' | tr '\n' '&' | sed s'/\&//g' | sed s'/\(on input line[^\.]*\.\)/\1\&/g' | tr '&' '\n' | grep -o 'LaTeX Warning:.*' | grep -o 'TODO.*\|QUESTION.*' | grep --color=auto 'TODO:\|QUESTION FOR ADAM:'
+	cat jgross-thesis.log | grep -C 10 '^LaTeX Warning:\|on input line' | tr '\r' '&' | tr '\n' '&' | sed s'/\&//g' | sed s'/\(on input line[^\.]*\.\)/\1\&/g' | tr '&' '\n' | grep -o 'LaTeX Warning:.*' | grep -o 'TODO.*\|QUESTION.*' | grep --color=auto 'TODO:\|QUESTION FOR ADAM:'
 
 clean:
 	rm -f *.aux *.out *.nav *.toc *.vrb $(PDFS) *.snm *.log *.bbl *.blg *.tex.d *.run.xml

@@ -11,6 +11,7 @@ addons:
     - texlive-science
     - texlive-luatex
     - texlive-generic-extra
+    - biber
     - wget
     - curl
     - sed

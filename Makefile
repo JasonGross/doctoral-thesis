@@ -287,9 +287,7 @@ todo: jgross-thesis.pdf
 	$(MAKE_TODO)
 
 todo.svg: jgross-thesis.pdf Makefile
-	echo '<svg xmlns="http://www.w3.org/2000/svg"><text x="0" y="0">' > $@
-	$(MAKE_TODO) | sed s'|^\(.*\)$$|<tspan x="0" dy="1.2em">\1</tspan>|g' >> $@
-	echo '</text></svg>' >> $@
+	$(MAKE_TODO) | etc/makesvg.sh > $@
 
 clean:
 	rm -f *.aux *.out *.nav *.toc *.vrb $(PDFS) *.snm *.log *.bbl *.blg *.tex.d *.run.xml

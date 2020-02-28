@@ -11,10 +11,10 @@
 \AtBeginDocument{\renewcommand{\NowOrAtBeginDocument}[1]{#1}}%
 \fi
 \newcommand{\todo}[1]{%
-\finalwarning{TODO: \detokenize{#1}}%
+\finalwarning{TODO: \detokenize{#1} in file \currfilename}%
 \NowOrAtBeginDocument{\textcolor{red}{[\textbf{TODO:} #1]}}}%
 \newcommand{\todoask}[1]{%
-\finalwarning{QUESTION FOR ADAM: \detokenize{#1}}%
+\finalwarning{QUESTION FOR ADAM: \detokenize{#1} in file \currfilename}%
 \NowOrAtBeginDocument{\textcolor{purple}{[\textbf{QUESTION FOR ADAM:} #1]}}}%
 \newcommand{\colorifzero}[3]{%
 \ifnum#1=0\relax

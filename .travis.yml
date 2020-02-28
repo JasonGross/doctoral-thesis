@@ -10,6 +10,7 @@ addons:
     - texlive-bibtex-extra
     - texlive-science
     - texlive-luatex
+    - texlive-generic-extra
     - wget
     - curl
     - sed

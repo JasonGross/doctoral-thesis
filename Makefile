@@ -1,6 +1,11 @@
 .PHONY: all proposal thesis update-thesis update-proposal print-main-contents download-packages todo
 all: proposal thesis
 
+LATEXFLAGS?=--synctex=1 --shell-escape
+PDFLATEX?=lualatex
+MD5?=md5sum
+OTHERFLAGS?=
+
 PROPOSAL_PDFS = jgross-thesis-proposal.pdf
 THESIS_PDFS = jgross-thesis.pdf
 MAIN_TEXS = $(patsubst \include{%},%.tex,$(filter \include{%},$(shell cat main-files.tex jgross-thesis.tex)))
@@ -227,33 +232,51 @@ hyperref.sty : %.sty : backref.dtx bmhydoc.sty hylatex.ltx hyperref.dtx hyperref
 
 #http://mirrors.ctan.org/macros/latex/contrib/mathtools.zip && unzip mathtools.zip && (cd mathtools && for i in *.dtx; do (mv $i ../ && cd .. && tex $i); done)
 
-$(PDFS): references.bib
+$(PDFS): references.bib references-lower.bib
 
 $(THESIS_PDFS): $(THESIS_TEXS)
 
 $(PROPOSAL_PDFS): $(PROPOSAL_TEXS)
 
+references-lower.bib: references.bib
+	sed -e s'/Title\(\s*=\)/title\1/g' -e s'/Author\(\s*=\)/author\1/g' $< > $@
+
+include rewriting/PerfData.mk
+REWRITING_PERF_DATA_MD5 := $(addsuffix .md5,$(REWRITING_PERF_DATA))
+
+$(THESIS_PDFS): $(REWRITING_PERF_DATA) $(REWRITING_PERF_DATA_MD5) rewriting/trust?.pdf
+
+.PHONY: remake-rewriting-PerfData.mk
+remake-rewriting-PerfData.mk:
+	$(MAKE) -B rewriting/PerfData.mk
+
+rewriting/PerfData.mk:
+	(echo "REWRITING_PERF_DATA := \\"; (git ls-files "rewriting/perf-*.txt" | sed s'/\(.*\)/\t\1 \\/g' | sed s'/;/\\;/g'); printf '\t#\n') > $@
+
+%.md5: %
+	$(MD5) '$<' | awk '{print $$1}' > '$@'
+
 %.pdf: %.tex.d
 
 $(THESIS_PDFS) : %.pdf : %.tex
 	@ echo "PDFLATEX (run 1)"
-	@ pdflatex -synctex=1 -enable-write18 $(OTHERFLAGS) $<
+	@ $(PDFLATEX) $(LATEXFLAGS) $(OTHERFLAGS) $<
 	@ echo "BIBTEX"
 	@ bibtex ${<:.tex=.aux}
 	@ echo "PDFLATEX (run 2)"
-	@ pdflatex -synctex=1 -interaction=nonstopmode $(OTHERFLAGS) -enable-write18 $< 2>&1 >/dev/null || true
+	@ $(PDFLATEX) $(LATEXFLAGS) $(OTHERFLAGS) --interaction=nonstopmode $< 2>&1 >/dev/null || true
 	@ echo "PDFLATEX (run 3)"
-	@ pdflatex -synctex=1 $(OTHERFLAGS) $<
+	@ $(PDFLATEX) $(LATEXFLAGS) $(OTHERFLAGS) $<
 
 $(PROPOSAL_PDFS) : %.pdf : %.tex
 	@ echo "PDFLATEX (run 1)"
-	@ pdflatex -synctex=1 -enable-write18 $(OTHERFLAGS) $<
+	@ $(PDFLATEX) $(LATEXFLAGS) $(OTHERFLAGS) $<
 	@ echo "BIBTEX"
 	@ bibtex ${<:.tex=.aux}
 	@ echo "PDFLATEX (run 2)"
-	@ pdflatex -synctex=1 -interaction=nonstopmode $(OTHERFLAGS) -enable-write18 $< 2>&1 >/dev/null || true
+	@ $(PDFLATEX) $(LATEXFLAGS) $(OTHERFLAGS) --interaction=nonstopmode $< 2>&1 >/dev/null || true
 	@ echo "PDFLATEX (run 3)"
-	@ pdflatex -synctex=1 $(OTHERFLAGS) $<
+	@ $(PDFLATEX) $(LATEXFLAGS) $(OTHERFLAGS) $<
 
 # pdflatex -synctex=1 -interaction=nonstopmode -enable-write18 jgross-thesis.tex 2>&1
 todo: jgross-thesis.pdf

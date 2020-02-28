@@ -1022,7 +1022,7 @@ Consider
 %  & \letin[{v_2 := v_1 + v_1 + 0}{}] \\
 We want to remove all of the${}+0$s.
 We can start from this expression directly, in which case reification alone takes as much time as \texttt{setoid\_rewrite}.
-As the reification method was not especially optimized, and there exist fast reification methods~\cite{ReificationITP18}, we instead start from a call to a recursive function that generates such a sequence of \mintinline{coq}{let} bindings.
+As the reification method was not especially optimized, and there exist fast reification methods~\cite{reification-by-parametricity}, we instead start from a call to a recursive function that generates such a sequence of \mintinline{coq}{let} bindings.
 
 \autoref{fig:timing-UnderLetsPlus0} shows the results.
 The comparison points are Coq's \texttt{setoid\_rewrite} and \texttt{rewrite\_strat}.

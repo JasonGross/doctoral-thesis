@@ -154,7 +154,7 @@ It is instant on the last example.%, \texttt{10 * 10 * 10 * 10 * 10 * 10 * 10 * 
 Before we proceed to reification, we will introduce one more complexity.
 If we want to support our initial example with \letindots\space efficiently, we must also have \texttt{let}-expressions.
 Our current procedure that inlines \texttt{let}-expressions takes 19 seconds, for example, on \texttt{let x0 := 10 * 10 in let x1 := x0 * x0 in \ldots\space let x24 := x23 * x23 in x24}.
-The choices of representation include higher-order abstract syntax (HOAS)~\cite{HOAS}, parametric higher-order abstract syntax (PHOAS)~\cite{PhoasICFP08}, and de Bruijn indices~\cite{DeBruijn}.
+The choices of representation include higher-order abstract syntax (HOAS)~\cite{HOAS}, parametric higher-order abstract syntax (PHOAS)~\cite{PhoasICFP08}, and de Bruijn indices~\cite{debruijn1972}.
 The PHOAS representation is particularly convenient.
 In PHOAS, expression binders are represented by binders in Gallina, the functional language of Coq, and the expression language is parameterized over the type of the binder.
 %We make this binder type implicit so that we can often omit writing it.
@@ -203,7 +203,7 @@ end.
 
 \section{Methods of Reification} \label{sec:reif-survey}
 
-We implemented reification in 18 different ways, using 6 different metaprogramming facilities in the Coq ecosystem: Ltac, Ltac2, Mtac~\cite{lessadhoc}, type classes~\cite{sozeau2008first}, canonical structures~\cite{gonthier2016small}, and reification-specific OCaml plugins (quote~\cite{quote-plugin}, template-coq~\cite{template-coq}, ours).
+We implemented reification in 18 different ways, using 6 different metaprogramming facilities in the Coq ecosystem: Ltac, Ltac2, Mtac~\cite{lessadhoc}, type classes~\cite{sozeau2008first}, canonical structures~\cite{gonthier2016small}, and reification-specific OCaml plugins (quote~\cite{quote-plugin}, template-coq~\cite{TemplateCoq}, ours).
 \autoref{fig:ltac-reify-nobinders} displays the simplest case: an Ltac script to reify a tree of function applications and constants.
 Unfortunately, all methods we surveyed become drastically more complicated or slower (and usually both) when adapted to reify terms with variable bindings such as \texttt{let}-\texttt{in} or \texttt{$\lambda$} nodes.
 

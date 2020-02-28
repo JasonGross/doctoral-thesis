@@ -261,8 +261,8 @@ rewriting/PerfData.mk:
 $(THESIS_PDFS) : %.pdf : %.tex
 	@ echo "PDFLATEX (run 1)"
 	@ $(PDFLATEX) $(LATEXFLAGS) $(OTHERFLAGS) $<
-	@ echo "BIBTEX"
-	@ bibtex ${<:.tex=.aux}
+#	@ echo "BIBTEX"
+#	@ bibtex ${<:.tex=.aux}
 	@ echo "PDFLATEX (run 2)"
 	@ $(PDFLATEX) $(LATEXFLAGS) $(OTHERFLAGS) --interaction=nonstopmode $< 2>&1 >/dev/null || true
 	@ echo "PDFLATEX (run 3)"

@@ -1,0 +1,60 @@
+\begin{coqdoccode}
+\end{coqdoccode}
+\section{Common Notations for Reification By Parametricity}
+
+\subsection{Introductory Notations}
+
+\begin{coqdoccode}
+\coqdocnoindent
+\coqdockw{Global Set Implicit Arguments}.\coqdoceol
+\coqdocnoindent
+\coqdockw{Reserved Notation} "'dlet' x := v 'in' f"\coqdoceol
+\coqdocindent{4.50em}
+(\coqdoctac{at} \coqdockw{level} 200, \coqdocvar{f} \coqdoctac{at} \coqdockw{level} 200,\coqdoceol
+\coqdocindent{5.00em}
+\coqdocvar{format} "'dlet'  x  :=  v  'in' '//' f").\coqdoceol
+\coqdocnoindent
+\coqdockw{Reserved Notation} "'nllet' x := v 'in' f"\coqdoceol
+\coqdocindent{4.50em}
+(\coqdoctac{at} \coqdockw{level} 200, \coqdocvar{f} \coqdoctac{at} \coqdockw{level} 200,\coqdoceol
+\coqdocindent{5.00em}
+\coqdocvar{format} "'nllet'  x  :=  v  'in' '//' f").\coqdoceol
+\coqdocnoindent
+\coqdockw{Reserved Notation} "'elet' x := v 'in' f"\coqdoceol
+\coqdocindent{4.50em}
+(\coqdoctac{at} \coqdockw{level} 200, \coqdocvar{f} \coqdoctac{at} \coqdockw{level} 200,\coqdoceol
+\coqdocindent{5.00em}
+\coqdocvar{format} "'elet'  x  :=  v  'in' '//' f").\coqdoceol
+\coqdocnoindent
+\coqdockw{Definition} \coqdocvar{Let\_In} \{\coqdocvar{A} \coqdocvar{B}\} (\coqdocvar{v} : \coqdocvar{A}) (\coqdocvar{f} : \coqdocvar{A} \ensuremath{\rightarrow} \coqdocvar{B}) : \coqdocvar{B}\coqdoceol
+\coqdocindent{1.00em}
+:= \coqdockw{let} \coqdocvar{x} := \coqdocvar{v} \coqdoctac{in} \coqdocvar{f} \coqdocvar{x}.\coqdoceol
+\coqdocnoindent
+\coqdockw{Notation} "'dlet' x := v 'in' f" := (\coqdocvar{Let\_In} \coqdocvar{v} (\coqdockw{fun} \coqdocvar{x} \ensuremath{\Rightarrow} \coqdocvar{f})).\coqdoceol
+\coqdocnoindent
+\coqdockw{Definition} \coqdocvar{key} : \coqdocvar{unit}. \coqdoctac{exact} \coqdocvar{tt}. \coqdockw{Qed}.\coqdoceol
+\coqdocnoindent
+\coqdockw{Definition} \coqdocvar{lock} \{\coqdocvar{A}\} (\coqdocvar{v} : \coqdocvar{A}) : \coqdocvar{A} := \coqdockw{match} \coqdocvar{key} \coqdockw{with} \coqdocvar{tt} \ensuremath{\Rightarrow} \coqdocvar{v} \coqdockw{end}.\coqdoceol
+\coqdocnoindent
+\coqdockw{Lemma} \coqdocvar{unlock} \{\coqdocvar{A}\} (\coqdocvar{v} : \coqdocvar{A}) : \coqdocvar{lock} \coqdocvar{v} = \coqdocvar{v}.\coqdoceol
+\coqdocnoindent
+\coqdockw{Proof}. \coqdoctac{unfold} \coqdocvar{lock}; \coqdoctac{destruct} \coqdocvar{key}; \coqdoctac{reflexivity}. \coqdockw{Qed}.\coqdoceol
+\coqdocnoindent
+\coqdockw{Definition} \coqdocvar{LockedLet\_In\_nat} : \coqdocvar{nat} \ensuremath{\rightarrow} (\coqdocvar{nat} \ensuremath{\rightarrow} \coqdocvar{nat}) \ensuremath{\rightarrow} \coqdocvar{nat}\coqdoceol
+\coqdocindent{1.00em}
+:= \coqdocvar{lock} (@\coqdocvar{Let\_In} \coqdocvar{nat} \coqdocvar{nat}).\coqdoceol
+\coqdocnoindent
+\coqdockw{Definition} \coqdocvar{locked\_nat\_mul} := \coqdocvar{lock} \coqdocvar{Nat.mul}.\coqdoceol
+\coqdocnoindent
+\coqdockw{Notation} "'nllet' x := v 'in' f"\coqdoceol
+\coqdocindent{1.00em}
+:= (\coqdocvar{LockedLet\_In\_nat} \coqdocvar{v} (\coqdockw{fun} \coqdocvar{x} \ensuremath{\Rightarrow} \coqdocvar{f})).\coqdoceol
+\coqdocnoindent
+\coqdockw{Definition} \coqdocvar{lock\_Let\_In\_nat} : @\coqdocvar{Let\_In} \coqdocvar{nat} \coqdocvar{nat} = \coqdocvar{LockedLet\_In\_nat}\coqdoceol
+\coqdocindent{1.00em}
+:= \coqdocvar{eq\_sym} (\coqdocvar{unlock} \coqdocvar{\_}).\coqdoceol
+\coqdocnoindent
+\coqdockw{Definition} \coqdocvar{lock\_Nat\_mul} : \coqdocvar{Nat.mul} = \coqdocvar{locked\_nat\_mul}\coqdoceol
+\coqdocindent{1.00em}
+:= \coqdocvar{eq\_sym} (\coqdocvar{unlock} \coqdocvar{\_}).\coqdoceol
+\end{coqdoccode}

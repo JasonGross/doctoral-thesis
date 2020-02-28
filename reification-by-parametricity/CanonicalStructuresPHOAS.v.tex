@@ -1,0 +1,123 @@
+\begin{coqdoccode}
+\end{coqdoccode}
+\section{Canonical-structure based reification}
+
+ This version reifies to \coqdocvar{Expr}, and supports let-binders. \begin{coqdoccode}
+\coqdocemptyline
+\coqdocnoindent
+\coqdockw{Require} \coqdockw{Import} \coqdocvar{Coq.Lists.List}.\coqdoceol
+\coqdocnoindent
+\coqdockw{Require} \coqdockw{Import} \coqdocvar{Reify.CanonicalStructuresReifyCommon}.\coqdoceol
+\coqdocemptyline
+\coqdocnoindent
+\coqdockw{Local} \coqdockw{Notation} \coqdockw{context} := (\coqdocvar{list} \coqdocvar{nat}).\coqdoceol
+\coqdocemptyline
+\coqdocnoindent
+\coqdockw{Structure} \coqdocvar{tagged\_nat} (\coqdocvar{ctx} : \coqdockw{context}) := \coqdocvar{tag} \{ \coqdocvar{untag} :> \coqdocvar{nat} \}.\coqdoceol
+\coqdocemptyline
+\coqdocnoindent
+\coqdockw{Structure} \coqdocvar{reified\_of} (\coqdocvar{ctx} : \coqdockw{context}) :=\coqdoceol
+\coqdocindent{1.00em}
+\coqdocvar{reify} \{ \coqdocvar{nat\_of} : \coqdocvar{tagged\_nat} \coqdocvar{ctx} ;\coqdoceol
+\coqdocindent{5.00em}
+\coqdocvar{reified\_nat\_of} :> \coqdockw{\ensuremath{\forall}} \coqdocvar{var}, \coqdocvar{list} \coqdocvar{var} \ensuremath{\rightarrow} (\coqdockw{\ensuremath{\forall}} \coqdocvar{T}, \coqdocvar{T}) \ensuremath{\rightarrow} @\coqdocvar{expr} \coqdocvar{var} \}.\coqdoceol
+\coqdocemptyline
+\coqdocnoindent
+\coqdockw{Definition} \coqdocvar{var\_tl\_tag} := \coqdocvar{tag}.\coqdoceol
+\coqdocnoindent
+\coqdockw{Definition} \coqdocvar{var\_hd\_tag} := \coqdocvar{var\_tl\_tag}.\coqdoceol
+\coqdocnoindent
+\coqdockw{Definition} \coqdocvar{S\_tag} := \coqdocvar{var\_hd\_tag}.\coqdoceol
+\coqdocnoindent
+\coqdockw{Definition} \coqdocvar{O\_tag} := \coqdocvar{S\_tag}.\coqdoceol
+\coqdocnoindent
+\coqdockw{Definition} \coqdocvar{mul\_tag} := \coqdocvar{O\_tag}.\coqdoceol
+\coqdocemptyline
+\end{coqdoccode}
+N.B. \coqdocvar{Canonical} structures follow \coqdockw{Import}, so they must be
+    imported for reification to work. \begin{coqdoccode}
+\coqdocemptyline
+\coqdocnoindent
+\coqdockw{Module} \coqdockw{Export} \coqdocvar{Exports}.\coqdoceol
+\coqdocindent{1.00em}
+\coqdockw{Canonical} \coqdockw{Structure} \coqdocvar{letin\_tag} \coqdocvar{ctx} \coqdocvar{n} := \coqdocvar{mul\_tag} \coqdocvar{ctx} \coqdocvar{n}.\coqdoceol
+\coqdocemptyline
+\coqdocindent{1.00em}
+\coqdockw{Canonical} \coqdockw{Structure} \coqdocvar{reify\_O} \coqdocvar{ctx}\coqdoceol
+\coqdocindent{2.00em}
+:= \coqdocvar{reify} (\coqdocvar{O\_tag} \coqdocvar{ctx} 0) (\coqdockw{fun} \coqdocvar{var} \coqdocvar{\_} \coqdocvar{\_} \ensuremath{\Rightarrow} @\coqdocvar{NatO} \coqdocvar{var}).\coqdoceol
+\coqdocindent{1.00em}
+\coqdockw{Canonical} \coqdockw{Structure} \coqdocvar{reify\_S} \coqdocvar{ctx} \coqdocvar{x}\coqdoceol
+\coqdocindent{2.00em}
+:= \coqdocvar{reify} (@\coqdocvar{S\_tag} \coqdocvar{ctx} (\coqdocvar{S} (@\coqdocvar{nat\_of} \coqdocvar{ctx} \coqdocvar{x})))\coqdoceol
+\coqdocindent{6.50em}
+(\coqdockw{fun} \coqdocvar{var} \coqdocvar{vs} \coqdocvar{phantom} \ensuremath{\Rightarrow} @\coqdocvar{NatS} \coqdocvar{var} (\coqdocvar{x} \coqdocvar{var} \coqdocvar{vs} \coqdocvar{phantom})).\coqdoceol
+\coqdocindent{1.00em}
+\coqdockw{Canonical} \coqdockw{Structure} \coqdocvar{reify\_mul} \coqdocvar{ctx} \coqdocvar{x} \coqdocvar{y}\coqdoceol
+\coqdocindent{2.00em}
+:= \coqdocvar{reify} (@\coqdocvar{mul\_tag} \coqdocvar{ctx} (@\coqdocvar{nat\_of} \coqdocvar{ctx} \coqdocvar{x} \ensuremath{\times} @\coqdocvar{nat\_of} \coqdocvar{ctx} \coqdocvar{y}))\coqdoceol
+\coqdocindent{6.50em}
+(\coqdockw{fun} \coqdocvar{var} \coqdocvar{vs} \coqdocvar{phantom} \ensuremath{\Rightarrow} @\coqdocvar{NatMul} \coqdocvar{var} (\coqdocvar{x} \coqdocvar{var} \coqdocvar{vs} \coqdocvar{phantom}) (\coqdocvar{y} \coqdocvar{var} \coqdocvar{vs} \coqdocvar{phantom})).\coqdoceol
+\coqdocindent{1.00em}
+\coqdockw{Canonical} \coqdockw{Structure} \coqdocvar{reify\_var\_hd} \coqdocvar{n} \coqdocvar{ctx}\coqdoceol
+\coqdocindent{2.00em}
+:= \coqdocvar{reify} (\coqdocvar{var\_hd\_tag} (\coqdocvar{n} :: \coqdocvar{ctx}) \coqdocvar{n})\coqdoceol
+\coqdocindent{6.50em}
+(\coqdockw{fun} \coqdocvar{var} \coqdocvar{vs} \coqdocvar{phantom} \ensuremath{\Rightarrow} @\coqdocvar{Var} \coqdocvar{var} (\coqdocvar{List.hd} (\coqdocvar{phantom} \coqdocvar{\_}) \coqdocvar{vs})).\coqdoceol
+\coqdocindent{1.00em}
+\coqdockw{Canonical} \coqdockw{Structure} \coqdocvar{reify\_var\_tl} \coqdocvar{n} \coqdocvar{ctx} \coqdocvar{x}\coqdoceol
+\coqdocindent{2.00em}
+:= \coqdocvar{reify} (\coqdocvar{var\_tl\_tag} (\coqdocvar{n} :: \coqdocvar{ctx}) (@\coqdocvar{nat\_of} \coqdocvar{ctx} \coqdocvar{x}))\coqdoceol
+\coqdocindent{6.50em}
+(\coqdockw{fun} \coqdocvar{var} \coqdocvar{vs} \coqdocvar{phantom} \ensuremath{\Rightarrow} \coqdocvar{reified\_nat\_of} \coqdocvar{x} (\coqdocvar{List.tl} \coqdocvar{vs}) \coqdocvar{phantom}).\coqdoceol
+\coqdocindent{1.00em}
+\coqdockw{Canonical} \coqdockw{Structure} \coqdocvar{reify\_letin} \coqdocvar{ctx} \coqdocvar{v} \coqdocvar{f}\coqdoceol
+\coqdocindent{2.00em}
+:= \coqdocvar{reify} (\coqdocvar{letin\_tag}\coqdoceol
+\coqdocindent{8.00em}
+\coqdocvar{ctx}\coqdoceol
+\coqdocindent{8.00em}
+(\coqdocvar{nllet} \coqdocvar{x} := @\coqdocvar{nat\_of} \coqdocvar{ctx} \coqdocvar{v} \coqdoctac{in}\coqdoceol
+\coqdocindent{8.50em}
+@\coqdocvar{nat\_of} (\coqdocvar{x} :: \coqdocvar{ctx}) (\coqdocvar{f} \coqdocvar{x})))\coqdoceol
+\coqdocindent{6.50em}
+(\coqdockw{fun} \coqdocvar{var} \coqdocvar{vs} \coqdocvar{phantom}\coqdoceol
+\coqdocindent{7.00em}
+\ensuremath{\Rightarrow} \coqdocvar{elet} \coqdocvar{x} := \coqdocvar{reified\_nat\_of} \coqdocvar{v} \coqdocvar{vs} \coqdocvar{phantom} \coqdoctac{in}\coqdoceol
+\coqdocindent{8.50em}
+\coqdocvar{reified\_nat\_of} (\coqdocvar{f} (\coqdocvar{phantom} \coqdocvar{\_})) (\coqdocvar{x} :: \coqdocvar{vs}) \coqdocvar{phantom})\%\coqdocvar{expr}.\coqdoceol
+\coqdocnoindent
+\coqdockw{End} \coqdocvar{Exports}.\coqdoceol
+\coqdocemptyline
+\coqdocnoindent
+\coqdockw{Definition} \coqdocvar{ReifiedNatOf} (\coqdocvar{e} : \coqdocvar{reified\_of} \coqdocvar{nil}) : (\coqdockw{\ensuremath{\forall}} \coqdocvar{T}, \coqdocvar{T}) \ensuremath{\rightarrow} \coqdocvar{Expr}\coqdoceol
+\coqdocindent{1.00em}
+:= \coqdockw{fun} \coqdocvar{phantom} \coqdocvar{var} \ensuremath{\Rightarrow} \coqdocvar{reified\_nat\_of} \coqdocvar{e} \coqdocvar{nil} \coqdocvar{phantom}.\coqdoceol
+\coqdocemptyline
+\coqdocnoindent
+\coqdockw{Ltac} \coqdocvar{pre\_Reify\_rhs} \coqdocvar{\_} := \coqdocvar{make\_pre\_Reify\_rhs} (@\coqdocvar{nat\_of} \coqdocvar{nil}) (@\coqdocvar{untag} \coqdocvar{nil}) \coqdocvar{true} \coqdocvar{false}.\coqdoceol
+\coqdocemptyline
+\end{coqdoccode}
+N.B. we must thunk the constants so as to not focus the goal \begin{coqdoccode}
+\coqdocemptyline
+\coqdocnoindent
+\coqdockw{Ltac} \coqdocvar{do\_Reify\_rhs} \coqdocvar{\_} :=\coqdoceol
+\coqdocindent{1.00em}
+\coqdocvar{make\_do\_Reify\_rhs}\coqdoceol
+\coqdocindent{2.00em}
+\coqdockw{ltac}:(\coqdockw{fun} \coqdocvar{\_} \ensuremath{\Rightarrow} \coqdocvar{Denote}) \coqdockw{ltac}:(\coqdockw{fun} \coqdocvar{\_} \ensuremath{\Rightarrow} \coqdocvar{ReifiedNatOf})\coqdoceol
+\coqdocindent{2.00em}
+\coqdockw{ltac}:(\coqdockw{fun} \coqdocvar{e} \ensuremath{\Rightarrow}\coqdoceol
+\coqdocindent{6.00em}
+\coqdockw{lazymatch} \coqdocvar{e} \coqdockw{with}\coqdoceol
+\coqdocindent{6.00em}
+\ensuremath{|} \coqdockw{fun} \coqdocvar{\_} \ensuremath{\Rightarrow} ?\coqdocvar{e} \ensuremath{\Rightarrow} \coqdocvar{e}\coqdoceol
+\coqdocindent{6.00em}
+\ensuremath{|} \coqdocvar{\_} \ensuremath{\Rightarrow} \coqdocvar{ReifyCommon.error\_cant\_elim\_deps} \coqdocvar{e}\coqdoceol
+\coqdocindent{6.00em}
+\coqdockw{end}).\coqdoceol
+\coqdocnoindent
+\coqdockw{Ltac} \coqdocvar{post\_Reify\_rhs} \coqdocvar{\_} := \coqdocvar{ReifyCommon.post\_Reify\_rhs} ().\coqdoceol
+\coqdocnoindent
+\coqdockw{Ltac} \coqdocvar{Reify\_rhs} \coqdocvar{\_} := \coqdocvar{pre\_Reify\_rhs} (); \coqdocvar{do\_Reify\_rhs} (); \coqdocvar{post\_Reify\_rhs} ().\coqdoceol
+\end{coqdoccode}

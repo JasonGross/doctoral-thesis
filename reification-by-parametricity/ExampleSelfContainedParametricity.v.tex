@@ -1,0 +1,270 @@
+\begin{coqdoccode}
+\end{coqdoccode}
+\section{Self-contained example of reification by parametricity on flat expressions}
+
+\begin{coqdoccode}
+\coqdocnoindent
+\coqdockw{Require} \coqdockw{Import} \coqdocvar{Coq.Bool.Bool}.\coqdoceol
+\coqdocnoindent
+\coqdockw{Require} \coqdockw{Import} \coqdocvar{Coq.Setoids.Setoid}.\coqdoceol
+\coqdocemptyline
+\coqdocnoindent
+\coqdockw{Inductive} \coqdocvar{expr} :=\coqdoceol
+\coqdocnoindent
+\ensuremath{|} \coqdocvar{NatO} : \coqdocvar{expr}\coqdoceol
+\coqdocnoindent
+\ensuremath{|} \coqdocvar{NatS} : \coqdocvar{expr} \ensuremath{\rightarrow} \coqdocvar{expr}\coqdoceol
+\coqdocnoindent
+\ensuremath{|} \coqdocvar{NatMul} : \coqdocvar{expr} \ensuremath{\rightarrow} \coqdocvar{expr} \ensuremath{\rightarrow} \coqdocvar{expr}.\coqdoceol
+\coqdocnoindent
+\coqdockw{Fixpoint} \coqdocvar{denote} (\coqdocvar{t} : \coqdocvar{expr}) : \coqdocvar{nat}\coqdoceol
+\coqdocindent{1.00em}
+:= \coqdockw{match} \coqdocvar{t} \coqdockw{with}\coqdoceol
+\coqdocindent{2.50em}
+\ensuremath{|} \coqdocvar{NatO} \ensuremath{\Rightarrow} \coqdocvar{O}\coqdoceol
+\coqdocindent{2.50em}
+\ensuremath{|} \coqdocvar{NatS} \coqdocvar{x} \ensuremath{\Rightarrow} \coqdocvar{S} (\coqdocvar{denote} \coqdocvar{x})\coqdoceol
+\coqdocindent{2.50em}
+\ensuremath{|} \coqdocvar{NatMul} \coqdocvar{x} \coqdocvar{y} \ensuremath{\Rightarrow} \coqdocvar{denote} \coqdocvar{x} \ensuremath{\times} \coqdocvar{denote} \coqdocvar{y}\coqdoceol
+\coqdocindent{2.50em}
+\coqdockw{end}.\coqdoceol
+\coqdocemptyline
+\coqdocnoindent
+\coqdockw{Module} \coqdockw{Import} \coqdocvar{EvennessChecking}.\coqdoceol
+\end{coqdoccode}
+\subsection{Theory on checking evenness of expressions}
+
+\begin{coqdoccode}
+\coqdocindent{1.00em}
+\coqdockw{Inductive} \coqdocvar{is\_even} : \coqdocvar{nat} \ensuremath{\rightarrow} \coqdockw{Prop} :=\coqdoceol
+\coqdocindent{1.00em}
+\ensuremath{|} \coqdocvar{even\_O} : \coqdocvar{is\_even} \coqdocvar{O}\coqdoceol
+\coqdocindent{1.00em}
+\ensuremath{|} \coqdocvar{even\_SS} : \coqdockw{\ensuremath{\forall}} \coqdocvar{x}, \coqdocvar{is\_even} \coqdocvar{x} \ensuremath{\rightarrow} \coqdocvar{is\_even} (\coqdocvar{S} (\coqdocvar{S} \coqdocvar{x})).\coqdoceol
+\coqdocemptyline
+\coqdocindent{1.00em}
+\coqdockw{Fixpoint} \coqdocvar{check\_is\_even\_expr} (\coqdocvar{t} : \coqdocvar{expr}) : \coqdocvar{bool}\coqdoceol
+\coqdocindent{2.00em}
+:= \coqdockw{match} \coqdocvar{t} \coqdockw{with}\coqdoceol
+\coqdocindent{3.50em}
+\ensuremath{|} \coqdocvar{NatO} \ensuremath{\Rightarrow} \coqdocvar{true}\coqdoceol
+\coqdocindent{3.50em}
+\ensuremath{|} \coqdocvar{NatS} \coqdocvar{x}\coqdoceol
+\coqdocindent{4.50em}
+\ensuremath{\Rightarrow} \coqdocvar{negb} (\coqdocvar{check\_is\_even\_expr} \coqdocvar{x})\coqdoceol
+\coqdocindent{3.50em}
+\ensuremath{|} \coqdocvar{NatMul} \coqdocvar{x} \coqdocvar{y}\coqdoceol
+\coqdocindent{4.50em}
+\ensuremath{\Rightarrow} \coqdocvar{orb} (\coqdocvar{check\_is\_even\_expr} \coqdocvar{x}) (\coqdocvar{check\_is\_even\_expr} \coqdocvar{y})\coqdoceol
+\coqdocindent{3.50em}
+\coqdockw{end}.\coqdoceol
+\coqdocemptyline
+\coqdocindent{1.00em}
+\coqdockw{Notation} \coqdocvar{is\_even\_or\_odd} \coqdocvar{x} := (\{\coqdocvar{is\_even} \coqdocvar{x}\} + \{\~{}\coqdocvar{is\_even} \coqdocvar{x}\}).\coqdoceol
+\coqdocemptyline
+\coqdocindent{1.00em}
+\coqdockw{Lemma} \coqdocvar{is\_even\_or\_odd\_x} : \coqdockw{\ensuremath{\forall}} \coqdocvar{x}, (\coqdocvar{is\_even} \coqdocvar{x} \ensuremath{\land} \ensuremath{\lnot}\coqdocvar{is\_even} (\coqdocvar{S} \coqdocvar{x}))\coqdoceol
+\coqdocindent{18.50em}
+\ensuremath{\lor} (\~{}\coqdocvar{is\_even} \coqdocvar{x} \ensuremath{\land} \coqdocvar{is\_even} (\coqdocvar{S} \coqdocvar{x})).\coqdoceol
+\coqdocindent{1.00em}
+\coqdockw{Proof}.\coqdoceol
+\coqdocindent{2.00em}
+\coqdoctac{induction} \coqdocvar{x} \coqdockw{as} [|\coqdocvar{x} [[\coqdocvar{IHx0} \coqdocvar{IHx1}]|[\coqdocvar{IHx0} \coqdocvar{IHx1}]]].\coqdoceol
+\coqdocindent{2.00em}
+\{ \coqdoctac{left}; \coqdoctac{split}; \coqdoctac{try} \coqdoctac{constructor}; \coqdoctac{intro} \coqdocvar{H}; \coqdoctac{inversion} \coqdocvar{H}. \}\coqdoceol
+\coqdocindent{2.00em}
+\{ \coqdoctac{right}; \coqdoctac{split}; [ \ensuremath{|} \coqdoctac{constructor} ]; \coqdoctac{assumption}. \}\coqdoceol
+\coqdocindent{2.00em}
+\{ \coqdoctac{left}; \coqdoctac{split};\coqdoceol
+\coqdocindent{4.00em}
+[ \coqdoctac{assumption}\coqdoceol
+\coqdocindent{4.00em}
+\ensuremath{|} \coqdoctac{intro} \coqdocvar{H}; \coqdoctac{inversion\_clear} \coqdocvar{H}; \coqdoctac{apply} \coqdocvar{IHx0}; \coqdoctac{assumption} ]. \}\coqdoceol
+\coqdocindent{1.00em}
+\coqdockw{Qed}.\coqdoceol
+\coqdocemptyline
+\coqdocindent{1.00em}
+\coqdockw{Definition} \coqdocvar{is\_even\_or\_odd\_S} \coqdocvar{x} (\coqdocvar{pf} : \coqdocvar{is\_even\_or\_odd} \coqdocvar{x})\coqdoceol
+\coqdocindent{2.00em}
+: \coqdocvar{is\_even\_or\_odd} (\coqdocvar{S} \coqdocvar{x}).\coqdoceol
+\coqdocindent{1.00em}
+\coqdockw{Proof}.\coqdoceol
+\coqdocindent{2.00em}
+\coqdoctac{destruct} \coqdocvar{pf} \coqdockw{as} [\coqdocvar{pf}\ensuremath{|}\coqdocvar{pf}]; [ \coqdoctac{right} \ensuremath{|} \coqdoctac{left} ];\coqdoceol
+\coqdocindent{3.00em}
+\coqdoctac{abstract} (\coqdoctac{destruct} (\coqdocvar{is\_even\_or\_odd\_x} \coqdocvar{x}) \coqdockw{as} [[\coqdocvar{H0} \coqdocvar{H1}]|[\coqdocvar{H0} \coqdocvar{H1}]]; \coqdoctac{tauto}).\coqdoceol
+\coqdocindent{1.00em}
+\coqdockw{Defined}.\coqdoceol
+\coqdocemptyline
+\coqdocindent{1.00em}
+\coqdockw{Definition} \coqdocvar{is\_even\_or\_odd\_sum}\coqdoceol
+\coqdocindent{6.50em}
+\coqdocvar{x} \coqdocvar{y}\coqdoceol
+\coqdocindent{2.00em}
+: (\coqdocvar{is\_even} \coqdocvar{x} \ensuremath{\land} \coqdocvar{is\_even} \coqdocvar{y} \ensuremath{\land} \coqdocvar{is\_even} (\coqdocvar{x} + \coqdocvar{y}))\coqdoceol
+\coqdocindent{3.00em}
+\ensuremath{\lor} (\~{}\coqdocvar{is\_even} \coqdocvar{x} \ensuremath{\land} \ensuremath{\lnot}\coqdocvar{is\_even} \coqdocvar{y} \ensuremath{\land} \coqdocvar{is\_even} (\coqdocvar{x} + \coqdocvar{y}))\coqdoceol
+\coqdocindent{3.00em}
+\ensuremath{\lor} (\coqdocvar{is\_even} \coqdocvar{x} \ensuremath{\land} \ensuremath{\lnot}\coqdocvar{is\_even} \coqdocvar{y} \ensuremath{\land} \ensuremath{\lnot}\coqdocvar{is\_even} (\coqdocvar{x} + \coqdocvar{y}))\coqdoceol
+\coqdocindent{3.00em}
+\ensuremath{\lor} (\~{}\coqdocvar{is\_even} \coqdocvar{x} \ensuremath{\land} \coqdocvar{is\_even} \coqdocvar{y} \ensuremath{\land} \ensuremath{\lnot}\coqdocvar{is\_even} (\coqdocvar{x} + \coqdocvar{y})).\coqdoceol
+\coqdocindent{1.00em}
+\coqdockw{Proof}.\coqdoceol
+\coqdocindent{2.00em}
+\coqdocvar{revert} \coqdocvar{y}; \coqdoctac{induction} \coqdocvar{x} \coqdockw{as} [|\coqdocvar{x} \coqdocvar{IHx}];\coqdoceol
+\coqdocindent{3.00em}
+\coqdoctac{intro} \coqdocvar{y};\coqdoceol
+\coqdocindent{3.00em}
+[ \ensuremath{|} \coqdoctac{destruct} (\coqdocvar{is\_even\_or\_odd\_x} \coqdocvar{x}) \coqdockw{as} [\coqdocvar{H}\ensuremath{|}\coqdocvar{H}]; \coqdoctac{specialize} (\coqdocvar{IHx} (\coqdocvar{S} \coqdocvar{y}));\coqdoceol
+\coqdocindent{5.00em}
+\coqdoctac{rewrite} \ensuremath{\leftarrow} !\coqdocvar{plus\_n\_Sm} \coqdoctac{in} \coqdocvar{IHx} ];\coqdoceol
+\coqdocindent{3.00em}
+\coqdoctac{destruct} (\coqdocvar{is\_even\_or\_odd\_x} \coqdocvar{y}) \coqdockw{as} [\coqdocvar{Hy}\ensuremath{|}\coqdocvar{Hy}];\coqdoceol
+\coqdocindent{3.00em}
+\coqdoctac{intuition}.\coqdoceol
+\coqdocindent{2.00em}
+\{ \coqdoctac{left}; \coqdoctac{repeat} \coqdoctac{constructor}; \coqdoctac{assumption}. \}\coqdoceol
+\coqdocindent{2.00em}
+\{ \coqdoctac{right}; \coqdoctac{right}; \coqdoctac{left}; \coqdoctac{repeat} \coqdoctac{constructor}; \coqdoctac{assumption}. \}\coqdoceol
+\coqdocindent{1.00em}
+\coqdockw{Qed}.\coqdoceol
+\coqdocemptyline
+\coqdocindent{1.00em}
+\coqdockw{Definition} \coqdocvar{is\_even\_or\_odd\_mul\_helper}\coqdoceol
+\coqdocindent{6.50em}
+\coqdocvar{x} \coqdocvar{y}\coqdoceol
+\coqdocindent{2.00em}
+: (\coqdocvar{is\_even} \coqdocvar{x} \ensuremath{\land} \coqdocvar{is\_even} \coqdocvar{y} \ensuremath{\land} \coqdocvar{is\_even} (\coqdocvar{x} \ensuremath{\times} \coqdocvar{y}))\coqdoceol
+\coqdocindent{3.00em}
+\ensuremath{\lor} (\~{}\coqdocvar{is\_even} \coqdocvar{x} \ensuremath{\land} \coqdocvar{is\_even} \coqdocvar{y} \ensuremath{\land} \coqdocvar{is\_even} (\coqdocvar{x} \ensuremath{\times} \coqdocvar{y}))\coqdoceol
+\coqdocindent{3.00em}
+\ensuremath{\lor} (\coqdocvar{is\_even} \coqdocvar{x} \ensuremath{\land} \ensuremath{\lnot}\coqdocvar{is\_even} \coqdocvar{y} \ensuremath{\land} \coqdocvar{is\_even} (\coqdocvar{x} \ensuremath{\times} \coqdocvar{y}))\coqdoceol
+\coqdocindent{3.00em}
+\ensuremath{\lor} (\~{}\coqdocvar{is\_even} \coqdocvar{x} \ensuremath{\land} \ensuremath{\lnot}\coqdocvar{is\_even} \coqdocvar{y} \ensuremath{\land} \ensuremath{\lnot}\coqdocvar{is\_even} (\coqdocvar{x} \ensuremath{\times} \coqdocvar{y})).\coqdoceol
+\coqdocindent{1.00em}
+\coqdockw{Proof}.\coqdoceol
+\coqdocindent{2.00em}
+\coqdoctac{induction} \coqdocvar{x} \coqdockw{as} [|\coqdocvar{x} \coqdocvar{IHx}]; \coqdoctac{simpl}.\coqdoceol
+\coqdocindent{2.00em}
+\{ \coqdoctac{destruct} (\coqdocvar{is\_even\_or\_odd\_x} \coqdocvar{y}); \coqdoctac{intuition}.\coqdoceol
+\coqdocindent{3.00em}
+\{ \coqdoctac{left}; \coqdoctac{repeat} \coqdoctac{constructor}; \coqdoctac{assumption}. \}\coqdoceol
+\coqdocindent{3.00em}
+\{ \coqdoctac{right}; \coqdoctac{right}; \coqdoctac{left}; \coqdoctac{repeat} \coqdoctac{constructor}; \coqdoctac{assumption}. \} \}\coqdoceol
+\coqdocindent{2.00em}
+\{ \coqdoctac{pose} \coqdocvar{proof} (\coqdocvar{is\_even\_or\_odd\_sum} \coqdocvar{y} (\coqdocvar{x} \ensuremath{\times} \coqdocvar{y})).\coqdoceol
+\coqdocindent{3.00em}
+\coqdoctac{pose} \coqdocvar{proof} (\coqdocvar{is\_even\_or\_odd\_x} \coqdocvar{x}).\coqdoceol
+\coqdocindent{3.00em}
+\coqdoctac{intuition}. \}\coqdoceol
+\coqdocindent{1.00em}
+\coqdockw{Qed}.\coqdoceol
+\coqdocemptyline
+\coqdocindent{1.00em}
+\coqdockw{Definition} \coqdocvar{is\_even\_or\_odd\_mul} \coqdocvar{x} \coqdocvar{y}\coqdoceol
+\coqdocindent{6.50em}
+(\coqdocvar{Hx} : \coqdocvar{is\_even\_or\_odd} \coqdocvar{x}) (\coqdocvar{Hy} : \coqdocvar{is\_even\_or\_odd} \coqdocvar{y})\coqdoceol
+\coqdocindent{2.00em}
+: \coqdocvar{is\_even\_or\_odd} (\coqdocvar{x} \ensuremath{\times} \coqdocvar{y}).\coqdoceol
+\coqdocindent{1.00em}
+\coqdockw{Proof}.\coqdoceol
+\coqdocindent{2.00em}
+\coqdoctac{destruct} \coqdocvar{Hx}, \coqdocvar{Hy}; [ \coqdoctac{left} \ensuremath{|} \coqdoctac{left} \ensuremath{|} \coqdoctac{left} \ensuremath{|} \coqdoctac{right} ];\coqdoceol
+\coqdocindent{3.00em}
+\coqdoctac{abstract} (\coqdoctac{pose} \coqdocvar{proof} (\coqdocvar{is\_even\_or\_odd\_mul\_helper} \coqdocvar{x} \coqdocvar{y}); \coqdoctac{intuition}).\coqdoceol
+\coqdocindent{1.00em}
+\coqdockw{Defined}.\coqdoceol
+\coqdocemptyline
+\coqdocindent{1.00em}
+\coqdockw{Lemma} \coqdocvar{check\_is\_even\_expr\_correct} (\coqdocvar{e} : \coqdocvar{expr})\coqdoceol
+\coqdocindent{2.00em}
+: \coqdocvar{check\_is\_even\_expr} \coqdocvar{e} = \coqdocvar{true} \ensuremath{\leftrightarrow} \coqdocvar{is\_even} (\coqdocvar{denote} \coqdocvar{e}).\coqdoceol
+\coqdocindent{1.00em}
+\coqdockw{Proof}.\coqdoceol
+\coqdocindent{2.00em}
+\coqdoctac{induction} \coqdocvar{e}; \coqdoctac{simpl} \coqdoctac{in} *.\coqdoceol
+\coqdocindent{2.00em}
+\{ \coqdoctac{repeat} \coqdoctac{constructor}. \}\coqdoceol
+\coqdocindent{2.00em}
+\{ \coqdoctac{rewrite} \coqdocvar{negb\_true\_iff}, \ensuremath{\leftarrow} \coqdocvar{not\_true\_iff\_false}, \coqdocvar{IHe}.\coqdoceol
+\coqdocindent{3.00em}
+\coqdocvar{edestruct} (\coqdocvar{is\_even\_or\_odd\_x} (\coqdocvar{denote} \coqdocvar{e})); \coqdoctac{intuition}. \}\coqdoceol
+\coqdocindent{2.00em}
+\{ \coqdoctac{rewrite} \coqdocvar{orb\_true\_iff}, \coqdocvar{IHe1}, \coqdocvar{IHe2}.\coqdoceol
+\coqdocindent{3.00em}
+\coqdocvar{edestruct} \coqdocvar{is\_even\_or\_odd\_mul\_helper};\coqdoceol
+\coqdocindent{4.00em}
+\coqdoctac{intuition} \coqdoctac{solve} [ \coqdoctac{intuition} \coqdoctac{eauto} ]. \}\coqdoceol
+\coqdocindent{1.00em}
+\coqdockw{Qed}.\coqdoceol
+\coqdocemptyline
+\coqdocindent{1.00em}
+\coqdockw{Theorem} \coqdocvar{check\_is\_even\_expr\_sound} (\coqdocvar{e} : \coqdocvar{expr})\coqdoceol
+\coqdocindent{2.00em}
+: \coqdocvar{check\_is\_even\_expr} \coqdocvar{e} = \coqdocvar{true} \ensuremath{\rightarrow} \coqdocvar{is\_even} (\coqdocvar{denote} \coqdocvar{e}).\coqdoceol
+\coqdocindent{1.00em}
+\coqdockw{Proof}. \coqdoctac{intro}; \coqdoctac{apply} \coqdocvar{check\_is\_even\_expr\_correct}; \coqdoctac{assumption}. \coqdockw{Qed}.\coqdoceol
+\coqdocemptyline
+\coqdocindent{1.00em}
+\coqdockw{Lemma} \coqdocvar{cut\_is\_even\_eq} (\coqdocvar{x} \coqdocvar{y} : \coqdocvar{nat}) (\coqdocvar{H} : \coqdocvar{x} = \coqdocvar{y}) (\coqdocvar{Hx} : \coqdocvar{is\_even} \coqdocvar{x})\coqdoceol
+\coqdocindent{2.00em}
+: \coqdocvar{is\_even} \coqdocvar{y}.\coqdoceol
+\coqdocindent{1.00em}
+\coqdockw{Proof}. \coqdoctac{subst}; \coqdoctac{assumption}. \coqdockw{Qed}.\coqdoceol
+\coqdocnoindent
+\coqdockw{End} \coqdocvar{EvennessChecking}.\coqdoceol
+\coqdocemptyline
+\end{coqdoccode}
+\subsection{Reification by parametricity}
+
+\begin{coqdoccode}
+\coqdocnoindent
+\coqdockw{Ltac} \coqdocvar{Reify} \coqdocvar{x} :=\coqdoceol
+\coqdocindent{1.00em}
+\coqdockw{let} \coqdocvar{rx} := \coqdockw{lazymatch} (\coqdoctac{eval} \coqdoctac{pattern} \coqdocvar{nat}, \coqdocvar{O}, \coqdocvar{S}, \coqdocvar{Nat.mul} \coqdoctac{in} \coqdocvar{x}) \coqdockw{with}\coqdoceol
+\coqdocindent{6.00em}
+\ensuremath{|} ?\coqdocvar{rx} \coqdocvar{\_} \coqdocvar{\_} \coqdocvar{\_} \coqdocvar{\_} \ensuremath{\Rightarrow} \coqdocvar{rx} \coqdockw{end} \coqdoctac{in}\coqdoceol
+\coqdocindent{1.00em}
+\coqdockw{constr}:(\coqdocvar{rx} \coqdocvar{expr} \coqdocvar{NatO} \coqdocvar{NatS} \coqdocvar{NatMul}).\coqdoceol
+\coqdocemptyline
+\coqdocnoindent
+\coqdockw{Ltac} \coqdocvar{Reify\_rhs} \coqdocvar{\_} :=\coqdoceol
+\coqdocindent{1.00em}
+\coqdockw{lazymatch} \coqdockw{goal} \coqdockw{with}\coqdoceol
+\coqdocindent{1.00em}
+\ensuremath{|} [ \ensuremath{\vdash} \coqdocvar{\_} = ?\coqdocvar{RHS} ]\coqdoceol
+\coqdocindent{2.00em}
+\ensuremath{\Rightarrow} \coqdockw{let} \coqdocvar{rv} := \coqdocvar{Reify} \coqdocvar{RHS} \coqdoctac{in}\coqdoceol
+\coqdocindent{3.50em}
+\coqdoctac{transitivity} (\coqdocvar{denote} \coqdocvar{rv});\coqdoceol
+\coqdocindent{3.50em}
+[ \ensuremath{|} \coqdoctac{lazy} [\coqdocvar{denote}]; \coqdoctac{reflexivity} ]\coqdoceol
+\coqdocindent{1.00em}
+\coqdockw{end}.\coqdoceol
+\coqdocemptyline
+\end{coqdoccode}
+\subsection{Using reification to check evenness}
+
+\begin{coqdoccode}
+\coqdocemptyline
+\coqdocnoindent
+\coqdockw{Goal} \coqdocvar{is\_even} (\coqdockw{let} \coqdocvar{x0} := 100 \ensuremath{\times} 100 \ensuremath{\times} 100 \ensuremath{\times} 100 \coqdoctac{in}\coqdoceol
+\coqdocindent{7.00em}
+\coqdockw{let} \coqdocvar{x1} := \coqdocvar{x0} \ensuremath{\times} \coqdocvar{x0} \ensuremath{\times} \coqdocvar{x0} \ensuremath{\times} \coqdocvar{x0} \coqdoctac{in}\coqdoceol
+\coqdocindent{7.00em}
+\coqdockw{let} \coqdocvar{x2} := \coqdocvar{x1} \ensuremath{\times} \coqdocvar{x1} \ensuremath{\times} \coqdocvar{x1} \ensuremath{\times} \coqdocvar{x1} \coqdoctac{in}\coqdoceol
+\coqdocindent{7.00em}
+\coqdocvar{x2}).\coqdoceol
+\coqdocnoindent
+\coqdockw{Proof}.\coqdoceol
+\coqdocindent{1.00em}
+\coqdoctac{eapply} \coqdocvar{cut\_is\_even\_eq}.\coqdoceol
+\coqdocindent{1.00em}
+\{ \coqdocvar{Reify\_rhs} ().\coqdoceol
+\coqdocindent{2.00em}
+\coqdoctac{reflexivity}. \}\coqdoceol
+\coqdocindent{1.00em}
+\coqdoctac{apply} \coqdocvar{check\_is\_even\_expr\_sound}; \coqdockw{vm\_compute}; \coqdoctac{reflexivity}.\coqdoceol
+\coqdocnoindent
+\coqdockw{Qed}.\coqdoceol
+\end{coqdoccode}

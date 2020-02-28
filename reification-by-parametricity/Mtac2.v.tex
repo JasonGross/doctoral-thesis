@@ -1,0 +1,208 @@
+\begin{coqdoccode}
+\end{coqdoccode}
+\section{Reification by Mtac2}
+
+\begin{coqdoccode}
+\coqdocnoindent
+\coqdockw{Require} \coqdockw{Import} \coqdocvar{Coq.Strings.String} \coqdocvar{Coq.ZArith.ZArith}.\coqdoceol
+\coqdocnoindent
+\coqdockw{Require} \coqdockw{Import} \coqdocvar{Reify.ReifyCommon}.\coqdoceol
+\coqdocnoindent
+\coqdockw{Require} \coqdockw{Import} \coqdocvar{Mtac2.Mtac2}.\coqdoceol
+\coqdocnoindent
+\coqdockw{Import} \coqdocvar{M.notations}.\coqdoceol
+\coqdocemptyline
+\end{coqdoccode}
+Points of note:
+
+
+
+\begin{itemize}
+\item  We use \verb|=n>| to avoid unnecessary normalization /
+      reduction
+
+
+
+\item  We handle fresh binder names manually rather than invoking
+      \coqdocvar{M.fresh\_binder\_name}, which produces a string with length
+      linear in the number of times it has been called so far, rather
+      than logarithmic. 
+\end{itemize}
+\begin{coqdoccode}
+\coqdocemptyline
+\coqdocnoindent
+\coqdockw{Module} \coqdocvar{var\_context}.\coqdoceol
+\coqdocindent{1.00em}
+\coqdockw{Inductive} \coqdocvar{var\_context} \{\coqdocvar{var} : \coqdockw{Type}\} :=\coqdoceol
+\coqdocindent{1.00em}
+\ensuremath{|} \coqdocvar{nil}\coqdoceol
+\coqdocindent{1.00em}
+\ensuremath{|} \coqdocvar{cons} (\coqdocvar{n} : \coqdocvar{nat}) (\coqdocvar{v} : \coqdocvar{var}) (\coqdocvar{xs} : \coqdocvar{var\_context}).\coqdoceol
+\coqdocnoindent
+\coqdockw{End} \coqdocvar{var\_context}.\coqdoceol
+\coqdocemptyline
+\coqdocnoindent
+\coqdockw{Fixpoint} \coqdocvar{string\_of\_pos\_bin'} (\coqdocvar{p} : \coqdocvar{positive}) (\coqdocvar{rest} : \coqdocvar{string}) : \coqdocvar{string}\coqdoceol
+\coqdocindent{1.00em}
+:= \coqdockw{match} \coqdocvar{p} \coqdockw{with}\coqdoceol
+\coqdocindent{2.50em}
+\ensuremath{|} \coqdocvar{xI} \coqdocvar{x} \ensuremath{\Rightarrow} \coqdocvar{string\_of\_pos\_bin'} \coqdocvar{x} (\coqdocvar{String} "1" \coqdocvar{rest})\coqdoceol
+\coqdocindent{2.50em}
+\ensuremath{|} \coqdocvar{xO} \coqdocvar{x} \ensuremath{\Rightarrow} \coqdocvar{string\_of\_pos\_bin'} \coqdocvar{x} (\coqdocvar{String} "0" \coqdocvar{rest})\coqdoceol
+\coqdocindent{2.50em}
+\ensuremath{|} \coqdocvar{xH} \ensuremath{\Rightarrow} \coqdocvar{String} "0" (\coqdocvar{String} "b" (\coqdocvar{String} "1" \coqdocvar{rest}))\coqdoceol
+\coqdocindent{2.50em}
+\coqdockw{end}.\coqdoceol
+\coqdocnoindent
+\coqdockw{Definition} \coqdocvar{string\_of\_pos\_bin} (\coqdocvar{p} : \coqdocvar{positive}) : \coqdocvar{string}\coqdoceol
+\coqdocindent{1.00em}
+:= \coqdocvar{string\_of\_pos\_bin'} \coqdocvar{p} \coqdocvar{EmptyString}.\coqdoceol
+\coqdocemptyline
+\end{coqdoccode}
+We'd like to just use \coqdocvar{M.fresh\_binder\_name} \coqdocvar{f}, but this incurs
+    significant overhead (about 2X slower at 27 invocations) because
+    it has strings linear in the number of repeated invocations,
+    rather than logarithmic, so instead we handle binder names
+    manually. 
+
+ \coqdocvar{norm\_string} is useful for printing / debugging, but incurs a bit
+    of overhead. \begin{coqdoccode}
+\coqdocemptyline
+\coqdocnoindent
+\coqdockw{Definition} \coqdocvar{norm\_string} (\coqdocvar{v} : \coqdocvar{string}) : \coqdocvar{M} \coqdocvar{string} :=\coqdoceol
+\coqdocindent{1.00em}
+(\coqdocvar{mfix1} \coqdocvar{norm\_string} (\coqdocvar{s} : \coqdocvar{string}) : \coqdocvar{M} \coqdocvar{string} :=\coqdoceol
+\coqdocindent{2.50em}
+(\coqdocvar{mmatch} \coqdocvar{s} \coqdockw{with}\coqdoceol
+\coqdocindent{2.50em}
+\ensuremath{|} \coqdocvar{EmptyString} \ensuremath{\Rightarrow} \coqdocvar{M.ret} \coqdocvar{EmptyString}\coqdoceol
+\coqdocindent{2.50em}
+\ensuremath{|} [? \coqdocvar{a} \coqdocvar{b}] (\coqdocvar{String} \coqdocvar{a} \coqdocvar{b}) \ensuremath{\Rightarrow} \coqdocvar{b'} \ensuremath{\leftarrow} \coqdocvar{norm\_string} \coqdocvar{b}; \coqdocvar{M.ret} (\coqdocvar{String} \coqdocvar{a} \coqdocvar{b'})\coqdoceol
+\coqdocindent{3.00em}
+\coqdockw{end})) \coqdocvar{v}.\coqdoceol
+\coqdocnoindent
+\coqdockw{Definition} \coqdocvar{name\_binder} \{\coqdocvar{A} \coqdocvar{B}\} (\coqdocvar{f} : \coqdocvar{A} \ensuremath{\rightarrow} \coqdocvar{B}) (\coqdocvar{var\_idx} : \coqdocvar{positive}) : \coqdocvar{M} \coqdocvar{string}\coqdoceol
+\coqdocindent{1.00em}
+:= \coqdocvar{M.ret} (\coqdocvar{String} "x" (\coqdocvar{string\_of\_pos\_bin} \coqdocvar{var\_idx})).\coqdoceol
+\coqdocnoindent
+\coqdockw{Definition} \coqdocvar{find\_in\_ctx} \{\coqdocvar{var} : \coqdockw{Type}\} (\coqdocvar{term} : \coqdocvar{nat})\coqdoceol
+\coqdocindent{5.50em}
+(\coqdocvar{ctx} : @\coqdocvar{var\_context.var\_context} \coqdocvar{var})\coqdoceol
+\coqdocindent{1.00em}
+: \coqdocvar{M} (\coqdocvar{option} \coqdocvar{var})\coqdoceol
+\coqdocindent{1.00em}
+:= (\coqdocvar{mfix1} \coqdocvar{find\_in\_ctx} (\coqdocvar{ctx} : @\coqdocvar{var\_context.var\_context} \coqdocvar{var}) : \coqdocvar{M} (\coqdocvar{option} \coqdocvar{var}) :=\coqdoceol
+\coqdocindent{4.00em}
+(\coqdocvar{mmatch} \coqdocvar{ctx} \coqdockw{with}\coqdoceol
+\coqdocindent{4.00em}
+\ensuremath{|} [? \coqdocvar{v} \coqdocvar{xs}] (\coqdocvar{var\_context.cons} \coqdocvar{term} \coqdocvar{v} \coqdocvar{xs})\coqdoceol
+\coqdocindent{5.00em}
+=\coqdocvar{n}> \coqdocvar{M.ret} (\coqdocvar{Some} \coqdocvar{v})\coqdoceol
+\coqdocindent{4.00em}
+\ensuremath{|} [? \coqdocvar{x} \coqdocvar{v} \coqdocvar{xs}] (\coqdocvar{var\_context.cons} \coqdocvar{x} \coqdocvar{v} \coqdocvar{xs})\coqdoceol
+\coqdocindent{5.00em}
+=\coqdocvar{n}> \coqdocvar{find\_in\_ctx} \coqdocvar{xs}\coqdoceol
+\coqdocindent{4.00em}
+\ensuremath{|} \coqdocvar{\_} \ensuremath{\Rightarrow} \coqdocvar{M.ret} \coqdocvar{None}\coqdoceol
+\coqdocindent{4.50em}
+\coqdockw{end})) \coqdocvar{ctx}.\coqdoceol
+\coqdocnoindent
+\coqdockw{Definition} \coqdocvar{reify\_helper} \{\coqdocvar{var} : \coqdockw{Type}\} (\coqdocvar{term} : \coqdocvar{nat})\coqdoceol
+\coqdocindent{5.50em}
+(\coqdocvar{ctx} : @\coqdocvar{var\_context.var\_context} \coqdocvar{var})\coqdoceol
+\coqdocindent{1.00em}
+: \coqdocvar{M} (@\coqdocvar{expr} \coqdocvar{var})\coqdoceol
+\coqdocindent{1.00em}
+:= ((\coqdocvar{mfix3} \coqdocvar{reify\_helper} (\coqdocvar{term} : \coqdocvar{nat}) (\coqdocvar{var\_idx} : \coqdocvar{positive})\coqdoceol
+\coqdocindent{6.50em}
+(\coqdocvar{ctx} : @\coqdocvar{var\_context.var\_context} \coqdocvar{var})\coqdoceol
+\coqdocindent{3.50em}
+: \coqdocvar{M} (@\coqdocvar{expr} \coqdocvar{var}) :=\coqdoceol
+\coqdocindent{4.50em}
+\coqdocvar{lvar} \ensuremath{\leftarrow} \coqdocvar{find\_in\_ctx} \coqdocvar{term} \coqdocvar{ctx};\coqdoceol
+\coqdocindent{5.50em}
+\coqdockw{match} \coqdocvar{lvar} \coqdockw{with}\coqdoceol
+\coqdocindent{5.50em}
+\ensuremath{|} \coqdocvar{Some} \coqdocvar{v} \ensuremath{\Rightarrow} \coqdocvar{M.ret} (@\coqdocvar{Var} \coqdocvar{var} \coqdocvar{v})\coqdoceol
+\coqdocindent{5.50em}
+\ensuremath{|} \coqdocvar{None}\coqdoceol
+\coqdocindent{6.50em}
+\ensuremath{\Rightarrow}\coqdoceol
+\coqdocindent{6.50em}
+(\coqdocvar{mmatch} \coqdocvar{term} \coqdockw{with}\coqdoceol
+\coqdocindent{6.50em}
+\ensuremath{|} \coqdocvar{O}\coqdoceol
+\coqdocindent{7.50em}
+=\coqdocvar{n}> \coqdocvar{M.ret} (@\coqdocvar{NatO} \coqdocvar{var})\coqdoceol
+\coqdocindent{6.50em}
+\ensuremath{|} [? \coqdocvar{x}] (\coqdocvar{S} \coqdocvar{x})\coqdoceol
+\coqdocindent{7.50em}
+=\coqdocvar{n}> (\coqdocvar{rx} \ensuremath{\leftarrow} \coqdocvar{reify\_helper} \coqdocvar{x} \coqdocvar{var\_idx} \coqdocvar{ctx};\coqdoceol
+\coqdocindent{11.00em}
+\coqdocvar{M.ret} (@\coqdocvar{NatS} \coqdocvar{var} \coqdocvar{rx}))\coqdoceol
+\coqdocindent{6.50em}
+\ensuremath{|} [? \coqdocvar{x} \coqdocvar{y}] (\coqdocvar{x} \ensuremath{\times} \coqdocvar{y})\coqdoceol
+\coqdocindent{7.50em}
+=\coqdocvar{n}> (\coqdocvar{rx} \ensuremath{\leftarrow} \coqdocvar{reify\_helper} \coqdocvar{x} \coqdocvar{var\_idx} \coqdocvar{ctx};\coqdoceol
+\coqdocindent{11.00em}
+\coqdocvar{ry} \ensuremath{\leftarrow} \coqdocvar{reify\_helper} \coqdocvar{y} \coqdocvar{var\_idx} \coqdocvar{ctx};\coqdoceol
+\coqdocindent{11.00em}
+\coqdocvar{M.ret} (@\coqdocvar{NatMul} \coqdocvar{var} \coqdocvar{rx} \coqdocvar{ry}))\coqdoceol
+\coqdocindent{6.50em}
+\ensuremath{|} [? \coqdocvar{v} \coqdocvar{f}] (@\coqdocvar{Let\_In} \coqdocvar{nat} \coqdocvar{nat} \coqdocvar{v} \coqdocvar{f})\coqdoceol
+\coqdocindent{7.50em}
+=\coqdocvar{n}> (\coqdocvar{rv} \ensuremath{\leftarrow} \coqdocvar{reify\_helper} \coqdocvar{v} \coqdocvar{var\_idx} \coqdocvar{ctx};\coqdoceol
+\coqdocindent{10.00em}
+\coqdocvar{x} \ensuremath{\leftarrow} \coqdocvar{name\_binder} \coqdocvar{f} \coqdocvar{var\_idx};\coqdoceol
+\coqdocindent{10.00em}
+\coqdockw{let} \coqdocvar{vx} := \coqdocvar{String.append} "var\_" \coqdocvar{x} \coqdoctac{in}\coqdoceol
+\coqdocindent{10.00em}
+\coqdocvar{rf} \ensuremath{\leftarrow} (\coqdocvar{M.nu}\coqdoceol
+\coqdocindent{14.50em}
+\coqdocvar{x} \coqdocvar{mNone}\coqdoceol
+\coqdocindent{14.50em}
+(\coqdockw{fun} \coqdocvar{x} : \coqdocvar{nat}\coqdoceol
+\coqdocindent{15.00em}
+\ensuremath{\Rightarrow} \coqdocvar{M.nu}\coqdoceol
+\coqdocindent{17.50em}
+\coqdocvar{vx} \coqdocvar{mNone}\coqdoceol
+\coqdocindent{17.50em}
+(\coqdockw{fun} \coqdocvar{vx} : \coqdocvar{var}\coqdoceol
+\coqdocindent{18.00em}
+\ensuremath{\Rightarrow} \coqdockw{let} \coqdocvar{fx} := \coqdocvar{reduce} (\coqdocvar{RedWhd} [\coqdocvar{rl}:\coqdocvar{RedBeta}]) (\coqdocvar{f} \coqdocvar{x}) \coqdoctac{in}\coqdoceol
+\coqdocindent{19.50em}
+\coqdocvar{rf} \ensuremath{\leftarrow} (\coqdocvar{reify\_helper}\coqdoceol
+\coqdocindent{24.00em}
+\coqdocvar{fx}\coqdoceol
+\coqdocindent{24.00em}
+(\coqdocvar{Pos.succ} \coqdocvar{var\_idx})\coqdoceol
+\coqdocindent{24.00em}
+(\coqdocvar{var\_context.cons} \coqdocvar{x} \coqdocvar{vx} \coqdocvar{ctx}));\coqdoceol
+\coqdocindent{19.50em}
+\coqdocvar{M.abs\_fun} \coqdocvar{vx} \coqdocvar{rf})));\coqdoceol
+\coqdocindent{10.00em}
+\coqdocvar{M.ret} (@\coqdocvar{LetIn} \coqdocvar{var} \coqdocvar{rv} \coqdocvar{rf}))\coqdoceol
+\coqdocindent{7.00em}
+\coqdockw{end})\coqdoceol
+\coqdocindent{5.50em}
+\coqdockw{end}) \coqdocvar{term} 1\%\coqdocvar{positive} \coqdocvar{ctx}).\coqdoceol
+\coqdocnoindent
+\coqdockw{Definition} \coqdocvar{reify} (\coqdocvar{var} : \coqdockw{Type}) (\coqdocvar{term} : \coqdocvar{nat}) : \coqdocvar{M} (@\coqdocvar{expr} \coqdocvar{var})\coqdoceol
+\coqdocindent{1.00em}
+:= \coqdocvar{reify\_helper} \coqdocvar{term} \coqdocvar{var\_context.nil}.\coqdoceol
+\coqdocnoindent
+\coqdockw{Definition} \coqdocvar{Reify} (\coqdocvar{term} : \coqdocvar{nat}) : \coqdocvar{M} \coqdocvar{Expr}\coqdoceol
+\coqdocindent{1.00em}
+:= \symbol{92}\coqdocvar{nu} \coqdocvar{var}:\coqdockw{Type}, \coqdocvar{r} \ensuremath{\leftarrow} \coqdocvar{reify} \coqdocvar{var} \coqdocvar{term}; \coqdocvar{M.abs\_fun} \coqdocvar{var} \coqdocvar{r}.\coqdoceol
+\coqdocemptyline
+\coqdocnoindent
+\coqdockw{Ltac} \coqdocvar{Reify'} \coqdocvar{x} := \coqdockw{constr}:(\coqdockw{ltac}:(\coqdocvar{mrun} (@\coqdocvar{Reify} \coqdocvar{x}))).\coqdoceol
+\coqdocnoindent
+\coqdockw{Ltac} \coqdocvar{Reify} \coqdocvar{x} := \coqdocvar{Reify'} \coqdocvar{x}.\coqdoceol
+\coqdocnoindent
+\coqdockw{Ltac} \coqdocvar{do\_Reify\_rhs} \coqdocvar{\_} := \coqdocvar{do\_Reify\_rhs\_of} \coqdockw{ltac}:(\coqdocvar{Reify}) ().\coqdoceol
+\coqdocnoindent
+\coqdockw{Ltac} \coqdocvar{post\_Reify\_rhs} \coqdocvar{\_} := \coqdocvar{ReifyCommon.post\_Reify\_rhs} ().\coqdoceol
+\coqdocnoindent
+\coqdockw{Ltac} \coqdocvar{Reify\_rhs} \coqdocvar{\_} := \coqdocvar{Reify\_rhs\_of} \coqdockw{ltac}:(\coqdocvar{Reify}) ().\coqdoceol
+\end{coqdoccode}

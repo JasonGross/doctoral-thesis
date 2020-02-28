@@ -1,0 +1,94 @@
+\begin{coqdoccode}
+\end{coqdoccode}
+\section{Reification by canonical structures}
+
+\begin{coqdoccode}
+\coqdocnoindent
+\coqdockw{Require} \coqdockw{Import} \coqdocvar{Reify.NamedTimers}.\coqdoceol
+\coqdocnoindent
+\coqdockw{Require} \coqdockw{Import} \coqdocvar{Reify.Common}.\coqdoceol
+\coqdocnoindent
+\coqdockw{Require} \coqdockw{Export} \coqdocvar{Reify.ReifyCommon}.\coqdoceol
+\coqdocnoindent
+\coqdockw{Require} \coqdockw{Import} \coqdocvar{Reify.PHOAS}.\coqdoceol
+\coqdocemptyline
+\end{coqdoccode}
+Take care of initial locking of mul, letin, etc. \begin{coqdoccode}
+\coqdocemptyline
+\coqdocnoindent
+\coqdockw{Ltac} \coqdocvar{make\_pre\_Reify\_rhs} \coqdocvar{nat\_of} \coqdocvar{untag} \coqdocvar{do\_lock\_letin} \coqdocvar{do\_lock\_natmul} :=\coqdoceol
+\coqdocindent{1.00em}
+\coqdockw{let} \coqdocvar{RHS} := \coqdockw{lazymatch} \coqdockw{goal} \coqdockw{with} \ensuremath{\vdash} \coqdocvar{\_} = ?\coqdocvar{RHS} \ensuremath{\Rightarrow} \coqdocvar{RHS} \coqdockw{end} \coqdoctac{in}\coqdoceol
+\coqdocindent{1.00em}
+\coqdockw{let} \coqdocvar{e} := \coqdoctac{fresh} "e" \coqdoctac{in}\coqdoceol
+\coqdocindent{1.00em}
+\coqdockw{let} \coqdocvar{T} := \coqdoctac{fresh} \coqdoctac{in}\coqdoceol
+\coqdocindent{1.00em}
+\coqdoctac{evar} (\coqdocvar{T} : \coqdockw{Type});\coqdoceol
+\coqdocindent{1.00em}
+\coqdoctac{evar} (\coqdocvar{e} : \coqdocvar{T});\coqdoceol
+\coqdocindent{1.00em}
+\coqdoctac{subst} \coqdocvar{T};\coqdoceol
+\coqdocindent{1.00em}
+\coqdoctac{cut} (\coqdocvar{untag} (\coqdocvar{nat\_of} \coqdocvar{e}) = \coqdocvar{RHS});\coqdoceol
+\coqdocindent{1.00em}
+[ \coqdoctac{subst} \coqdocvar{e}\coqdoceol
+\coqdocindent{1.00em}
+\ensuremath{|} \coqdockw{lazymatch} \coqdocvar{do\_lock\_letin} \coqdockw{with}\coqdoceol
+\coqdocindent{2.00em}
+\ensuremath{|} \coqdocvar{true} \ensuremath{\Rightarrow} \coqdoctac{rewrite} ?\coqdocvar{lock\_Let\_In\_nat}\coqdoceol
+\coqdocindent{2.00em}
+\ensuremath{|} \coqdocvar{false} \ensuremath{\Rightarrow} \coqdoctac{idtac}\coqdoceol
+\coqdocindent{2.00em}
+\coqdockw{end};\coqdoceol
+\coqdocindent{2.00em}
+\coqdockw{lazymatch} \coqdocvar{do\_lock\_natmul} \coqdockw{with}\coqdoceol
+\coqdocindent{2.00em}
+\ensuremath{|} \coqdocvar{true} \ensuremath{\Rightarrow} \coqdoctac{rewrite} ?\coqdocvar{lock\_Nat\_mul}\coqdoceol
+\coqdocindent{2.00em}
+\ensuremath{|} \coqdocvar{false} \ensuremath{\Rightarrow} \coqdoctac{idtac}\coqdoceol
+\coqdocindent{2.00em}
+\coqdockw{end};\coqdoceol
+\coqdocindent{2.00em}
+\coqdoctac{cbv} [\coqdocvar{e}]; \coqdoctac{clear} \coqdocvar{e} ].\coqdoceol
+\coqdocemptyline
+\end{coqdoccode}
+N.B. we must thunk the constants so as to not focus the goal \begin{coqdoccode}
+\coqdocemptyline
+\coqdocnoindent
+\coqdockw{Ltac} \coqdocvar{make\_do\_Reify\_rhs} \coqdocvar{denote} \coqdocvar{reified\_nat\_of} \coqdocvar{postprocess} :=\coqdoceol
+\coqdocindent{1.00em}
+[ >\coqdoceol
+\coqdocindent{1.00em}
+\ensuremath{|} \coqdocvar{restart\_timer} "norm reif";\coqdoceol
+\coqdocindent{2.00em}
+\coqdocvar{time} "actual reif" \coqdoctac{refine} \coqdocvar{eq\_refl} ];\coqdoceol
+\coqdocindent{1.00em}
+\coqdockw{let} \coqdocvar{denote} := \coqdocvar{denote} () \coqdoctac{in}\coqdoceol
+\coqdocindent{1.00em}
+\coqdockw{let} \coqdocvar{reified\_nat\_of} := \coqdocvar{reified\_nat\_of} () \coqdoctac{in}\coqdoceol
+\coqdocindent{1.00em}
+\coqdockw{let} \coqdocvar{e} := \coqdockw{lazymatch} \coqdockw{goal} \coqdockw{with} \ensuremath{\vdash} ?\coqdocvar{untag} (?\coqdocvar{nat\_of} ?\coqdocvar{e}) = \coqdocvar{\_} \ensuremath{\rightarrow} ?\coqdocvar{LHS} = \coqdocvar{\_} \ensuremath{\Rightarrow} \coqdocvar{e} \coqdockw{end} \coqdoctac{in}\coqdoceol
+\coqdocindent{1.00em}
+\coqdockw{let} \coqdocvar{\_\_} := \coqdocvar{crun} \coqdockw{ltac}:(\coqdocvar{restart\_timer} "eval lazy") \coqdoctac{in}\coqdoceol
+\coqdocindent{1.00em}
+\coqdockw{let} \coqdocvar{e'} := (\coqdoctac{eval} \coqdoctac{lazy} \coqdoctac{in} (\coqdocvar{reified\_nat\_of} \coqdocvar{e})) \coqdoctac{in}\coqdoceol
+\coqdocindent{1.00em}
+\coqdockw{let} \coqdocvar{\_\_} := \coqdocvar{crun} \coqdockw{ltac}:(\coqdocvar{finish\_timing} ("Tactic call") "eval lazy") \coqdoctac{in}\coqdoceol
+\coqdocindent{1.00em}
+\coqdockw{let} \coqdocvar{\_\_} := \coqdocvar{crun} \coqdockw{ltac}:(\coqdocvar{restart\_timer} "postprocess") \coqdoctac{in}\coqdoceol
+\coqdocindent{1.00em}
+\coqdockw{let} \coqdocvar{e'} := \coqdocvar{postprocess} \coqdocvar{e'} \coqdoctac{in}\coqdoceol
+\coqdocindent{1.00em}
+\coqdockw{let} \coqdocvar{\_\_} := \coqdocvar{crun} \coqdockw{ltac}:(\coqdocvar{finish\_timing} ("Tactic call") "postprocess") \coqdoctac{in}\coqdoceol
+\coqdocindent{1.00em}
+\coqdockw{let} \coqdocvar{\_\_} := \coqdocvar{crun} \coqdockw{ltac}:(\coqdocvar{finish\_timing} ("Tactic call") "norm reif") \coqdoctac{in}\coqdoceol
+\coqdocindent{1.00em}
+\coqdocvar{time} "intros \_" \coqdoctac{intros} \coqdocvar{\_};\coqdoceol
+\coqdocindent{1.00em}
+\coqdocvar{time} "lazy beta iota" \coqdoctac{lazy} \coqdockw{beta} \coqdockw{iota};\coqdoceol
+\coqdocindent{1.00em}
+\coqdocvar{if\_doing\_trans} \coqdockw{ltac}:(\coqdockw{fun} \coqdocvar{\_} \ensuremath{\Rightarrow} \coqdocvar{time} "transitivity (Denote rv)"\coqdoceol
+\coqdocindent{18.50em}
+\coqdoctac{transitivity} (\coqdocvar{denote} \coqdocvar{e'})).\coqdoceol
+\end{coqdoccode}

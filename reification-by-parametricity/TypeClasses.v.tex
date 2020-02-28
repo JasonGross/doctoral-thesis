@@ -1,0 +1,77 @@
+\begin{coqdoccode}
+\end{coqdoccode}
+\section{Typeclass-based reification}
+
+\begin{coqdoccode}
+\coqdocnoindent
+\coqdockw{Require} \coqdockw{Import} \coqdocvar{Reify.ReifyCommon}.\coqdoceol
+\coqdocemptyline
+\coqdocnoindent
+\coqdockw{Local} \coqdockw{Generalizable} \coqdockw{Variables} \coqdocvar{x} \coqdocvar{y} \coqdocvar{rx} \coqdocvar{ry} \coqdocvar{f} \coqdocvar{rf}.\coqdoceol
+\coqdocnoindent
+\coqdockw{Section} \coqdocvar{with\_var}.\coqdoceol
+\coqdocindent{1.00em}
+\coqdockw{Context} \{\coqdocvar{var} : \coqdockw{Type}\}.\coqdoceol
+\coqdocemptyline
+\coqdocindent{1.00em}
+\coqdockw{Class} \coqdocvar{reify\_of} (\coqdocvar{term} : \coqdocvar{nat}) (\coqdocvar{rterm} : @\coqdocvar{expr} \coqdocvar{var}) := \{\}.\coqdoceol
+\coqdocindent{1.00em}
+\coqdockw{Global Instance} \coqdocvar{reify\_NatMul} `\{\coqdocvar{reify\_of} \coqdocvar{x} \coqdocvar{rx}, \coqdocvar{reify\_of} \coqdocvar{y} \coqdocvar{ry}\}\coqdoceol
+\coqdocindent{2.00em}
+: \coqdocvar{reify\_of} (\coqdocvar{x} \ensuremath{\times} \coqdocvar{y}) (\coqdocvar{rx} \ensuremath{\times} \coqdocvar{ry}).\coqdoceol
+\coqdocindent{1.00em}
+\coqdockw{Global Instance} \coqdocvar{reify\_LetIn} `\{\coqdocvar{reify\_of} \coqdocvar{x} \coqdocvar{rx}\}\coqdoceol
+\coqdocindent{4.50em}
+`\{\coqdockw{\ensuremath{\forall}} \coqdocvar{y} \coqdocvar{ry}, \coqdocvar{reify\_of} \coqdocvar{y} (\coqdocvar{Var} \coqdocvar{ry}) \ensuremath{\rightarrow} \coqdocvar{reify\_of} (\coqdocvar{f} \coqdocvar{y}) (\coqdocvar{rf} \coqdocvar{ry})\}\coqdoceol
+\coqdocindent{2.00em}
+: \coqdocvar{reify\_of} (\coqdocvar{dlet} \coqdocvar{y} := \coqdocvar{x} \coqdoctac{in} \coqdocvar{f} \coqdocvar{y}) (\coqdocvar{elet} \coqdocvar{ry} := \coqdocvar{rx} \coqdoctac{in} \coqdocvar{rf} \coqdocvar{ry}).\coqdoceol
+\coqdocindent{1.00em}
+\coqdockw{Global Instance} \coqdocvar{reify\_S} `\{\coqdocvar{reify\_of} \coqdocvar{x} \coqdocvar{rx}\}\coqdoceol
+\coqdocindent{2.00em}
+: \coqdocvar{reify\_of} (\coqdocvar{S} \coqdocvar{x}) (\coqdocvar{NatS} \coqdocvar{rx}).\coqdoceol
+\coqdocindent{1.00em}
+\coqdockw{Global Instance} \coqdocvar{reify\_O}\coqdoceol
+\coqdocindent{2.00em}
+: \coqdocvar{reify\_of} \coqdocvar{O} \coqdocvar{NatO}.\coqdoceol
+\coqdocnoindent
+\coqdockw{End} \coqdocvar{with\_var}.\coqdoceol
+\coqdocemptyline
+\end{coqdoccode}
+This must be commented out pre-8.6; it tells Coq to not try to
+    infer reifications if it doesn't fully know what term it's
+    reifying. \begin{coqdoccode}
+\coqdocemptyline
+\coqdocnoindent
+\coqdockw{Hint} \coqdocvar{Mode} \coqdocvar{reify\_of} - ! - : \coqdocvar{typeclass\_instances}.\coqdoceol
+\coqdocnoindent
+\coqdockw{Hint Opaque} \coqdocvar{Nat.mul} \coqdocvar{Let\_In} : \coqdocvar{typeclass\_instances}.\coqdoceol
+\coqdocemptyline
+\coqdocnoindent
+\coqdockw{Ltac} \coqdocvar{reify} \coqdocvar{var} \coqdocvar{x} :=\coqdoceol
+\coqdocindent{1.00em}
+\coqdockw{let} \coqdocvar{c} := \coqdockw{constr}:(\coqdocvar{\_} : @\coqdocvar{reify\_of} \coqdocvar{var} \coqdocvar{x} \coqdocvar{\_}) \coqdoctac{in}\coqdoceol
+\coqdocindent{1.00em}
+\coqdockw{lazymatch} \coqdockw{type} \coqdockw{of} \coqdocvar{c} \coqdockw{with}\coqdoceol
+\coqdocindent{1.00em}
+\ensuremath{|} \coqdocvar{reify\_of} \coqdocvar{\_} ?\coqdocvar{rx} \ensuremath{\Rightarrow} \coqdocvar{rx}\coqdoceol
+\coqdocindent{1.00em}
+\coqdockw{end}.\coqdoceol
+\coqdocemptyline
+\coqdocnoindent
+\coqdockw{Ltac} \coqdocvar{Reify} \coqdocvar{x} :=\coqdoceol
+\coqdocindent{1.00em}
+\coqdockw{let} \coqdocvar{c} := \coqdockw{constr}:(\coqdockw{fun} \coqdocvar{var} \ensuremath{\Rightarrow} (\coqdocvar{\_} : @\coqdocvar{reify\_of} \coqdocvar{var} \coqdocvar{x} \coqdocvar{\_})) \coqdoctac{in}\coqdoceol
+\coqdocindent{1.00em}
+\coqdockw{lazymatch} \coqdockw{type} \coqdockw{of} \coqdocvar{c} \coqdockw{with}\coqdoceol
+\coqdocindent{1.00em}
+\ensuremath{|} \coqdockw{\ensuremath{\forall}} \coqdocvar{var}, \coqdocvar{reify\_of} \coqdocvar{\_} (@?\coqdocvar{rx} \coqdocvar{var}) \ensuremath{\Rightarrow} \coqdocvar{rx}\coqdoceol
+\coqdocindent{1.00em}
+\coqdockw{end}.\coqdoceol
+\coqdocemptyline
+\coqdocnoindent
+\coqdockw{Ltac} \coqdocvar{do\_Reify\_rhs} \coqdocvar{\_} := \coqdocvar{do\_Reify\_rhs\_of} \coqdocvar{Reify} ().\coqdoceol
+\coqdocnoindent
+\coqdockw{Ltac} \coqdocvar{post\_Reify\_rhs} \coqdocvar{\_} := \coqdocvar{ReifyCommon.post\_Reify\_rhs} ().\coqdoceol
+\coqdocnoindent
+\coqdockw{Ltac} \coqdocvar{Reify\_rhs} \coqdocvar{\_} := \coqdocvar{Reify\_rhs\_of} \coqdocvar{Reify} ().\coqdoceol
+\end{coqdoccode}

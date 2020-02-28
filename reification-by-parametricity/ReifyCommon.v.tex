@@ -1,0 +1,214 @@
+\begin{coqdoccode}
+\end{coqdoccode}
+\section{Factored code common to many variants of reification}
+
+\begin{coqdoccode}
+\coqdocnoindent
+\coqdockw{Require} \coqdockw{Import} \coqdocvar{Reify.NamedTimers}.\coqdoceol
+\coqdocnoindent
+\coqdockw{Require} \coqdockw{Export} \coqdocvar{Reify.Common}.\coqdoceol
+\coqdocnoindent
+\coqdockw{Require} \coqdockw{Export} \coqdocvar{Reify.PHOAS}.\coqdoceol
+\coqdocemptyline
+\coqdocnoindent
+\coqdockw{Notation} \coqdocvar{do\_transitivity} := \coqdocvar{false} (\coqdocvar{only} \coqdocvar{parsing}).\coqdoceol
+\coqdocemptyline
+\end{coqdoccode}
+We provide a tactic to run a tactic in a constr context. \begin{coqdoccode}
+\coqdocemptyline
+\coqdocnoindent
+\coqdockw{Ltac} \coqdocvar{crun} \coqdocvar{tac} :=\coqdoceol
+\coqdocindent{1.00em}
+\coqdockw{match} \coqdockw{goal} \coqdockw{with}\coqdoceol
+\coqdocindent{1.00em}
+\ensuremath{|} \coqdocvar{\_} \ensuremath{\Rightarrow} \coqdocvar{tac}\coqdoceol
+\coqdocindent{1.00em}
+\coqdockw{end}.\coqdoceol
+\coqdocemptyline
+\end{coqdoccode}
+Note: If you want to preserve variable names on reification, there
+    are many hoops to jump through. We write a \coqdocvar{refresh} tactic which
+    permits preserving binder names at a nontrivial performance
+    overhead. 
+
+ c.f. \url{https://github.com/coq/coq/issues/5448},
+         \url{https://github.com/coq/coq/issues/6315},
+         \url{https://github.com/coq/coq/issues/6559} \begin{coqdoccode}
+\coqdocemptyline
+\coqdocnoindent
+\coqdockw{Ltac} \coqdocvar{require\_same\_var} \coqdocvar{n1} \coqdocvar{n2} :=\coqdoceol
+\coqdocindent{1.00em}
+\coqdockw{let} \coqdocvar{c1} := \coqdockw{constr}:(\coqdockw{fun} \coqdocvar{n1} \coqdocvar{n2} : \coqdockw{Set} \ensuremath{\Rightarrow} \coqdockw{ltac}:(\coqdoctac{exact} \coqdocvar{n1})) \coqdoctac{in}\coqdoceol
+\coqdocindent{1.00em}
+\coqdockw{let} \coqdocvar{c2} := \coqdockw{constr}:(\coqdockw{fun} \coqdocvar{n1} \coqdocvar{n2} : \coqdockw{Set} \ensuremath{\Rightarrow} \coqdockw{ltac}:(\coqdoctac{exact} \coqdocvar{n2})) \coqdoctac{in}\coqdoceol
+\coqdocindent{1.00em}
+\coqdoctac{first} [ \coqdocvar{constr\_eq} \coqdocvar{c1} \coqdocvar{c2}\coqdoceol
+\coqdocindent{4.00em}
+\ensuremath{|} \coqdoctac{fail} 1 "Not the same var:" \coqdocvar{n1} "and" \coqdocvar{n2} "(via constr\_eq" \coqdocvar{c1} \coqdocvar{c2} ")" ].\coqdoceol
+\coqdocnoindent
+\coqdockw{Ltac} \coqdocvar{is\_same\_var} \coqdocvar{n1} \coqdocvar{n2} :=\coqdoceol
+\coqdocindent{1.00em}
+\coqdockw{match} \coqdockw{goal} \coqdockw{with}\coqdoceol
+\coqdocindent{1.00em}
+\ensuremath{|} \coqdocvar{\_} \ensuremath{\Rightarrow} \coqdockw{let} \coqdocvar{\_\_} := \coqdockw{match} \coqdockw{goal} \coqdockw{with} \coqdocvar{\_} \ensuremath{\Rightarrow} \coqdocvar{require\_same\_var} \coqdocvar{n1} \coqdocvar{n2} \coqdockw{end} \coqdoctac{in}\coqdoceol
+\coqdocindent{4.50em}
+\coqdocvar{true}\coqdoceol
+\coqdocindent{1.00em}
+\ensuremath{|} \coqdocvar{\_} \ensuremath{\Rightarrow} \coqdocvar{false}\coqdoceol
+\coqdocindent{1.00em}
+\coqdockw{end}.\coqdoceol
+\coqdocnoindent
+\coqdockw{Ltac} \coqdocvar{is\_underscore} \coqdocvar{v} :=\coqdoceol
+\coqdocindent{1.00em}
+\coqdockw{let} \coqdocvar{v'} := \coqdoctac{fresh} \coqdocvar{v} \coqdoctac{in}\coqdoceol
+\coqdocindent{1.00em}
+\coqdockw{let} \coqdocvar{v'} := \coqdoctac{fresh} \coqdocvar{v'} \coqdoctac{in}\coqdoceol
+\coqdocindent{1.00em}
+\coqdocvar{is\_same\_var} \coqdocvar{v} \coqdocvar{v'}.\coqdoceol
+\coqdocemptyline
+\end{coqdoccode}
+Note that \coqdocvar{fresh\_tac} must be \coqdockw{ltac}:(\coqdockw{fun} \coqdocvar{n} \ensuremath{\Rightarrow} \coqdoctac{fresh} \coqdocvar{n});
+    c.f. \url{https://github.com/coq/coq/issues/6559} \begin{coqdoccode}
+\coqdocemptyline
+\coqdocnoindent
+\coqdockw{Ltac} \coqdocvar{refresh} \coqdocvar{n} \coqdocvar{fresh\_tac} :=\coqdoceol
+\coqdocindent{1.00em}
+\coqdockw{let} \coqdocvar{n\_is\_underscore} := \coqdocvar{is\_underscore} \coqdocvar{n} \coqdoctac{in}\coqdoceol
+\coqdocindent{1.00em}
+\coqdockw{let} \coqdocvar{n'} := \coqdockw{lazymatch} \coqdocvar{n\_is\_underscore} \coqdockw{with}\coqdoceol
+\coqdocindent{6.00em}
+\ensuremath{|} \coqdocvar{true} \ensuremath{\Rightarrow} \coqdoctac{fresh}\coqdoceol
+\coqdocindent{6.00em}
+\ensuremath{|} \coqdocvar{false} \ensuremath{\Rightarrow} \coqdocvar{fresh\_tac} \coqdocvar{n}\coqdoceol
+\coqdocindent{6.00em}
+\coqdockw{end} \coqdoctac{in}\coqdoceol
+\coqdocindent{1.00em}
+\coqdockw{let} \coqdocvar{n'} := \coqdocvar{fresh\_tac} \coqdocvar{n'} \coqdoctac{in}\coqdoceol
+\coqdocindent{1.00em}
+\coqdocvar{n'}.\coqdoceol
+\coqdocemptyline
+\end{coqdoccode}
+However, this comes at a significant cost in speed, so we do not
+    try to preserve variable names, and this tactic is unused in our
+    benchmark. \begin{coqdoccode}
+\coqdocemptyline
+\coqdocnoindent
+\coqdockw{Ltac} \coqdocvar{Reify\_of} \coqdocvar{reify} \coqdocvar{x} :=\coqdoceol
+\coqdocindent{1.00em}
+\coqdockw{constr}:(\coqdockw{fun} \coqdocvar{var} : \coqdockw{Type} \ensuremath{\Rightarrow} \coqdockw{ltac}:(\coqdockw{let} \coqdocvar{v} := \coqdocvar{reify} \coqdocvar{var} \coqdocvar{x} \coqdoctac{in} \coqdoctac{exact} \coqdocvar{v})).\coqdoceol
+\coqdocemptyline
+\coqdocnoindent
+\coqdockw{Ltac} \coqdocvar{if\_doing\_trans} \coqdocvar{tac} :=\coqdoceol
+\coqdocindent{1.00em}
+\coqdockw{let} \coqdocvar{do\_trans} := \coqdockw{constr}:(\coqdocvar{do\_transitivity}) \coqdoctac{in}\coqdoceol
+\coqdocindent{1.00em}
+\coqdockw{lazymatch} \coqdocvar{do\_trans} \coqdockw{with}\coqdoceol
+\coqdocindent{1.00em}
+\ensuremath{|} \coqdocvar{true} \ensuremath{\Rightarrow} \coqdocvar{tac} ()\coqdoceol
+\coqdocindent{1.00em}
+\ensuremath{|} \coqdocvar{false} \ensuremath{\Rightarrow} \coqdoctac{idtac}\coqdoceol
+\coqdocindent{1.00em}
+\coqdockw{end}.\coqdoceol
+\coqdocemptyline
+\end{coqdoccode}
+We ask for dummy arguments for most things, because it is good
+    practice to indicate that this tactic should not be run at the
+    call-site (when it's passed to another tactic), but at the
+    use-site. \begin{coqdoccode}
+\coqdocemptyline
+\coqdocnoindent
+\coqdockw{Ltac} \coqdocvar{do\_Reify\_rhs\_of\_cps\_with\_denote} \coqdocvar{Reify\_cps} \coqdocvar{Denote} \coqdocvar{\_} :=\coqdoceol
+\coqdocindent{1.00em}
+\coqdockw{let} \coqdocvar{v} := \coqdockw{lazymatch} \coqdockw{goal} \coqdockw{with} \ensuremath{\vdash} ?\coqdocvar{LHS} = ?\coqdocvar{v} \ensuremath{\Rightarrow} \coqdocvar{v} \coqdockw{end} \coqdoctac{in}\coqdoceol
+\coqdocindent{1.00em}
+\coqdockw{let} \coqdocvar{\_\_} := \coqdocvar{crun} \coqdockw{ltac}:(\coqdocvar{restart\_timer} "norm reif") \coqdoctac{in}\coqdoceol
+\coqdocindent{1.00em}
+\coqdockw{let} \coqdocvar{\_\_} := \coqdocvar{crun} \coqdockw{ltac}:(\coqdocvar{restart\_timer} "actual reif") \coqdoctac{in}\coqdoceol
+\coqdocindent{1.00em}
+\coqdocvar{Reify\_cps} \coqdocvar{v} \coqdockw{ltac}:(\coqdoceol
+\coqdocindent{2.00em}
+\coqdockw{fun} \coqdocvar{rv}\coqdoceol
+\coqdocindent{2.00em}
+\ensuremath{\Rightarrow} \coqdockw{let} \coqdocvar{\_\_} := \coqdocvar{crun} \coqdockw{ltac}:(\coqdocvar{finish\_timing} ("Tactic call") "actual reif") \coqdoctac{in}\coqdoceol
+\coqdocindent{3.50em}
+\coqdockw{let} \coqdocvar{\_\_} := \coqdocvar{crun} \coqdockw{ltac}:(\coqdocvar{restart\_timer} "eval lazy") \coqdoctac{in}\coqdoceol
+\coqdocindent{3.50em}
+\coqdockw{let} \coqdocvar{rv} := (\coqdoctac{eval} \coqdoctac{lazy} \coqdoctac{in} \coqdocvar{rv}) \coqdoctac{in}\coqdoceol
+\coqdocindent{3.50em}
+\coqdockw{let} \coqdocvar{\_\_} := \coqdocvar{crun} \coqdockw{ltac}:(\coqdocvar{finish\_timing} ("Tactic call") "eval lazy") \coqdoctac{in}\coqdoceol
+\coqdocindent{3.50em}
+\coqdockw{let} \coqdocvar{\_\_} := \coqdocvar{crun} \coqdockw{ltac}:(\coqdocvar{finish\_timing} ("Tactic call") "norm reif") \coqdoctac{in}\coqdoceol
+\coqdocindent{3.50em}
+\coqdocvar{time} "lazy beta iota" \coqdoctac{lazy} \coqdockw{beta} \coqdockw{iota};\coqdoceol
+\coqdocindent{3.50em}
+\coqdocvar{if\_doing\_trans}\coqdoceol
+\coqdocindent{4.50em}
+\coqdockw{ltac}:(\coqdockw{fun} \coqdocvar{\_}\coqdoceol
+\coqdocindent{7.50em}
+\ensuremath{\Rightarrow} \coqdocvar{time} "transitivity (Denote rv)"\coqdoceol
+\coqdocindent{11.50em}
+\coqdoctac{transitivity} (\coqdocvar{Denote} \coqdocvar{rv}))).\coqdoceol
+\coqdocnoindent
+\coqdockw{Ltac} \coqdocvar{do\_Reify\_rhs\_of\_cps} \coqdocvar{Reify\_cps} \coqdocvar{\_} :=\coqdoceol
+\coqdocindent{1.00em}
+\coqdocvar{do\_Reify\_rhs\_of\_cps\_with\_denote} \coqdocvar{Reify\_cps} \coqdocvar{Denote} ().\coqdoceol
+\coqdocnoindent
+\coqdockw{Ltac} \coqdocvar{do\_Reify\_rhs\_of\_with\_denote} \coqdocvar{Reify} \coqdocvar{Denote} \coqdocvar{\_} :=\coqdoceol
+\coqdocindent{1.00em}
+\coqdocvar{do\_Reify\_rhs\_of\_cps\_with\_denote}\coqdoceol
+\coqdocindent{2.00em}
+\coqdockw{ltac}:(\coqdockw{fun} \coqdocvar{v} \coqdocvar{tac} \ensuremath{\Rightarrow} \coqdockw{let} \coqdocvar{rv} := \coqdocvar{Reify} \coqdocvar{v} \coqdoctac{in} \coqdocvar{tac} \coqdocvar{rv}) \coqdocvar{Denote} ().\coqdoceol
+\coqdocnoindent
+\coqdockw{Ltac} \coqdocvar{do\_Reify\_rhs\_of} \coqdocvar{Reify} \coqdocvar{\_} :=\coqdoceol
+\coqdocindent{1.00em}
+\coqdocvar{do\_Reify\_rhs\_of\_with\_denote} \coqdocvar{Reify} \coqdocvar{Denote} ().\coqdoceol
+\coqdocnoindent
+\coqdockw{Ltac} \coqdocvar{post\_Reify\_rhs} \coqdocvar{\_} :=\coqdoceol
+\coqdocindent{1.00em}
+[ > ..\coqdoceol
+\coqdocindent{1.00em}
+\ensuremath{|} \coqdocvar{if\_doing\_trans} \coqdockw{ltac}:(\coqdockw{fun} \coqdocvar{\_} \ensuremath{\Rightarrow} \coqdoctac{lazy} [\coqdocvar{Denote} \coqdocvar{denote}]; \coqdoctac{reflexivity}) ].\coqdoceol
+\coqdocnoindent
+\coqdockw{Ltac} \coqdocvar{Reify\_rhs\_of\_cps} \coqdocvar{Reify\_cps} \coqdocvar{\_} :=\coqdoceol
+\coqdocindent{1.00em}
+\coqdocvar{do\_Reify\_rhs\_of\_cps} \coqdocvar{Reify\_cps} (); \coqdocvar{post\_Reify\_rhs} ().\coqdoceol
+\coqdocnoindent
+\coqdockw{Ltac} \coqdocvar{Reify\_rhs\_of} \coqdocvar{Reify} \coqdocvar{\_} :=\coqdoceol
+\coqdocindent{1.00em}
+\coqdocvar{do\_Reify\_rhs\_of} \coqdocvar{Reify} (); \coqdocvar{post\_Reify\_rhs} ().\coqdoceol
+\coqdocemptyline
+\coqdocnoindent
+\coqdockw{Ltac} \coqdocvar{error\_cant\_elim\_deps} \coqdocvar{f} :=\coqdoceol
+\coqdocindent{1.00em}
+\coqdockw{let} \coqdocvar{\_\_} := \coqdockw{match} \coqdockw{goal} \coqdockw{with}\coqdoceol
+\coqdocindent{6.00em}
+\ensuremath{|} \coqdocvar{\_} \ensuremath{\Rightarrow} \coqdoctac{idtac} "Failed to eliminate functional dependencies in" \coqdocvar{f}\coqdoceol
+\coqdocindent{6.00em}
+\coqdockw{end} \coqdoctac{in}\coqdoceol
+\coqdocindent{1.00em}
+\coqdockw{constr}:(\coqdocvar{I} : \coqdocvar{I}).\coqdoceol
+\coqdocemptyline
+\coqdocnoindent
+\coqdockw{Ltac} \coqdocvar{error\_bad\_function} \coqdocvar{f} :=\coqdoceol
+\coqdocindent{1.00em}
+\coqdockw{let} \coqdocvar{\_\_} := \coqdockw{match} \coqdockw{goal} \coqdockw{with}\coqdoceol
+\coqdocindent{6.00em}
+\ensuremath{|} \coqdocvar{\_} \ensuremath{\Rightarrow} \coqdoctac{idtac} "Bad let-in function" \coqdocvar{f}\coqdoceol
+\coqdocindent{6.00em}
+\coqdockw{end} \coqdoctac{in}\coqdoceol
+\coqdocindent{1.00em}
+\coqdockw{constr}:(\coqdocvar{I} : \coqdocvar{I}).\coqdoceol
+\coqdocemptyline
+\coqdocnoindent
+\coqdockw{Ltac} \coqdocvar{error\_bad\_term} \coqdocvar{term} :=\coqdoceol
+\coqdocindent{1.00em}
+\coqdockw{let} \coqdocvar{\_\_} := \coqdockw{match} \coqdockw{goal} \coqdockw{with}\coqdoceol
+\coqdocindent{6.00em}
+\ensuremath{|} \coqdocvar{\_} \ensuremath{\Rightarrow} \coqdoctac{idtac} "Unrecognized term:" \coqdocvar{term}\coqdoceol
+\coqdocindent{6.00em}
+\coqdockw{end} \coqdoctac{in}\coqdoceol
+\coqdocindent{1.00em}
+\coqdockw{let} \coqdocvar{ret} := \coqdockw{constr}:(\coqdocvar{term} : \coqdocvar{I}) \coqdoctac{in}\coqdoceol
+\coqdocindent{1.00em}
+\coqdockw{constr}:(\coqdocvar{I} : \coqdocvar{I}).\coqdoceol
+\end{coqdoccode}

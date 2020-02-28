@@ -1,0 +1,58 @@
+\begin{coqdoccode}
+\end{coqdoccode}
+\section{Utility functions for PHOAS}
+
+\begin{coqdoccode}
+\coqdocnoindent
+\coqdockw{Require} \coqdockw{Import} \coqdocvar{Reify.Common}.\coqdoceol
+\coqdocnoindent
+\coqdockw{Require} \coqdockw{Import} \coqdocvar{Reify.PHOAS}.\coqdoceol
+\coqdocemptyline
+\coqdocnoindent
+\coqdockw{Module} \coqdocvar{PHOAS}.\coqdoceol
+\coqdocindent{1.00em}
+\coqdockw{Export} \coqdocvar{Reify.PHOAS}.\coqdoceol
+\coqdocemptyline
+\coqdocindent{1.00em}
+\coqdockw{Fixpoint} \coqdocvar{beq\_helper} (\coqdocvar{e1} \coqdocvar{e2} : @\coqdocvar{expr} \coqdocvar{nat}) (\coqdocvar{base} : \coqdocvar{nat}) : \coqdocvar{bool}\coqdoceol
+\coqdocindent{2.00em}
+:= \coqdockw{match} \coqdocvar{e1}, \coqdocvar{e2} \coqdockw{with}\coqdoceol
+\coqdocindent{3.50em}
+\ensuremath{|} \coqdocvar{LetIn} \coqdocvar{v1} \coqdocvar{f1}, \coqdocvar{LetIn} \coqdocvar{v2} \coqdocvar{f2}\coqdoceol
+\coqdocindent{4.50em}
+\ensuremath{\Rightarrow} \coqdockw{if} \coqdocvar{beq\_helper} \coqdocvar{v1} \coqdocvar{v2} \coqdocvar{base}\coqdoceol
+\coqdocindent{6.00em}
+\coqdockw{then} \coqdocvar{beq\_helper} (\coqdocvar{f1} \coqdocvar{base}) (\coqdocvar{f2} \coqdocvar{base}) (\coqdocvar{S} \coqdocvar{base})\coqdoceol
+\coqdocindent{6.00em}
+\coqdockw{else} \coqdocvar{false}\coqdoceol
+\coqdocindent{3.50em}
+\ensuremath{|} \coqdocvar{Var} \coqdocvar{v1}, \coqdocvar{Var} \coqdocvar{v2} \ensuremath{\Rightarrow} \coqdocvar{Nat.eqb} \coqdocvar{v1} \coqdocvar{v2}\coqdoceol
+\coqdocindent{3.50em}
+\ensuremath{|} \coqdocvar{NatO}, \coqdocvar{NatO} \ensuremath{\Rightarrow} \coqdocvar{true}\coqdoceol
+\coqdocindent{3.50em}
+\ensuremath{|} \coqdocvar{NatS} \coqdocvar{x}, \coqdocvar{NatS} \coqdocvar{y} \ensuremath{\Rightarrow} \coqdocvar{beq\_helper} \coqdocvar{x} \coqdocvar{y} \coqdocvar{base}\coqdoceol
+\coqdocindent{3.50em}
+\ensuremath{|} \coqdocvar{NatMul} \coqdocvar{x1} \coqdocvar{y1}, \coqdocvar{NatMul} \coqdocvar{x2} \coqdocvar{y2}\coqdoceol
+\coqdocindent{4.50em}
+\ensuremath{\Rightarrow} \coqdocvar{andb} (\coqdocvar{beq\_helper} \coqdocvar{x1} \coqdocvar{x2} \coqdocvar{base}) (\coqdocvar{beq\_helper} \coqdocvar{y1} \coqdocvar{y2} \coqdocvar{base})\coqdoceol
+\coqdocindent{3.50em}
+\ensuremath{|} \coqdocvar{LetIn} \coqdocvar{\_} \coqdocvar{\_}, \coqdocvar{\_}\coqdoceol
+\coqdocindent{3.50em}
+\ensuremath{|} \coqdocvar{Var} \coqdocvar{\_}, \coqdocvar{\_}\coqdoceol
+\coqdocindent{3.50em}
+\ensuremath{|} \coqdocvar{NatO}, \coqdocvar{\_}\coqdoceol
+\coqdocindent{3.50em}
+\ensuremath{|} \coqdocvar{NatS} \coqdocvar{\_}, \coqdocvar{\_}\coqdoceol
+\coqdocindent{3.50em}
+\ensuremath{|} \coqdocvar{NatMul} \coqdocvar{\_} \coqdocvar{\_}, \coqdocvar{\_}\coqdoceol
+\coqdocindent{4.50em}
+\ensuremath{\Rightarrow} \coqdocvar{false}\coqdoceol
+\coqdocindent{3.50em}
+\coqdockw{end}.\coqdoceol
+\coqdocindent{1.00em}
+\coqdockw{Definition} \coqdocvar{beq} (\coqdocvar{e1} \coqdocvar{e2} : @\coqdocvar{expr} \coqdocvar{nat}) : \coqdocvar{bool} := \coqdocvar{beq\_helper} \coqdocvar{e1} \coqdocvar{e2} \coqdocvar{O}.\coqdoceol
+\coqdocindent{1.00em}
+\coqdockw{Definition} \coqdocvar{Beq} (\coqdocvar{e1} \coqdocvar{e2} : \coqdocvar{Expr}) : \coqdocvar{bool} := \coqdocvar{beq} (\coqdocvar{e1} \coqdocvar{\_}) (\coqdocvar{e2} \coqdocvar{\_}).\coqdoceol
+\coqdocnoindent
+\coqdockw{End} \coqdocvar{PHOAS}.\coqdoceol
+\end{coqdoccode}

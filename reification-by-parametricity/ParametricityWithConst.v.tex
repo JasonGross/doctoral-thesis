@@ -1,0 +1,89 @@
+\begin{coqdoccode}
+\end{coqdoccode}
+\section{Reification by parametricity, with a routine for handling constants recursively}
+
+\begin{coqdoccode}
+\coqdocnoindent
+\coqdockw{Require} \coqdockw{Import} \coqdocvar{Reify.ReifyCommon}.\coqdoceol
+\coqdocemptyline
+\end{coqdoccode}
+This file contains the extra code to handle constants recursively.
+    We advise against using this code, and provide it as a proof of
+    concept only. 
+
+ expects:
+
+\begin{itemize}
+\item  \coqdocvar{var} - the PHOAS var type
+
+\item  \coqdocvar{find\_const} \coqdocvar{term} \coqdocvar{found\_tac} \coqdocvar{not\_found\_tac}, a tactical which
+      looks for constants in \coqdocvar{term}, invokes \coqdocvar{found\_tac} with the
+      constant if it finds one, and invokes \coqdocvar{not\_found\_tac} () if it
+      finds none.
+
+\item  \coqdocvar{plug\_const} \coqdocvar{var} \coqdocvar{term} \coqdocvar{const}, a tactic which takes a term and a
+      constant, and plugs in the reified version of \coqdocvar{const} 
+\end{itemize}
+\begin{coqdoccode}
+\coqdocemptyline
+\coqdocnoindent
+\coqdockw{Ltac} \coqdocvar{reify\_with\_consts} \coqdocvar{var} \coqdocvar{find\_const} \coqdocvar{plug\_const} \coqdocvar{term} :=\coqdoceol
+\coqdocindent{1.00em}
+\coqdocvar{find\_const}\coqdoceol
+\coqdocindent{2.00em}
+\coqdocvar{term}\coqdoceol
+\coqdocindent{2.00em}
+\coqdockw{ltac}:(\coqdockw{fun} \coqdocvar{c}\coqdoceol
+\coqdocindent{5.00em}
+\ensuremath{\Rightarrow} \coqdockw{let} \coqdocvar{rx} := \coqdockw{lazymatch} (\coqdoctac{eval} \coqdoctac{pattern} \coqdocvar{c} \coqdoctac{in} \coqdocvar{term}) \coqdockw{with}\coqdoceol
+\coqdocindent{11.50em}
+\ensuremath{|} ?\coqdocvar{term} \coqdocvar{\_} \ensuremath{\Rightarrow} \coqdocvar{term}\coqdoceol
+\coqdocindent{11.50em}
+\coqdockw{end} \coqdoctac{in}\coqdoceol
+\coqdocindent{6.50em}
+\coqdockw{let} \coqdocvar{rx} := \coqdocvar{reify\_with\_consts} \coqdocvar{find\_const} \coqdocvar{plug\_const} \coqdocvar{term} \coqdoctac{in}\coqdoceol
+\coqdocindent{6.50em}
+\coqdocvar{plug\_const} \coqdocvar{var} \coqdocvar{rx} \coqdocvar{c})\coqdoceol
+\coqdocindent{2.00em}
+\coqdockw{ltac}:(\coqdockw{fun} \coqdocvar{\_}\coqdoceol
+\coqdocindent{5.00em}
+\ensuremath{\Rightarrow} \coqdockw{let} \coqdocvar{rx} :=\coqdoceol
+\coqdocindent{8.50em}
+\coqdockw{lazymatch}\coqdoceol
+\coqdocindent{9.50em}
+(\coqdoctac{eval} \coqdoctac{pattern} \coqdocvar{nat}, \coqdocvar{Nat.mul}, (@\coqdocvar{Let\_In} \coqdocvar{nat} (\coqdockw{fun} \coqdocvar{\_} \ensuremath{\Rightarrow} \coqdocvar{nat})), \coqdocvar{O}, \coqdocvar{S}\coqdoceol
+\coqdocindent{10.50em}
+\coqdoctac{in} \coqdocvar{term})\coqdoceol
+\coqdocindent{8.50em}
+\coqdockw{with}\coqdoceol
+\coqdocindent{8.50em}
+\ensuremath{|} ?\coqdocvar{rx} \coqdocvar{\_} \coqdocvar{\_} \coqdocvar{\_} \coqdocvar{\_} \coqdocvar{\_} \ensuremath{\Rightarrow} \coqdocvar{rx}\coqdoceol
+\coqdocindent{8.50em}
+\coqdockw{end} \coqdoctac{in}\coqdoceol
+\coqdocindent{6.50em}
+\coqdockw{let} \coqdocvar{rx} := \coqdockw{lazymatch} \coqdocvar{rx} \coqdockw{with}\coqdoceol
+\coqdocindent{11.50em}
+\ensuremath{|} \coqdockw{fun} \coqdocvar{N} : \coqdockw{Set} \ensuremath{\Rightarrow} ?\coqdocvar{rx} \ensuremath{\Rightarrow} \coqdockw{constr}:(\coqdockw{fun} \coqdocvar{N} : \coqdockw{Type} \ensuremath{\Rightarrow} \coqdocvar{rx})\coqdoceol
+\coqdocindent{11.50em}
+\coqdockw{end} \coqdoctac{in}\coqdoceol
+\coqdocindent{6.50em}
+\coqdockw{let} \coqdocvar{\_\_} := \coqdockw{type} \coqdockw{of} \coqdocvar{rx} \coqdoctac{in} \coqdoceol
+\coqdocindent{6.50em}
+\coqdockw{constr}:(\coqdocvar{rx} (@\coqdocvar{expr} \coqdocvar{var}) (@\coqdocvar{NatMul} \coqdocvar{var})\coqdoceol
+\coqdocindent{12.00em}
+(\coqdockw{fun} \coqdocvar{x'} \coqdocvar{f'}\coqdoceol
+\coqdocindent{12.50em}
+\ensuremath{\Rightarrow} @\coqdocvar{LetIn} \coqdocvar{var} \coqdocvar{x'}\coqdoceol
+\coqdocindent{17.50em}
+(\coqdockw{fun} \coqdocvar{v} \ensuremath{\Rightarrow} \coqdocvar{f'} (@\coqdocvar{Var} \coqdocvar{var} \coqdocvar{v})))\coqdoceol
+\coqdocindent{12.00em}
+(@\coqdocvar{NatO} \coqdocvar{var}) (@\coqdocvar{NatS} \coqdocvar{var}))).\coqdoceol
+\coqdocnoindent
+\coqdockw{Ltac} \coqdocvar{Reify\_with\_consts} \coqdocvar{find\_const} \coqdocvar{plug\_const} \coqdocvar{term} :=\coqdoceol
+\coqdocindent{1.00em}
+\coqdockw{constr}:(\coqdockw{fun} \coqdocvar{var} : \coqdockw{Type}\coqdoceol
+\coqdocindent{5.00em}
+\ensuremath{\Rightarrow} \coqdockw{ltac}:(\coqdockw{let} \coqdocvar{rx} := \coqdocvar{reify\_with\_consts} \coqdocvar{var} \coqdocvar{find\_const} \coqdocvar{plug\_const} \coqdocvar{term} \coqdoctac{in}\coqdoceol
+\coqdocindent{9.50em}
+\coqdoctac{exact} \coqdocvar{rx})).\coqdoceol
+\end{coqdoccode}

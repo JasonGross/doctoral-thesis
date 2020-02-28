@@ -1,0 +1,768 @@
+\begin{coqdoccode}
+\end{coqdoccode}
+\section{Reification by parametricity: More Examples}
+
+\begin{coqdoccode}
+\coqdocnoindent
+\coqdockw{Require} \coqdockw{Import} \coqdocvar{Coq.Lists.List}.\coqdoceol
+\coqdocnoindent
+\coqdockw{Reserved Notation} "'λ' x .. y , t"\coqdoceol
+\coqdocindent{4.50em}
+(\coqdoctac{at} \coqdockw{level} 200, \coqdocvar{x} \coqdocvar{binder}, \coqdocvar{y} \coqdocvar{binder}, \coqdoctac{right} \coqdockw{associativity},\coqdoceol
+\coqdocindent{5.00em}
+\coqdocvar{format} "'λ'  x .. y , '//' t").\coqdoceol
+\coqdocnoindent
+\coqdocvar{Reserved} \coqdockw{Infix} "@" (\coqdoctac{left} \coqdockw{associativity}, \coqdoctac{at} \coqdockw{level} 11).\coqdoceol
+\coqdocemptyline
+\coqdocnoindent
+\coqdockw{Module} \coqdockw{Import} \coqdocvar{NatExpr}.\coqdoceol
+\end{coqdoccode}
+\subsection{Expressions of natural numbers}
+
+ Here we show how to reify simple expressions of natural numbers
+      into syntax trees.  Note that we place \coqdocvar{expr} in \coqdockw{Set} to avoid
+      having to adjust \coqdockw{Type} binders.  See \coqdocvar{AbstractionList} for an
+      example with \coqdocvar{expr} in \coqdockw{Type}. \begin{coqdoccode}
+\coqdocemptyline
+\coqdocindent{1.00em}
+\coqdockw{Inductive} \coqdocvar{expr} \{\coqdocvar{var} : \coqdockw{Set}\} : \coqdockw{Set} :=\coqdoceol
+\coqdocindent{1.00em}
+\ensuremath{|} \coqdocvar{NatO} : \coqdocvar{expr}\coqdoceol
+\coqdocindent{1.00em}
+\ensuremath{|} \coqdocvar{NatS} : \coqdocvar{expr} \ensuremath{\rightarrow} \coqdocvar{expr}\coqdoceol
+\coqdocindent{1.00em}
+\ensuremath{|} \coqdocvar{NatMul} : \coqdocvar{expr} \ensuremath{\rightarrow} \coqdocvar{expr} \ensuremath{\rightarrow} \coqdocvar{expr}\coqdoceol
+\coqdocindent{1.00em}
+\ensuremath{|} \coqdocvar{NatAdd} : \coqdocvar{expr} \ensuremath{\rightarrow} \coqdocvar{expr} \ensuremath{\rightarrow} \coqdocvar{expr}\coqdoceol
+\coqdocindent{1.00em}
+\ensuremath{|} \coqdocvar{Var} : \coqdocvar{var} \ensuremath{\rightarrow} \coqdocvar{expr}.\coqdoceol
+\coqdocemptyline
+\coqdocindent{1.00em}
+\coqdockw{Fixpoint} \coqdocvar{denote} (\coqdocvar{e} : @\coqdocvar{expr} \coqdocvar{nat}) : \coqdocvar{nat}\coqdoceol
+\coqdocindent{2.00em}
+:= \coqdockw{match} \coqdocvar{e} \coqdockw{with}\coqdoceol
+\coqdocindent{3.50em}
+\ensuremath{|} \coqdocvar{NatO} \ensuremath{\Rightarrow} \coqdocvar{O}\coqdoceol
+\coqdocindent{3.50em}
+\ensuremath{|} \coqdocvar{NatS} \coqdocvar{x} \ensuremath{\Rightarrow} \coqdocvar{S} (\coqdocvar{denote} \coqdocvar{x})\coqdoceol
+\coqdocindent{3.50em}
+\ensuremath{|} \coqdocvar{NatMul} \coqdocvar{x} \coqdocvar{y} \ensuremath{\Rightarrow} \coqdocvar{denote} \coqdocvar{x} \ensuremath{\times} \coqdocvar{denote} \coqdocvar{y}\coqdoceol
+\coqdocindent{3.50em}
+\ensuremath{|} \coqdocvar{NatAdd} \coqdocvar{x} \coqdocvar{y} \ensuremath{\Rightarrow} \coqdocvar{denote} \coqdocvar{x} + \coqdocvar{denote} \coqdocvar{y}\coqdoceol
+\coqdocindent{3.50em}
+\ensuremath{|} \coqdocvar{Var} \coqdocvar{v} \ensuremath{\Rightarrow} \coqdocvar{v}\coqdoceol
+\coqdocindent{3.50em}
+\coqdockw{end}.\coqdoceol
+\coqdocemptyline
+\coqdocindent{1.00em}
+\coqdockw{Definition} \coqdocvar{Expr} := \coqdockw{\ensuremath{\forall}} \coqdocvar{var}, @\coqdocvar{expr} \coqdocvar{var}.\coqdoceol
+\coqdocindent{1.00em}
+\coqdockw{Definition} \coqdocvar{Denote} (\coqdocvar{e} : \coqdocvar{Expr}) : \coqdocvar{nat} := \coqdocvar{denote} (\coqdocvar{e} \coqdocvar{nat}).\coqdoceol
+\coqdocemptyline
+\coqdocindent{1.00em}
+\coqdockw{Ltac} \coqdocvar{Reify} \coqdocvar{x} :=\coqdoceol
+\coqdocindent{2.00em}
+\coqdockw{let} \coqdocvar{rx} := \coqdockw{lazymatch} (\coqdoctac{eval} \coqdoctac{pattern} \coqdocvar{nat}, \coqdocvar{O}, \coqdocvar{S}, \coqdocvar{Nat.mul}, \coqdocvar{Nat.add} \coqdoctac{in} \coqdocvar{x}) \coqdockw{with}\coqdoceol
+\coqdocindent{7.00em}
+\ensuremath{|} ?\coqdocvar{rx} \coqdocvar{\_} \coqdocvar{\_} \coqdocvar{\_} \coqdocvar{\_} \coqdocvar{\_} \ensuremath{\Rightarrow} \coqdocvar{rx} \coqdockw{end} \coqdoctac{in}\coqdoceol
+\coqdocindent{2.00em}
+\coqdockw{constr}:(\coqdockw{fun} \coqdocvar{var} \ensuremath{\Rightarrow} \coqdocvar{rx} (@\coqdocvar{expr} \coqdocvar{var}) \coqdocvar{NatO} \coqdocvar{NatS} \coqdocvar{NatMul} \coqdocvar{NatAdd}).\coqdoceol
+\coqdocemptyline
+\coqdocindent{1.00em}
+\coqdockw{Goal} \coqdocvar{True}.\coqdoceol
+\coqdocindent{2.00em}
+\coqdockw{let} \coqdocvar{v} := \coqdocvar{Reify} (1 \ensuremath{\times} 2 + 3) \coqdoctac{in}\coqdoceol
+\coqdocindent{2.00em}
+\coqdoctac{pose} \coqdocvar{v} \coqdockw{as} \coqdocvar{r}.\coqdoceol
+\end{coqdoccode}
+Now we check that we get what we expected to get \begin{coqdoccode}
+\coqdocemptyline
+\coqdocindent{2.00em}
+\coqdoctac{pose} (\coqdocvar{eq\_refl}\coqdoceol
+\coqdocindent{5.00em}
+: \coqdocvar{r} = (\coqdockw{fun} \coqdocvar{var}\coqdoceol
+\coqdocindent{8.50em}
+\ensuremath{\Rightarrow} \coqdocvar{NatAdd}\coqdoceol
+\coqdocindent{11.00em}
+(\coqdocvar{NatMul} (\coqdocvar{NatS} \coqdocvar{NatO}) (\coqdocvar{NatS} (\coqdocvar{NatS} \coqdocvar{NatO})))\coqdoceol
+\coqdocindent{11.00em}
+(\coqdocvar{NatS} (\coqdocvar{NatS} (\coqdocvar{NatS} \coqdocvar{NatO}))))).\coqdoceol
+\coqdocindent{1.00em}
+\coqdockw{Abort}.\coqdoceol
+\coqdocnoindent
+\coqdockw{End} \coqdocvar{NatExpr}.\coqdoceol
+\coqdocemptyline
+\coqdocnoindent
+\coqdockw{Module} \coqdocvar{Abstraction}.\coqdoceol
+\end{coqdoccode}
+\subsection{Expressions involving λ}
+
+ What if we have abstraction nodes?  The trick is to pair them
+      with the higher-order function which takes in the λ.  We use the
+      example of \coqdocvar{sum\_upto} \coqdocvar{n} \coqdocvar{f} := \coqdocvar{f} 0 + \coqdocvar{f} 1 + \coqdocvar{f} 2 + ... + \coqdocvar{f} \coqdocvar{n}.  Note
+      that we place \coqdocvar{expr} in \coqdockw{Set} to avoid having to adjust \coqdockw{Type}
+      binders.  See \coqdocvar{AbstractionList} for an example with \coqdocvar{expr} in
+      \coqdockw{Type}. \begin{coqdoccode}
+\coqdocemptyline
+\coqdocindent{1.00em}
+\coqdockw{Inductive} \coqdockw{type} := \coqdocvar{NAT} \ensuremath{|} \coqdocvar{ARROW} (\coqdocvar{a} \coqdocvar{b} : \coqdockw{type}).\coqdoceol
+\coqdocindent{1.00em}
+\coqdockw{Delimit} \coqdockw{Scope} \coqdocvar{etype\_scope} \coqdockw{with} \coqdocvar{etype}.\coqdoceol
+\coqdocindent{1.00em}
+\coqdockw{Bind} \coqdockw{Scope} \coqdocvar{etype\_scope} \coqdockw{with} \coqdockw{type}.\coqdoceol
+\coqdocindent{1.00em}
+\coqdockw{Infix} "->" := \coqdocvar{ARROW} : \coqdocvar{etype\_scope}.\coqdoceol
+\coqdocindent{1.00em}
+\coqdockw{Inductive} \coqdocvar{expr} \{\coqdocvar{var} : \coqdockw{type} \ensuremath{\rightarrow} \coqdockw{Set}\} : \coqdockw{type} \ensuremath{\rightarrow} \coqdockw{Set} :=\coqdoceol
+\coqdocindent{1.00em}
+\ensuremath{|} \coqdocvar{Var} \{\coqdocvar{t}\} (\coqdocvar{v} : \coqdocvar{var} \coqdocvar{t}) : \coqdocvar{expr} \coqdocvar{t}\coqdoceol
+\coqdocindent{1.00em}
+\ensuremath{|} \coqdocvar{NatO} : \coqdocvar{expr} \coqdocvar{NAT}\coqdoceol
+\coqdocindent{1.00em}
+\ensuremath{|} \coqdocvar{NatS} : \coqdocvar{expr} (\coqdocvar{NAT} \ensuremath{\rightarrow} \coqdocvar{NAT})\coqdoceol
+\coqdocindent{1.00em}
+\ensuremath{|} \coqdocvar{NatAdd} : \coqdocvar{expr} (\coqdocvar{NAT} \ensuremath{\rightarrow} \coqdocvar{NAT} \ensuremath{\rightarrow} \coqdocvar{NAT})\coqdoceol
+\coqdocindent{1.00em}
+\ensuremath{|} \coqdocvar{NatMul} : \coqdocvar{expr} (\coqdocvar{NAT} \ensuremath{\rightarrow} \coqdocvar{NAT} \ensuremath{\rightarrow} \coqdocvar{NAT})\coqdoceol
+\coqdocindent{1.00em}
+\ensuremath{|} \coqdocvar{Sum\_UpTo} : \coqdocvar{expr} (\coqdocvar{NAT} \ensuremath{\rightarrow} (\coqdocvar{NAT} \ensuremath{\rightarrow} \coqdocvar{NAT}) \ensuremath{\rightarrow} \coqdocvar{NAT})\coqdoceol
+\coqdocindent{1.00em}
+\ensuremath{|} \coqdocvar{App} \{\coqdocvar{a} \coqdocvar{b}\} : \coqdocvar{expr} (\coqdocvar{a} \ensuremath{\rightarrow} \coqdocvar{b}) \ensuremath{\rightarrow} \coqdocvar{expr} \coqdocvar{a} \ensuremath{\rightarrow} \coqdocvar{expr} \coqdocvar{b}\coqdoceol
+\coqdocindent{1.00em}
+\ensuremath{|} \coqdocvar{Abs} \{\coqdocvar{a} \coqdocvar{b}\} (\coqdocvar{f} : \coqdocvar{var} \coqdocvar{a} \ensuremath{\rightarrow} \coqdocvar{expr} \coqdocvar{b}) : \coqdocvar{expr} (\coqdocvar{a} \ensuremath{\rightarrow} \coqdocvar{b}).\coqdoceol
+\coqdocemptyline
+\coqdocindent{1.00em}
+\coqdockw{Bind} \coqdockw{Scope} \coqdocvar{expr\_scope} \coqdockw{with} \coqdocvar{expr}.\coqdoceol
+\coqdocindent{1.00em}
+\coqdockw{Delimit} \coqdockw{Scope} \coqdocvar{expr\_scope} \coqdockw{with} \coqdocvar{expr}.\coqdoceol
+\coqdocindent{1.00em}
+\coqdockw{Notation} "'λ'  x .. y , t"\coqdoceol
+\coqdocindent{2.00em}
+:= (\coqdocvar{Abs} (\coqdockw{fun} \coqdocvar{x} \ensuremath{\Rightarrow} .. (\coqdocvar{Abs} (\coqdockw{fun} \coqdocvar{y} \ensuremath{\Rightarrow} \coqdocvar{t}\%\coqdocvar{expr})) ..)) : \coqdocvar{expr\_scope}.\coqdoceol
+\coqdocindent{1.00em}
+\coqdockw{Infix} "@" := \coqdocvar{App} : \coqdocvar{expr\_scope}.\coqdoceol
+\coqdocemptyline
+\coqdocindent{1.00em}
+\coqdockw{Fixpoint} \coqdocvar{type\_denote} (\coqdocvar{t} : \coqdockw{type}) : \coqdockw{Set}\coqdoceol
+\coqdocindent{2.00em}
+:= \coqdockw{match} \coqdocvar{t} \coqdockw{with}\coqdoceol
+\coqdocindent{3.50em}
+\ensuremath{|} \coqdocvar{NAT} \ensuremath{\Rightarrow} \coqdocvar{nat}\coqdoceol
+\coqdocindent{3.50em}
+\ensuremath{|} \coqdocvar{ARROW} \coqdocvar{a} \coqdocvar{b} \ensuremath{\Rightarrow} \coqdocvar{type\_denote} \coqdocvar{a} \ensuremath{\rightarrow} \coqdocvar{type\_denote} \coqdocvar{b}\coqdoceol
+\coqdocindent{3.50em}
+\coqdockw{end}.\coqdoceol
+\coqdocemptyline
+\coqdocindent{1.00em}
+\coqdockw{Definition} \coqdocvar{sum\_upto} (\coqdocvar{n} : \coqdocvar{nat}) (\coqdocvar{f} : \coqdocvar{nat} \ensuremath{\rightarrow} \coqdocvar{nat}) : \coqdocvar{nat}\coqdoceol
+\coqdocindent{2.00em}
+:= \coqdocvar{List.fold\_left} \coqdocvar{Nat.add} (\coqdocvar{List.map} \coqdocvar{f} (\coqdocvar{List.seq} 0 (\coqdocvar{S} \coqdocvar{n}))) 0.\coqdoceol
+\coqdocemptyline
+\coqdocindent{1.00em}
+\coqdockw{Fixpoint} \coqdocvar{denote} \{\coqdocvar{t}\} (\coqdocvar{e} : @\coqdocvar{expr} \coqdocvar{type\_denote} \coqdocvar{t}) : \coqdocvar{type\_denote} \coqdocvar{t}\coqdoceol
+\coqdocindent{2.00em}
+:= \coqdockw{match} \coqdocvar{e} \coqdockw{with}\coqdoceol
+\coqdocindent{3.50em}
+\ensuremath{|} \coqdocvar{Var} \coqdocvar{v} \ensuremath{\Rightarrow} \coqdocvar{v}\coqdoceol
+\coqdocindent{3.50em}
+\ensuremath{|} \coqdocvar{NatO} \ensuremath{\Rightarrow} \coqdocvar{O}\coqdoceol
+\coqdocindent{3.50em}
+\ensuremath{|} \coqdocvar{NatS} \ensuremath{\Rightarrow} \coqdocvar{S}\coqdoceol
+\coqdocindent{3.50em}
+\ensuremath{|} \coqdocvar{NatMul} \ensuremath{\Rightarrow} \coqdocvar{Nat.mul}\coqdoceol
+\coqdocindent{3.50em}
+\ensuremath{|} \coqdocvar{NatAdd} \ensuremath{\Rightarrow} \coqdocvar{Nat.add}\coqdoceol
+\coqdocindent{3.50em}
+\ensuremath{|} \coqdocvar{Sum\_UpTo} \ensuremath{\Rightarrow} \coqdocvar{sum\_upto}\coqdoceol
+\coqdocindent{3.50em}
+\ensuremath{|} \coqdocvar{App} \coqdocvar{f} \coqdocvar{x} \ensuremath{\Rightarrow} \coqdocvar{denote} \coqdocvar{f} (\coqdocvar{denote} \coqdocvar{x})\coqdoceol
+\coqdocindent{3.50em}
+\ensuremath{|} \coqdocvar{Abs} \coqdocvar{f} \ensuremath{\Rightarrow} \coqdockw{fun} \coqdocvar{x} \ensuremath{\Rightarrow} \coqdocvar{denote} (\coqdocvar{f} \coqdocvar{x})\coqdoceol
+\coqdocindent{3.50em}
+\coqdockw{end}.\coqdoceol
+\coqdocemptyline
+\coqdocindent{1.00em}
+\coqdockw{Definition} \coqdocvar{Expr} \coqdocvar{t} := \coqdockw{\ensuremath{\forall}} \coqdocvar{var}, @\coqdocvar{expr} \coqdocvar{var} \coqdocvar{t}.\coqdoceol
+\coqdocindent{1.00em}
+\coqdockw{Definition} \coqdocvar{Denote} \{\coqdocvar{t}\} (\coqdocvar{e} : \coqdocvar{Expr} \coqdocvar{t}) := \coqdocvar{denote} (\coqdocvar{e} \coqdocvar{type\_denote}).\coqdoceol
+\coqdocemptyline
+\end{coqdoccode}
+To reify these sorts of terms, the trick is to pair \coqdocvar{App} and
+      \coqdocvar{Abs} nodes with the functions. \begin{coqdoccode}
+\coqdocemptyline
+\coqdocindent{1.00em}
+\coqdockw{Ltac} \coqdocvar{Reify} \coqdocvar{x} :=\coqdoceol
+\coqdocindent{2.00em}
+\coqdockw{let} \coqdocvar{rx} := \coqdockw{lazymatch} (\coqdoctac{eval} \coqdoctac{pattern} \coqdocvar{nat}, \coqdocvar{O}, \coqdocvar{S}, \coqdocvar{Nat.mul}, \coqdocvar{Nat.add}, \coqdocvar{sum\_upto}\coqdoceol
+\coqdocindent{13.00em}
+\coqdoctac{in} \coqdocvar{x}) \coqdockw{with}\coqdoceol
+\coqdocindent{7.00em}
+\ensuremath{|} ?\coqdocvar{rx} \coqdocvar{\_} \coqdocvar{\_} \coqdocvar{\_} \coqdocvar{\_} \coqdocvar{\_} \coqdocvar{\_} \ensuremath{\Rightarrow} \coqdocvar{rx} \coqdockw{end} \coqdoctac{in}\coqdoceol
+\coqdocindent{2.00em}
+\coqdockw{constr}:(\coqdockw{fun} \coqdocvar{var}\coqdoceol
+\coqdocindent{6.00em}
+\ensuremath{\Rightarrow} (\coqdocvar{rx} (@\coqdocvar{expr} \coqdocvar{var} \coqdocvar{NAT})\coqdoceol
+\coqdocindent{9.50em}
+\coqdocvar{NatO}\coqdoceol
+\coqdocindent{9.50em}
+(\coqdockw{fun} \coqdocvar{a} \ensuremath{\Rightarrow} \coqdocvar{NatS} @ \coqdocvar{a})\coqdoceol
+\coqdocindent{9.50em}
+(\coqdockw{fun} \coqdocvar{a} \coqdocvar{b} \ensuremath{\Rightarrow} \coqdocvar{NatMul} @ \coqdocvar{a} @ \coqdocvar{b})\coqdoceol
+\coqdocindent{9.50em}
+(\coqdockw{fun} \coqdocvar{a} \coqdocvar{b} \ensuremath{\Rightarrow} \coqdocvar{NatAdd} @ \coqdocvar{a} @ \coqdocvar{b})\coqdoceol
+\coqdocindent{9.50em}
+(\coqdockw{fun} \coqdocvar{n} \coqdocvar{f} \ensuremath{\Rightarrow} \coqdocvar{Sum\_UpTo} @ \coqdocvar{n} @ (\coqdocvar{\ensuremath{\lambda}} \coqdocvar{v}, \coqdocvar{f} (\coqdocvar{Var} \coqdocvar{v}))))\%\coqdocvar{expr}).\coqdoceol
+\coqdocemptyline
+\coqdocindent{1.00em}
+\coqdockw{Goal} \coqdocvar{True}.\coqdoceol
+\coqdocindent{2.00em}
+\coqdockw{let} \coqdocvar{r} := \coqdocvar{Reify} (\coqdocvar{sum\_upto} (1 \ensuremath{\times} 2 + 3) (\coqdockw{fun} \coqdocvar{x} \ensuremath{\Rightarrow} \coqdocvar{x})) \coqdoctac{in}\coqdoceol
+\coqdocindent{2.00em}
+\coqdoctac{pose} \coqdocvar{r} \coqdockw{as} \coqdocvar{rx}.\coqdoceol
+\end{coqdoccode}
+Now we check that we got what we wanted \begin{coqdoccode}
+\coqdocemptyline
+\coqdocindent{2.00em}
+\coqdoctac{pose} (\coqdocvar{eq\_refl}\coqdoceol
+\coqdocindent{5.00em}
+: \coqdocvar{rx}\coqdoceol
+\coqdocindent{6.00em}
+= (\coqdockw{fun} \coqdocvar{var} \ensuremath{\Rightarrow}\coqdoceol
+\coqdocindent{8.50em}
+\coqdocvar{Sum\_UpTo}\coqdoceol
+\coqdocindent{9.50em}
+@ (\coqdocvar{NatAdd}\coqdoceol
+\coqdocindent{12.00em}
+@ (\coqdocvar{NatMul} @ (\coqdocvar{NatS} @ \coqdocvar{NatO}) @ (\coqdocvar{NatS} @ (\coqdocvar{NatS} @ \coqdocvar{NatO})))\coqdoceol
+\coqdocindent{12.00em}
+@ (\coqdocvar{NatS} @ (\coqdocvar{NatS} @ (\coqdocvar{NatS} @ \coqdocvar{NatO}))))\coqdoceol
+\coqdocindent{9.50em}
+@ (\coqdocvar{\ensuremath{\lambda}} \coqdocvar{v}, \coqdocvar{Var} \coqdocvar{v}))\%\coqdocvar{expr}).\coqdoceol
+\coqdocindent{1.00em}
+\coqdockw{Abort}.\coqdoceol
+\coqdocnoindent
+\coqdockw{End} \coqdocvar{Abstraction}.\coqdoceol
+\coqdocemptyline
+\coqdocnoindent
+\coqdockw{Module} \coqdockw{Import} \coqdocvar{OpenTerms}.\coqdoceol
+\end{coqdoccode}
+\subsection{ℕ expressions with variables}
+
+ Here we show how to reify quantified formulas of natural numbers
+      into PHOAS.  Note that we place \coqdocvar{expr} in \coqdockw{Set} to avoid having
+      to adjust \coqdockw{Type} binders.  See \coqdocvar{AbstractionList} for an example
+      with \coqdocvar{expr} in \coqdockw{Type}. \begin{coqdoccode}
+\coqdocemptyline
+\coqdocindent{1.00em}
+\coqdockw{Inductive} \coqdockw{type} := \coqdocvar{NAT} \ensuremath{|} \coqdocvar{PROP}.\coqdoceol
+\coqdocemptyline
+\coqdocindent{1.00em}
+\coqdockw{Inductive} \coqdocvar{expr} \{\coqdocvar{var} : \coqdockw{Set}\} : \coqdockw{Set} :=\coqdoceol
+\coqdocindent{1.00em}
+\ensuremath{|} \coqdocvar{Forall} (\coqdocvar{P} : \coqdocvar{var} \ensuremath{\rightarrow} \coqdocvar{expr}) : \coqdocvar{expr}\coqdoceol
+\coqdocindent{1.00em}
+\ensuremath{|} \coqdocvar{Exists} (\coqdocvar{P} : \coqdocvar{var} \ensuremath{\rightarrow} \coqdocvar{expr}) : \coqdocvar{expr}\coqdoceol
+\coqdocindent{1.00em}
+\ensuremath{|} \coqdocvar{And} (\coqdocvar{x} \coqdocvar{y} : \coqdocvar{expr}) : \coqdocvar{expr}\coqdoceol
+\coqdocindent{1.00em}
+\ensuremath{|} \coqdocvar{Imp} (\coqdocvar{x} \coqdocvar{y} : \coqdocvar{expr}) : \coqdocvar{expr}\coqdoceol
+\coqdocindent{1.00em}
+\ensuremath{|} \coqdocvar{LtNat} (\coqdocvar{x} \coqdocvar{y} : @\coqdocvar{NatExpr.expr} \coqdocvar{var}) : \coqdocvar{expr}\coqdoceol
+\coqdocindent{1.00em}
+\ensuremath{|} \coqdocvar{EqNat} (\coqdocvar{x} \coqdocvar{y} : @\coqdocvar{NatExpr.expr} \coqdocvar{var}) : \coqdocvar{expr}.\coqdoceol
+\coqdocemptyline
+\coqdocindent{1.00em}
+\coqdockw{Fixpoint} \coqdocvar{denote} (\coqdocvar{e} : @\coqdocvar{expr} \coqdocvar{nat}) : \coqdockw{Prop}\coqdoceol
+\coqdocindent{2.00em}
+:= \coqdockw{match} \coqdocvar{e} \coqdockw{with}\coqdoceol
+\coqdocindent{3.50em}
+\ensuremath{|} \coqdocvar{Forall} \coqdocvar{P} \ensuremath{\Rightarrow} \coqdockw{\ensuremath{\forall}} \coqdocvar{n}, \coqdocvar{denote} (\coqdocvar{P} \coqdocvar{n})\coqdoceol
+\coqdocindent{3.50em}
+\ensuremath{|} \coqdocvar{Exists} \coqdocvar{P} \ensuremath{\Rightarrow} \coqdoctac{\ensuremath{\exists}} \coqdocvar{n}, \coqdocvar{denote} (\coqdocvar{P} \coqdocvar{n})\coqdoceol
+\coqdocindent{3.50em}
+\ensuremath{|} \coqdocvar{And} \coqdocvar{x} \coqdocvar{y} \ensuremath{\Rightarrow} \coqdocvar{denote} \coqdocvar{x} \ensuremath{\land} \coqdocvar{denote} \coqdocvar{y}\coqdoceol
+\coqdocindent{3.50em}
+\ensuremath{|} \coqdocvar{Imp} \coqdocvar{x} \coqdocvar{y} \ensuremath{\Rightarrow} \coqdocvar{denote} \coqdocvar{x} \ensuremath{\rightarrow} \coqdocvar{denote} \coqdocvar{y}\coqdoceol
+\coqdocindent{3.50em}
+\ensuremath{|} \coqdocvar{LtNat} \coqdocvar{x} \coqdocvar{y} \ensuremath{\Rightarrow} \coqdocvar{NatExpr.denote} \coqdocvar{x} < \coqdocvar{NatExpr.denote} \coqdocvar{y}\coqdoceol
+\coqdocindent{3.50em}
+\ensuremath{|} \coqdocvar{EqNat} \coqdocvar{x} \coqdocvar{y} \ensuremath{\Rightarrow} \coqdocvar{NatExpr.denote} \coqdocvar{x} = \coqdocvar{NatExpr.denote} \coqdocvar{y}\coqdoceol
+\coqdocindent{3.50em}
+\coqdockw{end}.\coqdoceol
+\coqdocemptyline
+\coqdocindent{1.00em}
+\coqdockw{Definition} \coqdocvar{Expr} := \coqdockw{\ensuremath{\forall}} \coqdocvar{var}, @\coqdocvar{expr} \coqdocvar{var}.\coqdoceol
+\coqdocindent{1.00em}
+\coqdockw{Definition} \coqdocvar{Denote} (\coqdocvar{e} : \coqdocvar{Expr}) := \coqdocvar{denote} (\coqdocvar{e} \coqdocvar{nat}).\coqdoceol
+\coqdocemptyline
+\end{coqdoccode}
+Note that we cannot \coqdoctac{pattern} over ``\coqdockw{\ensuremath{\forall}}'', nor ``\ensuremath{\rightarrow}'',
+      so this method cannot really handle \coqdockw{\ensuremath{\forall}}.  However, we can
+      handle it in prenex positions by recursively reverting the
+      context, and replacing \coqdockw{\ensuremath{\forall}} and \ensuremath{\rightarrow} with custom definitions
+      accessible to \coqdoctac{pattern}. \begin{coqdoccode}
+\coqdocemptyline
+\coqdocindent{1.00em}
+\coqdockw{Definition} \coqdocvar{forall\_nat} (\coqdocvar{P} : \coqdocvar{nat} \ensuremath{\rightarrow} \coqdockw{Prop}) := \coqdockw{\ensuremath{\forall}} \coqdocvar{n}, \coqdocvar{P} \coqdocvar{n}.\coqdoceol
+\coqdocindent{1.00em}
+\coqdockw{Definition} \coqdocvar{impl} (\coqdocvar{A} \coqdocvar{B} : \coqdockw{Prop}) := \coqdocvar{A} \ensuremath{\rightarrow} \coqdocvar{B}.\coqdoceol
+\coqdocindent{1.00em}
+\coqdockw{Ltac} \coqdocvar{Reify} \coqdocvar{x} :=\coqdoceol
+\coqdocindent{2.00em}
+\coqdockw{let} \coqdocvar{rx} := \coqdockw{lazymatch} (\coqdoctac{eval} \coqdoctac{pattern} \coqdocvar{nat}, \coqdockw{Prop}, \coqdocvar{O}, \coqdocvar{S}, \coqdocvar{Nat.mul}, \coqdocvar{Nat.add}, \coqdocvar{lt},\coqdoceol
+\coqdocindent{12.50em}
+(@\coqdocvar{eq} \coqdocvar{nat}), \coqdocvar{and}, \coqdocvar{impl}, (@\coqdocvar{ex} \coqdocvar{nat}), \coqdocvar{forall\_nat}\coqdoceol
+\coqdocindent{13.00em}
+\coqdoctac{in} \coqdocvar{x}) \coqdockw{with}\coqdoceol
+\coqdocindent{7.00em}
+\ensuremath{|} ?\coqdocvar{rx} \coqdocvar{\_} \coqdocvar{\_} \coqdocvar{\_} \coqdocvar{\_} \coqdocvar{\_} \coqdocvar{\_} \coqdocvar{\_} \coqdocvar{\_} \coqdocvar{\_} \coqdocvar{\_} \coqdocvar{\_} \coqdocvar{\_} \ensuremath{\Rightarrow} \coqdocvar{rx} \coqdockw{end} \coqdoctac{in}\coqdoceol
+\coqdocindent{2.00em}
+\coqdockw{constr}:(\coqdockw{fun} \coqdocvar{var}\coqdoceol
+\coqdocindent{6.00em}
+\ensuremath{\Rightarrow} \coqdocvar{rx} (@\coqdocvar{NatExpr.expr} \coqdocvar{var}) (@\coqdocvar{expr} \coqdocvar{var})\coqdoceol
+\coqdocindent{9.00em}
+\coqdocvar{NatO} \coqdocvar{NatS} \coqdocvar{NatMul} \coqdocvar{NatAdd} \coqdocvar{LtNat} \coqdocvar{EqNat} \coqdocvar{And} \coqdocvar{Imp}\coqdoceol
+\coqdocindent{9.00em}
+(\coqdockw{fun} \coqdocvar{P} \ensuremath{\Rightarrow} @\coqdocvar{Exists} \coqdocvar{var} (\coqdockw{fun} \coqdocvar{v} \ensuremath{\Rightarrow} \coqdocvar{P} (\coqdocvar{Var} \coqdocvar{v})))\coqdoceol
+\coqdocindent{9.00em}
+(\coqdockw{fun} \coqdocvar{P} \ensuremath{\Rightarrow} @\coqdocvar{Forall} \coqdocvar{var} (\coqdockw{fun} \coqdocvar{v} \ensuremath{\Rightarrow} \coqdocvar{P} (\coqdocvar{Var} \coqdocvar{v})))).\coqdoceol
+\coqdocemptyline
+\coqdocindent{1.00em}
+\coqdockw{Ltac} \coqdocvar{revert\_all\_for\_pattern} :=\coqdoceol
+\coqdocindent{2.00em}
+\coqdoctac{repeat} (\coqdockw{match} \coqdockw{goal} \coqdockw{with} \coqdocvar{H} : \coqdocvar{\_} \ensuremath{\vdash} \coqdocvar{\_} \ensuremath{\Rightarrow} \coqdocvar{revert} \coqdocvar{H} \coqdockw{end};\coqdoceol
+\coqdocindent{6.00em}
+\coqdockw{lazymatch} \coqdockw{goal} \coqdockw{with}\coqdoceol
+\coqdocindent{6.00em}
+\ensuremath{|} [ \ensuremath{\vdash} \coqdockw{\ensuremath{\forall}} \coqdocvar{n} : \coqdocvar{nat}, @?\coqdocvar{P} \coqdocvar{n} ] \ensuremath{\Rightarrow} \coqdoctac{change} (\coqdocvar{forall\_nat} \coqdocvar{P})\coqdoceol
+\coqdocindent{6.00em}
+\ensuremath{|} [ \ensuremath{\vdash} ?\coqdocvar{A} \ensuremath{\rightarrow} ?\coqdocvar{B} ] \ensuremath{\Rightarrow} \coqdoctac{change} (\coqdocvar{impl} \coqdocvar{A} \coqdocvar{B})\coqdoceol
+\coqdocindent{6.00em}
+\coqdockw{end}).\coqdoceol
+\coqdocindent{1.00em}
+\coqdockw{Ltac} \coqdocvar{Reify\_goal} :=\coqdoceol
+\coqdocindent{2.00em}
+\end{coqdoccode}
+First we revert things \begin{coqdoccode}
+\coqdocnoindent
+\coqdoceol
+\coqdocindent{2.00em}
+\coqdocvar{revert\_all\_for\_pattern};\coqdoceol
+\coqdocindent{2.00em}
+\end{coqdoccode}
+Now we reify \begin{coqdoccode}
+\coqdocnoindent
+\coqdoceol
+\coqdocindent{2.00em}
+\coqdockw{let} \coqdocvar{g} := \coqdockw{match} \coqdockw{goal} \coqdockw{with} \ensuremath{\vdash} ?\coqdocvar{G} \ensuremath{\Rightarrow} \coqdocvar{G} \coqdockw{end} \coqdoctac{in}\coqdoceol
+\coqdocindent{2.00em}
+\coqdockw{let} \coqdocvar{rg} := \coqdocvar{Reify} \coqdocvar{g} \coqdoctac{in}\coqdoceol
+\coqdocindent{2.00em}
+\coqdoctac{change} (\coqdocvar{Denote} \coqdocvar{rg}).\coqdoceol
+\coqdocemptyline
+\end{coqdoccode}
+We make a notation to display the goal more easily. \begin{coqdoccode}
+\coqdocemptyline
+\coqdocindent{1.00em}
+\coqdockw{Delimit} \coqdockw{Scope} \coqdocvar{expr\_scope} \coqdockw{with} \coqdocvar{expr}.\coqdoceol
+\coqdocindent{1.00em}
+\coqdockw{Bind} \coqdockw{Scope} \coqdocvar{expr\_scope} \coqdockw{with} \coqdocvar{expr}.\coqdoceol
+\coqdocindent{1.00em}
+\coqdockw{Bind} \coqdockw{Scope} \coqdocvar{expr\_scope} \coqdockw{with} \coqdocvar{NatExpr.expr}.\coqdoceol
+\coqdocindent{1.00em}
+\coqdockw{Notation} "∀ x .. y , P"\coqdoceol
+\coqdocindent{2.00em}
+:= (\coqdocvar{Forall} (\coqdockw{fun} \coqdocvar{x} \ensuremath{\Rightarrow} .. (\coqdocvar{Forall} (\coqdockw{fun} \coqdocvar{y} \ensuremath{\Rightarrow} \coqdocvar{P})) .. ))\coqdoceol
+\coqdocindent{4.50em}
+(\coqdoctac{at} \coqdockw{level} 200, \coqdocvar{x} \coqdocvar{binder}, \coqdocvar{y} \coqdocvar{binder}, \coqdoctac{right} \coqdockw{associativity},\coqdoceol
+\coqdocindent{5.00em}
+\coqdocvar{format} "'[  ' ∀  x  ..  y ']' ,  P") : \coqdocvar{expr\_scope}.\coqdoceol
+\coqdocindent{1.00em}
+\coqdockw{Notation} "∃ x .. y , P"\coqdoceol
+\coqdocindent{2.00em}
+:= (\coqdocvar{Exists} (\coqdockw{fun} \coqdocvar{x} \ensuremath{\Rightarrow} .. (\coqdocvar{Exists} (\coqdockw{fun} \coqdocvar{y} \ensuremath{\Rightarrow} \coqdocvar{P})) .. ))\coqdoceol
+\coqdocindent{4.50em}
+(\coqdoctac{at} \coqdockw{level} 200, \coqdocvar{x} \coqdocvar{binder}, \coqdocvar{y} \coqdocvar{binder}, \coqdoctac{right} \coqdockw{associativity},\coqdoceol
+\coqdocindent{5.00em}
+\coqdocvar{format} "'[  ' ∃  x  ..  y ']' ,  P") : \coqdocvar{expr\_scope}.\coqdoceol
+\coqdocindent{1.00em}
+\coqdockw{Infix} "*" := \coqdocvar{NatMul} : \coqdocvar{expr\_scope}.\coqdoceol
+\coqdocindent{1.00em}
+\coqdockw{Infix} "+" := \coqdocvar{NatAdd} : \coqdocvar{expr\_scope}.\coqdoceol
+\coqdocindent{1.00em}
+\coqdockw{Infix} "<" := \coqdocvar{LtNat} : \coqdocvar{expr\_scope}.\coqdoceol
+\coqdocindent{1.00em}
+\coqdockw{Infix} "=" := \coqdocvar{EqNat} : \coqdocvar{expr\_scope}.\coqdoceol
+\coqdocemptyline
+\coqdocindent{1.00em}
+\coqdockw{Goal} \coqdockw{\ensuremath{\forall}} \coqdocvar{a} \coqdocvar{b}, 0 < \coqdocvar{b} \ensuremath{\rightarrow} \coqdoctac{\ensuremath{\exists}} \coqdocvar{q} \coqdocvar{r}, \coqdocvar{a} = \coqdocvar{q} \ensuremath{\times} \coqdocvar{b} + \coqdocvar{r} \ensuremath{\land} \coqdocvar{r} < \coqdocvar{b}.\coqdoceol
+\coqdocindent{2.00em}
+\coqdoctac{intros}.\coqdoceol
+\coqdocindent{2.00em}
+\coqdocvar{Reify\_goal}.\coqdoceol
+\end{coqdoccode}
+Now we check that we got what we want \begin{coqdoccode}
+\coqdocemptyline
+\coqdocindent{2.00em}
+\coqdoctac{cbv} \coqdockw{beta}.\coqdoceol
+\coqdocindent{2.00em}
+\coqdockw{lazymatch} \coqdockw{goal} \coqdockw{with}\coqdoceol
+\coqdocindent{2.00em}
+\ensuremath{|} [ \ensuremath{\vdash} \coqdocvar{Denote}\coqdoceol
+\coqdocindent{6.50em}
+(\coqdockw{fun} \coqdocvar{var} \ensuremath{\Rightarrow}\coqdoceol
+\coqdocindent{8.00em}
+∀ \coqdocvar{a} \coqdocvar{b},\coqdoceol
+\coqdocindent{9.00em}
+\coqdocvar{Imp}\coqdoceol
+\coqdocindent{10.00em}
+(\coqdocvar{NatO} < \coqdocvar{Var} \coqdocvar{b})\coqdoceol
+\coqdocindent{10.00em}
+(∃ \coqdocvar{q} \coqdocvar{r},\coqdoceol
+\coqdocindent{12.00em}
+\coqdocvar{And}\coqdoceol
+\coqdocindent{13.00em}
+(\coqdocvar{Var} \coqdocvar{a} = \coqdocvar{Var} \coqdocvar{q} \ensuremath{\times} \coqdocvar{Var} \coqdocvar{b} + \coqdocvar{Var} \coqdocvar{r})\coqdoceol
+\coqdocindent{13.00em}
+(\coqdocvar{Var} \coqdocvar{r} < \coqdocvar{Var} \coqdocvar{b})))\%\coqdocvar{expr} ]\coqdoceol
+\coqdocindent{3.00em}
+\ensuremath{\Rightarrow} \coqdoctac{idtac}\coqdoceol
+\coqdocindent{2.00em}
+\coqdockw{end}.\coqdoceol
+\coqdocindent{1.00em}
+\coqdockw{Abort}.\coqdoceol
+\coqdocnoindent
+\coqdockw{End} \coqdocvar{OpenTerms}.\coqdoceol
+\coqdocemptyline
+\coqdocnoindent
+\coqdockw{Module} \coqdocvar{TopLevelLambda}.\coqdoceol
+\end{coqdoccode}
+\subsection{Expressions involving λ at the top-level}
+
+ What if we have abstraction nodes at the top level?  Here,
+      again, we have to handle them one-by-one, to deal with the fact
+      that we cannot \coqdoctac{pattern} over ``\ensuremath{\rightarrow}''.  Note that we place
+      \coqdocvar{expr} in \coqdockw{Set} to avoid having to adjust \coqdockw{Type} binders.  See
+      \coqdocvar{AbstractionList} for an example with \coqdocvar{expr} in \coqdockw{Type}. \begin{coqdoccode}
+\coqdocemptyline
+\coqdocindent{1.00em}
+\coqdockw{Inductive} \coqdockw{type} := \coqdocvar{NAT} \ensuremath{|} \coqdocvar{ARROW} (\coqdocvar{a} \coqdocvar{b} : \coqdockw{type}).\coqdoceol
+\coqdocindent{1.00em}
+\coqdockw{Delimit} \coqdockw{Scope} \coqdocvar{etype\_scope} \coqdockw{with} \coqdocvar{etype}.\coqdoceol
+\coqdocindent{1.00em}
+\coqdockw{Bind} \coqdockw{Scope} \coqdocvar{etype\_scope} \coqdockw{with} \coqdockw{type}.\coqdoceol
+\coqdocindent{1.00em}
+\coqdockw{Infix} "->" := \coqdocvar{ARROW} : \coqdocvar{etype\_scope}.\coqdoceol
+\coqdocindent{1.00em}
+\coqdockw{Inductive} \coqdocvar{expr} \{\coqdocvar{var} : \coqdockw{type} \ensuremath{\rightarrow} \coqdockw{Set}\} : \coqdockw{type} \ensuremath{\rightarrow} \coqdockw{Set} :=\coqdoceol
+\coqdocindent{1.00em}
+\ensuremath{|} \coqdocvar{NatOf} (\coqdocvar{e} : @\coqdocvar{NatExpr.expr} (\coqdocvar{var} \coqdocvar{NAT})) : \coqdocvar{expr} \coqdocvar{NAT}\coqdoceol
+\coqdocindent{1.00em}
+\ensuremath{|} \coqdocvar{Abs} \{\coqdocvar{a} \coqdocvar{b}\} (\coqdocvar{f} : \coqdocvar{var} \coqdocvar{a} \ensuremath{\rightarrow} \coqdocvar{expr} \coqdocvar{b}) : \coqdocvar{expr} (\coqdocvar{a} \ensuremath{\rightarrow} \coqdocvar{b}).\coqdoceol
+\coqdocemptyline
+\coqdocindent{1.00em}
+\coqdockw{Bind} \coqdockw{Scope} \coqdocvar{expr\_scope} \coqdockw{with} \coqdocvar{expr}.\coqdoceol
+\coqdocindent{1.00em}
+\coqdockw{Delimit} \coqdockw{Scope} \coqdocvar{expr\_scope} \coqdockw{with} \coqdocvar{expr}.\coqdoceol
+\coqdocindent{1.00em}
+\coqdockw{Notation} "'λ'  x .. y , t"\coqdoceol
+\coqdocindent{2.00em}
+:= (\coqdocvar{Abs} (\coqdockw{fun} \coqdocvar{x} \ensuremath{\Rightarrow} .. (\coqdocvar{Abs} (\coqdockw{fun} \coqdocvar{y} \ensuremath{\Rightarrow} \coqdocvar{t}\%\coqdocvar{expr})) ..)) : \coqdocvar{expr\_scope}.\coqdoceol
+\coqdocemptyline
+\coqdocindent{1.00em}
+\coqdockw{Fixpoint} \coqdocvar{type\_denote} (\coqdocvar{t} : \coqdockw{type}) : \coqdockw{Set}\coqdoceol
+\coqdocindent{2.00em}
+:= \coqdockw{match} \coqdocvar{t} \coqdockw{with}\coqdoceol
+\coqdocindent{3.50em}
+\ensuremath{|} \coqdocvar{NAT} \ensuremath{\Rightarrow} \coqdocvar{nat}\coqdoceol
+\coqdocindent{3.50em}
+\ensuremath{|} \coqdocvar{ARROW} \coqdocvar{a} \coqdocvar{b} \ensuremath{\Rightarrow} \coqdocvar{type\_denote} \coqdocvar{a} \ensuremath{\rightarrow} \coqdocvar{type\_denote} \coqdocvar{b}\coqdoceol
+\coqdocindent{3.50em}
+\coqdockw{end}.\coqdoceol
+\coqdocemptyline
+\coqdocindent{1.00em}
+\coqdockw{Fixpoint} \coqdocvar{denote} \{\coqdocvar{t}\} (\coqdocvar{e} : @\coqdocvar{expr} \coqdocvar{type\_denote} \coqdocvar{t}) : \coqdocvar{type\_denote} \coqdocvar{t}\coqdoceol
+\coqdocindent{2.00em}
+:= \coqdockw{match} \coqdocvar{e} \coqdockw{with}\coqdoceol
+\coqdocindent{3.50em}
+\ensuremath{|} \coqdocvar{NatOf} \coqdocvar{e} \ensuremath{\Rightarrow} \coqdocvar{NatExpr.denote} \coqdocvar{e}\coqdoceol
+\coqdocindent{3.50em}
+\ensuremath{|} \coqdocvar{Abs} \coqdocvar{f} \ensuremath{\Rightarrow} \coqdockw{fun} \coqdocvar{x} \ensuremath{\Rightarrow} \coqdocvar{denote} (\coqdocvar{f} \coqdocvar{x})\coqdoceol
+\coqdocindent{3.50em}
+\coqdockw{end}.\coqdoceol
+\coqdocemptyline
+\coqdocindent{1.00em}
+\coqdockw{Definition} \coqdocvar{Expr} \coqdocvar{t} := \coqdockw{\ensuremath{\forall}} \coqdocvar{var}, @\coqdocvar{expr} \coqdocvar{var} \coqdocvar{t}.\coqdoceol
+\coqdocindent{1.00em}
+\coqdockw{Definition} \coqdocvar{Denote} \{\coqdocvar{t}\} (\coqdocvar{e} : \coqdocvar{Expr} \coqdocvar{t}) := \coqdocvar{denote} (\coqdocvar{e} \coqdocvar{type\_denote}).\coqdoceol
+\coqdocemptyline
+\end{coqdoccode}
+The standard reification by parametricity will return a Gallina
+      function.  To reify top-level λs, we must add the \coqdocvar{Abs} nodes
+      recursively. \begin{coqdoccode}
+\coqdocemptyline
+\coqdocindent{1.00em}
+\coqdockw{Ltac} \coqdocvar{post\_reify} \coqdocvar{var} \coqdocvar{rx} :=\coqdoceol
+\coqdocindent{2.00em}
+\coqdockw{lazymatch} \coqdockw{type} \coqdockw{of} \coqdocvar{rx} \coqdockw{with}\coqdoceol
+\coqdocindent{2.00em}
+\ensuremath{|} @\coqdocvar{NatExpr.expr} ?\coqdocvar{varNAT} \ensuremath{\rightarrow} \coqdocvar{\_}\coqdoceol
+\coqdocindent{3.00em}
+\ensuremath{\Rightarrow} \coqdockw{let} \coqdocvar{v} := \coqdoctac{fresh} \coqdoctac{in}\coqdoceol
+\coqdocindent{4.50em}
+\coqdockw{let} \coqdocvar{rf} :=\coqdoceol
+\coqdocindent{6.50em}
+\coqdockw{constr}:(\coqdoceol
+\coqdocindent{7.50em}
+\coqdockw{fun} \coqdocvar{v} : \coqdocvar{varNAT}\coqdoceol
+\coqdocindent{7.50em}
+\ensuremath{\Rightarrow} \coqdockw{ltac}:(\coqdockw{let} \coqdocvar{rf} := \coqdocvar{post\_reify} \coqdocvar{var} (\coqdocvar{rx} (@\coqdocvar{NatExpr.Var} \coqdocvar{varNAT} \coqdocvar{v})) \coqdoctac{in}\coqdoceol
+\coqdocindent{12.00em}
+\coqdoctac{exact} \coqdocvar{rf})) \coqdoctac{in}\coqdoceol
+\coqdocindent{4.50em}
+\coqdockw{constr}:(@\coqdocvar{Abs} \coqdocvar{var} \coqdocvar{NAT} \coqdocvar{\_} \coqdocvar{rf})\coqdoceol
+\coqdocindent{2.00em}
+\ensuremath{|} \coqdocvar{\_}\coqdoceol
+\coqdocindent{3.00em}
+\ensuremath{\Rightarrow} \coqdockw{constr}:(@\coqdocvar{NatOf} \coqdocvar{var} \coqdocvar{rx})\coqdoceol
+\coqdocindent{2.00em}
+\coqdockw{end}.\coqdoceol
+\coqdocindent{1.00em}
+\coqdockw{Ltac} \coqdocvar{Reify} \coqdocvar{x} :=\coqdoceol
+\coqdocindent{2.00em}
+\coqdockw{constr}:(\coqdockw{fun} \coqdocvar{var} : \coqdockw{type} \ensuremath{\rightarrow} \coqdockw{Set}\coqdoceol
+\coqdocindent{6.00em}
+\ensuremath{\Rightarrow} \coqdockw{ltac}:(\coqdockw{let} \coqdocvar{rx} := \coqdocvar{NatExpr.Reify} \coqdocvar{x} \coqdoctac{in}\coqdoceol
+\coqdocindent{10.50em}
+\coqdockw{let} \coqdocvar{rf} := \coqdocvar{post\_reify} \coqdocvar{var} (\coqdocvar{rx} (\coqdocvar{var} \coqdocvar{NAT})) \coqdoctac{in}\coqdoceol
+\coqdocindent{10.50em}
+\coqdoctac{exact} \coqdocvar{rf})).\coqdoceol
+\coqdocemptyline
+\coqdocindent{1.00em}
+\coqdockw{Goal} \coqdocvar{True}.\coqdoceol
+\coqdocindent{2.00em}
+\coqdockw{let} \coqdocvar{r} := \coqdocvar{Reify} (\coqdockw{fun} \coqdocvar{x} \coqdocvar{y} \ensuremath{\Rightarrow} \coqdocvar{x} \ensuremath{\times} \coqdocvar{x} \ensuremath{\times} \coqdocvar{y} \ensuremath{\times} \coqdocvar{y}) \coqdoctac{in}\coqdoceol
+\coqdocindent{2.00em}
+\coqdoctac{pose} \coqdocvar{r} \coqdockw{as} \coqdocvar{rx}.\coqdoceol
+\end{coqdoccode}
+Now we check that we got what we wanted \begin{coqdoccode}
+\coqdocemptyline
+\coqdocindent{2.00em}
+\coqdoctac{cbv} \coqdockw{beta} \coqdoctac{in} \coqdocvar{rx}.\coqdoceol
+\coqdocindent{2.00em}
+\coqdoctac{pose} (\coqdocvar{eq\_refl}\coqdoceol
+\coqdocindent{5.00em}
+: \coqdocvar{rx}\coqdoceol
+\coqdocindent{6.00em}
+= (\coqdockw{fun} \coqdocvar{var} \ensuremath{\Rightarrow}\coqdoceol
+\coqdocindent{8.50em}
+(\coqdocvar{\ensuremath{\lambda}} \coqdocvar{x} \coqdocvar{y}, \coqdocvar{NatOf} (\coqdocvar{Var} \coqdocvar{x} \ensuremath{\times} \coqdocvar{Var} \coqdocvar{x} \ensuremath{\times} \coqdocvar{Var} \coqdocvar{y} \ensuremath{\times} \coqdocvar{Var} \coqdocvar{y})))\%\coqdocvar{expr}).\coqdoceol
+\coqdocindent{1.00em}
+\coqdockw{Abort}.\coqdoceol
+\coqdocnoindent
+\coqdockw{End} \coqdocvar{TopLevelLambda}.\coqdoceol
+\coqdocemptyline
+\coqdocnoindent
+\coqdockw{Module} \coqdocvar{AbstractionList}.\coqdoceol
+\end{coqdoccode}
+\subsection{List Expressions involving λ}
+
+ What if we have abstraction nodes?  The trick is to pair them
+      with the higher-order function which takes in the λ.  We use the
+      example of \coqdocvar{list} with \coqdocvar{map}. \begin{coqdoccode}
+\coqdocemptyline
+\coqdocindent{1.00em}
+\coqdockw{Inductive} \coqdockw{type} := \coqdocvar{NAT} \ensuremath{|} \coqdocvar{LIST} (\coqdocvar{t} : \coqdockw{type}) \ensuremath{|} \coqdocvar{ARROW} (\coqdocvar{a} \coqdocvar{b} : \coqdockw{type}).\coqdoceol
+\coqdocindent{1.00em}
+\coqdockw{Delimit} \coqdockw{Scope} \coqdocvar{etype\_scope} \coqdockw{with} \coqdocvar{etype}.\coqdoceol
+\coqdocindent{1.00em}
+\coqdockw{Bind} \coqdockw{Scope} \coqdocvar{etype\_scope} \coqdockw{with} \coqdockw{type}.\coqdoceol
+\coqdocindent{1.00em}
+\coqdockw{Infix} "->" := \coqdocvar{ARROW} : \coqdocvar{etype\_scope}.\coqdoceol
+\coqdocindent{1.00em}
+\coqdockw{Inductive} \coqdocvar{expr} \{\coqdocvar{var} : \coqdockw{type} \ensuremath{\rightarrow} \coqdockw{Type}\} : \coqdockw{type} \ensuremath{\rightarrow} \coqdockw{Type} :=\coqdoceol
+\coqdocindent{1.00em}
+\ensuremath{|} \coqdocvar{Var} \{\coqdocvar{t}\} (\coqdocvar{v} : \coqdocvar{var} \coqdocvar{t}) : \coqdocvar{expr} \coqdocvar{t}\coqdoceol
+\coqdocindent{1.00em}
+\ensuremath{|} \coqdocvar{Nil} \{\coqdocvar{t}\} : \coqdocvar{expr} (\coqdocvar{LIST} \coqdocvar{t})\coqdoceol
+\coqdocindent{1.00em}
+\ensuremath{|} \coqdocvar{Cons} \{\coqdocvar{t}\} : \coqdocvar{expr} (\coqdocvar{t} \ensuremath{\rightarrow} \coqdocvar{LIST} \coqdocvar{t} \ensuremath{\rightarrow} \coqdocvar{LIST} \coqdocvar{t})\coqdoceol
+\coqdocindent{1.00em}
+\ensuremath{|} \coqdocvar{NatO} : \coqdocvar{expr} \coqdocvar{NAT}\coqdoceol
+\coqdocindent{1.00em}
+\ensuremath{|} \coqdocvar{NatS} : \coqdocvar{expr} (\coqdocvar{NAT} \ensuremath{\rightarrow} \coqdocvar{NAT})\coqdoceol
+\coqdocindent{1.00em}
+\ensuremath{|} \coqdocvar{NatMul} : \coqdocvar{expr} (\coqdocvar{NAT} \ensuremath{\rightarrow} \coqdocvar{NAT} \ensuremath{\rightarrow} \coqdocvar{NAT})\coqdoceol
+\coqdocindent{1.00em}
+\ensuremath{|} \coqdocvar{Map} \{\coqdocvar{a} \coqdocvar{b}\} : \coqdocvar{expr} ((\coqdocvar{a} \ensuremath{\rightarrow} \coqdocvar{b}) \ensuremath{\rightarrow} \coqdocvar{LIST} \coqdocvar{a} \ensuremath{\rightarrow} \coqdocvar{LIST} \coqdocvar{b})\coqdoceol
+\coqdocindent{1.00em}
+\ensuremath{|} \coqdocvar{App} \{\coqdocvar{a} \coqdocvar{b}\} : \coqdocvar{expr} (\coqdocvar{a} \ensuremath{\rightarrow} \coqdocvar{b}) \ensuremath{\rightarrow} \coqdocvar{expr} \coqdocvar{a} \ensuremath{\rightarrow} \coqdocvar{expr} \coqdocvar{b}\coqdoceol
+\coqdocindent{1.00em}
+\ensuremath{|} \coqdocvar{Abs} \{\coqdocvar{a} \coqdocvar{b}\} (\coqdocvar{f} : \coqdocvar{var} \coqdocvar{a} \ensuremath{\rightarrow} \coqdocvar{expr} \coqdocvar{b}) : \coqdocvar{expr} (\coqdocvar{a} \ensuremath{\rightarrow} \coqdocvar{b}).\coqdoceol
+\coqdocemptyline
+\coqdocindent{1.00em}
+\coqdockw{Bind} \coqdockw{Scope} \coqdocvar{expr\_scope} \coqdockw{with} \coqdocvar{expr}.\coqdoceol
+\coqdocindent{1.00em}
+\coqdockw{Delimit} \coqdockw{Scope} \coqdocvar{expr\_scope} \coqdockw{with} \coqdocvar{expr}.\coqdoceol
+\coqdocindent{1.00em}
+\coqdockw{Notation} "'λ'  x .. y , t"\coqdoceol
+\coqdocindent{2.00em}
+:= (\coqdocvar{Abs} (\coqdockw{fun} \coqdocvar{x} \ensuremath{\Rightarrow} .. (\coqdocvar{Abs} (\coqdockw{fun} \coqdocvar{y} \ensuremath{\Rightarrow} \coqdocvar{t}\%\coqdocvar{expr})) ..)) : \coqdocvar{expr\_scope}.\coqdoceol
+\coqdocindent{1.00em}
+\coqdockw{Infix} "@" := \coqdocvar{App} : \coqdocvar{expr\_scope}.\coqdoceol
+\coqdocemptyline
+\coqdocindent{1.00em}
+\coqdockw{Fixpoint} \coqdocvar{type\_denote} (\coqdocvar{t} : \coqdockw{type}) : \coqdockw{Type}\coqdoceol
+\coqdocindent{2.00em}
+:= \coqdockw{match} \coqdocvar{t} \coqdockw{with}\coqdoceol
+\coqdocindent{3.50em}
+\ensuremath{|} \coqdocvar{NAT} \ensuremath{\Rightarrow} \coqdocvar{nat}\coqdoceol
+\coqdocindent{3.50em}
+\ensuremath{|} \coqdocvar{LIST} \coqdocvar{t} \ensuremath{\Rightarrow} \coqdocvar{list} (\coqdocvar{type\_denote} \coqdocvar{t})\coqdoceol
+\coqdocindent{3.50em}
+\ensuremath{|} \coqdocvar{ARROW} \coqdocvar{a} \coqdocvar{b} \ensuremath{\Rightarrow} \coqdocvar{type\_denote} \coqdocvar{a} \ensuremath{\rightarrow} \coqdocvar{type\_denote} \coqdocvar{b}\coqdoceol
+\coqdocindent{3.50em}
+\coqdockw{end}.\coqdoceol
+\coqdocemptyline
+\coqdocindent{1.00em}
+\coqdockw{Fixpoint} \coqdocvar{denote} \{\coqdocvar{t}\} (\coqdocvar{e} : @\coqdocvar{expr} \coqdocvar{type\_denote} \coqdocvar{t}) : \coqdocvar{type\_denote} \coqdocvar{t}\coqdoceol
+\coqdocindent{2.00em}
+:= \coqdockw{match} \coqdocvar{e} \coqdockw{with}\coqdoceol
+\coqdocindent{3.50em}
+\ensuremath{|} \coqdocvar{Var} \coqdocvar{v} \ensuremath{\Rightarrow} \coqdocvar{v}\coqdoceol
+\coqdocindent{3.50em}
+\ensuremath{|} @\coqdocvar{Nil} \coqdocvar{\_} \coqdocvar{t} \ensuremath{\Rightarrow} @\coqdocvar{nil} (\coqdocvar{type\_denote} \coqdocvar{t})\coqdoceol
+\coqdocindent{3.50em}
+\ensuremath{|} @\coqdocvar{Cons} \coqdocvar{\_} \coqdocvar{t} \ensuremath{\Rightarrow} @\coqdocvar{cons} (\coqdocvar{type\_denote} \coqdocvar{t})\coqdoceol
+\coqdocindent{3.50em}
+\ensuremath{|} \coqdocvar{NatO} \ensuremath{\Rightarrow} \coqdocvar{O}\coqdoceol
+\coqdocindent{3.50em}
+\ensuremath{|} \coqdocvar{NatS} \ensuremath{\Rightarrow} \coqdocvar{S}\coqdoceol
+\coqdocindent{3.50em}
+\ensuremath{|} \coqdocvar{NatMul} \ensuremath{\Rightarrow} \coqdocvar{Nat.mul}\coqdoceol
+\coqdocindent{3.50em}
+\ensuremath{|} @\coqdocvar{Map} \coqdocvar{\_} \coqdocvar{a} \coqdocvar{b} \ensuremath{\Rightarrow} @\coqdocvar{List.map} (\coqdocvar{type\_denote} \coqdocvar{a}) (\coqdocvar{type\_denote} \coqdocvar{b})\coqdoceol
+\coqdocindent{3.50em}
+\ensuremath{|} \coqdocvar{App} \coqdocvar{f} \coqdocvar{x} \ensuremath{\Rightarrow} \coqdocvar{denote} \coqdocvar{f} (\coqdocvar{denote} \coqdocvar{x})\coqdoceol
+\coqdocindent{3.50em}
+\ensuremath{|} \coqdocvar{Abs} \coqdocvar{f} \ensuremath{\Rightarrow} \coqdockw{fun} \coqdocvar{x} \ensuremath{\Rightarrow} \coqdocvar{denote} (\coqdocvar{f} \coqdocvar{x})\coqdoceol
+\coqdocindent{3.50em}
+\coqdockw{end}.\coqdoceol
+\coqdocemptyline
+\coqdocindent{1.00em}
+\coqdockw{Definition} \coqdocvar{Expr} \coqdocvar{t} := \coqdockw{\ensuremath{\forall}} \coqdocvar{var}, @\coqdocvar{expr} \coqdocvar{var} \coqdocvar{t}.\coqdoceol
+\coqdocindent{1.00em}
+\coqdockw{Definition} \coqdocvar{Denote} \{\coqdocvar{t}\} (\coqdocvar{e} : \coqdocvar{Expr} \coqdocvar{t}) := \coqdocvar{denote} (\coqdocvar{e} \coqdocvar{type\_denote}).\coqdoceol
+\coqdocemptyline
+\end{coqdoccode}
+To reify these sorts of terms, the trick is to pair \coqdocvar{App} and
+      \coqdocvar{Abs} nodes with the functions.  Note also that there must be a
+      clear distinction between types that we reify and types that we
+      don't; we choose here to handle only \coqdocvar{list} \coqdocvar{nat}, but we could
+      extend this to include, e.g., \coqdocvar{list} (\coqdocvar{list} \coqdocvar{nat}) and \coqdocvar{list} (\coqdocvar{nat}
+      \ensuremath{\rightarrow} \coqdocvar{nat}).  We can't extend it to handle \coqdocvar{list} (\coqdocvar{anything})
+      without changing the type of type codes, because we need a clear
+      separation between what we reify and what we don't. 
+
+ Due to \url{https://github.com/coq/coq/issues/7195}, we can
+      only adjust types on the first binder, so we need a function
+      that swaps the first two binders. \begin{coqdoccode}
+\coqdocemptyline
+\coqdocindent{1.00em}
+\coqdockw{Ltac} \coqdocvar{swap\_first\_two\_binders} \coqdocvar{x} :=\coqdoceol
+\coqdocindent{2.00em}
+\coqdockw{lazymatch} \coqdocvar{x} \coqdockw{with}\coqdoceol
+\coqdocindent{2.00em}
+\ensuremath{|} \coqdockw{fun} \coqdocvar{a} \coqdocvar{b} \ensuremath{\Rightarrow} @?\coqdocvar{x'} \coqdocvar{b} \coqdocvar{a} \ensuremath{\Rightarrow} \coqdocvar{x'}\coqdoceol
+\coqdocindent{2.00em}
+\coqdockw{end}.\coqdoceol
+\coqdocindent{1.00em}
+\coqdockw{Ltac} \coqdocvar{adjust\_first\_binder\_to\_type} \coqdocvar{rx} :=\coqdoceol
+\coqdocindent{2.00em}
+\coqdockw{lazymatch} \coqdocvar{rx} \coqdockw{with}\coqdoceol
+\coqdocindent{2.00em}
+\ensuremath{|} (\coqdockw{fun} (\coqdocvar{N} : \coqdockw{Set}) \ensuremath{\Rightarrow} ?\coqdocvar{rx}) \ensuremath{\Rightarrow} \coqdockw{constr}:(\coqdockw{fun} (\coqdocvar{N} : \coqdockw{Type}) \ensuremath{\Rightarrow} \coqdocvar{rx})\coqdoceol
+\coqdocindent{2.00em}
+\coqdockw{end}.\coqdoceol
+\coqdocindent{1.00em}
+\coqdockw{Ltac} \coqdocvar{Reify} \coqdocvar{x} :=\coqdoceol
+\coqdocindent{2.00em}
+\coqdockw{let} \coqdocvar{rx} := \coqdockw{lazymatch} (\coqdoctac{eval} \coqdoctac{pattern} \coqdocvar{nat}, (\coqdocvar{list} \coqdocvar{nat}), \coqdocvar{O}, \coqdocvar{S}, \coqdocvar{Nat.mul},\coqdoceol
+\coqdocindent{12.50em}
+(@\coqdocvar{nil} \coqdocvar{nat}), (@\coqdocvar{cons} \coqdocvar{nat}), (@\coqdocvar{List.map} \coqdocvar{nat} \coqdocvar{nat})\coqdoceol
+\coqdocindent{13.00em}
+\coqdoctac{in} \coqdocvar{x}) \coqdockw{with}\coqdoceol
+\coqdocindent{7.00em}
+\ensuremath{|} ?\coqdocvar{rx} \coqdocvar{\_} \coqdocvar{\_} \coqdocvar{\_} \coqdocvar{\_} \coqdocvar{\_} \coqdocvar{\_} \coqdocvar{\_} \coqdocvar{\_} \ensuremath{\Rightarrow} \coqdocvar{rx} \coqdockw{end} \coqdoctac{in}\coqdoceol
+\coqdocindent{2.00em}
+\coqdockw{let} \coqdocvar{rx} := \coqdocvar{adjust\_first\_binder\_to\_type} \coqdocvar{rx} \coqdoctac{in}\coqdoceol
+\coqdocindent{2.00em}
+\coqdockw{let} \coqdocvar{rx} := \coqdocvar{swap\_first\_two\_binders} \coqdocvar{rx} \coqdoctac{in}\coqdoceol
+\coqdocindent{2.00em}
+\coqdockw{let} \coqdocvar{rx} := \coqdocvar{adjust\_first\_binder\_to\_type} \coqdocvar{rx} \coqdoctac{in}\coqdoceol
+\coqdocindent{2.00em}
+\coqdockw{let} \coqdocvar{rx} := \coqdocvar{swap\_first\_two\_binders} \coqdocvar{rx} \coqdoctac{in}\coqdoceol
+\coqdocindent{2.00em}
+\end{coqdoccode}
+Now we propagate universe constraints, because \coqdocvar{nat} is in
+        \coqdockw{Set} but \coqdocvar{expr} is in \coqdockw{Type}; c.f.,
+        \url{https://github.com/coq/coq/issues/5996} \begin{coqdoccode}
+\coqdocnoindent
+\coqdoceol
+\coqdocindent{2.00em}
+\coqdockw{let} \coqdocvar{\_\_} := \coqdockw{type} \coqdockw{of} \coqdocvar{rx} \coqdoctac{in}\coqdoceol
+\coqdocindent{2.00em}
+\coqdockw{constr}:(\coqdockw{fun} \coqdocvar{var}\coqdoceol
+\coqdocindent{6.00em}
+\ensuremath{\Rightarrow} (\coqdocvar{rx} (@\coqdocvar{expr} \coqdocvar{var} \coqdocvar{NAT}) (@\coqdocvar{expr} \coqdocvar{var} (\coqdocvar{LIST} \coqdocvar{NAT}))\coqdoceol
+\coqdocindent{9.50em}
+\coqdocvar{NatO}\coqdoceol
+\coqdocindent{9.50em}
+(\coqdockw{fun} \coqdocvar{a} \ensuremath{\Rightarrow} \coqdocvar{NatS} @ \coqdocvar{a})\coqdoceol
+\coqdocindent{9.50em}
+(\coqdockw{fun} \coqdocvar{a} \coqdocvar{b} \ensuremath{\Rightarrow} \coqdocvar{NatMul} @ \coqdocvar{a} @ \coqdocvar{b})\coqdoceol
+\coqdocindent{9.50em}
+\coqdocvar{Nil}\coqdoceol
+\coqdocindent{9.50em}
+(\coqdockw{fun} \coqdocvar{v} \coqdocvar{vs} \ensuremath{\Rightarrow} \coqdocvar{Cons} @ \coqdocvar{v} @ \coqdocvar{vs})\coqdoceol
+\coqdocindent{9.50em}
+(\coqdockw{fun} \coqdocvar{f} \coqdocvar{ls} \ensuremath{\Rightarrow} \coqdocvar{Map} @ (\coqdocvar{\ensuremath{\lambda}} \coqdocvar{v}, \coqdocvar{f} (\coqdocvar{Var} \coqdocvar{v})) @ \coqdocvar{ls}))\%\coqdocvar{expr}).\coqdoceol
+\coqdocemptyline
+\coqdocindent{1.00em}
+\coqdockw{Goal} \coqdocvar{True}.\coqdoceol
+\coqdocindent{2.00em}
+\coqdockw{let} \coqdocvar{r} := \coqdocvar{Reify} (\coqdocvar{List.map} (\coqdockw{fun} \coqdocvar{x} \ensuremath{\Rightarrow} \coqdocvar{x} \ensuremath{\times} \coqdocvar{x}) (1 :: 2 :: 3 :: \coqdocvar{nil})) \coqdoctac{in}\coqdoceol
+\coqdocindent{2.00em}
+\coqdoctac{pose} \coqdocvar{r} \coqdockw{as} \coqdocvar{rx}.\coqdoceol
+\end{coqdoccode}
+Now we check that we got what we wanted \begin{coqdoccode}
+\coqdocemptyline
+\coqdocindent{2.00em}
+\coqdoctac{pose} (\coqdocvar{eq\_refl}\coqdoceol
+\coqdocindent{5.00em}
+: \coqdocvar{rx}\coqdoceol
+\coqdocindent{6.00em}
+= (\coqdockw{fun} \coqdocvar{var} \ensuremath{\Rightarrow}\coqdoceol
+\coqdocindent{8.50em}
+\coqdocvar{Map}\coqdoceol
+\coqdocindent{9.50em}
+@ (\coqdocvar{\ensuremath{\lambda}} \coqdocvar{v} : \coqdocvar{var} \coqdocvar{NAT}, \coqdocvar{NatMul} @ \coqdocvar{Var} \coqdocvar{v} @ \coqdocvar{Var} \coqdocvar{v})\coqdoceol
+\coqdocindent{9.50em}
+@ (\coqdocvar{Cons}\coqdoceol
+\coqdocindent{12.00em}
+@ (\coqdocvar{NatS} @ \coqdocvar{NatO})\coqdoceol
+\coqdocindent{12.00em}
+@ (\coqdocvar{Cons}\coqdoceol
+\coqdocindent{14.50em}
+@ (\coqdocvar{NatS} @ (\coqdocvar{NatS} @ \coqdocvar{NatO}))\coqdoceol
+\coqdocindent{14.50em}
+@ (\coqdocvar{Cons}\coqdoceol
+\coqdocindent{17.00em}
+@ (\coqdocvar{NatS} @ (\coqdocvar{NatS} @ (\coqdocvar{NatS} @ \coqdocvar{NatO})))\coqdoceol
+\coqdocindent{17.00em}
+@ \coqdocvar{Nil}))))\%\coqdocvar{expr}).\coqdoceol
+\coqdocindent{1.00em}
+\coqdockw{Abort}.\coqdoceol
+\coqdocnoindent
+\coqdockw{End} \coqdocvar{AbstractionList}.\coqdoceol
+\end{coqdoccode}

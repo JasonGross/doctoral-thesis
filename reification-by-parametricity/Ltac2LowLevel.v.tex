@@ -1,0 +1,420 @@
+\begin{coqdoccode}
+\end{coqdoccode}
+\section{Reification by Ltac2, using unsafe low-level primitives}
+
+\begin{coqdoccode}
+\coqdocnoindent
+\coqdockw{Require} \coqdockw{Import} \coqdocvar{Reify.ReifyCommon}.\coqdoceol
+\coqdocnoindent
+\coqdockw{Require} \coqdockw{Import} \coqdocvar{Reify.Ltac2Common}.\coqdoceol
+\coqdocnoindent
+\coqdockw{Import} \coqdocvar{Ltac2.Init}.\coqdoceol
+\coqdocnoindent
+\coqdockw{Import} \coqdocvar{Ltac2.Notations}.\coqdoceol
+\coqdocemptyline
+\coqdocnoindent
+\coqdockw{Ltac}2 \coqdocvar{if\_doing\_trans} (\coqdocvar{tac} : \coqdocvar{unit} \ensuremath{\rightarrow} '\coqdocvar{a}) (\coqdocvar{default} : '\coqdocvar{a}) :=\coqdoceol
+\coqdocindent{1.00em}
+\coqdockw{let} \coqdocvar{do\_trans} := '(\coqdocvar{do\_transitivity}) \coqdoctac{in}\coqdoceol
+\coqdocindent{1.00em}
+(\coqdocvar{lazy\_match}! \coqdocvar{do\_trans} \coqdockw{with}\coqdoceol
+\coqdocindent{1.00em}
+\ensuremath{|} \coqdocvar{true} \ensuremath{\Rightarrow} \coqdocvar{tac} ()\coqdoceol
+\coqdocindent{1.00em}
+\ensuremath{|} \coqdocvar{false} \ensuremath{\Rightarrow} \coqdocvar{default}\coqdoceol
+\coqdocindent{1.00em}
+\coqdockw{end}).\coqdoceol
+\coqdocemptyline
+\end{coqdoccode}
+This function is parameterized over the constants which we are
+    reifying (\coqdocvar{gO}, \coqdocvar{gS}, \coqdocvar{gNatMul}, \coqdocvar{gLetIn}) and over Ltac2
+    functions that build applications of the reified versions of these
+    functions to reified arguments. \begin{coqdoccode}
+\coqdocnoindent
+\coqdockw{Ltac}2 \coqdockw{rec} \coqdocvar{unsafe\_reify\_helper}\coqdoceol
+\coqdocindent{3.00em}
+(\coqdocvar{mkVar} : \coqdockw{constr} \ensuremath{\rightarrow} '\coqdocvar{a})\coqdoceol
+\coqdocindent{3.00em}
+(\coqdocvar{mkO} : '\coqdocvar{a})\coqdoceol
+\coqdocindent{3.00em}
+(\coqdocvar{mkS} : '\coqdocvar{a} \ensuremath{\rightarrow} '\coqdocvar{a})\coqdoceol
+\coqdocindent{3.00em}
+(\coqdocvar{mkNatMul} : '\coqdocvar{a} \ensuremath{\rightarrow} '\coqdocvar{a} \ensuremath{\rightarrow} '\coqdocvar{a})\coqdoceol
+\coqdocindent{3.00em}
+(\coqdocvar{mkLetIn} : '\coqdocvar{a} \ensuremath{\rightarrow} \coqdocvar{ident} \coqdocvar{option} \ensuremath{\rightarrow} \coqdockw{constr} \ensuremath{\rightarrow} '\coqdocvar{a} \ensuremath{\rightarrow} '\coqdocvar{a})\coqdoceol
+\coqdocindent{3.00em}
+(\coqdocvar{gO} : \coqdockw{constr})\coqdoceol
+\coqdocindent{3.00em}
+(\coqdocvar{gS} : \coqdockw{constr})\coqdoceol
+\coqdocindent{3.00em}
+(\coqdocvar{gNatMul} : \coqdockw{constr})\coqdoceol
+\coqdocindent{3.00em}
+(\coqdocvar{gLetIn} : \coqdockw{constr})\coqdoceol
+\coqdocindent{3.00em}
+(\coqdocvar{unrecognized} : \coqdockw{constr} \ensuremath{\rightarrow} '\coqdocvar{a})\coqdoceol
+\coqdocindent{3.00em}
+(\coqdocvar{term} : \coqdockw{constr})\coqdoceol
+\coqdocindent{1.00em}
+:=\coqdoceol
+\coqdocindent{2.00em}
+\coqdockw{let} \coqdocvar{reify\_rec} \coqdocvar{term} :=\coqdoceol
+\coqdocindent{4.00em}
+\coqdocvar{unsafe\_reify\_helper}\coqdoceol
+\coqdocindent{5.00em}
+\coqdocvar{mkVar} \coqdocvar{mkO} \coqdocvar{mkS} \coqdocvar{mkNatMul} \coqdocvar{mkLetIn} \coqdocvar{gO} \coqdocvar{gS} \coqdocvar{gNatMul} \coqdocvar{gLetIn} \coqdocvar{unrecognized} \coqdocvar{term} \coqdoctac{in}\coqdoceol
+\coqdocindent{2.00em}
+\coqdockw{let} \coqdocvar{kterm} := \coqdocvar{Constr.Unsafe.kind} \coqdocvar{term} \coqdoctac{in}\coqdoceol
+\coqdocindent{2.00em}
+\coqdockw{match} \coqdocvar{Constr.equal} \coqdocvar{term} \coqdocvar{gO} \coqdockw{with}\coqdoceol
+\coqdocindent{2.00em}
+\ensuremath{|} \coqdocvar{true}\coqdoceol
+\coqdocindent{3.00em}
+\ensuremath{\Rightarrow} \coqdocvar{mkO}\coqdoceol
+\coqdocindent{2.00em}
+\ensuremath{|} \coqdocvar{false}\coqdoceol
+\coqdocindent{3.00em}
+\ensuremath{\Rightarrow}\coqdoceol
+\coqdocindent{3.00em}
+\coqdockw{match} \coqdocvar{kterm} \coqdockw{with}\coqdoceol
+\coqdocindent{3.00em}
+\ensuremath{|} \coqdocvar{Constr.Unsafe.Rel} \coqdocvar{\_} \ensuremath{\Rightarrow} \coqdocvar{mkVar} \coqdocvar{term}\coqdoceol
+\coqdocindent{3.00em}
+\ensuremath{|} \coqdocvar{Constr.Unsafe.Var} \coqdocvar{\_} \ensuremath{\Rightarrow} \coqdocvar{mkVar} \coqdocvar{term}\coqdoceol
+\coqdocindent{3.00em}
+\ensuremath{|} \coqdocvar{Constr.Unsafe.Cast} \coqdocvar{term} \coqdocvar{\_} \coqdocvar{\_} \ensuremath{\Rightarrow} \coqdocvar{reify\_rec} \coqdocvar{term}\coqdoceol
+\coqdocindent{3.00em}
+\ensuremath{|} \coqdocvar{Constr.Unsafe.App} \coqdocvar{f} \coqdocvar{args}\coqdoceol
+\coqdocindent{4.00em}
+\ensuremath{\Rightarrow}\coqdoceol
+\coqdocindent{4.00em}
+\coqdockw{match} \coqdocvar{Constr.equal} \coqdocvar{f} \coqdocvar{gS} \coqdockw{with}\coqdoceol
+\coqdocindent{4.00em}
+\ensuremath{|} \coqdocvar{true}\coqdoceol
+\coqdocindent{5.00em}
+\ensuremath{\Rightarrow} \coqdockw{let} \coqdocvar{x} := \coqdocvar{Array.get} \coqdocvar{args} 0 \coqdoctac{in}\coqdoceol
+\coqdocindent{6.50em}
+\coqdockw{let} \coqdocvar{rx} := \coqdocvar{reify\_rec} \coqdocvar{x} \coqdoctac{in}\coqdoceol
+\coqdocindent{6.50em}
+\coqdocvar{mkS} \coqdocvar{rx}\coqdoceol
+\coqdocindent{4.00em}
+\ensuremath{|} \coqdocvar{false}\coqdoceol
+\coqdocindent{5.00em}
+\ensuremath{\Rightarrow}\coqdoceol
+\coqdocindent{5.00em}
+\coqdockw{match} \coqdocvar{Constr.equal} \coqdocvar{f} \coqdocvar{gNatMul} \coqdockw{with}\coqdoceol
+\coqdocindent{5.00em}
+\ensuremath{|} \coqdocvar{true}\coqdoceol
+\coqdocindent{6.00em}
+\ensuremath{\Rightarrow} \coqdockw{let} \coqdocvar{x} := \coqdocvar{Array.get} \coqdocvar{args} 0 \coqdoctac{in}\coqdoceol
+\coqdocindent{7.50em}
+\coqdockw{let} \coqdocvar{y} := \coqdocvar{Array.get} \coqdocvar{args} 1 \coqdoctac{in}\coqdoceol
+\coqdocindent{7.50em}
+\coqdockw{let} \coqdocvar{rx} := \coqdocvar{reify\_rec} \coqdocvar{x} \coqdoctac{in}\coqdoceol
+\coqdocindent{7.50em}
+\coqdockw{let} \coqdocvar{ry} := \coqdocvar{reify\_rec} \coqdocvar{y} \coqdoctac{in}\coqdoceol
+\coqdocindent{7.50em}
+\coqdocvar{mkNatMul} \coqdocvar{rx} \coqdocvar{ry}\coqdoceol
+\coqdocindent{5.00em}
+\ensuremath{|} \coqdocvar{false}\coqdoceol
+\coqdocindent{6.00em}
+\ensuremath{\Rightarrow}\coqdoceol
+\coqdocindent{6.00em}
+\coqdockw{match} \coqdocvar{Constr.equal} \coqdocvar{f} \coqdocvar{gLetIn} \coqdockw{with}\coqdoceol
+\coqdocindent{6.00em}
+\ensuremath{|} \coqdocvar{true}\coqdoceol
+\coqdocindent{7.00em}
+\ensuremath{\Rightarrow} \coqdockw{let} \coqdocvar{x} := \coqdocvar{Array.get} \coqdocvar{args} 2  \coqdoctac{in}\coqdoceol
+\coqdocindent{8.50em}
+\coqdockw{let} \coqdocvar{f} := \coqdocvar{Array.get} \coqdocvar{args} 3 \coqdoctac{in}\coqdoceol
+\coqdocindent{8.50em}
+\coqdockw{match} \coqdocvar{Constr.Unsafe.kind} \coqdocvar{f} \coqdockw{with}\coqdoceol
+\coqdocindent{8.50em}
+\ensuremath{|} \coqdocvar{Constr.Unsafe.Lambda} \coqdocvar{idx} \coqdocvar{ty} \coqdocvar{body}\coqdoceol
+\coqdocindent{9.50em}
+\ensuremath{\Rightarrow} \coqdockw{let} \coqdocvar{rx} := \coqdocvar{reify\_rec} \coqdocvar{x} \coqdoctac{in}\coqdoceol
+\coqdocindent{11.00em}
+\coqdockw{let} \coqdocvar{rf} := \coqdocvar{reify\_rec} \coqdocvar{body} \coqdoctac{in}\coqdoceol
+\coqdocindent{11.00em}
+\coqdocvar{mkLetIn} \coqdocvar{rx} \coqdocvar{idx} \coqdocvar{ty} \coqdocvar{rf}\coqdoceol
+\coqdocindent{8.50em}
+\ensuremath{|} \coqdocvar{\_} \ensuremath{\Rightarrow} \coqdocvar{unrecognized} \coqdocvar{term}\coqdoceol
+\coqdocindent{8.50em}
+\coqdockw{end}\coqdoceol
+\coqdocindent{6.00em}
+\ensuremath{|} \coqdocvar{false}\coqdoceol
+\coqdocindent{7.00em}
+\ensuremath{\Rightarrow} \coqdocvar{unrecognized} \coqdocvar{term}\coqdoceol
+\coqdocindent{6.00em}
+\coqdockw{end}\coqdoceol
+\coqdocindent{5.00em}
+\coqdockw{end}\coqdoceol
+\coqdocindent{4.00em}
+\coqdockw{end}\coqdoceol
+\coqdocindent{3.00em}
+\ensuremath{|} \coqdocvar{\_}\coqdoceol
+\coqdocindent{4.00em}
+\ensuremath{\Rightarrow} \coqdocvar{unrecognized} \coqdocvar{term}\coqdoceol
+\coqdocindent{3.00em}
+\coqdockw{end}\coqdoceol
+\coqdocindent{2.00em}
+\coqdockw{end}.\coqdoceol
+\coqdocemptyline
+\coqdocnoindent
+\coqdockw{Ltac}2 \coqdocvar{unsafe\_reify} (\coqdocvar{var} : \coqdockw{constr}) (\coqdocvar{term} : \coqdockw{constr}) :=\coqdoceol
+\coqdocindent{1.00em}
+\coqdockw{let} \coqdocvar{cVar} := '@\coqdocvar{Var} \coqdoctac{in}\coqdoceol
+\coqdocindent{1.00em}
+\coqdockw{let} \coqdocvar{cO} := '@\coqdocvar{NatO} \coqdoctac{in}\coqdoceol
+\coqdocindent{1.00em}
+\coqdockw{let} \coqdocvar{cS} := '@\coqdocvar{NatS} \coqdoctac{in}\coqdoceol
+\coqdocindent{1.00em}
+\coqdockw{let} \coqdocvar{cNatMul} := '@\coqdocvar{NatMul} \coqdoctac{in}\coqdoceol
+\coqdocindent{1.00em}
+\coqdockw{let} \coqdocvar{cLetIn} := '@\coqdocvar{LetIn} \coqdoctac{in}\coqdoceol
+\coqdocindent{1.00em}
+\coqdockw{let} \coqdocvar{gO} := '\coqdocvar{O} \coqdoctac{in}\coqdoceol
+\coqdocindent{1.00em}
+\coqdockw{let} \coqdocvar{gS} := '\coqdocvar{S} \coqdoctac{in}\coqdoceol
+\coqdocindent{1.00em}
+\coqdockw{let} \coqdocvar{gNatMul} := '@\coqdocvar{Nat.mul} \coqdoctac{in}\coqdoceol
+\coqdocindent{1.00em}
+\coqdockw{let} \coqdocvar{gLetIn} := '@\coqdocvar{Let\_In} \coqdoctac{in}\coqdoceol
+\coqdocindent{1.00em}
+\coqdockw{let} \coqdocvar{mk0VarArgs} :=\coqdoceol
+\coqdocindent{3.00em}
+\coqdockw{let} \coqdocvar{args} := \coqdocvar{Array.make} 1 \coqdocvar{var} \coqdoctac{in}\coqdoceol
+\coqdocindent{3.00em}
+\coqdocvar{args} \coqdoctac{in}\coqdoceol
+\coqdocindent{1.00em}
+\coqdockw{let} \coqdocvar{mk1VarArgs} (\coqdocvar{x} : \coqdockw{constr}) :=\coqdoceol
+\coqdocindent{3.00em}
+\coqdockw{let} \coqdocvar{args} := \coqdocvar{Array.make} 2 \coqdocvar{var} \coqdoctac{in}\coqdoceol
+\coqdocindent{3.00em}
+\coqdockw{let} () := \coqdocvar{Array.set} \coqdocvar{args} 1 \coqdocvar{x} \coqdoctac{in}\coqdoceol
+\coqdocindent{3.00em}
+\coqdocvar{args} \coqdoctac{in}\coqdoceol
+\coqdocindent{1.00em}
+\coqdockw{let} \coqdocvar{mk2VarArgs} (\coqdocvar{x} : \coqdockw{constr}) (\coqdocvar{y} : \coqdockw{constr}) :=\coqdoceol
+\coqdocindent{3.00em}
+\coqdockw{let} \coqdocvar{args} := \coqdocvar{Array.make} 3 \coqdocvar{var} \coqdoctac{in}\coqdoceol
+\coqdocindent{3.00em}
+\coqdockw{let} () := \coqdocvar{Array.set} \coqdocvar{args} 1 \coqdocvar{x} \coqdoctac{in}\coqdoceol
+\coqdocindent{3.00em}
+\coqdockw{let} () := \coqdocvar{Array.set} \coqdocvar{args} 2 \coqdocvar{y} \coqdoctac{in}\coqdoceol
+\coqdocindent{3.00em}
+\coqdocvar{args} \coqdoctac{in}\coqdoceol
+\coqdocindent{1.00em}
+\coqdockw{let} \coqdocvar{mkApp0} (\coqdocvar{f} : \coqdockw{constr}) :=\coqdoceol
+\coqdocindent{3.00em}
+\coqdocvar{Constr.Unsafe.make} (\coqdocvar{Constr.Unsafe.App} \coqdocvar{f} \coqdocvar{mk0VarArgs}) \coqdoctac{in}\coqdoceol
+\coqdocindent{1.00em}
+\coqdockw{let} \coqdocvar{mkApp1} (\coqdocvar{f} : \coqdockw{constr}) (\coqdocvar{x} : \coqdockw{constr}) :=\coqdoceol
+\coqdocindent{3.00em}
+\coqdocvar{Constr.Unsafe.make} (\coqdocvar{Constr.Unsafe.App} \coqdocvar{f} (\coqdocvar{mk1VarArgs} \coqdocvar{x})) \coqdoctac{in}\coqdoceol
+\coqdocindent{1.00em}
+\coqdockw{let} \coqdocvar{mkApp2} (\coqdocvar{f} : \coqdockw{constr}) (\coqdocvar{x} : \coqdockw{constr}) (\coqdocvar{y} : \coqdockw{constr}) :=\coqdoceol
+\coqdocindent{3.00em}
+\coqdocvar{Constr.Unsafe.make} (\coqdocvar{Constr.Unsafe.App} \coqdocvar{f} (\coqdocvar{mk2VarArgs} \coqdocvar{x} \coqdocvar{y})) \coqdoctac{in}\coqdoceol
+\coqdocindent{1.00em}
+\coqdockw{let} \coqdocvar{mkVar} (\coqdocvar{v} : \coqdockw{constr}) := \coqdocvar{mkApp1} \coqdocvar{cVar} \coqdocvar{v} \coqdoctac{in}\coqdoceol
+\coqdocindent{1.00em}
+\coqdockw{let} \coqdocvar{mkO} := \coqdocvar{mkApp0} \coqdocvar{cO} \coqdoctac{in}\coqdoceol
+\coqdocindent{1.00em}
+\coqdockw{let} \coqdocvar{mkS} (\coqdocvar{v} : \coqdockw{constr}) := \coqdocvar{mkApp1} \coqdocvar{cS} \coqdocvar{v} \coqdoctac{in}\coqdoceol
+\coqdocindent{1.00em}
+\coqdockw{let} \coqdocvar{mkNatMul} (\coqdocvar{x} : \coqdockw{constr}) (\coqdocvar{y} : \coqdockw{constr}) := \coqdocvar{mkApp2} \coqdocvar{cNatMul} \coqdocvar{x} \coqdocvar{y} \coqdoctac{in}\coqdoceol
+\coqdocindent{1.00em}
+\coqdockw{let} \coqdocvar{mkcLetIn} (\coqdocvar{x} : \coqdockw{constr}) (\coqdocvar{y} : \coqdockw{constr}) := \coqdocvar{mkApp2} \coqdocvar{cLetIn} \coqdocvar{x} \coqdocvar{y} \coqdoctac{in}\coqdoceol
+\coqdocindent{1.00em}
+\coqdockw{let} \coqdocvar{mkLetIn} (\coqdocvar{x} : \coqdockw{constr}) (\coqdocvar{idx} : \coqdocvar{ident} \coqdocvar{option}) (\coqdocvar{ty} : \coqdockw{constr}) (\coqdocvar{fbody} : \coqdockw{constr})\coqdoceol
+\coqdocindent{3.00em}
+:= \coqdocvar{mkcLetIn} \coqdocvar{x} (\coqdocvar{Constr.Unsafe.make} (\coqdocvar{Constr.Unsafe.Lambda} \coqdocvar{idx} \coqdocvar{var} \coqdocvar{fbody})) \coqdoctac{in}\coqdoceol
+\coqdocindent{1.00em}
+\coqdockw{let} \coqdocvar{ret} := \coqdocvar{unsafe\_reify\_helper}\coqdoceol
+\coqdocindent{7.50em}
+\coqdocvar{mkVar} \coqdocvar{mkO} \coqdocvar{mkS} \coqdocvar{mkNatMul} \coqdocvar{mkLetIn} \coqdocvar{gO} \coqdocvar{gS} \coqdocvar{gNatMul} \coqdocvar{gLetIn}\coqdoceol
+\coqdocindent{7.50em}
+(\coqdockw{fun} \coqdocvar{term} \ensuremath{\Rightarrow} \coqdocvar{term})\coqdoceol
+\coqdocindent{7.50em}
+\coqdocvar{term} \coqdoctac{in}\coqdoceol
+\coqdocindent{1.00em}
+\coqdocvar{ret}.\coqdoceol
+\coqdocnoindent
+\coqdockw{Ltac}2 \coqdocvar{check\_result} (\coqdocvar{ret} : \coqdockw{constr}) :=\coqdoceol
+\coqdocindent{1.00em}
+\coqdockw{match} \coqdocvar{Constr.Unsafe.check} \coqdocvar{ret} \coqdockw{with}\coqdoceol
+\coqdocindent{1.00em}
+\ensuremath{|} \coqdocvar{Val} \coqdocvar{rterm} \ensuremath{\Rightarrow} \coqdocvar{rterm}\coqdoceol
+\coqdocindent{1.00em}
+\ensuremath{|} \coqdocvar{Err} \coqdocvar{exn} \ensuremath{\Rightarrow} \coqdocvar{Control.zero} \coqdocvar{exn}\coqdoceol
+\coqdocindent{1.00em}
+\coqdockw{end}.\coqdoceol
+\coqdocnoindent
+\coqdockw{Ltac}2 \coqdocvar{reify} (\coqdocvar{var} : \coqdockw{constr}) (\coqdocvar{term} : \coqdockw{constr}) :=\coqdoceol
+\coqdocindent{1.00em}
+\coqdocvar{check\_result} (\coqdocvar{unsafe\_reify} \coqdocvar{var} \coqdocvar{term}).\coqdoceol
+\coqdocemptyline
+\coqdocnoindent
+\coqdockw{Ltac}2 \coqdocvar{unsafe\_Reify} (\coqdocvar{term} : \coqdockw{constr}) :=\coqdoceol
+\coqdocindent{1.00em}
+\coqdockw{let} \coqdocvar{fresh\_set} := \coqdocvar{Fresh.Free.of\_constr} \coqdocvar{term} \coqdoctac{in}\coqdoceol
+\coqdocindent{1.00em}
+\coqdockw{let} \coqdocvar{idvar} := \coqdocvar{Fresh.fresh} \coqdocvar{fresh\_set} @\coqdocvar{var} \coqdoctac{in}\coqdoceol
+\coqdocindent{1.00em}
+\coqdockw{let} \coqdocvar{var} := \coqdocvar{Constr.Unsafe.make} (\coqdocvar{Constr.Unsafe.Var} \coqdocvar{idvar}) \coqdoctac{in}\coqdoceol
+\coqdocindent{1.00em}
+\coqdockw{let} \coqdocvar{rterm} := \coqdocvar{unsafe\_reify} \coqdocvar{var} \coqdocvar{term} \coqdoctac{in}\coqdoceol
+\coqdocindent{1.00em}
+\coqdockw{let} \coqdocvar{rterm} := \coqdocvar{Constr.Unsafe.closenl} [\coqdocvar{idvar}] 1 \coqdocvar{rterm} \coqdoctac{in}\coqdoceol
+\coqdocindent{1.00em}
+\coqdocvar{Constr.Unsafe.make} (\coqdocvar{Constr.Unsafe.Lambda} (\coqdocvar{Some} \coqdocvar{idvar}) '\coqdockw{Type} \coqdocvar{rterm}).\coqdoceol
+\coqdocemptyline
+\coqdocnoindent
+\coqdockw{Ltac}2 \coqdocvar{do\_Reify} (\coqdocvar{term} : \coqdockw{constr}) :=\coqdoceol
+\coqdocindent{1.00em}
+\coqdocvar{check\_result} (\coqdocvar{unsafe\_Reify} \coqdocvar{term}).\coqdoceol
+\coqdocemptyline
+\coqdocnoindent
+\coqdockw{Ltac}2 \coqdocvar{unsafe\_mkApp1} (\coqdocvar{f} : \coqdockw{constr}) (\coqdocvar{x} : \coqdockw{constr}) :=\coqdoceol
+\coqdocindent{1.00em}
+\coqdockw{let} \coqdocvar{args} := \coqdocvar{Array.make} 1 \coqdocvar{x} \coqdoctac{in}\coqdoceol
+\coqdocindent{1.00em}
+\coqdocvar{Constr.Unsafe.make} (\coqdocvar{Constr.Unsafe.App} \coqdocvar{f} \coqdocvar{args}).\coqdoceol
+\coqdocnoindent
+\coqdockw{Ltac}2 \coqdocvar{mkApp1} (\coqdocvar{f} : \coqdockw{constr}) (\coqdocvar{x} : \coqdockw{constr}) :=\coqdoceol
+\coqdocindent{1.00em}
+\coqdocvar{check\_result} (\coqdocvar{unsafe\_mkApp1} \coqdocvar{f} \coqdocvar{x}).\coqdoceol
+\coqdocemptyline
+\coqdocnoindent
+\coqdockw{Ltac}2 \coqdocvar{all\_flags} :=\coqdoceol
+\coqdocindent{1.00em}
+\{\coqdoceol
+\coqdocindent{2.00em}
+\coqdocvar{Std.rBeta} := \coqdocvar{true}; \coqdocvar{Std.rMatch} := \coqdocvar{true}; \coqdocvar{Std.rFix} := \coqdocvar{true}; \coqdocvar{Std.rCofix} := \coqdocvar{true};\coqdoceol
+\coqdocindent{2.00em}
+\coqdocvar{Std.rZeta} := \coqdocvar{true}; \coqdocvar{Std.rDelta} := \coqdocvar{true}; \coqdocvar{Std.rConst} := [];\coqdoceol
+\coqdocindent{1.00em}
+\}.\coqdoceol
+\coqdocnoindent
+\coqdockw{Ltac}2 \coqdocvar{betaiota\_flags} :=\coqdoceol
+\coqdocindent{1.00em}
+\{\coqdoceol
+\coqdocindent{2.00em}
+\coqdocvar{Std.rBeta} := \coqdocvar{true}; \coqdocvar{Std.rMatch} := \coqdocvar{true}; \coqdocvar{Std.rFix} := \coqdocvar{true}; \coqdocvar{Std.rCofix} := \coqdocvar{true};\coqdoceol
+\coqdocindent{2.00em}
+\coqdocvar{Std.rZeta} := \coqdocvar{false}; \coqdocvar{Std.rDelta} := \coqdocvar{false}; \coqdocvar{Std.rConst} := [];\coqdoceol
+\coqdocindent{1.00em}
+\}.\coqdoceol
+\coqdocnoindent
+\coqdockw{Ltac}2 \coqdocvar{in\_goal} :=\coqdoceol
+\coqdocindent{1.00em}
+\{ \coqdocvar{Std.on\_hyps} := \coqdocvar{None}; \coqdocvar{Std.on\_concl} := \coqdocvar{Std.AllOccurrences} \}.\coqdoceol
+\coqdocemptyline
+\coqdocnoindent
+\coqdockw{Ltac}2 \coqdocvar{do\_Reify\_rhs\_fast} () :=\coqdoceol
+\coqdocindent{1.00em}
+\coqdockw{let} \coqdocvar{g} := \coqdocvar{Control.goal} () \coqdoctac{in}\coqdoceol
+\coqdocindent{1.00em}
+\coqdockw{match} \coqdocvar{Constr.Unsafe.kind} \coqdocvar{g} \coqdockw{with}\coqdoceol
+\coqdocindent{1.00em}
+\ensuremath{|} \coqdocvar{Constr.Unsafe.App} \coqdocvar{f} \coqdocvar{args} \coqdoceol
+\coqdocindent{2.00em}
+\ensuremath{\Rightarrow} \coqdockw{let} \coqdocvar{v} := \coqdocvar{Array.get} \coqdocvar{args} 2 \coqdoctac{in}\coqdoceol
+\coqdocindent{3.50em}
+\coqdockw{let} \coqdocvar{rv} := \coqdocvar{Control.time} (\coqdocvar{Some} "actual reif")\coqdoceol
+\coqdocindent{15.00em}
+(\coqdockw{fun} \coqdocvar{\_} \ensuremath{\Rightarrow} \coqdocvar{unsafe\_Reify} \coqdocvar{v}) \coqdoctac{in}\coqdoceol
+\coqdocindent{3.50em}
+\coqdockw{let} \coqdocvar{rv} := \coqdocvar{Control.time} (\coqdocvar{Some} "eval lazy")\coqdoceol
+\coqdocindent{15.00em}
+(\coqdockw{fun} \coqdocvar{\_} \ensuremath{\Rightarrow} \coqdocvar{Std.eval\_lazy} \coqdocvar{all\_flags} \coqdocvar{rv}) \coqdoctac{in}\coqdoceol
+\coqdocindent{3.50em}
+\coqdocvar{Control.time} (\coqdocvar{Some} "lazy beta iota")\coqdoceol
+\coqdocindent{10.00em}
+(\coqdockw{fun} \coqdocvar{\_} \ensuremath{\Rightarrow} \coqdocvar{Std.lazy} \coqdocvar{betaiota\_flags} \coqdocvar{in\_goal});\coqdoceol
+\coqdocindent{4.50em}
+\coqdocvar{if\_doing\_trans}\coqdoceol
+\coqdocindent{5.50em}
+(\coqdockw{fun} \coqdocvar{\_} \ensuremath{\Rightarrow} \coqdocvar{Control.time}\coqdoceol
+\coqdocindent{11.50em}
+(\coqdocvar{Some} "transitivity (Denote rv)")\coqdoceol
+\coqdocindent{11.50em}
+(\coqdockw{fun} \coqdocvar{\_} \ensuremath{\Rightarrow} \coqdocvar{Std.transitivity} (\coqdocvar{unsafe\_mkApp1} '\coqdocvar{Denote} \coqdocvar{rv}))) ()\coqdoceol
+\coqdocindent{1.00em}
+\ensuremath{|} \coqdocvar{\_}\coqdoceol
+\coqdocindent{2.00em}
+\ensuremath{\Rightarrow} \coqdocvar{Control.zero}\coqdoceol
+\coqdocindent{4.50em}
+(\coqdocvar{Tactic\_failure}\coqdoceol
+\coqdocindent{6.00em}
+(\coqdocvar{Some} (\coqdocvar{Message.concat}\coqdoceol
+\coqdocindent{10.50em}
+(\coqdocvar{Message.of\_string}\coqdoceol
+\coqdocindent{12.00em}
+"Invalid goal in Ltac2Unsafe.do\_Reify\_rhs\_fast: ")\coqdoceol
+\coqdocindent{10.50em}
+(\coqdocvar{Message.of\_constr} \coqdocvar{g}))))\coqdoceol
+\coqdocindent{1.00em}
+\coqdockw{end}.\coqdoceol
+\coqdocemptyline
+\coqdocnoindent
+\coqdockw{Ltac}2 \coqdocvar{do\_Reify\_rhs} () :=\coqdoceol
+\coqdocindent{1.00em}
+(\coqdocvar{lazy\_match}! \coqdockw{goal} \coqdockw{with}\coqdoceol
+\coqdocindent{1.00em}
+\ensuremath{|} [ \ensuremath{\vdash} \coqdocvar{\_} = ?\coqdocvar{v} ]\coqdoceol
+\coqdocindent{2.00em}
+\ensuremath{\Rightarrow} \coqdockw{let} \coqdocvar{rv} := \coqdocvar{do\_Reify} \coqdocvar{v} \coqdoctac{in}\coqdoceol
+\coqdocindent{3.50em}
+\coqdockw{let} \coqdocvar{rv} := \coqdocvar{Std.eval\_lazy} \coqdocvar{all\_flags} \coqdocvar{rv} \coqdoctac{in}\coqdoceol
+\coqdocindent{3.50em}
+\coqdocvar{if\_doing\_trans} (\coqdockw{fun} \coqdocvar{\_} \ensuremath{\Rightarrow} \coqdocvar{Std.transitivity} (\coqdocvar{mkApp1} '\coqdocvar{Denote} \coqdocvar{rv})) ()\coqdoceol
+\coqdocindent{1.00em}
+\ensuremath{|} [ \ensuremath{\vdash} ?\coqdocvar{g} ] \ensuremath{\Rightarrow} \coqdocvar{Control.zero}\coqdoceol
+\coqdocindent{9.50em}
+(\coqdocvar{Tactic\_failure}\coqdoceol
+\coqdocindent{11.00em}
+(\coqdocvar{Some} (\coqdocvar{Message.concat}\coqdoceol
+\coqdocindent{15.50em}
+(\coqdocvar{Message.of\_string}\coqdoceol
+\coqdocindent{17.00em}
+"Invalid goal in Ltac2Unsafe.do\_Reify\_rhs: ")\coqdoceol
+\coqdocindent{15.50em}
+(\coqdocvar{Message.of\_constr} \coqdocvar{g}))))\coqdoceol
+\coqdocindent{1.50em}
+\coqdockw{end}).\coqdoceol
+\coqdocemptyline
+\coqdocnoindent
+\coqdockw{Ltac} \coqdocvar{reify} \coqdocvar{var} \coqdocvar{term} :=\coqdoceol
+\coqdocindent{1.00em}
+\coqdockw{let} \coqdocvar{\_\_} := \coqdocvar{Ltac1.save\_ltac1\_result} (\coqdocvar{var}, \coqdocvar{term}) \coqdoctac{in}\coqdoceol
+\coqdocindent{1.00em}
+\coqdockw{let} \coqdocvar{ret} :=\coqdoceol
+\coqdocindent{3.00em}
+\coqdockw{constr}:(\coqdocvar{ltac2}:(\coqdockw{let} \coqdocvar{args} := \coqdocvar{Ltac1.get\_ltac1\_result} () \coqdoctac{in}\coqdoceol
+\coqdocindent{10.50em}
+(\coqdocvar{lazy\_match}! \coqdocvar{args} \coqdockw{with}\coqdoceol
+\coqdocindent{10.50em}
+\ensuremath{|} (?\coqdocvar{var}, ?\coqdocvar{term})\coqdoceol
+\coqdocindent{11.50em}
+\ensuremath{\Rightarrow} \coqdockw{let} \coqdocvar{rv} := \coqdocvar{reify} \coqdocvar{var} \coqdocvar{term} \coqdoctac{in}\coqdoceol
+\coqdocindent{13.00em}
+\coqdocvar{Control.refine} (\coqdockw{fun} () \ensuremath{\Rightarrow} \coqdocvar{rv})\coqdoceol
+\coqdocindent{10.50em}
+\ensuremath{|} \coqdocvar{\_} \ensuremath{\Rightarrow} \coqdocvar{Control.throw} \coqdocvar{Not\_found}\coqdoceol
+\coqdocindent{11.00em}
+\coqdockw{end}))) \coqdoctac{in}\coqdoceol
+\coqdocindent{1.00em}
+\coqdockw{let} \coqdocvar{\_\_} := \coqdocvar{Ltac1.clear\_ltac1\_results} () \coqdoctac{in}\coqdoceol
+\coqdocindent{1.00em}
+\coqdocvar{ret}.\coqdoceol
+\coqdocemptyline
+\coqdocnoindent
+\coqdockw{Ltac} \coqdocvar{Reify} \coqdocvar{x} := \coqdocvar{Reify\_of} \coqdocvar{reify} \coqdocvar{x}.\coqdoceol
+\coqdocnoindent
+\coqdockw{Ltac} \coqdocvar{do\_Reify\_rhs} \coqdocvar{\_} := \coqdocvar{ltac2}:(\coqdocvar{do\_Reify\_rhs\_fast} ()).\coqdoceol
+\coqdocnoindent
+\coqdockw{Ltac} \coqdocvar{post\_Reify\_rhs} := \coqdocvar{ReifyCommon.post\_Reify\_rhs}.\coqdoceol
+\coqdocnoindent
+\coqdockw{Ltac} \coqdocvar{Reify\_rhs} \coqdocvar{\_} := \coqdocvar{Reify\_rhs\_of} \coqdocvar{Reify} ().\coqdoceol
+\end{coqdoccode}

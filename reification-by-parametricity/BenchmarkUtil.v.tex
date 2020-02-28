@@ -1,0 +1,134 @@
+\begin{coqdoccode}
+\end{coqdoccode}
+\section{Various utilities for benchmarking}
+
+\begin{coqdoccode}
+\coqdocnoindent
+\coqdockw{Require} \coqdockw{Import} \coqdocvar{Coq.ZArith.ZArith}. \coqdocnoindent
+\coqdockw{Require} \coqdockw{Import} \coqdocvar{Reify.Common}.\coqdoceol
+\coqdocnoindent
+\coqdockw{Require} \coqdocvar{Reify.PHOAS}.\coqdoceol
+\coqdocnoindent
+\coqdockw{Require} \coqdockw{Import} \coqdocvar{Reify.PHOASUtil}.\coqdoceol
+\coqdocemptyline
+\end{coqdoccode}
+\subsection{Definition of the terms with which we build our benchmarking suite}
+
+\begin{coqdoccode}
+\coqdocnoindent
+\coqdockw{Inductive} \coqdocvar{count} := \coqdocvar{none} \ensuremath{|} \coqdocvar{one\_more} (\coqdocvar{how\_many} : \coqdocvar{count}).\coqdoceol
+\coqdocnoindent
+\coqdockw{Fixpoint} \coqdocvar{count\_of\_nat} (\coqdocvar{v} : \coqdocvar{nat}) : \coqdocvar{count}\coqdoceol
+\coqdocindent{1.00em}
+:= \coqdockw{match} \coqdocvar{v} \coqdockw{with}\coqdoceol
+\coqdocindent{2.50em}
+\ensuremath{|} \coqdocvar{O} \ensuremath{\Rightarrow} \coqdocvar{none}\coqdoceol
+\coqdocindent{2.50em}
+\ensuremath{|} \coqdocvar{S} \coqdocvar{x} \ensuremath{\Rightarrow} \coqdocvar{one\_more} (\coqdocvar{count\_of\_nat} \coqdocvar{x})\coqdoceol
+\coqdocindent{2.50em}
+\coqdockw{end}.\coqdoceol
+\coqdocnoindent
+\coqdockw{Fixpoint} \coqdocvar{nat\_of\_count} (\coqdocvar{v} : \coqdocvar{count}) : \coqdocvar{nat}\coqdoceol
+\coqdocindent{1.00em}
+:= \coqdockw{match} \coqdocvar{v} \coqdockw{with}\coqdoceol
+\coqdocindent{2.50em}
+\ensuremath{|} \coqdocvar{none} \ensuremath{\Rightarrow} \coqdocvar{O}\coqdoceol
+\coqdocindent{2.50em}
+\ensuremath{|} \coqdocvar{one\_more} \coqdocvar{x} \ensuremath{\Rightarrow} \coqdocvar{S} (\coqdocvar{nat\_of\_count} \coqdocvar{x})\coqdoceol
+\coqdocindent{2.50em}
+\coqdockw{end}.\coqdoceol
+\coqdocemptyline
+\coqdocnoindent
+\coqdockw{Fixpoint} \coqdocvar{pos\_of\_succ\_count} (\coqdocvar{v} : \coqdocvar{count}) : \coqdocvar{positive}\coqdoceol
+\coqdocindent{1.00em}
+:= \coqdockw{match} \coqdocvar{v} \coqdockw{with}\coqdoceol
+\coqdocindent{2.50em}
+\ensuremath{|} \coqdocvar{none} \ensuremath{\Rightarrow} 1\%\coqdocvar{positive}\coqdoceol
+\coqdocindent{2.50em}
+\ensuremath{|} \coqdocvar{one\_more} \coqdocvar{x} \ensuremath{\Rightarrow} \coqdocvar{Pos.succ} (\coqdocvar{pos\_of\_succ\_count} \coqdocvar{x})\coqdoceol
+\coqdocindent{2.50em}
+\coqdockw{end}.\coqdoceol
+\coqdocnoindent
+\coqdockw{Definition} \coqdocvar{Z\_of\_count} (\coqdocvar{v} : \coqdocvar{count}) : \coqdocvar{Z}\coqdoceol
+\coqdocindent{1.00em}
+:= \coqdockw{match} \coqdocvar{v} \coqdockw{with}\coqdoceol
+\coqdocindent{2.50em}
+\ensuremath{|} \coqdocvar{none} \ensuremath{\Rightarrow} 0\%\coqdocvar{Z}\coqdoceol
+\coqdocindent{2.50em}
+\ensuremath{|} \coqdocvar{one\_more} \coqdocvar{x} \ensuremath{\Rightarrow} \coqdocvar{Z.pos} (\coqdocvar{pos\_of\_succ\_count} \coqdocvar{x})\coqdoceol
+\coqdocindent{2.50em}
+\coqdockw{end}.\coqdoceol
+\coqdocemptyline
+\coqdocnoindent
+\coqdockw{Fixpoint} \coqdocvar{big} (\coqdocvar{x}:\coqdocvar{nat}) (\coqdocvar{n}:\coqdocvar{count})\coqdoceol
+\coqdocindent{1.00em}
+: \coqdocvar{nat}\coqdoceol
+\coqdocindent{1.00em}
+:= \coqdockw{match} \coqdocvar{n} \coqdockw{with}\coqdoceol
+\coqdocindent{2.50em}
+\ensuremath{|} \coqdocvar{none} \ensuremath{\Rightarrow} \coqdocvar{x}\coqdoceol
+\coqdocindent{2.50em}
+\ensuremath{|} \coqdocvar{one\_more} \coqdocvar{n'}\coqdoceol
+\coqdocindent{3.50em}
+\ensuremath{\Rightarrow} \coqdocvar{dlet} \coqdocvar{x'} := \coqdocvar{x} \ensuremath{\times} \coqdocvar{x} \coqdoctac{in}\coqdoceol
+\coqdocindent{5.00em}
+\coqdocvar{big} \coqdocvar{x'} \coqdocvar{n'}\coqdoceol
+\coqdocindent{2.50em}
+\coqdockw{end}.\coqdoceol
+\coqdocemptyline
+\coqdocnoindent
+\coqdockw{Definition} \coqdocvar{big\_flat\_op} \{\coqdocvar{T}\} (\coqdocvar{op} : \coqdocvar{T} \ensuremath{\rightarrow} \coqdocvar{T} \ensuremath{\rightarrow} \coqdocvar{T}) (\coqdocvar{a} : \coqdocvar{T}) (\coqdocvar{sz} : \coqdocvar{count}) : \coqdocvar{T}\coqdoceol
+\coqdocindent{1.00em}
+:= \coqdockw{Eval} \coqdoctac{cbv} [\coqdocvar{Z\_of\_count} \coqdocvar{pos\_of\_succ\_count} \coqdocvar{Pos.iter\_op} \coqdocvar{Pos.succ}] \coqdoctac{in}\coqdoceol
+\coqdocindent{3.00em}
+\coqdockw{match} \coqdocvar{Z\_of\_count} \coqdocvar{sz} \coqdockw{with}\coqdoceol
+\coqdocindent{3.00em}
+\ensuremath{|} \coqdocvar{Z0} \ensuremath{\Rightarrow} \coqdocvar{a}\coqdoceol
+\coqdocindent{3.00em}
+\ensuremath{|} \coqdocvar{Zpos} \coqdocvar{p} \ensuremath{\Rightarrow} \coqdocvar{Pos.iter\_op} \coqdocvar{op} \coqdocvar{p} \coqdocvar{a}\coqdoceol
+\coqdocindent{3.00em}
+\ensuremath{|} \coqdocvar{Zneg} \coqdocvar{p} \ensuremath{\Rightarrow} \coqdocvar{a}\coqdoceol
+\coqdocindent{3.00em}
+\coqdockw{end}.\coqdoceol
+\coqdocnoindent
+\coqdockw{Definition} \coqdocvar{big\_flat} (\coqdocvar{a} : \coqdocvar{nat}) (\coqdocvar{sz} : \coqdocvar{count}) : \coqdocvar{nat}\coqdoceol
+\coqdocindent{1.00em}
+:= \coqdocvar{big\_flat\_op} \coqdocvar{Nat.mul} \coqdocvar{a} \coqdocvar{sz}.\coqdoceol
+\coqdocemptyline
+\coqdocnoindent
+\coqdockw{Ltac} \coqdocvar{check\_sane} \coqdocvar{ref\_PHOAS} :=\coqdoceol
+\coqdocindent{1.00em}
+\coqdockw{lazymatch} \coqdockw{goal} \coqdockw{with}\coqdoceol
+\coqdocindent{1.00em}
+\ensuremath{|} [ \ensuremath{\vdash} \coqdocvar{\_} = \coqdocvar{PHOAS.Denote} ?\coqdocvar{e} ]\coqdoceol
+\coqdocindent{2.00em}
+\ensuremath{\Rightarrow} \coqdockw{let} \coqdocvar{val} := (\coqdoctac{eval} \coqdockw{vm\_compute} \coqdoctac{in} (\coqdocvar{PHOAS.Beq} \coqdocvar{e} \coqdocvar{ref\_PHOAS})) \coqdoctac{in}\coqdoceol
+\coqdocindent{3.50em}
+\coqdockw{lazymatch} \coqdocvar{val} \coqdockw{with}\coqdoceol
+\coqdocindent{3.50em}
+\ensuremath{|} \coqdocvar{true} \ensuremath{\Rightarrow} \coqdoctac{idtac}\coqdoceol
+\coqdocindent{3.50em}
+\ensuremath{|} \coqdocvar{false} \ensuremath{\Rightarrow} \coqdoctac{idtac} "Error: Got" \coqdocvar{e} "Expected:" \coqdocvar{ref\_PHOAS}; \coqdocvar{unify} \coqdocvar{e} \coqdocvar{ref\_PHOAS}\coqdoceol
+\coqdocindent{3.50em}
+\coqdockw{end}\coqdoceol
+\coqdocindent{1.00em}
+\ensuremath{|} [ \ensuremath{\vdash} \coqdocvar{\_} = \coqdocvar{PHOAS.denote} ?\coqdocvar{e} ]\coqdoceol
+\coqdocindent{2.00em}
+\ensuremath{\Rightarrow} \coqdockw{let} \coqdocvar{ref\_HOAS} := (\coqdoctac{eval} \coqdoctac{lazy} \coqdoctac{in} (\coqdocvar{ref\_PHOAS} \coqdocvar{nat})) \coqdoctac{in}\coqdoceol
+\coqdocindent{3.50em}
+\coqdockw{let} \coqdocvar{val} := (\coqdoctac{eval} \coqdockw{vm\_compute} \coqdoctac{in} (\coqdocvar{PHOAS.beq} \coqdocvar{e} \coqdocvar{ref\_HOAS})) \coqdoctac{in}\coqdoceol
+\coqdocindent{3.50em}
+\coqdockw{lazymatch} \coqdocvar{val} \coqdockw{with}\coqdoceol
+\coqdocindent{3.50em}
+\ensuremath{|} \coqdocvar{true} \ensuremath{\Rightarrow} \coqdoctac{idtac}\coqdoceol
+\coqdocindent{3.50em}
+\ensuremath{|} \coqdocvar{false} \ensuremath{\Rightarrow} \coqdoctac{idtac} "Error: Got" \coqdocvar{e} "Expected:" \coqdocvar{ref\_HOAS}; \coqdocvar{unify} \coqdocvar{e} \coqdocvar{ref\_HOAS}\coqdoceol
+\coqdocindent{3.50em}
+\coqdockw{end}\coqdoceol
+\coqdocindent{1.00em}
+\ensuremath{|} [ \ensuremath{\vdash} \coqdocvar{\_} = ?\coqdocvar{Denote} ?\coqdocvar{e} ]\coqdoceol
+\coqdocindent{2.00em}
+\ensuremath{\Rightarrow} \coqdoctac{fail} 0 "Unrecognized denotation function" \coqdocvar{Denote}\coqdoceol
+\coqdocindent{1.00em}
+\coqdockw{end}.\coqdoceol
+\end{coqdoccode}

@@ -1,0 +1,175 @@
+\begin{coqdoccode}
+\end{coqdoccode}
+\section{Recursing under binders with tactics in terms, tracking variables by pairing}
+
+\begin{coqdoccode}
+\coqdocnoindent
+\coqdockw{Require} \coqdockw{Import} \coqdocvar{Reify.ReifyCommon}.\coqdoceol
+\coqdocnoindent
+\coqdockw{Require} \coqdockw{Import} \coqdocvar{Reify.PrimPair}.\coqdoceol
+\coqdocemptyline
+\end{coqdoccode}
+Points of note:
+
+
+
+\begin{itemize}
+\item  We use primitive projections for pairing to speed up typing.
+
+
+
+\item  We make sure to fill in all implicit arguments explicitly, to
+      minimize the number of evars generated; evars are one of the
+      main bottlenecks.
+
+
+
+\item  We must bind open terms to fresh variable names to work around
+      the fact that tactics in terms do not correctly support open
+      terms.\footnote{\url{https://github.com/coq/coq/issues/3248}}
+
+
+
+\item  We make use of a trick from ``[coqdev] beta1 and zeta1
+      reduction''\footnote{\url{https://sympa.inria.fr/sympa/arc/coqdev/2016-01/msg00060.html}}
+      to bind names with a single-branch \coqdockw{match} statement without
+      incurring extra β or ζ reductions.
+
+
+
+\item  We must unfold aliases bound with this \coqdockw{match} statement trick
+      (substitution does not happen until after typechecking), and if
+      we are not careful with how we use \coqdoctac{fresh}, Coq will stack
+      overflow on \coqdoctac{cbv} \coqdockw{delta} or otherwise misbehave.\footnote{See
+      \url{https://github.com/coq/coq/issues/5448},
+      \url{https://github.com/coq/coq/issues/6315},
+      \url{https://github.com/coq/coq/issues/6559}.}
+
+
+
+\item  We give the \coqdockw{return} clause on the \coqdockw{match} statement explicitly.
+      Without the explicit return clause, Coq would backtrack on
+      failure and attempt a second way of elaborating the \coqdockw{match}
+      branches, resulting in a blowup on failure that is exponential
+      in the recursive depth of the
+      failure.\footnote{\url{https://github.com/coq/coq/issues/6252\#issuecomment-347041995}}
+      If we used \coqdockw{return} \coqdocvar{\_}, rather than specifying the type
+      explicitly, we incur the cost of allocating an additional evar,
+      which is linear in the size of the context.  (This performance
+      statistic courtesy of conversations with Pierre-Marie Pédrot on
+      Coq's gitter.)
+
+
+
+\item  We explicitly \coqdoctac{clear} variable bindings from the context before
+      invoking the recursive call, because the cost of evars is
+      proportional to the size of the context.  
+\end{itemize}
+\begin{coqdoccode}
+\coqdocemptyline
+\coqdocnoindent
+\coqdockw{Ltac} \coqdocvar{reify} \coqdocvar{var} \coqdocvar{term} :=\coqdoceol
+\coqdocindent{1.00em}
+\coqdockw{let} \coqdocvar{reify\_rec} \coqdocvar{term} := \coqdocvar{reify} \coqdocvar{var} \coqdocvar{term} \coqdoctac{in}\coqdoceol
+\coqdocindent{1.00em}
+\coqdockw{lazymatch} \coqdocvar{term} \coqdockw{with}\coqdoceol
+\coqdocindent{1.00em}
+\ensuremath{|} \coqdocvar{fst} (?\coqdocvar{term}, ?\coqdocvar{v})\coqdoceol
+\coqdocindent{2.00em}
+\ensuremath{\Rightarrow} \coqdockw{constr}:(@\coqdocvar{Var} \coqdocvar{var} \coqdocvar{v})\coqdoceol
+\coqdocindent{1.00em}
+\ensuremath{|} \coqdocvar{\_}\coqdoceol
+\coqdocindent{2.00em}
+\ensuremath{\Rightarrow}\coqdoceol
+\coqdocindent{2.00em}
+\coqdockw{lazymatch} \coqdocvar{term} \coqdockw{with}\coqdoceol
+\coqdocindent{2.00em}
+\ensuremath{|} \coqdocvar{O} \ensuremath{\Rightarrow} \coqdockw{constr}:(@\coqdocvar{NatO} \coqdocvar{var})\coqdoceol
+\coqdocindent{2.00em}
+\ensuremath{|} \coqdocvar{S} ?\coqdocvar{x}\coqdoceol
+\coqdocindent{3.00em}
+\ensuremath{\Rightarrow} \coqdockw{let} \coqdocvar{rx} := \coqdocvar{reify\_rec} \coqdocvar{x} \coqdoctac{in}\coqdoceol
+\coqdocindent{4.50em}
+\coqdockw{constr}:(@\coqdocvar{NatS} \coqdocvar{var} \coqdocvar{rx})\coqdoceol
+\coqdocindent{2.00em}
+\ensuremath{|} ?\coqdocvar{x} \ensuremath{\times} ?\coqdocvar{y}\coqdoceol
+\coqdocindent{3.00em}
+\ensuremath{\Rightarrow} \coqdockw{let} \coqdocvar{rx} := \coqdocvar{reify\_rec} \coqdocvar{x} \coqdoctac{in}\coqdoceol
+\coqdocindent{4.50em}
+\coqdockw{let} \coqdocvar{ry} := \coqdocvar{reify\_rec} \coqdocvar{y} \coqdoctac{in}\coqdoceol
+\coqdocindent{4.50em}
+\coqdockw{constr}:(@\coqdocvar{NatMul} \coqdocvar{var} \coqdocvar{rx} \coqdocvar{ry})\coqdoceol
+\coqdocindent{2.00em}
+\ensuremath{|} (\coqdocvar{dlet} \coqdocvar{x} := ?\coqdocvar{v} \coqdoctac{in} ?\coqdocvar{f})\coqdoceol
+\coqdocindent{3.00em}
+\ensuremath{\Rightarrow} \coqdockw{let} \coqdocvar{rv} := \coqdocvar{reify\_rec} \coqdocvar{v} \coqdoctac{in}\coqdoceol
+\coqdocindent{4.50em}
+\coqdockw{let} \coqdocvar{not\_x} := \coqdoctac{fresh} \coqdoctac{in} \coqdoceol
+\coqdocindent{4.50em}
+\coqdockw{let} \coqdocvar{not\_x2} := \coqdoctac{fresh} \coqdoctac{in} \coqdoceol
+\coqdocindent{4.50em}
+\coqdockw{let} \coqdocvar{not\_x3} := \coqdoctac{fresh} \coqdoctac{in} \coqdoceol
+\coqdocindent{4.50em}
+\coqdockw{let} \coqdocvar{rf}\coqdoceol
+\coqdocindent{6.50em}
+:=\coqdoceol
+\coqdocindent{6.50em}
+\coqdockw{lazymatch}\coqdoceol
+\coqdocindent{7.50em}
+\coqdockw{constr}:(\coqdoceol
+\coqdocindent{8.50em}
+\coqdockw{fun} (\coqdocvar{not\_x} : \coqdocvar{nat}) (\coqdocvar{not\_x2} : \coqdocvar{var})\coqdoceol
+\coqdocindent{8.50em}
+\ensuremath{\Rightarrow} \coqdockw{match} @\coqdocvar{fst} \coqdocvar{nat} \coqdocvar{var} (@\coqdocvar{pair} \coqdocvar{nat} \coqdocvar{var} \coqdocvar{not\_x} \coqdocvar{not\_x2})\coqdoceol
+\coqdocindent{13.00em}
+\coqdockw{return} @\coqdocvar{expr} \coqdocvar{var} \coqdoceol
+\coqdocindent{10.00em}
+\coqdockw{with}\coqdoceol
+\coqdocindent{10.00em}
+\ensuremath{|} \coqdocvar{x}\coqdoceol
+\coqdocindent{11.00em}
+\ensuremath{\Rightarrow} \coqdockw{match} \coqdocvar{f} \coqdockw{return} @\coqdocvar{expr} \coqdocvar{var} \coqdockw{with}\coqdoceol
+\coqdocindent{12.50em}
+\ensuremath{|} \coqdocvar{not\_x3}\coqdoceol
+\coqdocindent{13.50em}
+\ensuremath{\Rightarrow} \coqdockw{ltac}:(\coqdoceol
+\coqdocindent{16.00em}
+\coqdockw{let} \coqdocvar{fx} := (\coqdoctac{eval} \coqdoctac{cbv} \coqdockw{delta} [\coqdocvar{not\_x3} \coqdocvar{x}] \coqdoctac{in} \coqdocvar{not\_x3}) \coqdoctac{in}\coqdoceol
+\coqdocindent{16.00em}
+\coqdoctac{clear} \coqdocvar{x} \coqdocvar{not\_x3};\coqdoceol
+\coqdocindent{16.00em}
+\coqdockw{let} \coqdocvar{rf} := \coqdocvar{reify\_rec} \coqdocvar{fx} \coqdoctac{in}\coqdoceol
+\coqdocindent{16.00em}
+\coqdoctac{exact} \coqdocvar{rf})\coqdoceol
+\coqdocindent{12.50em}
+\coqdockw{end}\coqdoceol
+\coqdocindent{10.00em}
+\coqdockw{end})\coqdoceol
+\coqdocindent{6.50em}
+\coqdockw{with}\coqdoceol
+\coqdocindent{6.50em}
+\ensuremath{|} \coqdockw{fun} \coqdocvar{\_} \ensuremath{\Rightarrow} ?\coqdocvar{f} \ensuremath{\Rightarrow} \coqdocvar{f}\coqdoceol
+\coqdocindent{6.50em}
+\ensuremath{|} ?\coqdocvar{f} \ensuremath{\Rightarrow} \coqdocvar{error\_cant\_elim\_deps} \coqdocvar{f}\coqdoceol
+\coqdocindent{6.50em}
+\coqdockw{end} \coqdoctac{in}\coqdoceol
+\coqdocindent{4.50em}
+\coqdockw{constr}:(@\coqdocvar{LetIn} \coqdocvar{var} \coqdocvar{rv} \coqdocvar{rf})\coqdoceol
+\coqdocindent{2.00em}
+\ensuremath{|} ?\coqdocvar{v}\coqdoceol
+\coqdocindent{3.00em}
+\ensuremath{\Rightarrow} \coqdocvar{error\_bad\_term} \coqdocvar{v}\coqdoceol
+\coqdocindent{2.00em}
+\coqdockw{end}\coqdoceol
+\coqdocindent{1.00em}
+\coqdockw{end}.\coqdoceol
+\coqdocemptyline
+\coqdocnoindent
+\coqdockw{Ltac} \coqdocvar{Reify} \coqdocvar{x} := \coqdocvar{Reify\_of} \coqdocvar{reify} \coqdocvar{x}.\coqdoceol
+\coqdocnoindent
+\coqdockw{Ltac} \coqdocvar{do\_Reify\_rhs} \coqdocvar{\_} := \coqdocvar{do\_Reify\_rhs\_of} \coqdocvar{Reify} ().\coqdoceol
+\coqdocnoindent
+\coqdockw{Ltac} \coqdocvar{post\_Reify\_rhs} \coqdocvar{\_} := \coqdocvar{ReifyCommon.post\_Reify\_rhs} ().\coqdoceol
+\coqdocnoindent
+\coqdockw{Ltac} \coqdocvar{Reify\_rhs} \coqdocvar{\_} := \coqdocvar{Reify\_rhs\_of} \coqdocvar{Reify} ().\coqdoceol
+\end{coqdoccode}

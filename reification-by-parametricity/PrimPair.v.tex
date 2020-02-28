@@ -1,0 +1,24 @@
+\begin{coqdoccode}
+\end{coqdoccode}
+\section{Define a primitive pairing type}
+
+\begin{coqdoccode}
+\coqdocnoindent
+\coqdockw{Set} \coqdocvar{Primitive} \coqdocvar{Projections}.\coqdoceol
+\coqdocnoindent
+\coqdockw{Record} \coqdocvar{prod} \coqdocvar{A} \coqdocvar{B} := \coqdocvar{pair} \{ \coqdocvar{fst} : \coqdocvar{A} ; \coqdocvar{snd} : \coqdocvar{B} \}.\coqdoceol
+\coqdocnoindent
+\coqdockw{Add} \coqdockw{Printing} \coqdockw{Let} \coqdocvar{prod}.\coqdoceol
+\coqdocemptyline
+\coqdocnoindent
+\coqdocvar{Arguments} \coqdocvar{pair} \{\coqdocvar{A} \coqdocvar{B}\} \coqdocvar{\_} \coqdocvar{\_}.\coqdoceol
+\coqdocnoindent
+\coqdocvar{Arguments} \coqdocvar{fst} \{\coqdocvar{A} \coqdocvar{B}\} \coqdocvar{\_}.\coqdoceol
+\coqdocnoindent
+\coqdocvar{Arguments} \coqdocvar{snd} \{\coqdocvar{A} \coqdocvar{B}\} \coqdocvar{\_}.\coqdoceol
+\coqdocemptyline
+\coqdocnoindent
+\coqdockw{Notation} "x * y" := (\coqdocvar{prod} \coqdocvar{x} \coqdocvar{y}) : \coqdocvar{type\_scope}.\coqdoceol
+\coqdocnoindent
+\coqdockw{Notation} "( x , y , .. , z )" := (\coqdocvar{pair} .. (\coqdocvar{pair} \coqdocvar{x} \coqdocvar{y}) .. \coqdocvar{z}) : \coqdocvar{core\_scope}.\coqdoceol
+\end{coqdoccode}

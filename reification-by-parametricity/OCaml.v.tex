@@ -1,0 +1,33 @@
+\begin{coqdoccode}
+\end{coqdoccode}
+\section{Reification in OCaml}
+
+\begin{coqdoccode}
+\coqdocnoindent
+\coqdockw{Require} \coqdockw{Import} \coqdocvar{Reify.ReifyCommon}.\coqdoceol
+\coqdocnoindent
+\coqdockw{Require} \coqdockw{Import} \coqdocvar{Reify.OCamlReify}.\coqdoceol
+\end{coqdoccode}
+See \coqdocvar{OCamlReify.v} and \coqdocvar{reify\_plugin.ml4} for the implementation code. \begin{coqdoccode}
+\coqdocemptyline
+\coqdocnoindent
+\coqdockw{Ltac} \coqdocvar{Reify\_cps} \coqdocvar{term} \coqdocvar{tac} :=\coqdoceol
+\coqdocindent{1.00em}
+\coqdocvar{quote\_term\_cps}\coqdoceol
+\coqdocindent{2.00em}
+[\coqdocvar{var}, \coqdockw{Type}] (@\coqdocvar{Var}) (@\coqdocvar{NatO}) (@\coqdocvar{NatS}) (@\coqdocvar{NatMul}) (@\coqdocvar{LetIn}) \coqdocvar{O} \coqdocvar{S} \coqdocvar{Nat.mul} (@\coqdocvar{Let\_In})\coqdoceol
+\coqdocindent{2.00em}
+\coqdocvar{term} \coqdocvar{tac}.\coqdoceol
+\coqdocemptyline
+\coqdocnoindent
+\coqdockw{Ltac} \coqdocvar{reify\_cps} \coqdocvar{var} \coqdocvar{term} \coqdocvar{tac} :=\coqdoceol
+\coqdocindent{1.00em}
+\coqdocvar{Reify\_cps} \coqdocvar{term} \coqdockw{ltac}:(\coqdockw{fun} \coqdocvar{rt} \ensuremath{\Rightarrow} \coqdocvar{tac} (\coqdocvar{rt} \coqdocvar{var})).\coqdoceol
+\coqdocemptyline
+\coqdocnoindent
+\coqdockw{Ltac} \coqdocvar{do\_Reify\_rhs} \coqdocvar{\_} := \coqdocvar{do\_Reify\_rhs\_of\_cps} \coqdocvar{Reify\_cps} ().\coqdoceol
+\coqdocnoindent
+\coqdockw{Ltac} \coqdocvar{post\_Reify\_rhs} \coqdocvar{\_} := \coqdocvar{ReifyCommon.post\_Reify\_rhs} ().\coqdoceol
+\coqdocnoindent
+\coqdockw{Ltac} \coqdocvar{Reify\_rhs} \coqdocvar{\_} := \coqdocvar{Reify\_rhs\_of\_cps} \coqdocvar{Reify\_cps} ().\coqdoceol
+\end{coqdoccode}

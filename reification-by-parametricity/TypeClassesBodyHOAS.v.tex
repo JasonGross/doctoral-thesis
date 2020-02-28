@@ -1,0 +1,64 @@
+\begin{coqdoccode}
+\end{coqdoccode}
+\section{Typeclass-based reification}
+
+ We can also do typeclass-based reification where we return the
+    reified term in the body rather than in the type.  However, this
+    method does not work well with PHOAS binders, because there's no
+    easy way to eliminate the dependency on the unreified binder when
+    reifying to PHOAS. \begin{coqdoccode}
+\coqdocemptyline
+\coqdocnoindent
+\coqdockw{Require} \coqdockw{Import} \coqdocvar{Reify.ReifyCommon}.\coqdoceol
+\coqdocemptyline
+\coqdocnoindent
+\coqdockw{Local} \coqdockw{Generalizable} \coqdockw{Variables} \coqdocvar{x} \coqdocvar{y} \coqdocvar{rx} \coqdocvar{ry} \coqdocvar{f} \coqdocvar{rf}.\coqdoceol
+\coqdocnoindent
+\coqdockw{Class} \coqdocvar{reify\_of} (\coqdocvar{term} : \coqdocvar{nat}) := \coqdocvar{rterm} : @\coqdocvar{expr} \coqdocvar{nat}.\coqdoceol
+\coqdocemptyline
+\end{coqdoccode}
+We use \ensuremath{|} 100 so this gets triggered late. \begin{coqdoccode}
+\coqdocemptyline
+\coqdocnoindent
+\coqdockw{Global Instance} \coqdocvar{reify\_Var} \{\coqdocvar{x}\} : \coqdocvar{reify\_of} \coqdocvar{x} \ensuremath{|} 100 := \coqdocvar{Var} \coqdocvar{x}.\coqdoceol
+\coqdocnoindent
+\coqdockw{Global Instance} \coqdocvar{reify\_NatMul} `\{\coqdocvar{rx} : \coqdocvar{reify\_of} \coqdocvar{x}, \coqdocvar{ry} : \coqdocvar{reify\_of} \coqdocvar{y}\}\coqdoceol
+\coqdocindent{1.00em}
+: \coqdocvar{reify\_of} (\coqdocvar{x} \ensuremath{\times} \coqdocvar{y}) := (\coqdocvar{rx} \ensuremath{\times} \coqdocvar{ry})\%\coqdocvar{expr}.\coqdoceol
+\coqdocnoindent
+\coqdockw{Global Instance} \coqdocvar{reify\_S} `\{\coqdocvar{rx} : \coqdocvar{reify\_of} \coqdocvar{x}\}\coqdoceol
+\coqdocindent{1.00em}
+: \coqdocvar{reify\_of} (\coqdocvar{S} \coqdocvar{x}) := \coqdocvar{NatS} \coqdocvar{rx}.\coqdoceol
+\coqdocnoindent
+\coqdockw{Global Instance} \coqdocvar{reify\_O}\coqdoceol
+\coqdocindent{1.00em}
+: \coqdocvar{reify\_of} \coqdocvar{O} := \coqdocvar{NatO}.\coqdoceol
+\coqdocnoindent
+\coqdockw{Global Instance} \coqdocvar{reify\_LetIn} `\{\coqdocvar{rx} : \coqdocvar{reify\_of} \coqdocvar{x}\}\coqdoceol
+\coqdocindent{3.50em}
+`\{\coqdocvar{rf} : \coqdockw{\ensuremath{\forall}} \coqdocvar{y}, \coqdocvar{reify\_of} (\coqdocvar{f} \coqdocvar{y})\}\coqdoceol
+\coqdocindent{1.00em}
+: \coqdocvar{reify\_of} (\coqdocvar{dlet} \coqdocvar{y} := \coqdocvar{x} \coqdoctac{in} \coqdocvar{f} \coqdocvar{y}) := (\coqdocvar{elet} \coqdocvar{ry} := \coqdocvar{rx} \coqdoctac{in} \coqdocvar{rf} \coqdocvar{ry})\%\coqdocvar{expr}.\coqdoceol
+\coqdocemptyline
+\end{coqdoccode}
+This must be commented out pre-8.6; it tells Coq to not try to
+    infer reifications if it doesn't fully know what term it's
+    reifying. \begin{coqdoccode}
+\coqdocemptyline
+\coqdocnoindent
+\coqdockw{Hint} \coqdocvar{Mode} \coqdocvar{reify\_of} ! : \coqdocvar{typeclass\_instances}.\coqdoceol
+\coqdocnoindent
+\coqdockw{Hint Opaque} \coqdocvar{Nat.mul} \coqdocvar{Let\_In} : \coqdocvar{typeclass\_instances}.\coqdoceol
+\coqdocemptyline
+\coqdocnoindent
+\coqdockw{Ltac} \coqdocvar{Reify} \coqdocvar{x} :=\coqdoceol
+\coqdocindent{1.00em}
+\coqdockw{constr}:(\coqdocvar{\_} : @\coqdocvar{reify\_of} \coqdocvar{x}).\coqdoceol
+\coqdocemptyline
+\coqdocnoindent
+\coqdockw{Ltac} \coqdocvar{do\_Reify\_rhs} \coqdocvar{\_} := \coqdocvar{do\_Reify\_rhs\_of\_with\_denote} \coqdocvar{Reify} \coqdocvar{denote} ().\coqdoceol
+\coqdocnoindent
+\coqdockw{Ltac} \coqdocvar{post\_Reify\_rhs} \coqdocvar{\_} := \coqdocvar{ReifyCommon.post\_Reify\_rhs} ().\coqdoceol
+\coqdocnoindent
+\coqdockw{Ltac} \coqdocvar{Reify\_rhs} \coqdocvar{\_} := \coqdocvar{Reify\_rhs\_of} \coqdocvar{Reify} ().\coqdoceol
+\end{coqdoccode}

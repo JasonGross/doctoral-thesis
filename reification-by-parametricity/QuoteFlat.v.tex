@@ -1,0 +1,90 @@
+\begin{coqdoccode}
+\end{coqdoccode}
+\section{Reification by the quote plugin}
+
+\begin{coqdoccode}
+\coqdocnoindent
+\coqdockw{Require} \coqdockw{Import} \coqdocvar{Coq.quote.Quote}.\coqdoceol
+\coqdocnoindent
+\coqdockw{Require} \coqdockw{Import} \coqdocvar{Reify.ReifyCommon}.\coqdoceol
+\coqdocemptyline
+\coqdocnoindent
+\coqdockw{Inductive} \coqdocvar{qexpr} : \coqdockw{Set} :=\coqdoceol
+\coqdocnoindent
+\ensuremath{|} \coqdocvar{qNatO} : \coqdocvar{qexpr}\coqdoceol
+\coqdocnoindent
+\ensuremath{|} \coqdocvar{qNatS} : \coqdocvar{qexpr} \ensuremath{\rightarrow} \coqdocvar{qexpr}\coqdoceol
+\coqdocnoindent
+\ensuremath{|} \coqdocvar{qNatMul} (\coqdocvar{x} \coqdocvar{y} : \coqdocvar{qexpr})\coqdoceol
+\coqdocnoindent
+\ensuremath{|} \coqdocvar{qConst} (\coqdocvar{k} : \coqdocvar{nat}).\coqdoceol
+\coqdocemptyline
+\coqdocnoindent
+\coqdockw{Module} \coqdockw{Export} \coqdocvar{Exports}.\coqdoceol
+\coqdocindent{1.00em}
+\coqdockw{Fixpoint} \coqdocvar{qdenote} (\coqdocvar{e} : \coqdocvar{qexpr}) : \coqdocvar{nat}\coqdoceol
+\coqdocindent{2.00em}
+:= \coqdockw{match} \coqdocvar{e} \coqdockw{with}\coqdoceol
+\coqdocindent{3.50em}
+\ensuremath{|} \coqdocvar{qNatO} \ensuremath{\Rightarrow} \coqdocvar{O}\coqdoceol
+\coqdocindent{3.50em}
+\ensuremath{|} \coqdocvar{qNatS} \coqdocvar{x} \ensuremath{\Rightarrow} \coqdocvar{S} (\coqdocvar{qdenote} \coqdocvar{x})\coqdoceol
+\coqdocindent{3.50em}
+\ensuremath{|} \coqdocvar{qNatMul} \coqdocvar{x} \coqdocvar{y} \ensuremath{\Rightarrow} \coqdocvar{Nat.mul} (\coqdocvar{qdenote} \coqdocvar{x}) (\coqdocvar{qdenote} \coqdocvar{y})\coqdoceol
+\coqdocindent{3.50em}
+\ensuremath{|} \coqdocvar{qConst} \coqdocvar{k} \ensuremath{\Rightarrow} \coqdocvar{k}\coqdoceol
+\coqdocindent{3.50em}
+\coqdockw{end}.\coqdoceol
+\coqdocnoindent
+\coqdockw{End} \coqdocvar{Exports}.\coqdoceol
+\coqdocemptyline
+\coqdocnoindent
+\coqdockw{Fixpoint} \coqdocvar{compile\_nat} \{\coqdocvar{var}\} (\coqdocvar{n} : \coqdocvar{nat}) : @\coqdocvar{expr} \coqdocvar{var}\coqdoceol
+\coqdocindent{1.00em}
+:= \coqdockw{match} \coqdocvar{n} \coqdockw{with}\coqdoceol
+\coqdocindent{2.50em}
+\ensuremath{|} \coqdocvar{O} \ensuremath{\Rightarrow} \coqdocvar{NatO}\coqdoceol
+\coqdocindent{2.50em}
+\ensuremath{|} \coqdocvar{S} \coqdocvar{x} \ensuremath{\Rightarrow} \coqdocvar{NatS} (\coqdocvar{compile\_nat} \coqdocvar{x})\coqdoceol
+\coqdocindent{2.50em}
+\coqdockw{end}.\coqdoceol
+\coqdocemptyline
+\coqdocnoindent
+\coqdockw{Fixpoint} \coqdocvar{compile} \{\coqdocvar{var}\} (\coqdocvar{e} : \coqdocvar{qexpr}) : @\coqdocvar{expr} \coqdocvar{var}\coqdoceol
+\coqdocindent{1.00em}
+:= \coqdockw{match} \coqdocvar{e} \coqdockw{with}\coqdoceol
+\coqdocindent{2.50em}
+\ensuremath{|} \coqdocvar{qNatO} \ensuremath{\Rightarrow} \coqdocvar{NatO}\coqdoceol
+\coqdocindent{2.50em}
+\ensuremath{|} \coqdocvar{qNatS} \coqdocvar{x} \ensuremath{\Rightarrow} \coqdocvar{NatS} (\coqdocvar{compile} \coqdocvar{x})\coqdoceol
+\coqdocindent{2.50em}
+\ensuremath{|} \coqdocvar{qNatMul} \coqdocvar{x} \coqdocvar{y} \ensuremath{\Rightarrow} \coqdocvar{NatMul} (\coqdocvar{compile} \coqdocvar{x}) (\coqdocvar{compile} \coqdocvar{y})\coqdoceol
+\coqdocindent{2.50em}
+\ensuremath{|} \coqdocvar{qConst} \coqdocvar{k} \ensuremath{\Rightarrow} \coqdocvar{compile\_nat} \coqdocvar{k}\coqdoceol
+\coqdocindent{2.50em}
+\coqdockw{end}.\coqdoceol
+\coqdocemptyline
+\coqdocnoindent
+\coqdockw{Definition} \coqdocvar{Compile} (\coqdocvar{e} : \coqdocvar{qexpr}) : \coqdocvar{Expr} := \coqdockw{fun} \coqdocvar{var} \ensuremath{\Rightarrow} \coqdocvar{compile} \coqdocvar{e}.\coqdoceol
+\coqdocemptyline
+\coqdocnoindent
+\coqdockw{Ltac} \coqdocvar{reify\_cps} \coqdocvar{var} \coqdocvar{term} \coqdocvar{tac} :=\coqdoceol
+\coqdocindent{1.00em}
+\coqdoctac{quote} \coqdocvar{qdenote} [\coqdocvar{S} \coqdocvar{O}] \coqdoctac{in} \coqdocvar{term} \coqdockw{using}\coqdoceol
+\coqdocindent{2.00em}
+(\coqdockw{fun} \coqdocvar{v} \ensuremath{\Rightarrow} \coqdockw{lazymatch} \coqdocvar{v} \coqdockw{with} \coqdocvar{qdenote} ?\coqdocvar{v} \ensuremath{\Rightarrow} \coqdocvar{tac} (@\coqdocvar{compile} \coqdocvar{var} \coqdocvar{v}) \coqdockw{end}).\coqdoceol
+\coqdocemptyline
+\coqdocnoindent
+\coqdockw{Ltac} \coqdocvar{Reify\_cps} \coqdocvar{term} \coqdocvar{tac} :=\coqdoceol
+\coqdocindent{1.00em}
+\coqdoctac{quote} \coqdocvar{qdenote} [\coqdocvar{S} \coqdocvar{O}] \coqdoctac{in} \coqdocvar{term} \coqdockw{using}\coqdoceol
+\coqdocindent{2.00em}
+(\coqdockw{fun} \coqdocvar{v} \ensuremath{\Rightarrow} \coqdockw{lazymatch} \coqdocvar{v} \coqdockw{with} \coqdocvar{qdenote} ?\coqdocvar{v} \ensuremath{\Rightarrow} \coqdocvar{tac} (@\coqdocvar{Compile} \coqdocvar{v}) \coqdockw{end}).\coqdoceol
+\coqdocemptyline
+\coqdocnoindent
+\coqdockw{Ltac} \coqdocvar{do\_Reify\_rhs} \coqdocvar{\_} := \coqdocvar{do\_Reify\_rhs\_of\_cps} \coqdocvar{Reify\_cps} ().\coqdoceol
+\coqdocnoindent
+\coqdockw{Ltac} \coqdocvar{post\_Reify\_rhs} \coqdocvar{\_} := \coqdocvar{ReifyCommon.post\_Reify\_rhs} ().\coqdoceol
+\coqdocnoindent
+\coqdockw{Ltac} \coqdocvar{Reify\_rhs} \coqdocvar{\_} := \coqdocvar{Reify\_rhs\_of\_cps} \coqdocvar{Reify\_cps} ().\coqdoceol
+\end{coqdoccode}

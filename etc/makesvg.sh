@@ -7,5 +7,5 @@ nchars="$(echo "$lines" | awk ' length > max { max=length;row=NR } END{ print ma
 nchars="100%"
 
 echo '<svg xmlns="http://www.w3.org/2000/svg" width="'"$nchars"'em" height="'"$nlines"'em"><text x="0" y="0">'
-echo "$lines" | sed s'|^\(.*\)$|<tspan x="0" dy="1.2em">\1</tspan>|g'
+echo "$lines" | cat -v | sed s'|^\(.*\)$|<tspan x="0" dy="1.2em">\1</tspan>|g'
 echo '</text></svg>'

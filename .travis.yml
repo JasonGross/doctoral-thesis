@@ -16,6 +16,7 @@ addons:
     - curl
     - sed
     - grep
+    - python
 
 deploy:
   provider: pages

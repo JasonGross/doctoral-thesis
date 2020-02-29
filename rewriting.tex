@@ -10,7 +10,7 @@
 \section{Introduction} \label{sec:intro}
 
 Mechanized proof is gaining in importance for development of critical software infrastructure.
-Oft-cited examples include the CompCert verified C compiler~\cite{Compcert} and the seL4 verified operating-system microkernel~\cite{sel4SOSP09}.
+Oft-cited examples include the CompCert verified C compiler~\cite{Compcert} and the seL4 verified operating-system microkernel~\cite{seL4SOSP09}.
 Here we have very flexible systems that are ready to adapt to varieties of workloads, be they C source programs for CompCert or application binaries for seL4.
 For a verified operating system, such adaptation takes place at \emph{runtime}, when we launch the application.
 However, some important bits of software infrastructure commonly do adaptation at \emph{compile time}, such that the fully general infrastructure software is not even installed in a deployed system.

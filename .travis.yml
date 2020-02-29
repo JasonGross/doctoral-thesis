@@ -18,6 +18,7 @@ addons:
     - sed
     - grep
     - python
+    - python-pygments
 
 deploy:
   provider: pages

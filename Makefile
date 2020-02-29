@@ -281,7 +281,7 @@ $(PROPOSAL_PDFS) : %.pdf : %.tex
 	$(HIDE)$(PDFLATEX) $(LATEXFLAGS) $(OTHERFLAGS) $<
 
 # pdflatex -synctex=1 -interaction=nonstopmode -enable-write18 jgross-thesis.tex 2>&1
-MAKE_TODO := cat jgross-thesis.log | grep -C 10 '^LaTeX Warning:\|on input line' | tr '\r' '&' | tr '\n' '&' | sed s'/\&//g' | sed s'/\(on input line[^\.]*\.\)/\1\&/g' | tr '&' '\n' | grep -o 'LaTeX Warning:.*' | grep -o 'TODO.*\|QUESTION.*' | grep --color=auto 'TODO:\|QUESTION FOR ADAM:'
+MAKE_TODO := cat jgross-thesis.log | grep -C 10 '^LaTeX Warning:\|on input line' | tr '\r' '&' | tr '\n' '&' | sed s'/\&//g' | sed s'/\(on input line[^\.]*\.\)/\1\&/g' | tr '&' '\n' | grep -o 'LaTeX Warning:.*' | grep -o 'TODO.*\|QUESTION.*\|Warning: Reference.*\|Warning: Citation.*' | grep --color=auto 'TODO:\|QUESTION FOR ADAM:\|Warning: Reference\|Warning: Citation'
 .PHONY: todo
 todo: jgross-thesis.pdf
 	$(MAKE_TODO)

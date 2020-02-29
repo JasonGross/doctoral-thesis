@@ -169,7 +169,7 @@ Even the additional three reduction mechanisms outside Coq's kernel (\texttt{cbn
 
 \subsection{Our Solution} \label{sec:our-solution}
 
-\citet{Aehlig} presented a very relevant solution to a related problem, using \emph{normalization by evaluation (NbE)}~\cite{NbE} to bootstrap reduction of open terms on top of full reduction, as built into a proof assistant.
+\textcite{Aehlig} presented a very relevant solution to a related problem, using \emph{normalization by evaluation (NbE)}~\cite{NbE} to bootstrap reduction of open terms on top of full reduction, as built into a proof assistant.
 However, it was simultaneously true that they expanded the proof-assistant trusted code base in ways specific to their technique, and that they did not report any experiments actually using the tool for partial evaluation (just traditional full reduction), potentially hiding performance-scaling challenges or other practical issues.
 We have adapted their approach in a new Coq library embodying \textbf{the first partial-evaluation approach to satisfy the following criteria}.
 
@@ -182,11 +182,11 @@ We have adapted their approach in a new Coq library embodying \textbf{the first 
 \end{itemize}
 
 Our contributions include answers to a number of challenges that arise in scaling NbE-based partial evaluation in a proof assistant.
-First, we rework the approach of \citet{Aehlig} to function \emph{without extending a proof assistant's trusted code base}, which, among other challenges, requires us to prove termination of reduction and encode pattern matching explicitly (leading us to adopt the performance-tuned approach of \citet{maranget2008compiling}).
+First, we rework the approach of \textcite{Aehlig} to function \emph{without extending a proof assistant's trusted code base}, which, among other challenges, requires us to prove termination of reduction and encode pattern matching explicitly (leading us to adopt the performance-tuned approach of \textcite{maranget2008compiling}).
 
 Second, using partial evaluation to generate residual terms thousands of lines long raises \emph{new scaling challenges}:
 \begin{itemize}
-\item Output terms may contain so \emph{many nested variable binders} that we expect it to be performance-prohibitive to perform bookkeeping operations on first-order-encoded terms (e.g., with de Bruijn indices, as is done in \Rtac{} by \citet{rtac}).  For instance, while the reported performance experiments of \citet{Aehlig} generate only closed terms with no binders, Fiat Cryptography may generate a single routine (e.g., multiplication for curve P-384) with nearly a thousand nested binders.
+\item Output terms may contain so \emph{many nested variable binders} that we expect it to be performance-prohibitive to perform bookkeeping operations on first-order-encoded terms (e.g., with de Bruijn indices, as is done in \Rtac{} by \textcite{rtac}).  For instance, while the reported performance experiments of \textcite{Aehlig} generate only closed terms with no binders, Fiat Cryptography may generate a single routine (e.g., multiplication for curve P-384) with nearly a thousand nested binders.
 %\todo{Consider being more specific here about expected cost of first-order representation, maybe using some experiment.}
 %  \todo{Note from Jason: We haven't actually checked that the bookkeeping is performance-prohibitive.  I suspect there will be a cost, but that if when we made fiat-crypto there was an existing system that used de Bruijn indices and did this, (along with built-in let-lifting, etc), I suspect we might have been a bit more sad, but not prohibitively more sad.  I think we should be much more tentative with this bullet point.}
 \item Naive representation of terms without proper \emph{sharing of common subterms} can lead to fatal term-size blow-up.  Fiat Cryptography's arithmetic routines rely on significant sharing of this kind.
@@ -225,23 +225,23 @@ Still, as \autoref{sec:evaluation} will show, these methods that generate substa
 
 \begin{figure} \centering
   \subfloat[Reduction via the definitional equality]{%
-    \includegraphics[scale=.7]{trust1}
+    \includegraphics[scale=.7]{rewriting/trust1}
     \label{subfig:change}} \\
   \subfloat[Rewriting via proved rules]{%
-    \includegraphics[scale=.7]{trust2}
+    \includegraphics[scale=.7]{rewriting/trust2}
     \label{subfig:autorewrite}} \\
-  \subfloat[Approach of \citet{Aehlig}]{%
-    \includegraphics[scale=.7]{trust3}
+  \subfloat[Approach of \textcite{Aehlig}]{%
+    \includegraphics[scale=.7]{rewriting/trust3}
     \label{subfig:aehlig}} \\
   \subfloat[Our approach]{%
-    \includegraphics[scale=.7]{trust4}
+    \includegraphics[scale=.7]{rewriting/trust4}
     \label{subfig:perfect}}
 
   \caption{Different approaches to reduction and rewriting}
   \label{fig:trust}
 \end{figure}
 
-Now we summarize how \citet{Aehlig} provide flexible and fast interleaving of standard $\lambda$-calculus reduction and use of proved equalities (the next section will go into more detail).
+Now we summarize how \textcite{Aehlig} provide flexible and fast interleaving of standard $\lambda$-calculus reduction and use of proved equalities (the next section will go into more detail).
 \autoref{subfig:aehlig} demonstrates a workflow based on \emph{a deep embedding of a core ML-like language}.
 That is, within the logic of the proof assistant (Isabelle/HOL, in their case), a type of syntax trees for ML programs is defined, with an associated operational semantics.
 The basic strategy is, for a particular set of rewrite rules and a particular term to simplify, to \emph{generate a (deeply embedded) ML program that, if it terminates, produces a syntax tree for the simplified term}.
@@ -252,7 +252,7 @@ The tactic then ``throws the ML term over the wall,'' using a general code-gener
 Trusted code compiles the ML code into the concrete syntax of a mainstream ML language, Standard ML in their case, and compiles it with an off-the-shelf compiler.
 The output of that compiled program is then passed back over to the tactic, in terms of an axiomatic assertion that the ML semantics really yields that answer.
 
-As \citet{Aehlig} argue, their use of external compilation and evaluation of ML code adds no real complexity on top of that required by the proof assistant -- after all, the proof assistant itself must be compiled and executed somehow.
+As \textcite{Aehlig} argue, their use of external compilation and evaluation of ML code adds no real complexity on top of that required by the proof assistant -- after all, the proof assistant itself must be compiled and executed somehow.
 However, the perceived increase of trusted code base is not spurious:
 it is one thing to trust that the toolchain and execution environment used by the proof assistant and the partial evaluator are well-behaved,
 and another to rely on two descriptions of ML (one deeply embedded in the proof assistant and another implied by the compiler) to agree on every detail of the semantics.
@@ -309,7 +309,7 @@ When we want to rewrite with a rewriter package in a goal, the following steps a
 
 \section{The Structure of a Rewriter} \label{sec:structure}
 
-We now simultaneously review the approach of \citet{Aehlig} and introduce some notable differences in our own approach, noting similarities to the reflective rewriter of \citet{rtac} where applicable.
+We now simultaneously review the approach of \textcite{Aehlig} and introduce some notable differences in our own approach, noting similarities to the reflective rewriter of \textcite{rtac} where applicable.
 
 First, let us describe the language of terms we support rewriting in.
 Note that, while we support rewriting in full-scale Coq proofs, where the metalanguage is dependently typed, the object language of our rewriter is nearly simply typed, with limited support for calling polymorphic functions.
@@ -324,15 +324,15 @@ We write $\llbracket e \rrbracket$ for a standard denotational semantics.
 
 \subsection{Pattern-Matching Compilation and Evaluation} \label{sec:pattern-matching-compilation-and-evaluation}
 
-\citet{Aehlig} feed a specific set of user-provided rewrite rules to their engine by generating code for an ML function, which takes in deeply embedded term syntax (actually \emph{doubly} deeply embedded, within the syntax of the deeply embedded ML!) and uses ML pattern matching to decide which rule to apply at the top level.
+\textcite{Aehlig} feed a specific set of user-provided rewrite rules to their engine by generating code for an ML function, which takes in deeply embedded term syntax (actually \emph{doubly} deeply embedded, within the syntax of the deeply embedded ML!) and uses ML pattern matching to decide which rule to apply at the top level.
 Thus, they delegate efficient implementation of pattern matching to the underlying ML implementation.
 As we instead build our rewriter in Coq's logic, we have no such option to defer to ML.
 Indeed, Coq's logic only includes primitive pattern-matching constructs to match one constructor at a time.
 %The frontend desugars nested pattern matching into trees of matches, but we do not have access to that desugaring within the language.
 %It is arguably a good design decision to keep Coq working this way, since putting efficient nested pattern matching into the kernel would grow the trusted base substantially.
 
-We could follow a naive strategy of repeatedly matching each subterm against a pattern for every rewrite rule, as in the rewriter of \citet{rtac}, but in that case we do a lot of duplicate work when rewrite rules use overlapping function symbols.
-Instead, we adopted the approach of \citet{maranget2008compiling}, who describes compilation of pattern matches in OCaml to decision trees that eliminate needless repeated work (for example, decomposing an expression into $x + y + z$ only once even if two different rules match on that pattern).
+We could follow a naive strategy of repeatedly matching each subterm against a pattern for every rewrite rule, as in the rewriter of \textcite{rtac}, but in that case we do a lot of duplicate work when rewrite rules use overlapping function symbols.
+Instead, we adopted the approach of \textcite{maranget2008compiling}, who describes compilation of pattern matches in OCaml to decision trees that eliminate needless repeated work (for example, decomposing an expression into $x + y + z$ only once even if two different rules match on that pattern).
 We have not yet implemented any of the optimizations described therein for finding \emph{minimal} decision trees.
 
 There are three steps to turn a set of rewrite rules into a functional program that takes in an expression and reduces according to the rules.
@@ -405,7 +405,7 @@ To orient expectations: we would like to enable the following reduction
   ?n + 0 & \to n
 \end{align*}
 
-\citet{Aehlig} also use NbE, and we begin by reviewing its most classic variant, for performing full $\beta$-reduction in a simply typed term in a guaranteed-terminating way.
+\textcite{Aehlig} also use NbE, and we begin by reviewing its most classic variant, for performing full $\beta$-reduction in a simply typed term in a guaranteed-terminating way.
 The simply typed $\lambda$-calculus syntax we use is:
 \begin{align*}
   t & ::= t \to t ~|~ b
@@ -462,7 +462,7 @@ In other words, we change this one function-definition clause:
 It is important to note that a constant of function type will be $\eta$-expanded only once for each syntactic occurrence in the starting term, though the expanded function is effectively a thunk, waiting to perform rewriting again each time it is called.
 From first principles, it is not clear why such a strategy terminates on all possible input terms, though we work up to convincing Coq of that fact.
 
-The details so far are essentially the same as in the approach of \citet{Aehlig}.
+The details so far are essentially the same as in the approach of \textcite{Aehlig}.
 Recall that their rewriter was implemented in a deeply embedded ML, while ours is implemented in Coq's logic, which enforces termination of all functions.
 Aehlig et al. did not prove termination, which indeed does not hold for their rewriter in general, which works with untyped terms, not to mention the possibility of rule-specific ML functions that diverge themselves.
 In contrast, we need to convince Coq up-front that our interleaved $\lambda$-term normalization and algebraic simplification always terminate.
@@ -473,12 +473,12 @@ The next section introduces the techniques we use to avoid explicit termination 
 
 \section{Scaling Challenges} \label{sec:scaling}
 
-\citet{Aehlig} only evaluated their implementation against closed programs.
+\textcite{Aehlig} only evaluated their implementation against closed programs.
 What happens when we try to apply the approach to partial-evaluation problems that should generate thousands of lines of low-level code?
 
 \subsection{Variable Environments Will Be Large} \label{sec:PHOAS}
 We should think carefully about representation of ASTs, since many primitive operations on variables will run in the course of a single partial evaluation.
-For instance, \citet{Aehlig} reported a significant performance improvement changing variable nodes from using strings to using de Bruijn indices~\cite{debruijn1972}.
+For instance, \textcite{Aehlig} reported a significant performance improvement changing variable nodes from using strings to using de Bruijn indices~\cite{debruijn1972}.
 However, de Bruijn indices and other first-order representations remain painful to work with.
 We often need to fix up indices in a term being substituted in a new context.
 Even looking up a variable in an environment tends to incur linear time overhead, thanks to traversal of a list.
@@ -573,7 +573,7 @@ With all those details hashed out, we can prove a pleasingly simple correctness 
 $$\forall t, E : \mintinline{coq}{Expr t}. \; \llbracket \mintinline{coq}{Rewrite}(E) \rrbracket = \llbracket E \rrbracket$$
 
 Even before getting to the correctness theorem, we needed to convince Coq that the function terminates.
-While for \citet{Aehlig}, a termination proof would have been a whole separate enterprise, it turns out that PHOAS and NbE line up so well that Coq accepts the above code with no additional termination proof.
+While for \textcite{Aehlig}, a termination proof would have been a whole separate enterprise, it turns out that PHOAS and NbE line up so well that Coq accepts the above code with no additional termination proof.
 As a result, the Coq kernel is ready to run our \mintinline{coq}{Rewrite} procedure during checking.
 
 To understand how we now apply the soundness theorem in a tactic, it is important to note that the Coq kernel's built-in reduction strategies have, to an extent, been tuned to work well to show equivalence between a simple denotational-semantics application and the semantic value it produces, while it is rather difficult to code up one reduction strategy that works well for all partial-evaluation tasks.
@@ -665,7 +665,7 @@ We can encode nonlinearity on top of linear patterns via side conditions.
 \end{align*}
 
 The trouble is how to support predictable solving of side conditions during partial evaluation, where we may be rewriting in open terms.
-We decided to sidestep this problem by allowing side conditions only as executable Boolean functions, to be applied only to variables that are confirmed as \emph{compile-time constants}, unlike \citet{rtac} who support general unification variables.
+We decided to sidestep this problem by allowing side conditions only as executable Boolean functions, to be applied only to variables that are confirmed as \emph{compile-time constants}, unlike \textcite{rtac} who support general unification variables.
 We added a variant of pattern variable that only matches constants.
 Semantically, this variable style has no additional meaning, and in fact we implement it as a special identity function that should be called in the right places within Coq lemma statements.
 Rather, use of this identity function triggers the right behavior in our tactic code that reifies lemma statements.
@@ -705,59 +705,59 @@ If the abstract interpreter did its job, then all lower and upper bounds are con
 \begin{figure*}
   \newcommand{\NestedBindersSubfloat}{%
     \adjustbox{valign=t}{\resizebox{150px}{!}{\beginTikzpictureStamped[only marks]{
-      \einput{perf-UnderLetsPlus0-cbv;rewrite-strat(bottomup).txt}
-      \einput{perf-UnderLetsPlus0-cbv;rewrite-strat(topdown).txt}
-      \einput{perf-UnderLetsPlus0-cbv;setoid-rewrite.txt}
-      \einput{perf-UnderLetsPlus0-Rewrite-for.txt}
-      \einput{perf-UnderLetsPlus0-rewriting.txt}
+      \einput{rewriting/perf-UnderLetsPlus0-cbv;rewrite-strat(bottomup).txt}
+      \einput{rewriting/perf-UnderLetsPlus0-cbv;rewrite-strat(topdown).txt}
+      \einput{rewriting/perf-UnderLetsPlus0-cbv;setoid-rewrite.txt}
+      \einput{rewriting/perf-UnderLetsPlus0-Rewrite-for.txt}
+      \einput{rewriting/perf-UnderLetsPlus0-rewriting.txt}
     }
       \pgfplotsset{every axis legend/.append style={
           at={(0.5,-0.2)},
           anchor=north}}
       \begin{axis}[xlabel=\# of let binders,ylabel=time (s),ymax=65]
-        \addplot[mark=o,color=red] table{perf-UnderLetsPlus0-cbv;rewrite-strat(bottomup).txt};
-        \addplot[mark=triangle,color=red] table{perf-UnderLetsPlus0-cbv;rewrite-strat(topdown).txt};
-        \addplot[mark=square,color=red] table{perf-UnderLetsPlus0-cbv;setoid-rewrite.txt};
-        \addplot[mark=+,color=blue] table{perf-UnderLetsPlus0-Rewrite-for.txt};
-        \addplot[mark=x,color=ForestGreen] table{perf-UnderLetsPlus0-rewriting.txt};
+        \addplot[mark=o,color=red] table{rewriting/perf-UnderLetsPlus0-cbv;rewrite-strat(bottomup).txt};
+        \addplot[mark=triangle,color=red] table{rewriting/perf-UnderLetsPlus0-cbv;rewrite-strat(topdown).txt};
+        \addplot[mark=square,color=red] table{rewriting/perf-UnderLetsPlus0-cbv;setoid-rewrite.txt};
+        \addplot[mark=+,color=blue] table{rewriting/perf-UnderLetsPlus0-Rewrite-for.txt};
+        \addplot[mark=x,color=ForestGreen] table{rewriting/perf-UnderLetsPlus0-rewriting.txt};
         \legend{rewrite\_strat bottomup,rewrite\_strat topdown,setoid\_rewrite,{Our approach including reification, cbv, etc.},Our approach (only rewriting)}
       \end{axis}
     \end{tikzpicture}}}}%
   \newcommand{\BindersAndRecursiveFunctionsSubfloat}{%
     \adjustbox{valign=t}{\resizebox{150px}{!}{\beginTikzpictureStamped[only marks]{
-        \einput{perf-LiftLetsMap-rewrite-strat(bottomup,bottomup).txt}
-        \einput{perf-LiftLetsMap-rewrite-strat(topdown,bottomup).txt}
-        \einput{perf-LiftLetsMap-setoid-rewrite.txt}
-        \einput{perf-LiftLetsMap-Rewrite-for.txt}
-        \einput{perf-LiftLetsMap-rewriting.txt}
-        \einput{perf-LiftLetsMap-cps+vm-compute.txt}
+        \einput{rewriting/perf-LiftLetsMap-rewrite-strat(bottomup,bottomup).txt}
+        \einput{rewriting/perf-LiftLetsMap-rewrite-strat(topdown,bottomup).txt}
+        \einput{rewriting/perf-LiftLetsMap-setoid-rewrite.txt}
+        \einput{rewriting/perf-LiftLetsMap-Rewrite-for.txt}
+        \einput{rewriting/perf-LiftLetsMap-rewriting.txt}
+        \einput{rewriting/perf-LiftLetsMap-cps+vm-compute.txt}
     }
       \pgfplotsset{every axis legend/.append style={
           at={(0.5,-0.2)},
           anchor=north}}
       \begin{axis}[xlabel=$n\cdot m$,ylabel=time (s),scaled x ticks=false,ymax=27]
-        \addplot[mark=o,color=red] table{perf-LiftLetsMap-rewrite-strat(bottomup,bottomup).txt};
-        \addplot[mark=triangle,color=red] table{perf-LiftLetsMap-rewrite-strat(topdown,bottomup).txt};
-        \addplot[mark=square,color=red] table{perf-LiftLetsMap-setoid-rewrite.txt};
-        \addplot[mark=+,color=blue] table{perf-LiftLetsMap-Rewrite-for.txt};
-        \addplot[mark=x,color=ForestGreen] table{perf-LiftLetsMap-rewriting.txt};
-        \addplot[mark=*,color=purple] table{perf-LiftLetsMap-cps+vm-compute.txt};
+        \addplot[mark=o,color=red] table{rewriting/perf-LiftLetsMap-rewrite-strat(bottomup,bottomup).txt};
+        \addplot[mark=triangle,color=red] table{rewriting/perf-LiftLetsMap-rewrite-strat(topdown,bottomup).txt};
+        \addplot[mark=square,color=red] table{rewriting/perf-LiftLetsMap-setoid-rewrite.txt};
+        \addplot[mark=+,color=blue] table{rewriting/perf-LiftLetsMap-Rewrite-for.txt};
+        \addplot[mark=x,color=ForestGreen] table{rewriting/perf-LiftLetsMap-rewriting.txt};
+        \addplot[mark=*,color=purple] table{rewriting/perf-LiftLetsMap-cps+vm-compute.txt};
         \legend{rewrite\_strat bottomup,rewrite\_strat topdown,repeat setoid\_rewrite,{Our approach including reification, cbv, etc.},Our approach (only rewriting),cps+vm\_compute}
       \end{axis}
     \end{tikzpicture}}}}%
   \newcommand{\FiatCryptoSubfloat}{%
     \adjustbox{valign=t}{\resizebox{150px}{!}{\beginTikzpictureStamped[only marks]{
-      \einput{perf-new-vm-over-old-vm.txt.md5}
-      \einput{perf-old-vm-over-old-vm.txt.md5}
-      \einput{perf-new-extraction-over-old-vm.txt.md5}
+      \einput{rewriting/perf-new-vm-over-old-vm.txt.md5}
+      \einput{rewriting/perf-old-vm-over-old-vm.txt.md5}
+      \einput{rewriting/perf-new-extraction-over-old-vm.txt.md5}
     }
       \pgfplotsset{every axis legend/.append style={
           at={(0.5,-0.2)},
           anchor=north}}
       \begin{axis}[xlabel=prime,ylabel=slowdown factor over old approach,xmode=log, ymode=log,log basis x={2}]
-        \addplot[mark=+] table{perf-new-vm-over-old-vm.txt};
-        \addplot[mark=o] table{perf-old-vm-over-old-vm.txt};
-        \addplot[mark=*] table{perf-new-extraction-over-old-vm.txt};
+        \addplot[mark=+] table{rewriting/perf-new-vm-over-old-vm.txt};
+        \addplot[mark=o] table{rewriting/perf-old-vm-over-old-vm.txt};
+        \addplot[mark=*] table{rewriting/perf-new-extraction-over-old-vm.txt};
         \legend{Our approach w/ Coq's VM,Old approach (handwritten-CPS+VM),Our approach w/ extracted OCaml}
       \end{axis}
     \end{tikzpicture}}}}%
@@ -830,11 +830,11 @@ Specifically, both functions are rewritten in continuation-passing style, which 
 The figure shows that \texttt{rewrite\_strat} variants are essentially unusable for this example, with \texttt{setoid\_rewrite} performing only marginally better, while our approach applied to the original, more readable definitions loses ground steadily to VM-based reduction on CPSed code.
 On the largest terms ($n \cdot m > 20,000$), the gap is 6s vs.\ 0.1s of compilation time, which should often be acceptable in return for simplified coding and proofs, plus the ability to mix proved rewrite rules with built-in reductions.
 %traded for simplified coding and proofs, plus the ability to mix proved rewrite rules with built-in reductions.
-See \autoref{sec:LiftLetsMap-more} for more on this microbenchmark and \autoref{sec:Eratosthenes} for an even more extreme example of full reduction with a Sieve of Eratosthenes as in the experiments of \citet{Aehlig} (ours 10s, VM 0.3s).
+See \autoref{sec:LiftLetsMap-more} for more on this microbenchmark and \autoref{sec:Eratosthenes} for an even more extreme example of full reduction with a Sieve of Eratosthenes as in the experiments of \textcite{Aehlig} (ours 10s, VM 0.3s).
 
 \subsection{Macrobenchmark: Fiat Cryptography} \label{sec:macro}
 
-Finally, we consider an experiment (described in more detail in \autoref{sec:additionalMacro}) replicating the generation of performance-competitive finite-field-arithmetic code for all popular elliptic curves by \citet{FiatCryptoSP19}.
+Finally, we consider an experiment (described in more detail in \autoref{sec:additionalMacro}) replicating the generation of performance-competitive finite-field-arithmetic code for all popular elliptic curves by \textcite{FiatCryptoSP19}.
 In all cases, we generate essentially the same code as they did, so we only measure performance of the code-generation process.
 We stage partial evaluation with three different reduction engines (i.e., three \mintinline{coq}{Make} invocations), respectively applying 85, 56, and 44 rewrite rules (with only 2 rules shared across engines), taking total time of about 5 minutes to generate all three engines.
 These engines support 95 distinct function symbols.
@@ -847,7 +847,7 @@ By instead hiding those identifiers behind opaque module-signature ascription, w
 
 As the figure shows, our approach running partial evaluation inside Coq's kernel begins with about a 10$\times$ performance disadvantage vs.\ the original method.
 With log scale on both axes, we see that this disadvantage narrows to become nearly negligible for the largest primes, of around 500 bits.
-(We used the same set of prime moduli as in the experiments run by \citet{FiatCryptoSP19}, which were chosen based on searching the archives of an elliptic-curves mailing list for all prime numbers.)
+(We used the same set of prime moduli as in the experiments run by \textcite{FiatCryptoSP19}, which were chosen based on searching the archives of an elliptic-curves mailing list for all prime numbers.)
 It makes sense that execution inside Coq leaves our new approach at a disadvantage, as we are essentially running an interpreter (our normalizer) within an interpreter (Coq's kernel), while the old approach ran just the latter directly.
 Also recall that the old approach required rewriting Fiat Cryptography's library of arithmetic functions in continuation-passing style, enduring this complexity in library correctness proofs, while our new approach applies to a direct-style library.
 Finally, the old approach included a custom reflection-based arithmetic simplifier for term syntax, run after traditional reduction, whereas now we are able to apply a generic engine that combines both, without requiring more than proving traditional rewrite rules.
@@ -858,7 +858,7 @@ By the time we reach middle-of-the-pack prime size around 300 bits, the extracte
 
 \section{Related Work}\label{sec:related}
 
-We have already discussed the work of \citet{Aehlig}, which introduced the basic structure that our engine shares, but which required a substantially larger trusted code base, did not tackle certain challenges in scaling to large partial-evaluation problems, and did not report any performance experiments in partial evaluation.
+We have already discussed the work of \textcite{Aehlig}, which introduced the basic structure that our engine shares, but which required a substantially larger trusted code base, did not tackle certain challenges in scaling to large partial-evaluation problems, and did not report any performance experiments in partial evaluation.
 
 We have also mentioned \Rtac{}~\cite{rtac}, which implements an experimental reflective version of \texttt{rewrite\_strat} supporting arbitrary setoid relations, unification variables, and arbitrary semi-decidable side conditions solvable by other reflective tactics, using de Bruijn indexing to manage binders.
 We were unfortunately unable to get the rewriter to work with Coq 8.10 and were also not able to determine from the paper how to repurpose the rewriter to handle our benchmarks.
@@ -884,30 +884,11 @@ There are a number of natural extensions to our engine.
 For instance, we do not yet allow pattern variables marked as ``constants only'' to apply to container datatypes; we limit the mixing of higher-order and polymorphic types, as well as limiting use of first-class polymorphism; we do not support proving equalities on functions; we only support decidable predicates as rule side conditions, and the predicates may only mention pattern variables restricted to matching constants; we have hardcoded support for a small set of container types and their eliminators; we support rewriting with equality and no other relations (e.g., subset inclusion); and we require decidable equality for all types mentioned in rules.
 It may be helpful to design an engine that lifts some or all of these limitations, building on the basic structure that we present here.
 
-%% Acknowledgments
-\begin{acks}                            %% acks environment is optional
-                                        %% contents suppressed with 'anonymous'
-  %% Commands \grantsponsor{<sponsorID>}{<name>}{<url>} and
-  %% \grantnum[<url>]{<sponsorID>}{<number>} should be used to
-  %% acknowledge financial support and will be used by metadata
-  %% extraction tools.
-  This material is based upon work supported by the
-  \grantsponsor{GS100000001}{National Science
-    Foundation}{http://dx.doi.org/10.13039/100000001} under Grant
-  No.~\grantnum{GS100000001}{nnnnnnn} and Grant
-  No.~\grantnum{GS100000001}{mmmmmmm}.  Any opinions, findings, and
-  conclusions or recommendations expressed in this material are those
-  of the author and do not necessarily reflect the views of the
-  National Science Foundation.
-\end{acks}
-
-
-%% Bibliography
-\nocite{*}
-\bibliography{rewriting}
+%\nocite{*}
 
 \clearpage
-\appendix
+\begin{subappendices}
+    %\appendix
 \section{Additional Information on Microbenchmarks} \label{sec:additionalMicro}
 
 We performed all benchmarks on a 3.5 GHz Core i7 running Linux and Coq 8.10.0.
@@ -1002,12 +983,12 @@ We can see from the graphs in \autoref{fig:timing-Plus0Tree-fixed-m} and \autore
 %       at={(0.5,-0.2)},
 %       anchor=north}}
 %     \begin{axis}[xlabel=$\text{term size} = (m+1)\cdot 2^{n+1}-m$,ylabel=time (s)]
-%       \addplot[mark=+,color=blue] table{perf-Plus0Tree-Rewrite-for.txt};
-%       \addplot[mark=x,color=ForestGreen] table{perf-Plus0Tree-rewriting.txt};
-%       \addplot[mark=o,color=red] table{perf-Plus0Tree-cbv;rewrite!.txt};
-%       \addplot[mark=*,color=red] table{perf-Plus0Tree-cbv;setoid-rewrite.txt};
-%       \addplot[mark=square,color=red] table{perf-Plus0Tree-cbv;rewrite-strat(bottomup).txt};
-%       \addplot[mark=triangle,color=red] table{perf-Plus0Tree-cbv;rewrite-strat(topdown).txt};
+%       \addplot[mark=+,color=blue] table{rewriting/perf-Plus0Tree-Rewrite-for.txt};
+%       \addplot[mark=x,color=ForestGreen] table{rewriting/perf-Plus0Tree-rewriting.txt};
+%       \addplot[mark=o,color=red] table{rewriting/perf-Plus0Tree-cbv;rewrite!.txt};
+%       \addplot[mark=*,color=red] table{rewriting/perf-Plus0Tree-cbv;setoid-rewrite.txt};
+%       \addplot[mark=square,color=red] table{rewriting/perf-Plus0Tree-cbv;rewrite-strat(bottomup).txt};
+%       \addplot[mark=triangle,color=red] table{rewriting/perf-Plus0Tree-cbv;rewrite-strat(topdown).txt};
 %       \legend{Our approach including reification,Our approach (only rewriting),rewrite!,setoid\_rewrite,rewrite\_strat bottomup,rewrite\_strat topdown}
 %     \end{axis}
 %   \end{tikzpicture}
@@ -1019,24 +1000,24 @@ We can see from the graphs in \autoref{fig:timing-Plus0Tree-fixed-m} and \autore
   \def\mval{#1}%
   \subfloat[Timing of Plus0Tree ($m=\mval$)]{%
   \resizebox{150px}{!}{\beginTikzpictureStamped[only marks]{
-    \einput{perf-Plus0Tree-only-m-\mval-cbv;rewrite-strat(bottomup).txt}
-    \einput{perf-Plus0Tree-only-m-\mval-cbv;setoid-rewrite.txt}
-    \einput{perf-Plus0Tree-only-m-\mval-cbv;rewrite-strat(topdown).txt}
-    \einput{perf-Plus0Tree-only-m-\mval-cbv;rewrite!.txt}
-    \einput{perf-Plus0Tree-only-m-\mval-Rewrite-for.txt}
-    \einput{perf-Plus0Tree-only-m-\mval-rewriting.txt}
+    \einput{rewriting/perf-Plus0Tree-only-m-\mval-cbv;rewrite-strat(bottomup).txt}
+    \einput{rewriting/perf-Plus0Tree-only-m-\mval-cbv;setoid-rewrite.txt}
+    \einput{rewriting/perf-Plus0Tree-only-m-\mval-cbv;rewrite-strat(topdown).txt}
+    \einput{rewriting/perf-Plus0Tree-only-m-\mval-cbv;rewrite!.txt}
+    \einput{rewriting/perf-Plus0Tree-only-m-\mval-Rewrite-for.txt}
+    \einput{rewriting/perf-Plus0Tree-only-m-\mval-rewriting.txt}
     \mval
   }
     \pgfplotsset{every axis legend/.append style={
         at={(0.5,-0.2)},
         anchor=north}}
     \begin{axis}[xlabel=$n$,ylabel=time (s),ymode=log,ymin=0.002,ymax=110]
-      \addplot[mark=square,color=red] table{perf-Plus0Tree-only-m-\mval-cbv;rewrite-strat(bottomup).txt};
-      \addplot[mark=*,color=red] table{perf-Plus0Tree-only-m-\mval-cbv;setoid-rewrite.txt};
-      \addplot[mark=triangle,color=red] table{perf-Plus0Tree-only-m-\mval-cbv;rewrite-strat(topdown).txt};
-      \addplot[mark=o,color=red] table{perf-Plus0Tree-only-m-\mval-cbv;rewrite!.txt};
-      \addplot[mark=+,color=blue] table{perf-Plus0Tree-only-m-\mval-Rewrite-for.txt};
-      \addplot[mark=x,color=ForestGreen] table{perf-Plus0Tree-only-m-\mval-rewriting.txt};
+      \addplot[mark=square,color=red] table{rewriting/perf-Plus0Tree-only-m-\mval-cbv;rewrite-strat(bottomup).txt};
+      \addplot[mark=*,color=red] table{rewriting/perf-Plus0Tree-only-m-\mval-cbv;setoid-rewrite.txt};
+      \addplot[mark=triangle,color=red] table{rewriting/perf-Plus0Tree-only-m-\mval-cbv;rewrite-strat(topdown).txt};
+      \addplot[mark=o,color=red] table{rewriting/perf-Plus0Tree-only-m-\mval-cbv;rewrite!.txt};
+      \addplot[mark=+,color=blue] table{rewriting/perf-Plus0Tree-only-m-\mval-Rewrite-for.txt};
+      \addplot[mark=x,color=ForestGreen] table{rewriting/perf-Plus0Tree-only-m-\mval-rewriting.txt};
       \legend{rewrite\_strat bottomup,setoid\_rewrite,rewrite\_strat topdown,rewrite!,{Our approach including reification, cbv, etc.},Our approach (only rewriting)}
     \end{axis}
   \end{tikzpicture}}%
@@ -1053,24 +1034,24 @@ We can see from the graphs in \autoref{fig:timing-Plus0Tree-fixed-m} and \autore
   \def\nval{#1}%
   \subfloat[Timing of Plus0Tree ($n=\nval$)]{%
   \resizebox{150px}{!}{\beginTikzpictureStamped[only marks]{
-      \einput{perf-Plus0Tree-only-n-\nval-cbv;rewrite-strat(bottomup).txt}
-      \einput{perf-Plus0Tree-only-n-\nval-cbv;setoid-rewrite.txt}
-      \einput{perf-Plus0Tree-only-n-\nval-cbv;rewrite-strat(topdown).txt}
-      \einput{perf-Plus0Tree-only-n-\nval-cbv;rewrite!.txt}
-      \einput{perf-Plus0Tree-only-n-\nval-Rewrite-for.txt}
-      \einput{perf-Plus0Tree-only-n-\nval-rewriting.txt}
+      \einput{rewriting/perf-Plus0Tree-only-n-\nval-cbv;rewrite-strat(bottomup).txt}
+      \einput{rewriting/perf-Plus0Tree-only-n-\nval-cbv;setoid-rewrite.txt}
+      \einput{rewriting/perf-Plus0Tree-only-n-\nval-cbv;rewrite-strat(topdown).txt}
+      \einput{rewriting/perf-Plus0Tree-only-n-\nval-cbv;rewrite!.txt}
+      \einput{rewriting/perf-Plus0Tree-only-n-\nval-Rewrite-for.txt}
+      \einput{rewriting/perf-Plus0Tree-only-n-\nval-rewriting.txt}
       \nval
   }
     \pgfplotsset{every axis legend/.append style={
         at={(0.5,-0.2)},
         anchor=north}}
     \begin{axis}[xlabel=$m$,ylabel=time (s),ymax=10]
-      \addplot[mark=square,color=red] table{perf-Plus0Tree-only-n-\nval-cbv;rewrite-strat(bottomup).txt};
-      \addplot[mark=*,color=red] table{perf-Plus0Tree-only-n-\nval-cbv;setoid-rewrite.txt};
-      \addplot[mark=triangle,color=red] table{perf-Plus0Tree-only-n-\nval-cbv;rewrite-strat(topdown).txt};
-      \addplot[mark=o,color=red] table{perf-Plus0Tree-only-n-\nval-cbv;rewrite!.txt};
-      \addplot[mark=+,color=blue] table{perf-Plus0Tree-only-n-\nval-Rewrite-for.txt};
-      \addplot[mark=x,color=ForestGreen] table{perf-Plus0Tree-only-n-\nval-rewriting.txt};
+      \addplot[mark=square,color=red] table{rewriting/perf-Plus0Tree-only-n-\nval-cbv;rewrite-strat(bottomup).txt};
+      \addplot[mark=*,color=red] table{rewriting/perf-Plus0Tree-only-n-\nval-cbv;setoid-rewrite.txt};
+      \addplot[mark=triangle,color=red] table{rewriting/perf-Plus0Tree-only-n-\nval-cbv;rewrite-strat(topdown).txt};
+      \addplot[mark=o,color=red] table{rewriting/perf-Plus0Tree-only-n-\nval-cbv;rewrite!.txt};
+      \addplot[mark=+,color=blue] table{rewriting/perf-Plus0Tree-only-n-\nval-Rewrite-for.txt};
+      \addplot[mark=x,color=ForestGreen] table{rewriting/perf-Plus0Tree-only-n-\nval-rewriting.txt};
       \legend{rewrite\_strat bottomup,setoid\_rewrite,rewrite\_strat topdown,rewrite!,{Our approach including reification, cbv, etc.},Our approach (only rewriting)}
     \end{axis}
   \end{tikzpicture}}%
@@ -1213,27 +1194,27 @@ We are additionally bottlenecked on \texttt{cbv}, which is used to unfold the go
 
 \begin{figure}
   \beginTikzpictureStamped[only marks]{
-      \einput{perf-SieveOfEratosthenes-simpl.txt}
-      \einput{perf-SieveOfEratosthenes-cbn.txt}
-      \einput{perf-SieveOfEratosthenes-lazy.txt}
-      \einput{perf-SieveOfEratosthenes-Rewrite-for.txt}
-      \einput{perf-SieveOfEratosthenes-rewriting.txt}
-      \einput{perf-SieveOfEratosthenes-cbv.txt}
-      \einput{perf-SieveOfEratosthenes-vm-compute.txt}
-      \einput{perf-SieveOfEratosthenes-native(2)(real).txt}
+      \einput{rewriting/perf-SieveOfEratosthenes-simpl.txt}
+      \einput{rewriting/perf-SieveOfEratosthenes-cbn.txt}
+      \einput{rewriting/perf-SieveOfEratosthenes-lazy.txt}
+      \einput{rewriting/perf-SieveOfEratosthenes-Rewrite-for.txt}
+      \einput{rewriting/perf-SieveOfEratosthenes-rewriting.txt}
+      \einput{rewriting/perf-SieveOfEratosthenes-cbv.txt}
+      \einput{rewriting/perf-SieveOfEratosthenes-vm-compute.txt}
+      \einput{rewriting/perf-SieveOfEratosthenes-native(2)(real).txt}
   }
     \pgfplotsset{every axis legend/.append style={
         at={(0.5,-0.2)},
         anchor=north}}
     \begin{axis}[xlabel=upper bound,ylabel=time (s),ymax=65]
-      \addplot[mark=square,color=red] table{perf-SieveOfEratosthenes-simpl.txt};
-      \addplot[mark=triangle,color=red] table{perf-SieveOfEratosthenes-cbn.txt};
-      \addplot[mark=square*,color=red] table{perf-SieveOfEratosthenes-lazy.txt};
-      \addplot[mark=+,color=blue] table{perf-SieveOfEratosthenes-Rewrite-for.txt};
-      \addplot[mark=x,color=ForestGreen] table{perf-SieveOfEratosthenes-rewriting.txt};
-      \addplot[mark=triangle*,color=orange] table{perf-SieveOfEratosthenes-cbv.txt};
-      \addplot[mark=*,color=purple] table{perf-SieveOfEratosthenes-vm-compute.txt};
-      \addplot[mark=-,color=red] table{perf-SieveOfEratosthenes-native(2)(real).txt};
+      \addplot[mark=square,color=red] table{rewriting/perf-SieveOfEratosthenes-simpl.txt};
+      \addplot[mark=triangle,color=red] table{rewriting/perf-SieveOfEratosthenes-cbn.txt};
+      \addplot[mark=square*,color=red] table{rewriting/perf-SieveOfEratosthenes-lazy.txt};
+      \addplot[mark=+,color=blue] table{rewriting/perf-SieveOfEratosthenes-Rewrite-for.txt};
+      \addplot[mark=x,color=ForestGreen] table{rewriting/perf-SieveOfEratosthenes-rewriting.txt};
+      \addplot[mark=triangle*,color=orange] table{rewriting/perf-SieveOfEratosthenes-cbv.txt};
+      \addplot[mark=*,color=purple] table{rewriting/perf-SieveOfEratosthenes-vm-compute.txt};
+      \addplot[mark=-,color=red] table{rewriting/perf-SieveOfEratosthenes-native(2)(real).txt};
       \legend{simpl,cbn,lazy,{Our approach including reification, cbv, etc.},Our approach (only rewriting),cbv,vm\_compute,native\_compute}
     \end{axis}
   \end{tikzpicture}
@@ -1241,7 +1222,7 @@ We are additionally bottlenecked on \texttt{cbv}, which is used to unfold the go
 \end{figure}
 
 
-To benchmark how much overhead we add when we are reducing fully, we compute the Sieve of Eratosthenes, taking inspiration on benchmark choice from \citet{Aehlig}.
+To benchmark how much overhead we add when we are reducing fully, we compute the Sieve of Eratosthenes, taking inspiration on benchmark choice from \textcite{Aehlig}.
 We find in \autoref{fig:timing-SieveOfEratosthenes} that we are slower than \texttt{vm\_compute}, \mintinline{coq}{native_compute}, and \texttt{cbv}, but faster than \mintinline{coq}{lazy}, and of course much faster than \texttt{simpl} and \texttt{cbn}, which are quite slow.
 
 We define the sieve using \mintinline{coq}{PositiveMap.t} and \mintinline{coq}{list Z}:
@@ -1350,17 +1331,17 @@ Global Arguments Pos.to_nat !_ / .
   \newcommand{\MacroSubfloat}[3]{%
     \subfloat[Timing of different partial-evaluation implementations for Fiat Cryptography as prime modulus grows (only #2 #3)]{%
   \resizebox{200px}{!}{\beginTikzpictureStamped[only marks]{
-      \einput{perf-new-vm-times--only-#1-#3.txt}
-      \einput{perf-old-vm-times--only-#1-#3.txt}
-      \einput{perf-new-extraction-times--only-#1-#3.txt}
+      \einput{rewriting/perf-new-vm-times--only-#1-#3.txt}
+      \einput{rewriting/perf-old-vm-times--only-#1-#3.txt}
+      \einput{rewriting/perf-new-extraction-times--only-#1-#3.txt}
   }
     \pgfplotsset{every axis legend/.append style={
         at={(0.5,-0.2)},
         anchor=north}}
     \begin{axis}[xlabel=prime,ylabel=time (s),xmode=log, ymode=log,log basis x={2}]
-      \addplot[mark=+] table{perf-new-vm-times--only-#1-#3.txt};
-      \addplot[mark=o] table{perf-old-vm-times--only-#1-#3.txt};
-      \addplot[mark=*] table{perf-new-extraction-times--only-#1-#3.txt};
+      \addplot[mark=+] table{rewriting/perf-new-vm-times--only-#1-#3.txt};
+      \addplot[mark=o] table{rewriting/perf-old-vm-times--only-#1-#3.txt};
+      \addplot[mark=*] table{rewriting/perf-new-extraction-times--only-#1-#3.txt};
       \legend{Our approach w/ Coq's VM,Old approach (handwritten-CPS+VM),Our approach w/ extracted OCaml}
     \end{axis}
   \end{tikzpicture}}%
@@ -1615,7 +1596,7 @@ Note that the well-formedness-preservation proof for this definition in inlined 
 The inductive description of decision trees is \verb|decision_tree| in \texttt{rewriter/src/Rewriter/Rewriter/Rewriter.v}.
 
 The pattern language is defined as the inductive \verb|pattern| in \texttt{rewriter/src/Rewriter/Rewriter/Rewriter.v}.
-Note that we have a \verb|Raw| version and a typed version; the pattern-matching compilation and decision-tree evaluation of \citet{Aehlig} is an algorithm on untyped patterns and untyped terms.
+Note that we have a \verb|Raw| version and a typed version; the pattern-matching compilation and decision-tree evaluation of \textcite{Aehlig} is an algorithm on untyped patterns and untyped terms.
 We found that trying to maintain typing constraints led to headaches with dependent types.
 Therefore when doing the actual decision-tree evaluation, we wrap all of our expressions in the dynamically typed \verb|rawexpr| type and all of our patterns in the dynamically typed \verb|Raw.pattern| type.
 We also emit separate inductives of identifier codes for each of the \verb|expr|, \verb|pattern|, and \verb|Raw.pattern| type families.
@@ -1729,3 +1710,4 @@ The rewrite rules are defined in \texttt{fiat-crypto/src/Rewriter/Rules.v} and p
 They are turned into rewriters in the various files in \texttt{fiat-crypto/src/Rewriter/Passes/}.
 The shared inductives and definitions are defined in the Coq source files \texttt{fiat-crypto/src/Language/IdentifiersBasicGENERATED.v}, \texttt{fiat-crypto/src/Language/IdentifiersGENERATED.v}, and \texttt{fiat-crypto/src/Language/IdentifiersGENERATEDProofs.v}.
 Note that we invoke the subtactics of the \mintinline{coq}{Make} command manually to increase parallelism in the build and to allow a shared language across multiple rewriter packages.
+\end{subappendices}

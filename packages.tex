@@ -361,5 +361,8 @@
 \makeatother
 \newcommand{\asserteq}[2]{\ifthenelse{\equal{#1}{#2}}{}{\GenericError{}{Not equal: \detokenize{#1} != \detokenize{#2}}{}{}}}
 
+%% from pandoc
+\providecommand{\tightlist}{%
+    \setlength{\itemsep}{0pt}\setlength{\parskip}{0pt}}
 
 \input{todo}

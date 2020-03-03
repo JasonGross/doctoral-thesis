@@ -13,6 +13,8 @@
 \end{flushright}
 
 \chapter{Introduction}\label{ch:intro}
+\paragraph{Paragraph 1: Orient the reader to very broad things}
+
 
 \begin{subappendices}
 
@@ -128,40 +130,12 @@ Yeah that way I feel like I'm I'm trying out a methodology of this like recordin
 
 Then like taking the transcripts and putting them into tech and polishing them and soon it might be the case that's speaking it. Is closer to writing. Okay the way I'm trying to approach this. 
 
+\section{more Adam transcript}
+
 So tell me the story of land called Intro. Okay, so. One cold in true has. Two three chapters. 
 
 It feels like I I know how to end the introduction more than I know how to start it. How do you end it? Oh so I ended with a the like final chapter in the introduction is a sort of a painting of where map of like. This is what performance and caulk looks like. 
-
-You're like performance issues and look like this is what makes them hard and I want to like, It'll probably it's I should probably like say the things that I'm thinking of including in this section because you'll probably tell me that some of them are not good to include. So I'm thinking of including like both deep and mundane issues and one of the things that I want to point out is that it's hard to figure out like what the performance roots are. 
-
-And. One example that I want to pull that seems like a good example to give here is like a like one of the examples in the palette of performance. Troubles is the quadratic behavior of CBV on the number of finders. And. The ultimate issue here is the cock uses NDE to do to implement CVB and the way that they move closures under binders is they add a thunk that says bump all the point indices by one. 
-
-And so if you move it under and binders you add unthanks that add one to all the different indices you mentioned one of these design choices in caulk. I think you will be good to do your best to explain why it's not terrible any that you should finish ever to try. 
-
-Oh interesting. I feel like. 
-
-So. Leaning on premature premature optimization is the root of all evil it is this seems like a fairly easy way to implement bumping the brain indices. And if you expect most functions to have order 10-ish binders, then you don't run into any problems and you can see this by the fact that CPV is not usually very slow, okay, yeah, I'm not necessarily trying to pull out these explanations from you now to apply things to see that we really want to try in this paper and this document and then say the next version we submit of our rewriter paper not to just present it as usual and into us by the gods we have to deal with that we want to explain why this is. 
-
-The tool we're connected to is somewhat representative of the community's knowledge about how to build a good privilege system sure. Oh. Yeah. So like this to to finish up the CBV example, like the algorithm that they have tends to work, it's tends to be fast enough and even catch this. 
-
-Performance issue either you need to be the one who wrote the code in the first place or you need to be actually playing with hundreds of binders. To notice it. To diagnose it. You need to understand the algorithm in part because all of caulk is like a big mutual recursive lock and soon call traces turned always give you relevant data. 
-
-And also because you're implementing mathematical algorithms that are non-trivial. And because it's I think CBV is not. In the trusted code base. But. You could imagine it's possible that lazy has the same issue. I'm not sure if it does it might. And if it does then it is part of the trusted code base. 
-
-And so then you can you need to be careful when you're optimizing because you still need to trust the resulting code. And so you have this. Confluence of a bunch of different restrictions that they hit hard to catch and diagnose and fix the performance issues, yeah. Even when they're Monday and like this, that sounds okay. 
-
-Yeah. 
-
-And so another another example from this is that oh. Building proof terms step by step every time you need to create a new. Evar for the goal and. When you create the new Eve already you need to relate it to the you need to relate it's context the only verse context. 
-
-And it turns out that this is something like linear in the number of things in the context. And this is usually fine because your context are usually not more than a couple hundred things big and you're it's usually the case that the individual steps in your approved take more time than the like transition between steps in the proof. 
-
-But this means that if you want to introduce say a couple thousand variables and you do it one of the time you're now something like. Ah, like quadratic. In the republic. I can't remember if it's quadratic or cubic there might be another linear factor somewhere in there and call okay, but you have like that performance in the number of variables you're trying to introduce for this like very simple tactic and this one is sort of less obvious how to solve it. 
-
-Sure. And say like that's that's another thing that's hard. Oh and so I think in this section now probably go digging up a couple other performance issues that unlike pain this picture of like widely ranging performance issues in terms of how hard they are to solve but the commonality is that it's. 
-
-Complicated to tell ahead of time like. It's like hard to find the performance issue and know how hard it'll be to solve, okay? Oh so that's how I want to sort of end the introduction. Makes sense to me. It does sound like you've been pretty clear you would go there so I figured out remaining time that's more useful to talk about earlier parts that are fuzzier yep sounds good. 
-
+\section{more Adam transcript}
 Ah. Okay, so things that need to go in the earlier parts. What are what is proof assistant and what is cock? To proud criterion. 
 
 Whatever dependent types. Maybe like what is what is conversion what is or I don't know if I introduce conversion on the here if I save it for later. Should you included what is a proof assistant but you didn't include why do we care about them, okay, maybe you all said mind. 

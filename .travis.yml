@@ -34,7 +34,7 @@ jobs:
     - env: EXCLUDE_REWRITING=1
       script: sed s'/\\def\\excludefiles{}/\\def\\excludefiles{rewriting}/g' -i jgross-thesis.tex && make OTHERFLAGS="-interaction=nonstopmode" && make todo && make todo.svg # this is the fast job, which exlcudes all the plots in rewriting
     - env: EXCLUDE_REWRITING=""
-      script: make OTHERFLAGS="-interaction=nonstopmode" && make todo && make todo.svg
+      script: sed s'/\\def\\excludefiles{rewriting}/\\def\\excludefiles{}/g' -i jgross-thesis.tex && make OTHERFLAGS="-interaction=nonstopmode" && make todo && make todo.svg
 
 after_success:
   - mkdir -p deploy/nightly

@@ -15,13 +15,12 @@
 }
 
 @InProceedings{reification-by-parametricity,
-  Title                    = {Reification by Parametricity: Fast Setup for Proof by Reflection, in Two Lines of {L}tac},
-  Author                   = {Jason Gross and Andres Erbsen and Adam Chlipala},
-  Booktitle                = {Proceedings of the \href{https://itp2018.inria.fr/}{9th International Conference on Interactive Theorem Proving (ITP'18)}},
-  Year                     = {2018},
-  Month                    = {July},
-
-  Abstract                 = {We present a new strategy for performing reification in Coq.
+  author          = {Jason Gross and Andres Erbsen and Adam Chlipala},
+  title           = {Reification by Parametricity: Fast Setup for Proof by Reflection, in Two Lines of {L}tac},
+  booktitle       = {Proceedings of the \href{https://itp2018.inria.fr/}{9th International Conference on Interactive Theorem Proving (ITP'18)}},
+  year            = {2018},
+  month           = jul,
+  abstract        = {We present a new strategy for performing reification in Coq.
 That is, we show how to generate first-class abstract syntax trees from ``native'' terms of Coq's logic, suitable as inputs to verified compilers or procedures in the \emph{proof-by-reflection} style.
 Our new strategy, based on simple generalization of subterms as variables, is straightforward, short, and fast.
 In its pure form, it is only complete for constants and function applications, but ``let'' binders, eliminators, lambdas, and quantifiers can be accommodated through lightweight coding conventions or preprocessing.
@@ -30,11 +29,11 @@ We survey the existing methods of reification across multiple Coq metaprogrammin
 We report benchmarking results for 18 variants, in addition to our own, finding that our own reification outperforms 16 of these methods in all cases, and one additional method in some cases; writing an OCaml plugin is the only method tested to be faster.
 Our method is the most concise of the strategies we considered, reifying terms using only two to four lines of \texttt{Ltac}---beyond lists of the identifiers to reify and their reified variants.
 Additionally, our strategy automatically provides error messages that are no less helpful than Coq's own error messages.},
-  Artifact-github          = {https://github.com/mit-plv/reification-by-parametricity},
-  Artifact-tar-gz          = {https://people.csail.mit.edu/jgross/personal-website/papers/2018-reification-by-parametricity-itp-camera-ready-supplementary.tar.gz},
-  Original-url             = {https://people.csail.mit.edu/jgross/personal-website/papers/2018-reification-by-parametricity-itp-draft.pdf},
-  Owner                    = {Jason},
-  Url                      = {https://people.csail.mit.edu/jgross/personal-website/papers/2018-reification-by-parametricity-itp-camera-ready.pdf}
+  artifact-github = {https://github.com/mit-plv/reification-by-parametricity},
+  artifact-tar-gz = {https://people.csail.mit.edu/jgross/personal-website/papers/2018-reification-by-parametricity-itp-camera-ready-supplementary.tar.gz},
+  original-url    = {https://people.csail.mit.edu/jgross/personal-website/papers/2018-reification-by-parametricity-itp-draft.pdf},
+  owner           = {Jason},
+  url             = {https://people.csail.mit.edu/jgross/personal-website/papers/2018-reification-by-parametricity-itp-camera-ready.pdf},
 }
 
 @InProceedings{FiatCryptoSP19,
@@ -68,14 +67,13 @@ url = {http://adam.chlipala.net/papers/FiatCryptoSP19/}
 }
 
 @Book{cpdt,
-  Title                    = {Certified Programming with Dependent Types: A Pragmatic Introduction to the {C}oq Proof Assistant},
-  Author                   = {Adam Chlipala},
-  Publisher                = {MIT Press},
-  Year                     = {2013},
-  Month                    = {December},
-
-  ISBN                     = {9780262026659},
-  Url                      = {http://adam.chlipala.net/cpdt/}
+  title     = {Certified Programming with Dependent Types: A Pragmatic Introduction to the {C}oq Proof Assistant},
+  publisher = {MIT Press},
+  year      = {2013},
+  author    = {Adam Chlipala},
+  month     = dec,
+  isbn      = {9780262026659},
+  url       = {http://adam.chlipala.net/cpdt/},
 }
 
 @TechReport{gonthier2016small,
@@ -168,14 +166,13 @@ url = {http://adam.chlipala.net/papers/FiatCryptoSP19/}
 }
 
 @Article{ziliani2015mtac,
-  Title                    = {Mtac: A Monad for Typed Tactic Programming in {C}oq},
-  Author                   = {Ziliani, Beta and Dreyer, Derek and Krishnaswami, Neelakantan R and Nanevski, Aleksandar and Vafeiadis, Viktor},
-  Journal                  = {Journal of Functional Programming},
-  Year                     = {2015},
-  Volume                   = {25},
-
-  Publisher                = {Cambridge University Press},
-  Url                      = {http://plv.mpi-sws.org/mtac/journal-draft.pdf}
+  author    = {Beta Ziliani and Derek Dreyer and Neelakantan R Krishnaswami and Aleksandar Nanevski and Viktor Vafeiadis},
+  title     = {Mtac: A Monad for Typed Tactic Programming in {C}oq},
+  journal   = {Journal of Functional Programming},
+  year      = {2015},
+  volume    = {25},
+  publisher = {Cambridge University Press},
+  url       = {http://plv.mpi-sws.org/mtac/journal-draft.pdf},
 }
 
 @Article{ziliani2017comprehensible,
@@ -205,11 +202,11 @@ url = {http://adam.chlipala.net/papers/FiatCryptoSP19/}
 @Misc{coq-pr-floats,
   author    = {Erik Martin-Dorel},
   title     = {Implementing primitive floats (binary64 floating-point numbers) - Issue \#8276 - coq/coq},
+  month     = aug,
   year      = {2018},
-  month     = {Aug},
-  url       = {https://github.com/coq/coq/issues/8276},
   owner     = {jgross},
   timestamp = {2019.04.22},
+  url       = {https://github.com/coq/coq/issues/8276},
 }
 
 @article{Compcert,
@@ -253,13 +250,13 @@ url = {http://adam.chlipala.net/papers/FiatCryptoSP19/}
     pages = {207--220}
 }
 
-@book{PartialEvaluation,
-  author = {N.D. Jones and C.K. Gomard and P. Sestoft},
-  title = {Partial Evaluation and Automatic Program Generation},
+@Book{PartialEvaluation,
+  title     = {Partial Evaluation and Automatic Program Generation},
   publisher = {Prentice Hall International},
-  month = Jun,
-  year = 1993,
-  isbn = {0-13-020249-5}
+  year      = {1993},
+  author    = {N.D. Jones and C.K. Gomard and P. Sestoft},
+  month     = jun,
+  isbn      = {0-13-020249-5},
 }
 
 @Article{LMS,
@@ -276,8 +273,8 @@ url = {http://adam.chlipala.net/papers/FiatCryptoSP19/}
   title     = {An inverse of the evaluation functional for typed $\lambda$--calculus},
   booktitle = {[1991] Proceedings Sixth Annual IEEE Symposium on Logic in Computer Science},
   year      = {1991},
-  pages     = {203-211},
-  month     = {July},
+  pages     = {203--211},
+  month     = jul,
   doi       = {10.1109/LICS.1991.151645},
   keywords  = {formal logic;inverse;evaluation functional;typed lambda -calculus;typed lambda -terms;normalization algorithm;lambda -calculi;constants;natural deduction proofs;completeness theorem;recursive functions;Calculus;Arithmetic;Computer languages},
   url       = {http://www.mathematik.uni-muenchen.de/~schwicht/papers/lics91/paper.pdf},
@@ -290,11 +287,11 @@ url = {http://adam.chlipala.net/papers/FiatCryptoSP19/}
   booktitle = {Proc. TPHOLs}
 }
 
-@inproceedings{CodeGen,
-  author = {Florian Haftmann and Tobias Nipkow},
-  year = 2007,
-  title = {A Code Generator Framework for Isabelle/HOL},
-  booktitle = {Proc. TPHOLs}
+@InProceedings{CodeGen,
+  author    = {Florian Haftmann and Tobias Nipkow},
+  title     = {A Code Generator Framework for {I}sabelle/{HOL}},
+  booktitle = {Proc. TPHOLs},
+  year      = {2007},
 }
 
 @inproceedings{vale,
@@ -360,10 +357,10 @@ url = {http://adam.chlipala.net/papers/FiatCryptoSP19/}
 @PhdThesis{malecha2015thesis,
   author = {Gregory Michael Malecha},
   title  = {Extensible Proof Engineering in Intensional Type Theory},
-  year   = {2014},
-  month  = {Nov},
-  url    = {http://gmalecha.github.io/publication/2015/02/01/extensible-proof-engineering-in-intensional-type-theory.html},
   school = {Harvard University},
+  year   = {2014},
+  month  = nov,
+  url    = {http://gmalecha.github.io/publication/2015/02/01/extensible-proof-engineering-in-intensional-type-theory.html},
 }
 
 @InProceedings{debruijn1972,

@@ -45,11 +45,11 @@
 %% Krishna Sethuraman (1990).
 \usepackage{excludeonly}
 \def\files{all}
-\def\excludefiles{}%{rewriting}
+\def\excludefiles{rewriting}%{}
 \def\all{all}
 \def\nofiles{}
-\ifx\files\all \typeout{Including all files.} \else \typeout{Including only \files.} \todo{Make sure to include all files} \includeonly{\files} \fi
-\ifx\excludefiles\nofiles \typeout{Exlcuding no files.} \else \typeout{Exlcuding only \excludefiles.} \todo{Make sure to exclude no files} \excludeonly{\excludefiles} \fi
+\ifx\files\all \typeout{Including all files.} \else \typeout{Including only \files.} \etodo{Make sure to include all files (not just \files)} \includeonly{\files} \fi
+\ifx\excludefiles\nofiles \typeout{Exlcuding no files.} \else \typeout{Exlcuding only \excludefiles.} \etodo{Make sure to exclude no files (not \excludefiles)} \excludeonly{\excludefiles} \fi
 
 \newlength{\initialparskip}
 \newlength{\newparskip}

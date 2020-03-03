@@ -234,14 +234,11 @@ hyperref.sty : %.sty : backref.dtx bmhydoc.sty hylatex.ltx hyperref.dtx hyperref
 
 #http://mirrors.ctan.org/macros/latex/contrib/mathtools.zip && unzip mathtools.zip && (cd mathtools && for i in *.dtx; do (mv $i ../ && cd .. && tex $i); done)
 
-$(PDFS): references.bib references-lower.bib
+$(PDFS): references.bib
 
 $(THESIS_PDFS): $(THESIS_TEXS)
 
 $(PROPOSAL_PDFS): $(PROPOSAL_TEXS)
-
-references-lower.bib: references.bib
-	sed -e s'/Title\(\s*=\)/title\1/g' -e s'/Author\(\s*=\)/author\1/g' $< > $@
 
 include rewriting/PerfData.mk
 REWRITING_PERF_DATA_MD5 := $(addsuffix .md5,$(REWRITING_PERF_DATA))

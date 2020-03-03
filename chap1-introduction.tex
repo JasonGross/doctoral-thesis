@@ -14,6 +14,246 @@
 
 \chapter{Introduction}\label{ch:intro}
 
+\begin{subappendices}
+
+\section{Transcript bits from talking with Adam}
+And my phone is now recording. 
+
+Yeah, so my son's this story is that the there'll be sort of introduction and at some point I'll have to introduce caulk and some amount of detail and I'm not sure where exactly that bit of it goes. But the main thing I want to talk about in the introduction is. 
+
+Like what makes performance in caulk and assistance especially dependently type ones different from performance and other programming languages, let me suggest here for the very beginning. I would try to write introduction that doesn't go into a lot of detail about conflict but paints a broad picture. 
+
+Say sort of like going through a breath first traversal of the material starting with the higher level motivation, so that's whoever reads it understands what you're trying to accomplish and what major it's a progress you made towards those goals and then chapter two. Presents more the details on call background, that'll be needed to understand the precise rules of the game and what's going to come later okay so then I'm thinking the chapter one in the introduction is something like performance in crew or like proof assistance or thing preface systems are important performance improve assistance is important yeah. 
+
+I'm not sure how much it feels like in order to like talk about why performance improve assistance is important. I need to say something about like what makes it different like why it's not already solved. The information at a very high level there so the the like highest level the sketch here is that in most languages the performance looks something like EU write something and it works and maybe you have to optimize it a little and like as you get bigger examples, it slowly gets slower. 
+
+Whereas in caulk the experience is that he writes something in that works and you get bigger examples and it gets a bit slower and then you make your examples just a little bit bigger and now it takes a week or a month or like unclear just I'm sure we can find examples like that in traditional software also like you you just pushed your working set beyond the cast size or. 
+
+Something like that. 
+
+I think that's true put my senses that in preface this then it like this is. This is just how the like. It seems like this is pervasive in preface systems. I think this is the wrong level abstraction for. Section one. I would first try to convey the big message of the detention between flexibility and trust in a free persistent building out alcohol methods tools, we can typically get around a lot of these issues. 
+
+I say okay, so. So is this section where I want to talk about the divide between kernel trusted code base and the rest of it you might try starting out with with just introducing the debate on criteria remind me what that does. Roughly what you just said small currently that's in terms of some sort of record of approved that can be appreciated in terms of only a small senators okay, yeah that seems good. 
+
+And you might want to give an idea for what dependent types are what's the peel they give people using them and some sort of fuzzy idea for the challenges that might emerge are. 
+
+Yeah. 
+
+I'm trying to figure out what it feels like. I have like two very different levels that I can pitch dependent types at and not sure if either one is adequate for thesis. One of them is explaining dependent types as in many languages you want to know at compile time if you try to pass an integer when you're function is expecting a string yeah in caulk you like you have this part of these system on steroids where you can do things like oh. 
+
+You need to pass element of the empty set if the turning machine does not halt and if the turning machine does halt the need to pass an element of the one element set. There was definitely skipping forward way through an explanation of what depends sorry why are we here? 
+
+Well represented about the actual way is so this is sort of the like what? What makes dependent types powerful and challenging. The the what dependent types are. I feel like my technical explanation is something like they let the home. So one version of it is that they return value for your the return type of your function gets the depend on the value of the arguments. 
+
+Yes, that does sound like a definition. I mean, it's it's not. 
+
+Hit. To only works precisely if you're either fully curried or like it doesn't capture segment types exactly or something. 
+
+Sure. Okay. I'm right. And no, and then the the turning machine bit is an explanation of like what? What dependent types let you do and how they let you encode proofs and this part of the system. I don't think it's an explanation of why it pays off to do things that way. 
+
+They're really important to have in the first section. I feel like I don't have a good explanation of why why it appears off to be a superficial systems on type theory, rather than doing something like Isabel Hall. It's gonna be a problem, but if you spend a while. Theseus explaining how to handle dependent types properly and you have an explained why that was the right size choice to put them in there in the first place. 
+
+Yeah. It feels like currently I like to have the knowledge about to have an argument for them. Okay. 
+
+Other than like lots of people do it or something. I think part of it is connected to the small trusted go-based story of how tribulation checking works. Really don't have another option but using types of things sometimes. I feel like if you base everything on the axioms of sub theory, you can have a. 
+
+TCP that's much smaller than that of call. Maybe. We get the same performance advantages ignore this issue that there's a design choice that creates a large fraction of the challenges and the thesis and not explain why it's there. If you want to start out by saying there was a time when we were confused and thought this was a good idea and now we're going to trace through the consequences. 
+
+That's better than trying to ignore it. 
+
+I think I want guidance from you on what to do here. It feels like the best I can say is like this is a choice that lots of people make and we're going to look at like assuming that you've made this choice like what follows? Maybe should try to pull people who seem like on a bashed fans of a family type programming improve assistance even today and get looked there. 
+
+There didn't justifications over. I think it's fun. Okay, it's a good start. Which might translate into what happens to match every people of intuition as well. I think that's close correlative fun here. Yeah. 
+
+I guess I can like email. Call club or something. 
+
+Okay. Okay, I will plan to email golf club. It's good. And figure out something to write. Feels like this will be one of the one of the week links in my thesis. Okay. Okay, so there will be some chunks that's like talking about dependent types and. 
+
+You won't you want to make a similar introduction and motivation for every major feature that leaked into interesting and significant challenges in the work you presents. 
+
+Yeah, so I guess the it feels like the two main. 
+
+Like two main features that I'm going to talk about are motivated by the Deborah and Criterion and using dependent types. 
+
+I think there's something about computation for efficiency being built into certain parts of the system, that is. Fundamental here having compiled my thoughts. Yeah. I feel like that that's sort of runs through both of them or something. So we're sorry that like runs through both so I'm with my overall plan is that there'll be this introduction section, there'll be another section that like introduces call can talks about alike. 
+
+Survey of what performance issues and calls look like from a like bird's eye view. Okay, and then there'll be a section on. 
+
+\section{more transcript from Adam}
+I expect. In terms of where I expect to have trouble feels like I expect that. I'll have a lot of trouble making the technical details of the rewriter the targeted right level. 
+
+And I'll have trouble sort of weaving all of the different parts together coherently. 
+
+Because of what to be feels like it's sort of inherent. Between the category theory part and the the article is very important yeah. I feel like. Like I like the current way that I'm dealing with that of like we're going to look at like two completely different parts of the system that like overlapping little bit and how you solve them or like ways to solve them and like one of them is convergent. 
+
+And then the other one is or like one of them is conversion and the root of the issue is dependent types and then the other one is ah. Program transformation and rewriting in the root of the issue is this separation between the trusted code base and the parts that you freely optimize. 
+
+Okay. And like, Ah in the conversion that there's like a couple solutions one of them is that is basically all the way on the never call conversion end of things and the other one is on the like shove everything into the type level and this is where the like the amber efficient computation shows up and then in the the program transformation and rewriting section the solution that we're using is the shove everything into the piano. 
+
+Okay. 
+
+Did you bitch you reification in your little walk-through? I did not but I expect the the. Program transformation section is going to or like the program transformation chapter is going to split and will have. For like we'll have a bunch of sections and one of them will be on like. 
+
+Proof by reflection and then another one will be on like reification and some part of that will be on reification by parametricity. It's probably the case of the content from that paper as long enough that it shouldn't just be one section within a chapter. It's the reader. Feel happy about making a progress if you don't have evidence long chapters. 
+
+Length of an independent research paper as a good standard for roughly how long a chapter can get I could instead of calling them chapters call them like half parts yeah and I'm beneath that have chapters and have like perk introduction that has the like true introduction and then the like here is called and performance issues in call and then part conversion. 
+
+And then part. 
+
+I don't know what to call the next word. It's not you're writing in production. I mean, maybe it's rewriting in reduction but it's also like it also covers fruit by reflection in general, but if you're general pattern is apart of corresponds to a problem and then that treatment of each problem you introduce a solution including the background for it then makes sense to me, then you'd have reflection be introduced within there well within the first portion be conversion, it should be API design or something, okay? 
+
+Yeah, I could do that. Oh so API design is a part and then in part that's on rewriting and reduction. 
+
+With chapters on. The like introduce the problem the talk about proof by reflection talk about reification and reification by parametricity. 
+
+And then talk about the rewriter and then your like talk about the performance of the rewriter and the like broad strokes of it and then talk about the technical details and challenges and implementing the rewriter and then there's like a part conclusion. 
+
+That talks about the like let's look back on on performance over the past decade and talk and see where we've like made strides and what this can say about future proof assistance and then also look forward and be like here's the like next challenged tackle and performance of previous systems like call. 
+
+Yeah. Sounds good to me. Cool was that the level of detail you were looking for here home. 
+
+I think I. To the part that I feel most fuzzy on still is the introduction, oh. 
+
+I could go into more detail and tell you it feels like I've given a good level of detail of the outline, okay, oh. 
+
+Except it feels like I still don't know how to do the introduction or split it up. Okay, so you want to drill down I think I want to drill down more on the introduction unless you think it's better to save the introduction part for later. Do we have anything higher priority by later? 
+
+I meant after I read the other parts of the thesis or something, okay? You try to productively use the remaining time in this meeting and if you don't have a better idea of what to do, we should talk about. The only other idea of that I have for what to do is to tell you more bits of the story for from the other parts. 
+
+When it sounds like you're much more confident that you have that story inside you. Yeah, it feels like I'm I'm like still a little bit fuzzy, but I like every time I tell that it gets more clear and I feel confident that this will continue to be the pattern. 
+
+Whereas for the introduction, I feel like Like every time I tell it it's completely different and. It's not getting any more clear. You know, most people these things don't take shape until they're actually writing. You didn't necessarily expect to reach it fixed point by speaking it over and over again. 
+
+Yeah that way I feel like I'm I'm trying out a methodology of this like recording and using transcripts. Yeah and. 
+
+Then like taking the transcripts and putting them into tech and polishing them and soon it might be the case that's speaking it. Is closer to writing. Okay the way I'm trying to approach this. 
+
+So tell me the story of land called Intro. Okay, so. One cold in true has. Two three chapters. 
+
+It feels like I I know how to end the introduction more than I know how to start it. How do you end it? Oh so I ended with a the like final chapter in the introduction is a sort of a painting of where map of like. This is what performance and caulk looks like. 
+
+You're like performance issues and look like this is what makes them hard and I want to like, It'll probably it's I should probably like say the things that I'm thinking of including in this section because you'll probably tell me that some of them are not good to include. So I'm thinking of including like both deep and mundane issues and one of the things that I want to point out is that it's hard to figure out like what the performance roots are. 
+
+And. One example that I want to pull that seems like a good example to give here is like a like one of the examples in the palette of performance. Troubles is the quadratic behavior of CBV on the number of finders. And. The ultimate issue here is the cock uses NDE to do to implement CVB and the way that they move closures under binders is they add a thunk that says bump all the point indices by one. 
+
+And so if you move it under and binders you add unthanks that add one to all the different indices you mentioned one of these design choices in caulk. I think you will be good to do your best to explain why it's not terrible any that you should finish ever to try. 
+
+Oh interesting. I feel like. 
+
+So. Leaning on premature premature optimization is the root of all evil it is this seems like a fairly easy way to implement bumping the brain indices. And if you expect most functions to have order 10-ish binders, then you don't run into any problems and you can see this by the fact that CPV is not usually very slow, okay, yeah, I'm not necessarily trying to pull out these explanations from you now to apply things to see that we really want to try in this paper and this document and then say the next version we submit of our rewriter paper not to just present it as usual and into us by the gods we have to deal with that we want to explain why this is. 
+
+The tool we're connected to is somewhat representative of the community's knowledge about how to build a good privilege system sure. Oh. Yeah. So like this to to finish up the CBV example, like the algorithm that they have tends to work, it's tends to be fast enough and even catch this. 
+
+Performance issue either you need to be the one who wrote the code in the first place or you need to be actually playing with hundreds of binders. To notice it. To diagnose it. You need to understand the algorithm in part because all of caulk is like a big mutual recursive lock and soon call traces turned always give you relevant data. 
+
+And also because you're implementing mathematical algorithms that are non-trivial. And because it's I think CBV is not. In the trusted code base. But. You could imagine it's possible that lazy has the same issue. I'm not sure if it does it might. And if it does then it is part of the trusted code base. 
+
+And so then you can you need to be careful when you're optimizing because you still need to trust the resulting code. And so you have this. Confluence of a bunch of different restrictions that they hit hard to catch and diagnose and fix the performance issues, yeah. Even when they're Monday and like this, that sounds okay. 
+
+Yeah. 
+
+And so another another example from this is that oh. Building proof terms step by step every time you need to create a new. Evar for the goal and. When you create the new Eve already you need to relate it to the you need to relate it's context the only verse context. 
+
+And it turns out that this is something like linear in the number of things in the context. And this is usually fine because your context are usually not more than a couple hundred things big and you're it's usually the case that the individual steps in your approved take more time than the like transition between steps in the proof. 
+
+But this means that if you want to introduce say a couple thousand variables and you do it one of the time you're now something like. Ah, like quadratic. In the republic. I can't remember if it's quadratic or cubic there might be another linear factor somewhere in there and call okay, but you have like that performance in the number of variables you're trying to introduce for this like very simple tactic and this one is sort of less obvious how to solve it. 
+
+Sure. And say like that's that's another thing that's hard. Oh and so I think in this section now probably go digging up a couple other performance issues that unlike pain this picture of like widely ranging performance issues in terms of how hard they are to solve but the commonality is that it's. 
+
+Complicated to tell ahead of time like. It's like hard to find the performance issue and know how hard it'll be to solve, okay? Oh so that's how I want to sort of end the introduction. Makes sense to me. It does sound like you've been pretty clear you would go there so I figured out remaining time that's more useful to talk about earlier parts that are fuzzier yep sounds good. 
+
+Ah. Okay, so things that need to go in the earlier parts. What are what is proof assistant and what is cock? To proud criterion. 
+
+Whatever dependent types. Maybe like what is what is conversion what is or I don't know if I introduce conversion on the here if I save it for later. Should you included what is a proof assistant but you didn't include why do we care about them, okay, maybe you all said mind. 
+
+I mean, I do have it in mind but I didn't have it in mind here idea why do we care about purpose systems, what are they already been used for was the basis of confidence that this is a painful tool? So this is like like look at all the prior work things that. 
+
+Shouldn't shouldn't less literally yeah. 
+
+And then why do we care about performance and purpose systems? 
+
+I do worry that there is prior work that I'm not going to find on performance improvement systems. I feel like I'm not currently aware of much other than maybe now there's. I think there's like making. I feel like there's some things that like touch on performance, that's like. Canonical structures for less ad hoc automation and. 
+
+The maybe some of burglaries stuff on reflection. If yep stars not raise and so forth native stuff. 
+
+Yeah. 
+
+I can't explain to you don't exhausted literature search there myself, okay. I shouldn't it's done some time it's returned alert literature yeah. I'm spending a few hours trying to find some other things out there. I remember what I did that with a much smaller time parameter than a few hours right before the poll deadline. 
+
+I found this this paper from the the Isabel crowd doing allows him with things and, Wasn't the ideal time to realize that yeah for the the rewriter paper yeah, yeah. Apparently we just never done a web search before for. Something like rewriting normalization by calculation proof assistance came up pretty quickly, yeah. 
+
+I feel like we ran into a similar issue with pressures and that I dove into implementing part series without having read any of literature on pursuers. 
+
+So what's these? Push down literature search. Early in the writing process this time even if it's too late to be early in the research process, you know. I will in to do that, okay? 
+
+Happy set enough about chapter one. I don't think so. I think we've like thrown a bunch of things out but I like and like I know how to say a little bit about each of them, okay, but I don't I don't know how to say enough about or like I don't know what is enough about each of them some of them. 
+
+I don't know how to say enough about them and I definitely don't know how to weave them into a story. While you're trying to introduce main performance element aspects of performance metal and aspects of. Particular. Design philosophy using caulk in some related systems, you're trying to explain why they were introduced originally. 
+
+And something of the challenges for the user that they introduced. 
+
+Were trying we need to keep our focus on not having this come across as here's a system that someone threw at us and we figured out how to use it well. That could be the nature of the experiment we ran to answer larger design questions, but we have we want to keep relating back to the larger questions. 
+
+I feel like when I when I try to imagine the intricate trend I keep running into the problem where. I can like. Say a lot of things and eventually I'll get to where I want to go, but. The it feels like I'm going to leave the reader not knowing what we're doing for the chapter or two. 
+
+That's good it's good it's it it's good relative to what's possible. What we're doing is so technical that we need to introduce a lot of background before anyone can appreciate it. 
+
+I feel like it would be good to give them a sense and maybe even like part of me wants to be like we should give them a sense in the first paragraph that we're like, I don't know dealing with performance issues and verified in life. Making. Systems not have bugs or something okay, yeah if we're just literally putting that phrase into the first paragraphs. 
+
+Sounds plausible. So that would evangelize more detail. I've been something that's like roughly it feels like sort of what I'm want to do is I want to orient the reader. I want to be like here here's what here's the broad thing of what we're going to look at and I want that and I don't know the first sentence the first paragraph. 
+
+That worries the like first sentence of the second paragraph. And then I want to like introduce some amount of context and then be like okay now that you have this context. I can orient you better like here's a better version of what we're going to be doing and then that paves the way for more context and then I can be like, okay now that you have this more context. 
+
+Like here's an even better version of what we're going to be doing and either that will be the last iteration or one more iteration and be like okay now that you have all of the context now I can actually start talking about what we're doing you just need to give yourself permission to write low-polity texts ready to revise it later, ah feels like a skill that I've never learned when I'm very handy one. 
+
+It feels like so the skill that I do have is like talk to someone with a low quality explanation, okay, and then as they express confusion revise on that. And it feels like that's a suddenly different skill yeah. It's just really hard to get oh you work your way up to complex information if you're just speaking it. 
+
+There's a reason we use written explanations, what do you mean? Working memories not sufficient to. Receive a complex idea just by listening to someone talk with no other visual aids up. So it may be that you're. By forcing yourself to use the conversational medium, you're so eliminating you're the set of what you could possibly convey you for you restricted your attention to such easy things and you feel like you're making progress, but oh. 
+
+It feels like the things that I can convey to the conversational medium or enough to get me to the point where I'm comfortable writing details or something, okay? Like it feels like like we have the rewriting paper and like, Even if I throw out the introduction bits of it. 
+
+I feel like I should be able to get to the point where I should be able to get up to the meat of it with the conversational medium and then just take the written made of it. I feel like you might need to point to code examples to do that. 
+
+I could believe that. 
+
+It feels like I'm floundering much earlier in the process. 
+
+Like I'm floundering that the orient the reader step. You know. 
+
+Tempted to just try again with the. Telling you that to know that I have this picture about what I'm trying to do with the introduction which I did not have before okay attempted to just try again to give you the story of the introduction, okay for minutes give you as much as I can give you in three minutes, let's do it, okay, so. 
+
+Story is that Jesus is going to look at. How. 
+
+We're looking at verified or at getting systems that don't have bugs in them and how to. Be performant when doing this what's hard about being performant and like how to. Succeed you haven't mentioned a aspect of foundational tools that a small trusted basis. I think that is central to this. 
+
+Depends on how you interpret it says it's not having buck you might be worried about bugs in the fall methods tools. Which case perhaps this is the unified. Oh people could use the nudge with a more explicit framing. So, I feel like I want that to be in the. 
+
+Non leave like super initial contacts but in the in the like background after the first contact setting that's like, okay the way that we're going to the like tools that we're using for not forgetting systems without bugs are proof assistance and these are foundational tools and here's this large body of work that's about how this has been useful and like why this is a reasonable way to get systems without bugs make sense as a buildup principle for the introduction. 
+
+I think throughout most of the paper you want the top-level frame of the problem people's minds to be fun. Damentally about foundational tools. Yeah, I think I'm going to. 
+
+Like. I think by paragraph three. I want to stop talking about or will. Yeah, I feel like by something around paragraph three of the introduction. I want to like like we're not. We're not talking about other ways of getting systems without bugs, we're talking about proofs. And purposes those sorts of foundational tools, okay? 
+
+And. 
+
+I feel like now I need to say something about performance and I don't know what to say. 
+
+Can't use the tools. I don't get what's that's kind of the maybe I just say that oh and then. 
+
+So I'm tempted here to be like okay and like this is this is what makes performance in pure physicists different but I feel like. You're suggesting from earlier was don't do that here. Like like my story wasn't compelling enough about why performance is bad and purpose. I think talking about this dope the proof system is this organism we found in the jungle we're going to tell you what's why isn't how you deal with it isn't near this convincing as talking about a fundamental trade-off between flexibility and trust. 
+
+Okay, so it goes here is where I. Want to introduce the grind criteria. 
+
+And I feel like then I want to introduce dependent types and maybe this is very. 
+
+Um and that. I'll need to like pull cockclub or something. And then I feel like now I want to reorient it's also three o'clock. Okay, oh and then I want to like reorient where. Like what we're going to be doing or something. Like spiral back to the. 
+
+So we're looking at. Performance improvement systems and these two issues you're going to generate. Like broad swaths of the. System where performance issues occur and I'll be talking about. What the performance issues look like and also ways to solve them. And then after that I get more context on. 
+
+In cock here is this palette of performance issues and like what they look like okay, so that seemed like a good introduction sketch. That level of abstraction you have my. Cult thanks sure. I'm assuming that you don't want to have any input into this strategy.
+
+
+\section{Transcript bits from Talking with Rajee}
 High level story:
 
 Coq and proof assistance are important. Performance in them is important, especially at scale. Performance engineering in proof assistants has some unique challenges that don't show up in other programming languages.
@@ -33,6 +273,7 @@ If the part generating the arithmetic proof is wrong then the users come complai
 If the part checking the proofs is wrong, then you don't see the bug and now suddenly your users can prove anything they want.
 And the system is no longer trustworthy right and so for that bit of it you need to be very careful with any changes you make.
 
+\end{subappendices}
 %\begin{itemize}
 %  \item Mention domains: math/CT and program transformation
 %  \item Case studies: parsers, fiat-crypto, CT library

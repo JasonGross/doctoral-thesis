@@ -1,5 +1,9 @@
 \chapter{The Performance Landscape in Type-Theoretic Proof Assistants} \label{ch:perf-failures}
 
+The purpose of this chapter is to convince the reader that the issue of performance in proof assistants is non-trivial in ways that differ from performance bottlenecks in non-dependently-typed languages.
+I intend to do this by painting a palette of real performance issues in Coq.
+
+
 \begin{itemize}
   \item \todo{quadratic cbv}
   \item \todo{quadratic vm\_compute}
@@ -19,6 +23,250 @@
 \todo{figure out story for this section}
 
 \begin{subappendices}
+    \section{transcript from Rajee}
+    
+    
+    Okay, it's recording. 
+    
+    You were saying. What was that you were saying you want you don't know how to structure okay, so the the purpose of this section. And stick inventory, but performance issues and purpose denser and nontrivial and. They're not real in different ways the differences between performance issues and purpose systems and performance issues and. 
+    
+    Other programs. Is non-trivial. The way that I want to do this is by giving a bunch of examples. Of. What performance issues in caulk look like. Do you also have to supplement with a taxonomy of issues in general like in other programs and then compare or like, how are you making the distinction? 
+    
+    Also with their taxonomy of different types of performance issues where you inventing one. 
+    
+    I hope not. The ladder and I don't know for the farmer. Okay, um like. 
+    
+    Okay, so my claim is that. In most other programs. You. 
+    
+    Pick the algorithm that you want for the job. And you have some sense of how it's going to be used and so you can pick an algorithm that. Has reasonable performance characteristics and you do a back with the envelope calculation and you're like yep if I implement the algorithm well then it will be good enough for my job. 
+    
+    And. Then you implement the algorithm. And then separately you don't need to understand the algorithm at all in order to performance optimize the implementation, very like you only need to understand it very superficially. You can like divide concerns between understanding and the implementation. And. To test the performance you need even less understanding. 
+    
+    Right and you just throw. The you need to know what sort of data gets thrown at it and you throw the data at it and you like profile the hot spots to three things getting recap them, okay, so. What? Like. Okay, so at all levels you need to know what? 
+    
+    Sort of tasks your program is doing what the like typical data looks like maybe that's the difference between performance and other programs and performance and call that. In proof assistance. It's quite hard to know like there isn't to standard for what the standard workload it is. Um, And then in these other programs there is the high level optimizations where you pick an algorithm and you do a back of the envelope calculation and you're like yep could the data that I use my I picked now rhythm that has the right asymptotics. 
+    
+    And then now you can implement it and then you can throw away all your knowledge the algorithm itself. And you can just focus on performance optimizing the implementation. Look up what the hotspots are and you optimize them. Yeah, how did the latter two play into how you do things of cock so the problem with pop is that? 
+    
+    You're typical data. Is proofs and math all proofs and math. And also other kinds of proofs that are like not commonly seen in the math there, isn't. Like. Okay, there's sort of a typical workload. Um, but. It's closer to the typical workload of like program compilation, but it's it's even bigger than that. 
+    
+    And. Usually with program compilation you like you want your compiler to be fast, but you care more about the speed of the compiled program and so. You only really need to check the asymptotics, usually. Whereas. 
+    
+    The. 
+    
+    So. In most do maintenance, you can actually. 
+    
+    Like you can get a meaningful sense of what the asymptotics are. In that you like look the compiler is at worst like you can get a worse overskis asymptotics. 
+    
+    Caulk, that is actually impossible. Because. Ah. Or like I can prove to you that the worst case running time and talk. Is exponential like no matter what you do no matter how good you make it and worse case running time is always going to be exponential as the no matter how good you make it worse is like oh because worst case because in cock yeah, oh you can. 
+    
+    Include you can take any. Turing machine and you can run it for a number of steps that is exponential in the length of your input. Very this is just how logarithmic like decimal encodings of numbers work and so. Unless you can solve the halting problem and like do better than just solving the whole thing problem unless you can like solve all acetic problems. 
+    
+    If you're going to have to run algorithms that are exponential in the size of your input. 
+    
+    I don't follow say that part again the beginning okay, so in most languages yeah you you're like, okay sorting a list is analog n in the length of the list. You're like good. I'm done. I don't need to worry about like sorting a list is never going to be exponential in the. 
+    
+    In the length of the list like this you mean constant time comparison and like you can express it in terms of how long comparison stay oh and you're like okay doing this database operation you like can actually put down a running time on it and like compiling code is a little bit harder to put a running time on but you could probably write a compiler where you're like look file or guarantees. 
+    
+    Like linear time quadratic time something and the one for the code. Like you're compiler for CH should not be exponential in the length of your C code. I think in fact. Well okay, so then interesting case but can you explain more about how the compiler? C should not be more than quadratic or it's not quite true and see because you can. 
+    
+    In the pre-processor you can code fancy things but like. For the standard use case. Um, 
+    
+    Like if. If you have like two unrelated blocks of code. Compiling them like shouldn't be that much harder than like compiling them separately. So compilation should be roughly linear in the length of your code. 
+    
+    And like okay, they're exceptions to this but they're rare. My claim is that in caulk the exceptions dominate every like when you scale things the exceptions dominate, what is what is the reason? Like how to be exceptions arise and yeah, so the the standard exception is you're like, um, So in C, you can say these computations when I compile time and now you have to run a C program. 
+    
+    I compile time. So you have a short C program you're like, please compute 20,000 factorial. Have compiled time. And this is like five lines of code. And then you're like, okay now please compute 40,000 factorial and you haven't changed the number of characters, but now it takes much more than twice as long. 
+    
+    So my claim is that in caulk. Um, this is sort of what goes on in lots of places. Why? Oh because. So much computation happens at file time. Why? 
+    
+    So when you run simple and call that's computation. When it creates your proof when it checks your proof when it runs your proof, that's all compile time. 
+    
+    It's like sort of the de facto standard is to do computation. I compile time so if you're proof becomes more and more complex. Where I don't understand how I'm using the word complex, you're encountering the exception that you're encounter where things yeah. No so you. Even when you're code is not complex, you're like hitting the exceptions but the factors are small enough that your exponential behavior or whatever doesn't doesn't show how are you using the word complex? 
+    
+    Informally, okay. 
+    
+    So what what's like a marker of like when things become when things scale weirdly and when they don't. Oh. 
+    
+    So you make your you run simple and it works and then you increase the size of the thing that you're running simple on and now maybe it finishes after 10 hours. 
+    
+    Maybe. Okay. Increasing the size, okay? What why is simple like right so you you were dealing with things with like successory of end times them yeah and like okay, so now. You like. Have a like cage long arithmetic problem and you write that down you run simple and it's fast. 
+    
+    And then you add two more terms to it. And now it doesn't finish after five hours what a simple actually running what's the? Magic magic. They would take me. Like two pages of text to describe what's simple as theory. Okay is that part of so is it a very complex program or what's up there like it's it's a complex algorithm with lots of heuristics, okay a philosophers. 
+    
+    Ah, it's like one complicated heuristic in particular okay, but it like takes the page or three to build up enough backgrounds even understand what the heuristic is for in the first place and how much of you analyze the complexities like is that analyzable or not or ah, 
+    
+    The problem with analyzing. The complexity of anything caulk is that everything calls everything else? 
+    
+    Like. 
+    
+    You're like, okay, I want to know how long it takes to to run simple on something and you're like okay what's simple does is it uses the definitions of things that sounds simple right and then you're like, okay, but like the definition of plus is that it's this recursive function that's like defined as an anonymous recursive function. 
+    
+    But when you simplify plus you get back the name plus. Right you get back plus symbol and you don't get back anonymous recursive function applied to arguments no this is what the heuristic and simplest for I see okay, so you're like, okay, so when I after I so simple unfolds things sometimes sometimes it's like nope actually. 
+    
+    I don't unfold this the heuristics about when it unfolds stuff when it uses definitions and when it doesn't you're complicated but then even after it use definitions now it needs to go back and it needs to use definitions and the other direction and be like, oh this anonymous function is bound to this name. 
+    
+    Okay, that's still fun but some of the anonymous functions take extra arguments before they get to the recursive part and so now it needs to pull those arguments out here anonymous recursive function. And in order to know whether or not. Like they can be pulled out because they can be arbitrarily complicated terms it invokes this entirely different procedure. 
+    
+    Which is how do you tell how do you tell whether one two things are the same when you might not know everything about the two things there might be some bits that you're like fill it in later. And this is an entirely different procedure that also doesn't have well understood complexity. 
+    
+    Because this one also can do arbitrary amounts of computation in the middle of of running it can use definitions arbitrarily much. And. Here even here when you fill in the holes. I think sometimes it goes back to this question of can you like is this thing down to a name or not? 
+    
+    And so you got this back and forth between them. I'm not actually might have only been an older versions of cock that there was this back and forth but. You'd still get this back and forth and so it gets quite tricky town allies asymptotics. It's not even clear what the what meaningful variable you can talk about asymptotics and right you're like but it's like the asymptotics are clearly. 
+    
+    Exponential or worse they just have to be because there's no way like when you code up programs that are exponential or worse or like when you could have programs that are that are exponential. It has to run the whole program and there's no way around that. So the worst case behavior is is just inherits it from the program. 
+    
+    Oh. And so it's not clear how to analyze the performance of this thing. Separately from the performance of the data that you're running and normally you don't think about performance of data meaningful characteristic, but it's sort of. It's like entwined in almost all of how cock works. 
+    
+    Something like oh you first point at this thing that you can do for other programs and you point at why you can't do it for cock and then you make a case for why that's okay or like there's like a couple questions about like why this would even be the case or like like do it you could like punton be like well, this is what we have. 
+    
+    Adam said I should not do that, okay. What should you do then? Um, 
+    
+    I should read the responses the email that I sent to call Club that are like, here's why we have dependent types, okay, like it's kind of hard to do math in some sense without all this power. Oh. 
+    
+    But this isn't exactly what I want this section to look like what do you like the first section? I will already have introduced some decent trunk of this. I think this is chapter 2. There. 
+    
+    Yeah. I feel like the structure is a little bit mixed up or something. Maybe chapter one is introducing the different design issues in chapter two is about here's performance things that go up with them. But design issues, so I've been focusing on the spit that is like, Ah. All of the. 
+    
+    Like worst case exponential behavior, there's no way around that also it's hard to analyze the performance. 
+    
+    That is. Sort of one large class of things but there's another class of things that I haven't talked about at all yet. That originates from a different. Difficulty source. 
+    
+    In one way of looking at where the other class of problems originates from is that. You want to have only a small. Chunk of program that you trust. And you want to have a larger part that even untrust. What is trust me here, oh. That if there is a bug in it. 
+    
+    Then other things happen, okay, right so there's a lot of stuff that you write and if there's bug enough. And you're like, oh there's an error message. There's a smaller chunk of the program that if there is a bug in it then you're like, Well, I guess I proved that one. 
+    
+    = 0. And so you won't only a small chunk of code where if you have bugs in it and you get proofs that one = 0. And. Sort of the standard way to do this is that you. Dress the language like gives sort of trace of what it's of the like smaller steps that you know how to do in the small language. 
+    
+    That the that's the like smaller kernel can check. 
+    
+    The problem is that. 
+    
+    The sort of obvious mathematical way of encoding this is frequently quadratic. 
+    
+    Oh coding what is quadratic? The steps steps off. The primitive steps that say that this is a valid beer. Okay. And that's quadratic. Oh, it's quadratic. Sort of because. 
+    
+    There isn't very much support for. Sharing. For being like reuse these steps. These sort of need to. Give the steps from scratch each time or jump through a lot of hoops. 
+    
+    Like. If you're not careful then there's no sharing. No sharing. Oh. So like if you just write the function that computes the Fibonacci numbers recursively. You. Duplicate a lot of work. Because like to compute like 5 you're like 5 plus 5 3, but to compute 4, you're like 5 3 plus 5 2, and now you can keep 3 twice. 
+    
+    Use of don't you use like tricks like memoization. Great, but if you want the, 
+    
+    Like most programming languages don't have. Of memorization. Yeah. Like. It might be interesting to have a programming language that auto memoizes everything. I expect there you would run into other performance issues. Okay. But in caulk again, you don't you don't have I mean, there is some attempts at doing something that's like auto memorization but. 
+    
+    Um, It's sort of not built in or like it's a how does the autopark matter can't you have? Introduced memoization yourself. Yeah, you can yeah, um, but it's. It's not the way that most people wait right proofs because you write the simplest thing that works first. Sure. Okay, so let's say you go introduce memorization problem is that. 
+    
+    That is still not good enough because. Ah. There are various bits of the cocky ego system that are something like cubic in the number of things that you've memorized. What do you mean by that? Like you want to memorize and things like. If you do this interactively. 
+    
+    Like if you. Want a system that lets you do this you need to make sure that all of your primitives behave nicely like have predictable performance with respect to this variable. I've already told you how hard it is to get ridicule performance of all the various things and the sort of naive obvious ways implement some of the bits of call. 
+    
+    Give you cubic performance and. How many things you've memorized? 
+    
+    And like quite possibly, maybe you could design a proof of system. Carefully if you had a like theoretical foundation. Or would like a global picture that doesn't have this issue. But otherwise it's sort of feels like you're playing guacamole. We're like you end up doing various trade officers something. 
+    
+    So then. 
+    
+    Ah. 
+    
+    Well, that's that's sort of where this chapter ends. The well okay not quite there's okay, so then the rest of the pieces. Are way too, maybe I don't remember if I put this at the end of this chapter. Maybe I'll put it at the end of it but no outline ish but not very well. 
+    
+    So then. The upcoming parts of the thesis are going to be about how to. How to work around these issues or how to solve them, so it's not. So one path you could take is like redesign your proof assistant like have a picture of how to do this memorization correctly that's still only solves half the problem. 
+    
+    I'm going to talk about first how to solve the other half of the problem why. What do you mean why why are you know, first talk about that? I mean, I could talk about it second no. I meant like is there like a utility doing that? It's a solution to the problem, okay? 
+    
+    You're like, why are you writing this thesis? Jason the the question doesn't feel like that he feels like I don't understand. Is the, The fact that you hit this worst case exponential behavior everywhere accidentally. How did how did I want to say how to not how to design your programs so that you stop hitting it everywhere accidentally, okay? 
+    
+    And so you're chunking the problem to it yes, okay, that's one of the bits yeah the other bit is this. Um, 
+    
+    This like. You're like okay, we want separation between trusted and untrusted yeah, but if you don't the like mathematically sound obvious way of doing this gives you quadratic. Blow up in various places and you're like, okay but memoization and. Then you try to do that and you're like, oh the things that made sense to do in various parts of the system are now real bad. 
+    
+    Along. 
+    
+    And. So. You could redesign your whole purpose system to like support this sort of analyzation thing. I'll come back to that in the conclusion as future work, but I'm instead of going for a different solution. The solution is that you? Um, 
+    
+    So this came about because we were trying to do things in the untrusted part and get the trusted part to check them. You could just put everything in the trusted card. Because you don't trust it well, but we can prove it. Like what do you mean, so we use the untrust part to like build? 
+    
+    New things that we trust and the reason we trust them is because we've proved them and the trusted part checked our group, okay, so now we have these new things that we built and now they live entirely like the parts of the system we need to interact with to deal with them as we scale the input is only the trusted part we don't need to do anything also the entrusted part as we scale input. 
+    
+    I don't follow why they were previously in the untrusted part what have you not done, but they had to be mental support and what have you introduced okay, so say you want to prove. A conjunction with like. A hundred different propositions, okay? There's. Sort of three ways to do this you can be like well I know how to prove conjunctions. 
+    
+    I proved conjunctions by proving the two parts of them and you interface through the untrusted part and you're like untrusted part, please let me prove two parts of the conjunction you do this and if you're not careful about my ovulation, you now have a hundred squared costs oops, okay? 
+    
+    So then you're like, Oh. So you could instead do some sort of fancy numberization then. But then you run into the other problem. Or you could say well. I'm going to prove that I'm gonna like write a description language of all the different kinds of propositions that I could write down and then I'm going to write a thing that just computes whether the proposition is true or false and then I'm going to prove that like the thing that computes whether it's true or false behaves correctly, but if it's as true in the proposition can in fact be proven, And then you're like, okay, here's my description of the conjunction. 
+    
+    Check true false. Look etc. 
+    
+    And the like check true false. Is all done in the like the trusted part knows how to run things. So it can run your check through false. 
+    
+    Can you distinguish between the trusted and untrusted part and what you're introduced again. Oh so the trusted part knows how to run knows how to like make use of definitions and run things. And it knows how to like. 
+    
+    Check everything is good, yeah. I didn't notice how to apply the like basic rules of types. Cool and the untrusted part, let's you like build proofs it by bit. Do arbitrarily fancy things. What what what were you using how's the trust important unpressed support like what was what were what was the structure serving as before and why are you making everything trusted and what what so the reason you want? 
+    
+    A small you want a small trusted perk yeah because. Um, You want it to be the case that as users add more features. They any bugs they introduce don't let you prove when equals zero. Oh. So the untrusted part is sort of convenient. So if you make things trust to when you're. 
+    
+    And the untrusted part you it's also like faster to write things in it because you don't need to prove that the thing that you're doing is right you're just like do this check that it's good. Check that as good as the same as private tray no truck that it's good is the thing that happens when you write QED and it's like make sure my proof is actually valid. 
+    
+    So why are you suddenly comfortable with making more things trusted whatever I'm not no. I'm not it's not that I'm making more things trust them yeah basically what I'm doing is I'm saying things that you were doing untrusted lands and that you were just later saying once I'm done. 
+    
+    I've generated the thing to check instead I'm saying, That what gets checked is the code implementing the untrusted bit. 
+    
+    Say that again. So different words no same word, so previously the untrusted bit generates a thing that gets checked but the trusted bit yeah instead I'm saying. I'm going to write code for the untrusted bit and that's what gets checked. And then once it's checked then it's good. I've shown that it's always correct and so I can just use it and the thing that it generates doesn't need to be checked. 
+    
+    This is how this is how gender they works. What do you mean? Like how does the trusted bit generally interact with the trust of the untrusted bit? The untrusted bit generates a certificate or the proof object or something and it hands it to the trusted bit and says check that it's good. 
+    
+    Okay. Where's now it's? Just getting checked with the whole things. So instead what I do is I say I managed to convince the trusted bit that any certificate that this bit of code could possibly generate. Is good. How do you do that? The first proof so what? Ah. There will be a whole chapter devoted to this. 
+    
+    Okay. But. Ah. 
+    
+    Okay, okay, here's an example. Suppose you want to prove that one number is less than or equal to another number natural numbers. Here my rules for less than or equal. X is less than equal X. If A is less than equal B then. A is less than equal success or P. 
+    
+    Okay, so now I want to prove that 0 is less than equal 100. And to have a hundred of the successor objects. Yep followed by one of the zero less than equals zero. Yeah, okay. What do you want to do instead? And then the current will check that this large object is correct. 
+    
+    Yeah. Here's the thing. I can do inside. 
+    
+    I define subtraction where I say that subtract. A minus B as long as both of them have a successor and you keep peeling the successors off. If A becomes zero, then the difference is zero, you just don't emit negative numbers negatives just go to zero and otherwise if the right thing becomes zero then you just submit first thing anything minus zero is itself. 
+    
+    And then I say, I can prove that. If. Be line to say sorry if a minus b is zero then a is less than equal b. Okay, now all I need to do is I need to compute. A minus b or sorry, yeah a minus b my check is a minus b zero. 
+    
+    And the trusted part knows how to compute a minus b. And the trusted partners how to check if it's zero. And I've written a proof that if a minus b is zero then a less than equal b. And so the trusted person doesn't need to expand out that certificate it doesn't need to know the certificate that a less than equal b yeah because it has a proof that it will always have a certificate. 
+    
+    And that's that's how this bit works. Well. So you want to introduce more? Than that. Yeah, I write functions that are like this function generates certificates for this kind of problem. Yeah. And then the kernel checks that it in fact always generates certificates. Yeah. And then I never need to run it. 
+    
+    Cool. And I can just run something simpler that doesn't generate quadratically sized objects. And also doesn't need to reificate or memoization. 
+    
+    Okay. What was this chapter again? The where I'm solving the second half of the problem or the entire thing we're talking about. The current chapter or whatever. I mean, the the chapter that I wanted to outline was just the second introduction chapter. That's like here the performance here's what performance issues look like. 
+    
+    Yes, but the chapter what I've been talking about is the chapters on how we solve the performance issue of that arises from having a separation between. Trusted and untrusted vets. 
+    
+    So going back to the chapter that you wanted to outline go. 
+    
+    Yeah. You said you want to have explanations for why cop has been designed in the specific way that a generates a performance issue has different room performance issues that are programmed. You have those explanations? 
+    
+    I. I feel like So there is another thing that I said at all yet, which is that. So before I was talking about how in a lot of languages. You can like separate understanding the algorithm from performance optimizing it. Uh-huh. And. Also separate that from. 
+    
+    Well and maybe the reason you can do this is because you have a good representative set of data unlike a small number of things that you need awesometotic behavior with respect to Magen say that again, I got lost. Oh, okay, so standard performance optimization. Same words is fine. Oh. 
+    
+    Unless you think it's not. I want to try different way and soon food. Okay. Yeah, so standard performance optimization you like generate your good set of data that exercises various axes that you care about. And then you're like, let me pick a good algorithm. And then you're like, let me write a good implementation and these all three steps are separate. 
+    
+    And my claim is that in caulk. The first step is an open research question, what good representative said of data, okay? I mean, whatever food representative said of data is this so like for sorting lists, you're like, let me pick a bunch of lists that if I can sort these. 
+    
+    In if I like can sort everything in the set of data that like I'm like can maybe it's an infinite set, maybe it's finite set but it's like a well-modeled set. And you're like if I can if I perform well on this set then I'll basically perform well on everything. 
+    
+    I'm like for sorting this is totally reasonable you're like okay what matters is the ordering of the list and the length of the list and whether I'm sorting lists of strings or lists of integers or lists of colors that doesn't matter at all. And also it's like, Like it's a not only is it a well described set you also and like not only to know which variations you don't care about you're like look if I can sort of vary the length of the list mostly independently from what how I vary the ordering within the list, oh. 
+    
+    And like this is a good exercise of sorting algorithms. And then caulk it's an open research question. I think it's like so big that it's it's hard to find this. Like it's not clear what the relevant set of data is. 
+    
+    For any of the proofs that you want to run. I know the problem is that the dataset is the proofs that you want to run. Okay and you're trying to sell elements of the data set are the proofs that you want to run. And you're like, what's a representative set of all proofs that you might want to run? 
+    
+    It's hard yeah. And like obviously they're going and like I can prove that you can't do well you could try to just say all sets in the same way you're like all lists and like when you say all this you're like great I can give you and login and then I say all proofs and you're like great I can give you exponential behavior you're like, no, please no. 
+    
+    And so it's hard to see how to do better right, oh. And so because you don't have this that means that your other two steps are coupled and require a lot of like nuanced understanding like you need to understand the algorithm understand what the relevant what the possible relevant axes are understand the implementation of the algorithm and you need to do all of this simultaneously. 
+    
+    That makes it hard. 
+    
+    And I want to give a couple of other examples where? Like that show this sort of coupling. Yeah, that seems good. Do you have those examples? Who do I talk about? Oh. Later. Okay. Here we go. Is this been transcribing? Yes that cool. Forty-five minutes. Sweet. No, redone. Okay.
+    
+    
     \section{transcript from Adam}
     You're like performance issues and look like this is what makes them hard and I want to like, It'll probably it's I should probably like say the things that I'm thinking of including in this section because you'll probably tell me that some of them are not good to include. So I'm thinking of including like both deep and mundane issues and one of the things that I want to point out is that it's hard to figure out like what the performance roots are. 
     

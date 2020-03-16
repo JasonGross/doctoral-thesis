@@ -1,7 +1,17 @@
 \chapter{The Performance Landscape in Type-Theoretic Proof Assistants} \label{ch:perf-failures}
 
 The purpose of this chapter is to convince the reader that the issue of performance in proof assistants is non-trivial in ways that differ from performance bottlenecks in non-dependently-typed languages.
-I intend to do this by painting a palette of real performance issues in Coq.
+I intend to do this by first sketching out what I see as the main difference between performance issues in dependently-typed proof assistants vs performance issues in other languages, and then supporting this claim with a palette of real performance issues that have arisen in Coq.
+
+The widespread commonsense in performance engineering\cite{commonsense-perf-engineering-order-of-operations} is that good performance optimization happens in a particular order:
+there is no use micro-optimizing code if you are implementing an algorithm with unacceptable performance characteristics; imagine trying to optimize the pseudorandom number generator used in bogosort~\cite{bogosort}, for example.\footnote{Bogosort, whose name is a portmanteau of the words bogus and sort~\cite{bogosort-name}, sorts a list by randomly permuting the list over and over until it is sorted.}
+Similarly, there is no use trying to find or create a better algorithm if the problem you're solving is more complicated than it needs to be; consider, for example, the difference between ray tracers and physics simulators.
+Ray tracers determine what objects can be seen from a given point essentially by drawing lines from the viewpoint to the object and seeing if it passes through any other object ``in front of'' it.
+Alternatively, one could provide a source of light waves and simulate the physical interaction of light with the various objects, to determine what images remain when the light arrives at a particular point.
+There's no use trying to find an efficient algorithm for simulating quantum electrodynamics, though, if all you need to know is ``which parts of which objects need to be drawn on the screen?''
+
+One essential ingredient to allowing this division of concerns---between specifying the problem, picking an efficient algorithm, and optimizing the implementation of the algorithm---is knowledge of what a typical set of input looks like, and what the scope looks like.
+When sorting a list, we know that the length of the list and the initial ordering matter; it doesn't matter, though, whether we're sorting a list of integers or colors or names.
 
 
 \begin{itemize}
@@ -28,17 +38,21 @@ I intend to do this by painting a palette of real performance issues in Coq.
     
     Okay, it's recording. 
     
-    You were saying. What was that you were saying you want you don't know how to structure okay, so the the purpose of this section. And stick inventory, but performance issues and purpose denser and nontrivial and. They're not real in different ways the differences between performance issues and purpose systems and performance issues and. 
+    You were saying.
     
-    Other programs. Is non-trivial. The way that I want to do this is by giving a bunch of examples. Of. What performance issues in caulk look like. Do you also have to supplement with a taxonomy of issues in general like in other programs and then compare or like, how are you making the distinction? 
+    Was I?
     
-    Also with their taxonomy of different types of performance issues where you inventing one. 
+    You were saying you don't know how to structure this section.
     
-    I hope not. The ladder and I don't know for the farmer. Okay, um like. 
+    Okay, so the the purpose of this section is to convince the reader that performance issues in proof assistants are nontrivial.  They're nontrivial in different ways----the differences between performance issues in proof assistants and performance issues in other programs is non-trivial. The way that I want to do this is by giving a bunch of examples of what performance issues in Coq look like.
     
-    Okay, so my claim is that. In most other programs. You. 
+    Do you also have to supplement with a taxonomy of issues in general? Like in other programs and then compare? Or like, how are you making the distinction? 
     
-    Pick the algorithm that you want for the job. And you have some sense of how it's going to be used and so you can pick an algorithm that. Has reasonable performance characteristics and you do a back with the envelope calculation and you're like yep if I implement the algorithm well then it will be good enough for my job. 
+    Also is there a taxonomy of different types of performance issues, are you inventing one?
+    
+    I hope not? For the latter. And I don't know for the former.
+    
+    Okay, so my claim is that in most other programs, you pick the algorithm that you want for the job. And you have some sense of how it's going to be used and so you can pick an algorithm that. Has reasonable performance characteristics and you do a back with the envelope calculation and you're like yep if I implement the algorithm well then it will be good enough for my job. 
     
     And. Then you implement the algorithm. And then separately you don't need to understand the algorithm at all in order to performance optimize the implementation, very like you only need to understand it very superficially. You can like divide concerns between understanding and the implementation. And. To test the performance you need even less understanding. 
     
@@ -74,11 +88,11 @@ I intend to do this by painting a palette of real performance issues in Coq.
     
     Like if. If you have like two unrelated blocks of code. Compiling them like shouldn't be that much harder than like compiling them separately. So compilation should be roughly linear in the length of your code. 
     
-    And like okay, they're exceptions to this but they're rare. My claim is that in caulk the exceptions dominate every like when you scale things the exceptions dominate, what is what is the reason? Like how to be exceptions arise and yeah, so the the standard exception is you're like, um, So in C, you can say these computations when I compile time and now you have to run a C program. 
+    And like okay, they're exceptions to this but they're rare. My claim is that in Coq the exceptions dominate every like when you scale things the exceptions dominate, what is what is the reason? Like how to be exceptions arise and yeah, so the the standard exception is you're like, um, So in C, you can say these computations when I compile time and now you have to run a C program. 
     
     I compile time. So you have a short C program you're like, please compute 20,000 factorial. Have compiled time. And this is like five lines of code. And then you're like, okay now please compute 40,000 factorial and you haven't changed the number of characters, but now it takes much more than twice as long. 
     
-    So my claim is that in caulk. Um, this is sort of what goes on in lots of places. Why? Oh because. So much computation happens at file time. Why? 
+    So my claim is that in Coq. Um, this is sort of what goes on in lots of places. Why? Oh because. So much computation happens at file time. Why? 
     
     So when you run simple and call that's computation. When it creates your proof when it checks your proof when it runs your proof, that's all compile time. 
     
@@ -96,7 +110,7 @@ I intend to do this by painting a palette of real performance issues in Coq.
     
     Ah, it's like one complicated heuristic in particular okay, but it like takes the page or three to build up enough backgrounds even understand what the heuristic is for in the first place and how much of you analyze the complexities like is that analyzable or not or ah, 
     
-    The problem with analyzing. The complexity of anything caulk is that everything calls everything else? 
+    The problem with analyzing. The complexity of anything Coq is that everything calls everything else? 
     
     Like. 
     
@@ -152,7 +166,7 @@ I intend to do this by painting a palette of real performance issues in Coq.
     
     Use of don't you use like tricks like memoization. Great, but if you want the, 
     
-    Like most programming languages don't have. Of memorization. Yeah. Like. It might be interesting to have a programming language that auto memoizes everything. I expect there you would run into other performance issues. Okay. But in caulk again, you don't you don't have I mean, there is some attempts at doing something that's like auto memorization but. 
+    Like most programming languages don't have. Of memorization. Yeah. Like. It might be interesting to have a programming language that auto memoizes everything. I expect there you would run into other performance issues. Okay. But in Coq again, you don't you don't have I mean, there is some attempts at doing something that's like auto memorization but. 
     
     Um, It's sort of not built in or like it's a how does the autopark matter can't you have? Introduced memoization yourself. Yeah, you can yeah, um, but it's. It's not the way that most people wait right proofs because you write the simplest thing that works first. Sure. Okay, so let's say you go introduce memorization problem is that. 
     
@@ -248,13 +262,13 @@ I intend to do this by painting a palette of real performance issues in Coq.
     
     Unless you think it's not. I want to try different way and soon food. Okay. Yeah, so standard performance optimization you like generate your good set of data that exercises various axes that you care about. And then you're like, let me pick a good algorithm. And then you're like, let me write a good implementation and these all three steps are separate. 
     
-    And my claim is that in caulk. The first step is an open research question, what good representative said of data, okay? I mean, whatever food representative said of data is this so like for sorting lists, you're like, let me pick a bunch of lists that if I can sort these. 
+    And my claim is that in Coq. The first step is an open research question, what good representative said of data, okay? I mean, whatever food representative said of data is this so like for sorting lists, you're like, let me pick a bunch of lists that if I can sort these. 
     
     In if I like can sort everything in the set of data that like I'm like can maybe it's an infinite set, maybe it's finite set but it's like a well-modeled set. And you're like if I can if I perform well on this set then I'll basically perform well on everything. 
     
     I'm like for sorting this is totally reasonable you're like okay what matters is the ordering of the list and the length of the list and whether I'm sorting lists of strings or lists of integers or lists of colors that doesn't matter at all. And also it's like, Like it's a not only is it a well described set you also and like not only to know which variations you don't care about you're like look if I can sort of vary the length of the list mostly independently from what how I vary the ordering within the list, oh. 
     
-    And like this is a good exercise of sorting algorithms. And then caulk it's an open research question. I think it's like so big that it's it's hard to find this. Like it's not clear what the relevant set of data is. 
+    And like this is a good exercise of sorting algorithms. And then Coq it's an open research question. I think it's like so big that it's it's hard to find this. Like it's not clear what the relevant set of data is. 
     
     For any of the proofs that you want to run. I know the problem is that the dataset is the proofs that you want to run. Okay and you're trying to sell elements of the data set are the proofs that you want to run. And you're like, what's a representative set of all proofs that you might want to run? 
     
@@ -272,7 +286,7 @@ I intend to do this by painting a palette of real performance issues in Coq.
     
     And. One example that I want to pull that seems like a good example to give here is like a like one of the examples in the palette of performance. Troubles is the quadratic behavior of CBV on the number of finders. And. The ultimate issue here is the cock uses NDE to do to implement CVB and the way that they move closures under binders is they add a thunk that says bump all the point indices by one. 
     
-    And so if you move it under and binders you add unthanks that add one to all the different indices you mentioned one of these design choices in caulk. I think you will be good to do your best to explain why it's not terrible any that you should finish ever to try. 
+    And so if you move it under and binders you add unthanks that add one to all the different indices you mentioned one of these design choices in Coq. I think you will be good to do your best to explain why it's not terrible any that you should finish ever to try. 
     
     Oh interesting. I feel like. 
     
@@ -280,7 +294,7 @@ I intend to do this by painting a palette of real performance issues in Coq.
     
     The tool we're connected to is somewhat representative of the community's knowledge about how to build a good privilege system sure. Oh. Yeah. So like this to to finish up the CBV example, like the algorithm that they have tends to work, it's tends to be fast enough and even catch this. 
     
-    Performance issue either you need to be the one who wrote the code in the first place or you need to be actually playing with hundreds of binders. To notice it. To diagnose it. You need to understand the algorithm in part because all of caulk is like a big mutual recursive lock and soon call traces turned always give you relevant data. 
+    Performance issue either you need to be the one who wrote the code in the first place or you need to be actually playing with hundreds of binders. To notice it. To diagnose it. You need to understand the algorithm in part because all of Coq is like a big mutual recursive lock and soon call traces turned always give you relevant data. 
     
     And also because you're implementing mathematical algorithms that are non-trivial. And because it's I think CBV is not. In the trusted code base. But. You could imagine it's possible that lazy has the same issue. I'm not sure if it does it might. And if it does then it is part of the trusted code base. 
     

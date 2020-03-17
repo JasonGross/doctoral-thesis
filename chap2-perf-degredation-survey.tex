@@ -11,13 +11,82 @@ Alternatively, one could provide a source of light waves and simulate the physic
 There's no use trying to find an efficient algorithm for simulating quantum electrodynamics, though, if all you need to know is ``which parts of which objects need to be drawn on the screen?''
 
 One essential ingredient to allowing this division of concerns---between specifying the problem, picking an efficient algorithm, and optimizing the implementation of the algorithm---is knowledge of what a typical set of input looks like, and what the scope looks like.
-When sorting a list, we know that the length of the list and the initial ordering matter; it doesn't matter, though, whether we're sorting a list of integers or colors or names.
+In Coq, and other dependently-typed proof assistants, this ingredient is missing.
+When sorting a list, we know that the length of the list and the initial ordering matter; it generally doesn't matter, though, whether we're sorting a list of integers or colors or names.
+Furthermore, randomized datasets tend to be reasonably representative for list ordering, though we may also care about some special cases, such as already-sorted lists, nearly sorted lists, and lists in reverse-sorted order.
+We can say that sorting is always possible in $\mathcal O(n\log n)$ time, and that's a pretty good starting point.
 
+In proof assistants, the domain is much larger: in theory, we want to be able to check any proof anyone might write.
+Furthermore, in dependently typed proof assistants, the worst-case behavior is effectively unbounded, because any provably terminating computation can be run at typechecking time.
 
+In fact, this issue already arises for compilers of mainstream programming languages.
+\todo{literature search on perf of compiletime in mainstream compilers?}
+The C++ language, for example, has \texttt{constexpr} constructions that allow running arbitrary computation at compile-time, and it's well-known that C++ templates can incur a large compile-time performance overhead.\todo{cite?}
+However, I claim that, in most languages, even as you scale your program, these performance issues are the exception rather than the rule.
+Most code written in C or C++ does not hit unbounded compile-time performance bottlenecks.
+Generally if you write code that compiles in a reasonable amount of time, as you scale up your codebase, your compile time will slowly creep up as well.
+
+In Coq, however, the scaling story is very different.
+Frequently, users will cobble together code that works to prove a toy version of some theorem, or to verify a toy version of some program.
+By virtue of the fact that humans are impatient, the code will execute in reasonable time on the toy version.
+The user will then apply the same proof technique on a slightly larger example, and the proof-checking time will often be pretty similar.
+After scaling the input size a bit more, the proof-checking time will be noticeably slow---maybe it now takes a couple of minutes.
+Scaling the input just a tiny bit more, though, will result in the compiler not finishing even if you let it run for a day or more.
+This is what working in an exponential performance domain is like.
+
+To put numbers on this, a project I was working on\todo{cite fiat-crypto} involved generating C code to do arithmetic on very large numbers.
+The code generation was parameterized on the number of machine words needed to represent a single big integer.
+Our smallest toy example used two machine words; our largest---slightly unrealistic---example used 17.
+The smallest toy example---two machine words---took about 14 seconds.
+Based on the the compile-time performance of about a hundred examples, we expect the largest example---17 machine words---would have taken over four thousand \emph{millenia}!
+(Our primary non-toy test example used four machine words and took just under a minute; the biggest realistic example we were targeting was twice that size, at eight machine words, and took about 20 hours.)
+
+Maybe, you might ask, were we generating unreasonable amounts of code?
+Each example using $n$ machine words generated $3n$ lines of code.
+Furthermore, the actual code generation took less than 0.002\% of the total time on the largest examples we tested (just 14 seconds out of about 211 hours).
+How can this be?
+
+Our method involved two steps: first generate the code, then check that the generated code matches with what comes out of the verified code generator.
+This may seem a bit silly, but this is actually somewhat common; if you have a theorem that says ``any code that comes out of this code generator satisfies this property'', you need a proof that the code you feed into the theorem actually came out of the specified code generator, and the easiest way to prove this is, roughly, to tell the proof assistant to just check that fact for you.
+(It's possible to be more careful and not do the work twice, but this often makes the code a bit harder to read and understand, and is oftentimes pointless; premature optimization is the root of all evil, as they say.)
+Furthermore, because you often don't want to fully compute results when checking that two things are equal---just imagine having to compute the factorial of $1000$ just to check that $1000!$ is equal to itself---the default method for checking that the code came out of the code generator is different from the method we used to compute the code in the first place.
+
+The fix itself is quite simple, only 21 characters long.\footnote{\texttt{Strategy 1 [Let_In].} for those who are curious.}
+However, tracking down this solution was quite involved, requiring the following pieces:
+\begin{enumerate}
+  \item
+    A good profiling tool for proof scripts (see \autoref{sec:ltac-prof}).
+    This is a standard component of a performance engineer's toolkit, but when I started my PhD, there was no adequate profiling infrastructure for Coq.
+    While such a tool is essential for performance engineering in all domains, what's unusual about dependently-typed proof assistants, I claim, is that essentially \emph{every} codebase that needs to scale runs into performance issues, and furthermore these issues are frequently total blockers for development because so many of them are exponential in nature.
+  \item
+    Understanding the details of how Coq works under-the-hood.
+    Conversion, the ability to check if two types or terms are the same, is one of the core components of any dependently-typed proof assistant.
+    Understanding the details of how conversion works is generally not something users of a proof assistant want to worry about; it's like asking C programmers to keep in mind the size of \texttt{gcc}'s maximum nesting level for \texttt{\#include}'d files\footnote{It's 200, for those who are curious.\todo{cite \url{https://gcc.gnu.org/onlinedocs/gcc-7.5.0/cpp/Implementation-limits.html}}} when writing basic programs.
+    It's certainly something that advanced users need to be aware of, but it's not something that comes up frequently.
+  \item
+    Being able to run the proof assistant in your head.
+    When I looked at the conversion problem, I knew immediately what the most likely cause of the performance issue was.
+    But this is because I've managed to internalize most of how Coq runs in my head.
+    This might seem reasonable at a glance; one expects to have to understand the system being optimized in order to optimize it.
+    But I've managed to learn the details of what Coq is doing---including performance characteristics---basically without having to read the source code at all!
+    This is akin to, say, being able to learn how \texttt{gcc} represents various bits of C code, what transformations it does in what order, and what performance characteristics these transformations have, just from using \texttt{gcc} to compile C code and reading the error messages it gives you.
+    These are details that should not need to be exposed to the user, but because dependent type theory is so complicated---complicated enough that it's generally assumed that users will get \emph{line-by-line interactive feedback from the compiler} while developing, the numerous design decisions and seemingly reasonable defaults and heuristics lead to subtle performance issues.
+  \item
+    Knowing how to tweak the built-in defaults for parts of the system which most users expect to be able to treat as black-boxes.
+\end{enumerate}
+
+\todo{Some sort of summary of argument-so-far here}
+
+To finish off the argument about slowness in dependently-typed proof assistants, I want to present a couple more cases of performance bottlenecks.
+
+\section{Quadratic Behavior in \texorpdfstring{\texttt{cbv}}{cbv}}
+\todo{explain how cbv is quadratic}
+
+\section{Quadratic Behavior in \texorpdfstring{\texttt{vm\_compute}}{vm\_compute}}
+\todo{explain how vm\_compute is quadratic?}
+
+\section{How Can We Prove Anything Big?}
 \begin{itemize}
-  \item \todo{quadratic cbv}
-  \item \todo{quadratic vm\_compute}
-  \item \todo{fiat-crypto > 900 hrs reflexivity}
   \item \todo{intros is cubic}
   \item \todo{Application is quadratic \url{https://github.com/andres-erbsen/coq-experiments/blob/master/experiments/bench/app10000.v}}
   \item \todo{Quadratic proof term for many ands}: \url{https://github.com/andres-erbsen/coq-experiments/blob/master/experiments/bench/big\_and\_10000\_true.v}

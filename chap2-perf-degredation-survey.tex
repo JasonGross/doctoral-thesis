@@ -51,7 +51,7 @@ This may seem a bit silly, but this is actually somewhat common; if you have a t
 (It's possible to be more careful and not do the work twice, but this often makes the code a bit harder to read and understand, and is oftentimes pointless; premature optimization is the root of all evil, as they say.)
 Furthermore, because you often don't want to fully compute results when checking that two things are equal---just imagine having to compute the factorial of $1000$ just to check that $1000!$ is equal to itself---the default method for checking that the code came out of the code generator is different from the method we used to compute the code in the first place.
 
-The fix itself is quite simple, only 21 characters long.\footnote{\texttt{Strategy 1 [Let_In].} for those who are curious.}
+The fix itself is quite simple, only 21 characters long.\footnote{\texttt{Strategy 1 [Let\_In].} for those who are curious.}
 However, tracking down this solution was quite involved, requiring the following pieces:
 \begin{enumerate}
   \item

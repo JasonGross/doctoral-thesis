@@ -103,6 +103,72 @@ Because we want a separation between
 \todo{figure out examples}
 \todo{figure out story for this section}
 
+\section{The Four Axes}
+\todo{introduce this section}
+
+\subsection{The Size of the Type}
+
+We start with one of the simplest axes.
+
+Suppose we want to prove a conjunction of $n$ things, say, $\texttt{True} \wedge \texttt{True} \wedge \cdots \wedge \texttt{True}$.
+For such a simple theorem, we want the size of the proof, and the time- and memory- complexity of checking it, to be linear in $n$.
+
+Recall from \autoref{sec:debruijn-criterion} that we want a separation between the small trusted part of the proof assistant and the larger untrusted part.
+The untrusted part generates certificates, which in dependently typed proof assistants are called terms, which the trusted part, the kernel, checks.
+
+The obvious certificate to prove a conjunction $A \wedge B$ is to hold a certificate $a$ proving $A$ and a certificate $b$ proving $B$.
+In Coq, this certificate is called \texttt{conj} and it takes four parameters: $A$, $B$, $a : A$, and $b : B$.
+Perhaps you can already spot the problem.
+
+To prove a conjunction of $n$ things, we end up repeating the type $n$ times in the certificate, resulting in a term that is quadratic in the size of the type.
+\todo{perf test conj term}
+
+There are two obvious solutions for this problem:
+\begin{enumerate}
+    \item
+    We can drop the type parameters from the \texttt{conj} certificates.
+    \item
+    We can implement some sort of sharing, where common subterms of the type only exist once in the representation.
+\end{enumerate}
+
+\subsubsection{Dropping Type Parameters: Nominal vs.~Structural Typing}
+The first option requires that the proof assistant implement structural typing~\cite{structural-typing} rather than nominal typing~\cite{nominal-typing}.
+\todo{explain structural and nominal typing more}
+Morally, the reason for this is that if we have an inductive record type \todo{have we explained inductive types yet?} \todo{have we explained records yet?} whose fields do not constrain the parameters of the inductive type family \todo{have we explained parameters vs indices and inductive type families yet?}, then we need to consider different instantiations of the same inductive type family to be convertible.
+That is, if we have a phantom record such as\todo{mention where the name ``phantom'' comes from?}
+\begin{minted}{coq}
+Record Phantom (A : Type) := phantom {}.
+\end{minted}
+and our implementation does not include \texttt{A} as an argument to \texttt{phantom}, then we must consider \texttt{phantom} to be both of type \texttt{Phantom nat} and \texttt{Phantom bool}, even though \texttt{nat} and \texttt{bool} are not the same.
+I have requested this feature in \cite{https://github.com/coq/coq/issues/5293}.
+Note, however, that sometimes it is important for such phantom types to be considered distinct when doing type-level programming.
+\todo{Come up with better justification for having nominal typing available?}
+
+\subsubsection{Sharing}
+\todo{this subsection}
+
+
+However, most na\"ive implementations of type theory do not 
+
+\subsection{The Size of the Term}
+
+Recall that Coq (and dependently typed proof assistants in general) have \emph{terms} which serve as both programs and proofs.
+The essential function of a proof checker is to verify that a given term has a given type.
+We obviously cannot type-check a term in better than linear time in the size of the representation of the term.
+
+Recall that we cannot place any hard bounds on complexity of typechecking a term, as terms as simple as \texttt{@eq\_refl bool true} proving that the boolean \texttt{true} is equal to itself can also be typechecked as proofs of arbitrarily complex decision procedures returning success.
+
+We might reasonably hope that typechecking problems which require no interesting computation can be completed in time linear in the size of the term and its type.
+
+However, some seemingly reasonable decisions can result in typechecking taking quadratic time in the size of the term.
+
+Suppose we want 
+
+
+\subsection{The Number of Binders}
+
+\subsection{The Number of Abstraction Barriers}
+
 \begin{subappendices}
     
     \section{Notes from call with Adam}

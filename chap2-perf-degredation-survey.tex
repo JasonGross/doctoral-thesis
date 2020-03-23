@@ -310,7 +310,7 @@ Even worse, typechecking can easily be unboundedly large in the size of the term
 
 Consider the problem of typechecking \mintinline{coq}{@eq\_refl nat (fact 100) : @id nat (fact 100) = fact 100}, where \mintinline{coq}{fact} is the factorial function on natural numbers and \mintinline{coq}{id} is the polymorphic identity function.
 \todo{should we define polymorphic identity function somewhere?}
-If the typechecker either decides to unfold \mintinline{coq}{id} before unfolding \mintinline{fact}, or if it performs a breath-first search, then we get speedy performance.
+If the typechecker either decides to unfold \mintinline{coq}{id} before unfolding \mintinline{coq}{fact}, or if it performs a breath-first search, then we get speedy performance.
 However, if the typechecker instead unfolds \mintinline{coq}{id} \emph{last}, then we end up computing the normal form of $100!$, which takes a long time and a lot of memory.
 
 Note that it is by no means obvious that the typechecker can meaningfully do anything about this.

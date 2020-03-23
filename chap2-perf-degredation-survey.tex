@@ -123,6 +123,9 @@ Perhaps you can already spot the problem.
 To prove a conjunction of $n$ things, we end up repeating the type $n$ times in the certificate, resulting in a term that is quadratic in the size of the type.
 \todo{perf test conj term}
 
+Note that for small, and even medium-sized examples, it's pretty reasonable to do duplicative work.
+It's only when we reach very large examples that we start hitting non-linear behavior.
+
 There are two obvious solutions for this problem:
 \begin{enumerate}
     \item
@@ -206,35 +209,85 @@ Recall that the typing rules for $\lambda$ and \texttt{let} are as follows:\todo
 Let us consider the inferred types for the intermediate terms when typechecking the \mintinline{coq}{let} expression:
 \begin{itemize}
   \item
+  We infer the type \mintinline{coq}{and True T2} for the expression
+\begin{minted}{coq}
+@conj True T2 I v2
+\end{minted}
+  \item
+  We perform the no-op substitution of \mintinline{coq}{v2} into that type to type the expression
+\begin{minted}{coq}
+let v2 : T2   := @conj True T1 I v0 in
+@conj True T2 I v2
+\end{minted}
+  \item
+  We substitute \mintinline{coq}{T2 := and True T1} into this type to get the type \mintinline{coq}{and True (and True T1)} for the expression
+\begin{minted}{coq}
+let T2 : Prop := and True T1 in
+let v2 : T2   := @conj True T1 I v0 in
+@conj True T2 I v2
+\end{minted}
+  \item
+  We perform the no-op substitution of \mintinline{coq}{v1} into this type to get the type for the expression
+\begin{minted}{coq}
+let v1 : T1   := @conj True T0 I v0 in
+let T2 : Prop := and True T1 in
+let v2 : T2   := @conj True T1 I v0 in
+@conj True T2 I v2
+\end{minted}
+  \item
+  We substitute \mintinline{coq}{T1 := and True T0} into this type to get the type \mintinline{coq}{and True (and True (and True T0))} for the expression
+\begin{minted}{coq}
+let T1 : Prop := and True T0 in
+let v1 : T1   := @conj True T0 I v0 in
+let T2 : Prop := and True T1 in
+let v2 : T2   := @conj True T1 I v0 in
+@conj True T2 I v2
+\end{minted}
+  \item
+  We perform the no-op substitution of \mintinline{coq}{v0} into this type to get the type for the expression
+\begin{minted}{coq}
+let v0 : T0   := I in
+let T1 : Prop := and True T0 in
+let v1 : T1   := @conj True T0 I v0 in
+let T2 : Prop := and True T1 in
+let v2 : T2   := @conj True T1 I v0 in
+@conj True T2 I v2
+\end{minted}
+  \item
+  Finally, we substitute \mintinline{coq}{T0 := True} into this type to get the type \mintinline{coq}{and True (and True (and True True))} for the expression
+\begin{minted}{coq}
+let T0 : Prop := True in
+let v0 : T0   := I in
+let T1 : Prop := and True T0 in
+let v1 : T1   := @conj True T0 I v0 in
+let T2 : Prop := and True T1 in
+let v2 : T2   := @conj True T1 I v0 in
+@conj True T2 I v2
+\end{minted}
 \end{itemize}
-
+Note that we have performed linearly many substitutions into linearly-sized types, so unless substitution is constant time in size of the term being substituted, we incur quadratic overhead here.
+The story for function abstraction is similar.
 
 \todo{Should we run though typechecking in more detail here?}
 
+We again have two choices to fix this:
+either we can change the typechecking rules (which work just fine for small-to-medium-sized terms), or we can adjust typechecking to deal with some sort of pending substitution data, so that we only do substitution once.
 
+\todo{maybe cite https://github.com/coq/coq/issues/11838?}
 
-Let us now consider what it takes to typecheck a slightly smaller version of the example from above.
-Let us consider a s
-\begin{minted}{coq}
-(λ (T0 : Prop) (v0 : T0),
-  (λ (T1 : Prop) (v1 : T1), (and True T1) (@conj True T1 I v1))
-    (and True T0) (@conj True T0 I v0))
-  True I
-\end{minted}
-We need to typecheck the following expressions:
-\begin{enumerate}
-    \item
-    Check that \mintinline{coq}{True : Prop} in the current context
-    \item
-    Add \mintinline{coq}{T0 : Prop := True} to the current context and check that
-\end{enumerate}
-we must first check that \mintinline{coq}{True : Prop} and that in the context where \mintinline{coq}{T0 : Prop := True}
+\todo{reference quadratic cbv here, which had a similar issue?}
 
+\todo{some sort of section division marker here?}
 
-\todo{this subsection}
+The proof assistant can also try to maximally share subterms for us.
+Many proof assistants do some version of this, called \emph{hashconsing}.
+\todo{explain and cite hashconsing?}
 
-
-However, most na\"ive implementations of type theory do not 
+However, hashconsing looses a lot of its benefit if terms are not maximally shared, and can lead to very unpredictable performance when transformations unexpectedly cause a loss of sharing.
+\todo{cite hashconsing needing to be full to get perf benefit}
+Furthermore, it's an open problem how to efficiently persist full hashconsing to disk in a way that allows for diamond dependencies.
+\todo{explain this more, find citation for hashconsing being hard with disk}
+\todo{flesh out hashconsing section more}
 
 \subsection{The Size of the Term}
 

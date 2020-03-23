@@ -145,6 +145,92 @@ Note, however, that sometimes it is important for such phantom types to be consi
 \todo{Come up with better justification for having nominal typing available?}
 
 \subsubsection{Sharing}
+The alternative to eliminating the duplicative arguments is to ensure that the duplication is at-most constant sized.
+There are two ways to do this: either the user can explicitly share subterms so that the size of the term is in fact linear in the size of the goal, or the proof assistant can ensure maximal sharing of subterms \todo{explain this better}.
+
+There are two ways for the user to share subterms: using let-binders, and using function abstraction.
+For example, rather than writing
+\begin{minted}{coq}
+@conj True (and True (and True True)) I (@conj True (and True True) I (@conj True True I I))
+\end{minted}
+and having roughly $n^2$ occurrences\footnote{The exact count is $n(n+1)/2 - 1$.} of \mintinline{coq}{True} when we are trying to prove a conjunction of $n$ \mintinline{coq}{True}s, the user can instead write
+\begin{minted}{coq}
+let T0 : Prop := True in
+let v0 : T0   := I in
+let T1 : Prop := and True T0 in
+let v1 : T1   := @conj True T0 I v0 in
+let T2 : Prop := and True T1 in
+let v2 : T2   := @conj True T1 I v0 in
+@conj True T2 I v2
+\end{minted}
+which has only $n$ occurrences of \mintinline{coq}{True}.
+Alternatively, the user can write
+\begin{minted}{coq}
+(λ (T0 : Prop) (v0 : T0),
+  (λ (T1 : Prop) (v1 : T1),
+    (λ (T2 : Prop) (v2 : T2), @conj True T2 I v2)
+      (and True T1) (@conj True T1 I v1))
+    (and True T0) (@conj True T0 I v0))
+  True I
+\end{minted}
+
+Unfortunately, both of these incur quadratic typechecking cost, even though the size of the term is linear.
+
+Recall that the typing rules for $\lambda$ and \texttt{let} are as follows:\todo{cite appendix with typing rules of Coq?}
+\todoask{What's the suggested way of pretty-printing typing rules?}
+\todoask{Which way do substitution brackets go?}
+\todoask{What convention should we use for typing rules with regard to things being types?  Maybe just copy the HoTT book?}
+\begin{verbatim}
+Γ ⊢ A type      Γ, x:A ⊢ B type
+Γ, x:A ⊢ f:B
+-------------------------------
+Γ ⊢ (λ (x:A), f) : ∀ x:A, B
+
+
+Γ ⊢ A type      Γ, x:A ⊢ B type
+Γ ⊢ f : ∀ x:A, B
+Γ ⊢ y : A
+-------------------------------
+Γ ⊢ f y : B[x/y]
+\end{verbatim}
+    
+\begin{verbatim}
+Γ ⊢ A type
+Γ ⊢ y : A
+Γ, x:A:=y ⊢ B type
+Γ, x:A:=y ⊢ f : B
+-------------------------------
+Γ ⊢ (let x : A := y in f) : B[x/y]
+\end{verbatim}
+
+Let us consider the inferred types for the intermediate terms when typechecking the \mintinline{coq}{let} expression:
+\begin{itemize}
+  \item
+\end{itemize}
+
+
+\todo{Should we run though typechecking in more detail here?}
+
+
+
+Let us now consider what it takes to typecheck a slightly smaller version of the example from above.
+Let us consider a s
+\begin{minted}{coq}
+(λ (T0 : Prop) (v0 : T0),
+  (λ (T1 : Prop) (v1 : T1), (and True T1) (@conj True T1 I v1))
+    (and True T0) (@conj True T0 I v0))
+  True I
+\end{minted}
+We need to typecheck the following expressions:
+\begin{enumerate}
+    \item
+    Check that \mintinline{coq}{True : Prop} in the current context
+    \item
+    Add \mintinline{coq}{T0 : Prop := True} to the current context and check that
+\end{enumerate}
+we must first check that \mintinline{coq}{True : Prop} and that in the context where \mintinline{coq}{T0 : Prop := True}
+
+
 \todo{this subsection}
 
 

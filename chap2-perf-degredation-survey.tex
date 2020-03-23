@@ -267,6 +267,7 @@ let v2 : T2   := @conj True T1 I v0 in
 \end{itemize}
 Note that we have performed linearly many substitutions into linearly-sized types, so unless substitution is constant time in size of the term being substituted, we incur quadratic overhead here.
 The story for function abstraction is similar.
+\todo{cite https://github.com/coq/coq/issues/8232 maybe?}
 
 \todo{Should we run though typechecking in more detail here?}
 
@@ -301,12 +302,40 @@ We might reasonably hope that typechecking problems which require no interesting
 
 However, some seemingly reasonable decisions can result in typechecking taking quadratic time in the size of the term.
 
-Suppose we want 
+\todo{maybe move some text form the sharing section to here?}
 
+Even worse, typechecking can easily be unboundedly large in the size of the term when the typechecker chooses the wrong constants to unfold, even when very little work ought to be done.
+
+\todo{discussion of conversion checking, and conversion modulo delta-beta}
+
+Consider the problem of typechecking \mintinline{coq}{@eq\_refl nat (fact 100) : @id nat (fact 100) = fact 100}, where \mintinline{coq}{fact} is the factorial function on natural numbers and \mintinline{coq}{id} is the polymorphic identity function.
+\todo{should we define polymorphic identity function somewhere?}
+If the typechecker either decides to unfold \mintinline{coq}{id} before unfolding \mintinline{fact}, or if it performs a breath-first search, then we get speedy performance.
+However, if the typechecker instead unfolds \mintinline{coq}{id} \emph{last}, then we end up computing the normal form of $100!$, which takes a long time and a lot of memory.
+
+Note that it is by no means obvious that the typechecker can meaningfully do anything about this.
+Breath-first search is significantly more complicated than depth-first, is harder to write good heuristics for, can incur enormous space overheads, and can be massively slower in cases where there are many options and the standard heuristics for depth-first unfolding in conversion-checking are sufficient.
+Furthermore, the more heuristics there are to tune conversion-checking, the more ``magic'' the algorithm seems, and the harder it is to debug when the performance is inadequate.
+
+\todo{maybe forward reference to the number of abstraction barriers}
+\todo{maybe include real-world fiat-crypto example here?}
 
 \subsection{The Number of Binders}
 
+This is a particular subcase of the above sections that we call out explicitly.
+Often there will be some operation (for example, substitution, lifting, context-creation) that needs to happen every time there is a binder, and which, when done naively, is linear in the size of the term or the size of the context.
+As a result, na\"ive implementations will often incur quadratic---or worse---overhead in the number of binders.
+
+\todo{make sure we've explained proof engine and Ltac by here}
+
+Similarly, if there is any operation that is even linear rather than constant in the number of binders in the context, then and user operation in proof mode which must be done, say, for each hypothesis, will incur an overall quadratic-or-worse performance penalty.
+
+\todo{mention quadratic evar creation https://github.com/coq/coq/issues/8237}
+
 \subsection{The Number of Abstraction Barriers}
+\todo{introduce abstraction barrier section}
+\todo{talk about packed vs unpacked records}
+\todo{talk about opportunity for conversion to make the wrong choice increasing with number of abstraction barriers}
 
 \begin{subappendices}
     

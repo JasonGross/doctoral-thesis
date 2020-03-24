@@ -136,6 +136,7 @@ There are two obvious solutions for this problem:
 
 \subsubsection{Dropping Type Parameters: Nominal vs.~Structural Typing}
 The first option requires that the proof assistant implement structural typing~\cite{structural-typing} rather than nominal typing~\cite{nominal-typing}.
+\todo{maybe look into TAPL}
 \todo{explain structural and nominal typing more}
 Morally, the reason for this is that if we have an inductive record type \todo{have we explained inductive types yet?} \todo{have we explained records yet?} whose fields do not constrain the parameters of the inductive type family \todo{have we explained parameters vs indices and inductive type families yet?}, then we need to consider different instantiations of the same inductive type family to be convertible.
 That is, if we have a phantom record such as\todo{mention where the name ``phantom'' comes from?}
@@ -180,6 +181,7 @@ Alternatively, the user can write
 Unfortunately, both of these incur quadratic typechecking cost, even though the size of the term is linear.
 
 Recall that the typing rules for $\lambda$ and \texttt{let} are as follows:\todo{cite appendix with typing rules of Coq?}
+\todo{maybe look in https://github.com/achlipala/frap and/or TAPL by Benjamin C. Pierce for how to render typing rules}
 \todoask{What's the suggested way of pretty-printing typing rules?}
 \todoask{Which way do substitution brackets go?}
 \todoask{What convention should we use for typing rules with regard to things being types?  Maybe just copy the HoTT book?}

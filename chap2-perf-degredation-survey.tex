@@ -136,6 +136,7 @@ There are two obvious solutions for this problem:
 
 \subsubsection{Dropping Type Parameters: Nominal vs.~Structural Typing}
 The first option requires that the proof assistant implement structural typing~\cite{structural-typing} rather than nominal typing~\cite{nominal-typing}.
+\todo{Note that it doesn't actually require structural, but complicates things; elaborate on this}
 \todo{maybe look into TAPL}
 \todo{explain structural and nominal typing more}
 Morally, the reason for this is that if we have an inductive record type \todo{have we explained inductive types yet?} \todo{have we explained records yet?} whose fields do not constrain the parameters of the inductive type family \todo{have we explained parameters vs indices and inductive type families yet?}, then we need to consider different instantiations of the same inductive type family to be convertible.

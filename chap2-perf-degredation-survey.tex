@@ -386,10 +386,17 @@ If only unary application nodes exist, it's much harder to solve.
 
 See \coqbug{8232} and \coqpr{8255}.
 
+\subsubsection{Quadratic Normalization by Evaluation}
+Normalization by evaluation (NbE) is a nifty way to implement reduction.
+\todo{explain or forward-reference NbE}
+\todo{Say more about it than that it's ``nifty''}
+Coq uses NbE to implement two of its reduction machines (\mintinline{coq}{lazy} and \mintinline{coq}{cbv}).
 
-\todo{quadratic vm}
-\todo{quadratic native}
+
 \todo{quadratic cbv}
+
+\subsubsection{Quadratic Closure Compilation}
+\todo{quadratic vm}
 
 \todo{maybe more examples here?}
 

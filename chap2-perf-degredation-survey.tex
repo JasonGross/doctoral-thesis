@@ -346,11 +346,13 @@ It may be tempting to keep the context in an array or linked list.
 However, if looking up which constant or variable is referred to by a name is $\mathcal O(n)$, then internalizing a term with $n$ typed binders is going to be $\mathcal O(n^2)$, because we need to do name lookups for each binder.
 See \coqbug{9582} and \coqpr{9586}.
 
-\subsubsection{Caputre Avoiding Substitution}
-If the user is presented with a proof engine interface where all context variables are named, then in general 
+\subsubsection{Capture-Avoiding Substitution}
+If the user is presented with a proof engine interface where all context variables are named, then in general the proof engine must implement capture-avoiding substitution.
+For example, if the user wants to operate inside the hole in \mintinline{coq}{(λ x, let y := x in λ x, \_)}, then the user needs to be able to talk about the body of \mintinline{coq}{y}, which is not the same as the innermost \mintinline{coq}{x}.
+However, if the $\alpha$-renaming is even just linear in the existing context, then creating a new hole under $n$ binders will take $\mathcal{O}(n^2)$ time in the worst case, as we may have to do $n$ renamings, each of which take time $\mathcal O(n)$.
 See \coqbug{9582}, perhaps also \coqbug{8245} and \coqbug{8237} and \coqbug{8231}.
 
-\subsubsection{Quadratic Creation of Existential Variables}
+\subsubsection{Quadratic Creation of Substitutions for Existential Variables}
 Recall \todo{make sure that this is mentioned previously, and that we're not rehashing things too much} that when we separate the trusted kernel from the untrusted proof engine, we want to be able to represent not-yet-finished terms in the proof engine.
 The standard way to do this is to enrich the type of terms with an ``existential variable'' node, which stands for a term which will be filled later.
 \todo{cite original idea for evars? (what is it?)}
@@ -362,17 +364,32 @@ For example, if we want to $\beta$-reduce \mintinline{coq}{(λ x, ?e₁) (S y)},
 
 There are a number of ways to represent substitution, and the choices are entangled with the choices of term representation.
 
+Note that most substitutions are either identity or lifting substitutions.
+\todo{define identity and lifting substitutions}
+
 One popular representation is the locally nameless representation.~\cite{locally-nameless}
 \todo{Justify it?  Discuss other representations? Say why and how it's convenient?}
+However, if we use a locally nameless term representation, then finding a compact representation for identity and lifting substitutions is quite tricky.
+If the substitution representation takes $\mathcal O(n)$ time to create in a context of size $n$, then having a $\lambda$ with $n$ arguments whose types are not known takes $\mathcal O(n^2)$ time, because we end up creating identity substitutions for $n$ holes, with linear-sized contexts.
+
+Note that fully nameless, i.e., de Bruijn term representations, do not suffer from this issue.
+
+See \coqbug{8237} and \coqpr{11896} for a mitigation of some (but not all) issues.
+
+\subsubsection{Quadratic Substitution in Function Application}
+Consider the case of typechecking a non-dependent function applied to $n$ arguments.
+If substitution is performed eagerly, following directly the rules of the type theory, \todo{cite the rules / reference an appendix}, then typechecking is quadratic.
+This is because the type of the function is $\mathcal{O}(n)$, and doing substitution $n$ times on a term of size $\mathcal{O}(n)$ is quadratic.
+
+If the term representation contains $n$-ary application nodes, it's possible to resolve this performance bottleneck by delaying the substitutions.
+If only unary application nodes exist, it's much harder to solve.
+
+See \coqbug{8232} and \coqpr{8255}.
 
 
-\coqbug{8237}
-\todo{mention quadratic evar creation }
-\todo{quadratic application}
 \todo{quadratic vm}
 \todo{quadratic native}
 \todo{quadratic cbv}
-\todo{implications of locally nameless vs de bruijn}
 
 \todo{maybe more examples here?}
 

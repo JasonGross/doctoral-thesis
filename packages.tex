@@ -32,7 +32,7 @@
 \usepackage{textcomp}
 \usepackage{attachfile2}
 \usepackage{etoolbox}
-\usepackage{xpatchcmd}
+\usepackage{xpatch}
 \usepackage[maxbibnames=99]{biblatex}% backend=bibtex,
 %\usepackage{embedfile}
 %\usepackage{hypgotoe}
@@ -286,7 +286,6 @@
 
 
 % begin appendix autoref patch [\autoref subsections in appendix](https://tex.stackexchange.com/questions/149807/autoref-subsections-in-appendix)
-\usepackage{etoolbox}
 \makeatletter
 \patchcmd{\hyper@makecurrent}{%
     \ifx\Hy@param\Hy@chapterstring

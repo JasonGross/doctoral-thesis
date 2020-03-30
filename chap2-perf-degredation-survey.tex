@@ -136,7 +136,7 @@ There are two obvious solutions for this problem:
 
 \subsubsection{Dropping Type Parameters: Nominal vs.~Structural Typing}
 The first option requires that the proof assistant implement structural typing~\cite{structural-typing} rather than nominal typing~\cite{nominal-typing}.
-\todo{Note that it doesn't actually require structural, but complicates things; elaborate on this}
+\todo{Find a place for this note:} Note that it doesn't actually require structural; we can do it with nominal typing if we enforce everywhere that we can only compare terms who are known to be the same type, because not having structural typing results in having a single kernel term with multiple non-unifiable types.
 \todo{maybe look into TAPL}
 \todo{explain structural and nominal typing more}
 Morally, the reason for this is that if we have an inductive record type \todo{have we explained inductive types yet?} \todo{have we explained records yet?} whose fields do not constrain the parameters of the inductive type family \todo{have we explained parameters vs indices and inductive type families yet?}, then we need to consider different instantiations of the same inductive type family to be convertible.
@@ -149,7 +149,7 @@ I have requested this feature in \cite{https://github.com/coq/coq/issues/5293}.
 Note, however, that sometimes it is important for such phantom types to be considered distinct when doing type-level programming.
 \todo{Come up with better justification for having nominal typing available?}
 
-\subsubsection{Sharing}
+\subsubsection{Sharing} \label{sec:sharing}
 The alternative to eliminating the duplicative arguments is to ensure that the duplication is at-most constant sized.
 There are two ways to do this: either the user can explicitly share subterms so that the size of the term is in fact linear in the size of the goal, or the proof assistant can ensure maximal sharing of subterms \todo{explain this better}.
 
@@ -303,7 +303,7 @@ Recall that we cannot place any hard bounds on complexity of typechecking a term
 
 We might reasonably hope that typechecking problems which require no interesting computation can be completed in time linear in the size of the term and its type.
 
-However, some seemingly reasonable decisions can result in typechecking taking quadratic time in the size of the term.
+However, some seemingly reasonable decisions can result in typechecking taking quadratic time in the size of the term, as we saw in \autoref{sec:sharing}.
 
 \todo{maybe move some text form the sharing section to here?}
 
@@ -320,8 +320,10 @@ Note that it is by no means obvious that the typechecker can meaningfully do any
 Breath-first search is significantly more complicated than depth-first, is harder to write good heuristics for, can incur enormous space overheads, and can be massively slower in cases where there are many options and the standard heuristics for depth-first unfolding in conversion-checking are sufficient.
 Furthermore, the more heuristics there are to tune conversion-checking, the more ``magic'' the algorithm seems, and the harder it is to debug when the performance is inadequate.
 
+As described in \todo{reference above example about fiat-crypto}, in fiat-crypto, we got exponential slowdown due to this issue, with an estimated overhead of over four millenia of extra typechecking time in the worst examples we were trying to handle.
+
 \todo{maybe forward reference to the number of abstraction barriers}
-\todo{maybe include real-world fiat-crypto example here?}
+\todo{maybe include more about real-world fiat-crypto example here?}
 
 \subsection{The Number of Binders}
 
@@ -333,7 +335,44 @@ As a result, na\"ive implementations will often incur quadratic---or worse---ove
 
 Similarly, if there is any operation that is even linear rather than constant in the number of binders in the context, then and user operation in proof mode which must be done, say, for each hypothesis, will incur an overall quadratic-or-worse performance penalty.
 
-\todo{mention quadratic evar creation https://github.com/coq/coq/issues/8237}
+The claim of this subsection is not that any particular application is inherently constrained by a performance bottleneck in the number of binders, but instead that it's very, very easy to end up with quadratic-or-worse performance in the number of binders, and hence that this forms a meaningful cluster for performance bottlenecks in practice.
+
+I will attempt to demonstrate this point with a palette of actual historical performance issues in Coq---some of which persist to this day---where the relevant axis was ``number of binders.''
+None of these performance issues are insurmountable, but all of them are either a result of seemingly reasonable decisions, have subtle interplay with seemingly disparate parts of the system, or else are to this day still mysterious despite the work of developers to investigate them.
+
+\subsubsection{Name Resolution}
+One key component of interactive proof assistants is figuring out which constant is referred to by a given name.
+It may be tempting to keep the context in an array or linked list.
+However, if looking up which constant or variable is referred to by a name is $\mathcal O(n)$, then internalizing a term with $n$ typed binders is going to be $\mathcal O(n^2)$, because we need to do name lookups for each binder.
+See \coqbug{9582} and \coqpr{9586}.
+
+\subsubsection{Caputre Avoiding Substitution}
+If the user is presented with a proof engine interface where all context variables are named, then in general 
+See \coqbug{9582}, perhaps also \coqbug{8245} and \coqbug{8237} and \coqbug{8231}.
+
+\subsubsection{Quadratic Creation of Existential Variables}
+Recall \todo{make sure that this is mentioned previously, and that we're not rehashing things too much} that when we separate the trusted kernel from the untrusted proof engine, we want to be able to represent not-yet-finished terms in the proof engine.
+The standard way to do this is to enrich the type of terms with an ``existential variable'' node, which stands for a term which will be filled later.
+\todo{cite original idea for evars? (what is it?)}
+Such existential variables, or evars, typically exist in a particular context.
+That is, you have access to some hypotheses but not others when filling an evar.
+
+Sometimes, reduction results in changing the context in which an evar exists.
+For example, if we want to $\beta$-reduce \mintinline{coq}{(λ x, ?e₁) (S y)}, then the result is the evar \mintinline{coq}{?e₁} with \mintinline{coq}{S y} substituted for \mintinline{coq}{x}.
+
+There are a number of ways to represent substitution, and the choices are entangled with the choices of term representation.
+
+One popular representation is the locally nameless representation.~\cite{locally-nameless}
+\todo{Justify it?  Discuss other representations? Say why and how it's convenient?}
+
+
+\coqbug{8237}
+\todo{mention quadratic evar creation }
+\todo{quadratic application}
+\todo{quadratic vm}
+\todo{quadratic native}
+\todo{quadratic cbv}
+\todo{implications of locally nameless vs de bruijn}
 
 \todo{maybe more examples here?}
 

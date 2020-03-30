@@ -32,6 +32,7 @@
 \usepackage{textcomp}
 \usepackage{attachfile2}
 \usepackage{etoolbox}
+\usepackage{xpatchcmd}
 \usepackage[maxbibnames=99]{biblatex}% backend=bibtex,
 %\usepackage{embedfile}
 %\usepackage{hypgotoe}
@@ -93,6 +94,14 @@
 
 \hypersetup{raiselinks=false,colorlinks=false,linkcolor=black} % undo coqdoc stuff
 
+%% Minted red box around greek characters - https://tex.stackexchange.com/a/343506/2066
+%\makeatletter
+%\AtBeginEnvironment{minted}{\dontdofcolorbox}
+%\def\dontdofcolorbox{\renewcommand\fcolorbox[4][]{##4}}
+%\xpatchcmd{\inputminted}{\minted@fvset}{\minted@fvset\dontdofcolorbox}{}{}
+%\xpatchcmd{\mintinline}{\minted@fvset}{\minted@fvset\dontdofcolorbox}{}{}
+%\makeatother
+\usemintedstyle{bw}
 
 \renewcommand{\chapterautorefname}{Chapter}
 \renewcommand{\sectionautorefname}{Section}

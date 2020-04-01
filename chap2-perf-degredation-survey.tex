@@ -407,19 +407,22 @@ See \coqbug{11151} for an occurrence of this performance issue in the wild in Co
 \subsubsection{Quadratic Closure Compilation}
 It's important to be able to perform reduction of terms in an optimized way.
 \todo{maybe give a better introductory justification to the vm and native compiler than ``it's important''?}
-When doing optimized reduction, one operation that might need to happen is the computation of free variables of abstraction nodes.
-\todo{figure out why, and explain it}
-If this computation of free variables is done in the na\"ive way, it'll be linear in the size of the term.
-If this is done recursively for every abstraction node, then we get a quadratic blowup in the number of nested abstraction nodes.
-\todo{explain this better?}
+When doing optimized reduction in an imperative language, we need to represent closures---abstraction nodes---in some way.
+Often this involves associating to each closure both some information about or code implementing the body of the function, as well as the values of all of the free variables of that closure.
+\todo{cite something for closure compilation?}
+In order to have efficient lookup, we need to know the memory location storing the value of any given variable statically at closure-compilation time.
+The standard way of doing this \todo{cite something for flat closure compilation} is to allocate an array of values for each closure.
+If variables are represented with de Bruijn indices, for example, it's then a very easy array lookup to get the value of any variable.
+Note that this allocation is linear in the number of free variables of a term.
+If we have many nested binders and use all of them underneath all the binders, then every abstraction node has as many free variables as there are total binders, and hence we get quadratic overhead.
 
 See \coqbug{11151} and \coqbug{11964} and \ocamlbug{7826} for an occurrence of this issue in the wild.
 Note that this issue rarely shows up in hand-written code, only in generated code, so developers of compilers such as \texttt{ocamlc} and \texttt{gcc} might be uninterested in optimizing this case.
 However, it's quite essential when doing meta-programming involving large generated terms.
+It's especially essential if we want to chain together reflective automation passes that operate on different input languages and therefore require denotation and reification between the passes.
+In such cases, unless our encoding language uses named or de Bruijn variable encoding, there's no way to avoid large numbers of nested binders at compilation time while preserving code sharing.
 Hence if we're trying to reuse the work of existing compilers to bootstrap good performance of reduction (as is the case for the native compiler in Coq), we have trouble with cases such as this one.
 \todo{reorganize this paragraph, improve it}
-
-\todo{Add new explanation of closure compilation; talk about chaining reflective passes}
 
 \todo{maybe more examples here?}
 

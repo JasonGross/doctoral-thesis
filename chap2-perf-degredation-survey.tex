@@ -387,16 +387,37 @@ If only unary application nodes exist, it's much harder to solve.
 See \coqbug{8232} and \coqpr{8255}.
 
 \subsubsection{Quadratic Normalization by Evaluation}
-Normalization by evaluation (NbE) is a nifty way to implement reduction.
+Normalization by evaluation (NbE) is a nifty way to implement reduction where function abstraction in the object language is represented by function abstraction in the metalanguage.
 \todo{explain or forward-reference NbE}
 \todo{Say more about it than that it's ``nifty''}
 Coq uses NbE to implement two of its reduction machines (\mintinline{coq}{lazy} and \mintinline{coq}{cbv}).
 
+The details of implementing NbE depend on the term representation used.
+If a fancy term encoding like PHOAS \todo{reference explanation of PHOAS} is used, then it's not hard to implement a good NbE algorithm.
+However, such fancy term representations incur unpredictable and hard-to-deal-with performance costs.
+Most languages do not do any reduction on thunks until they are called with arguments, which means that forcing early reduction of a PHOAS-like term representation requires round-tripping though another term representation, which can be costly on large terms if there is not much to reduce.
+On the other hand, other term representations need to implement either capture-avoiding substitution (for named representations) or index lifting (for de Bruijn and locally nameless representations).
 
-\todo{quadratic cbv}
+The sort-of obvious way to implement this transformation is to write a function that takes a term and a binder, and either renames the binder for capture-avoiding substitution or else lifts the indices of the term.
+The problem with this implementation is that if you call it every time you move a term under a binder, then moving a term under $n$ binders traverses the term $n$ times.
+If the term size is also proportional to $n$, then the result is quadratic blowup in the number of binders.
+
+See \coqbug{11151} for an occurrence of this performance issue in the wild in Coq.
 
 \subsubsection{Quadratic Closure Compilation}
-\todo{quadratic vm}
+It's important to be able to perform reduction of terms in an optimized way.
+\todo{maybe give a better introductory justification to the vm and native compiler than ``it's important''?}
+When doing optimized reduction, one operation that might need to happen is the computation of free variables of abstraction nodes.
+\todo{figure out why, and explain it}
+If this computation of free variables is done in the na\"ive way, it'll be linear in the size of the term.
+If this is done recursively for every abstraction node, then we get a quadratic blowup in the number of nested abstraction nodes.
+\todo{explain this better?}
+
+See \coqbug{11151} and \coqbug{11964} and \ocamlbug{7826} for an occurrence of this issue in the wild.
+Note that this issue rarely shows up in hand-written code, only in generated code, so developers of compilers such as \texttt{ocamlc} and \texttt{gcc} might be uninterested in optimizing this case.
+However, it's quite essential when doing meta-programming involving large generated terms.
+Hence if we're trying to reuse the work of existing compilers to bootstrap good performance of reduction (as is the case for the native compiler in Coq), we have trouble with cases such as this one.
+\todo{reorganize this paragraph, improve it}
 
 \todo{maybe more examples here?}
 
@@ -408,7 +429,7 @@ Coq uses NbE to implement two of its reduction machines (\mintinline{coq}{lazy} 
 \end{itemize}
 
 \begin{subappendices}
-    
+\begin{comment}
     \section{Notes from call with Adam}
     start with a compelling example of a problem in Coq, including code
     
@@ -728,4 +749,5 @@ Okay, so that's the like introduction palate of slowness.
 \begin{itemize}
 \item Descriptions of the order in which things fail?
 \end{itemize}
+\end{comment}
 \end{subappendices}

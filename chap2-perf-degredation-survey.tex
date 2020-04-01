@@ -426,7 +426,21 @@ Hence if we're trying to reuse the work of existing compilers to bootstrap good 
 
 \todo{maybe more examples here?}
 
-\subsection{The Number of Abstraction Barriers}
+\subsection{The Number of Nested Abstraction Barriers}
+This axis is the most theoretical of the axes.
+An abstraction barrier is an interface for making use of code, definitions, and theorems.
+For example, you might define non-negative integers using a binary representation, and present the interface of zero, successor, and the standard induction principle, along with an equational theory for how induction behaves on zero and successor.
+\todo{should I spell this example out more?}
+You might use lists and non-negative integers to implement a hash-set datatype for storing sets of hashable values, and present the hash-set with methods for empty, add, remove, membership-testing, and some sort of fold.
+Each of these is an abstraction barrier.
+
+There are two primary ways that nested abstraction barriers can lead to performance bottlenecks: one involving conversion missteps and the other involving exponential blow-up in the size of types.
+
+\subsubsection{Conversion Troubles}
+
+\subsubsection{Type Size Blowup: Packed vs.~Unpacked Records}
+
+
 \begin{itemize}
 \item \todo{introduce abstraction barrier section}
 \item \todo{talk about packed vs unpacked records}

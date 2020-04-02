@@ -94,14 +94,14 @@
 
 \hypersetup{raiselinks=false,colorlinks=false,linkcolor=black} % undo coqdoc stuff
 
-%% Minted red box around greek characters - https://tex.stackexchange.com/a/343506/2066
-%\makeatletter
-%\AtBeginEnvironment{minted}{\dontdofcolorbox}
-%\def\dontdofcolorbox{\renewcommand\fcolorbox[4][]{##4}}
-%\xpatchcmd{\inputminted}{\minted@fvset}{\minted@fvset\dontdofcolorbox}{}{}
-%\xpatchcmd{\mintinline}{\minted@fvset}{\minted@fvset\dontdofcolorbox}{}{}
-%\makeatother
+% Minted red box around greek characters - https://tex.stackexchange.com/a/343506/2066
 \usemintedstyle{bw}
+\makeatletter
+\AtBeginEnvironment{minted}{\dontdofcolorbox}
+\def\dontdofcolorbox{\renewcommand\fcolorbox[4][]{##4}}
+\xpatchcmd{\inputminted}{\minted@fvset}{\minted@fvset\dontdofcolorbox}{}{}
+\xpatchcmd{\mintinline}{\minted@fvset}{\minted@fvset\dontdofcolorbox}{}{}
+\makeatother
 
 \renewcommand{\chapterautorefname}{Chapter}
 \renewcommand{\sectionautorefname}{Section}

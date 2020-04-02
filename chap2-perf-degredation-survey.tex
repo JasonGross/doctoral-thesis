@@ -79,11 +79,15 @@ However, tracking down this solution was quite involved, requiring the following
 
 To finish off the argument about slowness in dependently-typed proof assistants, I want to present a couple more cases of performance bottlenecks.
 
+\todo{or maybe we don't need this anymore, given the next section?}
+
 \section{Quadratic Behavior in \texorpdfstring{\texttt{cbv}}{cbv}}
 \todo{explain how cbv is quadratic}
+\todo{or maybe we don't need this anymore, given the next section?}
 
 \section{Quadratic Behavior in \texorpdfstring{\texttt{vm\_compute}}{vm\_compute}}
 \todo{explain how vm\_compute is quadratic?}
+\todo{or maybe we don't need this anymore, given the next section?}
 
 \section{How Can We Prove Anything Big?}
 Consider the problem of proving a large conjunction, such as \texttt{True $\wedge$ True $\wedge \cdots\wedge$ True}.
@@ -96,15 +100,17 @@ Because we want a separation between
       \item -> try let-binding things (but intros n is $n^3$ time)
       \item -> try reflection
       \item -> application is also quadratic (maybe now fixed)
-      \end{itemize}
-  
+      \end{itemize}  
 \end{itemize}
+\todo{or maybe we don't need this anymore, given the next section?}
 
 \todo{figure out examples}
 \todo{figure out story for this section}
 
 \section{The Four Axes}
-\todo{introduce this section}
+I now present four major axes of performance.
+These are not comprehensive, but after extensive experience with Coq, most performance bottlenecks scaled super-linearly as a function of at least one of these axes.
+\todo{introduce this section better}
 
 \subsection{The Size of the Type}
 
@@ -486,6 +492,7 @@ If we go with anything but the fully packed design, then we incur exponential ov
 A \emph{monoid homomorphism} from a monoid $A$ to a monoid $B$ consists of a function between the carrier types, and proofs that this function respects composition and identity.
 If we use an unpacked definition of monoid with $n$ type parameters, then a similar definition of a monoid homomorphism involves at least $2n+2$ type parameters.
 In higher category theory, it's common to talk about morphisms between morphisms, and every additional layer here doubles the number of type arguments, and this can quickly lead to very large terms, resulting is major performance bottlenecks.
+Note that number of type parameters determines the constant factor out front of the exponential growth in the number of layers of mathematical constructions.
 
 \todo{maybe figure out some examples and include perf data?}
 \todo{does this need more exposition?}

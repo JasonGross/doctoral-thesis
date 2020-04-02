@@ -434,18 +434,65 @@ For example, you might define non-negative integers using a binary representatio
 You might use lists and non-negative integers to implement a hash-set datatype for storing sets of hashable values, and present the hash-set with methods for empty, add, remove, membership-testing, and some sort of fold.
 Each of these is an abstraction barrier.
 
-There are two primary ways that nested abstraction barriers can lead to performance bottlenecks: one involving conversion missteps and the other involving exponential blow-up in the size of types.
+There are three primary ways that nested abstraction barriers can lead to performance bottlenecks: one involving conversion missteps and the other involving exponential blow-up in the size of types.
 
 \subsubsection{Conversion Troubles}
+If abstraction barriers are not perfectly opaque---that is, if the typechecker ever has to unfold the definitions making up the API in order to typecheck a term---then every additional abstraction barrier provides another opportunity for the typechecker to pick the wrong constant to unfold first.
+\todo{add example?}
+In some typecheckers, such as Coq, it's possible to provide hints to the typechecker to inform it which constants to unfold when.
+In such a system, it's possible to carefully craft conversion hints so that abstraction barriers are always unfolded in the right order.
+Alternatively, it might be possible to carefully craft a system which picks the right order of unfolding by using a dependency analysis.
+
+However, most users don't bother to set up hints like this, and dependency analysis isn't sufficient to determine which abstraction barrier is ``higher up'' when there are many parts of it, only some of which are mentioned in any given part of the next abstraction barrier.
+The reason users don't set up hints like this is that usually it's not necessary.
+There's often minimal overhead, and things just work, even when the wrong path is picked---until the number of abstraction barriers or the size of the underlying term gets large enough.
+Then we get noticeable exponential blowup, and everything is sad.
+
+\subsubsection{Type Size Blowup: Abstraction Barrier Mismatch}
+When abstraction barriers are leaky or misaligned, there's a cost that accumulates in the size of the types of theorems.
+Consider, for example, the two different ways of using tuples:
+(1) we can use the projections \mintinline{coq}{fst} and \mintinline{coq}{snd}; or
+(2) we can use the eliminator \mintinline{coq}{pair\_rect : ∀ A B (P : A × B → Type), (∀ a b, P (a, b)) → ∀ x, P x}.
+The first gets us access to one element of the tuple at a time, while the second has us using all elements of the tuple simultaneously.
+
+Suppose now there is one API defined in terms of \mintinline{coq}{fst} and \mintinline{coq}{snd}, and another API defined in terms of \mintinline{coq}{pair\_rect}.
+To make these APIs interoperate, we need to explicitly convert from one representation to another.
+Furthermore, every theorem about the composition of these APIs needs to include the interoperation in talking about how they relate.
+
+If such API mismatches are nested, or if this code size blowup interacts with conversion missteps, then the performance issues compound.
+
+\todo{maybe be more concrete here?}
 
 \subsubsection{Type Size Blowup: Packed vs.~Unpacked Records}
+When designing APIs, especially of mathematical objects, one of the biggest choices is whether to pack the records, or whether to pass arguments in as fields.
+That is, when defining a monoid, for example, there are five ways to go about specifying it:
+\begin{enumerate}
+    \item
+    (packed)
+    A \emph{monoid} consists of a type $A$, a binary operation $\cdot : A \to A \to A$, an identity element $e$, a proof that $e$ is a left- and right-identity $e \cdot a = a \cdot e = a$ for all $a$, and a proof of associativity that $(a \cdot b) \cdot c = a \cdot (b \cdot c)$.
+    \item
+    A \emph{monoid on a carrier type $A$} consists of a binary operation $\cdot : A \to A \to A$, an identity element $e$, a proof that $e$ is a left- and right-identity, and a proof of associativity.
+    \item
+    A \emph{monoid on a carrier type $A$ under the binary operation $\cdot : A \to A \to A$} consists of an identity element $e$, a proof that $e$ is a left- and right-identity, and a proof of associativity.
+    \item
+    (mostly unpacked)
+    A \emph{monoid on a carrier type $A$ under the binary operation $\cdot : A \to A \to A$ with identity element $e$} consists of a proof that $e$ is a left- and right-identity and a proof of associativity.
+    \item
+    (fully unpacked) A monoid on a carrier type $A$ under the binary operation $\cdot : A \to A \to A$ with identity element $e$ using a proof $p$ that $e$ is a left- and right-identity and a proof of $q$ of associativity consists of an element of the one-element unit type.
+\end{enumerate}
+\todo{cite math-classes and HoTT for past design work here}
 
+If we go with anything but the fully packed design, then we incur exponential overhead as we go up abstraction layers, as follows.
+A \emph{monoid homomorphism} from a monoid $A$ to a monoid $B$ consists of a function between the carrier types, and proofs that this function respects composition and identity.
+If we use an unpacked definition of monoid with $n$ type parameters, then a similar definition of a monoid homomorphism involves at least $2n+2$ type parameters.
+In higher category theory, it's common to talk about morphisms between morphisms, and every additional layer here doubles the number of type arguments, and this can quickly lead to very large terms, resulting is major performance bottlenecks.
 
-\begin{itemize}
-\item \todo{introduce abstraction barrier section}
-\item \todo{talk about packed vs unpacked records}
-\item \todo{talk about opportunity for conversion to make the wrong choice increasing with number of abstraction barriers}
-\end{itemize}
+\todo{maybe figure out some examples and include perf data?}
+\todo{does this need more exposition?}
+
+\section{Conclusion of this Chapter}
+\todo{How should this chapter be concluded?}
+\todo{Maybe another look-forward at what comes next?}
 
 \begin{subappendices}
 \begin{comment}

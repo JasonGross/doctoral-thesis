@@ -277,6 +277,10 @@ $(PROPOSAL_PDFS) : %.pdf : %.tex
 	$(SHOW)"PDFLATEX (run 3)"
 	$(HIDE)$(PDFLATEX) $(LATEXFLAGS) $(OTHERFLAGS) $<
 
+.PHONY: rubber
+rubber:
+	rubber --shell-escape -d -m lualatex jgross-thesis.tex
+
 # pdflatex -synctex=1 -interaction=nonstopmode -enable-write18 jgross-thesis.tex 2>&1
 MAKE_TODO := LINES="$$(cat jgross-thesis.log | grep -C 10 '^LaTeX Warning:\|on input line\|in paragraph at lines\|Xy-pic Warning:' | tr '\r' '&' | tr '\n' '&' | sed s'/\&//g' | sed s'/\(\(on input line[^\.]*\| multiply defined\|multiply-defined labels\|Xy-pic Warning: [^\.]*\)\.\|in paragraph at lines [0-9-]*\([^\[\]]*\[\]\)*\)/\1\&/g' | sed s'/\(Underfull\|Overfull\)/\&\1/g' | sed s'/(Font)\s*/; /g' | tr '&' '\n' | grep -o 'LaTeX Warning:.*\|Xy-pic Warning:.*\|Font shape [^ ]* in size [^ ]* not available.*\|\(Under\|Over\)full ..box ([^)]*) in paragraph at lines.*' | grep -o 'TODO.*\|QUESTION.*\|Warning: Reference.*\|Warning: Citation.*\|Warning: Label.*\|Xy-pic Warning:.*\|Font shape [^ ]* in size [^ ]* not available.*\|\(Under\|Over\)full ..box ([^)]*) in paragraph at lines.*')"; ((echo "$$LINES" | grep TODO); (echo "$$LINES" | grep 'Warning:'); (echo "$$LINES" | grep 'Font shape'); (echo "$$LINES" | grep -v 'TODO\|Warning:\|Font shape')) | grep --color=auto 'TODO:\|QUESTION FOR ADAM:\|Warning: Reference\|Warning: Citation\|Warning:\|'
 .PHONY: todo

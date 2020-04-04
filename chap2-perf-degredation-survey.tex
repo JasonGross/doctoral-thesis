@@ -415,7 +415,7 @@ It's important to be able to perform reduction of terms in an optimized way.
 \todo{maybe give a better introductory justification to the vm and native compiler than ``it's important''?}
 When doing optimized reduction in an imperative language, we need to represent closures---abstraction nodes---in some way.
 Often this involves associating to each closure both some information about or code implementing the body of the function, as well as the values of all of the free variables of that closure.
-\todo{cite something for closure compilation?}
+\todo{cite \url{https://flint.cs.yale.edu/shao/papers/escc.html} or its references for closure compilation}
 In order to have efficient lookup, we need to know the memory location storing the value of any given variable statically at closure-compilation time.
 The standard way of doing this \todo{cite something for flat closure compilation} is to allocate an array of values for each closure.
 If variables are represented with de Bruijn indices, for example, it's then a very easy array lookup to get the value of any variable.
@@ -503,6 +503,35 @@ Note that number of type parameters determines the constant factor out front of 
 
 \begin{subappendices}
 \begin{comment}
+\section{Comments from Andres}
+in chapter 2 you start by comparing coq by non-dependently-typed languages. perhaps the more appropriate comparision would be between coq and *compilers* of other languages? Ah, you do this later.
+"integers or colors or names" -- some hardcore optimization nerds may object. did you know that for all of these it is possible to sort in less than nlogn time using specialized techniques? :P (not a serious objection)
+"3. Being able to run the proof assistant in your head" -- obligatory claim about this finding bugs that the developers didn't see? Also, please emphasize that this is beyond the *spec* of conversion, but about the actual *algorithm*. the gcc example kinda does that, map it back explicitly.
+typechecking of applications definitely was quadratic, but may no longer be
+"maximally" sharing terms is almost always heuristic, and I would call it heuristic sharing to highlight that (or something other that does not claim maximality)
+hashconsing itself is also slow
+I would like to be explicitly credited for my contributions to this list. Somehwere in the thesis, sometime, at least when you get to claiming how many of these are you are taking credit for.
+"There are three primary ways that nested abstraction barriers can lead to performance bottlenecks: one involving conversion missteps and the other involving exponential blow-up in the size of types."
+"The reason users don’t set up hints like this is that usually it’s not necessary." -- and that is hard to see where the time is spent when it is necessary
+Thu 7:22pm
+and the non-locality of design choices is even across libraries and proof assistant implementations
+Thu 7:22pm
+see your abstraction layer counting stuff
+Thu 7:22pm
+more generally
+Thu 7:38pm
+if in 20 years I hear that your thesis has become popular and important, my guess would be that it was "the first paper in a field", out of "you either want to write the first paper in the field or the last paper in the field"
+Thu 7:39pm
+in particular, the biggest impact I could see from this is making people consider proof performance engineering a worthwhile direction of study
+Thu 7:39pm
+you have overwhelming evidence that proof projects need the results of this
+Thu 7:40pm
+probably it would help to describe how it is intellectually interesting, releated to profound questions, and just cool to hack on
+Thu 7:40pm
+the more you can hit those points, the more likely I think people will care
+Thu 7:41pm
+(was my feedback useful? would you like to discuss anything about it?)
+
     \section{Notes from call with Adam}
     start with a compelling example of a problem in Coq, including code
     

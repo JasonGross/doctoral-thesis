@@ -72,6 +72,9 @@ However, tracking down this solution was quite involved, requiring the following
     This is akin to, say, being able to learn how \texttt{gcc} represents various bits of C code, what transformations it does in what order, and what performance characteristics these transformations have, just from using \texttt{gcc} to compile C code and reading the error messages it gives you.
     These are details that should not need to be exposed to the user, but because dependent type theory is so complicated---complicated enough that it's generally assumed that users will get \emph{line-by-line interactive feedback from the compiler} while developing, the numerous design decisions and seemingly reasonable defaults and heuristics lead to subtle performance issues.
     Note, furthermore, that this performance issue is essentially about the algorithm used to implement conversion, and is not even sensible when only talking about only the spec of what it means for two terms to be convertible.
+    \todo{incorporate Andres' suggestions:}
+    you running the typechecker in your head is essentially the statement that if the entire implementation is part of the spec, it is possible to engineer better, and something close to this has been necessary in practice.
+    the research direction you are advocating is finding a simpler performance-aware spec (perhaps by moving around interfaces or etc; my thought is that maybe we just want to get rid of the kernel and trust the proof engine).
   \item
     Knowing how to tweak the built-in defaults for parts of the system which most users expect to be able to treat as black-boxes.
 \end{enumerate}
@@ -89,6 +92,23 @@ To finish off the argument about slowness in dependently-typed proof assistants,
 \section{Quadratic Behavior in \texorpdfstring{\texttt{vm\_compute}}{vm\_compute}}
 \todo{explain how vm\_compute is quadratic?}
 \todo{or maybe we don't need this anymore, given the next section?}
+
+\section*{Misc Fragments}
+\todo{Find a place for this (h/t conversation with Andres)}:  because we have a kernel and a proof engine on top of it, you need to simultaneously optimize the kernel and the proof engine to see performance improvements; if the kernel API doesn't give you good enough performance on primitives, then there's no hope to optimizing the proof engine, but at the same time if the proof engine is not optimized right, improvements in the performance of the kernel API don't have noticeable impact.
+
+\todo{find a place for this:}
+In many domains, good performance optimization can be done locally.
+It's rarely the case that disparate parts of the codebase must be simultaneously optimized to see any performance improvement.
+However, in proof assistants satisfying the de Bruijn criterion, there are many seemingly reasonable implementation choices that can be made for the kernel which make performance-optimizing the proof engine next to impossible.
+Worse, if performance optimization is done incrementally, to avoid needless premature optimization, then it can be the case that performance-optimizing the kernel has effectively no visible impact; the most efficient proof engine design for the slower kernel might be inefficient in ways that prevent optimizations in the kernel from showing up in actual use cases, because simple proof engine implementations tend to avoid the performance bottlenecks of the kernel while simultaneously shadowing them with bottlenecks with similar performance characteristics.
+
+\todo{incorparate Andres' suggestions}
+I like the last two sentences.
+I would instead lead with something along the lines of ``in many domains, the performance challenges have been studied and understood, resulting in useful decompositions of the problem into subtasks that can be optimized independently.''
+``in proof assistants, it doesn't look like anyone has even tried'' :P.
+but e g signal processing was a huge mess too before the fast fourier transform.
+coq abstractions are mostly accidents of history.
+no other system has a clear performance-conscious story for how these interfaces should be designed either.
 
 \section{How Can We Prove Anything Big?}
 Consider the problem of proving a large conjunction, such as \texttt{True $\wedge$ True $\wedge \cdots\wedge$ True}.

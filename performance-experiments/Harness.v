@@ -134,6 +134,9 @@ Definition remove_smaller_args_of_size_by_reflect
      let smaller_args := flat_map args_of_size (smaller_sizes sz) in
      filter (fun v => negb (existsb (T_beq v) smaller_args)) args.
 
+Ltac default_describe_goal x :=
+  idtac "Params: n=" x.
+
 Ltac runtests args_of_size describe_goal mkgoal redgoal time_solve_goal sz :=
   let args := (eval vm_compute in (remove_smaller_args_of_size_by_reflect sz args_of_size)) in
   let rec iter ls :=

@@ -9,7 +9,7 @@
 ## Core latex/pdflatex auxiliary files:
 *.aux
 *.lof
-*.log
+/*.log
 *.lot
 *.fls
 *.out
@@ -318,3 +318,10 @@ nra.cache
 .nlia.cache
 .nia.cache
 .nra.cache
+
+# Generated .v files for perf
+*_SuperFast.v
+*_Fast.v
+*_Medium.v
+*_Slow.v
+*_VerySlow.v

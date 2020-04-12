@@ -21,8 +21,9 @@ Definition args_of_size (s : size) : list nat
      end.
 
 Ltac mkgoal n := constr:(and_True n).
-Ltac describe_goal n := idtac "Goal:" n.
 Ltac redgoal _ := vm_compute.
-Ltac time_solve_goal n := time "repeat-constructor" repeat constructor.
-
-Goal True. runtests args_of_size describe_goal mkgoal redgoal time_solve_goal Fast.
+Ltac time_solve_goal0 n := time "repeat-constructor" repeat constructor.
+Ltac run0 sz := Harness.runtests args_of_size default_describe_goal mkgoal redgoal time_solve_goal0 sz.
+(*
+Goal True. runtests SuperFast.
+*)

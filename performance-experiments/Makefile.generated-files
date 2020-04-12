@@ -1,0 +1,42 @@
+include Makefile.variables
+
+$(foreach size,$(SIZES),$(eval $(call makesize,$(size))))
+$(foreach kind,$(KINDS),$(eval $(call makekind,$(kind))))
+
+.PHONY: sizes
+sizes:
+	@echo $(addprefix perf-,$(SIZES))
+
+.PHONY: kinds
+kinds:
+	@echo $(addprefix perf-,$(KINDS))
+
+.PHONY: perf
+perf: $(ALL_PERF_LOGS)
+
+$(ALL_PERF_LOGS) : %.log : %.v
+	$(SHOW)'$(TIMEOUT_SHOW)COQC $(<:$(PERF_DIR)/%.v=%) > LOG'
+	$(HIDE)($(PERF_SET_LIMITS) $(TIMER) $(TIMEOUT_CMD) $(TIMER) $(COQC) $(COQDEBUG) $(COQFLAGS) $(COQLIBS) $<) > $@.tmp
+	$(HIDE)mv $@.tmp $@
+
+ifneq ($(EXTERNAL_PERF_DEPENDENCIES),1)
+$(ALL_PERF_LOGS): $(PERF_DIR)/Harness.vo
+endif
+
+EXTRA_PERF_CSVS := $(KINDS:%=perf-%.csv)
+
+.PHONY: perf-csv
+perf-csv: perf.csv $(EXTRA_PERF_CSVS)
+
+.PHONY: perf.csv
+perf.csv:
+	$(SHOW)'PYTHON3 aggregate.py -o $@'
+	$(HIDE)$(PYTHON3) $(PERF_DIR)/aggregate.py -o $@ $(wildcard $(ALL_PERF_LOGS))
+
+.PHONY: perf.m
+perf.m:
+	$(SHOW)'PYTHON3 aggregate.py -o $@'
+	$(HIDE)$(PYTHON3) $(PERF_DIR)/aggregate.py --mathematica -o $@ $(wildcard $(ALL_PERF_LOGS))
+
+$(EXTRA_PERF_CSVS) : perf-%.csv : perf.csv
+	$(PYTHON3) $(PERF_DIR)/process.py --txts -o $@ $* $<

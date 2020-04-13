@@ -40,6 +40,41 @@ Our smallest toy example used two machine words; our largest---slightly unrealis
 The smallest toy example---two machine words---took about 14 seconds.
 Based on the the compile-time performance of about a hundred examples, we expect the largest example---17 machine words---would have taken over four thousand \emph{millenia}!
 (Our primary non-toy test example used four machine words and took just under a minute; the biggest realistic example we were targeting was twice that size, at eight machine words, and took about 20 hours.)
+%\begin{figure*}
+%    \newcommand{\PlusZeroTreeNValSubfloat}[1]{%
+%        \def\nval{#1}%
+%        \subfloat[Timing of Plus0Tree ($n=\nval$)]{%
+%            \resizebox{150px}{!}{\beginTikzpictureStamped[only marks]{
+%                    \einput{rewriting/perf-Plus0Tree-only-n-\nval-cbv;rewrite-strat(bottomup).txt}
+%                    \einput{rewriting/perf-Plus0Tree-only-n-\nval-cbv;setoid-rewrite.txt}
+%                    \einput{rewriting/perf-Plus0Tree-only-n-\nval-cbv;rewrite-strat(topdown).txt}
+%                    \einput{rewriting/perf-Plus0Tree-only-n-\nval-cbv;rewrite!.txt}
+%                    \einput{rewriting/perf-Plus0Tree-only-n-\nval-Rewrite-for.txt}
+%                    \einput{rewriting/perf-Plus0Tree-only-n-\nval-rewriting.txt}
+%                    \nval
+%                }
+%                \pgfplotsset{every axis legend/.append style={
+%                        at={(0.5,-0.2)},
+%                        anchor=north}}
+%                \begin{axis}[xlabel=$m$,ylabel=time (s),ymax=10]
+%                    \addplot[mark=square,color=red] table{rewriting/perf-Plus0Tree-only-n-\nval-cbv;rewrite-strat(bottomup).txt};
+%                    \addplot[mark=*,color=red] table{rewriting/perf-Plus0Tree-only-n-\nval-cbv;setoid-rewrite.txt};
+%                    \addplot[mark=triangle,color=red] table{rewriting/perf-Plus0Tree-only-n-\nval-cbv;rewrite-strat(topdown).txt};
+%                    \addplot[mark=o,color=red] table{rewriting/perf-Plus0Tree-only-n-\nval-cbv;rewrite!.txt};
+%                    \addplot[mark=+,color=blue] table{rewriting/perf-Plus0Tree-only-n-\nval-Rewrite-for.txt};
+%                    \addplot[mark=x,color=ForestGreen] table{rewriting/perf-Plus0Tree-only-n-\nval-rewriting.txt};
+%                    \legend{rewrite\_strat bottomup,setoid\_rewrite,rewrite\_strat topdown,rewrite!,{Our approach including reification, cbv, etc.},Our approach (only rewriting)}
+%                \end{axis}
+%            \end{tikzpicture}}%
+%            \label{fig:timing-Plus0Tree-n=\nval}}%
+%    }%
+%    \PlusZeroTreeNValSubfloat{1}\qquad
+%    \PlusZeroTreeNValSubfloat{2}\qquad
+%    %\PlusZeroTreeNValSubfloat{3}\qquad
+%    \PlusZeroTreeNValSubfloat{9}
+%    \caption{Timing of different partial-evaluation implementations for Plus0Tree for fixed $n$ (1, 2, and then we jump to 9)} \label{fig:timing-Plus0Tree-fixed-n}
+%\end{figure*}
+
 
 Maybe, you might ask, were we generating unreasonable amounts of code?
 Each example using $n$ machine words generated $3n$ lines of code.

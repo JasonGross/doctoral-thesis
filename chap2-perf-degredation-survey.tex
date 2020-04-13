@@ -81,17 +81,8 @@ However, tracking down this solution was quite involved, requiring the following
 
 \todo{Some sort of summary of argument-so-far here}
 
-To finish off the argument about slowness in dependently-typed proof assistants, I want to present a couple more cases of performance bottlenecks.
-
-\todo{or maybe we don't need this anymore, given the next section?}
-
-\section{Quadratic Behavior in \texorpdfstring{\texttt{cbv}}{cbv}}
-\todo{explain how cbv is quadratic}
-\todo{or maybe we don't need this anymore, given the next section?}
-
-\section{Quadratic Behavior in \texorpdfstring{\texttt{vm\_compute}}{vm\_compute}}
-\todo{explain how vm\_compute is quadratic?}
-\todo{or maybe we don't need this anymore, given the next section?}
+To finish off the argument about slowness in dependently-typed proof assistants, I want to present four axes of performance bottlenecks.
+These axes are by no means exhaustive, but, in my experience, most interesting performance bottlenecks scale as a super-linear factor of one or more of these axes.
 
 \section*{Misc Fragments}
 \todo{Find a place for this (h/t conversation with Andres)}:  because we have a kernel and a proof engine on top of it, you need to simultaneously optimize the kernel and the proof engine to see performance improvements; if the kernel API doesn't give you good enough performance on primitives, then there's no hope to optimizing the proof engine, but at the same time if the proof engine is not optimized right, improvements in the performance of the kernel API don't have noticeable impact.
@@ -109,24 +100,6 @@ I would instead lead with something along the lines of ``in many domains, the pe
 but e g signal processing was a huge mess too before the fast fourier transform.
 coq abstractions are mostly accidents of history.
 no other system has a clear performance-conscious story for how these interfaces should be designed either.
-
-\section{How Can We Prove Anything Big?}
-Consider the problem of proving a large conjunction, such as \texttt{True $\wedge$ True $\wedge \cdots\wedge$ True}.
-Because we want a separation between 
-\begin{itemize}
-  \item \todo{intros is cubic}
-  \item \todo{Application is quadratic \url{https://github.com/andres-erbsen/coq-experiments/blob/master/experiments/bench/app10000.v}}
-  \item \todo{Quadratic proof term for many ands}: \url{https://github.com/andres-erbsen/coq-experiments/blob/master/experiments/bench/big\_and\_10000\_true.v}
-  \begin{itemize}
-      \item -> try let-binding things (but intros n is $n^3$ time)
-      \item -> try reflection
-      \item -> application is also quadratic (maybe now fixed)
-      \end{itemize}  
-\end{itemize}
-\todo{or maybe we don't need this anymore, given the next section?}
-
-\todo{figure out examples}
-\todo{figure out story for this section}
 
 \section{The Four Axes}
 I now present four major axes of performance.

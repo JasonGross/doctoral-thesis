@@ -1,2 +1,2 @@
-kind bitwidth op nlimbs prime real user sys mem
+bitwidth nlimbs real user sys mem
 

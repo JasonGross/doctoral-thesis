@@ -17,8 +17,8 @@ def parse_lines(lines):
     return ret
 
 def make_txt(stats, only_kind=None, only_bw=None, only_op=None):
-    return ('kind bitwidth op nlimbs prime real user sys mem\n' +
-            '\n'.join(' '.join((kind, str(bw), op, str(nlimbs), prime, stat['real'], stat['user'], stat['sys'], stat['mem']))
+    return ('bitwidth nlimbs real user sys mem\n' +
+            '\n'.join(' '.join((str(bw), str(nlimbs), stat['real'], stat['user'], stat['sys'], stat['mem']))
                       for (kind, op, nlimbs, bw, prime), stat in sorted(stats)
                       if (only_kind is None or kind == only_kind)
                       if (only_bw is None or bw == only_bw)

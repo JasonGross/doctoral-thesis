@@ -1,2 +1,2 @@
-bitwidth nlimbs real user sys mem
+nlimbs bitwidth real user sys mem
 

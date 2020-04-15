@@ -240,7 +240,7 @@ If we are careful to construct the certificate manually without duplicating work
         scaled y ticks=false]
         \addplot[only marks,color=black] table[x=param-n,y=repeat-constructor-user]{performance-experiments/conj-True-repeat-constructor.txt};
         \addlegendentry{\mintinline{coq}{repeat constructor}}
-        \addplotquadraticregression[no markers, black][x=param-n,y=typecheck-user]{performance-experiments/conj-True-repeat-constructor.txt};
+        \addplotquadraticregression[no markers, black][x=param-n,y=repeat-constructor-user]{performance-experiments/conj-True-repeat-constructor.txt};
         \addlegendentry{
             $\pgfmathprintnumber{\pgfplotstableregressiona}n^2
             \pgfmathprintnumber[print sign]{\pgfplotstableregressionb}n

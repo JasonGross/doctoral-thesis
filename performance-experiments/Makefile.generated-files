@@ -26,7 +26,7 @@ endif
 EXTRA_PERF_CSVS := $(KINDS:%=perf-%.csv)
 
 .PHONY: perf-csv
-perf-csv: perf.csv perf-txts $(EXTRA_PERF_CSVS)
+perf-csv: perf.csv perf-txts # $(EXTRA_PERF_CSVS)
 
 .PHONY: perf.csv
 perf.csv:
@@ -42,5 +42,5 @@ perf-txts: perf.csv
 	$(PYTHON3) $(PERF_DIR)/csv_to_txt.py $<
 .PHONY: perf-txts
 
-$(EXTRA_PERF_CSVS) : perf-%.csv : perf.csv
-	$(PYTHON3) $(PERF_DIR)/process.py --txts -o $@ $* $<
+#$(EXTRA_PERF_CSVS) : perf-%.csv : perf.csv
+#	$(PYTHON3) $(PERF_DIR)/process.py --txts -o $@ $* $<

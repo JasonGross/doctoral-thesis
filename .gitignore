@@ -276,7 +276,7 @@ logreq.sty
 jgross-thesis-figure*.dep
 *.pgf-plot.gnuplot
 *.pgf-plot.table
-/*-parameters.dat
+*-parameters.dat
 
 # vim
 [._]*.s[a-v][a-z]

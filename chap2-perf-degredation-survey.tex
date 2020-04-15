@@ -224,7 +224,64 @@ In Coq, this certificate is called \texttt{conj} and it takes four parameters: $
 Perhaps you can already spot the problem.
 
 To prove a conjunction of $n$ things, we end up repeating the type $n$ times in the certificate, resulting in a term that is quadratic in the size of the type.
-\todo{perf test conj term}
+We see in \autoref{fig:timing-conj-True-repeat-constructor} the time it takes to do this in Coq's tactic mode via \mintinline{coq}{repeat constructor}.
+If we are careful to construct the certificate manually without duplicating work, we see that it takes linear time for Coq to build the certificate and quadratic time for Coq to check the certificate; see \autoref{fig:timing-conj-True-ltac2}.
+\todo{improve data collection on perf test}
+
+\begin{figure*}
+    \beginTikzpictureStamped{
+        \einput{performance-experiments/conj-True-repeat-constructor.txt}
+    }
+    \begin{axis}[xlabel=$n$,
+        ylabel=time (s),
+        legend pos=outer north east,
+        axis lines=left,
+        xmin=0,
+        scaled y ticks=false]
+        \addplot[only marks,color=black] table[x=param-n,y=repeat-constructor-user]{performance-experiments/conj-True-repeat-constructor.txt};
+        \addlegendentry{\mintinline{coq}{repeat constructor}}
+        \addplotquadraticregression[no markers, black][x=param-n,y=typecheck-user]{performance-experiments/conj-True-repeat-constructor.txt};
+        \addlegendentry{
+            $\pgfmathprintnumber{\pgfplotstableregressiona}n^2
+            \pgfmathprintnumber[print sign]{\pgfplotstableregressionb}n
+            \pgfmathprintnumber[print sign]{\pgfplotstableregressionc}$
+        }
+    \end{axis}
+\end{tikzpicture}
+\caption{Timing of \mintinline{coq}{repeat constructor} to prove a conjunction of $n$ \mintinline{coq}{True}s} \label{fig:timing-conj-True-repeat-constructor}
+\end{figure*}
+
+\begin{figure*}
+\beginTikzpictureStamped{
+    \einput{performance-experiments/conj-True-ltac2.txt}
+}
+    \begin{axis}[xlabel=$n$,
+        ylabel=time (s),
+        legend pos=outer north east,
+        axis lines=left,
+        xmin=0,
+        scaled y ticks=false]
+        \addplot[only marks,color=blue] table[x=param-n,y=typecheck-user]{performance-experiments/conj-True-ltac2.txt};
+        \addlegendentry{typecheck}
+        \addplotquadraticregression[no markers, blue][x=param-n,y=typecheck-user]{performance-experiments/conj-True-ltac2.txt};
+        \addlegendentry{
+            $\pgfmathprintnumber{\pgfplotstableregressiona}n^2
+            \pgfmathprintnumber[print sign]{\pgfplotstableregressionb}n
+            \pgfmathprintnumber[print sign]{\pgfplotstableregressionc}$
+        }
+        \addplot[only marks,color=black] table[x=param-n,y=build-user]{performance-experiments/conj-True-ltac2.txt};
+        \addlegendentry{build}
+        \addplot [thick,black] table[x=param-n,
+            y={create col/linear regression={y=build-user}}
+            ] % compute a linear regression from the input table
+            {performance-experiments/conj-True-ltac2.txt};
+        \addlegendentry{
+            $\pgfmathprintnumber{\pgfplotstableregressiona}n
+            \pgfmathprintnumber[print sign]{\pgfplotstableregressionb}$}
+    \end{axis}
+\end{tikzpicture}
+\caption{Timing of manually building and typechecking a certificate to prove a conjunction of $n$ \mintinline{coq}{True}s using \LtacTwo} \label{fig:timing-conj-True-ltac2}
+\end{figure*}
 
 Note that for small, and even medium-sized examples, it's pretty reasonable to do duplicative work.
 It's only when we reach very large examples that we start hitting non-linear behavior.

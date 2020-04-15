@@ -251,6 +251,7 @@
 \newcommand{\cancomputeto}[2]{#1~~\ensuremath{\rightsquigarrow}~~#2}
 \newcommand{\Rtac}{\texorpdfstring{\ensuremath{\mathcal{R}_{\text{\textit{tac}}}}}{Rtac}}
 \newcommand{\Ltac}{\texorpdfstring{\ensuremath{\mathcal{L}_{\text{\textit{tac}}}}}{Ltac}}
+\newcommand{\LtacTwo}{\Ltac2}
 \newcommand{\coqgroupb}[1]{\texttt{\ensuremath{\left(\text{#1}\right)}}}
 \newcommand{\coqgroup}[1]{\texttt{(#1)}}
 \newcommand{\functiondefeq}{~\ensuremath{\operatorname{\texttt{\ensuremath{\defeq}}}}~}
@@ -452,6 +453,36 @@
     \pgfplotstableread{#3-parameters.dat}\parameters % Open the file Gnuplot wrote
     \pgfplotstablegetelem{0}{0}\of\parameters \pgfmathsetmacro\pgfplotstableregressiona{\pgfplotsretval} % Get first element, save into \pgfplotstableregressiona
     \pgfplotstablegetelem{0}{1}\of\parameters \pgfmathsetmacro\pgfplotstableregressionb{\pgfplotsretval}
+}
+% \addplotquadraticregression[params for \addplot][default settings for a and b and c, also for x and y columns]{table file}
+\NewDocumentCommand{\addplotquadraticregression}{ O{no markers} o m}{%
+    \pgfkeyssetvalue{/addplotquadraticregression/x}{0}
+    \pgfkeyssetvalue{/addplotquadraticregression/y}{1}
+    \pgfkeyssetvalue{/addplotquadraticregression/a}{1}
+    \pgfkeyssetvalue{/addplotquadraticregression/b}{1}
+    \pgfkeyssetvalue{/addplotquadraticregression/c}{1}
+    \pgfkeys{/addplotquadraticregression/.cd,#2}
+    \pgftognucolumnset{/addplotquadraticregression/x}{\@addplotquadraticregression@colx}%
+    \pgftognucolumnset{/addplotquadraticregression/y}{\@addplotquadraticregression@coly}%
+    \edef\@addplotquadraticregression@inita{\pgfkeysvalueof{/addplotquadraticregression/a}}%
+    \edef\@addplotquadraticregression@initb{\pgfkeysvalueof{/addplotquadraticregression/b}}%
+    \edef\@addplotquadraticregression@initc{\pgfkeysvalueof{/addplotquadraticregression/c}}%
+    \addplot [#1] gnuplot [raw gnuplot] { % allows arbitrary gnuplot commands
+        f(x) = a*x**2+b*x+c;     % Define the function to fit
+        % Set reasonable starting values here
+        a=\@addplotquadraticregression@inita;
+        b=\@addplotquadraticregression@initb;
+        c=\@addplotquadraticregression@initc;
+        fit f(x) '#3' u \@addplotquadraticregression@colx:\@addplotquadraticregression@coly\space via a,b,c; % Select the file
+        stats '#3' u \@addplotquadraticregression@colx;
+        plot [x=STATS_min:STATS_max] f(x);    % Specify the range to plot
+        set print "#3-parameters.dat";  % Open a file to save the parameters
+        print a, b, c;                  % Write the parameters to file
+    };
+    \pgfplotstableread{#3-parameters.dat}\parameters % Open the file Gnuplot wrote
+    \pgfplotstablegetelem{0}{0}\of\parameters \pgfmathsetmacro\pgfplotstableregressiona{\pgfplotsretval} % Get first element, save into \pgfplotstableregressiona
+    \pgfplotstablegetelem{0}{1}\of\parameters \pgfmathsetmacro\pgfplotstableregressionb{\pgfplotsretval}
+    \pgfplotstablegetelem{0}{2}\of\parameters \pgfmathsetmacro\pgfplotstableregressionc{\pgfplotsretval}
 }
 \makeatother
 

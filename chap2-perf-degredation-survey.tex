@@ -39,42 +39,73 @@ The code generation was parameterized on the number of machine words needed to r
 Our smallest toy example used two machine words; our largest---slightly unrealistic---example used 17.
 The smallest toy example---two machine words---took about 14 seconds.
 Based on the the compile-time performance of about a hundred examples, we expect the largest example---17 machine words---would have taken over four thousand \emph{millenia}!
+See \autoref{fig:timing-montgomery-fesub-before-user} and \autoref{fig:timing-montgomery-fesub-before-user-log}.
 (Our primary non-toy test example used four machine words and took just under a minute; the biggest realistic example we were targeting was twice that size, at eight machine words, and took about 20 hours.)
-%\begin{figure*}
-%    \newcommand{\PlusZeroTreeNValSubfloat}[1]{%
-%        \def\nval{#1}%
-%        \subfloat[Timing of Plus0Tree ($n=\nval$)]{%
-%            \resizebox{150px}{!}{\beginTikzpictureStamped[only marks]{
-%                    \einput{rewriting/perf-Plus0Tree-only-n-\nval-cbv;rewrite-strat(bottomup).txt}
-%                    \einput{rewriting/perf-Plus0Tree-only-n-\nval-cbv;setoid-rewrite.txt}
-%                    \einput{rewriting/perf-Plus0Tree-only-n-\nval-cbv;rewrite-strat(topdown).txt}
-%                    \einput{rewriting/perf-Plus0Tree-only-n-\nval-cbv;rewrite!.txt}
-%                    \einput{rewriting/perf-Plus0Tree-only-n-\nval-Rewrite-for.txt}
-%                    \einput{rewriting/perf-Plus0Tree-only-n-\nval-rewriting.txt}
-%                    \nval
-%                }
-%                \pgfplotsset{every axis legend/.append style={
-%                        at={(0.5,-0.2)},
-%                        anchor=north}}
-%                \begin{axis}[xlabel=$m$,ylabel=time (s),ymax=10]
-%                    \addplot[mark=square,color=red] table{rewriting/perf-Plus0Tree-only-n-\nval-cbv;rewrite-strat(bottomup).txt};
-%                    \addplot[mark=*,color=red] table{rewriting/perf-Plus0Tree-only-n-\nval-cbv;setoid-rewrite.txt};
-%                    \addplot[mark=triangle,color=red] table{rewriting/perf-Plus0Tree-only-n-\nval-cbv;rewrite-strat(topdown).txt};
-%                    \addplot[mark=o,color=red] table{rewriting/perf-Plus0Tree-only-n-\nval-cbv;rewrite!.txt};
-%                    \addplot[mark=+,color=blue] table{rewriting/perf-Plus0Tree-only-n-\nval-Rewrite-for.txt};
-%                    \addplot[mark=x,color=ForestGreen] table{rewriting/perf-Plus0Tree-only-n-\nval-rewriting.txt};
-%                    \legend{rewrite\_strat bottomup,setoid\_rewrite,rewrite\_strat topdown,rewrite!,{Our approach including reification, cbv, etc.},Our approach (only rewriting)}
-%                \end{axis}
-%            \end{tikzpicture}}%
-%            \label{fig:timing-Plus0Tree-n=\nval}}%
-%    }%
-%    \PlusZeroTreeNValSubfloat{1}\qquad
-%    \PlusZeroTreeNValSubfloat{2}\qquad
-%    %\PlusZeroTreeNValSubfloat{3}\qquad
-%    \PlusZeroTreeNValSubfloat{9}
-%    \caption{Timing of different partial-evaluation implementations for Plus0Tree for fixed $n$ (1, 2, and then we jump to 9)} \label{fig:timing-Plus0Tree-fixed-n}
-%\end{figure*}
-
+\begin{figure*}
+    \beginTikzpictureStamped{
+        \einput{fiat-crypto-perf-logs/montgomery-fesub-before.txt}
+    }
+    \begin{axis}[xlabel=\# limbs,
+        ylabel=time (s),
+        axis lines=left,
+        xmin=0,
+        scaled y ticks=false,
+        xtick distance=1,
+        ylabel style={
+            yshift = {width("0")}
+        }]
+        \addplot[only marks,color=black] table[x=nlimbs,y=user]{fiat-crypto-perf-logs/montgomery-fesub-before.txt};
+        \addplot [no markers, black] gnuplot [raw gnuplot] { % allows arbitrary gnuplot commands
+            f(x) = a*exp(b*x);     % Define the function to fit
+            a=0.0001;b=2.5;        % Set reasonable starting values here
+            fit f(x) 'fiat-crypto-perf-logs/montgomery-fesub-before.txt' u 1:3 via a,b; % Select the file, starts at col 1 and two variables
+            plot [x=1:9] f(x);    % Specify the range to plot
+            set print "montgomery-fesub-before-user-parameters.dat";  % Open a file to save the parameters
+            print a, b;                  % Write the parameters to file
+        };
+        \addlegendentry{synthesis}
+        \addlegendentry{\pgfplotstableread{montgomery-fesub-before-user-parameters.dat}\parameters % Open the file Gnuplot wrote
+            \pgfplotstablegetelem{0}{0}\of\parameters \pgfmathsetmacro\paramA{\pgfplotsretval} % Get first element, save into \paramA
+            \pgfplotstablegetelem{0}{1}\of\parameters \pgfmathsetmacro\paramB{\pgfplotsretval}
+            $\pgfmathprintnumber{\paramA} e^{\pgfmathprintnumber{\paramB} (\text{\# limbs})} $
+        }
+    \end{axis}
+\end{tikzpicture}
+\caption{Timing of synthesizing subtraction} \label{fig:timing-montgomery-fesub-before-user}
+\end{figure*}
+\begin{figure*}
+    \beginTikzpictureStamped{
+        \einput{fiat-crypto-perf-logs/montgomery-fesub-before.txt}
+    }
+    \begin{axis}[xlabel=\# limbs,
+        ylabel=time (s),
+        axis lines=left,
+        xmin=0,
+        scaled y ticks=false,
+        ymode=log,
+        xtick distance=1,
+        ylabel style={
+            yshift = {width("0")}
+        }]
+        \addplot[only marks,color=black] table[x=nlimbs,y=user]{fiat-crypto-perf-logs/montgomery-fesub-before.txt};
+        \addplot [no markers, black] gnuplot [raw gnuplot] { % allows arbitrary gnuplot commands
+            f(x) = a*exp(b*x);     % Define the function to fit
+            a=0.0001;b=2.5;        % Set reasonable starting values here
+            fit f(x) 'fiat-crypto-perf-logs/montgomery-fesub-before.txt' u 1:3 via a,b; % Select the file, starts at col 1 and two variables
+            plot [x=1:9] f(x);    % Specify the range to plot
+            set print "montgomery-fesub-before-user-parameters.dat";  % Open a file to save the parameters
+            print a, b;                  % Write the parameters to file
+        };
+        \addlegendentry{synthesis}
+        \addlegendentry{\pgfplotstableread{montgomery-fesub-before-user-parameters.dat}\parameters % Open the file Gnuplot wrote
+            \pgfplotstablegetelem{0}{0}\of\parameters \pgfmathsetmacro\paramA{\pgfplotsretval} % Get first element, save into \paramA
+            \pgfplotstablegetelem{0}{1}\of\parameters \pgfmathsetmacro\paramB{\pgfplotsretval}
+            $\pgfmathprintnumber{\paramA} e^{\pgfmathprintnumber{\paramB} x} $
+        }
+    \end{axis}
+\end{tikzpicture}
+\caption{Timing of synthesizing subtraction ($\log$-scale)} \label{fig:timing-montgomery-fesub-before-user-log}
+\end{figure*}
 
 Maybe, you might ask, were we generating unreasonable amounts of code?
 Each example using $n$ machine words generated $3n$ lines of code.
@@ -113,6 +144,75 @@ However, tracking down this solution was quite involved, requiring the following
   \item
     Knowing how to tweak the built-in defaults for parts of the system which most users expect to be able to treat as black-boxes.
 \end{enumerate}
+
+Note that even after this fix, the performance is \emph{still} exponential!
+However, the performance is good enough that we deemed it not currently worth digging into the profile to understand the remaining bottlenecks.
+See \autoref{fig:timing-montgomery-fesub-after-user} and \autoref{fig:timing-montgomery-fesub-after-user-log}.
+\begin{figure*}
+    \beginTikzpictureStamped{
+        \einput{fiat-crypto-perf-logs/montgomery-fesub-after.txt}
+    }
+    \begin{axis}[xlabel=\# limbs,
+        ylabel=time (s),
+        axis lines=left,
+        xmin=0,
+        scaled y ticks=false,
+        xtick distance=1,
+        ylabel style={
+            yshift = {width("0")}
+        }]
+        \addplot[only marks,color=black] table[x=nlimbs,y=user]{fiat-crypto-perf-logs/montgomery-fesub-after.txt};
+        \addplot [no markers, black] gnuplot [raw gnuplot] { % allows arbitrary gnuplot commands
+            f(x) = a*exp(b*x);     % Define the function to fit
+            a=10;b=0.2;            % Set reasonable starting values here
+            fit f(x) 'fiat-crypto-perf-logs/montgomery-fesub-after.txt' u 1:3 via a,b; % Select the file, starts at col 1 and two variables
+            plot [x=1:9] f(x);    % Specify the range to plot
+            set print "montgomery-fesub-after-user-parameters.dat";  % Open a file to save the parameters
+            print a, b;                  % Write the parameters to file
+        };
+        \addlegendentry{synthesis}
+        \addlegendentry{\pgfplotstableread{montgomery-fesub-after-user-parameters.dat}\parameters % Open the file Gnuplot wrote
+            \pgfplotstablegetelem{0}{0}\of\parameters \pgfmathsetmacro\paramA{\pgfplotsretval} % Get first element, save into \paramA
+            \pgfplotstablegetelem{0}{1}\of\parameters \pgfmathsetmacro\paramB{\pgfplotsretval}
+            $\pgfmathprintnumber{\paramA} e^{\pgfmathprintnumber{\paramB} (\text{\# limbs})} $
+        }
+    \end{axis}
+\end{tikzpicture}
+\caption{Timing of synthesizing subtraction after fixing the bottleneck} \label{fig:timing-montgomery-fesub-after-user}
+\end{figure*}
+\begin{figure*}
+    \beginTikzpictureStamped{
+        \einput{fiat-crypto-perf-logs/montgomery-fesub-after.txt}
+    }
+    \begin{axis}[xlabel=\# limbs,
+        ylabel=time (s),
+        axis lines=left,
+        xmin=0,
+        scaled y ticks=false,
+        ymode=log,
+        xtick distance=1,
+        ylabel style={
+            yshift = {width("0")}
+        }]
+        \addplot[only marks,color=black] table[x=nlimbs,y=user]{fiat-crypto-perf-logs/montgomery-fesub-after.txt};
+        \addplot [no markers, black] gnuplot [raw gnuplot] { % allows arbitrary gnuplot commands
+            f(x) = a*exp(b*x);     % Define the function to fit
+            a=10;b=0.2;            % Set reasonable starting values here
+            fit f(x) 'fiat-crypto-perf-logs/montgomery-fesub-after.txt' u 1:3 via a,b; % Select the file, starts at col 1 and two variables
+            plot [x=1:9] f(x);    % Specify the range to plot
+            set print "montgomery-fesub-after-user-parameters.dat";  % Open a file to save the parameters
+            print a, b;                  % Write the parameters to file
+        };
+        \addlegendentry{synthesis}
+        \addlegendentry{\pgfplotstableread{montgomery-fesub-after-user-parameters.dat}\parameters % Open the file Gnuplot wrote
+            \pgfplotstablegetelem{0}{0}\of\parameters \pgfmathsetmacro\paramA{\pgfplotsretval} % Get first element, save into \paramA
+            \pgfplotstablegetelem{0}{1}\of\parameters \pgfmathsetmacro\paramB{\pgfplotsretval}
+            $\pgfmathprintnumber{\paramA} e^{\pgfmathprintnumber{\paramB} x} $
+        }
+    \end{axis}
+\end{tikzpicture}
+\caption{Timing of synthesizing subtraction after fixing the bottleneck ($\log$-scale)} \label{fig:timing-montgomery-fesub-after-user-log}
+\end{figure*}
 
 \todo{Some sort of summary of argument-so-far here}
 

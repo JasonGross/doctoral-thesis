@@ -274,6 +274,9 @@ logreq.sty
 *.md5
 /todo.svg
 jgross-thesis-figure*.dep
+*.pgf-plot.gnuplot
+*.pgf-plot.table
+/*-parameters.dat
 
 # vim
 [._]*.s[a-v][a-z]

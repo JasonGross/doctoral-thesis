@@ -169,7 +169,7 @@ See \autoref{fig:timing-montgomery-fesub-after-user} and \autoref{fig:timing-mon
             f(x) = a*exp(b*x);     % Define the function to fit
             a=10;b=0.2;            % Set reasonable starting values here
             fit f(x) 'fiat-crypto-perf-logs/montgomery-fesub-after.txt' u 1:3 via a,b; % Select the file, starts at col 1 and two variables
-            plot [x=1:9] f(x);    % Specify the range to plot
+            plot [x=1:17] f(x);    % Specify the range to plot
             set print "montgomery-fesub-after-user-parameters.dat";  % Open a file to save the parameters
             print a, b;                  % Write the parameters to file
         };
@@ -203,7 +203,7 @@ See \autoref{fig:timing-montgomery-fesub-after-user} and \autoref{fig:timing-mon
             f(x) = a*exp(b*x);     % Define the function to fit
             a=10;b=0.2;            % Set reasonable starting values here
             fit f(x) 'fiat-crypto-perf-logs/montgomery-fesub-after.txt' u 1:3 via a,b; % Select the file, starts at col 1 and two variables
-            plot [x=1:9] f(x);    % Specify the range to plot
+            plot [x=1:17] f(x);    % Specify the range to plot
             set print "montgomery-fesub-after-user-parameters.dat";  % Open a file to save the parameters
             print a, b;                  % Write the parameters to file
         };

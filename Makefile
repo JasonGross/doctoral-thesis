@@ -257,15 +257,26 @@ rewriting/PerfData.mk:
 
 %.pdf: %.tex.d
 
+print-errors:
+	$(HIDE)for i in jgross-thesis-figure*.log; do \
+	  echo '============================'; \
+	  echo $$i; \
+	  echo '============================'; \
+	  cat $$i; \
+	  echo '============================'; \
+	done
+	exit 1
+.PHONY: print-errors
+
 $(THESIS_PDFS) : %.pdf : %.tex
 	$(SHOW)"PDFLATEX (run 1)"
-	$(HIDE)$(PDFLATEX) $(LATEXFLAGS) $(OTHERFLAGS) $<
+	$(HIDE)$(PDFLATEX) $(LATEXFLAGS) $(OTHERFLAGS) $< || $(MAKE) print-errors
 	$(SHOW)"BIBER"
 	$(HIDE)biber ${<:.tex=}
 	$(SHOW)"PDFLATEX (run 2)"
 	$(HIDE)$(PDFLATEX) $(LATEXFLAGS) $(OTHERFLAGS) --interaction=nonstopmode $< 2>&1 >/dev/null || true
 	$(SHOW)"PDFLATEX (run 3)"
-	$(HIDE)$(PDFLATEX) $(LATEXFLAGS) $(OTHERFLAGS) $<
+	$(HIDE)$(PDFLATEX) $(LATEXFLAGS) $(OTHERFLAGS) $< || $(MAKE) print-errors
 
 $(PROPOSAL_PDFS) : %.pdf : %.tex
 	$(SHOW)"PDFLATEX (run 1)"

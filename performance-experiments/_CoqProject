@@ -1,5 +1,7 @@
 -R . PerformanceExperiments
 Harness.v
+conj_True_app_ltac2.v
+conj_True_let_ltac2.v
 conj_True_ltac2.v
 conj_True_repeat_constructor.v
 conj_True_uconstr.v

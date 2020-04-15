@@ -38,15 +38,30 @@ Module Import WithLtac2.
     end.
   End Array.
 
-  Ltac2 rec build_conj_true (n : int) (and : constr) (conj : constr) (tru : constr) (i : constr) :=
+  Ltac2 rec mkres (n : int) (t : constr) (v : constr) (prop : constr) (and : constr) (conj : constr) (tru : constr) (i : constr) :=
     match Int.lt 0 n with
-    | false => (i, tru)
+    | false => Unsafe.make
+                 (Unsafe.LetIn
+                    { binder_name := None ; binder_relevance := Relevant }
+                    t
+                    prop
+                    v)
     | true
-      => match build_conj_true (Int.sub n 1) and conj tru i with
-         | (term, ty)
-           => (Unsafe.make (Unsafe.App conj (Array.of_list [tru;ty;i;term])),
-               Unsafe.make (Unsafe.App and (Array.of_list [tru;ty])))
-         end
+      => let rest := mkres (Int.sub n 1)
+                           (Unsafe.make (Unsafe.App and (Array.of_list [tru;Unsafe.make (Unsafe.Rel 2)])))
+                           (Unsafe.make (Unsafe.App conj (Array.of_list [tru;Unsafe.make (Unsafe.Rel 3);i;Unsafe.make (Unsafe.Rel 2)])))
+                           prop and conj tru i in
+         Unsafe.make
+           (Unsafe.LetIn
+              { binder_name := None ; binder_relevance := Relevant }
+              t
+              prop
+              (Unsafe.make
+                 (Unsafe.LetIn
+                    { binder_name := None ; binder_relevance := Relevant }
+                    v
+                    (Unsafe.make (Unsafe.Rel 1))
+                    rest)))
     end.
 
   Ltac2 rec int_of_nat n :=
@@ -60,7 +75,7 @@ Module Import WithLtac2.
     let v := Control.time
                (Some "build-and-typecheck")
                (fun _ =>
-                  let v := Control.time (Some "build") (fun _ => match build_conj_true n' 'and '(@conj) 'True 'I with (term, ty) => term end) in
+                  let v := Control.time (Some "build") (fun _ => mkres n' 'True 'I 'Prop 'and '(@conj) 'True 'I) in
                   let __ := Control.time (Some "typecheck") (fun _ => Unsafe.check v) in
                   v) in
     Control.time (Some "refine") (fun _ => refine v).

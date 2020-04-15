@@ -17,7 +17,7 @@ Ltac build_conj_true_cps n k :=
 
 Definition args_of_size (s : size) : list nat
   := match s with
-     | SuperFast => seq 0 100
+     | SuperFast => seq 1 100
      | Fast => seq 100 200
                    ++ List.map (fun x => 200 + x * 2) (seq 0 50)
                    ++ List.map (fun x => 300 + x * 5) (seq 0 20)
@@ -29,12 +29,13 @@ Definition args_of_size (s : size) : list nat
      | VerySlow => []
      end.
 
-Ltac mkgoal n := constr:(and_True n).
+Ltac mkgoal n := constr:(and_True (pred n)).
 Ltac redgoal _ := vm_compute.
 Ltac time_solve_goal0 n :=
+  let n' := (eval cbv in (pred n)) in
   time "build-and-refine"
        let eval_early := match goal with _ => restart_timer end in
-       let term := build_conj_true_cps n ltac:(fun term ty => term) in
+       let term := build_conj_true_cps n' ltac:(fun term ty => term) in
        let eval_early := match goal with _ => finish_timing ( "Tactic call build" ) end in
        let eval_early := match goal with _ => restart_timer end in
        let term := constr:(term) in

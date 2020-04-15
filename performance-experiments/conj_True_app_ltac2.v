@@ -5,10 +5,10 @@ Require Ltac2.Notations.
 Require Ltac2.Array.
 Require Ltac2.Int.
 Require Import PerformanceExperiments.Harness.
-Require PerformanceExperiments.conj_True_uconstr.
+Require PerformanceExperiments.conj_True_let_ltac2.
 
-Notation and_True := conj_True_uconstr.and_True.
-Notation args_of_size := conj_True_uconstr.args_of_size.
+Notation and_True := conj_True_let_ltac2.and_True.
+Notation args_of_size := conj_True_let_ltac2.args_of_size.
 
 Module Import WithLtac2.
   Import Ltac2.Notations.
@@ -38,15 +38,26 @@ Module Import WithLtac2.
     end.
   End Array.
 
-  Ltac2 rec build_conj_true (n : int) (and : constr) (conj : constr) (tru : constr) (i : constr) :=
+  Ltac2 rec mkres (n : int) (t : constr) (v : constr) (prop : constr) (and : constr) (conj : constr) (tru : constr) (i : constr) :=
     match Int.lt 0 n with
-    | false => (i, tru)
+    | false => v
     | true
-      => match build_conj_true (Int.sub n 1) and conj tru i with
-         | (term, ty)
-           => (Unsafe.make (Unsafe.App conj (Array.of_list [tru;ty;i;term])),
-               Unsafe.make (Unsafe.App and (Array.of_list [tru;ty])))
-         end
+      => let rest := mkres (Int.sub n 1)
+                           (Unsafe.make (Unsafe.App and (Array.of_list [tru;Unsafe.make (Unsafe.Rel 2)])))
+                           (Unsafe.make (Unsafe.App conj (Array.of_list [tru;Unsafe.make (Unsafe.Rel 2);i;Unsafe.make (Unsafe.Rel 1)])))
+                           prop and conj tru i in
+         Unsafe.make
+           (Unsafe.App
+              (Unsafe.make
+                 (Unsafe.Lambda
+                    { binder_name := None ; binder_relevance := Relevant }
+                    prop
+                    (Unsafe.make
+                       (Unsafe.Lambda
+                          { binder_name := None ; binder_relevance := Relevant }
+                          (Unsafe.make (Unsafe.Rel 1))
+                          rest))))
+              (Array.of_list [t; v]))
     end.
 
   Ltac2 rec int_of_nat n :=
@@ -60,7 +71,7 @@ Module Import WithLtac2.
     let v := Control.time
                (Some "build-and-typecheck")
                (fun _ =>
-                  let v := Control.time (Some "build") (fun _ => match build_conj_true n' 'and '(@conj) 'True 'I with (term, ty) => term end) in
+                  let v := Control.time (Some "build") (fun _ => mkres n' 'True 'I 'Prop 'and '(@conj) 'True 'I) in
                   let __ := Control.time (Some "typecheck") (fun _ => Unsafe.check v) in
                   v) in
     Control.time (Some "refine") (fun _ => refine v).
@@ -71,7 +82,6 @@ Ltac redgoal _ := vm_compute.
 Ltac time_solve_goal0 :=
   ltac2:(n |- time_solve_goal0 (match (Ltac1.to_constr n) with Some v => v | None => 'I end)).
 Ltac run0 sz := Harness.runtests args_of_size default_describe_goal mkgoal redgoal time_solve_goal0 sz.
-Global Set Default Proof Mode "Classic".
 (*
 Goal True. run0 Fast.
 *)

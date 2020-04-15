@@ -11,7 +11,6 @@ addons:
     - texlive-latex-extra
     - texlive-bibtex-extra
     - texlive-generic-extra
-    - texlive-math-extra
     - texlive-science
     - texlive-luatex
     - texlive-lang-greek

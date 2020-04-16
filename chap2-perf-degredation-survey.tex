@@ -340,6 +340,72 @@ Alternatively, the user can write
 \end{minted}
 
 Unfortunately, both of these incur quadratic typechecking cost, even though the size of the term is linear.
+See \autoref{fig:timing-conj-True-let-ltac2} and \autoref{fig:timing-conj-True-app-ltac2}.
+\todo{improve data collection on perf test}
+
+\begin{figure*}
+    \beginTikzpictureStamped{
+        \einput{performance-experiments/conj-True-let-ltac2.txt}
+    }
+    \begin{axis}[xlabel=$n$,
+        ylabel=time (s),
+        legend pos=outer north east,
+        axis lines=left,
+        xmin=0,
+        scaled y ticks=false]
+        \addplot[only marks,color=blue] table[x=param-n,y=typecheck-user]{performance-experiments/conj-True-let-ltac2.txt};
+        \addlegendentry{typecheck}
+        \addplotquadraticregression[no markers, blue][x=param-n,y=typecheck-user]{performance-experiments/conj-True-let-ltac2.txt};
+        \addlegendentry{
+            $\pgfmathprintnumber{\pgfplotstableregressiona}n^2
+            \pgfmathprintnumber[print sign]{\pgfplotstableregressionb}n
+            \pgfmathprintnumber[print sign]{\pgfplotstableregressionc}$
+        }
+        \addplot[only marks,color=black] table[x=param-n,y=build-user]{performance-experiments/conj-True-let-ltac2.txt};
+        \addlegendentry{build}
+        \addplot [thick,black] table[x=param-n,
+        y={create col/linear regression={y=build-user}}
+        ] % compute a linear regression from the input table
+        {performance-experiments/conj-True-let-ltac2.txt};
+        \addlegendentry{
+            $\pgfmathprintnumber{\pgfplotstableregressiona}n
+            \pgfmathprintnumber[print sign]{\pgfplotstableregressionb}$}
+    \end{axis}
+\end{tikzpicture}
+\caption{Timing of manually building and typechecking a certificate to prove a conjunction of $n$ \mintinline{coq}{True}s using \mintinline{coq}{let}-binders using \LtacTwo} \label{fig:timing-conj-True-let-ltac2}
+\end{figure*}
+
+\begin{figure*}
+    \beginTikzpictureStamped{
+        \einput{performance-experiments/conj-True-app-ltac2.txt}
+    }
+    \begin{axis}[xlabel=$n$,
+        ylabel=time (s),
+        legend pos=outer north east,
+        axis lines=left,
+        xmin=0,
+        scaled y ticks=false]
+        \addplot[only marks,color=blue] table[x=param-n,y=typecheck-user]{performance-experiments/conj-True-app-ltac2.txt};
+        \addlegendentry{typecheck}
+        \addplotquadraticregression[no markers, blue][x=param-n,y=typecheck-user]{performance-experiments/conj-True-app-ltac2.txt};
+        \addlegendentry{
+            $\pgfmathprintnumber{\pgfplotstableregressiona}n^2
+            \pgfmathprintnumber[print sign]{\pgfplotstableregressionb}n
+            \pgfmathprintnumber[print sign]{\pgfplotstableregressionc}$
+        }
+        \addplot[only marks,color=black] table[x=param-n,y=build-user]{performance-experiments/conj-True-app-ltac2.txt};
+        \addlegendentry{build}
+        \addplot [thick,black] table[x=param-n,
+        y={create col/linear regression={y=build-user}}
+        ] % compute a linear regression from the input table
+        {performance-experiments/conj-True-app-ltac2.txt};
+        \addlegendentry{
+            $\pgfmathprintnumber{\pgfplotstableregressiona}n
+            \pgfmathprintnumber[print sign]{\pgfplotstableregressionb}$}
+    \end{axis}
+\end{tikzpicture}
+\caption{Timing of manually building and typechecking a certificate to prove a conjunction of $n$ \mintinline{coq}{True}s using abstraction and application using \LtacTwo} \label{fig:timing-conj-True-app-ltac2}
+\end{figure*}
 
 Recall that the typing rules for $\lambda$ and \texttt{let} are as follows:\todo{cite appendix with typing rules of Coq?}
 \todo{maybe look in https://github.com/achlipala/frap and/or TAPL by Benjamin C. Pierce for how to render typing rules}

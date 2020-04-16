@@ -1,5 +1,7 @@
 PERF_LIB:=PerformanceExperiments
 PERF_DIR:=.
+mkfile_path := $(abspath $(lastword $(MAKEFILE_LIST)))
+PERF_ABS_DIR := $(patsubst %/,%,$(dir $(mkfile_path)))
 
 KINDS := \
 	conj_True_repeat_constructor \
@@ -8,7 +10,8 @@ KINDS := \
 	conj_True_let_ltac2 \
 	conj_True_app_ltac2
 
-SIZES:=$(subst |,,$(shell grep -o 'Inductive size := [^\.]*' $(PERF_DIR)/Harness.v | sed s'/Inductive size := //g'))
+
+SIZES:=$(subst |,,$(shell grep -o 'Inductive size := [^\.]*' $(PERF_ABS_DIR)/Harness.v | sed s'/Inductive size := //g'))
 
 NO_LIMIT_PERF?=
 PERF_MAX_KB?=10000000 # 10 GB
@@ -30,7 +33,7 @@ PERF_SET_LIMITS = ulimit -S -m $(PERF_MAX_KB); ulimit -S -v $(PERF_MAX_KB);
 TIMEOUT_SHOW:=TIMEOUT -m $(PERF_MAX_KB) $(PERF_T_ARG)
 endif
 
-get_TESTS = $(subst time_solve_goal,,$(shell grep -o 'time_solve_goal[0-9]\+' $(PERF_DIR)/$(1).v | sort -h | uniq))
+get_TESTS = $(subst time_solve_goal,,$(shell grep -o 'time_solve_goal[0-9]\+' $(PERF_ABS_DIR)/$(1).v | sort -h | uniq))
 
 ALL_PERF_LOGS := $(foreach size,$(SIZES),\
 	$(foreach kind,$(KINDS),\

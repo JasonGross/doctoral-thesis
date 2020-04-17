@@ -272,7 +272,7 @@ If we are careful to construct the certificate manually without duplicating work
             \pgfmathprintnumber[print sign]{\pgfplotstableregressionb}n
             \pgfmathprintnumber[print sign]{\pgfplotstableregressionc}$
         }
-        \addplot[only marks,color=black] table[x=param-n,y=build-user]{performance-experiments/conj-True-ltac2.txt};
+        \addplot[only marks,mark=o,color=black] table[x=param-n,y=build-user]{performance-experiments/conj-True-ltac2.txt};
         \addlegendentry{build}
         \addplot [thick,black] table[x=param-n,
             y={create col/linear regression={y=build-user}}
@@ -365,7 +365,7 @@ See \autoref{fig:timing-conj-True-let-ltac2} and \autoref{fig:timing-conj-True-a
             \pgfmathprintnumber[print sign]{\pgfplotstableregressionb}n
             \pgfmathprintnumber[print sign]{\pgfplotstableregressionc}$
         }
-        \addplot[only marks,color=black] table[x=param-n,y=build-user]{performance-experiments/conj-True-let-ltac2.txt};
+        \addplot[only marks,mark=o,color=black] table[x=param-n,y=build-user]{performance-experiments/conj-True-let-ltac2.txt};
         \addlegendentry{build}
         \addplot [thick,black] table[x=param-n,
         y={create col/linear regression={y=build-user}}
@@ -398,7 +398,7 @@ See \autoref{fig:timing-conj-True-let-ltac2} and \autoref{fig:timing-conj-True-a
             \pgfmathprintnumber[print sign]{\pgfplotstableregressionb}n
             \pgfmathprintnumber[print sign]{\pgfplotstableregressionc}$
         }
-        \addplot[only marks,color=black] table[x=param-n,y=build-user]{performance-experiments/conj-True-app-ltac2.txt};
+        \addplot[only marks,mark=o,color=black] table[x=param-n,y=build-user]{performance-experiments/conj-True-app-ltac2.txt};
         \addlegendentry{build}
         \addplot [thick,black] table[x=param-n,
         y={create col/linear regression={y=build-user}}
@@ -648,6 +648,40 @@ The problem with this implementation is that if you call it every time you move 
 If the term size is also proportional to $n$, then the result is quadratic blowup in the number of binders.
 
 See \coqbug{11151} for an occurrence of this performance issue in the wild in Coq.
+See also \autoref{fig:timing-quadratic-cbv-lazy-PHOAS}.
+
+
+\begin{figure*}
+    \beginTikzpictureStamped{
+        \einput{performance-experiments/quadratic-cbv-lazy-PHOAS.txt}
+    }
+    \begin{axis}[xlabel=\# binders,
+        ylabel=time (s),
+        legend pos=north west,
+        width=0.95\textwidth,
+        axis lines=left,
+        xmin=0,
+        scaled y ticks=false]
+        \addplot[only marks,mark=o,color=blue] table[x=param-num-binders,y=cbv-user]{performance-experiments/quadratic-cbv-lazy-PHOAS.txt};
+        \addlegendentry{\mintinline{coq}{cbv}}
+        \addplotquadraticregression[no markers, blue][x=param-num-binders,y=cbv-user]{performance-experiments/quadratic-cbv-lazy-PHOAS.txt};
+        \addlegendentry{
+            $\pgfmathprintnumber{\pgfplotstableregressiona}(\text{\# binders})^2
+            \pgfmathprintnumber[print sign]{\pgfplotstableregressionb}(\text{\# binders})
+            \pgfmathprintnumber[print sign]{\pgfplotstableregressionc}$
+        }
+        \addplot[only marks,mark=*,color=black] table[x=param-num-binders,y=lazy-user]{performance-experiments/quadratic-cbv-lazy-PHOAS.txt};
+        \addlegendentry{\mintinline{coq}{lazy}}
+        \addplotquadraticregression[no markers, blue][x=param-num-binders,y=lazy-user]{performance-experiments/quadratic-cbv-lazy-PHOAS.txt};
+        \addlegendentry{
+            $\pgfmathprintnumber{\pgfplotstableregressiona}(\text{\# binders})^2
+            \pgfmathprintnumber[print sign]{\pgfplotstableregressionb}(\text{\# binders})
+            \pgfmathprintnumber[print sign]{\pgfplotstableregressionc}$
+        }
+    \end{axis}
+\end{tikzpicture}
+\caption{Timing of running \mintinline{coq}{cbv} and \mintinline{coq}{lazy} reduction on interpreting a PHOAS expression as a function of the number of binders} \label{fig:timing-quadratic-cbv-lazy-PHOAS}
+\end{figure*}
 
 \subsubsection{Quadratic Closure Compilation} \label{sec:perf:closure-compilation} \label{sec:perf:quadratic-vm-native}
 It's important to be able to perform reduction of terms in an optimized way.
@@ -669,9 +703,57 @@ In such cases, unless our encoding language uses named or de Bruijn variable enc
 Hence if we're trying to reuse the work of existing compilers to bootstrap good performance of reduction (as is the case for the native compiler in Coq), we have trouble with cases such as this one.
 \todo{reorganize this paragraph, improve it}
 
-\todo{maybe more examples here?}
+See also \autoref{fig:timing-quadratic-vm-PHOAS} and \autoref{fig:timing-quadratic-native-PHOAS}.
 
-\todo{create graph here}
+\begin{figure*}
+    \beginTikzpictureStamped{
+        \einput{performance-experiments/quadratic-vm-PHOAS.txt}
+    }
+    \begin{axis}[xlabel=\# binders,
+        ylabel=time (s),
+        legend pos=north west,
+        width=0.95\textwidth,
+        axis lines=left,
+        xmin=0,
+        scaled y ticks=false]
+        \addplot[only marks,color=black] table[x=param-num-binders,y=vm-compute-user]{performance-experiments/quadratic-vm-PHOAS.txt};
+        \addlegendentry{\mintinline{coq}{vm_compute}}
+        \addplotquadraticregression[no markers, black][x=param-num-binders,y=vm-compute-user]{performance-experiments/quadratic-vm-PHOAS.txt};
+        \addlegendentry{
+            $\pgfmathprintnumber{\pgfplotstableregressiona}(\text{\# binders})^2
+            \pgfmathprintnumber[print sign]{\pgfplotstableregressionb}(\text{\# binders})
+            \pgfmathprintnumber[print sign]{\pgfplotstableregressionc}$
+        }
+    \end{axis}
+\end{tikzpicture}
+\caption{Timing of running \mintinline{coq}{vm_compute} reduction on interpreting a PHOAS expression as a function of the number of binders} \label{fig:timing-quadratic-vm-PHOAS}
+\end{figure*}
+
+\begin{figure*}
+    \beginTikzpictureStamped{
+        \einput{performance-experiments/quadratic-native-PHOAS.txt}
+    }
+    \begin{axis}[xlabel=\# binders,
+        ylabel=time (s),
+        legend pos=north west,
+        width=0.95\textwidth,
+        axis lines=left,
+        xmin=0,
+        scaled y ticks=false]
+        \addplot[only marks,color=black] table[x=param-num-binders,y=native-compute-user]{performance-experiments/quadratic-native-PHOAS.txt};
+        \addlegendentry{\mintinline{coq}{native_compute}}
+        \addplotquadraticregression[no markers, black][x=param-num-binders,y=native-compute-user]{performance-experiments/quadratic-native-PHOAS.txt};
+        \addlegendentry{
+            $\pgfmathprintnumber{\pgfplotstableregressiona}(\text{\# binders})^2
+            \pgfmathprintnumber[print sign]{\pgfplotstableregressionb}(\text{\# binders})
+            \pgfmathprintnumber[print sign]{\pgfplotstableregressionc}$
+        }
+    \end{axis}
+\end{tikzpicture}
+\caption{Timing of running \mintinline{coq}{native_compute} reduction on interpreting a PHOAS expression as a function of the number of binders} \label{fig:timing-quadratic-native-PHOAS}
+\end{figure*}
+
+\todo{maybe more examples here?}
 
 \subsection{The Number of Nested Abstraction Barriers}
 

@@ -1,0 +1,2 @@
+KINDS := \
+	name_resolution

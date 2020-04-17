@@ -1,10 +1,18 @@
-# Forward most targets to Coq makefile (with some trick to make this phony)
-%: Makefile.coq forward
-	@true
+# KNOWNTARGETS will not be passed along to CoqMakefile
+KNOWNTARGETS := update-_CoqProject clean cleanall foo
+# KNOWNFILES will not get implicit targets from the final rule, and so
+# depending on them won't invoke the submake
+# Warning: These files get declared as PHONY, so any targets depending
+# on them always get rebuilt
+KNOWNFILES   := \
+	Makefile \
+	_CoqProject \
+	Makefile.variables \
+	Makefile.characters \
+	Makefile.coq-versions \
+	Makefile.timing
 
-.PHONY: all clean cleanall
-all:: Makefile.coq
-	@$(MAKE) --no-print-directory -f Makefile.coq all
+.DEFAULT_GOAL := invoke-coqmakefile
 
 include Makefile.characters
 include Makefile.timing
@@ -17,26 +25,34 @@ update-_CoqProject:
 	$(SHOW)'ECHO > _CoqProject'
 	$(HIDE)(echo '-R . $(PERF_LIB)'; (git ls-files "*.v" | $(SORT_COQPROJECT))) > _CoqProject
 
-Makefile.coq: _CoqProject Makefile
-	"$(COQBIN)coq_makefile" -f _CoqProject -o Makefile.coq
+Makefile.coq: Makefile _CoqProject
+	$(COQBIN)coq_makefile -f _CoqProject -o Makefile.coq
 
 cleanall clean:: Makefile.coq
 	$(MAKE) -f Makefile.coq $@
 	rm -f Makefile.coq Makefile.coq.conf
+.PHONY: cleanall clean
 
-# Some files that do *not* need to be forwarded to Makefile.coq
-Makefile: ;
-_CoqProject: ;
-Makefile.variables: ;
-Makefile.characters: ;
-Makefile.coq-versions: ;
-Makefile.timing: ;
+ifeq ($(MAKECMDGOALS),)
+invoke-coqmakefile: Makefile.coq
+	@$(MAKE) --no-print-directory -f Makefile.coq
+else
+ifneq ($(filter-out $(KNOWNFILES) $(KNOWNTARGETS),$(MAKECMDGOALS)),)
+invoke-coqmakefile: Makefile.coq
+	@$(MAKE) --no-print-directory -f Makefile.coq $(filter-out $(KNOWNFILES) $(KNOWNTARGETS),$(MAKECMDGOALS))
+else
+invoke-coqmakefile: Makefile.coq
+	@true
+endif
+endif
+.PHONY: invoke-coqmakefile
 
-# special fowarding to allow parallel build success
-forward: Makefile.coq
-	@$(MAKE) --no-print-directory -f Makefile.coq $(MAKECMDGOALS)
-.PHONY: forward
+$(KNOWNFILES): ;
 
-# Phony wildcard targets
-phony: ;
-.PHONY: phony
+####################################################################
+##                      Your targets here                         ##
+####################################################################
+
+# This should be the last rule, to handle any targets not declared above
+%: invoke-coqmakefile
+	@true

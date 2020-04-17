@@ -1,5 +1,6 @@
 # Forward most targets to Coq makefile (with some trick to make this phony)
 %: Makefile.coq forward
+	@true
 
 .PHONY: all clean cleanall
 all:: Makefile.coq

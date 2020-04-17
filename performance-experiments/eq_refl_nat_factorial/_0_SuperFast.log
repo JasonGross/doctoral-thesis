@@ -1,0 +1,22 @@
+Params: n= 0
+Tactic call constr-eq-refl ran for 0. secs (0.u,0.s) (success)
+Params: n= 1
+Tactic call constr-eq-refl ran for 0. secs (0.u,0.s) (success)
+Params: n= 2
+Tactic call constr-eq-refl ran for 0. secs (0.u,0.s) (success)
+Params: n= 3
+Tactic call constr-eq-refl ran for 0. secs (0.u,0.s) (success)
+Params: n= 4
+Tactic call constr-eq-refl ran for 0. secs (0.u,0.s) (success)
+Params: n= 5
+Tactic call constr-eq-refl ran for 0. secs (0.u,0.s) (success)
+Params: n= 6
+Tactic call constr-eq-refl ran for 0.003 secs (0.003u,0.s) (success)
+Params: n= 7
+Tactic call constr-eq-refl ran for 0.024 secs (0.017u,0.006s) (success)
+Params: n= 8
+Tactic call constr-eq-refl ran for 0.151 secs (0.129u,0.02s) (success)
+Params: n= 9
+Tactic call constr-eq-refl ran for 0.684 secs (0.679u,0.004s) (success)
+Params: n= 10
+Tactic call constr-eq-refl ran for 6.807 secs (6.801u,0.s) (success)

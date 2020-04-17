@@ -78,9 +78,12 @@ Ltac describe_goal n :=
   let n2 := (eval cbv in (n * n)) in
   idtac "Params: n=" n ", num-binders=" n2.
 Ltac redgoal _ := vm_compute.
-Ltac time_solve_goal0 n :=
+Ltac get_term _ :=
   let preterm := lazymatch goal with |- P ?preterm => preterm end in
   let term := constr:(fun x => interp (@ident_interp) (preterm x _)) in
+  term.
+Ltac time_solve_goal0 n :=
+  let term := get_term () in
   try (once (time "cbv" (idtac; let res := (eval cbv in term) in idtac)); fail);
   try (once (time "lazy" (idtac; let res := (eval cbv in term) in idtac)); fail).
 Ltac run0 sz := Harness.runtests args_of_size describe_goal mkgoal redgoal time_solve_goal0 sz.

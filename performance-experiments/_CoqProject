@@ -6,3 +6,5 @@ conj_True_ltac2.v
 conj_True_repeat_constructor.v
 conj_True_uconstr.v
 quadratic_cbv_lazy_PHOAS.v
+quadratic_native_PHOAS.v
+quadratic_vm_PHOAS.v

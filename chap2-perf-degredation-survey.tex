@@ -53,7 +53,7 @@ See \autoref{fig:timing-montgomery-fesub-before-user} and \autoref{fig:timing-mo
         scaled y ticks=false,
         xtick distance=1,
         ylabel style={
-            yshift = {width("0")}
+            yshift = {width("10")}
         }]
         \addplot[only marks,color=black] table[x=nlimbs,y=user]{fiat-crypto-perf-logs/montgomery-fesub-before.txt};
         \addplotexponentialregression[no markers, black][x=nlimbs,y=user,a=0.0001,b=2.5]{fiat-crypto-perf-logs/montgomery-fesub-before.txt};
@@ -76,10 +76,7 @@ See \autoref{fig:timing-montgomery-fesub-before-user} and \autoref{fig:timing-mo
         xmin=0,
         scaled y ticks=false,
         ymode=log,
-        xtick distance=1,
-        ylabel style={
-            yshift = {width("0")}
-        }]
+        xtick distance=1]
         \addplot[only marks,color=black] table[x=nlimbs,y=user]{fiat-crypto-perf-logs/montgomery-fesub-before.txt};
         \addplotexponentialregression[no markers, black][x=nlimbs,y=user,a=0.0001,b=2.5]{fiat-crypto-perf-logs/montgomery-fesub-before.txt};
         \addlegendentry{synthesis}

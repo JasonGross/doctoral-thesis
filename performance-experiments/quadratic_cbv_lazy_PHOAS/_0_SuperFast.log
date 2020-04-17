@@ -1,0 +1,42 @@
+Params: n= 0 , num-binders= 0
+Tactic call cbv ran for 0. secs (0.u,0.s) (success)
+Tactic call lazy ran for 0. secs (0.u,0.s) (success)
+Params: n= 5 , num-binders= 25
+Tactic call cbv ran for 0. secs (0.u,0.s) (success)
+Tactic call lazy ran for 0. secs (0.u,0.s) (success)
+Params: n= 10 , num-binders= 100
+Tactic call cbv ran for 0.001 secs (0.001u,0.s) (success)
+Tactic call lazy ran for 0.001 secs (0.001u,0.s) (success)
+Params: n= 15 , num-binders= 225
+Tactic call cbv ran for 0.005 secs (0.005u,0.s) (success)
+Tactic call lazy ran for 0.005 secs (0.001u,0.004s) (success)
+Params: n= 20 , num-binders= 400
+Tactic call cbv ran for 0.012 secs (0.008u,0.004s) (success)
+Tactic call lazy ran for 0.012 secs (0.004u,0.008s) (success)
+Params: n= 25 , num-binders= 625
+Tactic call cbv ran for 0.025 secs (0.016u,0.008s) (success)
+Tactic call lazy ran for 0.026 secs (0.026u,0.s) (success)
+Params: n= 30 , num-binders= 900
+Tactic call cbv ran for 0.047 secs (0.047u,0.s) (success)
+Tactic call lazy ran for 0.047 secs (0.047u,0.s) (success)
+Params: n= 35 , num-binders= 1225
+Tactic call cbv ran for 0.1 secs (0.096u,0.003s) (success)
+Tactic call lazy ran for 0.113 secs (0.113u,0.s) (success)
+Params: n= 40 , num-binders= 1600
+Tactic call cbv ran for 0.266 secs (0.266u,0.s) (success)
+Tactic call lazy ran for 0.245 secs (0.245u,0.s) (success)
+Params: n= 45 , num-binders= 2025
+Tactic call cbv ran for 0.432 secs (0.432u,0.s) (success)
+Tactic call lazy ran for 0.433 secs (0.433u,0.s) (success)
+Params: n= 50 , num-binders= 2500
+Tactic call cbv ran for 0.7 secs (0.7u,0.s) (success)
+Tactic call lazy ran for 0.618 secs (0.614u,0.003s) (success)
+Params: n= 55 , num-binders= 3025
+Tactic call cbv ran for 1.062 secs (1.061u,0.s) (success)
+Tactic call lazy ran for 0.926 secs (0.926u,0.s) (success)
+Params: n= 60 , num-binders= 3600
+Tactic call cbv ran for 1.526 secs (1.526u,0.s) (success)
+Tactic call lazy ran for 1.522 secs (1.514u,0.007s) (success)
+Params: n= 65 , num-binders= 4225
+Tactic call cbv ran for 1.992 secs (1.992u,0.s) (success)
+Tactic call lazy ran for 2.127 secs (2.127u,0.s) (success)

@@ -1,6 +1,5 @@
 # Forward most targets to Coq makefile (with some trick to make this phony)
-%: Makefile.coq phony
-	@$(MAKE) --no-print-directory -f Makefile.coq $@
+%: Makefile.coq forward
 
 .PHONY: all clean cleanall
 all:: Makefile.coq
@@ -31,6 +30,11 @@ Makefile.variables: ;
 Makefile.characters: ;
 Makefile.coq-versions: ;
 Makefile.timing: ;
+
+# special fowarding to allow parallel build success
+forward: Makefile.coq
+	@$(MAKE) --no-print-directory -f Makefile.coq $(MAKECMDGOALS)
+.PHONY: forward
 
 # Phony wildcard targets
 phony: ;

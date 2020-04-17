@@ -8,7 +8,8 @@ KINDS := \
 	conj_True_uconstr \
 	conj_True_ltac2 \
 	conj_True_let_ltac2 \
-	conj_True_app_ltac2
+	conj_True_app_ltac2 \
+	quadratic_cbv_lazy_PHOAS
 
 
 SIZES:=$(subst |,,$(shell grep -o 'Inductive size := [^\.]*' $(PERF_ABS_DIR)/Harness.v | sed s'/Inductive size := //g'))

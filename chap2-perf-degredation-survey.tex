@@ -607,8 +607,8 @@ It may be tempting to keep the context in an array or linked list.
 However, if looking up which constant or variable is referred to by a name is $\mathcal O(n)$, then internalizing a term with $n$ typed binders is going to be $\mathcal O(n^2)$, because we need to do name lookups for each binder.
 See \coqbug{9582} and \coqpr{9586}.
 
-\todo{add plot for just name resolution}
-\todo{add plot for parsing + internalization}
+\todo{ADD PLOT: add plot for just name resolution}
+\todo{ADD PLOT: add plot for parsing + internalization}
 \todo{Is this called internalization or is it called elaboration}
 
 \subsubsection{Capture-Avoiding Substitution} \label{sec:perf:capture-avoiding-subst}
@@ -617,8 +617,8 @@ For example, if the user wants to operate inside the hole in \mintinline{coq}{(Î
 However, if the $\alpha$-renaming is even just linear in the existing context, then creating a new hole under $n$ binders will take $\mathcal{O}(n^2)$ time in the worst case, as we may have to do $n$ renamings, each of which take time $\mathcal O(n)$.
 See \coqbug{9582}, perhaps also \coqbug{8245} and \coqbug{8237} and \coqbug{8231}.
 
-\todo{try to come up with a graph for renaming stuff}
-\todo{check if confounders come up}
+\todo{ADD PLOT: try to come up with a graph for renaming stuff}
+\todo{ADD PLOT: check if confounders come up}
 
 \subsubsection{Quadratic Creation of Substitutions for Existential Variables} \label{sec:perf:quadratic-evar-subst}
 Recall \todo{make sure that this is mentioned previously, and that we're not rehashing things too much} that when we separate the trusted kernel from the untrusted proof engine, we want to be able to represent not-yet-finished terms in the proof engine.
@@ -644,7 +644,7 @@ Note that fully nameless, i.e., de Bruijn term representations, do not suffer fr
 
 See \coqbug{8237} and \coqpr{11896} for a mitigation of some (but not all) issues.
 
-\todo{create graph with n evars}
+\todo{ADD PLOT: create graph with n evars}
 
 \subsubsection{Quadratic Substitution in Function Application} \label{sec:perf:quadratic-application}
 Consider the case of typechecking a non-dependent function applied to $n$ arguments.
@@ -656,7 +656,7 @@ If only unary application nodes exist, it's much harder to solve.
 
 See \coqbug{8232} and \coqpr{8255}.
 
-\todo{create graph}
+\todo{ADD PLOT: create graph}
 
 \subsubsection{Quadratic Normalization by Evaluation} \label{sec:perf:quadratic-NbE} \label{sec:perf:quadratic-cbv}
 Normalization by evaluation (NbE) is a nifty way to implement reduction where function abstraction in the object language is represented by function abstraction in the metalanguage.
@@ -788,7 +788,7 @@ See also \autoref{fig:timing-quadratic-vm-PHOAS} and \autoref{fig:timing-quadrat
 
 \subsection{The Number of Nested Abstraction Barriers}
 
-\todo{This section requires digging into the historical performance issues around this to find convincing stand-alone examples so we can have graphs here.}
+\todo{ADD PLOT: This section requires digging into the historical performance issues around this to find convincing stand-alone examples so we can have graphs here.}
 
 This axis is the most theoretical of the axes.
 An abstraction barrier is an interface for making use of code, definitions, and theorems.

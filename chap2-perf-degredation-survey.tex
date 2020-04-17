@@ -51,6 +51,7 @@ See \autoref{fig:timing-montgomery-fesub-before-user} and \autoref{fig:timing-mo
         width=0.95\textwidth,
         axis lines=left,
         xmin=0,
+        scaled x ticks=false,
         scaled y ticks=false,
         xtick distance=1,
         ylabel style={
@@ -76,6 +77,7 @@ See \autoref{fig:timing-montgomery-fesub-before-user} and \autoref{fig:timing-mo
         width=0.95\textwidth,
         axis lines=left,
         xmin=0,
+        scaled x ticks=false,
         scaled y ticks=false,
         ymode=log,
         xtick distance=1]
@@ -141,6 +143,7 @@ See \autoref{fig:timing-montgomery-fesub-after-user} and \autoref{fig:timing-mon
         width=0.95\textwidth,
         axis lines=left,
         xmin=0,
+        scaled x ticks=false,
         scaled y ticks=false,
         xtick distance=1,
         ylabel style={
@@ -166,6 +169,7 @@ See \autoref{fig:timing-montgomery-fesub-after-user} and \autoref{fig:timing-mon
         width=0.95\textwidth,
         axis lines=left,
         xmin=0,
+        scaled x ticks=false,
         scaled y ticks=false,
         ymode=log,
         xtick distance=1,
@@ -239,6 +243,7 @@ If we are careful to construct the certificate manually without duplicating work
         width=0.95\textwidth,
         axis lines=left,
         xmin=0,
+        scaled x ticks=false,
         scaled y ticks=false]
         \addplot[only marks,color=black] table[x=param-n,y=repeat-constructor-user]{performance-experiments/conj-True-repeat-constructor.txt};
         \addlegendentry{\mintinline{coq}{repeat constructor}}
@@ -263,6 +268,7 @@ If we are careful to construct the certificate manually without duplicating work
         width=0.95\textwidth,
         axis lines=left,
         xmin=0,
+        scaled x ticks=false,
         scaled y ticks=false]
         \addplot[only marks,color=blue] table[x=param-n,y=typecheck-user]{performance-experiments/conj-True-ltac2.txt};
         \addlegendentry{typecheck}
@@ -356,6 +362,7 @@ See \autoref{fig:timing-conj-True-let-ltac2} and \autoref{fig:timing-conj-True-a
         width=0.95\textwidth,
         axis lines=left,
         xmin=0,
+        scaled x ticks=false,
         scaled y ticks=false]
         \addplot[only marks,color=blue] table[x=param-n,y=typecheck-user]{performance-experiments/conj-True-let-ltac2.txt};
         \addlegendentry{typecheck}
@@ -389,6 +396,7 @@ See \autoref{fig:timing-conj-True-let-ltac2} and \autoref{fig:timing-conj-True-a
         width=0.95\textwidth,
         axis lines=left,
         xmin=0,
+        scaled x ticks=false,
         scaled y ticks=false]
         \addplot[only marks,color=blue] table[x=param-n,y=typecheck-user]{performance-experiments/conj-True-app-ltac2.txt};
         \addlegendentry{typecheck}
@@ -546,8 +554,28 @@ Consider the problem of typechecking \mintinline{coq}{@eq_refl nat (fact 100) : 
 \todo{should we define polymorphic identity function somewhere?}
 If the typechecker either decides to unfold \mintinline{coq}{id} before unfolding \mintinline{coq}{fact}, or if it performs a breath-first search, then we get speedy performance.
 However, if the typechecker instead unfolds \mintinline{coq}{id} \emph{last}, then we end up computing the normal form of $100!$, which takes a long time and a lot of memory.
+See \autoref{fig:timing-eq-refl-nat-factorial}.
 
-\todo{insert graph for this}
+\begin{figure*}
+    \beginTikzpictureStamped{
+        \einput{performance-experiments/eq-refl-nat-factorial.txt}
+    }
+    \begin{axis}[xlabel=$n$,
+        ylabel=time (s),
+        legend pos=north west,
+        width=0.95\textwidth,
+        axis lines=left,
+        xmin=0,
+        scaled x ticks=false,
+        scaled y ticks=false]
+        \addplot[only marks,color=black] table[x=param-n,y=constr-eq-refl-user]{performance-experiments/eq-refl-nat-factorial.txt};
+        \addlegendentry{typechecking}
+        \addplotfactorialregression[no markers, black][x=param-n,y=constr-eq-refl-user]{performance-experiments/eq-refl-nat-factorial.txt};
+        \addlegendentry{$\pgfmathprintnumber{\pgfplotstableregressiona}n!$}
+    \end{axis}
+\end{tikzpicture}
+\caption{Timing of typechecking \mintinline{coq}{@eq_refl nat (fact 100) : @id nat (fact n) = fact n}} \label{fig:timing-eq-refl-nat-factorial}
+\end{figure*}
 
 Note that it is by no means obvious that the typechecker can meaningfully do anything about this.
 Breath-first search is significantly more complicated than depth-first, is harder to write good heuristics for, can incur enormous space overheads, and can be massively slower in cases where there are many options and the standard heuristics for depth-first unfolding in conversion-checking are sufficient.
@@ -661,6 +689,7 @@ See also \autoref{fig:timing-quadratic-cbv-lazy-PHOAS}.
         width=0.95\textwidth,
         axis lines=left,
         xmin=0,
+        scaled x ticks=false,
         scaled y ticks=false]
         \addplot[only marks,mark=o,color=blue] table[x=param-num-binders,y=cbv-user]{performance-experiments/quadratic-cbv-lazy-PHOAS.txt};
         \addlegendentry{\mintinline{coq}{cbv}}
@@ -672,7 +701,7 @@ See also \autoref{fig:timing-quadratic-cbv-lazy-PHOAS}.
         }
         \addplot[only marks,mark=*,color=black] table[x=param-num-binders,y=lazy-user]{performance-experiments/quadratic-cbv-lazy-PHOAS.txt};
         \addlegendentry{\mintinline{coq}{lazy}}
-        \addplotquadraticregression[no markers, blue][x=param-num-binders,y=lazy-user]{performance-experiments/quadratic-cbv-lazy-PHOAS.txt};
+        \addplotquadraticregression[no markers, black][x=param-num-binders,y=lazy-user]{performance-experiments/quadratic-cbv-lazy-PHOAS.txt};
         \addlegendentry{
             $\pgfmathprintnumber{\pgfplotstableregressiona}(\text{\# binders})^2
             \pgfmathprintnumber[print sign]{\pgfplotstableregressionb}(\text{\# binders})
@@ -715,6 +744,7 @@ See also \autoref{fig:timing-quadratic-vm-PHOAS} and \autoref{fig:timing-quadrat
         width=0.95\textwidth,
         axis lines=left,
         xmin=0,
+        scaled x ticks=false,
         scaled y ticks=false]
         \addplot[only marks,color=black] table[x=param-num-binders,y=vm-compute-user]{performance-experiments/quadratic-vm-PHOAS.txt};
         \addlegendentry{\mintinline{coq}{vm_compute}}
@@ -739,6 +769,7 @@ See also \autoref{fig:timing-quadratic-vm-PHOAS} and \autoref{fig:timing-quadrat
         width=0.95\textwidth,
         axis lines=left,
         xmin=0,
+        scaled x ticks=false,
         scaled y ticks=false]
         \addplot[only marks,color=black] table[x=param-num-binders,y=native-compute-user]{performance-experiments/quadratic-native-PHOAS.txt};
         \addlegendentry{\mintinline{coq}{native_compute}}

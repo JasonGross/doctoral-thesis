@@ -484,6 +484,29 @@
     \pgfplotstablegetelem{0}{1}\of\parameters \edef\pgfplotstableregressionb{\pgfplotsretval}
     \pgfplotstablegetelem{0}{2}\of\parameters \edef\pgfplotstableregressionc{\pgfplotsretval}
 }
+% regress on y = a (x!)
+% \addplotfactorialregression[params for \addplot][default settings for a, also for x and y columns]{table file}
+\NewDocumentCommand{\addplotfactorialregression}{ O{no markers} o m}{%
+    \pgfkeyssetvalue{/addplotquadraticregression/x}{0}
+    \pgfkeyssetvalue{/addplotquadraticregression/y}{1}
+    \pgfkeyssetvalue{/addplotquadraticregression/a}{1}
+    \pgfkeys{/addplotquadraticregression/.cd,#2}
+    \pgftognucolumnset{/addplotquadraticregression/x}{\@addplotquadraticregression@colx}%
+    \pgftognucolumnset{/addplotquadraticregression/y}{\@addplotquadraticregression@coly}%
+    \edef\@addplotquadraticregression@inita{\pgfkeysvalueof{/addplotquadraticregression/a}}%
+    \addplot [#1] gnuplot [raw gnuplot] { % allows arbitrary gnuplot commands
+        f(x) = a*gamma(x+1);     % Define the function to fit
+        % Set reasonable starting values here
+        a=\@addplotquadraticregression@inita;
+        fit f(x) '#3' u \@addplotquadraticregression@colx:\@addplotquadraticregression@coly\space via a; % Select the file
+        stats '#3' u \@addplotquadraticregression@colx;
+        plot [x=STATS_min:STATS_max] f(x);    % Specify the range to plot
+        set print "#3-parameters.dat";  % Open a file to save the parameters
+        print a;                  % Write the parameters to file
+    };
+    \pgfplotstableread{#3-parameters.dat}\parameters % Open the file Gnuplot wrote
+    \pgfplotstablegetelem{0}{0}\of\parameters \edef\pgfplotstableregressiona{\pgfplotsretval} % Get first element, save into \pgfplotstableregressiona
+}
 \makeatother
 
 \input{todo}

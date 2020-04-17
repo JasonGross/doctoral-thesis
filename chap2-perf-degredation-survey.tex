@@ -542,6 +542,8 @@ Consider the problem of typechecking \mintinline{coq}{@eq_refl nat (fact 100) : 
 If the typechecker either decides to unfold \mintinline{coq}{id} before unfolding \mintinline{coq}{fact}, or if it performs a breath-first search, then we get speedy performance.
 However, if the typechecker instead unfolds \mintinline{coq}{id} \emph{last}, then we end up computing the normal form of $100!$, which takes a long time and a lot of memory.
 
+\todo{insert graph for this}
+
 Note that it is by no means obvious that the typechecker can meaningfully do anything about this.
 Breath-first search is significantly more complicated than depth-first, is harder to write good heuristics for, can incur enormous space overheads, and can be massively slower in cases where there are many options and the standard heuristics for depth-first unfolding in conversion-checking are sufficient.
 Furthermore, the more heuristics there are to tune conversion-checking, the more ``magic'' the algorithm seems, and the harder it is to debug when the performance is inadequate.
@@ -572,11 +574,18 @@ It may be tempting to keep the context in an array or linked list.
 However, if looking up which constant or variable is referred to by a name is $\mathcal O(n)$, then internalizing a term with $n$ typed binders is going to be $\mathcal O(n^2)$, because we need to do name lookups for each binder.
 See \coqbug{9582} and \coqpr{9586}.
 
+\todo{add plot for just name resolution}
+\todo{add plot for parsing + internalization}
+\todo{Is this called internalization or is it called elaboration}
+
 \subsubsection{Capture-Avoiding Substitution} \label{sec:perf:capture-avoiding-subst}
 If the user is presented with a proof engine interface where all context variables are named, then in general the proof engine must implement capture-avoiding substitution.
 For example, if the user wants to operate inside the hole in \mintinline{coq}{(λ x, let y := x in λ x, _)}, then the user needs to be able to talk about the body of \mintinline{coq}{y}, which is not the same as the innermost \mintinline{coq}{x}.
 However, if the $\alpha$-renaming is even just linear in the existing context, then creating a new hole under $n$ binders will take $\mathcal{O}(n^2)$ time in the worst case, as we may have to do $n$ renamings, each of which take time $\mathcal O(n)$.
 See \coqbug{9582}, perhaps also \coqbug{8245} and \coqbug{8237} and \coqbug{8231}.
+
+\todo{try to come up with a graph for renaming stuff}
+\todo{check if confounders come up}
 
 \subsubsection{Quadratic Creation of Substitutions for Existential Variables} \label{sec:perf:quadratic-evar-subst}
 Recall \todo{make sure that this is mentioned previously, and that we're not rehashing things too much} that when we separate the trusted kernel from the untrusted proof engine, we want to be able to represent not-yet-finished terms in the proof engine.
@@ -602,6 +611,8 @@ Note that fully nameless, i.e., de Bruijn term representations, do not suffer fr
 
 See \coqbug{8237} and \coqpr{11896} for a mitigation of some (but not all) issues.
 
+\todo{create graph with n evars}
+
 \subsubsection{Quadratic Substitution in Function Application} \label{sec:perf:quadratic-application}
 Consider the case of typechecking a non-dependent function applied to $n$ arguments.
 If substitution is performed eagerly, following directly the rules of the type theory, \todo{cite the rules / reference an appendix}, then typechecking is quadratic.
@@ -611,6 +622,8 @@ If the term representation contains $n$-ary application nodes, it's possible to 
 If only unary application nodes exist, it's much harder to solve.
 
 See \coqbug{8232} and \coqpr{8255}.
+
+\todo{create graph}
 
 \subsubsection{Quadratic Normalization by Evaluation} \label{sec:perf:quadratic-NbE} \label{sec:perf:quadratic-cbv}
 Normalization by evaluation (NbE) is a nifty way to implement reduction where function abstraction in the object language is represented by function abstraction in the metalanguage.
@@ -653,7 +666,12 @@ Hence if we're trying to reuse the work of existing compilers to bootstrap good 
 
 \todo{maybe more examples here?}
 
+\todo{create graph here}
+
 \subsection{The Number of Nested Abstraction Barriers}
+
+\todo{This section requires digging into the historical performance issues around this to find convincing stand-alone examples so we can have graphs here.}
+
 This axis is the most theoretical of the axes.
 An abstraction barrier is an interface for making use of code, definitions, and theorems.
 For example, you might define non-negative integers using a binary representation, and present the interface of zero, successor, and the standard induction principle, along with an equational theory for how induction behaves on zero and successor.

@@ -451,8 +451,8 @@
         print a, b;                  % Write the parameters to file
     };
     \pgfplotstableread{#3-parameters.dat}\parameters % Open the file Gnuplot wrote
-    \pgfplotstablegetelem{0}{0}\of\parameters \pgfmathsetmacro\pgfplotstableregressiona{\pgfplotsretval} % Get first element, save into \pgfplotstableregressiona
-    \pgfplotstablegetelem{0}{1}\of\parameters \pgfmathsetmacro\pgfplotstableregressionb{\pgfplotsretval}
+    \pgfplotstablegetelem{0}{0}\of\parameters \edef\pgfplotstableregressiona{\pgfplotsretval} % Get first element, save into \pgfplotstableregressiona
+    \pgfplotstablegetelem{0}{1}\of\parameters \edef\pgfplotstableregressionb{\pgfplotsretval}
 }
 % \addplotquadraticregression[params for \addplot][default settings for a and b and c, also for x and y columns]{table file}
 \NewDocumentCommand{\addplotquadraticregression}{ O{no markers} o m}{%
@@ -480,9 +480,9 @@
         print a, b, c;                  % Write the parameters to file
     };
     \pgfplotstableread{#3-parameters.dat}\parameters % Open the file Gnuplot wrote
-    \pgfplotstablegetelem{0}{0}\of\parameters \pgfmathsetmacro\pgfplotstableregressiona{\pgfplotsretval} % Get first element, save into \pgfplotstableregressiona
-    \pgfplotstablegetelem{0}{1}\of\parameters \pgfmathsetmacro\pgfplotstableregressionb{\pgfplotsretval}
-    \pgfplotstablegetelem{0}{2}\of\parameters \pgfmathsetmacro\pgfplotstableregressionc{\pgfplotsretval}
+    \pgfplotstablegetelem{0}{0}\of\parameters \edef\pgfplotstableregressiona{\pgfplotsretval} % Get first element, save into \pgfplotstableregressiona
+    \pgfplotstablegetelem{0}{1}\of\parameters \edef\pgfplotstableregressionb{\pgfplotsretval}
+    \pgfplotstablegetelem{0}{2}\of\parameters \edef\pgfplotstableregressionc{\pgfplotsretval}
 }
 \makeatother
 

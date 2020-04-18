@@ -607,8 +607,65 @@ It may be tempting to keep the context in an array or linked list.
 However, if looking up which constant or variable is referred to by a name is $\mathcal O(n)$, then internalizing a term with $n$ typed binders is going to be $\mathcal O(n^2)$, because we need to do name lookups for each binder.
 See \coqbug{9582} and \coqpr{9586}.
 
-\todo{ADD PLOT: add plot for just name resolution}
-\todo{ADD PLOT: add plot for parsing + internalization}
+See \autoref{fig:timing-name-resolution} for the timing of name resolution in Coq.
+See \autoref{fig:timing-nested-lambda-different-name} for the effect on internalizing a lambda with $n$ arguments.
+
+\todo{mention Coq version automatically, mention why we're using a different Coq version}
+\begin{figure*}
+    \beginTikzpictureStamped{
+        \einput{performance-experiments-8-9/name-resolution.txt}
+    }
+    \begin{axis}[xlabel=\# binders,
+        ylabel=time (s),
+        legend pos=north west,
+        width=0.95\textwidth,
+        axis lines=left,
+        xmin=0,
+        scaled x ticks=false,
+        scaled y ticks=false,
+        ylabel style={
+            yshift = {width("$8\cdot{}$")}
+        }]
+        \addplot[only marks,color=black] table[x=param-n,y=uconstr-I-1000-user]{performance-experiments-8-9/name-resolution.txt};
+        \addlegendentry{1000 name resolutions}
+        \addplot [thick,black] table[x=param-n,
+        y={create col/linear regression={y=uconstr-I-1000-user}}
+        ]{performance-experiments-8-9/name-resolution.txt};
+        \addlegendentry{
+            $\pgfmathprintnumber{\pgfplotstableregressiona}(\text{\# binders})
+            \pgfmathprintnumber[print sign]{\pgfplotstableregressionb}$}
+    \end{axis}
+\end{tikzpicture}
+\caption{Timing of internalizing a name 1000 times under $n$ binders} \label{fig:timing-name-resolution}
+\end{figure*}
+\begin{figure*}
+    \beginTikzpictureStamped{
+        \einput{performance-experiments-8-9/nested-lambda-different-name.txt}
+    }
+    \begin{axis}[xlabel=$n$,
+        ylabel=time (s),
+        legend pos=north west,
+        width=0.95\textwidth,
+        axis lines=left,
+        xmin=0,
+        scaled x ticks=false,
+        scaled y ticks=false,
+        ylabel style={
+            yshift = {width("$8\cdot{}$")}
+        }]
+        \addplot[only marks,color=black] table[x=param-n,y=uconstr-lambda-user]{performance-experiments-8-9/nested-lambda-different-name.txt};
+        \addlegendentry{parsing and internalization}
+        \addplotquadraticregression[no markers, black][x=param-n,y=uconstr-lambda-user]{performance-experiments-8-9/nested-lambda-different-name.txt};
+        \addlegendentry{
+            $\pgfmathprintnumber{\pgfplotstableregressiona}n^2
+            \pgfmathprintnumber[print sign]{\pgfplotstableregressionb}n
+            \pgfmathprintnumber[print sign]{\pgfplotstableregressionc}$
+        }
+    \end{axis}
+\end{tikzpicture}
+\caption{Timing of internalizing a function with $n$ differently-named arguments of type \mintinline{coq}{True}} \label{fig:timing-nested-lambda-different-name}
+\end{figure*}
+
 \todo{Is this called internalization or is it called elaboration}
 
 \subsubsection{Capture-Avoiding Substitution} \label{sec:perf:capture-avoiding-subst}

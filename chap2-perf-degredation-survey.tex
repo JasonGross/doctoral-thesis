@@ -273,10 +273,13 @@ If we are careful to construct the certificate manually without duplicating work
         \addplot[only marks,color=blue] table[x=param-n,y=typecheck-user]{performance-experiments/conj-True-ltac2.txt};
         \addlegendentry{typecheck}
         \addplotquadraticregression[no markers, blue][x=param-n,y=typecheck-user]{performance-experiments/conj-True-ltac2.txt};
+        \edef\tca{\pgfplotstableregressiona}
+        \edef\tcb{\pgfplotstableregressionb}
+        \edef\tcc{\pgfplotstableregressionc}
         \addlegendentry{
-            $\pgfmathprintnumber{\pgfplotstableregressiona}n^2
-            \pgfmathprintnumber[print sign]{\pgfplotstableregressionb}n
-            \pgfmathprintnumber[print sign]{\pgfplotstableregressionc}$
+            $\pgfmathprintnumber{\tca}n^2
+            \pgfmathprintnumber[print sign]{\tcb}n
+            \pgfmathprintnumber[print sign]{\tcc}$
         }
         \addplot[only marks,mark=o,color=black] table[x=param-n,y=build-user]{performance-experiments/conj-True-ltac2.txt};
         \addlegendentry{build}
@@ -284,9 +287,11 @@ If we are careful to construct the certificate manually without duplicating work
             y={create col/linear regression={y=build-user}}
             ] % compute a linear regression from the input table
             {performance-experiments/conj-True-ltac2.txt};
+        \edef\builda{\pgfplotstableregressiona}
+        \edef\buildb{\pgfplotstableregressionb}
         \addlegendentry{
-            $\pgfmathprintnumber{\pgfplotstableregressiona}n
-            \pgfmathprintnumber[print sign]{\pgfplotstableregressionb}$}
+            $\pgfmathprintnumber{\builda}n
+            \pgfmathprintnumber[print sign]{\buildb}$}
     \end{axis}
 \end{tikzpicture}
 \caption{Timing of manually building and typechecking a certificate to prove a conjunction of $n$ \mintinline{coq}{True}s using \LtacTwo} \label{fig:timing-conj-True-ltac2}
@@ -367,10 +372,13 @@ See \autoref{fig:timing-conj-True-let-ltac2} and \autoref{fig:timing-conj-True-a
         \addplot[only marks,color=blue] table[x=param-n,y=typecheck-user]{performance-experiments/conj-True-let-ltac2.txt};
         \addlegendentry{typecheck}
         \addplotquadraticregression[no markers, blue][x=param-n,y=typecheck-user]{performance-experiments/conj-True-let-ltac2.txt};
+        \edef\tca{\pgfplotstableregressiona}
+        \edef\tcb{\pgfplotstableregressionb}
+        \edef\tcc{\pgfplotstableregressionc}
         \addlegendentry{
-            $\pgfmathprintnumber{\pgfplotstableregressiona}n^2
-            \pgfmathprintnumber[print sign]{\pgfplotstableregressionb}n
-            \pgfmathprintnumber[print sign]{\pgfplotstableregressionc}$
+            $\pgfmathprintnumber{\tca}n^2
+            \pgfmathprintnumber[print sign]{\tcb}n
+            \pgfmathprintnumber[print sign]{\tcc}$
         }
         \addplot[only marks,mark=o,color=black] table[x=param-n,y=build-user]{performance-experiments/conj-True-let-ltac2.txt};
         \addlegendentry{build}
@@ -378,9 +386,11 @@ See \autoref{fig:timing-conj-True-let-ltac2} and \autoref{fig:timing-conj-True-a
         y={create col/linear regression={y=build-user}}
         ] % compute a linear regression from the input table
         {performance-experiments/conj-True-let-ltac2.txt};
+        \edef\builda{\pgfplotstableregressiona}
+        \edef\buildb{\pgfplotstableregressionb}
         \addlegendentry{
-            $\pgfmathprintnumber{\pgfplotstableregressiona}n
-            \pgfmathprintnumber[print sign]{\pgfplotstableregressionb}$}
+            $\pgfmathprintnumber{\builda}n
+            \pgfmathprintnumber[print sign]{\buildb}$}
     \end{axis}
 \end{tikzpicture}
 \caption{Timing of manually building and typechecking a certificate to prove a conjunction of $n$ \mintinline{coq}{True}s using \mintinline{coq}{let}-binders using \LtacTwo} \label{fig:timing-conj-True-let-ltac2}
@@ -401,10 +411,13 @@ See \autoref{fig:timing-conj-True-let-ltac2} and \autoref{fig:timing-conj-True-a
         \addplot[only marks,color=blue] table[x=param-n,y=typecheck-user]{performance-experiments/conj-True-app-ltac2.txt};
         \addlegendentry{typecheck}
         \addplotquadraticregression[no markers, blue][x=param-n,y=typecheck-user]{performance-experiments/conj-True-app-ltac2.txt};
+        \edef\tca{\pgfplotstableregressiona}
+        \edef\tcb{\pgfplotstableregressionb}
+        \edef\tcc{\pgfplotstableregressionc}
         \addlegendentry{
-            $\pgfmathprintnumber{\pgfplotstableregressiona}n^2
-            \pgfmathprintnumber[print sign]{\pgfplotstableregressionb}n
-            \pgfmathprintnumber[print sign]{\pgfplotstableregressionc}$
+            $\pgfmathprintnumber{\tca}n^2
+            \pgfmathprintnumber[print sign]{\tcb}n
+            \pgfmathprintnumber[print sign]{\tcc}$
         }
         \addplot[only marks,mark=o,color=black] table[x=param-n,y=build-user]{performance-experiments/conj-True-app-ltac2.txt};
         \addlegendentry{build}
@@ -412,9 +425,11 @@ See \autoref{fig:timing-conj-True-let-ltac2} and \autoref{fig:timing-conj-True-a
         y={create col/linear regression={y=build-user}}
         ] % compute a linear regression from the input table
         {performance-experiments/conj-True-app-ltac2.txt};
+        \edef\builda{\pgfplotstableregressiona}
+        \edef\buildb{\pgfplotstableregressionb}
         \addlegendentry{
-            $\pgfmathprintnumber{\pgfplotstableregressiona}n
-            \pgfmathprintnumber[print sign]{\pgfplotstableregressionb}$}
+            $\pgfmathprintnumber{\builda}n
+            \pgfmathprintnumber[print sign]{\buildb}$}
     \end{axis}
 \end{tikzpicture}
 \caption{Timing of manually building and typechecking a certificate to prove a conjunction of $n$ \mintinline{coq}{True}s using abstraction and application using \LtacTwo} \label{fig:timing-conj-True-app-ltac2}
@@ -531,6 +546,7 @@ However, hashconsing looses a lot of its benefit if terms are not maximally shar
 Furthermore, it's an open problem how to efficiently persist full hashconsing to disk in a way that allows for diamond dependencies.
 \todo{explain this more, find citation for hashconsing being hard with disk}
 \todo{flesh out hashconsing section more}
+\todo{maybe cite https://github.com/coq/coq/issues/9028\#issuecomment-600013284 about hashconsing being slow}
 
 \subsection{The Size of the Term}
 
@@ -701,7 +717,88 @@ Note that fully nameless, i.e., de Bruijn term representations, do not suffer fr
 
 See \coqbug{8237} and \coqpr{11896} for a mitigation of some (but not all) issues.
 
-\todo{ADD PLOT: create graph with n evars}
+See also \autoref{fig:timing-do-n-open-constr-True} and \autoref{fig:timing-open-constr-n-lambda-no-types}.
+
+\begin{figure*}
+    \beginTikzpictureStamped{
+        \einput{performance-experiments/do-n-open-constr-True.txt}
+    }
+    \begin{axis}[xlabel=$n$,
+        ylabel=time (s),
+        legend pos=north west,
+        width=0.95\textwidth,
+        axis lines=left,
+        xmin=0,
+        scaled x ticks=false,
+        scaled y ticks=false]
+        \addplot[only marks,color=black] table[x=param-n,y=open-constr-True-1000-user]{performance-experiments/do-n-open-constr-True.txt};
+        \addlegendentry{construct an evar 1000 times}
+        \addplot [thick,black] table[x=param-n,
+         y={create col/linear regression={y=open-constr-True-1000-user}}
+         ] % compute a linear regression from the input table
+         {performance-experiments/do-n-open-constr-True.txt};
+        \addlegendentry{
+            $\pgfmathprintnumber{\pgfplotstableregressiona}n
+            \pgfmathprintnumber[print sign]{\pgfplotstableregressionb}$
+        }
+    \end{axis}
+\end{tikzpicture}
+\caption{Timing of generating 1000 evars in a context of size $n$} \label{fig:timing-do-n-open-constr-True}
+\end{figure*}
+
+\begin{figure*}
+    \beginTikzpictureStamped{
+        \einput{performance-experiments/open-constr-n-lambda-no-types-same-names.txt}
+        \einput{performance-experiments/open-constr-n-lambda-no-types-no-names.txt}
+        \einput{performance-experiments/open-constr-n-lambda-no-types-different-names.txt}
+    }
+    \begin{axis}[xlabel=$n$,
+        ylabel=time (s),
+        legend pos=north west,
+        width=0.95\textwidth,
+        axis lines=left,
+        xmin=0,
+        scaled x ticks=false,
+        scaled y ticks=false]
+        \addplot[only marks,mark=*,color=black] table[x=param-n,y=open-constr-user]{performance-experiments/open-constr-n-lambda-no-types-same-names.txt};
+        \addlegendentry{same names}
+        \addplotquadraticregression[no markers, black][x=param-n,y=open-constr-user]{performance-experiments/open-constr-n-lambda-no-types-same-names.txt};
+        \edef\ocsamea{\pgfplotstableregressiona}
+        \edef\ocsameb{\pgfplotstableregressionb}
+        \edef\ocsamec{\pgfplotstableregressionc}
+        \addlegendentry{
+            $\pgfmathprintnumber{\ocsamea}n^2
+            \pgfmathprintnumber[print sign]{\ocsameb}n
+            \pgfmathprintnumber[print sign]{\ocsamec}$
+        }
+        
+        \addplot[only marks,mark=o,color=blue] table[x=param-n,y=open-constr-user]{performance-experiments/open-constr-n-lambda-no-types-no-names.txt};
+        \addlegendentry{no names}
+        \addplotquadraticregression[no markers, blue][x=param-n,y=open-constr-user]{performance-experiments/open-constr-n-lambda-no-types-no-names.txt};
+        \edef\ocnoa{\pgfplotstableregressiona}
+        \edef\ocnob{\pgfplotstableregressionb}
+        \edef\ocnoc{\pgfplotstableregressionc}
+        \addlegendentry{
+            $\pgfmathprintnumber{\ocnoa}n^2
+            \pgfmathprintnumber[print sign]{\ocnob}n
+            \pgfmathprintnumber[print sign]{\ocnoc}$
+        }
+        
+        \addplot[only marks,mark=+,color=red] table[x=param-n,y=open-constr-user]{performance-experiments/open-constr-n-lambda-no-types-different-names.txt};
+        \addlegendentry{different names}
+        \addplotquadraticregression[no markers, red][x=param-n,y=open-constr-user]{performance-experiments/open-constr-n-lambda-no-types-different-names.txt};
+        \edef\ocdifferenta{\pgfplotstableregressiona}
+        \edef\ocdifferentb{\pgfplotstableregressionb}
+        \edef\ocdifferentc{\pgfplotstableregressionc}
+        \addlegendentry{
+            $\pgfmathprintnumber{\ocdifferenta}n^2
+            \pgfmathprintnumber[print sign]{\ocdifferentb}n
+            \pgfmathprintnumber[print sign]{\ocdifferentc}$
+        }
+    \end{axis}
+\end{tikzpicture}
+\caption{Timing of generating a $\lambda$ with $n$ binders of unknown/evar type, all of which have either no name, the same name, or different names} \label{fig:timing-open-constr-n-lambda-no-types}
+\end{figure*}
 
 \subsubsection{Quadratic Substitution in Function Application} \label{sec:perf:quadratic-application}
 Consider the case of typechecking a non-dependent function applied to $n$ arguments.

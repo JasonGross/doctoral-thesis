@@ -7,3 +7,6 @@ SH_KINDS := \
 
 SPECIAL_KINDS := \
 	name_resolution
+
+ALL_VKINDS := $(KINDS) $(SPECIAL_KINDS)
+ALL_KINDS := $(ALL_VKINDS) $(SH_KINDS)

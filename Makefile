@@ -243,8 +243,11 @@ $(PROPOSAL_PDFS): $(PROPOSAL_TEXS)
 include rewriting/PerfData.mk
 REWRITING_PERF_DATA_MD5 := $(addsuffix .md5,$(REWRITING_PERF_DATA))
 
-include performance-experiments/Makefile.variables
-EXPERIMENTS_PERF_DATA_MD5 := $(addprefix performance-experiments/,$(addsuffix .txt.md5,$(subst _,-,$(KINDS))))
+include performance-experiments/Makefile.variables.kinds
+EXPERIMENTS_PERF_DATA_MD5 := $(addprefix performance-experiments/,$(addsuffix .txt.md5,$(subst _,-,$(ALL_KINDS))))
+
+include performance-experiments-8-9/Makefile.variables.kinds
+EXPERIMENTS_PERF_DATA_MD5 += $(addprefix performance-experiments-8-9/,$(addsuffix .txt.md5,$(subst _,-,$(ALL_KINDS))))
 
 $(THESIS_PDFS): $(REWRITING_PERF_DATA) $(REWRITING_PERF_DATA_MD5) $(EXPERIMENTS_PERF_DATA_MD5) rewriting/trust?.pdf
 

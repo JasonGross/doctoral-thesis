@@ -5,9 +5,6 @@ PERF_ABS_DIR := $(patsubst %/,%,$(dir $(mkfile_path)))
 
 include Makefile.variables.kinds
 
-ALL_VKINDS := $(KINDS) $(SPECIAL_KINDS)
-ALL_KINDS := $(ALL_VKINDS) $(SH_KINDS)
-
 SIZES:=$(subst |,,$(shell grep -o 'Inductive size := [^\.]*' $(PERF_ABS_DIR)/Harness.v | sed s'/Inductive size := //g'))
 
 NO_LIMIT_PERF?=

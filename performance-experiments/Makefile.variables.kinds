@@ -8,3 +8,5 @@ KINDS := \
 	quadratic_vm_PHOAS \
 	quadratic_native_PHOAS \
 	eq_refl_nat_factorial
+
+SPECIAL_KINDS :=

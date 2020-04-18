@@ -12,12 +12,15 @@ KNOWNFILES   := \
 	Makefile.coq-versions \
 	Makefile.timing
 
-.DEFAULT_GOAL := invoke-coqmakefile
+.DEFAULT_GOAL := all
 
 include Makefile.characters
 include Makefile.timing
 include Makefile.coq-versions
 include Makefile.variables
+
+all:: invoke-coqmakefile
+.PHONY: all
 
 SORT_COQPROJECT = sed 's,[^/]*/,~&,g' | env LC_COLLATE=C sort | sed 's,~,,g' | uniq
 .PHONY: update-_CoqProject

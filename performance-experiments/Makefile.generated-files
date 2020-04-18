@@ -1,7 +1,8 @@
 include Makefile.variables
 
 $(foreach size,$(SIZES),$(eval $(call makesize,$(size))))
-$(foreach kind,$(KINDS),$(eval $(call makekind,$(kind))))
+$(foreach kind,$(filter-out $(SPECIAL_KINDS),$(KINDS)),$(eval $(call makekind,$(kind))))
+$(foreach kind,$(SPECIAL_KINDS),$(eval $(call makekind_special,$(kind))))
 
 .PHONY: sizes
 sizes:

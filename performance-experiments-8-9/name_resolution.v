@@ -1,29 +1,20 @@
 Require Import PerformanceExperiments.Harness.
 
-Fixpoint and_True (n : nat)
-  := match n with
-     | 0 => True
-     | S n => True /\ and_True n
-     end.
-
-Definition args_of_size (s : size) : list nat
+Definition args_of_size (s : size) : nat
   := match s with
-     | SuperFast => seq 1 100
-     | Fast => seq 100 200
-                   ++ List.map (fun x => 200 + x * 2) (seq 0 50)
-                   ++ List.map (fun x => 300 + x * 5) (seq 0 20)
-                   ++ List.map (fun x => 400 + x * 10) (seq 0 10)
-                   ++ List.map (fun x => 500 + x * 50) (seq 0 10)
-                   ++ List.map (fun x => 1000 + x * 100) (seq 0 10)
-     | Medium => []
-     | Slow => []
-     | VerySlow => []
+     | SuperFast => 1500
+     | Fast => 4000
+     | Medium => 4000 + 4000
+     | Slow => 0
+     | VerySlow => 0
      end.
 
-Ltac mkgoal n := constr:(and_True (pred n)).
-Ltac redgoal _ := vm_compute.
-Ltac time_solve_goal0 n := time "repeat-constructor" repeat constructor.
-Ltac run0 sz := Harness.runtests args_of_size default_describe_goal mkgoal redgoal time_solve_goal0 sz.
+Ltac mkgoal_step _ := pose proof I.
+Ltac time_solve_goal0 n tac :=
+  time "uconstr-I-1000" (do 1000 let v := tac () in idtac).
+Ltac run0 sz tac := Harness.runtests_step_arg args_of_size default_describe_goal mkgoal_step time_solve_goal0 sz tac.
 (*
-Goal True. runtests SuperFast.
+Goal True.
+  let tac := ltac:(fun _ => uconstr:(I)) in
+  run0 SuperFast tac.
 *)

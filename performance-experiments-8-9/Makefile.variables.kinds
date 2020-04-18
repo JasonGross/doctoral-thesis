@@ -1,2 +1,5 @@
 KINDS := \
 	name_resolution
+
+SPECIAL_KINDS := \
+	name_resolution

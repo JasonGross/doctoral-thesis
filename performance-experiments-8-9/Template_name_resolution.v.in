@@ -1,0 +1,3 @@
+Require Import PerformanceExperiments.Harness.
+Require Import PerformanceExperiments.@EXAMPLE@.
+Goal True. let tac := ltac:(fun _ => uconstr:(I)) in run@ARGS@ tac. Abort.

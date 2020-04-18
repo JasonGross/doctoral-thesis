@@ -51,6 +51,21 @@ $$($(1)_PERF_LOGS) : %.log : %.v $(PERF_DIR)/$(1).vo
 perf-$(1):: $($(1)_PERF_LOGS)
 endef
 
+define makekind_special
+$(eval $(1)_PERF_LOGS := $(filter $(PERF_DIR)/$(1)/%.log,$(ALL_PERF_LOGS)))
+$(eval $(1)_PERF_VFILES := $($(1)_PERF_LOGS:.log=.v))
+
+$$($(1)_PERF_VFILES) : $(PERF_DIR)/$(1)/_%.v : Template_$(1).v.in
+	$$(SHOW)'SED $$< > $$@'
+	$$(HIDE)mkdir -p $$(dir $$@)
+	$$(HIDE)sed 's/@EXAMPLE@/$(1)/g; s/@ARGS@/$$(subst _, ,$$*)/g' $$< > $$@
+
+$$($(1)_PERF_LOGS) : %.log : %.v $(PERF_DIR)/$(1).vo
+
+.PHONY: perf-$(1)
+perf-$(1):: $($(1)_PERF_LOGS)
+endef
+
 define makesize
 $(eval $(1)_PERF_LOGS := $(filter %_$(1).log,$(ALL_PERF_LOGS)))
 

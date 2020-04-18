@@ -28,6 +28,15 @@ Definition smaller_sizes (sz : size) : list size
      | VerySlow => [SuperFast; Fast; Medium; Slow]
      end.
 
+Definition size_pred (sz : size) : option size
+  := match sz with
+     | SuperFast => None
+     | Fast => Some SuperFast
+     | Medium => Some Fast
+     | Slow => Some Medium
+     | VerySlow => Some Slow
+     end.
+
 Fixpoint uniquify {T} (T_beq : T -> T -> bool) (ls : list T) : list T
   := match ls with
      | nil => nil
@@ -150,6 +159,38 @@ Ltac runtests args_of_size describe_goal mkgoal redgoal time_solve_goal sz :=
       end in
   iter args.
 
+Ltac do_n tac n start :=
+  lazymatch n with
+  | O => start
+  | S ?n
+    => let n := do_n tac n start in
+       let __ := match goal with _ => tac n end in
+       constr:(S n)
+  | ?v => match goal with
+          | _ => fail 1 "Invalid argument to do_n (expected a literal nat):" v
+          end
+  end.
+
+Ltac runtests_step_arg args_of_size describe_goal mkgoal_step time_solve_goal sz args :=
+  try (assert True;
+       [ once
+           (let n := lazymatch (eval cbv in (option_map args_of_size (size_pred sz))) with
+                     | None => O
+                     | Some ?n => n
+                     end in
+            let start := do_n mkgoal_step n O in
+            let n' := (eval cbv in (args_of_size sz - n)) in
+            do_n
+              ltac:(fun n
+                    => describe_goal n;
+                       try (solve [ once (time_solve_goal n args) ]; []);
+                       mkgoal_step n)
+                     n'
+                     start)
+       | fail ]).
+
+Ltac runtests_step args_of_size describe_goal mkgoal_step time_solve_goal sz :=
+  runtests_step_arg args_of_size describe_goal mkgoal_step ltac:(fun n args => time_solve_goal n) sz ().
 (*
 Module LiftLetsMap.
   Import Examples.LiftLetsMap.

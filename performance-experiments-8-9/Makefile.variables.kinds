@@ -1,5 +1,9 @@
-KINDS := \
-	name_resolution
+KINDS :=
+
+SH_KINDS := \
+	nested_lambda_no_name \
+	nested_lambda_same_name \
+	nested_lambda_different_name
 
 SPECIAL_KINDS := \
 	name_resolution

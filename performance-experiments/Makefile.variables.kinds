@@ -9,4 +9,6 @@ KINDS := \
 	quadratic_native_PHOAS \
 	eq_refl_nat_factorial
 
+SH_KINDS :=
+
 SPECIAL_KINDS :=

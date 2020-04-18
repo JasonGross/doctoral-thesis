@@ -1,7 +1,8 @@
 include Makefile.variables
 
 $(foreach size,$(SIZES),$(eval $(call makesize,$(size))))
-$(foreach kind,$(filter-out $(SPECIAL_KINDS),$(KINDS)),$(eval $(call makekind,$(kind))))
+$(foreach kind,$(KINDS),$(eval $(call makekind,$(kind))))
+$(foreach kind,$(SH_KINDS),$(eval $(call makekind_sh,$(kind))))
 $(foreach kind,$(SPECIAL_KINDS),$(eval $(call makekind_special,$(kind))))
 
 .PHONY: sizes
@@ -10,7 +11,7 @@ sizes:
 
 .PHONY: kinds
 kinds:
-	@echo $(addprefix perf-,$(KINDS))
+	@echo $(addprefix perf-,$(ALL_KINDS))
 
 .PHONY: perf
 perf: $(ALL_PERF_LOGS)

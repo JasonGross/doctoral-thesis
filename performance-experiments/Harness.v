@@ -1,4 +1,5 @@
 Require Import Coq.Structures.Orders.
+Require Import Coq.micromega.Lia.
 Require Import Coq.Bool.Bool.
 Require Import Coq.Sorting.Mergesort.
 Require Export Coq.Lists.List.
@@ -41,8 +42,7 @@ Fixpoint uniquify {T} (T_beq : T -> T -> bool) (ls : list T) : list T
   := match ls with
      | nil => nil
      | cons x xs
-       => (if existsb (T_beq x) xs then (fun xs => xs) else cons x)
-            (uniquify T_beq xs)
+       => x :: filter (fun y => negb (T_beq x y)) (uniquify T_beq xs)
      end.
 
 Definition remove_smaller_args_of_size {T} (T_beq : T -> T -> bool) (sz : size)
@@ -165,6 +165,26 @@ End ZFstOrder.
 Module ZFstSort := Sort ZFstOrder.
 Notation Zsort_by_fst := ZFstSort.sort.
 
+
+Module ZOrder <: TotalLeBool.
+  Local Open Scope Z_scope.
+  Definition t := Z.
+  Definition ltb := Z.ltb.
+  Definition leb := Z.leb.
+  Theorem leb_total : forall a1 a2, leb a1 a2 = true \/ leb a2 a1 = true.
+  Proof.
+    cbv [leb ltb]; intros a1 a2.
+    repeat first [ rewrite !Bool.andb_true_iff
+                 | rewrite !Bool.orb_true_iff
+                 | rewrite !Z.eqb_eq
+                 | rewrite !Z.ltb_lt
+                 | rewrite !Z.leb_le ].
+    lia.
+  Qed.
+End ZOrder.
+
+Module ZSort := Sort ZOrder.
+
 Existing Class reflect.
 Notation reflect_rel R1 R2 := (forall x y, reflect (R1 x y) (R2 x y)).
 
@@ -193,16 +213,6 @@ Instance reflect_eq_nat : reflect_rel (@eq nat) Nat.eqb
 Instance reflect_eq_Z : reflect_rel (@eq Z) Z.eqb
   := reflect_rel_of_beq_iff Z.eqb_eq.
 
-Definition remove_smaller_args_of_size_by_reflect
-           {T} {T_beq : T -> T -> bool}
-           {T_reflect : reflect_rel (@eq T) T_beq}
-           (sz : size)
-           (args_of_size : size -> list T)
-  : list T
-  := let args := uniquify T_beq (args_of_size sz) in
-     let smaller_args := flat_map args_of_size (smaller_sizes sz) in
-     filter (fun v => negb (existsb (T_beq v) smaller_args)) args.
-
 Class has_sub T := sub : T -> T -> T.
 Instance: has_sub nat := Nat.sub.
 Instance: has_sub Z := Z.sub.
@@ -214,6 +224,20 @@ Instance: has_succ Z := Z.succ.
 Class has_zero T := zero : T.
 Instance: has_zero nat := O.
 Instance: has_zero Z := Z0.
+
+Class has_sort T := sort : list T -> list T.
+Instance: has_sort nat := NatSort.sort.
+Instance: has_sort Z := ZSort.sort.
+
+Definition remove_smaller_args_of_size_by_reflect
+           {T} {T_beq : T -> T -> bool}
+           {T_reflect : reflect_rel (@eq T) T_beq}
+           (sz : size)
+           (args_of_size : size -> list T)
+  : list T
+  := let args := uniquify T_beq (args_of_size sz) in
+     let smaller_args := flat_map args_of_size (smaller_sizes sz) in
+     filter (fun v => negb (existsb (T_beq v) smaller_args)) args.
 
 Ltac default_describe_goal x :=
   idtac "Params: n=" x.

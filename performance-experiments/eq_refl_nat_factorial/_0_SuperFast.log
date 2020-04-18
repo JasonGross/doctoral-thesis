@@ -13,10 +13,10 @@ Tactic call constr-eq-refl ran for 0. secs (0.u,0.s) (success)
 Params: n= 6
 Tactic call constr-eq-refl ran for 0.003 secs (0.003u,0.s) (success)
 Params: n= 7
-Tactic call constr-eq-refl ran for 0.021 secs (0.017u,0.003s) (success)
+Tactic call constr-eq-refl ran for 0.022 secs (0.018u,0.003s) (success)
 Params: n= 8
-Tactic call constr-eq-refl ran for 0.135 secs (0.107u,0.027s) (success)
+Tactic call constr-eq-refl ran for 0.134 secs (0.114u,0.02s) (success)
 Params: n= 9
-Tactic call constr-eq-refl ran for 0.683 secs (0.683u,0.s) (success)
+Tactic call constr-eq-refl ran for 0.694 secs (0.681u,0.s) (success)
 Params: n= 10
-Tactic call constr-eq-refl ran for 6.867 secs (6.867u,0.s) (success)
+Tactic call constr-eq-refl ran for 6.817 secs (6.814u,0.003s) (success)

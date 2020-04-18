@@ -7,6 +7,9 @@ conj_True_repeat_constructor.v
 conj_True_uconstr.v
 do_n_open_constr_True.v
 eq_refl_nat_factorial.v
+open_constr_n_lambda_no_types_different_names.v
+open_constr_n_lambda_no_types_no_names.v
+open_constr_n_lambda_no_types_same_names.v
 quadratic_cbv_lazy_PHOAS.v
 quadratic_native_PHOAS.v
 quadratic_vm_PHOAS.v

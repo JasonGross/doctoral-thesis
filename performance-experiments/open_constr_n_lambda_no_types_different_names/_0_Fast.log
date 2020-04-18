@@ -1,0 +1,248 @@
+Params: n= 500
+Tactic call uconstr ran for 0.266 secs (0.247u,0.016s)
+Tactic call open_constr ran for 0.164 secs (0.159u,0.004s)
+Tactic call build-and-open ran for 0.43 secs (0.407u,0.02s) (success)
+Params: n= 510
+Tactic call uconstr ran for 0.163 secs (0.163u,0.s)
+Tactic call open_constr ran for 0.141 secs (0.135u,0.003s)
+Tactic call build-and-open ran for 0.305 secs (0.298u,0.003s) (success)
+Params: n= 520
+Tactic call uconstr ran for 0.206 secs (0.198u,0.008s)
+Tactic call open_constr ran for 0.194 secs (0.173u,0.003s)
+Tactic call build-and-open ran for 0.401 secs (0.372u,0.012s) (success)
+Params: n= 530
+Tactic call uconstr ran for 0.183 secs (0.171u,0.011s)
+Tactic call open_constr ran for 0.136 secs (0.136u,0.s)
+Tactic call build-and-open ran for 0.32 secs (0.308u,0.011s) (success)
+Params: n= 540
+Tactic call uconstr ran for 0.196 secs (0.194u,0.s)
+Tactic call open_constr ran for 0.192 secs (0.188u,0.003s)
+Tactic call build-and-open ran for 0.389 secs (0.383u,0.003s) (success)
+Params: n= 550
+Tactic call uconstr ran for 0.194 secs (0.194u,0.s)
+Tactic call open_constr ran for 0.14 secs (0.136u,0.003s)
+Tactic call build-and-open ran for 0.335 secs (0.331u,0.003s) (success)
+Params: n= 560
+Tactic call uconstr ran for 0.19 secs (0.19u,0.s)
+Tactic call open_constr ran for 0.2 secs (0.191u,0.s)
+Tactic call build-and-open ran for 0.391 secs (0.381u,0.s) (success)
+Params: n= 570
+Tactic call uconstr ran for 0.232 secs (0.224u,0.s)
+Tactic call open_constr ran for 0.142 secs (0.142u,0.s)
+Tactic call build-and-open ran for 0.375 secs (0.367u,0.s) (success)
+Params: n= 580
+Tactic call uconstr ran for 0.203 secs (0.203u,0.s)
+Tactic call open_constr ran for 0.194 secs (0.194u,0.s)
+Tactic call build-and-open ran for 0.398 secs (0.398u,0.s) (success)
+Params: n= 590
+Tactic call uconstr ran for 0.241 secs (0.241u,0.s)
+Tactic call open_constr ran for 0.165 secs (0.165u,0.s)
+Tactic call build-and-open ran for 0.406 secs (0.406u,0.s) (success)
+Params: n= 600
+Tactic call uconstr ran for 0.213 secs (0.213u,0.s)
+Tactic call open_constr ran for 0.209 secs (0.197u,0.s)
+Tactic call build-and-open ran for 0.423 secs (0.411u,0.s) (success)
+Params: n= 610
+Tactic call uconstr ran for 0.254 secs (0.254u,0.s)
+Tactic call open_constr ran for 0.176 secs (0.176u,0.s)
+Tactic call build-and-open ran for 0.43 secs (0.43u,0.s) (success)
+Params: n= 620
+Tactic call uconstr ran for 0.226 secs (0.226u,0.s)
+Tactic call open_constr ran for 0.215 secs (0.215u,0.s)
+Tactic call build-and-open ran for 0.442 secs (0.442u,0.s) (success)
+Params: n= 630
+Tactic call uconstr ran for 0.268 secs (0.268u,0.s)
+Tactic call open_constr ran for 0.182 secs (0.182u,0.s)
+Tactic call build-and-open ran for 0.451 secs (0.451u,0.s) (success)
+Params: n= 640
+Tactic call uconstr ran for 0.24 secs (0.24u,0.s)
+Tactic call open_constr ran for 0.239 secs (0.239u,0.s)
+Tactic call build-and-open ran for 0.48 secs (0.48u,0.s) (success)
+Params: n= 650
+Tactic call uconstr ran for 0.275 secs (0.275u,0.s)
+Tactic call open_constr ran for 0.184 secs (0.184u,0.s)
+Tactic call build-and-open ran for 0.459 secs (0.459u,0.s) (success)
+Params: n= 660
+Tactic call uconstr ran for 0.27 secs (0.27u,0.s)
+Tactic call open_constr ran for 0.251 secs (0.251u,0.s)
+Tactic call build-and-open ran for 0.522 secs (0.522u,0.s) (success)
+Params: n= 670
+Tactic call uconstr ran for 0.263 secs (0.263u,0.s)
+Tactic call open_constr ran for 0.229 secs (0.229u,0.s)
+Tactic call build-and-open ran for 0.493 secs (0.493u,0.s) (success)
+Params: n= 680
+Tactic call uconstr ran for 0.316 secs (0.316u,0.s)
+Tactic call open_constr ran for 0.224 secs (0.224u,0.s)
+Tactic call build-and-open ran for 0.541 secs (0.541u,0.s) (success)
+Params: n= 690
+Tactic call uconstr ran for 0.278 secs (0.278u,0.s)
+Tactic call open_constr ran for 0.295 secs (0.295u,0.s)
+Tactic call build-and-open ran for 0.574 secs (0.574u,0.s) (success)
+Params: n= 700
+Tactic call uconstr ran for 0.307 secs (0.299u,0.007s)
+Tactic call open_constr ran for 0.217 secs (0.217u,0.s)
+Tactic call build-and-open ran for 0.525 secs (0.517u,0.008s) (success)
+Params: n= 710
+Tactic call uconstr ran for 0.352 secs (0.352u,0.s)
+Tactic call open_constr ran for 0.236 secs (0.236u,0.s)
+Tactic call build-and-open ran for 0.589 secs (0.589u,0.s) (success)
+Params: n= 720
+Tactic call uconstr ran for 0.299 secs (0.299u,0.s)
+Tactic call open_constr ran for 0.308 secs (0.308u,0.s)
+Tactic call build-and-open ran for 0.607 secs (0.607u,0.s) (success)
+Params: n= 730
+Tactic call uconstr ran for 0.304 secs (0.304u,0.s)
+Tactic call open_constr ran for 0.274 secs (0.274u,0.s)
+Tactic call build-and-open ran for 0.578 secs (0.578u,0.s) (success)
+Params: n= 740
+Tactic call uconstr ran for 0.369 secs (0.369u,0.s)
+Tactic call open_constr ran for 0.237 secs (0.237u,0.s)
+Tactic call build-and-open ran for 0.606 secs (0.606u,0.s) (success)
+Params: n= 750
+Tactic call uconstr ran for 0.332 secs (0.332u,0.s)
+Tactic call open_constr ran for 0.315 secs (0.315u,0.s)
+Tactic call build-and-open ran for 0.648 secs (0.648u,0.s) (success)
+Params: n= 760
+Tactic call uconstr ran for 0.332 secs (0.332u,0.s)
+Tactic call open_constr ran for 0.329 secs (0.329u,0.s)
+Tactic call build-and-open ran for 0.661 secs (0.661u,0.s) (success)
+Params: n= 770
+Tactic call uconstr ran for 0.367 secs (0.367u,0.s)
+Tactic call open_constr ran for 0.261 secs (0.261u,0.s)
+Tactic call build-and-open ran for 0.628 secs (0.628u,0.s) (success)
+Params: n= 780
+Tactic call uconstr ran for 0.422 secs (0.422u,0.s)
+Tactic call open_constr ran for 0.302 secs (0.302u,0.s)
+Tactic call build-and-open ran for 0.725 secs (0.725u,0.s) (success)
+Params: n= 790
+Tactic call uconstr ran for 0.358 secs (0.358u,0.s)
+Tactic call open_constr ran for 0.367 secs (0.367u,0.s)
+Tactic call build-and-open ran for 0.725 secs (0.725u,0.s) (success)
+Params: n= 800
+Tactic call uconstr ran for 0.398 secs (0.389u,0.008s)
+Tactic call open_constr ran for 0.551 secs (0.551u,0.s)
+Tactic call build-and-open ran for 0.95 secs (0.94u,0.008s) (success)
+Params: n= 810
+Tactic call uconstr ran for 0.421 secs (0.421u,0.s)
+Tactic call open_constr ran for 0.296 secs (0.296u,0.s)
+Tactic call build-and-open ran for 0.718 secs (0.718u,0.s) (success)
+Params: n= 820
+Tactic call uconstr ran for 0.457 secs (0.457u,0.s)
+Tactic call open_constr ran for 0.327 secs (0.327u,0.s)
+Tactic call build-and-open ran for 0.784 secs (0.784u,0.s) (success)
+Params: n= 830
+Tactic call uconstr ran for 0.405 secs (0.405u,0.s)
+Tactic call open_constr ran for 0.373 secs (0.372u,0.s)
+Tactic call build-and-open ran for 0.778 secs (0.778u,0.s) (success)
+Params: n= 840
+Tactic call uconstr ran for 0.407 secs (0.407u,0.s)
+Tactic call open_constr ran for 0.603 secs (0.603u,0.s)
+Tactic call build-and-open ran for 1.011 secs (1.011u,0.s) (success)
+Params: n= 850
+Tactic call uconstr ran for 0.406 secs (0.406u,0.s)
+Tactic call open_constr ran for 0.424 secs (0.424u,0.s)
+Tactic call build-and-open ran for 0.831 secs (0.831u,0.s) (success)
+Params: n= 860
+Tactic call uconstr ran for 0.428 secs (0.428u,0.s)
+Tactic call open_constr ran for 0.412 secs (0.412u,0.s)
+Tactic call build-and-open ran for 0.841 secs (0.841u,0.s) (success)
+Params: n= 870
+Tactic call uconstr ran for 0.468 secs (0.468u,0.s)
+Tactic call open_constr ran for 0.367 secs (0.367u,0.s)
+Tactic call build-and-open ran for 0.835 secs (0.835u,0.s) (success)
+Params: n= 880
+Tactic call uconstr ran for 0.517 secs (0.517u,0.s)
+Tactic call open_constr ran for 0.349 secs (0.345u,0.003s)
+Tactic call build-and-open ran for 0.867 secs (0.863u,0.003s) (success)
+Params: n= 890
+Tactic call uconstr ran for 0.518 secs (0.518u,0.s)
+Tactic call open_constr ran for 0.359 secs (0.359u,0.s)
+Tactic call build-and-open ran for 0.878 secs (0.878u,0.s) (success)
+Params: n= 900
+Tactic call uconstr ran for 0.678 secs (0.678u,0.s)
+Tactic call open_constr ran for 0.363 secs (0.363u,0.s)
+Tactic call build-and-open ran for 1.041 secs (1.041u,0.s) (success)
+Params: n= 910
+Tactic call uconstr ran for 0.562 secs (0.561u,0.s)
+Tactic call open_constr ran for 0.384 secs (0.384u,0.s)
+Tactic call build-and-open ran for 0.946 secs (0.946u,0.s) (success)
+Params: n= 920
+Tactic call uconstr ran for 0.539 secs (0.539u,0.s)
+Tactic call open_constr ran for 0.39 secs (0.39u,0.s)
+Tactic call build-and-open ran for 0.93 secs (0.93u,0.s) (success)
+Params: n= 930
+Tactic call uconstr ran for 0.716 secs (0.716u,0.s)
+Tactic call open_constr ran for 0.413 secs (0.413u,0.s)
+Tactic call build-and-open ran for 1.13 secs (1.13u,0.s) (success)
+Params: n= 940
+Tactic call uconstr ran for 0.593 secs (0.593u,0.s)
+Tactic call open_constr ran for 0.384 secs (0.384u,0.s)
+Tactic call build-and-open ran for 0.977 secs (0.977u,0.s) (success)
+Params: n= 950
+Tactic call uconstr ran for 0.608 secs (0.608u,0.s)
+Tactic call open_constr ran for 0.458 secs (0.45u,0.007s)
+Tactic call build-and-open ran for 1.066 secs (1.058u,0.007s) (success)
+Params: n= 960
+Tactic call uconstr ran for 0.596 secs (0.596u,0.s)
+Tactic call open_constr ran for 0.405 secs (0.401u,0.003s)
+Tactic call build-and-open ran for 1.002 secs (0.998u,0.003s) (success)
+Params: n= 970
+Tactic call uconstr ran for 0.768 secs (0.768u,0.s)
+Tactic call open_constr ran for 0.456 secs (0.456u,0.s)
+Tactic call build-and-open ran for 1.224 secs (1.224u,0.s) (success)
+Params: n= 980
+Tactic call uconstr ran for 0.636 secs (0.636u,0.s)
+Tactic call open_constr ran for 0.448 secs (0.448u,0.s)
+Tactic call build-and-open ran for 1.085 secs (1.085u,0.s) (success)
+Params: n= 990
+Tactic call uconstr ran for 0.655 secs (0.655u,0.s)
+Tactic call open_constr ran for 0.427 secs (0.427u,0.s)
+Tactic call build-and-open ran for 1.083 secs (1.083u,0.s) (success)
+Params: n= 1000
+Tactic call uconstr ran for 0.642 secs (0.642u,0.s)
+Tactic call open_constr ran for 0.446 secs (0.446u,0.s)
+Tactic call build-and-open ran for 1.089 secs (1.089u,0.s) (success)
+Params: n= 1100
+Tactic call uconstr ran for 0.902 secs (0.902u,0.s)
+Tactic call open_constr ran for 0.629 secs (0.629u,0.s)
+Tactic call build-and-open ran for 1.532 secs (1.532u,0.s) (success)
+Params: n= 1200
+Tactic call uconstr ran for 0.892 secs (0.892u,0.s)
+Tactic call open_constr ran for 0.808 secs (0.808u,0.s)
+Tactic call build-and-open ran for 1.701 secs (1.701u,0.s) (success)
+Params: n= 1300
+Tactic call uconstr ran for 0.955 secs (0.955u,0.s)
+Tactic call open_constr ran for 0.913 secs (0.913u,0.s)
+Tactic call build-and-open ran for 1.869 secs (1.869u,0.s) (success)
+Params: n= 1400
+Tactic call uconstr ran for 1.177 secs (1.177u,0.s)
+Tactic call open_constr ran for 1.321 secs (1.321u,0.s)
+Tactic call build-and-open ran for 2.499 secs (2.499u,0.s) (success)
+Params: n= 1500
+Tactic call uconstr ran for 1.36 secs (1.36u,0.s)
+Tactic call open_constr ran for 1.451 secs (1.451u,0.s)
+Tactic call build-and-open ran for 2.812 secs (2.812u,0.s) (success)
+Params: n= 1600
+Tactic call uconstr ran for 1.644 secs (1.632u,0.011s)
+Tactic call open_constr ran for 1.437 secs (1.393u,0.044s)
+Tactic call build-and-open ran for 3.082 secs (3.026u,0.055s) (success)
+Params: n= 1700
+Tactic call uconstr ran for 2.242 secs (2.218u,0.024s)
+Tactic call open_constr ran for 1.679 secs (1.603u,0.075s)
+Tactic call build-and-open ran for 3.922 secs (3.822u,0.099s) (success)
+Params: n= 1800
+Tactic call uconstr ran for 2.228 secs (2.212u,0.015s)
+Tactic call open_constr ran for 1.937 secs (1.889u,0.048s)
+Tactic call build-and-open ran for 4.165 secs (4.101u,0.063s) (success)
+Params: n= 1900
+Tactic call uconstr ran for 2.724 secs (2.696u,0.027s)
+Tactic call open_constr ran for 2.229 secs (2.181u,0.048s)
+Tactic call build-and-open ran for 4.954 secs (4.878u,0.076s) (success)
+Params: n= 2000
+Tactic call uconstr ran for 2.634 secs (2.592u,0.041s)
+Tactic call open_constr ran for 2.354 secs (2.353u,0.s)
+Tactic call build-and-open ran for 4.988 secs (4.947u,0.041s) (success)
+Params: n= 2100
+Tactic call uconstr ran for 2.505 secs (2.505u,0.s)
+Tactic call open_constr ran for 2.951 secs (2.951u,0.s)
+Tactic call build-and-open ran for 5.457 secs (5.457u,0.s) (success)

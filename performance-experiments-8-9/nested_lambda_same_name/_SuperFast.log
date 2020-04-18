@@ -473,7 +473,7 @@ Params: n= 158
 Tactic call uconstr-lambda ran for 0. secs (0.u,0.s)
 Tactic call to_constr ran for 0. secs (0.u,0.s)
 Params: n= 159
-Tactic call uconstr-lambda ran for 0.051 secs (0.039u,0.011s)
+Tactic call uconstr-lambda ran for 0.045 secs (0.033u,0.011s)
 Tactic call to_constr ran for 0. secs (0.u,0.s)
 Params: n= 160
 Tactic call uconstr-lambda ran for 0. secs (0.u,0.s)
@@ -699,7 +699,7 @@ Tactic call uconstr-lambda ran for 0. secs (0.u,0.s)
 Tactic call to_constr ran for 0. secs (0.u,0.s)
 Params: n= 234
 Tactic call uconstr-lambda ran for 0. secs (0.u,0.s)
-Tactic call to_constr ran for 0.027 secs (0.027u,0.s)
+Tactic call to_constr ran for 0.025 secs (0.025u,0.s)
 Params: n= 235
 Tactic call uconstr-lambda ran for 0. secs (0.u,0.s)
 Tactic call to_constr ran for 0. secs (0.u,0.s)
@@ -789,7 +789,7 @@ Tactic call uconstr-lambda ran for 0. secs (0.u,0.s)
 Tactic call to_constr ran for 0. secs (0.u,0.s)
 Params: n= 264
 Tactic call uconstr-lambda ran for 0. secs (0.u,0.s)
-Tactic call to_constr ran for 0.047 secs (0.043u,0.003s)
+Tactic call to_constr ran for 0.042 secs (0.042u,0.s)
 Params: n= 265
 Tactic call uconstr-lambda ran for 0. secs (0.u,0.s)
 Tactic call to_constr ran for 0. secs (0.u,0.s)
@@ -1080,7 +1080,7 @@ Tactic call uconstr-lambda ran for 0. secs (0.u,0.s)
 Tactic call to_constr ran for 0. secs (0.u,0.s)
 Params: n= 361
 Tactic call uconstr-lambda ran for 0. secs (0.u,0.s)
-Tactic call to_constr ran for 0.042 secs (0.034u,0.007s)
+Tactic call to_constr ran for 0.045 secs (0.037u,0.007s)
 Params: n= 362
 Tactic call uconstr-lambda ran for 0. secs (0.u,0.s)
 Tactic call to_constr ran for 0. secs (0.u,0.s)
@@ -1256,7 +1256,7 @@ Params: n= 419
 Tactic call uconstr-lambda ran for 0. secs (0.u,0.s)
 Tactic call to_constr ran for 0. secs (0.u,0.s)
 Params: n= 420
-Tactic call uconstr-lambda ran for 0.029 secs (0.029u,0.s)
+Tactic call uconstr-lambda ran for 0.031 secs (0.031u,0.s)
 Tactic call to_constr ran for 0. secs (0.u,0.s)
 Params: n= 421
 Tactic call uconstr-lambda ran for 0. secs (0.u,0.s)
@@ -1310,7 +1310,7 @@ Params: n= 437
 Tactic call uconstr-lambda ran for 0. secs (0.u,0.s)
 Tactic call to_constr ran for 0. secs (0.u,0.s)
 Params: n= 438
-Tactic call uconstr-lambda ran for 0.045 secs (0.045u,0.s)
+Tactic call uconstr-lambda ran for 0.048 secs (0.048u,0.s)
 Tactic call to_constr ran for 0. secs (0.u,0.s)
 Params: n= 439
 Tactic call uconstr-lambda ran for 0. secs (0.u,0.s)
@@ -1362,7 +1362,7 @@ Tactic call uconstr-lambda ran for 0. secs (0.u,0.s)
 Tactic call to_constr ran for 0. secs (0.u,0.s)
 Params: n= 455
 Tactic call uconstr-lambda ran for 0. secs (0.u,0.s)
-Tactic call to_constr ran for 0.046 secs (0.038u,0.007s)
+Tactic call to_constr ran for 0.048 secs (0.04u,0.007s)
 Params: n= 456
 Tactic call uconstr-lambda ran for 0. secs (0.u,0.s)
 Tactic call to_constr ran for 0. secs (0.u,0.s)
@@ -1664,7 +1664,7 @@ Params: n= 555
 Tactic call uconstr-lambda ran for 0. secs (0.u,0.s)
 Tactic call to_constr ran for 0. secs (0.u,0.s)
 Params: n= 556
-Tactic call uconstr-lambda ran for 0. secs (0.u,0.s)
+Tactic call uconstr-lambda ran for 0.001 secs (0.001u,0.s)
 Tactic call to_constr ran for 0. secs (0.u,0.s)
 Params: n= 557
 Tactic call uconstr-lambda ran for 0. secs (0.u,0.s)
@@ -1722,12 +1722,12 @@ Tactic call uconstr-lambda ran for 0. secs (0.u,0.s)
 Tactic call to_constr ran for 0. secs (0.u,0.s)
 Params: n= 575
 Tactic call uconstr-lambda ran for 0. secs (0.u,0.s)
-Tactic call to_constr ran for 0.043 secs (0.035u,0.007s)
+Tactic call to_constr ran for 0.045 secs (0.045u,0.s)
 Params: n= 576
 Tactic call uconstr-lambda ran for 0. secs (0.u,0.s)
 Tactic call to_constr ran for 0. secs (0.u,0.s)
 Params: n= 577
-Tactic call uconstr-lambda ran for 0. secs (0.u,0.s)
+Tactic call uconstr-lambda ran for 0.001 secs (0.001u,0.s)
 Tactic call to_constr ran for 0. secs (0.u,0.s)
 Params: n= 578
 Tactic call uconstr-lambda ran for 0. secs (0.u,0.s)
@@ -1736,16 +1736,16 @@ Params: n= 579
 Tactic call uconstr-lambda ran for 0. secs (0.u,0.s)
 Tactic call to_constr ran for 0. secs (0.u,0.s)
 Params: n= 580
-Tactic call uconstr-lambda ran for 0. secs (0.u,0.s)
+Tactic call uconstr-lambda ran for 0.001 secs (0.001u,0.s)
 Tactic call to_constr ran for 0. secs (0.u,0.s)
 Params: n= 581
 Tactic call uconstr-lambda ran for 0. secs (0.u,0.s)
 Tactic call to_constr ran for 0. secs (0.u,0.s)
 Params: n= 582
-Tactic call uconstr-lambda ran for 0. secs (0.u,0.s)
+Tactic call uconstr-lambda ran for 0.001 secs (0.001u,0.s)
 Tactic call to_constr ran for 0. secs (0.u,0.s)
 Params: n= 583
-Tactic call uconstr-lambda ran for 0. secs (0.u,0.s)
+Tactic call uconstr-lambda ran for 0.001 secs (0.001u,0.s)
 Tactic call to_constr ran for 0. secs (0.u,0.s)
 Params: n= 584
 Tactic call uconstr-lambda ran for 0. secs (0.u,0.s)
@@ -1754,10 +1754,10 @@ Params: n= 585
 Tactic call uconstr-lambda ran for 0. secs (0.u,0.s)
 Tactic call to_constr ran for 0. secs (0.u,0.s)
 Params: n= 586
-Tactic call uconstr-lambda ran for 0. secs (0.u,0.s)
+Tactic call uconstr-lambda ran for 0.001 secs (0.001u,0.s)
 Tactic call to_constr ran for 0. secs (0.u,0.s)
 Params: n= 587
-Tactic call uconstr-lambda ran for 0. secs (0.u,0.s)
+Tactic call uconstr-lambda ran for 0.001 secs (0.001u,0.s)
 Tactic call to_constr ran for 0. secs (0.u,0.s)
 Params: n= 588
 Tactic call uconstr-lambda ran for 0. secs (0.u,0.s)
@@ -1772,10 +1772,10 @@ Params: n= 591
 Tactic call uconstr-lambda ran for 0. secs (0.u,0.s)
 Tactic call to_constr ran for 0. secs (0.u,0.s)
 Params: n= 592
-Tactic call uconstr-lambda ran for 0. secs (0.u,0.s)
+Tactic call uconstr-lambda ran for 0.001 secs (0.001u,0.s)
 Tactic call to_constr ran for 0. secs (0.u,0.s)
 Params: n= 593
-Tactic call uconstr-lambda ran for 0. secs (0.u,0.s)
+Tactic call uconstr-lambda ran for 0.001 secs (0.001u,0.s)
 Tactic call to_constr ran for 0. secs (0.u,0.s)
 Params: n= 594
 Tactic call uconstr-lambda ran for 0. secs (0.u,0.s)
@@ -1805,94 +1805,94 @@ Params: n= 602
 Tactic call uconstr-lambda ran for 0. secs (0.u,0.s)
 Tactic call to_constr ran for 0. secs (0.u,0.s)
 Params: n= 603
-Tactic call uconstr-lambda ran for 0. secs (0.u,0.s)
+Tactic call uconstr-lambda ran for 0.001 secs (0.001u,0.s)
 Tactic call to_constr ran for 0. secs (0.u,0.s)
 Params: n= 604
-Tactic call uconstr-lambda ran for 0. secs (0.u,0.s)
+Tactic call uconstr-lambda ran for 0.001 secs (0.001u,0.s)
 Tactic call to_constr ran for 0. secs (0.u,0.s)
 Params: n= 605
 Tactic call uconstr-lambda ran for 0. secs (0.u,0.s)
 Tactic call to_constr ran for 0. secs (0.u,0.s)
 Params: n= 606
-Tactic call uconstr-lambda ran for 0. secs (0.u,0.s)
+Tactic call uconstr-lambda ran for 0.001 secs (0.001u,0.s)
 Tactic call to_constr ran for 0. secs (0.u,0.s)
 Params: n= 607
-Tactic call uconstr-lambda ran for 0. secs (0.u,0.s)
+Tactic call uconstr-lambda ran for 0.001 secs (0.001u,0.s)
 Tactic call to_constr ran for 0. secs (0.u,0.s)
 Params: n= 608
-Tactic call uconstr-lambda ran for 0. secs (0.u,0.s)
+Tactic call uconstr-lambda ran for 0.001 secs (0.001u,0.s)
 Tactic call to_constr ran for 0. secs (0.u,0.s)
 Params: n= 609
-Tactic call uconstr-lambda ran for 0. secs (0.u,0.s)
+Tactic call uconstr-lambda ran for 0.001 secs (0.001u,0.s)
 Tactic call to_constr ran for 0. secs (0.u,0.s)
 Params: n= 610
-Tactic call uconstr-lambda ran for 0. secs (0.u,0.s)
+Tactic call uconstr-lambda ran for 0.001 secs (0.001u,0.s)
 Tactic call to_constr ran for 0. secs (0.u,0.s)
 Params: n= 611
 Tactic call uconstr-lambda ran for 0. secs (0.u,0.s)
 Tactic call to_constr ran for 0. secs (0.u,0.s)
 Params: n= 612
-Tactic call uconstr-lambda ran for 0. secs (0.u,0.s)
+Tactic call uconstr-lambda ran for 0.001 secs (0.001u,0.s)
 Tactic call to_constr ran for 0. secs (0.u,0.s)
 Params: n= 613
-Tactic call uconstr-lambda ran for 0. secs (0.u,0.s)
+Tactic call uconstr-lambda ran for 0.001 secs (0.001u,0.s)
 Tactic call to_constr ran for 0. secs (0.u,0.s)
 Params: n= 614
-Tactic call uconstr-lambda ran for 0. secs (0.u,0.s)
+Tactic call uconstr-lambda ran for 0.001 secs (0.001u,0.s)
 Tactic call to_constr ran for 0. secs (0.u,0.s)
 Params: n= 615
-Tactic call uconstr-lambda ran for 0. secs (0.u,0.s)
+Tactic call uconstr-lambda ran for 0.001 secs (0.001u,0.s)
 Tactic call to_constr ran for 0. secs (0.u,0.s)
 Params: n= 616
-Tactic call uconstr-lambda ran for 0. secs (0.u,0.s)
+Tactic call uconstr-lambda ran for 0.001 secs (0.001u,0.s)
 Tactic call to_constr ran for 0. secs (0.u,0.s)
 Params: n= 617
-Tactic call uconstr-lambda ran for 0. secs (0.u,0.s)
+Tactic call uconstr-lambda ran for 0.001 secs (0.001u,0.s)
 Tactic call to_constr ran for 0. secs (0.u,0.s)
 Params: n= 618
-Tactic call uconstr-lambda ran for 0. secs (0.u,0.s)
+Tactic call uconstr-lambda ran for 0.001 secs (0.001u,0.s)
 Tactic call to_constr ran for 0. secs (0.u,0.s)
 Params: n= 619
-Tactic call uconstr-lambda ran for 0. secs (0.u,0.s)
+Tactic call uconstr-lambda ran for 0.001 secs (0.001u,0.s)
 Tactic call to_constr ran for 0. secs (0.u,0.s)
 Params: n= 620
-Tactic call uconstr-lambda ran for 0. secs (0.u,0.s)
+Tactic call uconstr-lambda ran for 0.001 secs (0.001u,0.s)
 Tactic call to_constr ran for 0. secs (0.u,0.s)
 Params: n= 621
-Tactic call uconstr-lambda ran for 0. secs (0.u,0.s)
+Tactic call uconstr-lambda ran for 0.001 secs (0.001u,0.s)
 Tactic call to_constr ran for 0. secs (0.u,0.s)
 Params: n= 622
-Tactic call uconstr-lambda ran for 0. secs (0.u,0.s)
+Tactic call uconstr-lambda ran for 0.001 secs (0.001u,0.s)
 Tactic call to_constr ran for 0. secs (0.u,0.s)
 Params: n= 623
-Tactic call uconstr-lambda ran for 0. secs (0.u,0.s)
+Tactic call uconstr-lambda ran for 0.001 secs (0.001u,0.s)
 Tactic call to_constr ran for 0. secs (0.u,0.s)
 Params: n= 624
-Tactic call uconstr-lambda ran for 0. secs (0.u,0.s)
+Tactic call uconstr-lambda ran for 0.001 secs (0.001u,0.s)
 Tactic call to_constr ran for 0. secs (0.u,0.s)
 Params: n= 625
-Tactic call uconstr-lambda ran for 0. secs (0.u,0.s)
+Tactic call uconstr-lambda ran for 0.001 secs (0.001u,0.s)
 Tactic call to_constr ran for 0. secs (0.u,0.s)
 Params: n= 626
-Tactic call uconstr-lambda ran for 0. secs (0.u,0.s)
+Tactic call uconstr-lambda ran for 0.001 secs (0.001u,0.s)
 Tactic call to_constr ran for 0. secs (0.u,0.s)
 Params: n= 627
 Tactic call uconstr-lambda ran for 0.001 secs (0.001u,0.s)
 Tactic call to_constr ran for 0. secs (0.u,0.s)
 Params: n= 628
-Tactic call uconstr-lambda ran for 0. secs (0.u,0.s)
+Tactic call uconstr-lambda ran for 0.001 secs (0.001u,0.s)
 Tactic call to_constr ran for 0. secs (0.u,0.s)
 Params: n= 629
-Tactic call uconstr-lambda ran for 0. secs (0.u,0.s)
+Tactic call uconstr-lambda ran for 0.001 secs (0.001u,0.s)
 Tactic call to_constr ran for 0. secs (0.u,0.s)
 Params: n= 630
 Tactic call uconstr-lambda ran for 0. secs (0.u,0.s)
 Tactic call to_constr ran for 0. secs (0.u,0.s)
 Params: n= 631
-Tactic call uconstr-lambda ran for 0. secs (0.u,0.s)
+Tactic call uconstr-lambda ran for 0.001 secs (0.001u,0.s)
 Tactic call to_constr ran for 0. secs (0.u,0.s)
 Params: n= 632
-Tactic call uconstr-lambda ran for 0. secs (0.u,0.s)
+Tactic call uconstr-lambda ran for 0.001 secs (0.001u,0.s)
 Tactic call to_constr ran for 0. secs (0.u,0.s)
 Params: n= 633
 Tactic call uconstr-lambda ran for 0. secs (0.u,0.s)
@@ -1901,7 +1901,7 @@ Params: n= 634
 Tactic call uconstr-lambda ran for 0. secs (0.u,0.s)
 Tactic call to_constr ran for 0. secs (0.u,0.s)
 Params: n= 635
-Tactic call uconstr-lambda ran for 0. secs (0.u,0.s)
+Tactic call uconstr-lambda ran for 0.001 secs (0.001u,0.s)
 Tactic call to_constr ran for 0. secs (0.u,0.s)
 Params: n= 636
 Tactic call uconstr-lambda ran for 0. secs (0.u,0.s)
@@ -1910,19 +1910,19 @@ Params: n= 637
 Tactic call uconstr-lambda ran for 0. secs (0.u,0.s)
 Tactic call to_constr ran for 0. secs (0.u,0.s)
 Params: n= 638
-Tactic call uconstr-lambda ran for 0. secs (0.u,0.s)
+Tactic call uconstr-lambda ran for 0.001 secs (0.001u,0.s)
 Tactic call to_constr ran for 0. secs (0.u,0.s)
 Params: n= 639
-Tactic call uconstr-lambda ran for 0.046 secs (0.038u,0.007s)
+Tactic call uconstr-lambda ran for 0.048 secs (0.048u,0.s)
 Tactic call to_constr ran for 0. secs (0.u,0.s)
 Params: n= 640
-Tactic call uconstr-lambda ran for 0. secs (0.u,0.s)
+Tactic call uconstr-lambda ran for 0.001 secs (0.u,0.s)
 Tactic call to_constr ran for 0. secs (0.u,0.s)
 Params: n= 641
-Tactic call uconstr-lambda ran for 0. secs (0.u,0.s)
+Tactic call uconstr-lambda ran for 0.001 secs (0.001u,0.s)
 Tactic call to_constr ran for 0. secs (0.u,0.s)
 Params: n= 642
-Tactic call uconstr-lambda ran for 0. secs (0.u,0.s)
+Tactic call uconstr-lambda ran for 0.001 secs (0.001u,0.s)
 Tactic call to_constr ran for 0. secs (0.u,0.s)
 Params: n= 643
 Tactic call uconstr-lambda ran for 0.001 secs (0.001u,0.s)
@@ -1937,19 +1937,19 @@ Params: n= 646
 Tactic call uconstr-lambda ran for 0.001 secs (0.001u,0.s)
 Tactic call to_constr ran for 0. secs (0.u,0.s)
 Params: n= 647
-Tactic call uconstr-lambda ran for 0. secs (0.u,0.s)
+Tactic call uconstr-lambda ran for 0.001 secs (0.001u,0.s)
 Tactic call to_constr ran for 0. secs (0.u,0.s)
 Params: n= 648
 Tactic call uconstr-lambda ran for 0.001 secs (0.001u,0.s)
 Tactic call to_constr ran for 0. secs (0.u,0.s)
 Params: n= 649
-Tactic call uconstr-lambda ran for 0.001 secs (0.001u,0.s)
+Tactic call uconstr-lambda ran for 0. secs (0.u,0.s)
 Tactic call to_constr ran for 0. secs (0.u,0.s)
 Params: n= 650
 Tactic call uconstr-lambda ran for 0.001 secs (0.001u,0.s)
 Tactic call to_constr ran for 0. secs (0.u,0.s)
 Params: n= 651
-Tactic call uconstr-lambda ran for 0.174 secs (0.174u,0.s)
+Tactic call uconstr-lambda ran for 0.182 secs (0.182u,0.s)
 Tactic call to_constr ran for 0. secs (0.u,0.s)
 Params: n= 652
 Tactic call uconstr-lambda ran for 0.001 secs (0.001u,0.s)
@@ -1985,7 +1985,7 @@ Params: n= 662
 Tactic call uconstr-lambda ran for 0.001 secs (0.001u,0.s)
 Tactic call to_constr ran for 0. secs (0.u,0.s)
 Params: n= 663
-Tactic call uconstr-lambda ran for 0.047 secs (0.039u,0.007s)
+Tactic call uconstr-lambda ran for 0.047 secs (0.043u,0.003s)
 Tactic call to_constr ran for 0. secs (0.u,0.s)
 Params: n= 664
 Tactic call uconstr-lambda ran for 0.001 secs (0.001u,0.s)
@@ -1994,10 +1994,10 @@ Params: n= 665
 Tactic call uconstr-lambda ran for 0.001 secs (0.001u,0.s)
 Tactic call to_constr ran for 0. secs (0.u,0.s)
 Params: n= 666
-Tactic call uconstr-lambda ran for 0. secs (0.u,0.s)
+Tactic call uconstr-lambda ran for 0.001 secs (0.001u,0.s)
 Tactic call to_constr ran for 0. secs (0.u,0.s)
 Params: n= 667
-Tactic call uconstr-lambda ran for 0. secs (0.u,0.s)
+Tactic call uconstr-lambda ran for 0.001 secs (0.001u,0.s)
 Tactic call to_constr ran for 0. secs (0.u,0.s)
 Params: n= 668
 Tactic call uconstr-lambda ran for 0.001 secs (0.001u,0.s)
@@ -2054,7 +2054,7 @@ Params: n= 685
 Tactic call uconstr-lambda ran for 0.001 secs (0.001u,0.s)
 Tactic call to_constr ran for 0. secs (0.u,0.s)
 Params: n= 686
-Tactic call uconstr-lambda ran for 0.046 secs (0.03u,0.015s)
+Tactic call uconstr-lambda ran for 0.046 secs (0.046u,0.s)
 Tactic call to_constr ran for 0. secs (0.u,0.s)
 Params: n= 687
 Tactic call uconstr-lambda ran for 0.001 secs (0.001u,0.s)
@@ -2186,7 +2186,7 @@ Params: n= 729
 Tactic call uconstr-lambda ran for 0.001 secs (0.001u,0.s)
 Tactic call to_constr ran for 0. secs (0.u,0.s)
 Params: n= 730
-Tactic call uconstr-lambda ran for 0.048 secs (0.048u,0.s)
+Tactic call uconstr-lambda ran for 0.047 secs (0.043u,0.003s)
 Tactic call to_constr ran for 0. secs (0.u,0.s)
 Params: n= 731
 Tactic call uconstr-lambda ran for 0.001 secs (0.001u,0.s)
@@ -2249,7 +2249,7 @@ Params: n= 750
 Tactic call uconstr-lambda ran for 0.001 secs (0.001u,0.s)
 Tactic call to_constr ran for 0. secs (0.u,0.s)
 Params: n= 751
-Tactic call uconstr-lambda ran for 0.047 secs (0.043u,0.003s)
+Tactic call uconstr-lambda ran for 0.047 secs (0.039u,0.008s)
 Tactic call to_constr ran for 0. secs (0.u,0.s)
 Params: n= 752
 Tactic call uconstr-lambda ran for 0.001 secs (0.001u,0.s)
@@ -2486,7 +2486,7 @@ Params: n= 829
 Tactic call uconstr-lambda ran for 0.001 secs (0.001u,0.s)
 Tactic call to_constr ran for 0. secs (0.u,0.s)
 Params: n= 830
-Tactic call uconstr-lambda ran for 0.025 secs (0.025u,0.s)
+Tactic call uconstr-lambda ran for 0.026 secs (0.026u,0.s)
 Tactic call to_constr ran for 0. secs (0.u,0.s)
 Params: n= 831
 Tactic call uconstr-lambda ran for 0.001 secs (0.001u,0.s)
@@ -2864,7 +2864,7 @@ Params: n= 955
 Tactic call uconstr-lambda ran for 0.001 secs (0.001u,0.s)
 Tactic call to_constr ran for 0. secs (0.u,0.s)
 Params: n= 956
-Tactic call uconstr-lambda ran for 0.001 secs (0.001u,0.s)
+Tactic call uconstr-lambda ran for 0.001 secs (0.u,0.001s)
 Tactic call to_constr ran for 0. secs (0.u,0.s)
 Params: n= 957
 Tactic call uconstr-lambda ran for 0.001 secs (0.001u,0.s)
@@ -2879,7 +2879,7 @@ Params: n= 960
 Tactic call uconstr-lambda ran for 0.001 secs (0.001u,0.s)
 Tactic call to_constr ran for 0. secs (0.u,0.s)
 Params: n= 961
-Tactic call uconstr-lambda ran for 0.05 secs (0.042u,0.007s)
+Tactic call uconstr-lambda ran for 0.048 secs (0.044u,0.003s)
 Tactic call to_constr ran for 0. secs (0.u,0.s)
 Params: n= 962
 Tactic call uconstr-lambda ran for 0.001 secs (0.001u,0.s)
@@ -2928,7 +2928,7 @@ Tactic call uconstr-lambda ran for 0.001 secs (0.001u,0.s)
 Tactic call to_constr ran for 0. secs (0.u,0.s)
 Params: n= 977
 Tactic call uconstr-lambda ran for 0.001 secs (0.001u,0.s)
-Tactic call to_constr ran for 0.049 secs (0.049u,0.s)
+Tactic call to_constr ran for 0.048 secs (0.044u,0.003s)
 Params: n= 978
 Tactic call uconstr-lambda ran for 0.001 secs (0.001u,0.s)
 Tactic call to_constr ran for 0. secs (0.u,0.s)
@@ -2952,7 +2952,7 @@ Tactic call uconstr-lambda ran for 0.001 secs (0.001u,0.s)
 Tactic call to_constr ran for 0. secs (0.u,0.s)
 Params: n= 985
 Tactic call uconstr-lambda ran for 0.001 secs (0.001u,0.s)
-Tactic call to_constr ran for 0.015 secs (0.015u,0.s)
+Tactic call to_constr ran for 0.016 secs (0.016u,0.s)
 Params: n= 986
 Tactic call uconstr-lambda ran for 0.001 secs (0.001u,0.s)
 Tactic call to_constr ran for 0. secs (0.u,0.s)
@@ -2976,7 +2976,7 @@ Tactic call uconstr-lambda ran for 0.001 secs (0.001u,0.s)
 Tactic call to_constr ran for 0. secs (0.u,0.s)
 Params: n= 993
 Tactic call uconstr-lambda ran for 0.001 secs (0.001u,0.s)
-Tactic call to_constr ran for 0.05 secs (0.05u,0.s)
+Tactic call to_constr ran for 0.049 secs (0.037u,0.011s)
 Params: n= 994
 Tactic call uconstr-lambda ran for 0.001 secs (0.001u,0.s)
 Tactic call to_constr ran for 0. secs (0.u,0.s)
@@ -3065,7 +3065,7 @@ Params: n= 1022
 Tactic call uconstr-lambda ran for 0.001 secs (0.001u,0.s)
 Tactic call to_constr ran for 0. secs (0.u,0.s)
 Params: n= 1023
-Tactic call uconstr-lambda ran for 0.001 secs (0.u,0.001s)
+Tactic call uconstr-lambda ran for 0.001 secs (0.001u,0.s)
 Tactic call to_constr ran for 0. secs (0.u,0.s)
 Params: n= 1024
 Tactic call uconstr-lambda ran for 0.001 secs (0.001u,0.s)
@@ -3155,7 +3155,7 @@ Params: n= 1052
 Tactic call uconstr-lambda ran for 0.001 secs (0.001u,0.s)
 Tactic call to_constr ran for 0. secs (0.u,0.s)
 Params: n= 1053
-Tactic call uconstr-lambda ran for 0.002 secs (0.002u,0.s)
+Tactic call uconstr-lambda ran for 0.001 secs (0.001u,0.s)
 Tactic call to_constr ran for 0. secs (0.u,0.s)
 Params: n= 1054
 Tactic call uconstr-lambda ran for 0.001 secs (0.001u,0.s)
@@ -3173,7 +3173,7 @@ Params: n= 1058
 Tactic call uconstr-lambda ran for 0.001 secs (0.001u,0.s)
 Tactic call to_constr ran for 0. secs (0.u,0.s)
 Params: n= 1059
-Tactic call uconstr-lambda ran for 0.001 secs (0.001u,0.s)
+Tactic call uconstr-lambda ran for 0.002 secs (0.002u,0.s)
 Tactic call to_constr ran for 0. secs (0.u,0.s)
 Params: n= 1060
 Tactic call uconstr-lambda ran for 0.001 secs (0.001u,0.s)
@@ -3204,7 +3204,7 @@ Tactic call uconstr-lambda ran for 0.001 secs (0.001u,0.s)
 Tactic call to_constr ran for 0. secs (0.u,0.s)
 Params: n= 1069
 Tactic call uconstr-lambda ran for 0.001 secs (0.001u,0.s)
-Tactic call to_constr ran for 0.08 secs (0.08u,0.s)
+Tactic call to_constr ran for 0.082 secs (0.082u,0.s)
 Params: n= 1070
 Tactic call uconstr-lambda ran for 0.001 secs (0.001u,0.s)
 Tactic call to_constr ran for 0. secs (0.u,0.s)
@@ -3242,10 +3242,10 @@ Params: n= 1081
 Tactic call uconstr-lambda ran for 0.001 secs (0.001u,0.s)
 Tactic call to_constr ran for 0. secs (0.u,0.s)
 Params: n= 1082
-Tactic call uconstr-lambda ran for 0.001 secs (0.001u,0.s)
+Tactic call uconstr-lambda ran for 0.001 secs (0.u,0.001s)
 Tactic call to_constr ran for 0. secs (0.u,0.s)
 Params: n= 1083
-Tactic call uconstr-lambda ran for 0.001 secs (0.001u,0.s)
+Tactic call uconstr-lambda ran for 0.002 secs (0.001u,0.s)
 Tactic call to_constr ran for 0. secs (0.u,0.s)
 Params: n= 1084
 Tactic call uconstr-lambda ran for 0.001 secs (0.001u,0.s)
@@ -3254,7 +3254,7 @@ Params: n= 1085
 Tactic call uconstr-lambda ran for 0.001 secs (0.001u,0.s)
 Tactic call to_constr ran for 0. secs (0.u,0.s)
 Params: n= 1086
-Tactic call uconstr-lambda ran for 0.001 secs (0.001u,0.s)
+Tactic call uconstr-lambda ran for 0.002 secs (0.002u,0.s)
 Tactic call to_constr ran for 0. secs (0.u,0.s)
 Params: n= 1087
 Tactic call uconstr-lambda ran for 0.001 secs (0.001u,0.s)
@@ -3269,10 +3269,10 @@ Params: n= 1090
 Tactic call uconstr-lambda ran for 0.001 secs (0.001u,0.s)
 Tactic call to_constr ran for 0. secs (0.u,0.s)
 Params: n= 1091
-Tactic call uconstr-lambda ran for 0.046 secs (0.046u,0.s)
+Tactic call uconstr-lambda ran for 0.045 secs (0.041u,0.003s)
 Tactic call to_constr ran for 0. secs (0.u,0.s)
 Params: n= 1092
-Tactic call uconstr-lambda ran for 0.001 secs (0.001u,0.s)
+Tactic call uconstr-lambda ran for 0.002 secs (0.002u,0.s)
 Tactic call to_constr ran for 0. secs (0.u,0.s)
 Params: n= 1093
 Tactic call uconstr-lambda ran for 0.001 secs (0.001u,0.s)
@@ -3281,28 +3281,28 @@ Params: n= 1094
 Tactic call uconstr-lambda ran for 0.002 secs (0.002u,0.s)
 Tactic call to_constr ran for 0. secs (0.u,0.s)
 Params: n= 1095
-Tactic call uconstr-lambda ran for 0.002 secs (0.002u,0.s)
+Tactic call uconstr-lambda ran for 0.001 secs (0.001u,0.s)
 Tactic call to_constr ran for 0. secs (0.u,0.s)
 Params: n= 1096
-Tactic call uconstr-lambda ran for 0.002 secs (0.002u,0.s)
+Tactic call uconstr-lambda ran for 0.001 secs (0.001u,0.s)
 Tactic call to_constr ran for 0. secs (0.u,0.s)
 Params: n= 1097
-Tactic call uconstr-lambda ran for 0.002 secs (0.002u,0.s)
+Tactic call uconstr-lambda ran for 0.001 secs (0.001u,0.s)
 Tactic call to_constr ran for 0. secs (0.u,0.s)
 Params: n= 1098
-Tactic call uconstr-lambda ran for 0.127 secs (0.127u,0.s)
+Tactic call uconstr-lambda ran for 0.128 secs (0.128u,0.s)
 Tactic call to_constr ran for 0. secs (0.u,0.s)
 Params: n= 1099
 Tactic call uconstr-lambda ran for 0.002 secs (0.002u,0.s)
 Tactic call to_constr ran for 0. secs (0.u,0.s)
 Params: n= 1100
-Tactic call uconstr-lambda ran for 0.001 secs (0.001u,0.s)
+Tactic call uconstr-lambda ran for 0.002 secs (0.002u,0.s)
 Tactic call to_constr ran for 0. secs (0.u,0.s)
 Params: n= 1101
 Tactic call uconstr-lambda ran for 0.001 secs (0.001u,0.s)
 Tactic call to_constr ran for 0. secs (0.u,0.s)
 Params: n= 1102
-Tactic call uconstr-lambda ran for 0.002 secs (0.002u,0.s)
+Tactic call uconstr-lambda ran for 0.002 secs (0.001u,0.s)
 Tactic call to_constr ran for 0. secs (0.u,0.s)
 Params: n= 1103
 Tactic call uconstr-lambda ran for 0.001 secs (0.001u,0.s)
@@ -3311,8 +3311,8 @@ Params: n= 1104
 Tactic call uconstr-lambda ran for 0.002 secs (0.002u,0.s)
 Tactic call to_constr ran for 0. secs (0.u,0.s)
 Params: n= 1105
-Tactic call uconstr-lambda ran for 0.002 secs (0.002u,0.s)
-Tactic call to_constr ran for 0.054 secs (0.046u,0.007s)
+Tactic call uconstr-lambda ran for 0.001 secs (0.001u,0.s)
+Tactic call to_constr ran for 0.053 secs (0.049u,0.003s)
 Params: n= 1106
 Tactic call uconstr-lambda ran for 0.001 secs (0.001u,0.s)
 Tactic call to_constr ran for 0. secs (0.u,0.s)
@@ -3323,46 +3323,46 @@ Params: n= 1108
 Tactic call uconstr-lambda ran for 0.001 secs (0.001u,0.s)
 Tactic call to_constr ran for 0. secs (0.u,0.s)
 Params: n= 1109
-Tactic call uconstr-lambda ran for 0.002 secs (0.002u,0.s)
+Tactic call uconstr-lambda ran for 0.001 secs (0.001u,0.s)
 Tactic call to_constr ran for 0. secs (0.u,0.s)
 Params: n= 1110
 Tactic call uconstr-lambda ran for 0.001 secs (0.001u,0.s)
 Tactic call to_constr ran for 0. secs (0.u,0.s)
 Params: n= 1111
-Tactic call uconstr-lambda ran for 0.002 secs (0.002u,0.s)
+Tactic call uconstr-lambda ran for 0.002 secs (0.001u,0.s)
 Tactic call to_constr ran for 0. secs (0.u,0.s)
 Params: n= 1112
 Tactic call uconstr-lambda ran for 0.001 secs (0.001u,0.s)
 Tactic call to_constr ran for 0. secs (0.u,0.s)
 Params: n= 1113
-Tactic call uconstr-lambda ran for 0.002 secs (0.002u,0.s)
+Tactic call uconstr-lambda ran for 0.001 secs (0.001u,0.s)
 Tactic call to_constr ran for 0. secs (0.u,0.s)
 Params: n= 1114
 Tactic call uconstr-lambda ran for 0.001 secs (0.001u,0.s)
 Tactic call to_constr ran for 0. secs (0.u,0.s)
 Params: n= 1115
-Tactic call uconstr-lambda ran for 0.001 secs (0.001u,0.s)
+Tactic call uconstr-lambda ran for 0.002 secs (0.002u,0.s)
 Tactic call to_constr ran for 0. secs (0.u,0.s)
 Params: n= 1116
-Tactic call uconstr-lambda ran for 0.001 secs (0.001u,0.s)
+Tactic call uconstr-lambda ran for 0.002 secs (0.002u,0.s)
 Tactic call to_constr ran for 0. secs (0.u,0.s)
 Params: n= 1117
 Tactic call uconstr-lambda ran for 0.002 secs (0.002u,0.s)
 Tactic call to_constr ran for 0. secs (0.u,0.s)
 Params: n= 1118
-Tactic call uconstr-lambda ran for 0.002 secs (0.002u,0.s)
+Tactic call uconstr-lambda ran for 0.001 secs (0.001u,0.s)
 Tactic call to_constr ran for 0. secs (0.u,0.s)
 Params: n= 1119
-Tactic call uconstr-lambda ran for 0.002 secs (0.002u,0.s)
+Tactic call uconstr-lambda ran for 0.001 secs (0.001u,0.s)
 Tactic call to_constr ran for 0. secs (0.u,0.s)
 Params: n= 1120
 Tactic call uconstr-lambda ran for 0.001 secs (0.001u,0.s)
 Tactic call to_constr ran for 0. secs (0.u,0.s)
 Params: n= 1121
-Tactic call uconstr-lambda ran for 0.001 secs (0.001u,0.s)
+Tactic call uconstr-lambda ran for 0.002 secs (0.002u,0.s)
 Tactic call to_constr ran for 0. secs (0.u,0.s)
 Params: n= 1122
-Tactic call uconstr-lambda ran for 0.002 secs (0.002u,0.s)
+Tactic call uconstr-lambda ran for 0.001 secs (0.001u,0.s)
 Tactic call to_constr ran for 0. secs (0.u,0.s)
 Params: n= 1123
 Tactic call uconstr-lambda ran for 0.002 secs (0.002u,0.s)
@@ -3386,7 +3386,7 @@ Params: n= 1129
 Tactic call uconstr-lambda ran for 0.002 secs (0.002u,0.s)
 Tactic call to_constr ran for 0. secs (0.u,0.s)
 Params: n= 1130
-Tactic call uconstr-lambda ran for 0.001 secs (0.001u,0.s)
+Tactic call uconstr-lambda ran for 0.002 secs (0.002u,0.s)
 Tactic call to_constr ran for 0. secs (0.u,0.s)
 Params: n= 1131
 Tactic call uconstr-lambda ran for 0.002 secs (0.002u,0.s)
@@ -3396,7 +3396,7 @@ Tactic call uconstr-lambda ran for 0.002 secs (0.002u,0.s)
 Tactic call to_constr ran for 0. secs (0.u,0.s)
 Params: n= 1133
 Tactic call uconstr-lambda ran for 0.002 secs (0.002u,0.s)
-Tactic call to_constr ran for 0.049 secs (0.045u,0.003s)
+Tactic call to_constr ran for 0.048 secs (0.044u,0.003s)
 Params: n= 1134
 Tactic call uconstr-lambda ran for 0.002 secs (0.002u,0.s)
 Tactic call to_constr ran for 0. secs (0.u,0.s)
@@ -3407,7 +3407,7 @@ Params: n= 1136
 Tactic call uconstr-lambda ran for 0.002 secs (0.002u,0.s)
 Tactic call to_constr ran for 0. secs (0.u,0.s)
 Params: n= 1137
-Tactic call uconstr-lambda ran for 0.002 secs (0.002u,0.s)
+Tactic call uconstr-lambda ran for 0.001 secs (0.001u,0.s)
 Tactic call to_constr ran for 0. secs (0.u,0.s)
 Params: n= 1138
 Tactic call uconstr-lambda ran for 0.002 secs (0.002u,0.s)
@@ -3419,19 +3419,19 @@ Params: n= 1140
 Tactic call uconstr-lambda ran for 0.002 secs (0.002u,0.s)
 Tactic call to_constr ran for 0.13 secs (0.13u,0.s)
 Params: n= 1141
-Tactic call uconstr-lambda ran for 0.002 secs (0.002u,0.s)
+Tactic call uconstr-lambda ran for 0.001 secs (0.001u,0.s)
 Tactic call to_constr ran for 0. secs (0.u,0.s)
 Params: n= 1142
 Tactic call uconstr-lambda ran for 0.002 secs (0.002u,0.s)
 Tactic call to_constr ran for 0. secs (0.u,0.s)
 Params: n= 1143
-Tactic call uconstr-lambda ran for 0.001 secs (0.001u,0.s)
+Tactic call uconstr-lambda ran for 0.002 secs (0.002u,0.s)
 Tactic call to_constr ran for 0. secs (0.u,0.s)
 Params: n= 1144
 Tactic call uconstr-lambda ran for 0.002 secs (0.002u,0.s)
 Tactic call to_constr ran for 0. secs (0.u,0.s)
 Params: n= 1145
-Tactic call uconstr-lambda ran for 0.002 secs (0.002u,0.s)
+Tactic call uconstr-lambda ran for 0.001 secs (0.002u,0.s)
 Tactic call to_constr ran for 0. secs (0.u,0.s)
 Params: n= 1146
 Tactic call uconstr-lambda ran for 0.002 secs (0.002u,0.s)
@@ -3443,7 +3443,7 @@ Params: n= 1148
 Tactic call uconstr-lambda ran for 0.002 secs (0.002u,0.s)
 Tactic call to_constr ran for 0. secs (0.u,0.s)
 Params: n= 1149
-Tactic call uconstr-lambda ran for 0.001 secs (0.001u,0.s)
+Tactic call uconstr-lambda ran for 0.002 secs (0.002u,0.s)
 Tactic call to_constr ran for 0. secs (0.u,0.s)
 Params: n= 1150
 Tactic call uconstr-lambda ran for 0.002 secs (0.002u,0.s)
@@ -3452,13 +3452,13 @@ Params: n= 1151
 Tactic call uconstr-lambda ran for 0.002 secs (0.002u,0.s)
 Tactic call to_constr ran for 0. secs (0.u,0.s)
 Params: n= 1152
-Tactic call uconstr-lambda ran for 0.001 secs (0.001u,0.s)
+Tactic call uconstr-lambda ran for 0.002 secs (0.002u,0.s)
 Tactic call to_constr ran for 0. secs (0.u,0.s)
 Params: n= 1153
 Tactic call uconstr-lambda ran for 0.002 secs (0.002u,0.s)
 Tactic call to_constr ran for 0. secs (0.u,0.s)
 Params: n= 1154
-Tactic call uconstr-lambda ran for 0.001 secs (0.001u,0.s)
+Tactic call uconstr-lambda ran for 0.002 secs (0.002u,0.s)
 Tactic call to_constr ran for 0. secs (0.u,0.s)
 Params: n= 1155
 Tactic call uconstr-lambda ran for 0.002 secs (0.002u,0.s)
@@ -3467,7 +3467,7 @@ Params: n= 1156
 Tactic call uconstr-lambda ran for 0.002 secs (0.002u,0.s)
 Tactic call to_constr ran for 0. secs (0.u,0.s)
 Params: n= 1157
-Tactic call uconstr-lambda ran for 0.002 secs (0.002u,0.s)
+Tactic call uconstr-lambda ran for 0.002 secs (0.u,0.002s)
 Tactic call to_constr ran for 0. secs (0.u,0.s)
 Params: n= 1158
 Tactic call uconstr-lambda ran for 0.002 secs (0.002u,0.s)
@@ -3476,13 +3476,13 @@ Params: n= 1159
 Tactic call uconstr-lambda ran for 0.002 secs (0.002u,0.s)
 Tactic call to_constr ran for 0. secs (0.u,0.s)
 Params: n= 1160
-Tactic call uconstr-lambda ran for 0.002 secs (0.002u,0.s)
+Tactic call uconstr-lambda ran for 0.001 secs (0.001u,0.s)
 Tactic call to_constr ran for 0. secs (0.u,0.s)
 Params: n= 1161
 Tactic call uconstr-lambda ran for 0.001 secs (0.001u,0.s)
 Tactic call to_constr ran for 0. secs (0.u,0.s)
 Params: n= 1162
-Tactic call uconstr-lambda ran for 0.002 secs (0.002u,0.s)
+Tactic call uconstr-lambda ran for 0.002 secs (0.u,0.002s)
 Tactic call to_constr ran for 0. secs (0.u,0.s)
 Params: n= 1163
 Tactic call uconstr-lambda ran for 0.002 secs (0.002u,0.s)
@@ -3497,7 +3497,7 @@ Params: n= 1166
 Tactic call uconstr-lambda ran for 0.002 secs (0.002u,0.s)
 Tactic call to_constr ran for 0. secs (0.u,0.s)
 Params: n= 1167
-Tactic call uconstr-lambda ran for 0.002 secs (0.u,0.002s)
+Tactic call uconstr-lambda ran for 0.002 secs (0.002u,0.s)
 Tactic call to_constr ran for 0. secs (0.u,0.s)
 Params: n= 1168
 Tactic call uconstr-lambda ran for 0.002 secs (0.002u,0.s)
@@ -3518,13 +3518,13 @@ Params: n= 1173
 Tactic call uconstr-lambda ran for 0.002 secs (0.002u,0.s)
 Tactic call to_constr ran for 0. secs (0.u,0.s)
 Params: n= 1174
-Tactic call uconstr-lambda ran for 0.05 secs (0.046u,0.003s)
+Tactic call uconstr-lambda ran for 0.049 secs (0.049u,0.s)
 Tactic call to_constr ran for 0. secs (0.u,0.s)
 Params: n= 1175
 Tactic call uconstr-lambda ran for 0.002 secs (0.002u,0.s)
 Tactic call to_constr ran for 0. secs (0.u,0.s)
 Params: n= 1176
-Tactic call uconstr-lambda ran for 0.002 secs (0.u,0.002s)
+Tactic call uconstr-lambda ran for 0.002 secs (0.002u,0.s)
 Tactic call to_constr ran for 0. secs (0.u,0.s)
 Params: n= 1177
 Tactic call uconstr-lambda ran for 0.002 secs (0.002u,0.s)
@@ -3540,9 +3540,9 @@ Tactic call uconstr-lambda ran for 0.002 secs (0.002u,0.s)
 Tactic call to_constr ran for 0. secs (0.u,0.s)
 Params: n= 1181
 Tactic call uconstr-lambda ran for 0.002 secs (0.002u,0.s)
-Tactic call to_constr ran for 0. secs (0.u,0.s)
+Tactic call to_constr ran for 0.001 secs (0.u,0.s)
 Params: n= 1182
-Tactic call uconstr-lambda ran for 0.002 secs (0.002u,0.s)
+Tactic call uconstr-lambda ran for 0.001 secs (0.001u,0.s)
 Tactic call to_constr ran for 0. secs (0.u,0.s)
 Params: n= 1183
 Tactic call uconstr-lambda ran for 0.002 secs (0.002u,0.s)
@@ -3555,7 +3555,7 @@ Tactic call uconstr-lambda ran for 0.002 secs (0.002u,0.s)
 Tactic call to_constr ran for 0. secs (0.u,0.s)
 Params: n= 1186
 Tactic call uconstr-lambda ran for 0.002 secs (0.002u,0.s)
-Tactic call to_constr ran for 0.001 secs (0.001u,0.s)
+Tactic call to_constr ran for 0. secs (0.u,0.s)
 Params: n= 1187
 Tactic call uconstr-lambda ran for 0.002 secs (0.002u,0.s)
 Tactic call to_constr ran for 0. secs (0.u,0.s)
@@ -3573,7 +3573,7 @@ Tactic call uconstr-lambda ran for 0.002 secs (0.002u,0.s)
 Tactic call to_constr ran for 0. secs (0.u,0.s)
 Params: n= 1192
 Tactic call uconstr-lambda ran for 0.002 secs (0.002u,0.s)
-Tactic call to_constr ran for 0.001 secs (0.001u,0.s)
+Tactic call to_constr ran for 0. secs (0.u,0.s)
 Params: n= 1193
 Tactic call uconstr-lambda ran for 0.002 secs (0.002u,0.s)
 Tactic call to_constr ran for 0. secs (0.u,0.s)
@@ -3585,13 +3585,13 @@ Tactic call uconstr-lambda ran for 0.002 secs (0.002u,0.s)
 Tactic call to_constr ran for 0. secs (0.u,0.s)
 Params: n= 1196
 Tactic call uconstr-lambda ran for 0.002 secs (0.002u,0.s)
-Tactic call to_constr ran for 0.001 secs (0.u,0.s)
+Tactic call to_constr ran for 0. secs (0.u,0.s)
 Params: n= 1197
 Tactic call uconstr-lambda ran for 0.002 secs (0.002u,0.s)
-Tactic call to_constr ran for 0.001 secs (0.001u,0.s)
+Tactic call to_constr ran for 0. secs (0.u,0.s)
 Params: n= 1198
 Tactic call uconstr-lambda ran for 0.002 secs (0.002u,0.s)
-Tactic call to_constr ran for 0.001 secs (0.001u,0.s)
+Tactic call to_constr ran for 0. secs (0.u,0.s)
 Params: n= 1199
 Tactic call uconstr-lambda ran for 0.002 secs (0.002u,0.s)
 Tactic call to_constr ran for 0. secs (0.u,0.s)
@@ -3606,7 +3606,7 @@ Tactic call uconstr-lambda ran for 0.002 secs (0.002u,0.s)
 Tactic call to_constr ran for 0. secs (0.u,0.s)
 Params: n= 1203
 Tactic call uconstr-lambda ran for 0.002 secs (0.002u,0.s)
-Tactic call to_constr ran for 0. secs (0.u,0.s)
+Tactic call to_constr ran for 0.001 secs (0.001u,0.s)
 Params: n= 1204
 Tactic call uconstr-lambda ran for 0.002 secs (0.002u,0.s)
 Tactic call to_constr ran for 0. secs (0.u,0.s)
@@ -3618,7 +3618,7 @@ Tactic call uconstr-lambda ran for 0.002 secs (0.002u,0.s)
 Tactic call to_constr ran for 0. secs (0.u,0.s)
 Params: n= 1207
 Tactic call uconstr-lambda ran for 0.023 secs (0.023u,0.s)
-Tactic call to_constr ran for 0.001 secs (0.001u,0.s)
+Tactic call to_constr ran for 0. secs (0.u,0.s)
 Params: n= 1208
 Tactic call uconstr-lambda ran for 0.002 secs (0.002u,0.s)
 Tactic call to_constr ran for 0. secs (0.u,0.s)
@@ -3654,7 +3654,7 @@ Tactic call uconstr-lambda ran for 0.002 secs (0.002u,0.s)
 Tactic call to_constr ran for 0. secs (0.u,0.s)
 Params: n= 1219
 Tactic call uconstr-lambda ran for 0.002 secs (0.002u,0.s)
-Tactic call to_constr ran for 0. secs (0.u,0.s)
+Tactic call to_constr ran for 0.001 secs (0.001u,0.s)
 Params: n= 1220
 Tactic call uconstr-lambda ran for 0.023 secs (0.023u,0.s)
 Tactic call to_constr ran for 0. secs (0.u,0.s)
@@ -3666,7 +3666,7 @@ Tactic call uconstr-lambda ran for 0.002 secs (0.002u,0.s)
 Tactic call to_constr ran for 0. secs (0.u,0.s)
 Params: n= 1223
 Tactic call uconstr-lambda ran for 0.002 secs (0.002u,0.s)
-Tactic call to_constr ran for 0.001 secs (0.001u,0.s)
+Tactic call to_constr ran for 0. secs (0.u,0.s)
 Params: n= 1224
 Tactic call uconstr-lambda ran for 0.002 secs (0.002u,0.s)
 Tactic call to_constr ran for 0. secs (0.u,0.s)
@@ -3681,7 +3681,7 @@ Tactic call uconstr-lambda ran for 0.002 secs (0.002u,0.s)
 Tactic call to_constr ran for 0. secs (0.u,0.s)
 Params: n= 1228
 Tactic call uconstr-lambda ran for 0.002 secs (0.002u,0.s)
-Tactic call to_constr ran for 0. secs (0.u,0.s)
+Tactic call to_constr ran for 0.001 secs (0.001u,0.s)
 Params: n= 1229
 Tactic call uconstr-lambda ran for 0.002 secs (0.002u,0.s)
 Tactic call to_constr ran for 0. secs (0.u,0.s)
@@ -3690,15 +3690,15 @@ Tactic call uconstr-lambda ran for 0.002 secs (0.002u,0.s)
 Tactic call to_constr ran for 0. secs (0.u,0.s)
 Params: n= 1231
 Tactic call uconstr-lambda ran for 0.002 secs (0.002u,0.s)
-Tactic call to_constr ran for 0. secs (0.u,0.s)
+Tactic call to_constr ran for 0.001 secs (0.001u,0.s)
 Params: n= 1232
 Tactic call uconstr-lambda ran for 0.002 secs (0.002u,0.s)
-Tactic call to_constr ran for 0. secs (0.u,0.s)
+Tactic call to_constr ran for 0.001 secs (0.001u,0.s)
 Params: n= 1233
 Tactic call uconstr-lambda ran for 0.002 secs (0.002u,0.s)
 Tactic call to_constr ran for 0. secs (0.u,0.s)
 Params: n= 1234
-Tactic call uconstr-lambda ran for 0.002 secs (0.u,0.002s)
+Tactic call uconstr-lambda ran for 0.002 secs (0.002u,0.s)
 Tactic call to_constr ran for 0. secs (0.u,0.s)
 Params: n= 1235
 Tactic call uconstr-lambda ran for 0.002 secs (0.002u,0.s)
@@ -3714,7 +3714,7 @@ Tactic call uconstr-lambda ran for 0.002 secs (0.002u,0.s)
 Tactic call to_constr ran for 0. secs (0.u,0.s)
 Params: n= 1239
 Tactic call uconstr-lambda ran for 0.002 secs (0.002u,0.s)
-Tactic call to_constr ran for 0.048 secs (0.048u,0.s)
+Tactic call to_constr ran for 0.049 secs (0.049u,0.s)
 Params: n= 1240
 Tactic call uconstr-lambda ran for 0.002 secs (0.002u,0.s)
 Tactic call to_constr ran for 0. secs (0.u,0.s)
@@ -3723,49 +3723,49 @@ Tactic call uconstr-lambda ran for 0.002 secs (0.002u,0.s)
 Tactic call to_constr ran for 0. secs (0.u,0.s)
 Params: n= 1242
 Tactic call uconstr-lambda ran for 0.002 secs (0.002u,0.s)
-Tactic call to_constr ran for 0.001 secs (0.001u,0.s)
+Tactic call to_constr ran for 0. secs (0.u,0.s)
 Params: n= 1243
 Tactic call uconstr-lambda ran for 0.002 secs (0.002u,0.s)
-Tactic call to_constr ran for 0. secs (0.u,0.s)
+Tactic call to_constr ran for 0.001 secs (0.001u,0.s)
 Params: n= 1244
 Tactic call uconstr-lambda ran for 0.002 secs (0.002u,0.s)
-Tactic call to_constr ran for 0. secs (0.u,0.s)
+Tactic call to_constr ran for 0.001 secs (0.001u,0.s)
 Params: n= 1245
 Tactic call uconstr-lambda ran for 0.002 secs (0.002u,0.s)
 Tactic call to_constr ran for 0. secs (0.u,0.s)
 Params: n= 1246
 Tactic call uconstr-lambda ran for 0.002 secs (0.002u,0.s)
-Tactic call to_constr ran for 0. secs (0.u,0.s)
+Tactic call to_constr ran for 0.001 secs (0.001u,0.s)
 Params: n= 1247
 Tactic call uconstr-lambda ran for 0.002 secs (0.002u,0.s)
 Tactic call to_constr ran for 0. secs (0.u,0.s)
 Params: n= 1248
 Tactic call uconstr-lambda ran for 0.002 secs (0.002u,0.s)
-Tactic call to_constr ran for 0. secs (0.u,0.s)
+Tactic call to_constr ran for 0.001 secs (0.001u,0.s)
 Params: n= 1249
 Tactic call uconstr-lambda ran for 0.002 secs (0.002u,0.s)
-Tactic call to_constr ran for 0. secs (0.u,0.s)
+Tactic call to_constr ran for 0.001 secs (0.001u,0.s)
 Params: n= 1250
 Tactic call uconstr-lambda ran for 0.002 secs (0.002u,0.s)
 Tactic call to_constr ran for 0. secs (0.u,0.s)
 Params: n= 1251
 Tactic call uconstr-lambda ran for 0.002 secs (0.002u,0.s)
-Tactic call to_constr ran for 0. secs (0.u,0.s)
+Tactic call to_constr ran for 0.001 secs (0.001u,0.s)
 Params: n= 1252
 Tactic call uconstr-lambda ran for 0.001 secs (0.001u,0.s)
-Tactic call to_constr ran for 0.001 secs (0.001u,0.s)
+Tactic call to_constr ran for 0. secs (0.u,0.s)
 Params: n= 1253
 Tactic call uconstr-lambda ran for 0.002 secs (0.002u,0.s)
-Tactic call to_constr ran for 0.001 secs (0.001u,0.s)
+Tactic call to_constr ran for 0. secs (0.u,0.s)
 Params: n= 1254
 Tactic call uconstr-lambda ran for 0.002 secs (0.002u,0.s)
-Tactic call to_constr ran for 0.001 secs (0.001u,0.s)
+Tactic call to_constr ran for 0. secs (0.u,0.s)
 Params: n= 1255
 Tactic call uconstr-lambda ran for 0.002 secs (0.002u,0.s)
-Tactic call to_constr ran for 0. secs (0.u,0.s)
+Tactic call to_constr ran for 0.001 secs (0.001u,0.s)
 Params: n= 1256
 Tactic call uconstr-lambda ran for 0.002 secs (0.002u,0.s)
-Tactic call to_constr ran for 0. secs (0.u,0.s)
+Tactic call to_constr ran for 0.001 secs (0.001u,0.s)
 Params: n= 1257
 Tactic call uconstr-lambda ran for 0.002 secs (0.002u,0.s)
 Tactic call to_constr ran for 0. secs (0.u,0.s)
@@ -3774,31 +3774,31 @@ Tactic call uconstr-lambda ran for 0.013 secs (0.013u,0.s)
 Tactic call to_constr ran for 0.001 secs (0.001u,0.s)
 Params: n= 1259
 Tactic call uconstr-lambda ran for 0.002 secs (0.002u,0.s)
-Tactic call to_constr ran for 0. secs (0.u,0.s)
+Tactic call to_constr ran for 0.001 secs (0.001u,0.s)
 Params: n= 1260
 Tactic call uconstr-lambda ran for 0.002 secs (0.002u,0.s)
-Tactic call to_constr ran for 0. secs (0.u,0.s)
+Tactic call to_constr ran for 0.001 secs (0.001u,0.s)
 Params: n= 1261
 Tactic call uconstr-lambda ran for 0.002 secs (0.002u,0.s)
-Tactic call to_constr ran for 0.001 secs (0.001u,0.s)
+Tactic call to_constr ran for 0. secs (0.u,0.s)
 Params: n= 1262
 Tactic call uconstr-lambda ran for 0.002 secs (0.002u,0.s)
 Tactic call to_constr ran for 0.001 secs (0.001u,0.s)
 Params: n= 1263
 Tactic call uconstr-lambda ran for 0.002 secs (0.002u,0.s)
-Tactic call to_constr ran for 0.001 secs (0.001u,0.s)
+Tactic call to_constr ran for 0. secs (0.u,0.s)
 Params: n= 1264
 Tactic call uconstr-lambda ran for 0.002 secs (0.002u,0.s)
 Tactic call to_constr ran for 0.001 secs (0.001u,0.s)
 Params: n= 1265
 Tactic call uconstr-lambda ran for 0.002 secs (0.002u,0.s)
-Tactic call to_constr ran for 0.001 secs (0.001u,0.s)
+Tactic call to_constr ran for 0. secs (0.u,0.s)
 Params: n= 1266
 Tactic call uconstr-lambda ran for 0.002 secs (0.002u,0.s)
-Tactic call to_constr ran for 0. secs (0.u,0.s)
+Tactic call to_constr ran for 0.001 secs (0.001u,0.s)
 Params: n= 1267
 Tactic call uconstr-lambda ran for 0.002 secs (0.002u,0.s)
-Tactic call to_constr ran for 0. secs (0.u,0.s)
+Tactic call to_constr ran for 0.001 secs (0.001u,0.s)
 Params: n= 1268
 Tactic call uconstr-lambda ran for 0.002 secs (0.002u,0.s)
 Tactic call to_constr ran for 0. secs (0.u,0.s)
@@ -3807,13 +3807,13 @@ Tactic call uconstr-lambda ran for 0.002 secs (0.002u,0.s)
 Tactic call to_constr ran for 0. secs (0.u,0.s)
 Params: n= 1270
 Tactic call uconstr-lambda ran for 0.002 secs (0.002u,0.s)
-Tactic call to_constr ran for 0. secs (0.u,0.s)
+Tactic call to_constr ran for 0.001 secs (0.001u,0.s)
 Params: n= 1271
 Tactic call uconstr-lambda ran for 0.002 secs (0.002u,0.s)
 Tactic call to_constr ran for 0. secs (0.u,0.s)
 Params: n= 1272
 Tactic call uconstr-lambda ran for 0.002 secs (0.002u,0.s)
-Tactic call to_constr ran for 0.001 secs (0.001u,0.s)
+Tactic call to_constr ran for 0. secs (0.u,0.s)
 Params: n= 1273
 Tactic call uconstr-lambda ran for 0.002 secs (0.002u,0.s)
 Tactic call to_constr ran for 0. secs (0.u,0.s)
@@ -3822,13 +3822,13 @@ Tactic call uconstr-lambda ran for 0.002 secs (0.002u,0.s)
 Tactic call to_constr ran for 0.001 secs (0.001u,0.s)
 Params: n= 1275
 Tactic call uconstr-lambda ran for 0.002 secs (0.002u,0.s)
-Tactic call to_constr ran for 0.001 secs (0.001u,0.s)
+Tactic call to_constr ran for 0. secs (0.u,0.s)
 Params: n= 1276
 Tactic call uconstr-lambda ran for 0.002 secs (0.002u,0.s)
-Tactic call to_constr ran for 0.001 secs (0.001u,0.s)
+Tactic call to_constr ran for 0. secs (0.u,0.s)
 Params: n= 1277
 Tactic call uconstr-lambda ran for 0.001 secs (0.001u,0.s)
-Tactic call to_constr ran for 0.001 secs (0.001u,0.s)
+Tactic call to_constr ran for 0.001 secs (0.u,0.s)
 Params: n= 1278
 Tactic call uconstr-lambda ran for 0.002 secs (0.002u,0.s)
 Tactic call to_constr ran for 0. secs (0.u,0.s)
@@ -3836,14 +3836,14 @@ Params: n= 1279
 Tactic call uconstr-lambda ran for 0.002 secs (0.002u,0.s)
 Tactic call to_constr ran for 0.001 secs (0.001u,0.s)
 Params: n= 1280
-Tactic call uconstr-lambda ran for 0.002 secs (0.u,0.002s)
-Tactic call to_constr ran for 0.001 secs (0.u,0.001s)
+Tactic call uconstr-lambda ran for 0.002 secs (0.002u,0.s)
+Tactic call to_constr ran for 0. secs (0.u,0.s)
 Params: n= 1281
 Tactic call uconstr-lambda ran for 0.002 secs (0.002u,0.s)
-Tactic call to_constr ran for 0.001 secs (0.001u,0.s)
+Tactic call to_constr ran for 0. secs (0.u,0.s)
 Params: n= 1282
 Tactic call uconstr-lambda ran for 0.002 secs (0.002u,0.s)
-Tactic call to_constr ran for 0.001 secs (0.001u,0.s)
+Tactic call to_constr ran for 0. secs (0.u,0.s)
 Params: n= 1283
 Tactic call uconstr-lambda ran for 0.002 secs (0.002u,0.s)
 Tactic call to_constr ran for 0. secs (0.u,0.s)
@@ -3855,7 +3855,7 @@ Tactic call uconstr-lambda ran for 0.002 secs (0.002u,0.s)
 Tactic call to_constr ran for 0. secs (0.u,0.s)
 Params: n= 1286
 Tactic call uconstr-lambda ran for 0.002 secs (0.002u,0.s)
-Tactic call to_constr ran for 0.001 secs (0.001u,0.s)
+Tactic call to_constr ran for 0. secs (0.u,0.s)
 Params: n= 1287
 Tactic call uconstr-lambda ran for 0.002 secs (0.002u,0.s)
 Tactic call to_constr ran for 0.001 secs (0.001u,0.s)
@@ -3863,7 +3863,7 @@ Params: n= 1288
 Tactic call uconstr-lambda ran for 0.002 secs (0.002u,0.s)
 Tactic call to_constr ran for 0. secs (0.u,0.s)
 Params: n= 1289
-Tactic call uconstr-lambda ran for 0.055 secs (0.055u,0.s)
+Tactic call uconstr-lambda ran for 0.053 secs (0.053u,0.s)
 Tactic call to_constr ran for 0. secs (0.u,0.s)
 Params: n= 1290
 Tactic call uconstr-lambda ran for 0.002 secs (0.002u,0.s)
@@ -3873,7 +3873,7 @@ Tactic call uconstr-lambda ran for 0.002 secs (0.002u,0.s)
 Tactic call to_constr ran for 0.001 secs (0.001u,0.s)
 Params: n= 1292
 Tactic call uconstr-lambda ran for 0.002 secs (0.002u,0.s)
-Tactic call to_constr ran for 0.001 secs (0.001u,0.s)
+Tactic call to_constr ran for 0. secs (0.u,0.s)
 Params: n= 1293
 Tactic call uconstr-lambda ran for 0.002 secs (0.002u,0.s)
 Tactic call to_constr ran for 0.001 secs (0.001u,0.s)
@@ -3885,10 +3885,10 @@ Tactic call uconstr-lambda ran for 0.069 secs (0.069u,0.s)
 Tactic call to_constr ran for 0.001 secs (0.001u,0.s)
 Params: n= 1296
 Tactic call uconstr-lambda ran for 0.002 secs (0.002u,0.s)
-Tactic call to_constr ran for 0. secs (0.u,0.s)
+Tactic call to_constr ran for 0.001 secs (0.001u,0.s)
 Params: n= 1297
 Tactic call uconstr-lambda ran for 0.002 secs (0.002u,0.s)
-Tactic call to_constr ran for 0. secs (0.u,0.s)
+Tactic call to_constr ran for 0.001 secs (0.001u,0.s)
 Params: n= 1298
 Tactic call uconstr-lambda ran for 0.002 secs (0.002u,0.s)
 Tactic call to_constr ran for 0.001 secs (0.001u,0.s)
@@ -3899,11 +3899,11 @@ Params: n= 1300
 Tactic call uconstr-lambda ran for 0.002 secs (0.002u,0.s)
 Tactic call to_constr ran for 0. secs (0.u,0.s)
 Params: n= 1301
-Tactic call uconstr-lambda ran for 0.05 secs (0.042u,0.007s)
+Tactic call uconstr-lambda ran for 0.05 secs (0.05u,0.s)
 Tactic call to_constr ran for 0. secs (0.u,0.s)
 Params: n= 1302
 Tactic call uconstr-lambda ran for 0.002 secs (0.002u,0.s)
-Tactic call to_constr ran for 0.001 secs (0.001u,0.s)
+Tactic call to_constr ran for 0. secs (0.u,0.s)
 Params: n= 1303
 Tactic call uconstr-lambda ran for 0.002 secs (0.002u,0.s)
 Tactic call to_constr ran for 0.001 secs (0.001u,0.s)
@@ -3915,7 +3915,7 @@ Tactic call uconstr-lambda ran for 0.002 secs (0.002u,0.s)
 Tactic call to_constr ran for 0.001 secs (0.001u,0.s)
 Params: n= 1306
 Tactic call uconstr-lambda ran for 0.002 secs (0.002u,0.s)
-Tactic call to_constr ran for 0.001 secs (0.u,0.s)
+Tactic call to_constr ran for 0.001 secs (0.001u,0.s)
 Params: n= 1307
 Tactic call uconstr-lambda ran for 0.002 secs (0.002u,0.s)
 Tactic call to_constr ran for 0.014 secs (0.014u,0.s)
@@ -3930,16 +3930,16 @@ Tactic call uconstr-lambda ran for 0.002 secs (0.002u,0.s)
 Tactic call to_constr ran for 0.001 secs (0.001u,0.s)
 Params: n= 1311
 Tactic call uconstr-lambda ran for 0.002 secs (0.002u,0.s)
-Tactic call to_constr ran for 0. secs (0.u,0.s)
+Tactic call to_constr ran for 0.001 secs (0.001u,0.s)
 Params: n= 1312
 Tactic call uconstr-lambda ran for 0.002 secs (0.002u,0.s)
 Tactic call to_constr ran for 0.001 secs (0.001u,0.s)
 Params: n= 1313
 Tactic call uconstr-lambda ran for 0.002 secs (0.002u,0.s)
-Tactic call to_constr ran for 0.049 secs (0.041u,0.007s)
+Tactic call to_constr ran for 0.049 secs (0.045u,0.003s)
 Params: n= 1314
 Tactic call uconstr-lambda ran for 0.002 secs (0.002u,0.s)
-Tactic call to_constr ran for 0.001 secs (0.001u,0.s)
+Tactic call to_constr ran for 0.001 secs (0.u,0.s)
 Params: n= 1315
 Tactic call uconstr-lambda ran for 0.002 secs (0.002u,0.s)
 Tactic call to_constr ran for 0.001 secs (0.001u,0.s)
@@ -3965,13 +3965,13 @@ Params: n= 1322
 Tactic call uconstr-lambda ran for 0.002 secs (0.002u,0.s)
 Tactic call to_constr ran for 0.001 secs (0.001u,0.s)
 Params: n= 1323
-Tactic call uconstr-lambda ran for 0.002 secs (0.u,0.002s)
-Tactic call to_constr ran for 0.001 secs (0.u,0.001s)
+Tactic call uconstr-lambda ran for 0.002 secs (0.002u,0.s)
+Tactic call to_constr ran for 0.001 secs (0.001u,0.s)
 Params: n= 1324
 Tactic call uconstr-lambda ran for 0.002 secs (0.002u,0.s)
 Tactic call to_constr ran for 0.001 secs (0.001u,0.s)
 Params: n= 1325
-Tactic call uconstr-lambda ran for 0.049 secs (0.049u,0.s)
+Tactic call uconstr-lambda ran for 0.049 secs (0.045u,0.003s)
 Tactic call to_constr ran for 0. secs (0.u,0.s)
 Params: n= 1326
 Tactic call uconstr-lambda ran for 0.002 secs (0.002u,0.s)
@@ -3981,7 +3981,7 @@ Tactic call uconstr-lambda ran for 0.002 secs (0.002u,0.s)
 Tactic call to_constr ran for 0.001 secs (0.001u,0.s)
 Params: n= 1328
 Tactic call uconstr-lambda ran for 0.002 secs (0.002u,0.s)
-Tactic call to_constr ran for 0. secs (0.u,0.s)
+Tactic call to_constr ran for 0.001 secs (0.001u,0.s)
 Params: n= 1329
 Tactic call uconstr-lambda ran for 0.002 secs (0.002u,0.s)
 Tactic call to_constr ran for 0.001 secs (0.001u,0.s)
@@ -4113,7 +4113,7 @@ Tactic call uconstr-lambda ran for 0.002 secs (0.002u,0.s)
 Tactic call to_constr ran for 0.001 secs (0.001u,0.s)
 Params: n= 1372
 Tactic call uconstr-lambda ran for 0.002 secs (0.002u,0.s)
-Tactic call to_constr ran for 0.001 secs (0.001u,0.s)
+Tactic call to_constr ran for 0.001 secs (0.u,0.001s)
 Params: n= 1373
 Tactic call uconstr-lambda ran for 0.002 secs (0.002u,0.s)
 Tactic call to_constr ran for 0.001 secs (0.001u,0.s)
@@ -4145,7 +4145,7 @@ Params: n= 1382
 Tactic call uconstr-lambda ran for 0.002 secs (0.002u,0.s)
 Tactic call to_constr ran for 0.001 secs (0.001u,0.s)
 Params: n= 1383
-Tactic call uconstr-lambda ran for 0.044 secs (0.044u,0.s)
+Tactic call uconstr-lambda ran for 0.042 secs (0.042u,0.s)
 Tactic call to_constr ran for 0.001 secs (0.001u,0.s)
 Params: n= 1384
 Tactic call uconstr-lambda ran for 0.002 secs (0.002u,0.s)
@@ -4154,8 +4154,8 @@ Params: n= 1385
 Tactic call uconstr-lambda ran for 0.002 secs (0.002u,0.s)
 Tactic call to_constr ran for 0.001 secs (0.001u,0.s)
 Params: n= 1386
-Tactic call uconstr-lambda ran for 0.002 secs (0.u,0.002s)
-Tactic call to_constr ran for 0.001 secs (0.u,0.001s)
+Tactic call uconstr-lambda ran for 0.002 secs (0.002u,0.s)
+Tactic call to_constr ran for 0.001 secs (0.001u,0.s)
 Params: n= 1387
 Tactic call uconstr-lambda ran for 0.002 secs (0.002u,0.s)
 Tactic call to_constr ran for 0.001 secs (0.001u,0.s)
@@ -4163,7 +4163,7 @@ Params: n= 1388
 Tactic call uconstr-lambda ran for 0.002 secs (0.002u,0.s)
 Tactic call to_constr ran for 0.001 secs (0.001u,0.s)
 Params: n= 1389
-Tactic call uconstr-lambda ran for 0.002 secs (0.002u,0.s)
+Tactic call uconstr-lambda ran for 0.002 secs (0.001u,0.s)
 Tactic call to_constr ran for 0.001 secs (0.001u,0.s)
 Params: n= 1390
 Tactic call uconstr-lambda ran for 0.002 secs (0.002u,0.s)
@@ -4179,7 +4179,7 @@ Tactic call uconstr-lambda ran for 0.002 secs (0.002u,0.s)
 Tactic call to_constr ran for 0.001 secs (0.001u,0.s)
 Params: n= 1394
 Tactic call uconstr-lambda ran for 0.002 secs (0.002u,0.s)
-Tactic call to_constr ran for 0.001 secs (0.001u,0.s)
+Tactic call to_constr ran for 0.001 secs (0.u,0.001s)
 Params: n= 1395
 Tactic call uconstr-lambda ran for 0.002 secs (0.002u,0.s)
 Tactic call to_constr ran for 0.001 secs (0.001u,0.s)
@@ -4196,8 +4196,8 @@ Params: n= 1399
 Tactic call uconstr-lambda ran for 0.002 secs (0.002u,0.s)
 Tactic call to_constr ran for 0.001 secs (0.001u,0.s)
 Params: n= 1400
-Tactic call uconstr-lambda ran for 0.049 secs (0.049u,0.s)
-Tactic call to_constr ran for 0. secs (0.u,0.s)
+Tactic call uconstr-lambda ran for 0.049 secs (0.045u,0.003s)
+Tactic call to_constr ran for 0.001 secs (0.u,0.s)
 Params: n= 1401
 Tactic call uconstr-lambda ran for 0.002 secs (0.002u,0.s)
 Tactic call to_constr ran for 0.001 secs (0.001u,0.s)
@@ -4263,7 +4263,7 @@ Tactic call uconstr-lambda ran for 0.002 secs (0.002u,0.s)
 Tactic call to_constr ran for 0.001 secs (0.001u,0.s)
 Params: n= 1422
 Tactic call uconstr-lambda ran for 0.002 secs (0.002u,0.s)
-Tactic call to_constr ran for 0.05 secs (0.042u,0.007s)
+Tactic call to_constr ran for 0.05 secs (0.046u,0.003s)
 Params: n= 1423
 Tactic call uconstr-lambda ran for 0.002 secs (0.002u,0.s)
 Tactic call to_constr ran for 0.001 secs (0.001u,0.s)
@@ -4296,7 +4296,7 @@ Tactic call uconstr-lambda ran for 0.002 secs (0.002u,0.s)
 Tactic call to_constr ran for 0.001 secs (0.001u,0.s)
 Params: n= 1433
 Tactic call uconstr-lambda ran for 0.002 secs (0.002u,0.s)
-Tactic call to_constr ran for 0.053 secs (0.053u,0.s)
+Tactic call to_constr ran for 0.05 secs (0.05u,0.s)
 Params: n= 1434
 Tactic call uconstr-lambda ran for 0.002 secs (0.002u,0.s)
 Tactic call to_constr ran for 0.001 secs (0.001u,0.s)
@@ -4329,7 +4329,7 @@ Tactic call uconstr-lambda ran for 0.002 secs (0.002u,0.s)
 Tactic call to_constr ran for 0.001 secs (0.001u,0.s)
 Params: n= 1444
 Tactic call uconstr-lambda ran for 0.002 secs (0.002u,0.s)
-Tactic call to_constr ran for 0.053 secs (0.049u,0.003s)
+Tactic call to_constr ran for 0.051 secs (0.047u,0.003s)
 Params: n= 1445
 Tactic call uconstr-lambda ran for 0.002 secs (0.002u,0.s)
 Tactic call to_constr ran for 0.001 secs (0.001u,0.s)
@@ -4361,7 +4361,7 @@ Params: n= 1454
 Tactic call uconstr-lambda ran for 0.002 secs (0.002u,0.s)
 Tactic call to_constr ran for 0.001 secs (0.001u,0.s)
 Params: n= 1455
-Tactic call uconstr-lambda ran for 0.051 secs (0.051u,0.s)
+Tactic call uconstr-lambda ran for 0.05 secs (0.046u,0.003s)
 Tactic call to_constr ran for 0.001 secs (0.001u,0.s)
 Params: n= 1456
 Tactic call uconstr-lambda ran for 0.002 secs (0.002u,0.s)
@@ -4410,7 +4410,7 @@ Tactic call uconstr-lambda ran for 0.002 secs (0.002u,0.s)
 Tactic call to_constr ran for 0.001 secs (0.001u,0.s)
 Params: n= 1471
 Tactic call uconstr-lambda ran for 0.002 secs (0.002u,0.s)
-Tactic call to_constr ran for 0.167 secs (0.163u,0.003s)
+Tactic call to_constr ran for 0.168 secs (0.164u,0.003s)
 Params: n= 1472
 Tactic call uconstr-lambda ran for 0.002 secs (0.002u,0.s)
 Tactic call to_constr ran for 0.001 secs (0.001u,0.s)
@@ -4430,8 +4430,8 @@ Params: n= 1477
 Tactic call uconstr-lambda ran for 0.002 secs (0.002u,0.s)
 Tactic call to_constr ran for 0.001 secs (0.001u,0.s)
 Params: n= 1478
-Tactic call uconstr-lambda ran for 0.002 secs (0.u,0.002s)
-Tactic call to_constr ran for 0.001 secs (0.u,0.001s)
+Tactic call uconstr-lambda ran for 0.002 secs (0.002u,0.s)
+Tactic call to_constr ran for 0.001 secs (0.001u,0.s)
 Params: n= 1479
 Tactic call uconstr-lambda ran for 0.002 secs (0.002u,0.s)
 Tactic call to_constr ran for 0.001 secs (0.001u,0.s)
@@ -4457,8 +4457,8 @@ Params: n= 1486
 Tactic call uconstr-lambda ran for 0.002 secs (0.002u,0.s)
 Tactic call to_constr ran for 0.001 secs (0.001u,0.s)
 Params: n= 1487
-Tactic call uconstr-lambda ran for 0.05 secs (0.034u,0.015s)
-Tactic call to_constr ran for 0. secs (0.u,0.s)
+Tactic call uconstr-lambda ran for 0.05 secs (0.042u,0.007s)
+Tactic call to_constr ran for 0.001 secs (0.u,0.s)
 Params: n= 1488
 Tactic call uconstr-lambda ran for 0.002 secs (0.002u,0.s)
 Tactic call to_constr ran for 0.001 secs (0.001u,0.s)

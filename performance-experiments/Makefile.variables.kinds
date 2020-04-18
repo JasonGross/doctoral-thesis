@@ -8,7 +8,10 @@ KINDS := \
 	quadratic_vm_PHOAS \
 	quadratic_native_PHOAS \
 	eq_refl_nat_factorial \
-	do_n_open_constr_True
+	do_n_open_constr_True \
+	open_constr_n_lambda_no_types_different_names \
+	open_constr_n_lambda_no_types_no_names \
+	open_constr_n_lambda_no_types_same_names
 
 SH_KINDS :=
 

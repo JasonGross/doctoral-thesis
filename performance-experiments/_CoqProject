@@ -5,6 +5,7 @@ conj_True_let_ltac2.v
 conj_True_ltac2.v
 conj_True_repeat_constructor.v
 conj_True_uconstr.v
+do_n_open_constr_True.v
 eq_refl_nat_factorial.v
 quadratic_cbv_lazy_PHOAS.v
 quadratic_native_PHOAS.v

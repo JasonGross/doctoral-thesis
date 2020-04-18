@@ -1,2 +1,2 @@
 Params: n= 11
-Tactic call constr-eq-refl ran for 73.08 secs (73.035u,0.044s) (success)
+Tactic call constr-eq-refl ran for 75.731 secs (75.565u,0.111s) (success)

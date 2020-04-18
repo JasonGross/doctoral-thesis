@@ -25,5 +25,5 @@ Ltac redgoal _ := vm_compute.
 Ltac time_solve_goal0 n := time "repeat-constructor" repeat constructor.
 Ltac run0 sz := Harness.runtests args_of_size default_describe_goal mkgoal redgoal time_solve_goal0 sz.
 (*
-Goal True. runtests SuperFast.
+Goal True. run0 SuperFast.
 *)

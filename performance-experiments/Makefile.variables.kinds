@@ -7,7 +7,8 @@ KINDS := \
 	quadratic_cbv_lazy_PHOAS \
 	quadratic_vm_PHOAS \
 	quadratic_native_PHOAS \
-	eq_refl_nat_factorial
+	eq_refl_nat_factorial \
+	do_n_open_constr_True
 
 SH_KINDS :=
 

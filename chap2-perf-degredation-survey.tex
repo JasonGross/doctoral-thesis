@@ -690,6 +690,8 @@ For example, if the user wants to operate inside the hole in \mintinline{coq}{(Î
 However, if the $\alpha$-renaming is even just linear in the existing context, then creating a new hole under $n$ binders will take $\mathcal{O}(n^2)$ time in the worst case, as we may have to do $n$ renamings, each of which take time $\mathcal O(n)$.
 See \coqbug{9582}, perhaps also \coqbug{8245} and \coqbug{8237} and \coqbug{8231}.
 
+This might be the cause of the difference in \autoref{fig:timing-open-constr-n-lambda-no-types} between having different names (which do not need to be renamed) and having either no name (requiring name generation) or having all binders with the same name (requiring renaming in evar substitutions).
+
 \todo{ADD PLOT: try to come up with a graph for renaming stuff}
 \todo{ADD PLOT: check if confounders come up}
 

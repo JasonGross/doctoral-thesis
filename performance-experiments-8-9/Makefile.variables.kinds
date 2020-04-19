@@ -1,4 +1,5 @@
-KINDS :=
+KINDS := \
+	app_n_uconstr
 
 SH_KINDS := \
 	nested_lambda_no_name \

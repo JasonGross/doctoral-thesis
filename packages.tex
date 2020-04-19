@@ -422,7 +422,8 @@
 }%
 \newcommand{\pgftognucolumnset}[2]{%
     \IsInteger{\pgfkeysvalueof{#1}}{%
-        \edef#2{\pgfkeysvalueof{#1}}%
+        % pgf 0-indexes columns, while gnuplot 1-indexes columns, so we add 1 to adjust
+        \edef#2{\the\numexpr\pgfkeysvalueof{#1}+1\relax}%
     }{%
     \edef#2{(column("\pgfkeysvalueof{#1}"))}%
 }%

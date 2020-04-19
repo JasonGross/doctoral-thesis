@@ -808,9 +808,37 @@ This is because the type of the function is $\mathcal{O}(n)$, and doing substitu
 If the term representation contains $n$-ary application nodes, it's possible to resolve this performance bottleneck by delaying the substitutions.
 If only unary application nodes exist, it's much harder to solve.
 
-See \coqbug{8232} and \coqpr{8255}.
+Note that this is important, for example, if you want to avoid the problem of quadratically-sized certificates by making a $n$-ary conjunction-constructor which is parameterized on a list of the conjuncts.
+Such a function could then be applied to the $n$ proofs of the conjuncts.
 
-\todo{ADD PLOT: create graph}
+See \coqbug{8232} and \coqbug{12118} and \coqpr{8255}.
+
+See \autoref{fig:timing-app-n}.
+
+\begin{figure*}
+    \beginTikzpictureStamped{
+        \einput{performance-experiments/app-n-ltac2.txt}
+    }
+    \begin{axis}[xlabel=$n$,
+        ylabel=time (s),
+        legend pos=north west,
+        width=0.95\textwidth,
+        axis lines=left,
+        xmin=0,
+        scaled x ticks=false,
+        scaled y ticks=false]
+        \addplot[only marks,color=black] table[x=param-n,y=typecheck-user]{performance-experiments/app-n-ltac2.txt};
+        \addlegendentry{typecheck}
+        \addplotquadraticregression[no markers, black][x=param-n,y=typecheck-user]{performance-experiments/app-n-ltac2.txt};
+        \addlegendentry{
+            $\pgfmathprintnumber{\pgfplotstableregressiona}n^2
+            \pgfmathprintnumber[print sign]{\pgfplotstableregressionb}n
+            \pgfmathprintnumber[print sign]{\pgfplotstableregressionc}$
+            }
+    \end{axis}
+\end{tikzpicture}
+\caption{Timing of typechecking a function applied to $n$ arguments} \label{fig:timing-app-n}
+\end{figure*}
 
 \subsubsection{Quadratic Normalization by Evaluation} \label{sec:perf:quadratic-NbE} \label{sec:perf:quadratic-cbv}
 Normalization by evaluation (NbE) is a nifty way to implement reduction where function abstraction in the object language is represented by function abstraction in the metalanguage.

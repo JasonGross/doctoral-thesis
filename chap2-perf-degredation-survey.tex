@@ -956,9 +956,9 @@ See also \autoref{fig:timing-quadratic-vm-PHOAS} and \autoref{fig:timing-quadrat
         xmin=0,
         scaled x ticks=false,
         scaled y ticks=false]
-        \addplot[only marks,color=black] table[x=param-num-binders,y=native-compute-user]{performance-experiments/quadratic-native-PHOAS.txt};
+        \addplot[only marks,color=black] table[x=param-num-binders,y=native-compute-real]{performance-experiments/quadratic-native-PHOAS.txt};
         \addlegendentry{\mintinline{coq}{native_compute}}
-        \addplotquadraticregression[no markers, black][x=param-num-binders,y=native-compute-user]{performance-experiments/quadratic-native-PHOAS.txt};
+        \addplotquadraticregression[no markers, black][x=param-num-binders,y=native-compute-real]{performance-experiments/quadratic-native-PHOAS.txt};
         \addlegendentry{
             $\pgfmathprintnumber{\pgfplotstableregressiona}(\text{\# binders})^2
             \pgfmathprintnumber[print sign]{\pgfplotstableregressionb}(\text{\# binders})

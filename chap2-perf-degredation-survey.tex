@@ -1,5 +1,6 @@
 \chapter{The Performance Landscape in Type-Theoretic Proof Assistants} \label{ch:perf-failures}
-
+\section{The Story}
+\todo{come up with a better name for this section}
 The purpose of this chapter is to convince the reader that the issue of performance in proof assistants is non-trivial in ways that differ from performance bottlenecks in non-dependently-typed languages.
 I intend to do this by first sketching out what I see as the main difference between performance issues in dependently-typed proof assistants vs performance issues in other languages, and then supporting this claim with a palette of real performance issues that have arisen in Coq.
 
@@ -971,7 +972,7 @@ See also \autoref{fig:timing-quadratic-vm-PHOAS} and \autoref{fig:timing-quadrat
 
 \todo{maybe more examples here?}
 
-\subsection{The Number of Nested Abstraction Barriers}
+\subsection{The Number of Nested Abstraction Barriers} \label{sec:axis-nested-abstraction-barriers}
 
 \todo{ADD PLOT: This section requires digging into the historical performance issues around this to find convincing stand-alone examples so we can have graphs here.}
 

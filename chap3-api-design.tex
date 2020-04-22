@@ -1,67 +1,205 @@
 \chapter{Design-based fixes} \label{ch:design} \label{ch:api-design}
 
+\section{Introduction}
+In \Autoref{ch:intro,ch:perf-failures}, we talked about two different fundamental sources of performance bottlenecks in proof assistants:
+the power that comes from having dependent types, in \autoref{sec:why-how-dependent-types};
+and the de Bruijn criterion of having a small trusted kernel, in \autoref{sec:debruijn-criterion}.
+In this chapter, we will dive further into the performance issues arising from the first of these design decisions, expanding on \fullref{sec:axis-nested-abstraction-barriers}, and proposing some general guidelines for handling these performance bottlenecks.
+
+This chapter is primarily geared at the users of proof assistants, and especially at proof-assistant library developers.
+
+We saw in \nameref{sec:axis-nested-abstraction-barriers} three different ways that design choices for abstraction barriers can impact performance:
+We saw in \nameref{sec:abstraction-barriers:mismatch} that API mismatch results in type-size blowup.
+We saw in \nameref{sec:abstraction-barriers:conversion-troubles} that imperfectly opaque abstraction barriers result in slowdown due to needless calls to the conversion checker.
+We saw in \nameref{sec:abstraction-barriers:packed-records} how the choice of whether to use packed or unpacked records impacts performance.
+
+In this chapter, we will focus primarily on the first of these ways; while it might seem like a simple question of good design, it turns out that good API design in dependently-typed programming languages is significantly harder than in simply-typed programming languages.
+Mitigating the second source of performance bottlenecks, imperfectly opaque abstraction barriers, on the other hand, is actually just a question of meticulous tracking of how abstraction barriers are defined and used, and designing them so that they all unfolding is explicit.
+However, we will present an exception to the rule of opaque abstraction barriers in \autoref{sec:duality-conversion} in which deliberate breaking of all abstraction barriers in a careful way can result in performance gains of up to a factor of two:
+\autoref{sec:duality-conversion} presents one of our favorite design patterns for categorical constructions: a way of coaxing Coq's definitional equality into implementing \emph{proof by duality}, one of the most widely known ideas in category theory.
+\todo{adjust the tone of what comes after the colon in the previous sentence to fit with this paper}
+Finally, the question of whether to use packed or unpacked records is actually a genuine trade-off in both design-space and performance, as far as I can tell;
+the non-performance design considerations have been discussed before in \todo{cite math classes, etc}, while the performance implications are relatively straightforward.
+As far as I'm aware, there's not really a good way to get the best of all worlds.
+
+\section{When And How To Use Dependent Types Painlessly}
+The extremes are relatively easy:
+\begin{itemize}
+    \item Total separation between proofs and programs, so that programs are simply typed, works relatively well
+    \item Pre-existing mathematics, where objects are fully bundled with proofs and never need to be separated from them, also works relatively well
+    \item The rule of thumb in the middle: it is painful to recombine proofs and programs after you separate them; if you are doing it to define an opaque transformation that acts on proof-carrying code, that is okay, but if you cannot make that abstraction barrier, enormous pain results.
+    \item For example, if you have length-indexed lists and want to index into them with elements of a finite type, things are fine until you need to divorce the index from its proof of finiteness.  If you, for example, want to index into, say, the concatenation of two lists, with an index into the first of the lists, then you will likely run into trouble, because you are trying to consider the index separately from its proof of finitude, but you have to recombine them to do the indexing.
+\end{itemize}
+\todo{flesh out this section}
+\todo{More examples from the rewriter?}
+
+\section{Internalizing Duality Arguments in Type Theory} \label{sec:duality-conversion}
+\todoask{All of the text in this section is currently taken verbatim from the category theory paper.  What's the convention on taking text like this, how do I cite it, etc?}
+\todo{introduce category theory more before here?}
+
+  In general, we have tried to design our library so that trivial proofs on paper remain trivial when formalized.  One of Coq's main tools to make proofs trivial is the definitional equality, where some facts follow by computational reduction of terms.  We came up with some small tweaks to core definitions that allow a common family of proofs by \emph{duality} to follow by computation.
+
+  Proof by duality is a common idea in higher mathematics: sometimes, it is productive to flip the directions of all the arrows.  For example, if some fact about least upper bounds is provable, chances are that the same kind of fact about greatest lower bounds will also be provable in roughly the same way, by replacing ``greater than''s with ``less than''s and vice versa.
+
+  Concretely, there is a dualizing operation on categories that inverts the directions of the morphisms:
+\begin{minted}{coq}
+Notation "C ᵒᵖ" := ({| Ob := Ob C; Hom x y := Hom C y x; ... |}).
+\end{minted}
+
+  Dualization can be used, roughly, for example, to turn a proof that Cartesian product is an associative operation into a proof that disjoint union is an associative operation; products are dual to disjoint unions.
+
+  One of the simplest examples of duality in category theory is initial and terminal objects.  In a category \cat C, an initial object $0$ is one that has a unique morphism $0 \to x$ to every object $x$ in \cat C; a terminal object $1$ is one that has a unique morphism $x \to 1$ from every object $x$ in \cat C.  Initial objects in \cat C are terminal objects in $\cat{C}^\text{op}$.  The initial object of any category is unique up to isomorphism; for any two initial objects $0$ and $0'$, there is an isomorphism $0 \cong 0'$.  By flipping all of the arrows around, we can prove, by duality, that the terminal object is unique up to isomorphism.  More precisely, from a proof that an initial object of $\cat{C}^{\text{op}}$ is unique up to isomorphism, we get that any two terminal objects $1'$ and $1$ in $\cat{C}$, which are initial in $\cat{C}^{\text{op}}$, are isomorphic in $\cat{C}^{\text{op}}$.  Since an isomorphism $x \cong y$ in $\cat{C}^\text{op}$ is an isomorphism $y \cong x$ in \cat C, we get that $1$ and $1'$ are isomorphic in $\cat C$.
+
+  It is generally straightforward to see that there is an isomorphism between a theorem and its dual, and the technique of dualization is well-known to category theorists, among others.  We discovered that, by being careful about how we defined things, we could make theorems be judgmentally equal to their duals!  That is, when we prove a theorem
+  \begin{align*}
+  \mintinline{coq}{initial_ob_unique : ∀ C  (x y : Ob C) ,} \\
+  & \mintinline{coq}{is_initial_ob x → is_initial_ob y → x ≅ y},
+  \end{align*}
+  we can define another theorem
+  \begin{align*}
+  \mintinline{coq}{terminal_ob_unique : ∀ C  (x y : Ob C) ,} \\
+  & \mintinline{coq}{is_terminal_ob x → is_terminal_ob y → x ≅ y}
+  \end{align*}
+  as
+  \begin{center}
+  \mintinline{coq}{terminal_ob_unique C x y H H' := initial_ob_unique C Cᵒᵖ y x H' H}.
+  \end{center}
+  % In homotopy type theory, we can convey our discovery by saying that not only are theorems homotopic to their duals, but they can be made to be judgmentally equal to their duals.
+  Interestingly, we found that in proofs with sufficiently complicated types, it can take a few seconds or more for Coq to accept such a definition; we are not sure whether this is due to peculiarities of the reduction strategy of our version of Coq, or speed dependency on the size of the normal form of the type (rather than on the size of the unnormalized type), or something else entirely.
+
+  In contrast to the simplicity of witnessing the isomorphism, it takes a significant amount of care in defining concepts, often to get around deficiencies of Coq, to achieve \emph{judgmental} duality.  Even now, we were unable to achieve this ideal for some theorems.  For example, category theorists typically identify the functor category $\cat{C}^\text{op} \to \cat{D}^\text{op}$ (whose objects are functors $\cat{C}^\text{op} \to \cat{D}^\text{op}$ and whose morphisms are natural transformations) with $(\cat{C} \to \cat{D})^\text{op}$ (whose objects are functors $\cat{C} \to \cat{D}$ and whose morphisms are flipped natural transformations).  These categories are canonically isomorphic (by the dualizing natural transformations), and, with the univalence axiom~\cite{HoTTBook}, they are equal as categories!  But we have not found a way to make them definitionally equal, much to our disappointment.
+
+  \subsection{Duality Design Patterns}
+    One of the simplest theorems about duality is that it is involutive; we have that $(\cat{C}^{\text{op}})^{\text{op}} = \cat{C}$.  In order to internalize proof by duality via judgmental equality, we sometimes need this equality to be judgmental.  Although it is impossible in general in Coq 8.4 (see \hyperref[sec:no-judgmental-eta]{dodging judgmental \texorpdfstring{$\eta$}{η} on records} below), we want at least to have it be true for any explicit category (that is, any category specified by giving its objects, morphisms, etc., rather than referred to via a local variable).
+
+    \subsubsection{Removing Symmetry} \label{sec:remove-symmetry}
+      Taking the dual of a category, one constructs a proof that $f \circ (g \circ h) = (f \circ g) \circ h$ from a proof that $(f \circ g) \circ h = f \circ (g \circ h)$.  The standard approach is to apply symmetry.  However, because applying symmetry twice results in a judgmentally different proof, we decided instead to extend the definition of \texttt{Category} to require both a proof of $f \circ (g \circ h) = (f \circ g) \circ h$ and a proof of $(f \circ g) \circ h = f \circ (g \circ h)$.  Then our dualizing operation simply swaps the proofs.  We added a convenience constructor for categories that asks only for one of the proofs, and applies symmetry to get the other one.  Because we formalized 0-truncated category theory, where the type of morphisms is required to have unique identity proofs, asking for this other proof does not result in any coherence issues.
+
+    \subsubsection{Dualizing the Terminal Category}
+      To make everything work out nicely, we needed the terminal category, which is the category with one object and only the identity morphism, to be the dual of itself.  We originally had the terminal category as a special case of the discrete category on $n$ objects.  Given a type $T$ with uniqueness of identity proofs, the discrete category on $T$ has as objects inhabitants of $T$, and has as morphisms from $x$ to $y$ proofs that $x = y$.  These categories are not judgmentally equal to their duals, because the type $x = y$ is not judgmentally the same as the type $y = x$.  As a result, we instead used the indiscrete category, which has \texttt{unit} as its type of morphisms.
+
+    \subsubsection{Which Side Does the Identity Go On?}
+      The last tricky obstacle we encountered was that when defining a functor out of the terminal category, it is necessary to pick whether to use the right identity law or the left identity law to prove that the functor preserves composition; both will prove that the identity composed with itself is the identity.  The problem is that dualizing the functor leads to a road block where either concrete choice turns out to be ``wrong,'' because the dual of the functor out of the terminal category will not be judgmentally equal to another instance of itself.  To fix this problem, we further extended the definition of category to require a proof that the identity composed with itself is the identity.
+
+    \subsubsection{Dodging Judgmental \texorpdfstring{$\eta$}{η} on Records}  \label{sec:no-judgmental-eta}
+      The last problem we ran into was the fact that sometimes, we really, really wanted judgmental $\eta$ on records.  The $\eta$ rule for records says any application of the record constructor to all the projections of an object yields exactly that object; e.g. for pairs, $x \equiv (x_1, x_2)$ (where $x_1$ and $x_2$ are the first and second projections, respectively).  For categories, the $\eta$ rule says that given a category \cat C, for a ``new'' category defined by saying that its objects are the objects of \cat C, its morphisms are the morphisms of \cat C, \ldots, the ``new'' category is judgmentally equal to \cat C.
+
+      In particular, we wanted to show that any functor out of the terminal category is the opposite of some other functor; namely, any $F : 1 \to \cat C$ should be equal to $(F^{\text{op}})^{\text{op}} : 1 \to (\cat C^{\text{op}})^{\text{op}}$.  However, without the judgmental $\eta$ rule for records, a local variable $\cat C$ cannot be judgmentally equal to $(\cat C^{\text{op}})^{\text{op}}$, which reduces to an application of the constructor for a category.  To get around the problem, we made two variants of dual functors: given $F : \cat C \to \cat D$, we have $F^{\text{op}} : \cat C^{\text{op}} \to \cat D^{\text{op}}$, and given $F : C^{\text{op}} \to \cat D^{\text{op}}$, we have $F^{\text{op}'} : \cat C \to \cat D$.  There are two other flavors of dual functors, corresponding to the other two pairings of ${}^{\text{op}}$ with domain and codomain, but we have been glad to avoid defining them so far.  As it was, we ended up having four variants of dual natural transformation, and are very glad that we did not need sixteen.  We look forward to Coq 8.5, when we will hopefully only need one.
+
+
+  \subsection{Moving Forward: Computation Rules for Pattern Matching} \label{sec:compute-match}
+    While we were able to work around most of the issues that we had in internalizing proof by duality, things would have been far nicer if we had more $\eta$ rules.  The $\eta$ rule for records is explained above.  The $\eta$ rule for equality says that the identity function is judgmentally equal to the function $f : \forall x\, y, x = y \to x = y$ defined by pattern matching on the first proof of equality; this rule is necessary to have any hope that applying symmetry twice is judgmentally the identity transformation.  Matthieu Sozeau is currently working on giving Coq judgmental $\eta$ for records with one or more fields, though not for equality%fullbib:~\cite{mattam82/coq-polyproj}%
+    .
+
+    \autoref{sec:associators} will give more examples of the pain of manipulating pattern matching on equality.  Homotopy type theory provides a framework that systematizes reasoning about proofs of equality, turning a seemingly impossible task into a manageable one.  However, there is still a significant burden associated with reasoning about equalities, because so few of the rules are judgmental.
+
+    We are currently attempting to divine the appropriate computation rules for pattern matching constructs, in the hopes of making reasoning with proofs of equality more pleasant.\footnote{See \url{https://coq.inria.fr/bugs/show\_bug.cgi?id=3179} and \url{https://coq.inria.fr/bugs/show\_bug.cgi?id=3119}.}
+
+\section{A Sampling of Abstraction Barriers}
+\todo{maybe this section should come first?}
+
+We acknowledge that the concept of performance issues arising from choices of abstraction barriers may seem a bit counter-intuitive.
+After all, abstraction barriers generally live in the mind of the developer, in some sense, and it seems a bit insane to say that performance of the code depends on the mental state of the programmer.
+
+Therefore, we will describe a sampling of abstraction barriers and the design choices that went into them, drawn from real examples \todoask{how much should I talk about the category theory library itself in my thesis?}, as well as the performance issues that arose from these choices.
+
+\todo{Note that from here to the end of \autoref{sec:abstraction-barriers} is taken directly from the category theory paper}
+
+A few other pervasive strategies made non-trivial differences for proof performance or simplicity.
+
+  \subsection{Identities vs.~Equalities; Associators} \label{sec:associators}
+    There are a number of constructions that are provably equal, but which we found more convenient to construct transformations between instead, despite the increased verbosity of such definitions.  This is especially true of constructions that strayed towards higher category theory.  For example, when constructing the Grothendieck construction of a functor to the category of categories, we found it easier to first generalize the construction from functors to pseudofunctors.  The definition of a pseudofunctor results from replacing various equalities in the definition of a functor with isomorphisms (analogous to bijections between sets or types), together with proofs that the isomorphisms obey various coherence properties.  This replacement helped because there are fewer operations on isomorphisms (namely, just composition and inverting), and more operations on proofs of equality (pattern matching, or anything definable via induction); when we were forced to perform all of the operations in the same way, syntactically, it was easier to pick out the operations and reason about them.
+
+    Another example was defining the (co)unit of adjunction composition, where instead of a proof that $F \circ (G \circ H) = (F \circ G) \circ H$, we used a natural transformation, a coherent mapping between the actions of functors.  Where equality-based constructions led to computational reduction getting stuck at casts, the constructions with natural transformations reduce in all of the expected contexts.
+
+  \subsection{Opacity; Linear Dependence of Speed on Term Size}\label{sec:equality-reflection}\label{sec:term-size}
+
+    Coq is slow at dealing with large terms.  For goals around 175,000 words long\footnote{When we had objects as arguments rather than fields (see \autoref{sec:arguments-vs-fields}), we encountered goals of about 219,633 words when constructing pointwise Kan extensions.}, we have found that simple tactics like \texttt{apply f\_equal} take around 1 second to execute, which makes interactive theorem proving very frustrating.\footnote{See also \url{https://coq.inria.fr/bugs/show\_bug.cgi?id=3280}.}  Even more frustrating is the fact that the largest contribution to this size is often arguments to irrelevant functions, i.e., functions that are provably equal to all other functions of the same type.  (These are proofs related to algebraic laws like associativity, carried inside many constructions.)
+
+    Opacification helps by preventing the type checker from unfolding some definitions, but it is not enough: the type checker still has to deal with all of the large arguments to the opaque function.  Hash-consing might fix the problem completely.
+
+    Alternatively, it would be nice if, given a proof that all of the inhabitants of a type were equal, we could forget about terms of that type, so that their sizes would not impose any penalties on term manipulation.  %  One could imagine a version of Coq's logic that knows to treat all proofs of an equality as equivalent to each other.  Alternatively, there might be some way to ignore these terms when doing most computation, without changing the underlying theory.
+    One solution might be irrelevant fields, like those of Agda, or implemented via the Implicit CiC~\cite{barras2008implicit,logical2001implicit}.
+
+  \subsection{Abstraction Barriers} \label{sec:abstraction-barriers}
+
+    In many projects, choosing the right abstraction barriers is essential to reducing mistakes, improving maintainability and readability of code, and cutting down on time wasted by programmers trying to hold too many things in their heads at once.  This project was no exception; we developed an allergic reaction to constructions with more than four or so arguments, after making one too many mistakes in defining limits and colimits.  Limits are a generalization, to arbitrary categories, of subsets of Cartesian products.  Colimits are a generalization, to arbitrary categories, of disjoint unions modulo equivalence relations.
+
+    Our original flattened definition of limits involved a single definition with 14 nested binders for types and algebraic properties.  After a particularly frustrating experience hunting down a mistake in one of these components, we decided to factor the definition into a larger number of simpler definitions, including familiar categorical constructs like terminal objects and comma categories.  This refactoring paid off even further when some months later we discovered the universal morphism definition of adjoint functors%fullbib:~\cite{wiki:adjoint-functors:universal-morphisms%
+    %fullbib:,ncatlab:adjoint+functor:UniversalArrows%
+    %fullbib:}%
+    .  With a little more abstraction, we were able to reuse the same decomposition to prove the equivalence between universal morphisms and adjoint functors, with minimal effort.
+
+    Perhaps less typical of programming experience, we found that picking the right abstraction barriers could drastically reduce compile time by keeping details out of sight in large goal formulas.  In the instance discussed in the introduction, we got a factor of ten speed-up by plugging holes in a leaky abstraction barrier!\footnote{See \url{https://github.com/HoTT/HoTT/commit/eb0099005171} for the exact change.}
+
+\subsection{Nested Σ Types}
+\todo{Talk about how using nested $\Sigma$ types without hiding them behind an abstraction barrier and without primitive projections result in a performance bottleneck}
+
+\todo{Find more examples to talk about here?}
+
+\begin{comment}
 \begin{subappendices}
     \section{transcript bits from Adam}
-    The API design and issues that come up when you have so much power with conversion independent types. Okay, and this this will be the main section that draws from the category theory of paper. 
-    
-    
+    The API design and issues that come up when you have so much power with conversion independent types. Okay, and this this will be the main section that draws from the category theory of paper.
+
+
     \section{transcript bits from Rajee}
 The next section is one of the two big sections on like components of the system that is important for performance and this section is geared at users of proof assistance mainly.
-This is about how to design your APIs. 
+This is about how to design your APIs.
 
 How to design the interface of functions that you're writing.
 
-Many languages have a type system; this is used to deal with things like, if you have a function that takes a string and you pass it an integer you want to know that you made a mistake. 
+Many languages have a type system; this is used to deal with things like, if you have a function that takes a string and you pass it an integer you want to know that you made a mistake.
 
 And Coq has this on steroids, because not only can you say ``this function takes an integer and this function takes a string'' you can also say things ``like this function takes if this Turing machine halts then an element of the one element set, and if this Turing machine does not halt then an element of the empty set.''  You can't quite say that but you can say ``if it halts within $n$ steps'' so you can say ``this takes a number $n$ and the Turing machine $T$ and if $T$ halts within $n$ steps then it takes an element of the one element set and if $T$ does not halt within $n$ steps then it takes an element of the empty set.''
 
 What is the utility? This lets you pass around proofs.  Like just by virtue of being able to call the function you have a proof that some fact is true.  It's a source of power. It lets you write functions about that take in proofs and lets you write functions that prove things correct.  It lets you do things like ``this is a function that takes a proof that this list is not empty and spits out of proof that if you append that list to itself the resulting list is not empty.''
 
-This is useful why because you want to prove things. Okay, for example. Maybe you want to say. This function takes in a C program. It takes in. A function that's describes the behavior of the C program and it takes an approved that the C program matches the behavior of the function. 
+This is useful why because you want to prove things. Okay, for example. Maybe you want to say. This function takes in a C program. It takes in. A function that's describes the behavior of the C program and it takes an approved that the C program matches the behavior of the function.
 
-And what it spits out is some assembly code and a proof that the assembly code matches the behavior of the function. I see. 
+And what it spits out is some assembly code and a proof that the assembly code matches the behavior of the function. I see.
 
-And like this is how you get verified programs, but it doesn't matter the thing where you said that well. I still understand the part of like why using it as a function is useful or something. Like making a function out of it what's the alternative if you didn't have it like as a function calling it like what are you saving when you have a function that does this oh so it's sort of a question of how you found your mathematics on or like how you how you're doing mathematics, so like one way of doing proofs is that ah programs improve through the same thing. 
+And like this is how you get verified programs, but it doesn't matter the thing where you said that well. I still understand the part of like why using it as a function is useful or something. Like making a function out of it what's the alternative if you didn't have it like as a function calling it like what are you saving when you have a function that does this oh so it's sort of a question of how you found your mathematics on or like how you how you're doing mathematics, so like one way of doing proofs is that ah programs improve through the same thing.
 
-So you can reuse all the machinery for writing programs to also write proofs and you can reuse all the machinery for like making sure that a program is well typed to making sure that a proof is valid. Okay, it's kind of neat a different way you could do it as you could found your math on set theory and you could be like, I'm just applying axioms. 
+So you can reuse all the machinery for writing programs to also write proofs and you can reuse all the machinery for like making sure that a program is well typed to making sure that a proof is valid. Okay, it's kind of neat a different way you could do it as you could found your math on set theory and you could be like, I'm just applying axioms.
 
-This is how proof assistant called Isabel. Hall works almost for higher order logic. 
+This is how proof assistant called Isabel. Hall works almost for higher order logic.
 
-What is the higher order logic h o l. 
+What is the higher order logic h o l.
 
-So like there is a sort of design choice of like what? Like how you're building your prefix system tonight out have much to say about. Preface systems that are not based on type theory, okay? Oh. Other questions no okay so. Great so you can put arbitrary amounts of computation into this like thing that in other languages is used for checking that you don't try to pass an integer as a string. 
+So like there is a sort of design choice of like what? Like how you're building your prefix system tonight out have much to say about. Preface systems that are not based on type theory, okay? Oh. Other questions no okay so. Great so you can put arbitrary amounts of computation into this like thing that in other languages is used for checking that you don't try to pass an integer as a string.
 
-Um, and that's kind of neat it's kind of cool it also turns out to be. Useful because the part that does the checking is decently optimized in particular when you're like running fully running a program that's pretty optimized and so if you can stick all of the proof like all of the hard work into this question of how I passing an element of the empty set or of the one element set. 
+Um, and that's kind of neat it's kind of cool it also turns out to be. Useful because the part that does the checking is decently optimized in particular when you're like running fully running a program that's pretty optimized and so if you can stick all of the proof like all of the hard work into this question of how I passing an element of the empty set or of the one element set.
 
-Then you're like, you'll happy. Um, Also if you restrict yourself. To only asking questions like do I have a string or like asking questions like please make sure I have a string not an integer. You're also pretty happy like things are fast you need to do your proof separately but things still work nicely. 
+Then you're like, you'll happy. Um, Also if you restrict yourself. To only asking questions like do I have a string or like asking questions like please make sure I have a string not an integer. You're also pretty happy like things are fast you need to do your proof separately but things still work nicely.
 
-The problem is that with all this power. That usually works it's like very tempting to use a and so you're like, okay, give me a list give me the length of the list also give me a proof that the the list has that length. And like this is fine and it works fine until you try to scale it and then it doesn't okay, ah because you're like okay, well if I like. 
+The problem is that with all this power. That usually works it's like very tempting to use a and so you're like, okay, give me a list give me the length of the list also give me a proof that the the list has that length. And like this is fine and it works fine until you try to scale it and then it doesn't okay, ah because you're like okay, well if I like.
 
-Append to lists. I spit out a proof that like the so I spit out that the length should be like the sum of the two lengths I spit out of the proof that like the depending of the lists has length equal to the sum of the two lens. And then you're like okay and if I reverse a list it keeps the same length, and maybe now you want to like match like in one part of the code you were like I reversed my lists and then I appended them in reverse order. 
+Append to lists. I spit out a proof that like the so I spit out that the length should be like the sum of the two lengths I spit out of the proof that like the depending of the lists has length equal to the sum of the two lens. And then you're like okay and if I reverse a list it keeps the same length, and maybe now you want to like match like in one part of the code you were like I reversed my lists and then I appended them in reverse order.
 
-And another part you were like I I like first depended the lists and then I reversed the whole thing and like these are the same and I should be able to know that they're the same. 
+And another part you were like I I like first depended the lists and then I reversed the whole thing and like these are the same and I should be able to know that they're the same.
 
-But now here you're like length one plus length two and here you're like length two plus one. And so now your numbers are in the same and you're proofs are different. Ah, and maybe you manage to like make call accidentally try to figure out exactly what the proof is. 
+But now here you're like length one plus length two and here you're like length two plus one. And so now your numbers are in the same and you're proofs are different. Ah, and maybe you manage to like make call accidentally try to figure out exactly what the proof is.
 
-Rather than trying to just like verify that your numbers line up or something. And now suddenly it's spending a lot of time trying to figure out exactly what your complicated proof is. And this is why you when you like make your example a little bit bigger and careful on this place it like takes the other path and now instead of being like, oh oops. 
+Rather than trying to just like verify that your numbers line up or something. And now suddenly it's spending a lot of time trying to figure out exactly what your complicated proof is. And this is why you when you like make your example a little bit bigger and careful on this place it like takes the other path and now instead of being like, oh oops.
 
-I guess this path doesn't work after one second now, it's like. I'm gonna keep trying for a month hmm. And then you're real sad. 
+I guess this path doesn't work after one second now, it's like. I'm gonna keep trying for a month hmm. And then you're real sad.
 
-So the the lesson today out of this is like either put all of the work into the ah into the types. We're all turnatively like either but all of the work into the computational power at the types, or make sure that you're not using the computational power of the types at all. 
+So the the lesson today out of this is like either put all of the work into the ah into the types. We're all turnatively like either but all of the work into the computational power at the types, or make sure that you're not using the computational power of the types at all.
 
-What you mean not using the computational power of the types at all, you're not computing anything when you're asking like is string the same thing as string or string the same thing as integer, oh what would you do instead oh I mean there there's like nothing to compute you just compare them, okay? 
+What you mean not using the computational power of the types at all, you're not computing anything when you're asking like is string the same thing as string or string the same thing as integer, oh what would you do instead oh I mean there there's like nothing to compute you just compare them, okay?
 
-Right and then you're like, um, but like what about the identity function applied to string and you're like yeah yeah that's fine and so you can do a little bit of computation but if you're not careful then you're then you end up in this land where you're trying to compute with proofs and if you're not being careful, then you explode what's the extra stuff that you get from using the identity function versus comparing two strings, ah, Like what does it become more efficient or like what's the utility so like? 
+Right and then you're like, um, but like what about the identity function applied to string and you're like yeah yeah that's fine and so you can do a little bit of computation but if you're not careful then you're then you end up in this land where you're trying to compute with proofs and if you're not being careful, then you explode what's the extra stuff that you get from using the identity function versus comparing two strings, ah, Like what does it become more efficient or like what's the utility so like?
 
-Generally how it works is that you get to do more abstraction. Like. Like if you've ever dealt with monads in Haskell. 
+Generally how it works is that you get to do more abstraction. Like. Like if you've ever dealt with monads in Haskell.
 
-There are fancy abstraction things that you can do with it, okay and like most of them don't require much computation at the type level the require a little bit of computation at the site level. Um, that's fine. And it's also fine to do all your computation at the type level but it's not fine is when you. 
+There are fancy abstraction things that you can do with it, okay and like most of them don't require much computation at the type level the require a little bit of computation at the site level. Um, that's fine. And it's also fine to do all your computation at the type level but it's not fine is when you.
 
-When you're sort of like well do as much computation as you need. And if you're not being careful about how much computation is done at the site level, which you're usually not like it's something that's hard to track. Then and it's like the computer doesn't help you because you are going to like it it keeps working on small examples, but then you're real sad when you. 
+When you're sort of like well do as much computation as you need. And if you're not being careful about how much computation is done at the site level, which you're usually not like it's something that's hard to track. Then and it's like the computer doesn't help you because you are going to like it it keeps working on small examples, but then you're real sad when you.
 
-When you end up with a little bit too much. 
+When you end up with a little bit too much.
 
-Okay so that's that's this first section those the second section right oh like the first one it's the first of the like two big chunks of like things you want to do right this this thing so this part of cop that's like checking if two types do the same this is called conversion, okay, so the sections and conversions oh it's on like performance bottlenecks and conversion, okay? 
+Okay so that's that's this first section those the second section right oh like the first one it's the first of the like two big chunks of like things you want to do right this this thing so this part of cop that's like checking if two types do the same this is called conversion, okay, so the sections and conversions oh it's on like performance bottlenecks and conversion, okay?
 
 
 \todo{this chapter}
@@ -69,17 +207,8 @@ Okay so that's that's this first section those the second section right oh like 
 \section{Abstraction barriers}
 e.g., f (fst x) (snd x) where fst x := let (a, b) := x in a; vs let (a, b) := x in f a b.
 
-\section{When and how to use dependent types painlessly}
-The extremes are relatively easy:
-\begin{itemize}
-\item Total separation between proofs and programs, so that programs are simply typed, works relatively well
-\item Pre-existing mathematics, where objects are fully bundled with proofs and never need to be separated from them, also works relatively well
-\item The rule of thumb in the middle: it is painful to recombine proofs and programs after you separate them; if you are doing it to define an opaque transformation that acts on proof-carrying code, that is okay, but if you cannot make that abstraction barrier, enormous pain results.
-\item For example, if you have length-indexed lists and want to index into them with elements of a finite type, things are fine until you need to divorce the index from its proof of finiteness.  If you, for example, want to index into, say, the concatenation of two lists, with an index into the first of the lists, then you will likely run into trouble, because you are trying to consider the index separately from its proof of finitude, but you have to recombine them to do the indexing.
-\end{itemize}
-
-More examples from the rewriter?
 
 \section{more stuff from CT performance paper / presentation}
 \todo{this section}
 \end{subappendices}
+\end{comment}

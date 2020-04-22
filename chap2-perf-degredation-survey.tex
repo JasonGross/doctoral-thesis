@@ -985,7 +985,7 @@ Each of these is an abstraction barrier.
 
 There are three primary ways that nested abstraction barriers can lead to performance bottlenecks: one involving conversion missteps and two involving exponential blow-up in the size of types.
 
-\subsubsection{Conversion Troubles}
+\subsubsection{Conversion Troubles} \label{sec:abstraction-barriers:conversion-troubles}
 If abstraction barriers are not perfectly opaque---that is, if the typechecker ever has to unfold the definitions making up the API in order to typecheck a term---then every additional abstraction barrier provides another opportunity for the typechecker to pick the wrong constant to unfold first.
 \todo{add example?}
 In some typecheckers, such as Coq, it's possible to provide hints to the typechecker to inform it which constants to unfold when.
@@ -1000,7 +1000,7 @@ Furthermore, it's hard to know which part of conversion is incurring exponential
 
 
 
-\subsubsection{Type Size Blowup: Abstraction Barrier Mismatch}
+\subsubsection{Type Size Blowup: Abstraction Barrier Mismatch} \label{sec:abstraction-barriers:mismatch}
 When abstraction barriers are leaky or misaligned, there's a cost that accumulates in the size of the types of theorems.
 Consider, for example, the two different ways of using tuples:
 (1) we can use the projections \mintinline{coq}{fst} and \mintinline{coq}{snd}; or
@@ -1015,7 +1015,7 @@ If such API mismatches are nested, or if this code size blowup interacts with co
 
 \todo{maybe be more concrete here?}
 
-\subsubsection{Type Size Blowup: Packed vs.~Unpacked Records}
+\subsubsection{Type Size Blowup: Packed vs.~Unpacked Records} \label{sec:abstraction-barriers:packed-records}
 When designing APIs, especially of mathematical objects, one of the biggest choices is whether to pack the records, or whether to pass arguments in as fields.
 That is, when defining a monoid, for example, there are five ways to go about specifying it:
 \begin{enumerate}

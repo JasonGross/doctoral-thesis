@@ -52,12 +52,12 @@ Notation "C ᵒᵖ" := ({| Ob := Ob C; Hom x y := Hom C y x; ... |}).
 
   It is generally straightforward to see that there is an isomorphism between a theorem and its dual, and the technique of dualization is well-known to category theorists, among others.  We discovered that, by being careful about how we defined things, we could make theorems be judgmentally equal to their duals!  That is, when we prove a theorem
   \begin{align*}
-  \mintinline{coq}{initial_ob_unique : ∀ C  (x y : Ob C) ,} \\
+  \mintinline{coq}{initial_ob_unique : ∀ C  } & \mintinline{coq}{(x y : Ob C),} \\
   & \mintinline{coq}{is_initial_ob x → is_initial_ob y → x ≅ y},
   \end{align*}
   we can define another theorem
   \begin{align*}
-  \mintinline{coq}{terminal_ob_unique : ∀ C  (x y : Ob C) ,} \\
+  \mintinline{coq}{terminal_ob_unique : ∀ C  }& \mintinline{coq}{(x y : Ob C),} \\
   & \mintinline{coq}{is_terminal_ob x → is_terminal_ob y → x ≅ y}
   \end{align*}
   as

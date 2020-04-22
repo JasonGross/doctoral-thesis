@@ -1,7 +1,7 @@
 ## Misc Files
 *~
-*#
-.#*
+*\#
+.\#*
 *.pdf
 *.atfi
 *.swp
@@ -273,7 +273,7 @@ logreq.sty
 # misc generated files
 *.md5
 /todo.svg
-jgross-thesis-figure*.dep
+jgross-thesis*-figure*.dep
 *.pgf-plot.gnuplot
 *.pgf-plot.table
 *-parameters.dat

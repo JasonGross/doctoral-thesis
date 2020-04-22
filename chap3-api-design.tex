@@ -62,7 +62,7 @@ Notation "C ᵒᵖ" := ({| Ob := Ob C; Hom x y := Hom C y x; ... |}).
   \end{align*}
   as
   \begin{center}
-  \mintinline{coq}{terminal_ob_unique C x y H H' := initial_ob_unique C Cᵒᵖ y x H' H}.
+  \mintinline{coq}{terminal_ob_unique C x y H H' := initial_ob_unique Cᵒᵖ y x H' H}.
   \end{center}
   % In homotopy type theory, we can convey our discovery by saying that not only are theorems homotopic to their duals, but they can be made to be judgmentally equal to their duals.
   Interestingly, we found that in proofs with sufficiently complicated types, it can take a few seconds or more for Coq to accept such a definition; we are not sure whether this is due to peculiarities of the reduction strategy of our version of Coq, or speed dependency on the size of the normal form of the type (rather than on the size of the unnormalized type), or something else entirely.

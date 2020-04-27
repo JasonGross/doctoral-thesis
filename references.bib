@@ -16,10 +16,10 @@
 
 @InProceedings{reification-by-parametricity,
   author          = {Jason Gross and Andres Erbsen and Adam Chlipala},
-  title           = {Reification by Parametricity: Fast Setup for Proof by Reflection, in Two Lines of {L}tac},
   booktitle       = {Proceedings of the \href{https://itp2018.inria.fr/}{9th International Conference on Interactive Theorem Proving (ITP'18)}},
-  year            = {2018},
-  month           = jul,
+  date            = {2018-07},
+  title           = {Reification by Parametricity: Fast Setup for Proof by Reflection, in Two Lines of {L}tac},
+  url             = {https://people.csail.mit.edu/jgross/personal-website/papers/2018-reification-by-parametricity-itp-camera-ready.pdf},
   abstract        = {We present a new strategy for performing reification in Coq.
 That is, we show how to generate first-class abstract syntax trees from ``native'' terms of Coq's logic, suitable as inputs to verified compilers or procedures in the \emph{proof-by-reflection} style.
 Our new strategy, based on simple generalization of subterms as variables, is straightforward, short, and fast.
@@ -33,315 +33,276 @@ Additionally, our strategy automatically provides error messages that are no les
   artifact-tar-gz = {https://people.csail.mit.edu/jgross/personal-website/papers/2018-reification-by-parametricity-itp-camera-ready-supplementary.tar.gz},
   original-url    = {https://people.csail.mit.edu/jgross/personal-website/papers/2018-reification-by-parametricity-itp-draft.pdf},
   owner           = {Jason},
-  url             = {https://people.csail.mit.edu/jgross/personal-website/papers/2018-reification-by-parametricity-itp-camera-ready.pdf},
 }
 
 @InProceedings{FiatCryptoSP19,
-author = {Andres Erbsen and Jade Philipoom and Jason Gross and Robert Sloan and Adam Chlipala},
-title = {Simple High-Level Code For Cryptographic Arithmetic -- With Proofs, Without Compromises},
-booktitle = {IEEE Security \& Privacy},
-month = may,
-year = {2019},
-location = {San Francisco, CA, USA},
-url = {http://adam.chlipala.net/papers/FiatCryptoSP19/}
+  author    = {Andres Erbsen and Jade Philipoom and Jason Gross and Robert Sloan and Adam Chlipala},
+  booktitle = {IEEE Security \& Privacy},
+  date      = {2019-05},
+  title     = {Simple High-Level Code For Cryptographic Arithmetic -- With Proofs, Without Compromises},
+  location  = {San Francisco, CA, USA},
+  url       = {http://adam.chlipala.net/papers/FiatCryptoSP19/},
 }
 
 @Misc{beta1-zeta1,
-  Title                    = {[coqdev] beta1 and zeta1 reduction},
-
-  Author                   = {Jonathan Leivent},
-  Month                    = jan,
-  Year                     = {2016},
-
-  Url                      = {https://sympa.inria.fr/sympa/arc/coqdev/2016-01/msg00060.html}
+  author = {Jonathan Leivent},
+  date   = {2016-01},
+  title  = {[coqdev] beta1 and zeta1 reduction},
+  url    = {https://sympa.inria.fr/sympa/arc/coqdev/2016-01/msg00060.html},
 }
 
 @Misc{coq-pr-fast-rel-lookup,
-  Title                    = {Fast rel lookup \#6506},
-
-  Author                   = {Pierre-Marie P\'edrot},
-  Month                    = dec,
-  Year                     = {2017},
-
-  Url                      = {https://github.com/coq/coq/pull/6506}
+  author = {Pierre-Marie P\'edrot},
+  date   = {2017-12},
+  title  = {Fast rel lookup \#6506},
+  url    = {https://github.com/coq/coq/pull/6506},
 }
 
 @Book{cpdt,
-  title     = {Certified Programming with Dependent Types: A Pragmatic Introduction to the {C}oq Proof Assistant},
-  publisher = {MIT Press},
-  year      = {2013},
   author    = {Adam Chlipala},
-  month     = dec,
+  date      = {2013-12},
+  title     = {Certified Programming with Dependent Types: A Pragmatic Introduction to the {C}oq Proof Assistant},
   isbn      = {9780262026659},
+  publisher = {MIT Press},
   url       = {http://adam.chlipala.net/cpdt/},
 }
 
 @TechReport{gonthier2016small,
-  Title                    = {A Small Scale Reflection Extension for the {C}oq system},
-  Author                   = {Gonthier, Georges and Mahboubi, Assia and Tassi, Enrico},
-  Institution              = {Inria Saclay Ile de France},
-  Year                     = {2016},
-  Month                    = nov,
-
-  School                   = {Inria Saclay Ile de France},
-  Url                      = {https://hal.inria.fr/inria-00258384/}
+  author      = {Gonthier, Georges and Mahboubi, Assia and Tassi, Enrico},
+  date        = {2016-11},
+  institution = {Inria Saclay Ile de France},
+  title       = {A Small Scale Reflection Extension for the {C}oq system},
+  url         = {https://hal.inria.fr/inria-00258384/},
+  school      = {Inria Saclay Ile de France},
 }
 
 @InProceedings{HOAS,
-  Title                    = {Higher-order abstract syntax},
-  Author                   = {Frank Pfenning and Conal Elliot},
-  Booktitle                = {Proc. PLDI},
-  Year                     = {1988},
-  Pages                    = {199--208},
-
-  Location                 = {Atlanta, Georgia, United States},
-  Url                      = {https://www.cs.cmu.edu/~fp/papers/pldi88.pdf}
+  author    = {Frank Pfenning and Conal Elliot},
+  booktitle = {Proc. PLDI},
+  date      = {1988},
+  title     = {Higher-order abstract syntax},
+  location  = {Atlanta, Georgia, United States},
+  pages     = {199--208},
+  url       = {https://www.cs.cmu.edu/~fp/papers/pldi88.pdf},
 }
 
 @Article{lessadhoc,
-  Title                    = {How to Make Ad Hoc Proof Automation Less Ad Hoc},
-  Author                   = {Gonthier, Georges and Ziliani, Beta and Nanevski, Aleksandar and Dreyer, Derek},
-  Journal                  = {Journal of Functional Programming},
-  Year                     = {2013},
-  Number                   = {4},
-  Pages                    = {357--401},
-  Volume                   = {23},
-
-  Doi                      = {10.1017/S0956796813000051},
-  Publisher                = {Cambridge University Press},
-  Url                      = {https://people.mpi-sws.org/~beta/lessadhoc/lessadhoc-extended.pdf}
+  author       = {Gonthier, Georges and Ziliani, Beta and Nanevski, Aleksandar and Dreyer, Derek},
+  date         = {2013},
+  journaltitle = {Journal of Functional Programming},
+  title        = {How to Make Ad Hoc Proof Automation Less Ad Hoc},
+  doi          = {10.1017/S0956796813000051},
+  number       = {4},
+  pages        = {357--401},
+  url          = {https://people.mpi-sws.org/~beta/lessadhoc/lessadhoc-extended.pdf},
+  volume       = {23},
+  publisher    = {Cambridge University Press},
 }
 
-@inproceedings{MirrorShardITP14,
- author = {Gregory Malecha and Adam Chlipala and Thomas Braibant},
- title = {Compositional Computational Reflection},
- booktitle = {ITP'14: Proceedings of the 5th International Conference on Interactive Theorem Proving},
- year = 2014,
- url = {http://adam.chlipala.net/papers/MirrorShardITP14/}
+@InProceedings{MirrorShardITP14,
+  author    = {Gregory Malecha and Adam Chlipala and Thomas Braibant},
+  booktitle = {ITP'14: Proceedings of the 5th International Conference on Interactive Theorem Proving},
+  date      = {2014},
+  title     = {Compositional Computational Reflection},
+  url       = {http://adam.chlipala.net/papers/MirrorShardITP14/},
 }
 
 @InProceedings{PhoasICFP08,
-  Title                    = {Parametric Higher-Order Abstract Syntax for Mechanized Semantics},
-  Author                   = {Adam Chlipala},
-  Booktitle                = {ICFP'08: Proceedings of the 13th ACM SIGPLAN International Conference on Functional Programming},
-  Year                     = {2008},
-  Month                    = sep,
-
-  Location                 = {Victoria, British Columbia, Canada},
-  Url                      = {http://adam.chlipala.net/papers/PhoasICFP08/}
+  author    = {Adam Chlipala},
+  booktitle = {ICFP'08: Proceedings of the 13th ACM SIGPLAN International Conference on Functional Programming},
+  date      = {2008-09},
+  title     = {Parametric Higher-Order Abstract Syntax for Mechanized Semantics},
+  location  = {Victoria, British Columbia, Canada},
+  url       = {http://adam.chlipala.net/papers/PhoasICFP08/},
 }
 
 @InBook{primitive-projections,
-  Title                    = {The {C}oq Proof Assistant Reference Manual},
-  Author                   = {{Coq Development Team}},
-  Chapter                  = {2.1.1 Extensions of \texorpdfstring{\textsc{Gallina}}{Gallina}, Record Types (Primitive Projections)},
-  Publisher                = {INRIA},
-  Year                     = {2017},
-  Edition                  = {8.7.1},
-
-  Url                      = {https://coq.inria.fr/distrib/V8.7.1/refman/gallina-ext.html#sec65}
+  author    = {{Coq Development Team}},
+  date      = {2017},
+  title     = {The {C}oq Proof Assistant Reference Manual},
+  chapter   = {2.1.1 Extensions of \texorpdfstring{\textsc{Gallina}}{Gallina}, Record Types (Primitive Projections)},
+  edition   = {8.7.1},
+  publisher = {INRIA},
+  url       = {https://coq.inria.fr/distrib/V8.7.1/refman/gallina-ext.html#sec65},
 }
 
 @InBook{quote-plugin,
-  Title                    = {The {C}oq Proof Assistant Reference Manual},
-  Author                   = {{Coq Development Team}},
-  Chapter                  = {10.3 Detailed examples of tactics (quote)},
-  Publisher                = {INRIA},
-  Year                     = {2017},
-  Edition                  = {8.7.1},
-
-  Url                      = {https://coq.inria.fr/distrib/V8.7.1/refman/tactic-examples.html#quote-examples}
+  author    = {{Coq Development Team}},
+  date      = {2017},
+  title     = {The {C}oq Proof Assistant Reference Manual},
+  chapter   = {10.3 Detailed examples of tactics (quote)},
+  edition   = {8.7.1},
+  publisher = {INRIA},
+  url       = {https://coq.inria.fr/distrib/V8.7.1/refman/tactic-examples.html#quote-examples},
 }
 
 @Article{sozeau2008first,
-  Title                    = {First-class type classes},
-  Author                   = {Sozeau, Matthieu and Oury, Nicolas},
-  Journal                  = {Lecture Notes in Computer Science},
-  Year                     = {2008},
-  Pages                    = {278--293},
-  Volume                   = {5170},
-
-  Publisher                = {Springer},
-  Url                      = {https://www.irif.fr/~sozeau/research/publications/First-Class_Type_Classes.pdf}
+  author       = {Sozeau, Matthieu and Oury, Nicolas},
+  date         = {2008},
+  journaltitle = {Lecture Notes in Computer Science},
+  title        = {First-class type classes},
+  pages        = {278--293},
+  url          = {https://www.irif.fr/~sozeau/research/publications/First-Class_Type_Classes.pdf},
+  volume       = {5170},
+  publisher    = {Springer},
 }
 
 @Article{ziliani2015mtac,
-  author    = {Beta Ziliani and Derek Dreyer and Neelakantan R Krishnaswami and Aleksandar Nanevski and Viktor Vafeiadis},
-  title     = {Mtac: A Monad for Typed Tactic Programming in {C}oq},
-  journal   = {Journal of Functional Programming},
-  year      = {2015},
-  volume    = {25},
-  publisher = {Cambridge University Press},
-  url       = {http://plv.mpi-sws.org/mtac/journal-draft.pdf},
+  author       = {Beta Ziliani and Derek Dreyer and Neelakantan R Krishnaswami and Aleksandar Nanevski and Viktor Vafeiadis},
+  date         = {2015},
+  journaltitle = {Journal of Functional Programming},
+  title        = {Mtac: A Monad for Typed Tactic Programming in {C}oq},
+  url          = {http://plv.mpi-sws.org/mtac/journal-draft.pdf},
+  volume       = {25},
+  publisher    = {Cambridge University Press},
 }
 
 @Article{ziliani2017comprehensible,
-  Title                    = {A Comprehensible Guide to a New Unifier for {CIC} Including Universe Polymorphism and Overloading},
-  Author                   = {Ziliani, Beta and Sozeau, Matthieu},
-  Journal                  = {Journal of Functional Programming},
-  Year                     = {2017},
-  Volume                   = {27},
-
-  Publisher                = {Cambridge University Press},
-  Url                      = {https://people.mpi-sws.org/~beta/papers/unicoq-journal.pdf}
+  author       = {Ziliani, Beta and Sozeau, Matthieu},
+  date         = {2017},
+  journaltitle = {Journal of Functional Programming},
+  title        = {A Comprehensible Guide to a New Unifier for {CIC} Including Universe Polymorphism and Overloading},
+  url          = {https://people.mpi-sws.org/~beta/papers/unicoq-journal.pdf},
+  volume       = {27},
+  publisher    = {Cambridge University Press},
 }
 
 @InProceedings{maranget2008compiling,
-  Title                    = {Compiling Pattern Matching to Good Decision Trees},
-  Author                   = {Maranget, Luc},
-  Booktitle                = {Proceedings of the 2008 ACM SIGPLAN workshop on ML},
-  Year                     = {2008},
-  Organization             = {ACM},
-  Pages                    = {35--46},
-
-  Owner                    = {jgross},
-  Timestamp                = {2019.04.15},
-  Url                      = {http://moscova.inria.fr/~maranget/papers/ml05e-maranget.pdf}
+  author       = {Maranget, Luc},
+  booktitle    = {Proceedings of the 2008 ACM SIGPLAN workshop on ML},
+  date         = {2008},
+  title        = {Compiling Pattern Matching to Good Decision Trees},
+  organization = {ACM},
+  pages        = {35--46},
+  url          = {http://moscova.inria.fr/~maranget/papers/ml05e-maranget.pdf},
+  owner        = {jgross},
+  timestamp    = {2019.04.15},
 }
 
 @Misc{coq-pr-floats,
   author    = {Erik Martin-Dorel},
+  date      = {2018-08},
   title     = {Implementing primitive floats (binary64 floating-point numbers) - Issue \#8276 - coq/coq},
-  month     = aug,
-  year      = {2018},
+  url       = {https://github.com/coq/coq/issues/8276},
   owner     = {jgross},
   timestamp = {2019.04.22},
-  url       = {https://github.com/coq/coq/issues/8276},
 }
 
-@article{Compcert,
- author = {Leroy, Xavier},
- title = {A Formally Verified Compiler Back-end},
- journal = {J. Autom. Reason.},
- issue_date = {December  2009},
- volume = {43},
- number = {4},
- month = dec,
- year = {2009},
- issn = {0168-7433},
- pages = {363--446},
- numpages = {84},
- url = {http://gallium.inria.fr/~xleroy/publi/compcert-backend.pdf},
- acmid = {1666216},
- publisher = {Springer-Verlag New York, Inc.},
- address = {Secaucus, NJ, USA},
- keywords = {Compiler transformations and optimizations, Compiler verification, Formal methods, Program proof, Semantic preservation, The Coq theorem prover},
+@Article{Compcert,
+  author       = {Leroy, Xavier},
+  date         = {2009-12},
+  journaltitle = {J. Autom. Reason.},
+  title        = {A Formally Verified Compiler Back-end},
+  issn         = {0168-7433},
+  number       = {4},
+  pages        = {363--446},
+  url          = {http://gallium.inria.fr/~xleroy/publi/compcert-backend.pdf},
+  volume       = {43},
+  acmid        = {1666216},
+  issue_date   = {December 2009},
+  keywords     = {Compiler transformations and optimizations, Compiler verification, Formal methods, Program proof, Semantic preservation, The Coq theorem prover},
+  location     = {Secaucus, NJ, USA},
+  numpages     = {84},
+  publisher    = {Springer-Verlag New York, Inc.},
 }
-
 
 @InProceedings{seL4SOSP09,
-    author =  {Gerwin Klein 
-    and Kevin Elphinstone 
-    and Gernot Heiser
-    and June Andronick 
-    and David Cock
-    and Philip Derrin
-    and Dhammika Elkaduwe
-    and Kai Engelhardt
-    and Rafal Kolanski
-    and Michael Norrish
-    and Thomas Sewell
-    and Harvey Tuch
-    and Simon Winwood},
-    title =        {{seL4}: Formal Verification of an {OS} Kernel},
-    booktitle =    {Proc. SOSP},
-    year =         {2009},
-    publisher = {ACM},
-    pages = {207--220}
+  author    = {Gerwin Klein and Kevin Elphinstone and Gernot Heiser and June Andronick and David Cock and Philip Derrin and Dhammika Elkaduwe and Kai Engelhardt and Rafal Kolanski and Michael Norrish and Thomas Sewell and Harvey Tuch and Simon Winwood},
+  booktitle = {Proc. SOSP},
+  date      = {2009},
+  title     = {{seL4}: Formal Verification of an {OS} Kernel},
+  pages     = {207--220},
+  publisher = {ACM},
 }
 
 @Book{PartialEvaluation,
-  title     = {Partial Evaluation and Automatic Program Generation},
-  publisher = {Prentice Hall International},
-  year      = {1993},
   author    = {N.D. Jones and C.K. Gomard and P. Sestoft},
-  month     = jun,
+  date      = {1993-06},
+  title     = {Partial Evaluation and Automatic Program Generation},
   isbn      = {0-13-020249-5},
+  publisher = {Prentice Hall International},
 }
 
 @Article{LMS,
-  title = "Lightweight modular staging: {A} pragmatic approach to
-     runtime code generation and compiled {DSL}s",
-  url = {https://infoscience.epfl.ch/record/150347/files/gpce63-rompf.pdf},
-  author =  "Tiark Rompf and Martin Odersky",
-  year =  "2010",
-  journal = {Proceedings of GPCE},
+  author       = {Tiark Rompf and Martin Odersky},
+  date         = {2010},
+  journaltitle = {Proceedings of GPCE},
+  title        = {Lightweight modular staging: {A} pragmatic approach to runtime code generation and compiled {DSL}s},
+  url          = {https://infoscience.epfl.ch/record/150347/files/gpce63-rompf.pdf},
 }
 
 @InProceedings{NbE,
   author    = {U. Berger and H. Schwichtenberg},
-  title     = {An inverse of the evaluation functional for typed $\lambda$--calculus},
   booktitle = {[1991] Proceedings Sixth Annual IEEE Symposium on Logic in Computer Science},
-  year      = {1991},
-  pages     = {203--211},
-  month     = jul,
+  date      = {1991-07},
+  title     = {An inverse of the evaluation functional for typed $\lambda$--calculus},
   doi       = {10.1109/LICS.1991.151645},
-  keywords  = {formal logic;inverse;evaluation functional;typed lambda -calculus;typed lambda -terms;normalization algorithm;lambda -calculi;constants;natural deduction proofs;completeness theorem;recursive functions;Calculus;Arithmetic;Computer languages},
+  pages     = {203--211},
   url       = {http://www.mathematik.uni-muenchen.de/~schwicht/papers/lics91/paper.pdf},
+  keywords  = {formal logic;inverse;evaluation functional;typed lambda -calculus;typed lambda -terms;normalization algorithm;lambda -calculi;constants;natural deduction proofs;completeness theorem;recursive functions;Calculus;Arithmetic;Computer languages},
 }
 
-@inproceedings{Aehlig,
-  author = {Klaus Aehlig and Florian Haftmann and Tobias Nipkow},
-  year = 2008,
-  title = {A Compiled Implementation of Normalization by Evaluation},
-  booktitle = {Proc. TPHOLs}
+@InProceedings{Aehlig,
+  author    = {Klaus Aehlig and Florian Haftmann and Tobias Nipkow},
+  booktitle = {Proc. TPHOLs},
+  date      = {2008},
+  title     = {A Compiled Implementation of Normalization by Evaluation},
 }
 
 @InProceedings{CodeGen,
   author    = {Florian Haftmann and Tobias Nipkow},
-  title     = {A Code Generator Framework for {I}sabelle/{HOL}},
   booktitle = {Proc. TPHOLs},
-  year      = {2007},
+  date      = {2007},
+  title     = {A Code Generator Framework for {I}sabelle/{HOL}},
 }
 
-@inproceedings{vale,
-  author = {Barry Bond and Chris Hawblitzel and Manos Kapritsos and Rustan Leino and Jay Lorch and Bryan Parno and Ashay Rane and Srinath Setty and Laure Thompson},
-  title = {Vale: Verifying High-Performance Cryptographic Assembly Code},
+@InProceedings{vale,
+  author    = {Barry Bond and Chris Hawblitzel and Manos Kapritsos and Rustan Leino and Jay Lorch and Bryan Parno and Ashay Rane and Srinath Setty and Laure Thompson},
   booktitle = {Proc. USENIX Security},
-  year = 2017,
-  url = {http://www.cs.cornell.edu/~laurejt/papers/vale-2017.pdf},
+  date      = {2017},
+  title     = {Vale: Verifying High-Performance Cryptographic Assembly Code},
+  url       = {http://www.cs.cornell.edu/~laurejt/papers/vale-2017.pdf},
 }
 
-@inproceedings{nativecompute,
-  author = {Mathieu Boespflug and Maxime Dénès and Benjamin Grégoire},
-  title = {Full Reduction at Full Throttle},
+@InProceedings{nativecompute,
+  author    = {Mathieu Boespflug and Maxime Dénès and Benjamin Grégoire},
   booktitle = {Proc. CPP},
-  year = 2011
+  date      = {2011},
+  title     = {Full Reduction at Full Throttle},
 }
 
-@inproceedings{vmcompute,
-  author = {Benjamin Grégoire and Xavier Leroy},
-  title = {A compiled implementation of strong reduction},
+@InProceedings{vmcompute,
+  author    = {Benjamin Grégoire and Xavier Leroy},
   booktitle = {Proc. ICFP},
-  year = 2002
+  date      = {2002},
+  title     = {A compiled implementation of strong reduction},
 }
 
-@inproceedings{LMSVerify,
-  title={{LMS-Verify}: Abstraction without Regret for Verified Systems Programming},
-  author={Nada Amin and Tiark Rompf},
+@InProceedings{LMSVerify,
+  author    = {Nada Amin and Tiark Rompf},
   booktitle = {Proc. POPL},
-  year = 2017
+  date      = {2017},
+  title     = {{LMS-Verify}: Abstraction without Regret for Verified Systems Programming},
 }
 
-@inproceedings{TemplateCoq,
-  title={Towards Certified Meta-Programming with Typed {Template-Coq}},
-  author={Abhishek Anand and Simon Boulier and Cyril Cohen and Matthieu Sozeau and Nicolas Tabareau},
-  booktitle={Proc. ITP},
-  year={2018}
+@InProceedings{TemplateCoq,
+  author    = {Abhishek Anand and Simon Boulier and Cyril Cohen and Matthieu Sozeau and Nicolas Tabareau},
+  booktitle = {Proc. ITP},
+  date      = {2018},
+  title     = {Towards Certified Meta-Programming with Typed {Template-Coq}},
 }
 
 @InBook{rtac,
   author    = {Malecha, Gregory and Bengtson, Jesper},
+  date      = {2016},
   title     = {Programming Languages and Systems: 25th European Symposium on Programming, ESOP 2016, Held as Part of the European Joint Conferences on Theory and Practice of Software, ETAPS 2016, Eindhoven, The Netherlands, April 2-8, 2016, Proceedings},
-  year      = {2016},
-  editor    = {Thiemann, Peter},
-  publisher = {Springer Berlin Heidelberg},
-  isbn      = {978-3-662-49498-1},
   chapter   = {Extensible and Efficient Automation Through Reflective Tactics},
-  pages     = {532--559},
   doi       = {10.1007/978-3-662-49498-1_21},
-  url       = {http://dx.doi.org/10.1007/978-3-662-49498-1_21},
-  address   = {Berlin, Heidelberg},
+  editor    = {Thiemann, Peter},
+  isbn      = {978-3-662-49498-1},
+  location  = {Berlin, Heidelberg},
+  pages     = {532--559},
+  publisher = {Springer Berlin Heidelberg},
 }
 
 @Conference{denes2013prim-ints-arrays,
@@ -355,25 +316,24 @@ url = {http://adam.chlipala.net/papers/FiatCryptoSP19/}
 }
 
 @PhdThesis{malecha2015thesis,
-  author = {Gregory Michael Malecha},
-  title  = {Extensible Proof Engineering in Intensional Type Theory},
-  school = {Harvard University},
-  year   = {2014},
-  month  = nov,
-  url    = {http://gmalecha.github.io/publication/2015/02/01/extensible-proof-engineering-in-intensional-type-theory.html},
+  author      = {Gregory Michael Malecha},
+  date        = {2014-11},
+  institution = {Harvard University},
+  title       = {Extensible Proof Engineering in Intensional Type Theory},
+  url         = {http://gmalecha.github.io/publication/2015/02/01/extensible-proof-engineering-in-intensional-type-theory.html},
 }
 
 @InProceedings{debruijn1972,
   author       = {de Bruijn, Nicolaas Govert},
-  title        = {Lambda calculus notation with nameless dummies, a tool for automatic formula manipulation, with application to the {C}hurch-{R}osser theorem},
   booktitle    = {Indagationes Mathematicae (Proceedings)},
-  year         = {1972},
-  volume       = {75},
+  date         = {1972},
+  title        = {Lambda calculus notation with nameless dummies, a tool for automatic formula manipulation, with application to the {C}hurch-{R}osser theorem},
+  doi          = {10.1016/1385-7258(72)90034-0},
   number       = {5},
-  pages        = {381--392},
   organization = {Elsevier},
-  doi          = {https://doi.org/10.1016/1385-7258(72)90034-0},
+  pages        = {381--392},
   url          = {http://www.sciencedirect.com/science/article/pii/1385725872900340},
+  volume       = {75},
 }
 
-@Comment{jabref-meta: databaseType:bibtex;}
+@Comment{jabref-meta: databaseType:biblatex;}

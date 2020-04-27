@@ -276,7 +276,7 @@ print-errors:
 	exit 1
 .PHONY: print-errors
 
-$(THESIS_PDFS) : %.pdf : %.tex
+$(PROPOSAL_PDFS) $(THESIS_PDFS) : %.pdf : %.tex
 	$(SHOW)"PDFLATEX (run 1)"
 	$(HIDE)$(PDFLATEX) $(LATEXFLAGS) $(OTHERFLAGS) $< || $(MAKE) print-errors
 	$(SHOW)"BIBER"
@@ -287,18 +287,6 @@ $(THESIS_PDFS) : %.pdf : %.tex
 	$(HIDE)$(PDFLATEX) $(LATEXFLAGS) $(OTHERFLAGS) --interaction=nonstopmode $< 2>&1 >/dev/null || true
 	$(SHOW)"PDFLATEX (run 3)"
 	$(HIDE)$(PDFLATEX) $(LATEXFLAGS) $(OTHERFLAGS) $< || $(MAKE) print-errors
-
-$(PROPOSAL_PDFS) : %.pdf : %.tex
-	$(SHOW)"PDFLATEX (run 1)"
-	$(HIDE)$(PDFLATEX) $(LATEXFLAGS) $(OTHERFLAGS) $<
-	$(SHOW)"BIBTEX"
-	$(HIDE)rm -f $*-bibtex.ok
-	$(HIDE)(bibtex $*.aux 2>&1 && touch $*-bibtex.ok) | tee $*-bibtex.log
-	$(HIDE)rm $*-bibtex.ok
-	$(SHOW)"PDFLATEX (run 2)"
-	$(HIDE)$(PDFLATEX) $(LATEXFLAGS) $(OTHERFLAGS) --interaction=nonstopmode $< 2>&1 >/dev/null || true
-	$(SHOW)"PDFLATEX (run 3)"
-	$(HIDE)$(PDFLATEX) $(LATEXFLAGS) $(OTHERFLAGS) $<
 
 .PHONY: rubber
 rubber:

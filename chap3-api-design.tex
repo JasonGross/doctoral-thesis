@@ -22,6 +22,8 @@ Finally, the question of whether to use packed or unpacked records is actually a
 the non-performance design considerations have been discussed before in \todo{cite math classes, etc}, while the performance implications are relatively straightforward.
 As far as I'm aware, there's not really a good way to get the best of all worlds.
 
+Much of this chapter will draw on examples and experience from a category theory library we implemented in Coq~\cite{category-coq-experience}, which we introduce in \autoref{sec:category-theory-library}.
+
 \section{When And How To Use Dependent Types Painlessly}
 The extremes are relatively easy:
 \begin{itemize}
@@ -33,13 +35,47 @@ The extremes are relatively easy:
 \todo{flesh out this section}
 \todo{More examples from the rewriter?}
 
+\section{A Brief Introduction To Of Our Category Theory Library} \label{sec:category-theory-library}
+\subsection{Introduction}
+Category theory~\cite{mac1998categories} is a popular all-encompassing mathematical formalism that casts familiar mathematical ideas from many domains in terms of a few unifying concepts.
+A \emph{category} can be described as a directed graph plus algebraic laws stating equivalences between paths through the graph.
+Because of this spartan philosophical grounding, category theory is sometimes referred to in good humor as ``formal abstract nonsense.''
+Certainly the popular perception of category theory is quite far from pragmatic issues of implementation.
+Our implementation of category theory has run squarely into issues of design and efficient implementation of type theories, proof assistants, and developments within them.
+
+One might presume that it is a routine exercise to transliterate categorical concepts from the whiteboard to Coq.
+Most category theorists would probably be surprised to learn that standard constructions ``run too slowly,'' but in our experience that is exactly the result of experimenting with na\"ive first Coq implementations of categorical constructs.
+It is important to tune the library design to minimize the cost of manipulating terms and proving interesting theorems.
+
+Category theory, said to be ``notoriously hard to formalize''~\cite{harrison1996formalized}, provides a good stress test of any proof assistant, highlighting problems in usability and efficiency.
+
+Formalizing the connection between universal morphisms and adjunctions provides a typical example of our experience with performance.
+A \emph{universal morphism} is a construct in category theory generalizing extrema from calculus.
+An \emph{adjunction} is a weakened notion of equivalence.
+In the process of rewriting our library to be compatible with homotopy type theory, we discovered that cleaning up this construction conceptually resulted in a significant slow-down, because our first attempted rewrite resulted in a leaky abstraction barrier and, most importantly, large goals (\autoref{sec:term-size}).
+Plugging the holes there reduced goal sizes by two orders of magnitude\footnote{The word count of the larger of the two relevant goals went from 7,312 to 191.}, which led to a factor of ten speedup in that file (from 39s to 3s), but incurred a factor of three slow-down in the file where we defined the abstraction barriers (from 7s to 21s).
+Working around slow projections of $\Sigma$ types (\autoref{sec:nested-sigma-types}) and being more careful about code reuse each gave us back half of that lost time.
+
+\medskip
+
+We begin our discussion in \autoref{sec:categories} considering a mundane aspect of type definitions that has large consequences for usability and performance.
+With the expressive power of Coq's logic Gallina, we often face a choice of making \emph{parameters} of a type family explicit arguments to it, which looks like universal quantification; or of including them within values of the type, which looks like existential quantification.
+As a general principle, we found that the universal or \emph{outside} style improves the user experience modulo performance, while the existential or \emph{inside} style speeds up type checking.
+The rule that we settled on was: \emph{inside} definitions for pieces that are usually treated as black boxes by further constructions, and \emph{outside} definitions for pieces whose internal structure is more important later on.
+
+\autoref{sec:duality-conversion} presents one of our favorite design patterns for categorical constructions: a way of coaxing Coq's definitional equality into implementing \emph{proof by duality}, one of the most widely known ideas in category theory.
+In \autoref{sec:other}, we describe a few other design choices that had large impacts on usability and performance, often of a few orders of magnitude.
+\todo{this is duplicative with text above}
+
+
 \section{Internalizing Duality Arguments in Type Theory} \label{sec:duality-conversion}
-\todoask{All of the text in this section is currently taken verbatim from the category theory paper.  What's the convention on taking text like this, how do I cite it, etc?}
-\todo{introduce category theory more before here?}
 
-  In general, we have tried to design our library so that trivial proofs on paper remain trivial when formalized.  One of Coq's main tools to make proofs trivial is the definitional equality, where some facts follow by computational reduction of terms.  We came up with some small tweaks to core definitions that allow a common family of proofs by \emph{duality} to follow by computation.
+  In general, we tried to design our library so that trivial proofs on paper remain trivial when formalized.
+  One of Coq's main tools to make proofs trivial is the definitional equality, where some facts follow by computational reduction of terms.
+  We came up with some small tweaks to core definitions that allow a common family of proofs by \emph{duality} to follow by computation.
 
-  Proof by duality is a common idea in higher mathematics: sometimes, it is productive to flip the directions of all the arrows.  For example, if some fact about least upper bounds is provable, chances are that the same kind of fact about greatest lower bounds will also be provable in roughly the same way, by replacing ``greater than''s with ``less than''s and vice versa.
+  Proof by duality is a common idea in higher mathematics: sometimes, it is productive to flip the directions of all the arrows.
+  For example, if some fact about least upper bounds is provable, chances are that the same kind of fact about greatest lower bounds will also be provable in roughly the same way, by replacing ``greater than''s with ``less than''s and vice versa.
 
   Concretely, there is a dualizing operation on categories that inverts the directions of the morphisms:
 \begin{minted}{coq}
@@ -48,7 +84,11 @@ Notation "C ᵒᵖ" := ({| Ob := Ob C; Hom x y := Hom C y x; ... |}).
 
   Dualization can be used, roughly, for example, to turn a proof that Cartesian product is an associative operation into a proof that disjoint union is an associative operation; products are dual to disjoint unions.
 
-  One of the simplest examples of duality in category theory is initial and terminal objects.  In a category \cat C, an initial object $0$ is one that has a unique morphism $0 \to x$ to every object $x$ in \cat C; a terminal object $1$ is one that has a unique morphism $x \to 1$ from every object $x$ in \cat C.  Initial objects in \cat C are terminal objects in $\cat{C}^\text{op}$.  The initial object of any category is unique up to isomorphism; for any two initial objects $0$ and $0'$, there is an isomorphism $0 \cong 0'$.  By flipping all of the arrows around, we can prove, by duality, that the terminal object is unique up to isomorphism.  More precisely, from a proof that an initial object of $\cat{C}^{\text{op}}$ is unique up to isomorphism, we get that any two terminal objects $1'$ and $1$ in $\cat{C}$, which are initial in $\cat{C}^{\text{op}}$, are isomorphic in $\cat{C}^{\text{op}}$.  Since an isomorphism $x \cong y$ in $\cat{C}^\text{op}$ is an isomorphism $y \cong x$ in \cat C, we get that $1$ and $1'$ are isomorphic in $\cat C$.
+  One of the simplest examples of duality in category theory is initial and terminal objects.
+  In a category \cat C, an initial object $0$ is one that has a unique morphism $0 \to x$ to every object $x$ in \cat C; a terminal object $1$ is one that has a unique morphism $x \to 1$ from every object $x$ in \cat C.
+  Initial objects in \cat C are terminal objects in $\cat{C}^\text{op}$.
+  The initial object of any category is unique up to isomorphism; for any two initial objects $0$ and $0'$, there is an isomorphism $0 \cong 0'$.
+  By flipping all of the arrows around, we can prove, by duality, that the terminal object is unique up to isomorphism.  More precisely, from a proof that an initial object of $\cat{C}^{\text{op}}$ is unique up to isomorphism, we get that any two terminal objects $1'$ and $1$ in $\cat{C}$, which are initial in $\cat{C}^{\text{op}}$, are isomorphic in $\cat{C}^{\text{op}}$.  Since an isomorphism $x \cong y$ in $\cat{C}^\text{op}$ is an isomorphism $y \cong x$ in \cat C, we get that $1$ and $1'$ are isomorphic in $\cat C$.
 
   It is generally straightforward to see that there is an isomorphism between a theorem and its dual, and the technique of dualization is well-known to category theorists, among others.  We discovered that, by being careful about how we defined things, we could make theorems be judgmentally equal to their duals!  That is, when we prove a theorem
   \begin{align*}
@@ -103,8 +143,6 @@ After all, abstraction barriers generally live in the mind of the developer, in 
 
 Therefore, we will describe a sampling of abstraction barriers and the design choices that went into them, drawn from real examples \todoask{how much should I talk about the category theory library itself in my thesis?}, as well as the performance issues that arose from these choices.
 
-\todo{Note that from here to the end of \autoref{sec:abstraction-barriers} is taken directly from the category theory paper}
-
 A few other pervasive strategies made non-trivial differences for proof performance or simplicity.
 
   \subsection{Identities vs.~Equalities; Associators} \label{sec:associators}
@@ -132,7 +170,23 @@ A few other pervasive strategies made non-trivial differences for proof performa
 
     Perhaps less typical of programming experience, we found that picking the right abstraction barriers could drastically reduce compile time by keeping details out of sight in large goal formulas.  In the instance discussed in the introduction, we got a factor of ten speed-up by plugging holes in a leaky abstraction barrier!\footnote{See \url{https://github.com/HoTT/HoTT/commit/eb0099005171} for the exact change.}
 
-\subsection{Nested Σ Types}
+\subsection{Nested Σ Types} \label{sec:nested-sigma-types}
+  In Coq, there are two ways to represent a data structure with one constructor and many fields:
+  as a single inductive type with one constructor (records), or as a nested $\Sigma$ type.
+  For instance, consider a record type with two type fields $A$ and $B$ and a function $f$ from $A$ to $B$.
+  A logically equivalent encoding would be $\Sigma A. \; \Sigma B. \; A \to B$.
+  There are two important differences between these encodings in Coq.
+  
+  \label{sec:prim-record-proj}
+  The first is that while a theorem statement may abstract over all possible $\Sigma$ types, it may not abstract over all record types, which somehow have a less first-class status.
+  Such a limitation is inconvenient and leads to code duplication.
+  
+  The far more pressing problem, overriding the previous point, is that nested $\Sigma$ types have horrendous performance, and are sometimes a few orders of magnitude slower.
+  The culprit is projections from nested $\Sigma$ types, which, when unfolded (as they must be, to do computation), each take almost the entirety of the nested $\Sigma$ type as an argument, and so grow in size very quickly.
+  
+  Let's consider an example.
+  \todo{example}
+
 \todo{Talk about how using nested $\Sigma$ types without hiding them behind an abstraction barrier and without primitive projections result in a performance bottleneck}
 
 \todo{Find more examples to talk about here?}

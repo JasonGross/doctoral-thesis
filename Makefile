@@ -305,7 +305,23 @@ rubber:
 	rubber --shell-escape -d -m lualatex jgross-thesis.tex
 
 # pdflatex -synctex=1 -interaction=nonstopmode -enable-write18 jgross-thesis.tex 2>&1
-MAKE_TODO := LINES="$$(cat jgross-thesis.log jgross-thesis-biber.log | grep -C 10 '^LaTeX Warning:\|on input line\|in paragraph at lines\|Xy-pic Warning:\|^Package [^ ]* Warning:\|^WARN' | tr '\r' '&' | tr '\n' '&' | sed 's/\&//g; s/\(\(on input line[^\.]*\| multiply defined\|multiply-defined labels\|Xy-pic Warning: [^\.]*\)\.\|in paragraph at lines [0-9-]*\([^\[\]]*\[\]\)*\)/\1\&/g; s/\(Underfull\|Overfull\)/\&\1/g; s/(Font)\s*/; /g; s/(biblatex)\s*/ /g' | tr '&' '\n' | grep -o 'LaTeX Warning:.*\|Xy-pic Warning:.*\|Font shape [^ ]* in size [^ ]* not available.*\|Package biblatex Warning: The following entry could not be found in the database: [^ ]*\|\(Under\|Over\)full ..box ([^)]*) in paragraph at lines.*\|^WARN.*' | grep -o 'TODO.*\|QUESTION.*\|Warning: Reference.*\|Warning: Citation.*\|Warning: Label.*\|Xy-pic Warning:.*\|Font shape [^ ]* in size [^ ]* not available.*\|Package [^ ]* Warning: .*\|WARN.*\|\(Under\|Over\)full ..box ([^)]*) in paragraph at lines.*')"; ((echo "$$LINES" | grep TODO); (echo "$$LINES" | grep 'QUESTION FOR ADAM'); (echo "$$LINES" | grep '^Warning:'); (echo "$$LINES" | grep -v '^Warning:' | grep 'Warning:'); (echo "$$LINES" | grep 'WARN'); (echo "$$LINES" | grep 'Font shape'); (echo "$$LINES" | grep -v 'TODO\|QUESTION FOR ADAM\|Warning:\|Font shape\|WARN')) | grep --color=auto 'TODO:\|QUESTION FOR ADAM:\|Warning: Reference\|Warning: Citation\|Warning:\|WARN\|'
+MAKE_TODO := LINES="$$(cat jgross-thesis.log | \
+	grep -C 10 '^LaTeX Warning:\|on input line\|in paragraph at lines\|Xy-pic Warning:\|^Package [^ ]* Warning:' | \
+	tr '\r' '&' | \
+	tr '\n' '&' | \
+	sed 's/\&//g; s/\(\(on input line[^\.]*\| multiply defined\|multiply-defined labels\|Xy-pic Warning: [^\.]*\)\.\|in paragraph at lines [0-9-]*\([^\[\]]*\[\]\)*\)/\1\&/g; s/\(Underfull\|Overfull\)/\&\1/g; s/(Font)\s*/; /g; s/(biblatex)\s*/ /g' | \
+	tr '&' '\n' | \
+	grep -o 'LaTeX Warning:.*\|Xy-pic Warning:.*\|Font shape [^ ]* in size [^ ]* not available.*\|Package biblatex Warning: The following entry could not be found in the database: [^ ]*\|\(Under\|Over\)full ..box ([^)]*) in paragraph at lines.*' | \
+	grep -o 'TODO.*\|QUESTION.*\|Warning: Reference.*\|Warning: Citation.*\|Warning: Label.*\|Xy-pic Warning:.*\|Font shape [^ ]* in size [^ ]* not available.*\|Package [^ ]* Warning: .*\|\(Under\|Over\)full ..box ([^)]*) in paragraph at lines.*')$$(echo; (cat jgross-thesis-biber.log | \
+	grep '^WARN'))"; \
+	((echo "$$LINES" | grep TODO); \
+	(echo "$$LINES" | grep 'QUESTION FOR ADAM'); \
+	(echo "$$LINES" | grep '^Warning:'); \
+	(echo "$$LINES" | grep -v '^Warning:' | grep 'Warning:'); \
+	(echo "$$LINES" | grep 'WARN'); \
+	(echo "$$LINES" | grep 'Font shape'); \
+	(echo "$$LINES" | grep -v 'TODO\|QUESTION FOR ADAM\|Warning:\|Font shape\|WARN')) | \
+	grep --color=auto 'TODO:\|QUESTION FOR ADAM:\|Warning: Reference\|Warning: Citation\|Warning:\|WARN\|'
 .PHONY: todo
 todo: jgross-thesis.pdf
 	$(MAKE_TODO)

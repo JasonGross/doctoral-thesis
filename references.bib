@@ -33,15 +33,6 @@ Additionally, our strategy automatically provides error messages that are no les
   owner           = {Jason},
 }
 
-@InProceedings{FiatCryptoSP19,
-  author    = {Andres Erbsen and Jade Philipoom and Jason Gross and Robert Sloan and Adam Chlipala},
-  booktitle = {IEEE Security \& Privacy},
-  date      = {2019-05},
-  title     = {Simple High-Level Code For Cryptographic Arithmetic -- With Proofs, Without Compromises},
-  location  = {San Francisco, CA, USA},
-  url       = {http://adam.chlipala.net/papers/FiatCryptoSP19/},
-}
-
 @Misc{beta1-zeta1,
   author = {Jonathan Leivent},
   date   = {2016-01},
@@ -419,7 +410,6 @@ Additionally, our strategy automatically provides error messages that are no les
   adsurl         = {http://adsabs.harvard.edu/abs/2013arXiv1303.0584A},
   archiveprefix  = {ar{X}iv},
   comments       = {27 pages, ancillary files contain formalized proofs in the proof assistant Coq},
-  groups         = {[Jason:]},
   keywords       = {Mathematics - Category Theory, Mathematics - Logic, 18A15},
   oai2identifier = {1303.0584},
   owner          = {Jason},
@@ -801,7 +791,6 @@ Additionally, our strategy automatically provides error messages that are no les
   adsnote        = {Provided by the SAO/NASA Astrophysics Data System},
   adsurl         = {http://adsabs.harvard.edu/abs/2004hohc.book.....L},
   comments       = {Book, 410 pages},
-  groups         = {Jason:6},
   isbn-bak       = {0521532159},
   month-bak      = {8},
   oai2identifier = {math/0305049},
@@ -1146,11 +1135,86 @@ Additionally, our strategy automatically provides error messages that are no les
   timestamp = {2014.03.28}
 }
 
-@Comment{jabref-meta: databaseType:biblatex;}
-
-@Comment{jabref-meta: grouping:
-0 AllEntriesGroup:;
-1 StaticGroup:Markings\;2\;1\;\;\;\;;
-2 StaticGroup:Jason:6\;2\;1\;\;\;\;;
-2 StaticGroup:[Jason:]\;2\;1\;\;\;\;;
+@InProceedings{adt-synthesis,
+  author            = {Ben Delaware and Cl\'ement Pit--Claudel and Jason Gross and Adam Chlipala},
+  booktitle         = {Proceedings of the \href{http://popl.mpi-sws.org/2015/}{42nd ACM SIGPLAN-SIGACT Symposium on Principles of Programming Languages (POPL'15)}},
+  date              = {2015-01},
+  title             = {Fiat: Deductive Synthesis of Abstract Data Types in a Proof Assistant},
+  url               = {https://people.csail.mit.edu/jgross/personal-website/papers/2015-adt-synthesis.pdf},
+  abstract          = {We present Fiat, a library for the Coq proof assistant supporting refinement of declarative specifications into efficient functional programs with a high degree of automation. Each refinement process leaves a proof trail, checkable by the normal Coq kernel, justifying its soundness. We focus on the synthesis of abstract data types that package methods with private data. We demonstrate the utility of our framework by applying it to the synthesis of \textit{query structures} -- abstract data types with SQL-like query and insert operations. Fiat includes a library for writing specifications of query structures in SQL-inspired notation, expressing operations over relations (tables) in terms of mathematical sets. This library includes a set of tactics for automating the refinement of these specifications into efficient, correct-by-construction OCaml code. Using these tactics, a programmer can generate such an implementation completely automatically by only specifying the equivalent of SQL indexes, data structures capturing useful views of the abstract data. We conclude by speculating on the new programming modularity possibilities enabled by an automated refinement system with proved-correct rules.},
+  acm-authorize-url = {https://dl.acm.org/authorize?N20774},
+  artifact-tar-gz   = {https://people.csail.mit.edu/jgross/personal-website/media/2015-popl/fiat-20141031.tar.gz},
+  owner             = {Jason},
+  project-homepage  = {http://plv.csail.mit.edu/fiat/},
+  timestamp         = {2014.10.07},
 }
+
+@Misc{coqpl-15-coq-bug-minimizer,
+  author    = {Jason Gross},
+  date      = {2015-01},
+  title     = {Coq Bug Minimizer},
+  note      = {Presented at \href{https://coqpl.cs.washington.edu/2014/07/31/}{The First International Workshop on Coq for PL (CoqPL'15)}},
+  url       = {https://people.csail.mit.edu/jgross/personal-website/papers/2015-coq-bug-minimizer.pdf},
+  abstract  = {Are bugs the bane of your existence? Do you dread Coq upgrades, because they mean you'll have to spend days tracking down subtle failures deep in your developments? Have you ever hit an anomaly that just wouldn't go away, and wished you understood what triggered it? Have you ever been tormented by two blocks of code that looked identical, but behaved differently? Do you wish you submit more helpful error reports, but don't want to put in the time to construct minimal examples? If you answered ``yes'' to any of these questions, then the Coq Bug Minimizer is for you! Clone your own copy at \url{https://github.com/JasonGross/coq-bug-finder}.},
+  owner     = {Jason},
+  reviews   = {https://people.csail.mit.edu/jgross/personal-website/papers/2015-coq-bug-minimizer-reviews.txt},
+  timestamp = {2014.10.07},
+}
+
+@MastersThesis{jgross-masters-thesis,
+  author      = {Jason Gross},
+  date        = {2015-09},
+  institution = {Massachusetts Institute of Technology},
+  title       = {An Extensible Framework for Synthesizing Efficient, Verified Parsers},
+  url         = {https://people.csail.mit.edu/jgross/personal-website/papers/2015-jgross-thesis.pdf},
+  abstract    = {Parsers have a long history in computer science. This thesis proposes a novel approach to synthesizing efficient, verified parsers by refinement, and presents a demonstration of this approach in the Fiat framework by synthesizing a parser for arithmetic expressions. The benefits of this framework may include more flexibility in the parsers that can be described, more control over the low-level details when necessary for performance, and automatic or mostly automatic correctness proofs.},
+}
+
+@InProceedings{category-coq-experience,
+  author                      = {Jason Gross and Adam Chlipala and David I. Spivak},
+  booktitle                   = {Proceedings of the \href{http://www.cs.uwyo.edu/~ruben/itp-2014}{5th International Conference on Interactive Theorem Proving (ITP'14)}},
+  date                        = {2014-07},
+  title                       = {Experience Implementing a Performant Category-Theory Library in {C}oq},
+  eprint                      = {1401.7694},
+  url                         = {https://people.csail.mit.edu/jgross/personal-website/papers/category-coq-experience-itp-submission-final.pdf},
+  abstract                    = {We describe our experience implementing a broad category-theory library in Coq. Category theory and computational performance are not usually mentioned in the same breath, but we have needed substantial engineering effort to teach Coq to cope with large categorical constructions without slowing proof script processing unacceptably. In this paper, we share the lessons we have learned about how to represent very abstract mathematical objects and arguments in Coq and how future proof assistants might be designed to better support such reasoning. One particular encoding trick to which we draw attention allows category-theoretic arguments involving \emph{duality} to be internalized in Coq's logic with definitional equality. Ours may be the largest Coq development to date that uses the relatively new Coq version developed by homotopy type theorists, and we reflect on which new features were especially helpful.},
+  full-bibliography           = {https://people.csail.mit.edu/jgross/personal-website/papers/category-coq-experience.html},
+  original-url                = {https://people.csail.mit.edu/jgross/personal-website/papers/category-coq-experience-itp-submission.pdf},
+  owner                       = {Jason},
+  presentation-annotated-pptx = {https://people.csail.mit.edu/jgross/personal-website/presentations/itp-2014/category-coq-experience.pptx},
+  presentation-pdf            = {https://people.csail.mit.edu/jgross/personal-website/presentations/itp-2014/category-coq-experience.pdf},
+  published-url-springer      = {http://link.springer.com/chapter/10.1007/978-3-319-08970-6_18},
+  reviews                     = {https://people.csail.mit.edu/jgross/personal-website/papers/category-coq-experience-itp-2014-reviews.txt},
+  timestamp                   = {2014.01.19},
+}
+
+@Misc{coqpl-15-ltac-profiler,
+  author    = {Tobias Tebbi and Jason Gross},
+  date      = {2015-01},
+  title     = {A Profiler for {L}tac},
+  note      = {Presented at \href{https://coqpl.cs.washington.edu/2014/07/31/}{The First International Workshop on Coq for PL (CoqPL'15)}},
+  url       = {https://people.csail.mit.edu/jgross/personal-website/papers/2015-ltac-profiler.pdf},
+  abstract  = {We present a simple profiler for the Ltac tactic language of the Coq Proof Assistent. It measures the time spent in invocations of primitive tactics as well as tactics defined in Ltac and their inner invocations. The profiler is controlled using Vernacular commands and prints an aggregated view that differentiates between tactic invocations depending on their call tree location.},
+  owner     = {Jason},
+  timestamp = {2014.10.17},
+}
+
+@InProceedings{FiatCryptoSP19,
+  author      = {Andres Erbsen and Jade Philipoom and Jason Gross and Robert Sloan and Adam Chlipala},
+  booktitle   = {IEEE Security \& Privacy},
+  date        = {2019-05},
+  title       = {Simple High-Level Code For Cryptographic Arithmetic -- With Proofs, Without Compromises},
+  location    = {San Francisco, CA, USA},
+  url         = {http://adam.chlipala.net/papers/FiatCryptoSP19/},
+  abstract    = {We introduce a new approach for implementing cryptographic arithmetic in short high-level code with machine-checked proofs of functional correctness.
+We further demonstrate that simple partial evaluation is sufficient to transform into the fastest-known C code, breaking the decades-old pattern that the only fast implementations are those whose instruction-level steps were written out by hand.
+
+These techniques were used to build an elliptic-curve library that achieves competitive performance for 80 prime fields and multiple CPU architectures, showing that implementation and proof effort scales with the number and complexity of conceptually different algorithms, not their use cases.
+As one outcome, we present the first verified high-performance implementation of P-256, the most widely used elliptic curve.
+Implementations from our library were included in BoringSSL to replace existing specialized code, for inclusion in several large deployments for Chrome, Android, and CloudFlare.},
+  code-github = {https://github.com/mit-plv/fiat-crypto},
+  owner       = {jgross},
+  timestamp   = {2018.06.01},
+}
+
+@Comment{jabref-meta: databaseType:biblatex;}

@@ -4,6 +4,7 @@
 \documentclass[twoside]{article}
 \usepackage{hyperref}
 \usepackage[maxbibnames=99,backend=biber]{biblatex}
+\bibliography{references.bib}
 \input{new-date-proposal}
 
 \begin{document}
@@ -446,8 +447,8 @@ The rewriting and partial evaluation framework allows it to generate code for P-
 
 However, the framework is still only a \emph{prototype}, in the sense that the performance results suggest that a framework like it could replace tactics such as \texttt{rewrite}, \texttt{autorewrite}, \texttt{rewrite\_strat}, \texttt{simpl}, and \texttt{cbn} to a great performance improvement, but there is still much engineering work left to adequately replace these tactics in their full generality.
 
-\bibliographystyle{plain}
+%\bibliographystyle{plain}
 %\nocite{*}
-\bibliography{references}
+\printbibliography[title=References]
 
 \end{document}

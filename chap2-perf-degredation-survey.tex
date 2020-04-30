@@ -310,7 +310,7 @@ There are two obvious solutions for this problem:
     We can implement some sort of sharing, where common subterms of the type only exist once in the representation.
 \end{enumerate}
 
-\subsubsection{Dropping Type Parameters: Nominal vs.~Structural Typing}
+\subsubsection{Dropping Type Parameters: Nominal vs.~Structural Typing} \label{sec:nominal-vs-structural}
 The first option requires that the proof assistant implement structural typing~\cite{structural-typing} rather than nominal typing~\cite{nominal-typing}.
 \todo{Find a place for this note:} Note that it doesn't actually require structural; we can do it with nominal typing if we enforce everywhere that we can only compare terms who are known to be the same type, because not having structural typing results in having a single kernel term with multiple non-unifiable types.
 \todo{maybe look into TAPL}

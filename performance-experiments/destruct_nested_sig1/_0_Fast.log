@@ -1,0 +1,9 @@
+Params: n= 14
+Tactic call repeat-destruct ran for 37.371 secs (37.272u,0.099s) (success)
+Tactic call cbn ran for 0.254 secs (0.254u,0.s) (success)
+Params: n= 15
+Tactic call repeat-destruct ran for 80.39 secs (80.223u,0.167s) (success)
+Tactic call cbn ran for 0.282 secs (0.282u,0.s) (success)
+Params: n= 16
+Tactic call repeat-destruct ran for 166.252 secs (165.981u,0.271s) (success)
+Tactic call cbn ran for 0.772 secs (0.772u,0.s) (success)

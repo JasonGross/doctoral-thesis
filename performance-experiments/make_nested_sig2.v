@@ -4,7 +4,7 @@ Require Import PerformanceExperiments.make_nested_sig_common.
 Definition args_of_size (s : size) : list nat
   := match s with
      | SuperFast => List.map (fun x => x * 10) (seq 0 100)
-     | Fast => List.map (fun x => x * 100) (seq 0 30)
+     | Fast => List.map (fun x => x * 100) (seq 0 14)
      | Medium => []
      | Slow => []
      | VerySlow => []

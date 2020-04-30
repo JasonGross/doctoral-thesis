@@ -230,6 +230,446 @@ A few other pervasive strategies made non-trivial differences for proof performa
   
   Let's consider an example.
   
+%  >>> params = [{'y':y, 'txt':'%s-nested%s%s%s' % (tac, status, kind, num)}
+%      for tac in ('make', 'destruct')
+%      for status in ('-', '-prim-')
+%      for kind in ('prod', 'sig')
+%      for num in ('1', '2')
+%      for y in {'destruct':['repeat-destruct', 'cbn'], 'make':['cbv']}[tac]]
+%      >>> for val in params: print(template % val)
+      
+      \begin{figure*}
+          \beginTikzpictureStamped{
+              \einput{performance-experiments/make-nested-prod1.txt}
+            }
+            \begin{axis}[xlabel=$n$,
+                ylabel=time (s),
+                legend pos=north west,
+                width=0.95\textwidth,
+                axis lines=left,
+                xmin=0,
+                scaled x ticks=false,
+                scaled y ticks=false]
+                \addplot[only marks,color=black] table[x=param-n,y=cbv-user]{performance-experiments/make-nested-prod1.txt};
+                \addlegendentry{make-nested-prod1}
+            \end{axis}
+        \end{tikzpicture}
+        \caption{Timing of make-nested-prod1 cbv} \label{fig:timing-make-nested-prod1-cbv}
+    \end{figure*}
+    \begin{figure*}
+        \beginTikzpictureStamped{
+            \einput{performance-experiments/make-nested-prod2.txt}
+        }
+        \begin{axis}[xlabel=$n$,
+            ylabel=time (s),
+            legend pos=north west,
+            width=0.95\textwidth,
+            axis lines=left,
+            xmin=0,
+            scaled x ticks=false,
+            scaled y ticks=false]
+            \addplot[only marks,color=black] table[x=param-n,y=cbv-user]{performance-experiments/make-nested-prod2.txt};
+            \addlegendentry{make-nested-prod2}
+        \end{axis}
+    \end{tikzpicture}
+    \caption{Timing of make-nested-prod2 cbv} \label{fig:timing-make-nested-prod2-cbv}
+\end{figure*}
+\begin{figure*}
+    \beginTikzpictureStamped{
+        \einput{performance-experiments/make-nested-sig1.txt}
+    }
+    \begin{axis}[xlabel=$n$,
+        ylabel=time (s),
+        legend pos=north west,
+        width=0.95\textwidth,
+        axis lines=left,
+        xmin=0,
+        scaled x ticks=false,
+        scaled y ticks=false]
+        \addplot[only marks,color=black] table[x=param-n,y=cbv-user]{performance-experiments/make-nested-sig1.txt};
+        \addlegendentry{make-nested-sig1}
+    \end{axis}
+\end{tikzpicture}
+\caption{Timing of make-nested-sig1 cbv} \label{fig:timing-make-nested-sig1-cbv}
+\end{figure*}
+\begin{figure*}
+    \beginTikzpictureStamped{
+        \einput{performance-experiments/make-nested-sig2.txt}
+    }
+    \begin{axis}[xlabel=$n$,
+        ylabel=time (s),
+        legend pos=north west,
+        width=0.95\textwidth,
+        axis lines=left,
+        xmin=0,
+        scaled x ticks=false,
+        scaled y ticks=false]
+        \addplot[only marks,color=black] table[x=param-n,y=cbv-user]{performance-experiments/make-nested-sig2.txt};
+        \addlegendentry{make-nested-sig2}
+    \end{axis}
+\end{tikzpicture}
+\caption{Timing of make-nested-sig2 cbv} \label{fig:timing-make-nested-sig2-cbv}
+\end{figure*}
+\begin{figure*}
+    \beginTikzpictureStamped{
+        \einput{performance-experiments/make-nested-prim-prod1.txt}
+    }
+    \begin{axis}[xlabel=$n$,
+        ylabel=time (s),
+        legend pos=north west,
+        width=0.95\textwidth,
+        axis lines=left,
+        xmin=0,
+        scaled x ticks=false,
+        scaled y ticks=false]
+        \addplot[only marks,color=black] table[x=param-n,y=cbv-user]{performance-experiments/make-nested-prim-prod1.txt};
+        \addlegendentry{make-nested-prim-prod1}
+    \end{axis}
+\end{tikzpicture}
+\caption{Timing of make-nested-prim-prod1 cbv} \label{fig:timing-make-nested-prim-prod1-cbv}
+\end{figure*}
+\begin{figure*}
+    \beginTikzpictureStamped{
+        \einput{performance-experiments/make-nested-prim-prod2.txt}
+    }
+    \begin{axis}[xlabel=$n$,
+        ylabel=time (s),
+        legend pos=north west,
+        width=0.95\textwidth,
+        axis lines=left,
+        xmin=0,
+        scaled x ticks=false,
+        scaled y ticks=false]
+        \addplot[only marks,color=black] table[x=param-n,y=cbv-user]{performance-experiments/make-nested-prim-prod2.txt};
+        \addlegendentry{make-nested-prim-prod2}
+    \end{axis}
+\end{tikzpicture}
+\caption{Timing of make-nested-prim-prod2 cbv} \label{fig:timing-make-nested-prim-prod2-cbv}
+\end{figure*}
+\begin{figure*}
+    \beginTikzpictureStamped{
+        \einput{performance-experiments/make-nested-prim-sig1.txt}
+    }
+    \begin{axis}[xlabel=$n$,
+        ylabel=time (s),
+        legend pos=north west,
+        width=0.95\textwidth,
+        axis lines=left,
+        xmin=0,
+        scaled x ticks=false,
+        scaled y ticks=false]
+        \addplot[only marks,color=black] table[x=param-n,y=cbv-user]{performance-experiments/make-nested-prim-sig1.txt};
+        \addlegendentry{make-nested-prim-sig1}
+    \end{axis}
+\end{tikzpicture}
+\caption{Timing of make-nested-prim-sig1 cbv} \label{fig:timing-make-nested-prim-sig1-cbv}
+\end{figure*}
+\begin{figure*}
+    \beginTikzpictureStamped{
+        \einput{performance-experiments/make-nested-prim-sig2.txt}
+    }
+    \begin{axis}[xlabel=$n$,
+        ylabel=time (s),
+        legend pos=north west,
+        width=0.95\textwidth,
+        axis lines=left,
+        xmin=0,
+        scaled x ticks=false,
+        scaled y ticks=false]
+        \addplot[only marks,color=black] table[x=param-n,y=cbv-user]{performance-experiments/make-nested-prim-sig2.txt};
+        \addlegendentry{make-nested-prim-sig2}
+    \end{axis}
+\end{tikzpicture}
+\caption{Timing of make-nested-prim-sig2 cbv} \label{fig:timing-make-nested-prim-sig2-cbv}
+\end{figure*}
+\begin{figure*}
+    \beginTikzpictureStamped{
+        \einput{performance-experiments/destruct-nested-prod1.txt}
+    }
+    \begin{axis}[xlabel=$n$,
+        ylabel=time (s),
+        legend pos=north west,
+        width=0.95\textwidth,
+        axis lines=left,
+        xmin=0,
+        scaled x ticks=false,
+        scaled y ticks=false]
+        \addplot[only marks,color=black] table[x=param-n,y=repeat-destruct-user]{performance-experiments/destruct-nested-prod1.txt};
+        \addlegendentry{destruct-nested-prod1}
+    \end{axis}
+\end{tikzpicture}
+\caption{Timing of destruct-nested-prod1 repeat-destruct} \label{fig:timing-destruct-nested-prod1-repeat-destruct}
+\end{figure*}
+\begin{figure*}
+    \beginTikzpictureStamped{
+        \einput{performance-experiments/destruct-nested-prod1.txt}
+    }
+    \begin{axis}[xlabel=$n$,
+        ylabel=time (s),
+        legend pos=north west,
+        width=0.95\textwidth,
+        axis lines=left,
+        xmin=0,
+        scaled x ticks=false,
+        scaled y ticks=false]
+        \addplot[only marks,color=black] table[x=param-n,y=cbn-user]{performance-experiments/destruct-nested-prod1.txt};
+        \addlegendentry{destruct-nested-prod1}
+    \end{axis}
+\end{tikzpicture}
+\caption{Timing of destruct-nested-prod1 cbn} \label{fig:timing-destruct-nested-prod1-cbn}
+\end{figure*}
+\begin{figure*}
+    \beginTikzpictureStamped{
+        \einput{performance-experiments/destruct-nested-prod2.txt}
+    }
+    \begin{axis}[xlabel=$n$,
+        ylabel=time (s),
+        legend pos=north west,
+        width=0.95\textwidth,
+        axis lines=left,
+        xmin=0,
+        scaled x ticks=false,
+        scaled y ticks=false]
+        \addplot[only marks,color=black] table[x=param-n,y=repeat-destruct-user]{performance-experiments/destruct-nested-prod2.txt};
+        \addlegendentry{destruct-nested-prod2}
+    \end{axis}
+\end{tikzpicture}
+\caption{Timing of destruct-nested-prod2 repeat-destruct} \label{fig:timing-destruct-nested-prod2-repeat-destruct}
+\end{figure*}
+\begin{figure*}
+    \beginTikzpictureStamped{
+        \einput{performance-experiments/destruct-nested-prod2.txt}
+    }
+    \begin{axis}[xlabel=$n$,
+        ylabel=time (s),
+        legend pos=north west,
+        width=0.95\textwidth,
+        axis lines=left,
+        xmin=0,
+        scaled x ticks=false,
+        scaled y ticks=false]
+        \addplot[only marks,color=black] table[x=param-n,y=cbn-user]{performance-experiments/destruct-nested-prod2.txt};
+        \addlegendentry{destruct-nested-prod2}
+    \end{axis}
+\end{tikzpicture}
+\caption{Timing of destruct-nested-prod2 cbn} \label{fig:timing-destruct-nested-prod2-cbn}
+\end{figure*}
+\begin{figure*}
+    \beginTikzpictureStamped{
+        \einput{performance-experiments/destruct-nested-sig1.txt}
+    }
+    \begin{axis}[xlabel=$n$,
+        ylabel=time (s),
+        legend pos=north west,
+        width=0.95\textwidth,
+        axis lines=left,
+        xmin=0,
+        scaled x ticks=false,
+        scaled y ticks=false]
+        \addplot[only marks,color=black] table[x=param-n,y=repeat-destruct-user]{performance-experiments/destruct-nested-sig1.txt};
+        \addlegendentry{destruct-nested-sig1}
+    \end{axis}
+\end{tikzpicture}
+\caption{Timing of destruct-nested-sig1 repeat-destruct} \label{fig:timing-destruct-nested-sig1-repeat-destruct}
+\end{figure*}
+\begin{figure*}
+    \beginTikzpictureStamped{
+        \einput{performance-experiments/destruct-nested-sig1.txt}
+    }
+    \begin{axis}[xlabel=$n$,
+        ylabel=time (s),
+        legend pos=north west,
+        width=0.95\textwidth,
+        axis lines=left,
+        xmin=0,
+        scaled x ticks=false,
+        scaled y ticks=false]
+        \addplot[only marks,color=black] table[x=param-n,y=cbn-user]{performance-experiments/destruct-nested-sig1.txt};
+        \addlegendentry{destruct-nested-sig1}
+    \end{axis}
+\end{tikzpicture}
+\caption{Timing of destruct-nested-sig1 cbn} \label{fig:timing-destruct-nested-sig1-cbn}
+\end{figure*}
+\begin{figure*}
+    \beginTikzpictureStamped{
+        \einput{performance-experiments/destruct-nested-sig2.txt}
+    }
+    \begin{axis}[xlabel=$n$,
+        ylabel=time (s),
+        legend pos=north west,
+        width=0.95\textwidth,
+        axis lines=left,
+        xmin=0,
+        scaled x ticks=false,
+        scaled y ticks=false]
+        \addplot[only marks,color=black] table[x=param-n,y=repeat-destruct-user]{performance-experiments/destruct-nested-sig2.txt};
+        \addlegendentry{destruct-nested-sig2}
+    \end{axis}
+\end{tikzpicture}
+\caption{Timing of destruct-nested-sig2 repeat-destruct} \label{fig:timing-destruct-nested-sig2-repeat-destruct}
+\end{figure*}
+\begin{figure*}
+    \beginTikzpictureStamped{
+        \einput{performance-experiments/destruct-nested-sig2.txt}
+    }
+    \begin{axis}[xlabel=$n$,
+        ylabel=time (s),
+        legend pos=north west,
+        width=0.95\textwidth,
+        axis lines=left,
+        xmin=0,
+        scaled x ticks=false,
+        scaled y ticks=false]
+        \addplot[only marks,color=black] table[x=param-n,y=cbn-user]{performance-experiments/destruct-nested-sig2.txt};
+        \addlegendentry{destruct-nested-sig2}
+    \end{axis}
+\end{tikzpicture}
+\caption{Timing of destruct-nested-sig2 cbn} \label{fig:timing-destruct-nested-sig2-cbn}
+\end{figure*}
+\begin{figure*}
+    \beginTikzpictureStamped{
+        \einput{performance-experiments/destruct-nested-prim-prod1.txt}
+    }
+    \begin{axis}[xlabel=$n$,
+        ylabel=time (s),
+        legend pos=north west,
+        width=0.95\textwidth,
+        axis lines=left,
+        xmin=0,
+        scaled x ticks=false,
+        scaled y ticks=false]
+        \addplot[only marks,color=black] table[x=param-n,y=repeat-destruct-user]{performance-experiments/destruct-nested-prim-prod1.txt};
+        \addlegendentry{destruct-nested-prim-prod1}
+    \end{axis}
+\end{tikzpicture}
+\caption{Timing of destruct-nested-prim-prod1 repeat-destruct} \label{fig:timing-destruct-nested-prim-prod1-repeat-destruct}
+\end{figure*}
+\begin{figure*}
+    \beginTikzpictureStamped{
+        \einput{performance-experiments/destruct-nested-prim-prod1.txt}
+    }
+    \begin{axis}[xlabel=$n$,
+        ylabel=time (s),
+        legend pos=north west,
+        width=0.95\textwidth,
+        axis lines=left,
+        xmin=0,
+        scaled x ticks=false,
+        scaled y ticks=false]
+        \addplot[only marks,color=black] table[x=param-n,y=cbn-user]{performance-experiments/destruct-nested-prim-prod1.txt};
+        \addlegendentry{destruct-nested-prim-prod1}
+    \end{axis}
+\end{tikzpicture}
+\caption{Timing of destruct-nested-prim-prod1 cbn} \label{fig:timing-destruct-nested-prim-prod1-cbn}
+\end{figure*}
+\begin{figure*}
+    \beginTikzpictureStamped{
+        \einput{performance-experiments/destruct-nested-prim-prod2.txt}
+    }
+    \begin{axis}[xlabel=$n$,
+        ylabel=time (s),
+        legend pos=north west,
+        width=0.95\textwidth,
+        axis lines=left,
+        xmin=0,
+        scaled x ticks=false,
+        scaled y ticks=false]
+        \addplot[only marks,color=black] table[x=param-n,y=repeat-destruct-user]{performance-experiments/destruct-nested-prim-prod2.txt};
+        \addlegendentry{destruct-nested-prim-prod2}
+    \end{axis}
+\end{tikzpicture}
+\caption{Timing of destruct-nested-prim-prod2 repeat-destruct} \label{fig:timing-destruct-nested-prim-prod2-repeat-destruct}
+\end{figure*}
+\begin{figure*}
+    \beginTikzpictureStamped{
+        \einput{performance-experiments/destruct-nested-prim-prod2.txt}
+    }
+    \begin{axis}[xlabel=$n$,
+        ylabel=time (s),
+        legend pos=north west,
+        width=0.95\textwidth,
+        axis lines=left,
+        xmin=0,
+        scaled x ticks=false,
+        scaled y ticks=false]
+        \addplot[only marks,color=black] table[x=param-n,y=cbn-user]{performance-experiments/destruct-nested-prim-prod2.txt};
+        \addlegendentry{destruct-nested-prim-prod2}
+    \end{axis}
+\end{tikzpicture}
+\caption{Timing of destruct-nested-prim-prod2 cbn} \label{fig:timing-destruct-nested-prim-prod2-cbn}
+\end{figure*}
+\begin{figure*}
+    \beginTikzpictureStamped{
+        \einput{performance-experiments/destruct-nested-prim-sig1.txt}
+    }
+    \begin{axis}[xlabel=$n$,
+        ylabel=time (s),
+        legend pos=north west,
+        width=0.95\textwidth,
+        axis lines=left,
+        xmin=0,
+        scaled x ticks=false,
+        scaled y ticks=false]
+        \addplot[only marks,color=black] table[x=param-n,y=repeat-destruct-user]{performance-experiments/destruct-nested-prim-sig1.txt};
+        \addlegendentry{destruct-nested-prim-sig1}
+    \end{axis}
+\end{tikzpicture}
+\caption{Timing of destruct-nested-prim-sig1 repeat-destruct} \label{fig:timing-destruct-nested-prim-sig1-repeat-destruct}
+\end{figure*}
+\begin{figure*}
+    \beginTikzpictureStamped{
+        \einput{performance-experiments/destruct-nested-prim-sig1.txt}
+    }
+    \begin{axis}[xlabel=$n$,
+        ylabel=time (s),
+        legend pos=north west,
+        width=0.95\textwidth,
+        axis lines=left,
+        xmin=0,
+        scaled x ticks=false,
+        scaled y ticks=false]
+        \addplot[only marks,color=black] table[x=param-n,y=cbn-user]{performance-experiments/destruct-nested-prim-sig1.txt};
+        \addlegendentry{destruct-nested-prim-sig1}
+    \end{axis}
+\end{tikzpicture}
+\caption{Timing of destruct-nested-prim-sig1 cbn} \label{fig:timing-destruct-nested-prim-sig1-cbn}
+\end{figure*}
+\begin{figure*}
+    \beginTikzpictureStamped{
+        \einput{performance-experiments/destruct-nested-prim-sig2.txt}
+    }
+    \begin{axis}[xlabel=$n$,
+        ylabel=time (s),
+        legend pos=north west,
+        width=0.95\textwidth,
+        axis lines=left,
+        xmin=0,
+        scaled x ticks=false,
+        scaled y ticks=false]
+        \addplot[only marks,color=black] table[x=param-n,y=repeat-destruct-user]{performance-experiments/destruct-nested-prim-sig2.txt};
+        \addlegendentry{destruct-nested-prim-sig2}
+    \end{axis}
+\end{tikzpicture}
+\caption{Timing of destruct-nested-prim-sig2 repeat-destruct} \label{fig:timing-destruct-nested-prim-sig2-repeat-destruct}
+\end{figure*}
+\begin{figure*}
+    \beginTikzpictureStamped{
+        \einput{performance-experiments/destruct-nested-prim-sig2.txt}
+    }
+    \begin{axis}[xlabel=$n$,
+        ylabel=time (s),
+        legend pos=north west,
+        width=0.95\textwidth,
+        axis lines=left,
+        xmin=0,
+        scaled x ticks=false,
+        scaled y ticks=false]
+        \addplot[only marks,color=black] table[x=param-n,y=cbn-user]{performance-experiments/destruct-nested-prim-sig2.txt};
+        \addlegendentry{destruct-nested-prim-sig2}
+    \end{axis}
+\end{tikzpicture}
+\caption{Timing of destruct-nested-prim-sig2 cbn} \label{fig:timing-destruct-nested-prim-sig2-cbn}
+\end{figure*}
   \todo{example}
 
 \todo{Talk about how using nested $\Sigma$ types without hiding them behind an abstraction barrier and without primitive projections result in a performance bottleneck}

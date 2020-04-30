@@ -13,7 +13,8 @@ KINDS := \
 	open_constr_n_lambda_no_types_no_names \
 	open_constr_n_lambda_no_types_same_names \
 	app_n_uconstr \
-	app_n_ltac2
+	app_n_ltac2 \
+	$(foreach tac,make destruct,$(foreach status,_ _prim_,$(foreach kind,prod sig,$(foreach num,1 2,$(tac)_nested$(status)$(kind)$(num)))))
 
 SH_KINDS :=
 

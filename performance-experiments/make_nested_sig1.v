@@ -10,10 +10,10 @@ Definition args_of_size (s : size) : list nat
      | VerySlow => []
      end.
 
-Ltac mkgoal n := constr:(goal1_sig n).
-Ltac redgoal _ := once (time "cbv" (do_redgoal (); intros)).
+Ltac mkgoal0 n := constr:(goal1_sig n).
+Ltac redgoal0 _ := once (time "cbv" (do_redgoal (); intros)).
 Ltac time_solve_goal0 n := idtac.
-Ltac run0 sz := Harness.runtests args_of_size default_describe_goal mkgoal redgoal time_solve_goal0 sz.
+Ltac run0 sz := Harness.runtests args_of_size default_describe_goal mkgoal0 redgoal0 time_solve_goal0 sz.
 (*
 Goal True. run0 SuperFast.
 *)

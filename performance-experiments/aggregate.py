@@ -18,7 +18,7 @@ def process_file(f, data):
     def param_to_tuple(p):
         k, v = p.split('=')
         return (k, int(v))
-    reg = re.compile(r'Tactic call (.*?) ran for ([0-9\.]+) secs \(([0-9\.]+)u,([0-9\.]+)s\)(?: \(success\))?')
+    reg = re.compile(r'(?:Tactic call|Finished) (.*?) (?:ran for|in) ([0-9\.]+) secs \(([0-9\.]+)u,([0-9\.]+)s\)(?: \(success\)| \(successful\))?')
     fdir, fname = os.path.split(f.name)
     fbase, kind = os.path.split(fdir)
     curparams = None

@@ -242,16 +242,16 @@ A few other pervasive strategies made non-trivial differences for proof performa
             xmin=0,
             scaled x ticks=false,
             scaled y ticks=false]
-            \addplot[only marks,color=black] table[x=param-n,y=assert-user]{performance-experiments/make-destruct-nested-record.txt};
-            \addlegendentry{assert}
-            \addplot[only marks,color=black] table[x=param-n,y=build-user]{performance-experiments/make-destruct-nested-record.txt};
-            \addlegendentry{build}
-            \addplot[only marks,color=black] table[x=param-n,y=cbn-user]{performance-experiments/make-destruct-nested-record.txt};
-            \addlegendentry{cbn}
-            \addplot[only marks,color=black] table[x=param-n,y=destruct-user]{performance-experiments/make-destruct-nested-record.txt};
-            \addlegendentry{destruct}
-            \addplot[only marks,color=black] table[x=param-n,y=transaction-user]{performance-experiments/make-destruct-nested-record.txt};
-            \addlegendentry{Record}
+            \addplot[only marks,mark=triangle,color=black] table[x=param-n,y=transaction-user]{performance-experiments/make-destruct-nested-record.txt};
+            \addlegendentry{\mintinline{coq}{Record} command}
+%            \addplot[only marks,mark=o,color=black] table[x=param-n,y=assert-user]{performance-experiments/make-destruct-nested-record.txt};
+%            \addlegendentry{assert}
+            \addplot[only marks,mark=+,color=black] table[x=param-n,y=build-user]{performance-experiments/make-destruct-nested-record.txt};
+            \addlegendentry{building the goal}
+%            \addplot[only marks,mark=*,color=black] table[x=param-n,y=cbn-user]{performance-experiments/make-destruct-nested-record.txt};
+%            \addlegendentry{cbn}
+            \addplot[only marks,mark=square,color=black] table[x=param-n,y=destruct-user]{performance-experiments/make-destruct-nested-record.txt};
+            \addlegendentry{\mintinline{coq}{destruct}}
         \end{axis}
     \end{tikzpicture}
     \caption{Timing of make-destruct-nested-record} \label{fig:timing-make-destruct-nested-record}

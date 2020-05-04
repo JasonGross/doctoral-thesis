@@ -3,29 +3,19 @@
 
 case "$1" in
     SuperFast)
-        min=1
-        max=450
-        step=1
+        vs="$(seq 1 1 200)"
         ;;
     Fast)
-        min=500
-        max=1500
-        step=100
+        vs="$(seq 205 5 450) $(seq 500 100 1500)"
         ;;
     Medium)
-        min=1500
-        max=2000
-        step=100
+        vs="$(seq 1600 100 2000)"
         ;;
     Slow)
-        min=2000
-        max=2000
-        step=100
+        vs=""
         ;;
     VerySlow)
-        min=2000
-        max=2000
-        step=100
+        vs=""
         ;;
     * )
         echo "Invalid argument '$1'" >&2
@@ -33,9 +23,7 @@ case "$1" in
 esac
 
 FIELDS_SO_FAR=""
-for j in $(seq 1 $min); do
-    FIELDS_SO_FAR="${FIELDS_SO_FAR}x${j} : unit ; "
-done
+last_i=0
 echo 'Unset Boolean Equality Schemes.'
 echo 'Unset Case Analysis Schemes.'
 echo 'Unset Decidable Equality Schemes.'
@@ -43,10 +31,16 @@ echo 'Unset Elimination Schemes.'
 echo 'Unset Primitive Projections.'
 echo 'Unset Rewriting Schemes.'
 echo 'Unset Nonrecursive Elimination Schemes.'
-for i in $(seq $min $step $max); do
+for i in ${vs}; do
+    for j in $(seq $((${last_i}+1)) $i); do
+        FIELDS_SO_FAR="${FIELDS_SO_FAR}x${j} : unit ; "
+    done
+    last_i="$i"
     echo "Module Test$i."
     echo '  Goal True. idtac "Params: n=" '"$i"'. Abort.'
+    echo '  Optimize Heap.'
     echo "  Time Record test := { ${FIELDS_SO_FAR} }."
+    echo '  Optimize Heap.'
     echo '  Goal True.'
     echo '    restart_timer;'
     echo "    let v := constr:(forall v : test, x${i} v = x${i} v) in"
@@ -57,7 +51,4 @@ for i in $(seq $min $step $max); do
     echo '  Abort.'
     echo "End Test$i."
     echo
-    for j in $(seq $(($i+1)) $(($i+$step))); do
-        FIELDS_SO_FAR="${FIELDS_SO_FAR}x${j} : unit ; "
-    done
 done

@@ -220,16 +220,152 @@ A few other pervasive strategies made non-trivial differences for proof performa
   For instance, consider a record type with two type fields $A$ and $B$ and a function $f$ from $A$ to $B$.
   A logically equivalent encoding would be $\Sigma A. \; \Sigma B. \; A \to B$.
   There are two important differences between these encodings in Coq.
-  
+
   \label{sec:prim-record-proj}
   The first is that while a theorem statement may abstract over all possible $\Sigma$ types, it may not abstract over all record types, which somehow have a less first-class status.
   Such a limitation is inconvenient and leads to code duplication.
-  
+
   The far more pressing problem, overriding the previous point, is that nested $\Sigma$ types have horrendous performance, and are sometimes a few orders of magnitude slower.
   The culprit is projections from nested $\Sigma$ types, which, when unfolded (as they must be, to do computation), each take almost the entirety of the nested $\Sigma$ type as an argument, and so grow in size very quickly.
+
+  Let's consider a toy example to see the asymptotic performance.
+  To construct a nested $\Sigma$ type with three fields of type \mintinline{coq}{unit}, we can write the type:
+  \begin{center}
+      \mintinline{coq}{{ _ : unit & { _ : unit & unit }}}
+  \end{center}
+  If we want to project out the final field, we must write \mintinline{coq}{projT2 (projT2 x)} which, when implicit arguments are included, expands to
+  \begin{center}
+      \mintinline{coq}{@projT2 unit (λ _ : unit, unit) (@projT2 unit (λ _ : unit, { _ : unit & unit }) x)}
+  \end{center}
+  This term grows quadratically in the number of projections because the type of the $n^\text{th}$ field is repeated approximately $2n$ times.
+  This is even more of a problem when we need to \mintinline{coq}{destruct x} to prove something about the projections, as we need to \mintinline{coq}{destruct} it as many times as their are fields, which adds another factor of $n$ to the performance cost of building the proof from scratch; in Coq, this cost is either avoided due to sharing or else is hidden by a quadratic factor which a much larger constant factor.
+  Note that this is a sort-of dual to the problem of \autoref{sec:quadratic-conj-certificate}; there, we encountered quadratic overhead in applying the constructors (which is also a problem here), whereas right now we are discussing quadratic overhead in applying the eliminators.
+  See \autoref{fig:make-destruct-nested-sig} for the performance details.
+
+  We can avoid much of the cost of building the projection term by using \emph{primitive projections} (see \autoref{sec:primitive-projections} for more explanation of this feature).
+  Note that this feature is a sort-of dual to the proposed feature of dropping constructor parameters described in \autoref{sec:dropping-constructor-parameters}.
+  This does drastically reduce the overhead of building the projection term, but only slightly reduces the constant factor in destructing the variable so as to prove something about the projection.
+  See \autoref{fig:make-destruct-nested-prim-sig} for performance details.
+
+  There are two solutions to this issue:
+  \begin{enumerate}
+      \item use built-in \emph{record} types
+      \item carefully define intermediate abstraction barriers to avoid the quadratic overhead
+  \end{enumerate}
+
+  As seen in \autoref{fig:make-destruct-record}, using records mostly solves the issue.
+  There is still an untracked quadratic factor in defining the type in the first place; see \todo{cite new bug report}.
+
+  If your proof assistant does not support records out-of-the-box, or you want to avoid using them for whatever reason\footnote{Note that the UniMath library \todo{cite unimath} does this. \todo{explain reasoning}}, you can instead define intermediate abstraction barriers by hand.
+  Here is what code that almost works looks like for four fields:
+\begin{minted}{coq}
+Local Set Implicit Arguments.
+Record sigT {A} (P : A -> Type) := existT { projT1 : A ; projT2 : P projT1 }.
+Definition sigT_eta {A P} (x : @sigT A P) : x = existT P (projT1 x) (projT2 x).
+Proof. destruct x; reflexivity. Defined.
+Definition _T0 := unit.
+Definition _T1 := @sigT unit (fun _ : unit => _T0).
+Definition _T2 := @sigT unit (fun _ : unit => _T1).
+Definition _T3 := @sigT unit (fun _ : unit => _T2).
+Definition T := _T3.
+Definition Build_T0 (x0 : unit) : _T0 := x0.
+Definition Build_T1 (x0 : unit) (rest : _T0) : _T1
+  := @existT unit (fun _ : unit => _T0) x0 rest.
+Definition Build_T2 (x0 : unit) (rest : _T1) : _T2
+  := @existT unit (fun _ : unit => _T1) x0 rest.
+Definition Build_T3 (x0 : unit) (rest : _T2) : _T3
+  := @existT unit (fun _ : unit => _T2) x0 rest.
+Definition Build_T (x0 : unit) (x1 : unit) (x2 : unit) (x3 : unit) : T
+  := Build_T3 x0 (Build_T2 x1 (Build_T1 x2 (Build_T0 x3))).
+
+Definition _T0_proj (x : _T0) : unit := x.
+Definition _T1_proj1 (x : _T1) : unit := projT1 x.
+Definition _T1_proj2 (x : _T1) : _T0 := projT2 x.
+Definition _T2_proj1 (x : _T2) : unit := projT1 x.
+Definition _T2_proj2 (x : _T2) : _T1 := projT2 x.
+Definition _T3_proj1 (x : _T3) : unit := projT1 x.
+Definition _T3_proj2 (x : _T3) : _T2 := projT2 x.
+
+Definition proj_T_1 (x : T) : unit := _T3_proj1 x.
+Definition proj_T_1_rest (x : T) : _T2 := _T3_proj2 x.
+Definition proj_T_2 (x : T) : unit := _T2_proj1 (proj_T_1_rest x).
+Definition proj_T_2_rest (x : T) : _T1 := _T2_proj2 (proj_T_1_rest x).
+Definition proj_T_3 (x : T) : unit := _T1_proj1 (proj_T_2_rest x).
+Definition proj_T_3_rest (x : T) : _T0 := _T1_proj2 (proj_T_2_rest x).
+Definition proj_T_4 (x : T) : unit := _T0_proj (proj_T_3_rest x).
+
+Definition _T0_eta (x : _T0) : x = Build_T0 (_T0_proj x) := @eq_refl _T0 x.
+Definition _T1_eta (x : _T1) : x = Build_T1 (_T1_proj1 x) (_T1_proj2 x)
+  := @sigT_eta unit (fun _ : unit => _T0) x.
+Definition _T2_eta (x : _T2) : x = Build_T2 (_T2_proj1 x) (_T2_proj2 x)
+  := @sigT_eta unit (fun _ : unit => _T1) x.
+Definition _T3_eta (x : _T3) : x = Build_T3 (_T3_proj1 x) (_T3_proj2 x)
+  := @sigT_eta unit (fun _ : unit => _T2) x.
+
+Definition T_eta (x : T) : x = Build_T (proj_T_1 x) (proj_T_2 x) (proj_T_3 x) (proj_T_4 x)
+  := let lhs3 := x in
+     let lhs2 := _T3_proj2 lhs3 in
+     let lhs1 := _T2_proj2 lhs2 in
+     let lhs0 := _T1_proj2 lhs1 in
+     let final := _T0_proj lhs0 in
+     let rhs0 := Build_T0 final in
+     let rhs1 := Build_T1 (_T1_proj1 lhs1) rhs0 in
+     let rhs2 := Build_T2 (_T2_proj1 lhs2) rhs1 in
+     let rhs3 := Build_T3 (_T3_proj1 lhs3) rhs2 in
+     (((@eq_trans _T3)
+         x (Build_T3 (_T3_proj1 lhs3) lhs2) rhs3
+         (_T3_eta x)
+         ((@f_equal _T2 _T3 (Build_T3 (_T3_proj1 lhs3)))
+            lhs2 rhs2
+            ((@eq_trans _T2)
+               lhs2 (Build_T2 (_T2_proj1 lhs2) lhs1) rhs2
+               (_T2_eta lhs2)
+               ((@f_equal _T1 _T2 (Build_T2 (_T2_proj1 lhs2)))
+                  lhs1 rhs1
+                  ((@eq_trans _T1)
+                     lhs1 (Build_T1 (_T1_proj1 lhs1) lhs0) rhs1
+                     (_T1_eta lhs1)
+                     ((@f_equal _T0 _T1 (Build_T1 (_T1_proj1 lhs1)))
+                        lhs0 rhs0
+                        (_T0_eta lhs0)))))))
+      : x = Build_T (proj_T_1 x) (proj_T_2 x) (proj_T_3 x) (proj_T_4 x)).
+
+Import EqNotations.
+Definition T_rect (P : T -> Type)
+           (f : forall (x0 : unit) (x1 : unit) (x2 : unit) (x3 : unit),
+               P (Build_T x0 x1 x2 x3))
+           (x : T)
+  : P x
+  := rew <- [P] T_eta x in f (proj_T_1 x) (proj_T_2 x) (proj_T_3 x) (proj_T_4 x).
+\end{minted}
+  It only almost works because, although the overall size of the terms, even accounting for implicits, is linear in the number of fields, we still incur a quadratic number of unfoldings in the final cast node in the proof of \mintinline{coq}{T_eta}.
+  Note that this cast node is only present to make explicit the conversion problem that must happen; removing it does not break anything, but then the quadratic cost is hidden in non-trivial substitutions of the \mintinline{coq}{let}-binders into the types.
+  It might be possible to avoid this quadratic factor by being even more careful, but I was unable to find a way to do it.
+  Worse, though, due to the issue with nested \mintinline{coq}{let}-binders described in \autoref{sec:sharing}, we would still incur a quadratic typechecking cost.
   
-  Let's consider an example.
+  We can, however, avoid this cost by turning on primitive projections via \mintinline{coq}{Set Primitive Projections} at the top of this block of code:
+  this enables judgmental $\eta$-conversion for primitive records, whence we can prove \mintinline{coq}{T_eta} with the proof term \mintinline{coq}{@eq_refl T x}.
   
+
+%  \begin{figure*}
+%      \beginTikzpictureStamped{
+%          \einput{performance-experiments/make-nested-sig2.txt}
+%      }
+%      \begin{axis}[xlabel=$n$,
+%          ylabel=time (s),
+%          legend pos=north west,
+%          width=0.95\textwidth,
+%          axis lines=left,
+%          xmin=0,
+%          scaled x ticks=false,
+%          scaled y ticks=false]
+%          \addplot[only marks,color=black] table[x=param-n,y=cbv-user]{performance-experiments/make-nested-sig2.txt};
+%          \addlegendentry{cbv (make-nested-sig2)}
+%      \end{axis}
+%  \end{tikzpicture}
+%  \caption{Timing of make-nested-sig2 cbv} \label{fig:timing-make-nested-sig2-cbv}
+%\end{figure*}
+
   \begin{figure*}
       \beginTikzpictureStamped{
           \einput{performance-experiments/make-destruct-nested-record.txt}
@@ -246,17 +382,17 @@ A few other pervasive strategies made non-trivial differences for proof performa
             \addlegendentry{\mintinline{coq}{Record} command}
 %            \addplot[only marks,mark=o,color=black] table[x=param-n,y=assert-user]{performance-experiments/make-destruct-nested-record.txt};
 %            \addlegendentry{assert}
-            \addplot[only marks,mark=+,color=black] table[x=param-n,y=build-user]{performance-experiments/make-destruct-nested-record.txt};
-            \addlegendentry{building the goal}
 %            \addplot[only marks,mark=*,color=black] table[x=param-n,y=cbn-user]{performance-experiments/make-destruct-nested-record.txt};
 %            \addlegendentry{cbn}
             \addplot[only marks,mark=square,color=black] table[x=param-n,y=destruct-user]{performance-experiments/make-destruct-nested-record.txt};
             \addlegendentry{\mintinline{coq}{destruct}}
+            \addplot[only marks,mark=+,color=black] table[x=param-n,y=build-user]{performance-experiments/make-destruct-nested-record.txt};
+            \addlegendentry{building the goal}
         \end{axis}
     \end{tikzpicture}
     \caption{Timing of make-destruct-nested-record} \label{fig:timing-make-destruct-nested-record}
 \end{figure*}
-  
+
 %>>> template = r"""\begin{figure*}
 %\beginTikzpictureStamped{
 %\einput{performance-experiments/%(txt)s.txt}
@@ -275,7 +411,7 @@ A few other pervasive strategies made non-trivial differences for proof performa
 %\end{tikzpicture}
 %\caption{Timing of %(txt)s %(y)s} \label{fig:timing-%(txt)s-%(y)s}
 %\end{figure*}"""
-%>>> 
+%>>>
 %>>> params = [{'y':y, 'txt':'%s-nested%s%s%s%s' % (tac, status, kind, num, tacn)}
 %    for tacn in ('', '-ltac2')
 %    for tac in (('make', 'destruct') if tacn == '' else ('make', ))

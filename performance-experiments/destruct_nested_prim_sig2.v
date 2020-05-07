@@ -3,8 +3,8 @@ Require Import PerformanceExperiments.make_nested_sig_common.
 
 Definition args_of_size (s : size) : list nat
   := match s with
-     | SuperFast => seq 0 30
-     | Fast => seq 0 65
+     | SuperFast => seq 0 40
+     | Fast => seq 0 87
      | Medium => []
      | Slow => []
      | VerySlow => []

@@ -10,7 +10,7 @@ Definition args_of_size (s : size) : list nat
      | VerySlow => []
      end.
 
-Ltac mkgoal n := constr:(Prim.goal2_sig n).
+Ltac mkgoal n := constr:(goal2_sig n).
 Ltac redgoal _ := do_redgoal (); intros.
 Ltac time_solve_goal0 n :=
   time "repeat-destruct" do_destruct ();

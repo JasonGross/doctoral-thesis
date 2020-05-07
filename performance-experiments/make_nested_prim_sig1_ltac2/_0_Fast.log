@@ -1,6 +1,5 @@
 Params: n= 22
-Tactic call build ran for 0.001 secs (0.u,0.s) (success)
-Tactic call check ran for 42.54 secs (42.431u,0.103s) (success)
-Tactic call type ran for 42.324 secs (42.231u,0.091s) (success)
-Tactic call build-and-typecheck ran for 84.865 secs (84.664u,0.195s) (success)
-Tactic call refine ran for 42.534 secs (42.533u,0.s) (success)
+Tactic call build ran for 0. secs (0.u,0.s) (success)
+Tactic call check ran for 43.697 secs (43.577u,0.119s) (success)
+Tactic call type ran for 43.36 secs (43.284u,0.076s) (success)
+Tactic call refine ran for 43.629 secs (43.545u,0.084s) (success)

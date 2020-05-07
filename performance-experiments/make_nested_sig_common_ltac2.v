@@ -134,15 +134,16 @@ Module Import WithLtac2.
     build_goal_gen_gen n '(fun x : @Specif.sigT unit (fun _ => unit) => (Specif.projT1 x, Specif.projT2 x)) a.
 
   Ltac2 time_solve_goal_gen (f : int -> assoc -> constr) (n : constr) (a : assoc) :=
-    let n := int_of_nat n in
-    let v := Control.time
-               (Some "build-and-typecheck")
-               (fun _ =>
-                  let v := Control.time (Some "build") (fun _ => f n a) in
-                  let __ := Control.time (Some "check") (fun _ => Unsafe.check v) in
-                  let __ := Control.time (Some "type") (fun _ => Constr.type v) in
-                  v) in
-    Control.time (Some "refine") (fun _ => refine v).
+    (let n := int_of_nat n in
+     let v := (ltac1:(optimize_heap);
+              let v := Control.time (Some "build") (fun _ => f n a) in
+              ltac1:(optimize_heap);
+              let __ := Control.time (Some "check") (fun _ => Unsafe.check v) in
+              ltac1:(optimize_heap);
+              let __ := Control.time (Some "type") (fun _ => Constr.type v) in
+              v) in
+     ltac1:(optimize_heap);
+    Control.time (Some "refine") (fun _ => refine v)).
 
   Ltac2 time_solve_goal_1 n := time_solve_goal_gen build_goal_gen n Left.
   Ltac2 time_solve_goal_2 n := time_solve_goal_gen build_goal_gen n Right.

@@ -303,7 +303,8 @@ Definition _T2_eta (x : _T2) : x = Build_T2 (_T2_proj1 x) (_T2_proj2 x)
 Definition _T3_eta (x : _T3) : x = Build_T3 (_T3_proj1 x) (_T3_proj2 x)
   := @sigT_eta unit (fun _ : unit => _T2) x.
 
-Definition T_eta (x : T) : x = Build_T (proj_T_1 x) (proj_T_2 x) (proj_T_3 x) (proj_T_4 x)
+Definition T_eta (x : T)
+ : x = Build_T (proj_T_1 x) (proj_T_2 x) (proj_T_3 x) (proj_T_4 x)
   := let lhs3 := x in
      let lhs2 := _T3_proj2 lhs3 in
      let lhs1 := _T2_proj2 lhs2 in
@@ -337,7 +338,8 @@ Definition T_rect (P : T -> Type)
                P (Build_T x0 x1 x2 x3))
            (x : T)
   : P x
-  := rew <- [P] T_eta x in f (proj_T_1 x) (proj_T_2 x) (proj_T_3 x) (proj_T_4 x).
+  := rew <- [P] T_eta x in
+     f (proj_T_1 x) (proj_T_2 x) (proj_T_3 x) (proj_T_4 x).
 \end{minted}
   It only almost works because, although the overall size of the terms, even accounting for implicits, is linear in the number of fields, we still incur a quadratic number of unfoldings in the final cast node in the proof of \mintinline{coq}{T_eta}.
   Note that this cast node is only present to make explicit the conversion problem that must happen; removing it does not break anything, but then the quadratic cost is hidden in non-trivial substitutions of the \mintinline{coq}{let}-binders into the types.
@@ -354,7 +356,7 @@ Definition T_rect (P : T -> Type)
   }
   Worse, though, due to the issue with nested \mintinline{coq}{let}-binders described in \autoref{sec:sharing}, we would still incur a quadratic typechecking cost.
   
-  We can, however, avoid this cost by turning on primitive projections via \mintinline{coq}{Set Primitive Projections} at the top of this block of code:
+  We can, however, avoid this cost by turning on primitive projections via \texttt{Set Primitive Projections} at the top of this block of code:
   this enables judgmental $\eta$-conversion for primitive records, whence we can prove \mintinline{coq}{T_eta} with the proof term \mintinline{coq}{@eq_refl T x}.
   See \autoref{fig:timing-make-destruct-record-definition-abstraction} for performance details.
   

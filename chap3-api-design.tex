@@ -233,7 +233,7 @@ A few other pervasive strategies made non-trivial differences for proof performa
   \begin{center}
       \mintinline{coq}{{ _ : unit & { _ : unit & unit }}}
   \end{center}
-  If we want to project out the final field, we must write \mintinline{coq}{projT2 (projT2 x)} which, when implicit arguments are included, expands to
+  If we want to project out the final field, we must write \mintinline{coq}{projT2 (projT2 x)} which, when implicit arguments are included, expands to \todo{figure out why spacing is strange above this code example}
   \begin{center}
       \mintinline{coq}{@projT2 unit (λ _ : unit, unit) (@projT2 unit (λ _ : unit, { _ : unit & unit }) x)}
   \end{center}
@@ -244,7 +244,7 @@ A few other pervasive strategies made non-trivial differences for proof performa
 
   We can avoid much of the cost of building the projection term by using \emph{primitive projections} (see \autoref{sec:primitive-projections} for more explanation of this feature).
   Note that this feature is a sort-of dual to the proposed feature of dropping constructor parameters described in \autoref{sec:dropping-constructor-parameters}.
-  This does drastically reduce the overhead of building the projection term, but only slightly reduces the constant factor in destructing the variable so as to prove something about the projection.
+  This does drastically reduce the overhead of building the projection term, but only cuts in half the constant factor in destructing the variable so as to prove something about the projection.
   See \autoref{fig:timing-make-destruct-nested-prim-sig} for performance details.
 
   There are two solutions to this issue:
@@ -253,10 +253,20 @@ A few other pervasive strategies made non-trivial differences for proof performa
       \item carefully define intermediate abstraction barriers to avoid the quadratic overhead
   \end{enumerate}
 
-  As seen in \autoref{fig:timing-make-destruct-record}, using records mostly solves the issue.
-  There is still an untracked quadratic factor in defining the type in the first place; see \todo{cite https://github.com/coq/coq/issues/12270}.
-  There is also an untracked quadratic factor in running \mintinline{coq}{destruct}; see \todo{cite https://github.com/coq/coq/issues/12271}.
+  Both of these essentially solve the issue of quadratic overhead in projecting out the fields.
+  This is the benefit of good abstraction barriers.
+  
+  In Coq 8.11, \mintinline{coq}{destruct} is unfortunately still quadratic due to issues with name generation, but the constant factor is much smaller; see \autoref{fig:timing-make-destruct-record} and \coqbug{12271}.
+  
+  We now come to the question: how much do we pay for using this abstraction barrier?
+  That is, how much is the one-time cost of defining the abstraction barrier.
+  Obviously, we can just make definitions for each of the projections and for the eliminator, and pay the cubic (or perhaps even quartic; see the leading term in \autoref{fig:timing-make-destruct-nested-sig}) overhead once.
+  There's an interesting question, though, of if we can avoid this overhead all-together.
 
+  As seen in \autoref{fig:timing-make-destruct-record}, using records partially avoids the overhead.
+  Defining the record type, though, still incurs a quadratic factor due to hashconsing the projections; see \coqbug{12270}.
+
+  \todo{remove use of ``you''}
   If your proof assistant does not support records out-of-the-box, or you want to avoid using them for whatever reason\footnote{Note that the UniMath library \todo{cite unimath} does this. \todo{explain reasoning}}, you can instead define intermediate abstraction barriers by hand.
   Here is what code that almost works looks like for four fields:
 \begin{minted}{coq}

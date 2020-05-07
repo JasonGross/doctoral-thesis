@@ -483,7 +483,8 @@ Note that the $x$-axis is $10\times$ larger on this plot.} \label{fig:timing-mak
     \end{tikzpicture}
     \caption{Timing of running a \mintinline{coq}{Record} command to define a record with $n$ fields, and the time to \mintinline{coq}{destruct} such a record.
     Note that building the goal involving projecting out the last field takes less than 0.001s for all numbers of fields that we tested.
-(Presumably for large enough numbers of fields, we'd start getting a logarithmic overhead from parsing the name of the final field, which, when represented as $x$ followed by the field number in base 10, does grow in size as $\log_{10}n$.)}
+(Presumably for large enough numbers of fields, we'd start getting a logarithmic overhead from parsing the name of the final field, which, when represented as $x$ followed by the field number in base 10, does grow in size as $\log_{10}n$.)
+Note that the non-monotonic timing is \emph{reproducible}, and we have asked the Coq developers about it at \coqbug{12270}.}
 \label{fig:timing-make-destruct-nested-record}
 \end{figure*}
 

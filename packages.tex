@@ -613,6 +613,40 @@
     \pgfplotstablegetelem{0}{1}\of\parameters \xdef\pgfplotstableregressionb{\pgfplotsretval}
     \pgfplotstablegetelem{0}{2}\of\parameters \xdef\pgfplotstableregressionc{\pgfplotsretval}
 }
+% \addplotcubicregression[params for \addplot][default settings for a and b and c and d, also for x and y columns]{table file}
+\NewDocumentCommand{\addplotcubicregression}{ O{no markers} o m}{%
+    \pgfkeyssetvalue{/addplotcubicregression/x}{0}
+    \pgfkeyssetvalue{/addplotcubicregression/y}{1}
+    \pgfkeyssetvalue{/addplotcubicregression/a}{1}
+    \pgfkeyssetvalue{/addplotcubicregression/b}{1}
+    \pgfkeyssetvalue{/addplotcubicregression/c}{1}
+    \pgfkeyssetvalue{/addplotcubicregression/d}{1}
+    \pgfkeys{/addplotcubicregression/.cd,#2}
+    \pgftognucolumnset{/addplotcubicregression/x}{\@addplotcubicregression@colx}%
+    \pgftognucolumnset{/addplotcubicregression/y}{\@addplotcubicregression@coly}%
+    \edef\@addplotcubicregression@inita{\pgfkeysvalueof{/addplotcubicregression/a}}%
+    \edef\@addplotcubicregression@initb{\pgfkeysvalueof{/addplotcubicregression/b}}%
+    \edef\@addplotcubicregression@initc{\pgfkeysvalueof{/addplotcubicregression/c}}%
+    \edef\@addplotcubicregression@initd{\pgfkeysvalueof{/addplotcubicregression/d}}%
+    \addplot [#1] gnuplot [raw gnuplot] { % allows arbitrary gnuplot commands
+        f(x) = a*x**3+b*x**2+c*x+d;     % Define the function to fit
+        % Set reasonable starting values here
+        a=\@addplotcubicregression@inita;
+        b=\@addplotcubicregression@initb;
+        c=\@addplotcubicregression@initc;
+        d=\@addplotcubicregression@initd;
+        fit f(x) '#3' u \@addplotcubicregression@colx:\@addplotcubicregression@coly\space via a,b,c,d; % Select the file
+        stats '#3' u \@addplotcubicregression@colx;
+        plot [x=STATS_min:STATS_max] f(x);    % Specify the range to plot
+        set print "#3-parameters.dat";  % Open a file to save the parameters
+        print a, b, c, d;                  % Write the parameters to file
+    };
+    \pgfplotstableread{#3-parameters.dat}\parameters % Open the file Gnuplot wrote
+    \pgfplotstablegetelem{0}{0}\of\parameters \xdef\pgfplotstableregressiona{\pgfplotsretval} % Get first element, save into \pgfplotstableregressiona
+    \pgfplotstablegetelem{0}{1}\of\parameters \xdef\pgfplotstableregressionb{\pgfplotsretval}
+    \pgfplotstablegetelem{0}{2}\of\parameters \xdef\pgfplotstableregressionc{\pgfplotsretval}
+    \pgfplotstablegetelem{0}{3}\of\parameters \xdef\pgfplotstableregressiond{\pgfplotsretval}
+}
 % regress on y = a (x!)
 % \addplotfactorialregression[params for \addplot][default settings for a, also for x and y columns]{table file}
 \NewDocumentCommand{\addplotfactorialregression}{ O{no markers} o m}{%

@@ -37,7 +37,7 @@ for i in ${vs}; do
     done
     last_i="$i"
     echo "Module Test$i."
-    echo '  Goal True. idtac "Params: n=" '"$i"'. Abort.'
+    echo '  Goal True. idtac "Params: n=" '"$i"' ", #replace-transaction=record". Abort.'
     echo '  Optimize Heap.'
     echo "  Time Record test := { ${FIELDS_SO_FAR} }."
     echo '  Optimize Heap.'

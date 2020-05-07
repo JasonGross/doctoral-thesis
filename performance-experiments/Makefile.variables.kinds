@@ -18,7 +18,8 @@ KINDS := \
 	$(foreach status,_ _prim_,$(foreach kind,prod sig,$(foreach num,1 2,make_nested$(status)$(kind)$(num)_ltac2)))
 
 SH_KINDS := \
-	make_destruct_nested_record
+	make_destruct_nested_record \
+	make_destruct_nested_prim_record
 
 SPECIAL_KINDS :=
 

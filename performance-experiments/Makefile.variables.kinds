@@ -16,7 +16,7 @@ KINDS := \
 	app_n_ltac2 \
 	$(foreach tac,make destruct,$(foreach status,_ _prim_,$(foreach kind,prod sig,$(foreach num,1 2,$(tac)_nested$(status)$(kind)$(num))))) \
 	$(foreach status,_ _prim_,$(foreach kind,prod sig,$(foreach num,1 2,make_nested$(status)$(kind)$(num)_ltac2))) \
-	$(foreach status,_ _prim_,$(foreach kind,prod sig,$(make_nested$(status)$(kind)_abstraction)))
+	$(foreach status,_ _prim_,$(foreach kind,prod sig,make_nested$(status)$(kind)_abstraction))
 
 SH_KINDS := \
 	make_destruct_nested_record \

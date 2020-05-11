@@ -325,8 +325,8 @@ Definition T_eta (x : T)
      let rhs2 := Build_T2 (_T2_proj1 lhs2) rhs1 in
      let rhs3 := Build_T3 (_T3_proj1 lhs3) rhs2 in
      (((@eq_trans _T3)
-         x (Build_T3 (_T3_proj1 lhs3) lhs2) rhs3
-         (_T3_eta x)
+         lhs3 (Build_T3 (_T3_proj1 lhs3) lhs2) rhs3
+         (_T3_eta lhs3)
          ((@f_equal _T2 _T3 (Build_T3 (_T3_proj1 lhs3)))
             lhs2 rhs2
             ((@eq_trans _T2)

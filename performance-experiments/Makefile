@@ -22,11 +22,13 @@ include Makefile.variables
 all:: invoke-coqmakefile
 .PHONY: all
 
+WARNINGS:=-notation-overridden
+
 SORT_COQPROJECT = sed 's,[^/]*/,~&,g' | env LC_COLLATE=C sort | sed 's,~,,g' | uniq
 .PHONY: update-_CoqProject
 update-_CoqProject:
 	$(SHOW)'ECHO > _CoqProject'
-	$(HIDE)(echo '-R . $(PERF_LIB)'; (git ls-files "*.v" | $(SORT_COQPROJECT))) > _CoqProject
+	$(HIDE)(echo '-R . $(PERF_LIB)'; echo '-arg -w -arg $(WARNINGS)'; (git ls-files "*.v" | $(SORT_COQPROJECT))) > _CoqProject
 
 Makefile.coq: Makefile _CoqProject
 	$(COQBIN)coq_makefile -f _CoqProject -o Makefile.coq

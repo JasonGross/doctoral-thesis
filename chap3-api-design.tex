@@ -497,8 +497,15 @@ Note that the $x$-axis is $10\times$ larger on this plot.} \label{fig:timing-mak
 Note that the non-monotonic timing is \emph{reproducible}, and we have asked the Coq developers about it at \coqbug{12270}.}
 \label{fig:timing-make-destruct-nested-record}
 \end{figure*}
-%
+
 %#!/usr/bin/env bash
+%
+%set -e
+%
+%cat "$0" | sed s'/^/%/g'
+%
+%COLORS=(red green blue cyan magenta yellow black gray brown lime olive orange pink purple teal violet darkgray lightgray)
+%MARKS=(o asterisk star oplus otimes square square* triangle triangle* diamond diamond* pentagon pentagon* - '|' oplus* otimes*)
 %
 %for kind in performance-experiments/make-nested-*-abstraction.txt; do
 %    cat <<'EOF'
@@ -518,10 +525,12 @@ Note that the non-monotonic timing is \emph{reproducible}, and we have asked the
 %        scaled x ticks=false,
 %        scaled y ticks=false]
 %EOF
+%    i=0
 %    for y in $(grep -o '[^ ]*-user' $kind); do
 %        #,mark=square,color=black
-%        echo '        \addplot[only marks] table[x=param-n,y='"$y"']{'"$kind"'};'
+%        echo '        \addplot[only marks,'"mark=${MARKS[$i]},color=${COLORS[i]}"'] table[x=param-n,y='"$y"']{'"$kind"'};'
 %        echo '        \addlegendentry{'"$y"'}'
+%        i=$(($i+1))
 %    done
 %    cat <<'EOF'
 %    \end{axis}
@@ -532,7 +541,6 @@ Note that the non-monotonic timing is \emph{reproducible}, and we have asked the
 %\end{figure*}
 %EOF
 %done
-
 \begin{figure*}
     \beginTikzpictureStamped{
         \einput{performance-experiments/make-nested-prim-prod-abstraction.txt}
@@ -546,25 +554,25 @@ Note that the non-monotonic timing is \emph{reproducible}, and we have asked the
         ymin=0,
         scaled x ticks=false,
         scaled y ticks=false]
-        \addplot[only marks] table[x=param-n,y=constr-final-goal-make-final-goal-user]{performance-experiments/make-nested-prim-prod-abstraction.txt};
+        \addplot[only marks,mark=o,color=red] table[x=param-n,y=constr-final-goal-make-final-goal-user]{performance-experiments/make-nested-prim-prod-abstraction.txt};
         \addlegendentry{constr-final-goal-make-final-goal-user}
-        \addplot[only marks] table[x=param-n,y=everything-user]{performance-experiments/make-nested-prim-prod-abstraction.txt};
+        \addplot[only marks,mark=asterisk,color=green] table[x=param-n,y=everything-user]{performance-experiments/make-nested-prim-prod-abstraction.txt};
         \addlegendentry{everything-user}
-        \addplot[only marks] table[x=param-n,y=make-Build-T-user]{performance-experiments/make-nested-prim-prod-abstraction.txt};
+        \addplot[only marks,mark=star,color=blue] table[x=param-n,y=make-Build-T-user]{performance-experiments/make-nested-prim-prod-abstraction.txt};
         \addlegendentry{make-Build-T-user}
-        \addplot[only marks] table[x=param-n,y=make-T-user]{performance-experiments/make-nested-prim-prod-abstraction.txt};
+        \addplot[only marks,mark=oplus,color=cyan] table[x=param-n,y=make-T-user]{performance-experiments/make-nested-prim-prod-abstraction.txt};
         \addlegendentry{make-T-user}
-        \addplot[only marks] table[x=param-n,y=make-T-eta-user]{performance-experiments/make-nested-prim-prod-abstraction.txt};
+        \addplot[only marks,mark=otimes,color=magenta] table[x=param-n,y=make-T-eta-user]{performance-experiments/make-nested-prim-prod-abstraction.txt};
         \addlegendentry{make-T-eta-user}
-        \addplot[only marks] table[x=param-n,y=make-T-projs-user]{performance-experiments/make-nested-prim-prod-abstraction.txt};
+        \addplot[only marks,mark=square,color=yellow] table[x=param-n,y=make-T-projs-user]{performance-experiments/make-nested-prim-prod-abstraction.txt};
         \addlegendentry{make-T-projs-user}
-        \addplot[only marks] table[x=param-n,y=make-T-rect-user]{performance-experiments/make-nested-prim-prod-abstraction.txt};
+        \addplot[only marks,mark=square*,color=black] table[x=param-n,y=make-T-rect-user]{performance-experiments/make-nested-prim-prod-abstraction.txt};
         \addlegendentry{make-T-rect-user}
-        \addplot[only marks] table[x=param-n,y=make-Ts-user]{performance-experiments/make-nested-prim-prod-abstraction.txt};
+        \addplot[only marks,mark=triangle,color=gray] table[x=param-n,y=make-Ts-user]{performance-experiments/make-nested-prim-prod-abstraction.txt};
         \addlegendentry{make-Ts-user}
-        \addplot[only marks] table[x=param-n,y=make-f-ty-user]{performance-experiments/make-nested-prim-prod-abstraction.txt};
+        \addplot[only marks,mark=triangle*,color=brown] table[x=param-n,y=make-f-ty-user]{performance-experiments/make-nested-prim-prod-abstraction.txt};
         \addlegendentry{make-f-ty-user}
-        \addplot[only marks] table[x=param-n,y=making-user]{performance-experiments/make-nested-prim-prod-abstraction.txt};
+        \addplot[only marks,mark=diamond,color=lime] table[x=param-n,y=making-user]{performance-experiments/make-nested-prim-prod-abstraction.txt};
         \addlegendentry{making-user}
     \end{axis}
 \end{tikzpicture}
@@ -583,25 +591,25 @@ Note that the non-monotonic timing is \emph{reproducible}, and we have asked the
         ymin=0,
         scaled x ticks=false,
         scaled y ticks=false]
-        \addplot[only marks] table[x=param-n,y=constr-final-goal-make-final-goal-user]{performance-experiments/make-nested-prim-sig-abstraction.txt};
+        \addplot[only marks,mark=o,color=red] table[x=param-n,y=constr-final-goal-make-final-goal-user]{performance-experiments/make-nested-prim-sig-abstraction.txt};
         \addlegendentry{constr-final-goal-make-final-goal-user}
-        \addplot[only marks] table[x=param-n,y=everything-user]{performance-experiments/make-nested-prim-sig-abstraction.txt};
+        \addplot[only marks,mark=asterisk,color=green] table[x=param-n,y=everything-user]{performance-experiments/make-nested-prim-sig-abstraction.txt};
         \addlegendentry{everything-user}
-        \addplot[only marks] table[x=param-n,y=make-Build-T-user]{performance-experiments/make-nested-prim-sig-abstraction.txt};
+        \addplot[only marks,mark=star,color=blue] table[x=param-n,y=make-Build-T-user]{performance-experiments/make-nested-prim-sig-abstraction.txt};
         \addlegendentry{make-Build-T-user}
-        \addplot[only marks] table[x=param-n,y=make-T-user]{performance-experiments/make-nested-prim-sig-abstraction.txt};
+        \addplot[only marks,mark=oplus,color=cyan] table[x=param-n,y=make-T-user]{performance-experiments/make-nested-prim-sig-abstraction.txt};
         \addlegendentry{make-T-user}
-        \addplot[only marks] table[x=param-n,y=make-T-eta-user]{performance-experiments/make-nested-prim-sig-abstraction.txt};
+        \addplot[only marks,mark=otimes,color=magenta] table[x=param-n,y=make-T-eta-user]{performance-experiments/make-nested-prim-sig-abstraction.txt};
         \addlegendentry{make-T-eta-user}
-        \addplot[only marks] table[x=param-n,y=make-T-projs-user]{performance-experiments/make-nested-prim-sig-abstraction.txt};
+        \addplot[only marks,mark=square,color=yellow] table[x=param-n,y=make-T-projs-user]{performance-experiments/make-nested-prim-sig-abstraction.txt};
         \addlegendentry{make-T-projs-user}
-        \addplot[only marks] table[x=param-n,y=make-T-rect-user]{performance-experiments/make-nested-prim-sig-abstraction.txt};
+        \addplot[only marks,mark=square*,color=black] table[x=param-n,y=make-T-rect-user]{performance-experiments/make-nested-prim-sig-abstraction.txt};
         \addlegendentry{make-T-rect-user}
-        \addplot[only marks] table[x=param-n,y=make-Ts-user]{performance-experiments/make-nested-prim-sig-abstraction.txt};
+        \addplot[only marks,mark=triangle,color=gray] table[x=param-n,y=make-Ts-user]{performance-experiments/make-nested-prim-sig-abstraction.txt};
         \addlegendentry{make-Ts-user}
-        \addplot[only marks] table[x=param-n,y=make-f-ty-user]{performance-experiments/make-nested-prim-sig-abstraction.txt};
+        \addplot[only marks,mark=triangle*,color=brown] table[x=param-n,y=make-f-ty-user]{performance-experiments/make-nested-prim-sig-abstraction.txt};
         \addlegendentry{make-f-ty-user}
-        \addplot[only marks] table[x=param-n,y=making-user]{performance-experiments/make-nested-prim-sig-abstraction.txt};
+        \addplot[only marks,mark=diamond,color=lime] table[x=param-n,y=making-user]{performance-experiments/make-nested-prim-sig-abstraction.txt};
         \addlegendentry{making-user}
     \end{axis}
 \end{tikzpicture}
@@ -620,37 +628,37 @@ Note that the non-monotonic timing is \emph{reproducible}, and we have asked the
         ymin=0,
         scaled x ticks=false,
         scaled y ticks=false]
-        \addplot[only marks] table[x=param-n,y=constr-final-goal-make-final-goal-user]{performance-experiments/make-nested-prod-abstraction.txt};
+        \addplot[only marks,mark=o,color=red] table[x=param-n,y=constr-final-goal-make-final-goal-user]{performance-experiments/make-nested-prod-abstraction.txt};
         \addlegendentry{constr-final-goal-make-final-goal-user}
-        \addplot[only marks] table[x=param-n,y=eta-cast-pf-user]{performance-experiments/make-nested-prod-abstraction.txt};
+        \addplot[only marks,mark=asterisk,color=green] table[x=param-n,y=eta-cast-pf-user]{performance-experiments/make-nested-prod-abstraction.txt};
         \addlegendentry{eta-cast-pf-user}
-        \addplot[only marks] table[x=param-n,y=eta-constr-pf-user]{performance-experiments/make-nested-prod-abstraction.txt};
+        \addplot[only marks,mark=star,color=blue] table[x=param-n,y=eta-constr-pf-user]{performance-experiments/make-nested-prod-abstraction.txt};
         \addlegendentry{eta-constr-pf-user}
-        \addplot[only marks] table[x=param-n,y=eta-make-let-ins-user]{performance-experiments/make-nested-prod-abstraction.txt};
+        \addplot[only marks,mark=oplus,color=cyan] table[x=param-n,y=eta-make-let-ins-user]{performance-experiments/make-nested-prod-abstraction.txt};
         \addlegendentry{eta-make-let-ins-user}
-        \addplot[only marks] table[x=param-n,y=eta-make-pf-user]{performance-experiments/make-nested-prod-abstraction.txt};
+        \addplot[only marks,mark=otimes,color=magenta] table[x=param-n,y=eta-make-pf-user]{performance-experiments/make-nested-prod-abstraction.txt};
         \addlegendentry{eta-make-pf-user}
-        \addplot[only marks] table[x=param-n,y=eta-refine-user]{performance-experiments/make-nested-prod-abstraction.txt};
+        \addplot[only marks,mark=square,color=yellow] table[x=param-n,y=eta-refine-user]{performance-experiments/make-nested-prod-abstraction.txt};
         \addlegendentry{eta-refine-user}
-        \addplot[only marks] table[x=param-n,y=eta-refine-and-close-user]{performance-experiments/make-nested-prod-abstraction.txt};
+        \addplot[only marks,mark=square*,color=black] table[x=param-n,y=eta-refine-and-close-user]{performance-experiments/make-nested-prod-abstraction.txt};
         \addlegendentry{eta-refine-and-close-user}
-        \addplot[only marks] table[x=param-n,y=everything-user]{performance-experiments/make-nested-prod-abstraction.txt};
+        \addplot[only marks,mark=triangle,color=gray] table[x=param-n,y=everything-user]{performance-experiments/make-nested-prod-abstraction.txt};
         \addlegendentry{everything-user}
-        \addplot[only marks] table[x=param-n,y=make-Build-T-user]{performance-experiments/make-nested-prod-abstraction.txt};
+        \addplot[only marks,mark=triangle*,color=brown] table[x=param-n,y=make-Build-T-user]{performance-experiments/make-nested-prod-abstraction.txt};
         \addlegendentry{make-Build-T-user}
-        \addplot[only marks] table[x=param-n,y=make-T-user]{performance-experiments/make-nested-prod-abstraction.txt};
+        \addplot[only marks,mark=diamond,color=lime] table[x=param-n,y=make-T-user]{performance-experiments/make-nested-prod-abstraction.txt};
         \addlegendentry{make-T-user}
-        \addplot[only marks] table[x=param-n,y=make-T-eta-user]{performance-experiments/make-nested-prod-abstraction.txt};
+        \addplot[only marks,mark=diamond*,color=olive] table[x=param-n,y=make-T-eta-user]{performance-experiments/make-nested-prod-abstraction.txt};
         \addlegendentry{make-T-eta-user}
-        \addplot[only marks] table[x=param-n,y=make-T-projs-user]{performance-experiments/make-nested-prod-abstraction.txt};
+        \addplot[only marks,mark=pentagon,color=orange] table[x=param-n,y=make-T-projs-user]{performance-experiments/make-nested-prod-abstraction.txt};
         \addlegendentry{make-T-projs-user}
-        \addplot[only marks] table[x=param-n,y=make-T-rect-user]{performance-experiments/make-nested-prod-abstraction.txt};
+        \addplot[only marks,mark=pentagon*,color=pink] table[x=param-n,y=make-T-rect-user]{performance-experiments/make-nested-prod-abstraction.txt};
         \addlegendentry{make-T-rect-user}
-        \addplot[only marks] table[x=param-n,y=make-Ts-user]{performance-experiments/make-nested-prod-abstraction.txt};
+        \addplot[only marks,mark=-,color=purple] table[x=param-n,y=make-Ts-user]{performance-experiments/make-nested-prod-abstraction.txt};
         \addlegendentry{make-Ts-user}
-        \addplot[only marks] table[x=param-n,y=make-f-ty-user]{performance-experiments/make-nested-prod-abstraction.txt};
+        \addplot[only marks,mark=|,color=teal] table[x=param-n,y=make-f-ty-user]{performance-experiments/make-nested-prod-abstraction.txt};
         \addlegendentry{make-f-ty-user}
-        \addplot[only marks] table[x=param-n,y=making-user]{performance-experiments/make-nested-prod-abstraction.txt};
+        \addplot[only marks,mark=oplus*,color=violet] table[x=param-n,y=making-user]{performance-experiments/make-nested-prod-abstraction.txt};
         \addlegendentry{making-user}
     \end{axis}
 \end{tikzpicture}
@@ -669,37 +677,37 @@ Note that the non-monotonic timing is \emph{reproducible}, and we have asked the
         ymin=0,
         scaled x ticks=false,
         scaled y ticks=false]
-        \addplot[only marks] table[x=param-n,y=constr-final-goal-make-final-goal-user]{performance-experiments/make-nested-sig-abstraction.txt};
+        \addplot[only marks,mark=o,color=red] table[x=param-n,y=constr-final-goal-make-final-goal-user]{performance-experiments/make-nested-sig-abstraction.txt};
         \addlegendentry{constr-final-goal-make-final-goal-user}
-        \addplot[only marks] table[x=param-n,y=eta-cast-pf-user]{performance-experiments/make-nested-sig-abstraction.txt};
+        \addplot[only marks,mark=asterisk,color=green] table[x=param-n,y=eta-cast-pf-user]{performance-experiments/make-nested-sig-abstraction.txt};
         \addlegendentry{eta-cast-pf-user}
-        \addplot[only marks] table[x=param-n,y=eta-constr-pf-user]{performance-experiments/make-nested-sig-abstraction.txt};
+        \addplot[only marks,mark=star,color=blue] table[x=param-n,y=eta-constr-pf-user]{performance-experiments/make-nested-sig-abstraction.txt};
         \addlegendentry{eta-constr-pf-user}
-        \addplot[only marks] table[x=param-n,y=eta-make-let-ins-user]{performance-experiments/make-nested-sig-abstraction.txt};
+        \addplot[only marks,mark=oplus,color=cyan] table[x=param-n,y=eta-make-let-ins-user]{performance-experiments/make-nested-sig-abstraction.txt};
         \addlegendentry{eta-make-let-ins-user}
-        \addplot[only marks] table[x=param-n,y=eta-make-pf-user]{performance-experiments/make-nested-sig-abstraction.txt};
+        \addplot[only marks,mark=otimes,color=magenta] table[x=param-n,y=eta-make-pf-user]{performance-experiments/make-nested-sig-abstraction.txt};
         \addlegendentry{eta-make-pf-user}
-        \addplot[only marks] table[x=param-n,y=eta-refine-user]{performance-experiments/make-nested-sig-abstraction.txt};
+        \addplot[only marks,mark=square,color=yellow] table[x=param-n,y=eta-refine-user]{performance-experiments/make-nested-sig-abstraction.txt};
         \addlegendentry{eta-refine-user}
-        \addplot[only marks] table[x=param-n,y=eta-refine-and-close-user]{performance-experiments/make-nested-sig-abstraction.txt};
+        \addplot[only marks,mark=square*,color=black] table[x=param-n,y=eta-refine-and-close-user]{performance-experiments/make-nested-sig-abstraction.txt};
         \addlegendentry{eta-refine-and-close-user}
-        \addplot[only marks] table[x=param-n,y=everything-user]{performance-experiments/make-nested-sig-abstraction.txt};
+        \addplot[only marks,mark=triangle,color=gray] table[x=param-n,y=everything-user]{performance-experiments/make-nested-sig-abstraction.txt};
         \addlegendentry{everything-user}
-        \addplot[only marks] table[x=param-n,y=make-Build-T-user]{performance-experiments/make-nested-sig-abstraction.txt};
+        \addplot[only marks,mark=triangle*,color=brown] table[x=param-n,y=make-Build-T-user]{performance-experiments/make-nested-sig-abstraction.txt};
         \addlegendentry{make-Build-T-user}
-        \addplot[only marks] table[x=param-n,y=make-T-user]{performance-experiments/make-nested-sig-abstraction.txt};
+        \addplot[only marks,mark=diamond,color=lime] table[x=param-n,y=make-T-user]{performance-experiments/make-nested-sig-abstraction.txt};
         \addlegendentry{make-T-user}
-        \addplot[only marks] table[x=param-n,y=make-T-eta-user]{performance-experiments/make-nested-sig-abstraction.txt};
+        \addplot[only marks,mark=diamond*,color=olive] table[x=param-n,y=make-T-eta-user]{performance-experiments/make-nested-sig-abstraction.txt};
         \addlegendentry{make-T-eta-user}
-        \addplot[only marks] table[x=param-n,y=make-T-projs-user]{performance-experiments/make-nested-sig-abstraction.txt};
+        \addplot[only marks,mark=pentagon,color=orange] table[x=param-n,y=make-T-projs-user]{performance-experiments/make-nested-sig-abstraction.txt};
         \addlegendentry{make-T-projs-user}
-        \addplot[only marks] table[x=param-n,y=make-T-rect-user]{performance-experiments/make-nested-sig-abstraction.txt};
+        \addplot[only marks,mark=pentagon*,color=pink] table[x=param-n,y=make-T-rect-user]{performance-experiments/make-nested-sig-abstraction.txt};
         \addlegendentry{make-T-rect-user}
-        \addplot[only marks] table[x=param-n,y=make-Ts-user]{performance-experiments/make-nested-sig-abstraction.txt};
+        \addplot[only marks,mark=-,color=purple] table[x=param-n,y=make-Ts-user]{performance-experiments/make-nested-sig-abstraction.txt};
         \addlegendentry{make-Ts-user}
-        \addplot[only marks] table[x=param-n,y=make-f-ty-user]{performance-experiments/make-nested-sig-abstraction.txt};
+        \addplot[only marks,mark=|,color=teal] table[x=param-n,y=make-f-ty-user]{performance-experiments/make-nested-sig-abstraction.txt};
         \addlegendentry{make-f-ty-user}
-        \addplot[only marks] table[x=param-n,y=making-user]{performance-experiments/make-nested-sig-abstraction.txt};
+        \addplot[only marks,mark=oplus*,color=violet] table[x=param-n,y=making-user]{performance-experiments/make-nested-sig-abstraction.txt};
         \addlegendentry{making-user}
     \end{axis}
 \end{tikzpicture}

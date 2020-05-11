@@ -4,16 +4,16 @@
 \begin{subappendices}
     \section{Fragments from the category theory paper}
     For reasons that we present in the course of the paper, we were unsatisfied with the feature set of released Coq version 8.4.  We wound up adopting the Coq version under development by homotopy type theorists~\cite{HoTT/coq}, making critical use of its stronger universe polymorphism (\autoref{sec:category-of-categories}) and higher inductive types (\autoref{sec:hit}).  We hope that our account here provides useful data points for proof assistant designers about which features can have serious impact on proving convenience or performance in very abstract developments.  The two features we mentioned earlier in the paragraph can simplify the Coq user experience dramatically, while a number of other features, at various stages of conception or implementation by Coq team members, can make proving much easier or improve proof script performance by orders of magnitude, generally by reducing term size (\autoref{sec:term-size}): primitive record projections (\autoref{sec:prim-record-proj}), internalized proof irrelevance for equalities (\autoref{sec:equality-reflection}), and $\eta$ rules for records (\autoref{sec:no-judgmental-eta}) and equality proofs (\autoref{sec:compute-match}).
-    
-    \hrule
-    
-    
-    \section{transcript bits from Adam}
-    Ah a sort of like preconclusion chapter that's like let's now look at how cock is evolved performance wise over the years like here places that we've actually improved performance and this will be one that draws a bunch of other examples from the category theory paper, like look universe polymorphism is a thing that was implemented and helps here and like sort of like presenting a bunch of little things. 
-\section{transcript bits from Rajee}
-So those are the two main sections the thesis. And then there's another section of other small. Miscellaneous things that come up better like performance bottlenecks. Through like can or performance concerns, let's say these are things like decide design decisions that can have quadratic impacts. Um, Decisions about like what parts of cop to use for what and like why some bits might be more or less slow than others. 
 
-Yeah, that's that's that section and then I think I'm going to have seconds last section. Be a sort of retrospective of like places where cocks performance has gotten better in the past like decade or so of like I started with a bunch of ways that solving performance issues improved systems is heard but here are some successes and things where like we've managed to improve things and you can actually like, Leverage this for faster performance. 
+    \hrule
+
+
+    \section{transcript bits from Adam}
+    Ah a sort of like preconclusion chapter that's like let's now look at how cock is evolved performance wise over the years like here places that we've actually improved performance and this will be one that draws a bunch of other examples from the category theory paper, like look universe polymorphism is a thing that was implemented and helps here and like sort of like presenting a bunch of little things.
+\section{transcript bits from Rajee}
+So those are the two main sections the thesis. And then there's another section of other small. Miscellaneous things that come up better like performance bottlenecks. Through like can or performance concerns, let's say these are things like decide design decisions that can have quadratic impacts. Um, Decisions about like what parts of cop to use for what and like why some bits might be more or less slow than others.
+
+Yeah, that's that's that section and then I think I'm going to have seconds last section. Be a sort of retrospective of like places where cocks performance has gotten better in the past like decade or so of like I started with a bunch of ways that solving performance issues improved systems is heard but here are some successes and things where like we've managed to improve things and you can actually like, Leverage this for faster performance.
 
 
 \todo{this chapter}

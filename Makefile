@@ -236,7 +236,7 @@ hyperref.sty : %.sty : backref.dtx bmhydoc.sty hylatex.ltx hyperref.dtx hyperref
 
 #http://mirrors.ctan.org/macros/latex/contrib/mathtools.zip && unzip mathtools.zip && (cd mathtools && for i in *.dtx; do (mv $i ../ && cd .. && tex $i); done)
 
-$(PDFS): references.bib
+$(PDFS): jgross-thesis.bib
 
 $(THESIS_PDFS): $(THESIS_TEXS)
 

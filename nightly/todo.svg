@@ -1,4 +1,5 @@
-<svg xmlns="http://www.w3.org/2000/svg" width="200em" height="947em"><text x="0" y="0">
+<svg xmlns="http://www.w3.org/2000/svg" width="200em" height="907em"><text x="0" y="0">
+<tspan x="0" dy="1.2em">TODO: Make sure to exclude no files (not rewriting) in file jgross-thesis.tex on input line 54.</tspan>
 <tspan x="0" dy="1.2em">TODO: Run `make update-thesis' before submission to update the date on the cover page in file jgross-thesis.tex on input line 91.</tspan>
 <tspan x="0" dy="1.2em">TODO: change \string ^Linalfalse to \string ^Linaltrue  in file jgross-thesis.tex on input line 91.</tspan>
 <tspan x="0" dy="1.2em">TODO: Is the ``department committee chairman'' still Leslie A. Kolodziejski? in file cover.tex on input line 87.</tspan>
@@ -34,7 +35,7 @@
 <tspan x="0" dy="1.2em">TODO: ``I haven't yet updated the smalltt repo, but there's a simplified (https://gist.github.com/AndrasKovacs/a0e0938113b193d6b9c1c0620d853784) implementation of its evaluator, which seems to have roughly the same performance but which is much simpler to implement.'' in file chap1-introduction.tex on input line 44.</tspan>
 <tspan x="0" dy="1.2em">TODO: look into ``So technically, the lost sharing is the second-order sharing that is preserved in ``optimal reduction'' of lambda calculi [Levy-1980, Lamping-1990, Asperti-Laneve-1992], while hash consing normally is directly usable only for first-order sharing.'' in file chap1-introduction.tex on input line 64.</tspan>
 <tspan x="0" dy="1.2em">TODO: look at https://math.stackexchange.com/questions/3466976/online-reference-book-for-implementing-concepts-in-type-theory in file chap1-introduction.tex on input line 65.</tspan>
-<tspan x="0" dy="1.2em">TODO: look at https://github.com/AndrasKovacs/elaboration-zoo/blob/0c7f8a676c0964cc05c247879393e97729f59e5b/AIMprez/AIMprez.pdf in file chap1-introduction.tex on input line 66.</tspan>
+<tspan x="0" dy="1.2em">TODO: look at https://github.com/AndrasKovacs/elaboration-zoo/blob/0c7f8a676c0964cc05c247879393e97729f59e5b/AIMprez/AIMprez.pdf or https://eutypes.cs.ru.nl/eutypes\_pmwiki/uploads/Meetings/Kovacs\_slides.pdf in file chap1-introduction.tex on input line 66.</tspan>
 <tspan x="0" dy="1.2em">TODO: wide look at various proof assistants and successes in file chap1-introduction.tex on input line 69.</tspan>
 <tspan x="0" dy="1.2em">TODO: read and cite Talia's paper \url {http://tlringer.github.io/pdf/QEDatLarge.pdf}? in file chap1-introduction.tex on input line 70.</tspan>
 <tspan x="0" dy="1.2em">TODO: introduce section where we talk about what some big design decisions are and why we might make them the way we do in file chap1-introduction.tex on input line 73.</tspan>
@@ -133,7 +134,16 @@
 <tspan x="0" dy="1.2em">TODO: cite https://github.com/coq/coq/issues/12269 in file chap3-api-design.tex on input line 366.</tspan>
 <tspan x="0" dy="1.2em">TODO: make this timing graph in file chap3-api-design.tex on input line 373.</tspan>
 <tspan x="0" dy="1.2em">TODO: Find more examples to talk about here? in file chap3-api-design.tex on input line 717.</tspan>
-<tspan x="0" dy="1.2em">TODO: this chapter in file chap4-reflection.tex on input line 123.</tspan>
+<tspan x="0" dy="1.2em">TODO: talk about de Bruijn criterion again, how often building proof certificates is expensive in file chap4-reflection.tex on input line 5.</tspan>
+<tspan x="0" dy="1.2em">TODO: reformat this for flow, right now it's from reification-by-parametricity in file chap4-reflection.tex on input line 7.</tspan>
+<tspan x="0" dy="1.2em">TODO: move this paragraph elsewhere in file chap4-reflection.tex on input line 21.</tspan>
+<tspan x="0" dy="1.2em">TODO: give a full treatment of well-formedness in file chap4-reflection.tex on input line 174.</tspan>
+<tspan x="0" dy="1.2em">TODO: prep the reader for the upcoming chapter on the rewriter in file chap4-reflection.tex on input line 196.</tspan>
+<tspan x="0" dy="1.2em">TODO: figure out where this section belongs in file chap4-reflection.tex on input line 199.</tspan>
+<tspan x="0" dy="1.2em">TODO: talk about tricks for avoiding quadratic overhead in well-formedness proofs: minimizing the certificate size reflectively, and going via de Bruijn in file chap4-reflection.tex on input line 200.</tspan>
+<tspan x="0" dy="1.2em">TODO: talk about related work in file chap4-reflection.tex on input line 203.</tspan>
+<tspan x="0" dy="1.2em">TODO: figure out where this section belongs in file chap4-reflection.tex on input line 204.</tspan>
+<tspan x="0" dy="1.2em">TODO: should I talk about parsers at all? in file chap4-reflection.tex on input line 206.</tspan>
 <tspan x="0" dy="1.2em">TODO: this chapter in file chap6-rewriting.tex on input line 2.</tspan>
 <tspan x="0" dy="1.2em">TODO: mention frowned-upon Perl scripts previously in BoringSSL(?) OpenSSL?; (ask Andres for reference?) in file chap6-rewriting.tex on input line 3.</tspan>
 <tspan x="0" dy="1.2em">TODO: Refer back to representation changes (good abstraction barriers / equivalences) being important in fiat-crypto, and being cheap only because we have a rewriter in file chap6-rewriting.tex on input line 4.</tspan>
@@ -145,6 +155,17 @@
 <tspan x="0" dy="1.2em">QUESTION FOR ADAM: Which way do substitution brackets go? in file chap2-perf-degredation-survey.tex on input line 452.</tspan>
 <tspan x="0" dy="1.2em">QUESTION FOR ADAM: What convention should we use for typing rules with regard to things being types? Maybe just copy the HoTT book? in file chap2-perf-degredation-survey.tex on input line 453.</tspan>
 <tspan x="0" dy="1.2em">QUESTION FOR ADAM: how much should I talk about the category theory library itself in my thesis? in file chap3-api-design.tex on input line 172.</tspan>
+<tspan x="0" dy="1.2em">Warning: Label `sec:reification-by-parametricity:intro' multiply defined.</tspan>
+<tspan x="0" dy="1.2em">Warning: Label `sec:reification-by-parametricity:intro@cref' multiply defined.</tspan>
+<tspan x="0" dy="1.2em">Warning: Label `sec:evenness' multiply defined.</tspan>
+<tspan x="0" dy="1.2em">Warning: Label `sec:evenness@cref' multiply defined.</tspan>
+<tspan x="0" dy="1.2em">Warning: Label `fig:check-is-even' multiply defined.</tspan>
+<tspan x="0" dy="1.2em">Warning: Label `fig:check-is-even@cref' multiply defined.</tspan>
+<tspan x="0" dy="1.2em">Warning: Label `fig:inductive-expr-no-letin' multiply defined.</tspan>
+<tspan x="0" dy="1.2em">Warning: Label `fig:inductive-expr-no-letin@cref' multiply defined.</tspan>
+<tspan x="0" dy="1.2em">Warning: Label `sec:phoas-expr-def' multiply defined.</tspan>
+<tspan x="0" dy="1.2em">Warning: Label `sec:phoas-expr-def@cref' multiply defined.</tspan>
+<tspan x="0" dy="1.2em">Warning: Reference `sec:proof-by-reflection' on page 7 undefined on input line 149.</tspan>
 <tspan x="0" dy="1.2em">Warning: Reference `sec:ltac-prof' on page 33 undefined on input line 111.</tspan>
 <tspan x="0" dy="1.2em">Warning: Reference `sec:categories' on page 65 undefined on input line 61.</tspan>
 <tspan x="0" dy="1.2em">Warning: Reference `sec:other' on page 65 undefined on input line 67.</tspan>
@@ -153,8 +174,8 @@
 <tspan x="0" dy="1.2em">Warning: Reference `fig:timing-make-destruct-record' on page 73 undefined on input line 259.</tspan>
 <tspan x="0" dy="1.2em">Warning: Reference `fig:timing-make-destruct-record' on page 73 undefined on input line 266.</tspan>
 <tspan x="0" dy="1.2em">Warning: Reference `fig:timing-make-destruct-record-definition-abstraction' on page 75 undefined on input line 371.</tspan>
-<tspan x="0" dy="1.2em">Warning: Reference `sec:category-of-categories' on page 203 undefined on input line 6.</tspan>
-<tspan x="0" dy="1.2em">Warning: Reference `sec:hit' on page 203 undefined on input line 6.</tspan>
+<tspan x="0" dy="1.2em">Warning: Reference `sec:category-of-categories' on page 151 undefined on input line 6.</tspan>
+<tspan x="0" dy="1.2em">Warning: Reference `sec:hit' on page 151 undefined on input line 6.</tspan>
 <tspan x="0" dy="1.2em">Package biblatex Warning: The following entry could not be found in the database: bogosort</tspan>
 <tspan x="0" dy="1.2em">Package biblatex Warning: The following entry could not be found in the database: bogosort-name</tspan>
 <tspan x="0" dy="1.2em">Package biblatex Warning: The following entry could not be found in the database: commonsense-perf-engineering-order-of-operations</tspan>
@@ -162,14 +183,6 @@
 <tspan x="0" dy="1.2em">Package biblatex Warning: The following entry could not be found in the database: locally-nameless</tspan>
 <tspan x="0" dy="1.2em">Package biblatex Warning: The following entry could not be found in the database: nominal-typing</tspan>
 <tspan x="0" dy="1.2em">Package biblatex Warning: The following entry could not be found in the database: structural-typing</tspan>
-<tspan x="0" dy="1.2em">Xy-pic Warning: poor convergence [jgross-thesis:374].</tspan>
-<tspan x="0" dy="1.2em">Xy-pic Warning: poor convergence [jgross-thesis:374].</tspan>
-<tspan x="0" dy="1.2em">Xy-pic Warning: poor convergence [jgross-thesis:374].</tspan>
-<tspan x="0" dy="1.2em">Xy-pic Warning: poor convergence [jgross-thesis:374].</tspan>
-<tspan x="0" dy="1.2em">Xy-pic Warning: poor convergence [jgross-thesis:374].</tspan>
-<tspan x="0" dy="1.2em">Xy-pic Warning: poor convergence [jgross-thesis:374].</tspan>
-<tspan x="0" dy="1.2em">Xy-pic Warning: poor convergence [jgross-thesis:374].</tspan>
-<tspan x="0" dy="1.2em">Xy-pic Warning: poor convergence [jgross-thesis:374].</tspan>
 <tspan x="0" dy="1.2em">WARN - I didn't find a database entry for 'commonsense-perf-engineering-order-of-operations' (section 0)</tspan>
 <tspan x="0" dy="1.2em">WARN - I didn't find a database entry for 'bogosort' (section 0)</tspan>
 <tspan x="0" dy="1.2em">WARN - I didn't find a database entry for 'bogosort-name' (section 0)</tspan>
@@ -179,13 +192,11 @@
 <tspan x="0" dy="1.2em">WARN - I didn't find a database entry for 'locally-nameless' (section 0)</tspan>
 <tspan x="0" dy="1.2em">Font shape `T1/lmtt/bx/n' in size &lt;12&gt; not available; Font shape `T1/lmtt/b/n' tried instead on input line 2.</tspan>
 <tspan x="0" dy="1.2em">Font shape `T1/lmtt/bx/n' in size &lt;10&gt; not available; Font shape `T1/lmtt/b/n' tried instead on input line 2.</tspan>
-<tspan x="0" dy="1.2em">Font shape `T1/lmtt/bx/n' in size &lt;10.95&gt; not available; Font shape `T1/lmtt/b/n' tried instead on input line 2.</tspan>
-<tspan x="0" dy="1.2em">Font shape `TS1/lmtt/bx/n' in size &lt;10.95&gt; not available; Font shape `TS1/lmtt/b/n' tried instead on input line 5.</tspan>
-<tspan x="0" dy="1.2em">Font shape `T1/lmtt/bx/n' in size &lt;17.28&gt; not available; Font shape `T1/lmtt/b/n' tried instead on input line 1363.</tspan>
 <tspan x="0" dy="1.2em">Overfull \hbox (73.68713pt too wide) in paragraph at lines 27--45</tspan>
 <tspan x="0" dy="1.2em">Overfull \hbox (14.21379pt too wide) in paragraph at lines 27--45</tspan>
 <tspan x="0" dy="1.2em">Overfull \hbox (43.8667pt too wide) in paragraph at lines 64--67</tspan>
 <tspan x="0" dy="1.2em">Overfull \hbox (194.37654pt too wide) in paragraph at lines 64--67</tspan>
+<tspan x="0" dy="1.2em">Overfull \hbox (39.68224pt too wide) in paragraph at lines 64--67</tspan>
 <tspan x="0" dy="1.2em">Overfull \hbox (23.28331pt too wide) in paragraph at lines 77--79[]</tspan>
 <tspan x="0" dy="1.2em">Overfull \hbox (12.95117pt too wide) in paragraph at lines 81--84</tspan>
 <tspan x="0" dy="1.2em">Overfull \hbox (160.97711pt too wide) in paragraph at lines 7--13[]</tspan>
@@ -213,57 +224,12 @@
 <tspan x="0" dy="1.2em">Overfull \hbox (12.8885pt too wide) in paragraph at lines 153--153[]</tspan>
 <tspan x="0" dy="1.2em">Overfull \hbox (77.58801pt too wide) in paragraph at lines 1--239 []</tspan>
 <tspan x="0" dy="1.2em">Overfull \hbox (7.19618pt too wide) in paragraph at lines 369--372[]</tspan>
-<tspan x="0" dy="1.2em">Overfull \hbox (3.01855pt too wide) in paragraph at lines 209--215[]</tspan>
-<tspan x="0" dy="1.2em">Overfull \hbox (3.12395pt too wide) in paragraph at lines 288--291[]</tspan>
-<tspan x="0" dy="1.2em">Overfull \hbox (1.04492pt too wide) in paragraph at lines 302--305</tspan>
-<tspan x="0" dy="1.2em">Overfull \hbox (2.71367pt too wide) in paragraph at lines 353--355[]</tspan>
-<tspan x="0" dy="1.2em">Overfull \hbox (11.2731pt too wide) in paragraph at lines 355--356[]</tspan>
-<tspan x="0" dy="1.2em">Underfull \hbox (badness 10000) in paragraph at lines 765--770[]</tspan>
-<tspan x="0" dy="1.2em">Underfull \hbox (badness 10000) in paragraph at lines 1026--1029[]</tspan>
-<tspan x="0" dy="1.2em">Underfull \hbox (badness 10000) in paragraph at lines 1060--1064[]</tspan>
-<tspan x="0" dy="1.2em">Overfull \hbox (66.92613pt too wide) in paragraph at lines 1157--1161</tspan>
-<tspan x="0" dy="1.2em">Overfull \hbox (3.06592pt too wide) in paragraph at lines 1157--1161</tspan>
-<tspan x="0" dy="1.2em">Underfull \hbox (badness 1484) in paragraph at lines 1352--1352</tspan>
-<tspan x="0" dy="1.2em">Underfull \hbox (badness 1484) in paragraph at lines 1353--1353</tspan>
-<tspan x="0" dy="1.2em">Overfull \hbox (59.23671pt too wide) in paragraph at lines 1371--1373[]</tspan>
-<tspan x="0" dy="1.2em">Overfull \hbox (7.31541pt too wide) in paragraph at lines 1377--1381</tspan>
-<tspan x="0" dy="1.2em">Overfull \hbox (27.0287pt too wide) in paragraph at lines 1395--1398[]</tspan>
-<tspan x="0" dy="1.2em">Overfull \hbox (6.94974pt too wide) in paragraph at lines 1399--1404</tspan>
-<tspan x="0" dy="1.2em">Overfull \hbox (14.85356pt too wide) in paragraph at lines 1407--1411[]</tspan>
-<tspan x="0" dy="1.2em">Overfull \hbox (36.39565pt too wide) in paragraph at lines 1460--1464</tspan>
-<tspan x="0" dy="1.2em">Overfull \hbox (225.16933pt too wide) in paragraph at lines 1466--1469</tspan>
-<tspan x="0" dy="1.2em">Overfull \hbox (3.22318pt too wide) in paragraph at lines 1474--1476</tspan>
-<tspan x="0" dy="1.2em">Overfull \hbox (56.76094pt too wide) in paragraph at lines 1485--1489</tspan>
-<tspan x="0" dy="1.2em">Overfull \hbox (7.48936pt too wide) in paragraph at lines 1485--1489</tspan>
-<tspan x="0" dy="1.2em">Overfull \hbox (76.18787pt too wide) in paragraph at lines 1485--1489</tspan>
-<tspan x="0" dy="1.2em">Overfull \hbox (41.73323pt too wide) in paragraph at lines 1489--1493</tspan>
-<tspan x="0" dy="1.2em">Overfull \hbox (9.78194pt too wide) in paragraph at lines 1489--1493</tspan>
-<tspan x="0" dy="1.2em">Overfull \hbox (68.72116pt too wide) in paragraph at lines 1489--1493</tspan>
-<tspan x="0" dy="1.2em">Overfull \hbox (3.12395pt too wide) in paragraph at lines 1493--1497[]</tspan>
-<tspan x="0" dy="1.2em">Overfull \hbox (13.21342pt too wide) in paragraph at lines 1493--1497</tspan>
-<tspan x="0" dy="1.2em">Overfull \hbox (145.20375pt too wide) in paragraph at lines 1497--1499</tspan>
-<tspan x="0" dy="1.2em">Overfull \hbox (4.48825pt too wide) in paragraph at lines 1497--1499</tspan>
-<tspan x="0" dy="1.2em">Overfull \hbox (1.04492pt too wide) in paragraph at lines 1511--1515</tspan>
-<tspan x="0" dy="1.2em">Overfull \hbox (17.29805pt too wide) in paragraph at lines 1518--1519</tspan>
-<tspan x="0" dy="1.2em">Overfull \hbox (1.79419pt too wide) in paragraph at lines 1554--1557</tspan>
-<tspan x="0" dy="1.2em">Overfull \hbox (21.32695pt too wide) in paragraph at lines 1587--1591</tspan>
-<tspan x="0" dy="1.2em">Overfull \hbox (42.89444pt too wide) in paragraph at lines 1592--1595[]</tspan>
-<tspan x="0" dy="1.2em">Overfull \hbox (110.24847pt too wide) in paragraph at lines 1592--1595</tspan>
-<tspan x="0" dy="1.2em">Overfull \hbox (19.27367pt too wide) in paragraph at lines 1592--1595</tspan>
-<tspan x="0" dy="1.2em">Overfull \hbox (21.41335pt too wide) in paragraph at lines 1596--1597[]</tspan>
-<tspan x="0" dy="1.2em">Overfull \hbox (2.83774pt too wide) in paragraph at lines 1598--1603[]</tspan>
-<tspan x="0" dy="1.2em">Overfull \hbox (0.77126pt too wide) in paragraph at lines 1610--1612[]</tspan>
-<tspan x="0" dy="1.2em">Overfull \hbox (16.26814pt too wide) in paragraph at lines 1617--1620</tspan>
-<tspan x="0" dy="1.2em">Overfull \hbox (0.56296pt too wide) in paragraph at lines 1621--1628</tspan>
-<tspan x="0" dy="1.2em">Overfull \hbox (2.17865pt too wide) in paragraph at lines 1629--1630[]</tspan>
-<tspan x="0" dy="1.2em">Overfull \hbox (57.98373pt too wide) in paragraph at lines 1631--1634[]</tspan>
-<tspan x="0" dy="1.2em">Overfull \hbox (4.34633pt too wide) in paragraph at lines 1631--1634</tspan>
-<tspan x="0" dy="1.2em">Overfull \hbox (13.64133pt too wide) in paragraph at lines 1689--1692</tspan>
-<tspan x="0" dy="1.2em">Overfull \hbox (3.71806pt too wide) in paragraph at lines 1689--1692</tspan>
-<tspan x="0" dy="1.2em">Overfull \hbox (35.66911pt too wide) in paragraph at lines 1695--1696</tspan>
-<tspan x="0" dy="1.2em">Overfull \hbox (74.87704pt too wide) in paragraph at lines 1695--1696</tspan>
-<tspan x="0" dy="1.2em">Overfull \hbox (111.95926pt too wide) in paragraph at lines 1695--1696</tspan>
-<tspan x="0" dy="1.2em">Overfull \hbox (32.7304pt too wide) in paragraph at lines 1709--11</tspan>
+<tspan x="0" dy="1.2em">Overfull \hbox (12.1113pt too wide) in paragraph at lines 66--66[]</tspan>
+<tspan x="0" dy="1.2em">Underfull \hbox (badness 10000) in paragraph at lines 70--70[]</tspan>
+<tspan x="0" dy="1.2em">Overfull \hbox (5.9363pt too wide) in paragraph at lines 102--102[]</tspan>
+<tspan x="0" dy="1.2em">Overfull \hbox (36.81131pt too wide) in paragraph at lines 103--103[]</tspan>
+<tspan x="0" dy="1.2em">Overfull \hbox (33.74913pt too wide) in paragraph at lines 141--143[]</tspan>
+<tspan x="0" dy="1.2em">Overfull \hbox (7.73723pt too wide) in paragraph at lines 173--176[]</tspan>
 <tspan x="0" dy="1.2em">Overfull \hbox (42.68018pt too wide) in paragraph at lines 74--75[]</tspan>
 <tspan x="0" dy="1.2em">Overfull \hbox (5.63016pt too wide) in paragraph at lines 86--88[]</tspan>
 <tspan x="0" dy="1.2em">Overfull \hbox (5.75378pt too wide) in paragraph at lines 88--90[]</tspan>

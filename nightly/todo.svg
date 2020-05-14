@@ -1,4 +1,5 @@
-<svg xmlns="http://www.w3.org/2000/svg" width="200em" height="928em"><text x="0" y="0">
+<svg xmlns="http://www.w3.org/2000/svg" width="200em" height="874em"><text x="0" y="0">
+<tspan x="0" dy="1.2em">TODO: Make sure to exclude no files (not rewriting) in file jgross-thesis.tex on input line 54.</tspan>
 <tspan x="0" dy="1.2em">TODO: Run `make update-thesis' before submission to update the date on the cover page in file jgross-thesis.tex on input line 91.</tspan>
 <tspan x="0" dy="1.2em">TODO: change \string ^Linalfalse to \string ^Linaltrue  in file jgross-thesis.tex on input line 91.</tspan>
 <tspan x="0" dy="1.2em">TODO: Is the ``department committee chairman'' still Leslie A. Kolodziejski? in file cover.tex on input line 87.</tspan>
@@ -22,18 +23,31 @@
 <tspan x="0" dy="1.2em">TODO: read / look into https://dl.acm.org/doi/pdf/10.1145/1297027.1297033 in file chap1-introduction.tex on input line 29.</tspan>
 <tspan x="0" dy="1.2em">TODO: maybe read https://users.cs.northwestern.edu/~robby/courses/322-2013-spring/mytkowicz-wrong-data.pdf in file chap1-introduction.tex on input line 30.</tspan>
 <tspan x="0" dy="1.2em">TODO: Karl Palmskog: @Jason Gross I saw your post on performance optimization/measurements for proof assistants on Coq-Club. We summarize a lot of work on parallelization/selection for proof assistants in our regression proving papers (ASE 17 \ ISSTA 18): http://users.ece.utexas.edu/~gligoric/papers/CelikETAL17iCoq.pdf http://users.ece.utexas.edu/~gligoric/papers/PalmskogETAL18piCoq.pdf in file chap1-introduction.tex on input line 31.</tspan>
-<tspan x="0" dy="1.2em">TODO: wide look at various proof assistants and successes in file chap1-introduction.tex on input line 34.</tspan>
-<tspan x="0" dy="1.2em">TODO: read and cite Talia's paper \url {http://tlringer.github.io/pdf/QEDatLarge.pdf}? in file chap1-introduction.tex on input line 35.</tspan>
-<tspan x="0" dy="1.2em">TODO: introduce section where we talk about what some big design decisions are and why we might make them the way we do in file chap1-introduction.tex on input line 38.</tspan>
-<tspan x="0" dy="1.2em">TODO: explain dependent type theory, motivate using it in file chap1-introduction.tex on input line 42.</tspan>
-<tspan x="0" dy="1.2em">TODO: read and cite \url {https://lamport.azurewebsites.net/pubs/lamport-types.pdf} and \url {https://arxiv.org/abs/1804.07860} h/t Karl Palmskog @palmskog on gitter \url {https://gitter.im/coq/coq?at=5e5ec0ae4eefc06dcf31943f} in file chap1-introduction.tex on input line 43.</tspan>
-<tspan x="0" dy="1.2em">TODO: explain the De Bruijn criterion in file chap1-introduction.tex on input line 46.</tspan>
-<tspan x="0" dy="1.2em">TODO: look into \url {https://arxiv.org/abs/2003.01685} Sealing Pointer-Based Optimizations Behind Pure Functions in file chap1-introduction.tex on input line 47.</tspan>
-<tspan x="0" dy="1.2em">TODO: example: Ltac vs Gallina, kind-of in file chap1-introduction.tex on input line 48.</tspan>
-<tspan x="0" dy="1.2em">TODO: describe layout in file chap1-introduction.tex on input line 51.</tspan>
-<tspan x="0" dy="1.2em">TODO: describe main contributions in file chap1-introduction.tex on input line 52.</tspan>
-<tspan x="0" dy="1.2em">TODO: where does this description of Coq's design go? in file chap1-introduction.tex on input line 273.</tspan>
-<tspan x="0" dy="1.2em">TODO: this chapter in file chap1-introduction.tex on input line 290.</tspan>
+<tspan x="0" dy="1.2em">TODO: read and cite https://leanprover.github.io/papers/tactic.pdf in file chap1-introduction.tex on input line 32.</tspan>
+<tspan x="0" dy="1.2em">TODO: read Implementing Typed Intermediate Languages in file chap1-introduction.tex on input line 33.</tspan>
+<tspan x="0" dy="1.2em">TODO: read ``Inductive families need not store their indices'' by Edwin Brady, Connor McBride, James McKinna in file chap1-introduction.tex on input line 36.</tspan>
+<tspan x="0" dy="1.2em">TODO: read Aleksey Nogin's Cornell PhD thesis from the 1990s in file chap1-introduction.tex on input line 37.</tspan>
+<tspan x="0" dy="1.2em">TODO: read GrM-CM-)goire and Leroy's paper from ICFP 2002 https://xavierleroy.org/bibrefs/Gregoire-Leroy-02.html in file chap1-introduction.tex on input line 38.</tspan>
+<tspan x="0" dy="1.2em">TODO: read Dirk Kleeblatt's PhD thesis. in file chap1-introduction.tex on input line 39.</tspan>
+<tspan x="0" dy="1.2em">TODO: read Andras Kovacs has smalltt at https://github.com/AndrasKovacs/smalltt in file chap1-introduction.tex on input line 41.</tspan>
+<tspan x="0" dy="1.2em">TODO: look at https://github.com/AndrasKovacs/normalization-bench in file chap1-introduction.tex on input line 42.</tspan>
+<tspan x="0" dy="1.2em">TODO: look at https://github.com/AndrasKovacs/smalltt in file chap1-introduction.tex on input line 43.</tspan>
+<tspan x="0" dy="1.2em">TODO: ``I haven't yet updated the smalltt repo, but there's a simplified (https://gist.github.com/AndrasKovacs/a0e0938113b193d6b9c1c0620d853784) implementation of its evaluator, which seems to have roughly the same performance but which is much simpler to implement.'' in file chap1-introduction.tex on input line 44.</tspan>
+<tspan x="0" dy="1.2em">TODO: look into ``So technically, the lost sharing is the second-order sharing that is preserved in ``optimal reduction'' of lambda calculi [Levy-1980, Lamping-1990, Asperti-Laneve-1992], while hash consing normally is directly usable only for first-order sharing.'' in file chap1-introduction.tex on input line 64.</tspan>
+<tspan x="0" dy="1.2em">TODO: look at https://math.stackexchange.com/questions/3466976/online-reference-book-for-implementing-concepts-in-type-theory in file chap1-introduction.tex on input line 65.</tspan>
+<tspan x="0" dy="1.2em">TODO: look at https://github.com/AndrasKovacs/elaboration-zoo/blob/0c7f8a676c0964cc05c247879393e97729f59e5b/AIMprez/AIMprez.pdf in file chap1-introduction.tex on input line 66.</tspan>
+<tspan x="0" dy="1.2em">TODO: wide look at various proof assistants and successes in file chap1-introduction.tex on input line 69.</tspan>
+<tspan x="0" dy="1.2em">TODO: read and cite Talia's paper \url {http://tlringer.github.io/pdf/QEDatLarge.pdf}? in file chap1-introduction.tex on input line 70.</tspan>
+<tspan x="0" dy="1.2em">TODO: introduce section where we talk about what some big design decisions are and why we might make them the way we do in file chap1-introduction.tex on input line 73.</tspan>
+<tspan x="0" dy="1.2em">TODO: explain dependent type theory, motivate using it in file chap1-introduction.tex on input line 77.</tspan>
+<tspan x="0" dy="1.2em">TODO: read and cite \url {https://lamport.azurewebsites.net/pubs/lamport-types.pdf} and \url {https://arxiv.org/abs/1804.07860} h/t Karl Palmskog @palmskog on gitter \url {https://gitter.im/coq/coq?at=5e5ec0ae4eefc06dcf31943f} in file chap1-introduction.tex on input line 78.</tspan>
+<tspan x="0" dy="1.2em">TODO: explain the De Bruijn criterion in file chap1-introduction.tex on input line 81.</tspan>
+<tspan x="0" dy="1.2em">TODO: look into \url {https://arxiv.org/abs/2003.01685} Sealing Pointer-Based Optimizations Behind Pure Functions in file chap1-introduction.tex on input line 82.</tspan>
+<tspan x="0" dy="1.2em">TODO: example: Ltac vs Gallina, kind-of in file chap1-introduction.tex on input line 83.</tspan>
+<tspan x="0" dy="1.2em">TODO: describe layout in file chap1-introduction.tex on input line 86.</tspan>
+<tspan x="0" dy="1.2em">TODO: describe main contributions in file chap1-introduction.tex on input line 87.</tspan>
+<tspan x="0" dy="1.2em">TODO: where does this description of Coq's design go? in file chap1-introduction.tex on input line 308.</tspan>
+<tspan x="0" dy="1.2em">TODO: this chapter in file chap1-introduction.tex on input line 325.</tspan>
 <tspan x="0" dy="1.2em">TODO: come up with a better name for this section in file chap2-perf-degredation-survey.tex on input line 3.</tspan>
 <tspan x="0" dy="1.2em">TODO: cite https://github.com/coq/coq/issues/12200 in file chap2-perf-degredation-survey.tex on input line 22.</tspan>
 <tspan x="0" dy="1.2em">TODO: literature search on perf of compiletime in mainstream compilers? in file chap2-perf-degredation-survey.tex on input line 25.</tspan>
@@ -46,66 +60,67 @@
 <tspan x="0" dy="1.2em">TODO: find a place for this: in file chap2-perf-degredation-survey.tex on input line 200.</tspan>
 <tspan x="0" dy="1.2em">TODO: incorparate Andres' suggestions in file chap2-perf-degredation-survey.tex on input line 206.</tspan>
 <tspan x="0" dy="1.2em">TODO: introduce this section better in file chap2-perf-degredation-survey.tex on input line 217.</tspan>
-<tspan x="0" dy="1.2em">TODO: improve data collection on perf test in file chap2-perf-degredation-survey.tex on input line 236.</tspan>
-<tspan x="0" dy="1.2em">TODO: make a note about more complicated types causing scaling factors to be worse, and not just impacting the leaves in file chap2-perf-degredation-survey.tex on input line 237.</tspan>
-<tspan x="0" dy="1.2em">TODO: Find a place for this note: in file chap2-perf-degredation-survey.tex on input line 316.</tspan>
-<tspan x="0" dy="1.2em">TODO: maybe look into TAPL in file chap2-perf-degredation-survey.tex on input line 317.</tspan>
-<tspan x="0" dy="1.2em">TODO: explain structural and nominal typing more in file chap2-perf-degredation-survey.tex on input line 318.</tspan>
-<tspan x="0" dy="1.2em">TODO: have we explained inductive types yet? in file chap2-perf-degredation-survey.tex on input line 319.</tspan>
-<tspan x="0" dy="1.2em">TODO: have we explained records yet? in file chap2-perf-degredation-survey.tex on input line 319.</tspan>
-<tspan x="0" dy="1.2em">TODO: have we explained parameters vs indices and inductive type families yet? in file chap2-perf-degredation-survey.tex on input line 319.</tspan>
-<tspan x="0" dy="1.2em">TODO: mention where the name ``phantom'' comes from? in file chap2-perf-degredation-survey.tex on input line 320.</tspan>
-<tspan x="0" dy="1.2em">TODO: Come up with better justification for having nominal typing available? in file chap2-perf-degredation-survey.tex on input line 327.</tspan>
-<tspan x="0" dy="1.2em">TODO: explain this better in file chap2-perf-degredation-survey.tex on input line 331.</tspan>
-<tspan x="0" dy="1.2em">TODO: improve data collection on perf test in file chap2-perf-degredation-survey.tex on input line 361.</tspan>
-<tspan x="0" dy="1.2em">TODO: find pdf of manual for styling in file chap2-perf-degredation-survey.tex on input line 399.</tspan>
-<tspan x="0" dy="1.2em">TODO: find pdf of manual for styling in file chap2-perf-degredation-survey.tex on input line 399.</tspan>
-<tspan x="0" dy="1.2em">TODO: cite appendix with typing rules of Coq? in file chap2-perf-degredation-survey.tex on input line 441.</tspan>
-<tspan x="0" dy="1.2em">TODO: maybe look in https://github.com/achlipala/frap and/or TAPL by Benjamin C. Pierce for how to render typing rules in file chap2-perf-degredation-survey.tex on input line 442.</tspan>
-<tspan x="0" dy="1.2em">TODO: cite https://github.com/coq/coq/issues/8232 maybe? in file chap2-perf-degredation-survey.tex on input line 530.</tspan>
-<tspan x="0" dy="1.2em">TODO: Should we run though typechecking in more detail here? in file chap2-perf-degredation-survey.tex on input line 532.</tspan>
-<tspan x="0" dy="1.2em">TODO: maybe cite https://github.com/coq/coq/issues/11838? in file chap2-perf-degredation-survey.tex on input line 537.</tspan>
-<tspan x="0" dy="1.2em">TODO: reference quadratic cbv here, which had a similar issue? in file chap2-perf-degredation-survey.tex on input line 539.</tspan>
-<tspan x="0" dy="1.2em">TODO: some sort of section division marker here? in file chap2-perf-degredation-survey.tex on input line 541.</tspan>
-<tspan x="0" dy="1.2em">TODO: explain and cite hashconsing? in file chap2-perf-degredation-survey.tex on input line 545.</tspan>
-<tspan x="0" dy="1.2em">TODO: cite hashconsing needing to be full to get perf benefit in file chap2-perf-degredation-survey.tex on input line 548.</tspan>
-<tspan x="0" dy="1.2em">TODO: explain this more, find citation for hashconsing being hard with disk in file chap2-perf-degredation-survey.tex on input line 550.</tspan>
-<tspan x="0" dy="1.2em">TODO: flesh out hashconsing section more in file chap2-perf-degredation-survey.tex on input line 551.</tspan>
-<tspan x="0" dy="1.2em">TODO: maybe cite https://github.com/coq/coq/issues/9028\#issuecomment-600013284 about hashconsing being slow in file chap2-perf-degredation-survey.tex on input line 552.</tspan>
-<tspan x="0" dy="1.2em">TODO: maybe move some text form the sharing section to here? in file chap2-perf-degredation-survey.tex on input line 566.</tspan>
-<tspan x="0" dy="1.2em">TODO: discussion of conversion checking, and conversion modulo delta-beta in file chap2-perf-degredation-survey.tex on input line 570.</tspan>
-<tspan x="0" dy="1.2em">TODO: should we define polymorphic identity function somewhere? in file chap2-perf-degredation-survey.tex on input line 573.</tspan>
-<tspan x="0" dy="1.2em">TODO: reference above example about fiat-crypto in file chap2-perf-degredation-survey.tex on input line 603.</tspan>
-<tspan x="0" dy="1.2em">TODO: maybe forward reference to the number of abstraction barriers in file chap2-perf-degredation-survey.tex on input line 605.</tspan>
-<tspan x="0" dy="1.2em">TODO: maybe include more about real-world fiat-crypto example here? in file chap2-perf-degredation-survey.tex on input line 606.</tspan>
-<tspan x="0" dy="1.2em">TODO: make sure we've explained proof engine and Ltac by here in file chap2-perf-degredation-survey.tex on input line 614.</tspan>
-<tspan x="0" dy="1.2em">TODO: mention Coq version automatically, mention why we're using a different Coq version in file chap2-perf-degredation-survey.tex on input line 632.</tspan>
-<tspan x="0" dy="1.2em">TODO: Is this called internalization or is it called elaboration in file chap2-perf-degredation-survey.tex on input line 688.</tspan>
-<tspan x="0" dy="1.2em">TODO: ADD PLOT: try to come up with a graph for renaming stuff in file chap2-perf-degredation-survey.tex on input line 698.</tspan>
-<tspan x="0" dy="1.2em">TODO: ADD PLOT: check if confounders come up in file chap2-perf-degredation-survey.tex on input line 699.</tspan>
-<tspan x="0" dy="1.2em">TODO: make sure that this is mentioned previously, and that we're not rehashing things too much in file chap2-perf-degredation-survey.tex on input line 702.</tspan>
-<tspan x="0" dy="1.2em">TODO: cite original idea for evars? (what is it?) in file chap2-perf-degredation-survey.tex on input line 704.</tspan>
-<tspan x="0" dy="1.2em">TODO: define identity and lifting substitutions in file chap2-perf-degredation-survey.tex on input line 714.</tspan>
-<tspan x="0" dy="1.2em">TODO: Justify it? Discuss other representations? Say why and how it's convenient? in file chap2-perf-degredation-survey.tex on input line 717.</tspan>
-<tspan x="0" dy="1.2em">TODO: cite the rules / reference an appendix in file chap2-perf-degredation-survey.tex on input line 810.</tspan>
-<tspan x="0" dy="1.2em">TODO: explain or forward-reference NbE in file chap2-perf-degredation-survey.tex on input line 850.</tspan>
-<tspan x="0" dy="1.2em">TODO: Read stuff in \url {https://github.com/HoTT/book/issues/995\#issuecomment-418825844} for NbE stuff in file chap2-perf-degredation-survey.tex on input line 851.</tspan>
-<tspan x="0" dy="1.2em">TODO: Say more about it than that it's ``nifty'' in file chap2-perf-degredation-survey.tex on input line 852.</tspan>
-<tspan x="0" dy="1.2em">TODO: reference explanation of PHOAS in file chap2-perf-degredation-survey.tex on input line 856.</tspan>
-<tspan x="0" dy="1.2em">TODO: maybe give a better introductory justification to the vm and native compiler than ``it's important''? in file chap2-perf-degredation-survey.tex on input line 904.</tspan>
-<tspan x="0" dy="1.2em">TODO: cite \url {https://flint.cs.yale.edu/shao/papers/escc.html} or its references for closure compilation in file chap2-perf-degredation-survey.tex on input line 907.</tspan>
-<tspan x="0" dy="1.2em">TODO: cite something for flat closure compilation in file chap2-perf-degredation-survey.tex on input line 909.</tspan>
-<tspan x="0" dy="1.2em">TODO: reorganize this paragraph, improve it in file chap2-perf-degredation-survey.tex on input line 920.</tspan>
-<tspan x="0" dy="1.2em">TODO: maybe more examples here? in file chap2-perf-degredation-survey.tex on input line 974.</tspan>
-<tspan x="0" dy="1.2em">TODO: ADD PLOT: This section requires digging into the historical performance issues around this to find convincing stand-alone examples so we can have graphs here. in file chap2-perf-degredation-survey.tex on input line 978.</tspan>
-<tspan x="0" dy="1.2em">TODO: should I spell this example out more? in file chap2-perf-degredation-survey.tex on input line 983.</tspan>
-<tspan x="0" dy="1.2em">TODO: add example? in file chap2-perf-degredation-survey.tex on input line 991.</tspan>
-<tspan x="0" dy="1.2em">TODO: maybe be more concrete here? in file chap2-perf-degredation-survey.tex on input line 1017.</tspan>
-<tspan x="0" dy="1.2em">TODO: cite math-classes and HoTT for past design work here in file chap2-perf-degredation-survey.tex on input line 1036.</tspan>
-<tspan x="0" dy="1.2em">TODO: maybe figure out some examples and include perf data? in file chap2-perf-degredation-survey.tex on input line 1044.</tspan>
-<tspan x="0" dy="1.2em">TODO: does this need more exposition? in file chap2-perf-degredation-survey.tex on input line 1045.</tspan>
-<tspan x="0" dy="1.2em">TODO: How should this chapter be concluded? in file chap2-perf-degredation-survey.tex on input line 1048.</tspan>
-<tspan x="0" dy="1.2em">TODO: Maybe another look-forward at what comes next? in file chap2-perf-degredation-survey.tex on input line 1049.</tspan>
+<tspan x="0" dy="1.2em">TODO: Mention possibility of not building proof terms at all somewhere in file chap2-perf-degredation-survey.tex on input line 229.</tspan>
+<tspan x="0" dy="1.2em">TODO: improve data collection on perf test in file chap2-perf-degredation-survey.tex on input line 244.</tspan>
+<tspan x="0" dy="1.2em">TODO: make a note about more complicated types causing scaling factors to be worse, and not just impacting the leaves in file chap2-perf-degredation-survey.tex on input line 245.</tspan>
+<tspan x="0" dy="1.2em">TODO: Find a place for this note: in file chap2-perf-degredation-survey.tex on input line 324.</tspan>
+<tspan x="0" dy="1.2em">TODO: maybe look into TAPL in file chap2-perf-degredation-survey.tex on input line 325.</tspan>
+<tspan x="0" dy="1.2em">TODO: explain structural and nominal typing more in file chap2-perf-degredation-survey.tex on input line 326.</tspan>
+<tspan x="0" dy="1.2em">TODO: have we explained inductive types yet? in file chap2-perf-degredation-survey.tex on input line 327.</tspan>
+<tspan x="0" dy="1.2em">TODO: have we explained records yet? in file chap2-perf-degredation-survey.tex on input line 327.</tspan>
+<tspan x="0" dy="1.2em">TODO: have we explained parameters vs indices and inductive type families yet? in file chap2-perf-degredation-survey.tex on input line 327.</tspan>
+<tspan x="0" dy="1.2em">TODO: mention where the name ``phantom'' comes from? in file chap2-perf-degredation-survey.tex on input line 328.</tspan>
+<tspan x="0" dy="1.2em">TODO: Come up with better justification for having nominal typing available? in file chap2-perf-degredation-survey.tex on input line 335.</tspan>
+<tspan x="0" dy="1.2em">TODO: explain this better in file chap2-perf-degredation-survey.tex on input line 339.</tspan>
+<tspan x="0" dy="1.2em">TODO: improve data collection on perf test in file chap2-perf-degredation-survey.tex on input line 369.</tspan>
+<tspan x="0" dy="1.2em">TODO: find pdf of manual for styling in file chap2-perf-degredation-survey.tex on input line 407.</tspan>
+<tspan x="0" dy="1.2em">TODO: find pdf of manual for styling in file chap2-perf-degredation-survey.tex on input line 407.</tspan>
+<tspan x="0" dy="1.2em">TODO: cite appendix with typing rules of Coq? in file chap2-perf-degredation-survey.tex on input line 449.</tspan>
+<tspan x="0" dy="1.2em">TODO: maybe look in https://github.com/achlipala/frap and/or TAPL by Benjamin C. Pierce for how to render typing rules in file chap2-perf-degredation-survey.tex on input line 450.</tspan>
+<tspan x="0" dy="1.2em">TODO: cite https://github.com/coq/coq/issues/8232 maybe? in file chap2-perf-degredation-survey.tex on input line 538.</tspan>
+<tspan x="0" dy="1.2em">TODO: Should we run though typechecking in more detail here? in file chap2-perf-degredation-survey.tex on input line 540.</tspan>
+<tspan x="0" dy="1.2em">TODO: maybe cite https://github.com/coq/coq/issues/11838? in file chap2-perf-degredation-survey.tex on input line 545.</tspan>
+<tspan x="0" dy="1.2em">TODO: reference quadratic cbv here, which had a similar issue? in file chap2-perf-degredation-survey.tex on input line 547.</tspan>
+<tspan x="0" dy="1.2em">TODO: some sort of section division marker here? in file chap2-perf-degredation-survey.tex on input line 549.</tspan>
+<tspan x="0" dy="1.2em">TODO: explain and cite hashconsing? in file chap2-perf-degredation-survey.tex on input line 553.</tspan>
+<tspan x="0" dy="1.2em">TODO: cite hashconsing needing to be full to get perf benefit in file chap2-perf-degredation-survey.tex on input line 556.</tspan>
+<tspan x="0" dy="1.2em">TODO: explain this more, find citation for hashconsing being hard with disk in file chap2-perf-degredation-survey.tex on input line 558.</tspan>
+<tspan x="0" dy="1.2em">TODO: flesh out hashconsing section more in file chap2-perf-degredation-survey.tex on input line 559.</tspan>
+<tspan x="0" dy="1.2em">TODO: maybe cite https://github.com/coq/coq/issues/9028\#issuecomment-600013284 about hashconsing being slow in file chap2-perf-degredation-survey.tex on input line 560.</tspan>
+<tspan x="0" dy="1.2em">TODO: maybe move some text form the sharing section to here? in file chap2-perf-degredation-survey.tex on input line 574.</tspan>
+<tspan x="0" dy="1.2em">TODO: discussion of conversion checking, and conversion modulo delta-beta in file chap2-perf-degredation-survey.tex on input line 578.</tspan>
+<tspan x="0" dy="1.2em">TODO: should we define polymorphic identity function somewhere? in file chap2-perf-degredation-survey.tex on input line 581.</tspan>
+<tspan x="0" dy="1.2em">TODO: reference above example about fiat-crypto in file chap2-perf-degredation-survey.tex on input line 611.</tspan>
+<tspan x="0" dy="1.2em">TODO: maybe forward reference to the number of abstraction barriers in file chap2-perf-degredation-survey.tex on input line 613.</tspan>
+<tspan x="0" dy="1.2em">TODO: maybe include more about real-world fiat-crypto example here? in file chap2-perf-degredation-survey.tex on input line 614.</tspan>
+<tspan x="0" dy="1.2em">TODO: make sure we've explained proof engine and Ltac by here in file chap2-perf-degredation-survey.tex on input line 622.</tspan>
+<tspan x="0" dy="1.2em">TODO: mention Coq version automatically, mention why we're using a different Coq version in file chap2-perf-degredation-survey.tex on input line 640.</tspan>
+<tspan x="0" dy="1.2em">TODO: Is this called internalization or is it called elaboration in file chap2-perf-degredation-survey.tex on input line 696.</tspan>
+<tspan x="0" dy="1.2em">TODO: ADD PLOT: try to come up with a graph for renaming stuff in file chap2-perf-degredation-survey.tex on input line 706.</tspan>
+<tspan x="0" dy="1.2em">TODO: ADD PLOT: check if confounders come up in file chap2-perf-degredation-survey.tex on input line 707.</tspan>
+<tspan x="0" dy="1.2em">TODO: make sure that this is mentioned previously, and that we're not rehashing things too much in file chap2-perf-degredation-survey.tex on input line 710.</tspan>
+<tspan x="0" dy="1.2em">TODO: cite original idea for evars? (what is it?) in file chap2-perf-degredation-survey.tex on input line 712.</tspan>
+<tspan x="0" dy="1.2em">TODO: define identity and lifting substitutions in file chap2-perf-degredation-survey.tex on input line 722.</tspan>
+<tspan x="0" dy="1.2em">TODO: Justify it? Discuss other representations? Say why and how it's convenient? in file chap2-perf-degredation-survey.tex on input line 725.</tspan>
+<tspan x="0" dy="1.2em">TODO: cite the rules / reference an appendix in file chap2-perf-degredation-survey.tex on input line 818.</tspan>
+<tspan x="0" dy="1.2em">TODO: explain or forward-reference NbE in file chap2-perf-degredation-survey.tex on input line 858.</tspan>
+<tspan x="0" dy="1.2em">TODO: Read stuff in \url {https://github.com/HoTT/book/issues/995\#issuecomment-418825844} for NbE stuff in file chap2-perf-degredation-survey.tex on input line 859.</tspan>
+<tspan x="0" dy="1.2em">TODO: Say more about it than that it's ``nifty'' in file chap2-perf-degredation-survey.tex on input line 860.</tspan>
+<tspan x="0" dy="1.2em">TODO: reference explanation of PHOAS in file chap2-perf-degredation-survey.tex on input line 864.</tspan>
+<tspan x="0" dy="1.2em">TODO: maybe give a better introductory justification to the vm and native compiler than ``it's important''? in file chap2-perf-degredation-survey.tex on input line 912.</tspan>
+<tspan x="0" dy="1.2em">TODO: cite \url {https://flint.cs.yale.edu/shao/papers/escc.html} or its references for closure compilation in file chap2-perf-degredation-survey.tex on input line 915.</tspan>
+<tspan x="0" dy="1.2em">TODO: cite something for flat closure compilation in file chap2-perf-degredation-survey.tex on input line 917.</tspan>
+<tspan x="0" dy="1.2em">TODO: reorganize this paragraph, improve it in file chap2-perf-degredation-survey.tex on input line 928.</tspan>
+<tspan x="0" dy="1.2em">TODO: maybe more examples here? in file chap2-perf-degredation-survey.tex on input line 982.</tspan>
+<tspan x="0" dy="1.2em">TODO: ADD PLOT: This section requires digging into the historical performance issues around this to find convincing stand-alone examples so we can have graphs here. in file chap2-perf-degredation-survey.tex on input line 986.</tspan>
+<tspan x="0" dy="1.2em">TODO: should I spell this example out more? in file chap2-perf-degredation-survey.tex on input line 991.</tspan>
+<tspan x="0" dy="1.2em">TODO: add example? in file chap2-perf-degredation-survey.tex on input line 999.</tspan>
+<tspan x="0" dy="1.2em">TODO: maybe be more concrete here? in file chap2-perf-degredation-survey.tex on input line 1025.</tspan>
+<tspan x="0" dy="1.2em">TODO: cite math-classes and HoTT for past design work here in file chap2-perf-degredation-survey.tex on input line 1044.</tspan>
+<tspan x="0" dy="1.2em">TODO: maybe figure out some examples and include perf data? in file chap2-perf-degredation-survey.tex on input line 1052.</tspan>
+<tspan x="0" dy="1.2em">TODO: does this need more exposition? in file chap2-perf-degredation-survey.tex on input line 1053.</tspan>
+<tspan x="0" dy="1.2em">TODO: How should this chapter be concluded? in file chap2-perf-degredation-survey.tex on input line 1056.</tspan>
+<tspan x="0" dy="1.2em">TODO: Maybe another look-forward at what comes next? in file chap2-perf-degredation-survey.tex on input line 1057.</tspan>
 <tspan x="0" dy="1.2em">TODO: adjust the tone of what comes after the colon in the previous sentence to fit with this paper in file chap3-api-design.tex on input line 20.</tspan>
 <tspan x="0" dy="1.2em">TODO: cite math classes, etc in file chap3-api-design.tex on input line 22.</tspan>
 <tspan x="0" dy="1.2em">TODO: flesh out this section in file chap3-api-design.tex on input line 35.</tspan>
@@ -127,20 +142,20 @@
 <tspan x="0" dy="1.2em">TODO: Decide between options, maybe add more text in file chap8-conclusion.tex on input line 17.</tspan>
 <tspan x="0" dy="1.2em">TODO: insert category theory diagram of an End here in file chap8-conclusion.tex on input line 25.</tspan>
 <tspan x="0" dy="1.2em">QUESTION FOR ADAM: Decide on whether to copyright myself or MIT; Adam, are there considerations to be aware of here? in file jgross-thesis.tex on input line 105.</tspan>
-<tspan x="0" dy="1.2em">QUESTION FOR ADAM: What's the suggested way of pretty-printing typing rules? in file chap2-perf-degredation-survey.tex on input line 443.</tspan>
-<tspan x="0" dy="1.2em">QUESTION FOR ADAM: Which way do substitution brackets go? in file chap2-perf-degredation-survey.tex on input line 444.</tspan>
-<tspan x="0" dy="1.2em">QUESTION FOR ADAM: What convention should we use for typing rules with regard to things being types? Maybe just copy the HoTT book? in file chap2-perf-degredation-survey.tex on input line 445.</tspan>
+<tspan x="0" dy="1.2em">QUESTION FOR ADAM: What's the suggested way of pretty-printing typing rules? in file chap2-perf-degredation-survey.tex on input line 451.</tspan>
+<tspan x="0" dy="1.2em">QUESTION FOR ADAM: Which way do substitution brackets go? in file chap2-perf-degredation-survey.tex on input line 452.</tspan>
+<tspan x="0" dy="1.2em">QUESTION FOR ADAM: What convention should we use for typing rules with regard to things being types? Maybe just copy the HoTT book? in file chap2-perf-degredation-survey.tex on input line 453.</tspan>
 <tspan x="0" dy="1.2em">QUESTION FOR ADAM: how much should I talk about the category theory library itself in my thesis? in file chap3-api-design.tex on input line 172.</tspan>
 <tspan x="0" dy="1.2em">Warning: Reference `sec:ltac-prof' on page 33 undefined on input line 111.</tspan>
-<tspan x="0" dy="1.2em">Warning: Reference `sec:categories' on page 67 undefined on input line 61.</tspan>
-<tspan x="0" dy="1.2em">Warning: Reference `sec:other' on page 67 undefined on input line 67.</tspan>
-<tspan x="0" dy="1.2em">Warning: Reference `sec:arguments-vs-fields' on page 72 undefined on input line 189.</tspan>
-<tspan x="0" dy="1.2em">Warning: Reference `sec:primitive-projections' on page 74 undefined on input line 245.</tspan>
-<tspan x="0" dy="1.2em">Warning: Reference `fig:timing-make-destruct-record' on page 75 undefined on input line 259.</tspan>
-<tspan x="0" dy="1.2em">Warning: Reference `fig:timing-make-destruct-record' on page 75 undefined on input line 266.</tspan>
-<tspan x="0" dy="1.2em">Warning: Reference `fig:timing-make-destruct-record-definition-abstraction' on page 77 undefined on input line 371.</tspan>
-<tspan x="0" dy="1.2em">Warning: Reference `sec:category-of-categories' on page 205 undefined on input line 6.</tspan>
-<tspan x="0" dy="1.2em">Warning: Reference `sec:hit' on page 205 undefined on input line 6.</tspan>
+<tspan x="0" dy="1.2em">Warning: Reference `sec:categories' on page 65 undefined on input line 61.</tspan>
+<tspan x="0" dy="1.2em">Warning: Reference `sec:other' on page 65 undefined on input line 67.</tspan>
+<tspan x="0" dy="1.2em">Warning: Reference `sec:arguments-vs-fields' on page 70 undefined on input line 189.</tspan>
+<tspan x="0" dy="1.2em">Warning: Reference `sec:primitive-projections' on page 72 undefined on input line 245.</tspan>
+<tspan x="0" dy="1.2em">Warning: Reference `fig:timing-make-destruct-record' on page 73 undefined on input line 259.</tspan>
+<tspan x="0" dy="1.2em">Warning: Reference `fig:timing-make-destruct-record' on page 73 undefined on input line 266.</tspan>
+<tspan x="0" dy="1.2em">Warning: Reference `fig:timing-make-destruct-record-definition-abstraction' on page 75 undefined on input line 371.</tspan>
+<tspan x="0" dy="1.2em">Warning: Reference `sec:category-of-categories' on page 153 undefined on input line 6.</tspan>
+<tspan x="0" dy="1.2em">Warning: Reference `sec:hit' on page 153 undefined on input line 6.</tspan>
 <tspan x="0" dy="1.2em">Package biblatex Warning: The following entry could not be found in the database: bogosort</tspan>
 <tspan x="0" dy="1.2em">Package biblatex Warning: The following entry could not be found in the database: bogosort-name</tspan>
 <tspan x="0" dy="1.2em">Package biblatex Warning: The following entry could not be found in the database: commonsense-perf-engineering-order-of-operations</tspan>
@@ -148,14 +163,6 @@
 <tspan x="0" dy="1.2em">Package biblatex Warning: The following entry could not be found in the database: locally-nameless</tspan>
 <tspan x="0" dy="1.2em">Package biblatex Warning: The following entry could not be found in the database: nominal-typing</tspan>
 <tspan x="0" dy="1.2em">Package biblatex Warning: The following entry could not be found in the database: structural-typing</tspan>
-<tspan x="0" dy="1.2em">Xy-pic Warning: poor convergence [jgross-thesis:374].</tspan>
-<tspan x="0" dy="1.2em">Xy-pic Warning: poor convergence [jgross-thesis:374].</tspan>
-<tspan x="0" dy="1.2em">Xy-pic Warning: poor convergence [jgross-thesis:374].</tspan>
-<tspan x="0" dy="1.2em">Xy-pic Warning: poor convergence [jgross-thesis:374].</tspan>
-<tspan x="0" dy="1.2em">Xy-pic Warning: poor convergence [jgross-thesis:374].</tspan>
-<tspan x="0" dy="1.2em">Xy-pic Warning: poor convergence [jgross-thesis:374].</tspan>
-<tspan x="0" dy="1.2em">Xy-pic Warning: poor convergence [jgross-thesis:374].</tspan>
-<tspan x="0" dy="1.2em">Xy-pic Warning: poor convergence [jgross-thesis:374].</tspan>
 <tspan x="0" dy="1.2em">WARN - I didn't find a database entry for 'commonsense-perf-engineering-order-of-operations' (section 0)</tspan>
 <tspan x="0" dy="1.2em">WARN - I didn't find a database entry for 'bogosort' (section 0)</tspan>
 <tspan x="0" dy="1.2em">WARN - I didn't find a database entry for 'bogosort-name' (section 0)</tspan>
@@ -165,89 +172,37 @@
 <tspan x="0" dy="1.2em">WARN - I didn't find a database entry for 'locally-nameless' (section 0)</tspan>
 <tspan x="0" dy="1.2em">Font shape `T1/lmtt/bx/n' in size &lt;12&gt; not available; Font shape `T1/lmtt/b/n' tried instead on input line 2.</tspan>
 <tspan x="0" dy="1.2em">Font shape `T1/lmtt/bx/n' in size &lt;10&gt; not available; Font shape `T1/lmtt/b/n' tried instead on input line 2.</tspan>
-<tspan x="0" dy="1.2em">Font shape `T1/lmtt/bx/n' in size &lt;10.95&gt; not available; Font shape `T1/lmtt/b/n' tried instead on input line 2.</tspan>
-<tspan x="0" dy="1.2em">Font shape `TS1/lmtt/bx/n' in size &lt;10.95&gt; not available; Font shape `TS1/lmtt/b/n' tried instead on input line 5.</tspan>
-<tspan x="0" dy="1.2em">Font shape `T1/lmtt/bx/n' in size &lt;17.28&gt; not available; Font shape `T1/lmtt/b/n' tried instead on input line 1363.</tspan>
-<tspan x="0" dy="1.2em">Overfull \hbox (73.68713pt too wide) in paragraph at lines 27--32</tspan>
-<tspan x="0" dy="1.2em">Overfull \hbox (14.21379pt too wide) in paragraph at lines 27--32</tspan>
-<tspan x="0" dy="1.2em">Overfull \hbox (23.28331pt too wide) in paragraph at lines 42--44[]</tspan>
-<tspan x="0" dy="1.2em">Overfull \hbox (12.95117pt too wide) in paragraph at lines 46--49</tspan>
+<tspan x="0" dy="1.2em">Overfull \hbox (73.68713pt too wide) in paragraph at lines 27--45</tspan>
+<tspan x="0" dy="1.2em">Overfull \hbox (14.21379pt too wide) in paragraph at lines 27--45</tspan>
+<tspan x="0" dy="1.2em">Overfull \hbox (43.8667pt too wide) in paragraph at lines 64--67</tspan>
+<tspan x="0" dy="1.2em">Overfull \hbox (194.37654pt too wide) in paragraph at lines 64--67</tspan>
+<tspan x="0" dy="1.2em">Overfull \hbox (23.28331pt too wide) in paragraph at lines 77--79[]</tspan>
+<tspan x="0" dy="1.2em">Overfull \hbox (12.95117pt too wide) in paragraph at lines 81--84</tspan>
 <tspan x="0" dy="1.2em">Overfull \hbox (160.97711pt too wide) in paragraph at lines 7--13[]</tspan>
 <tspan x="0" dy="1.2em">Overfull \hbox (13.15315pt too wide) in paragraph at lines 49--70[]</tspan>
 <tspan x="0" dy="1.2em">Overfull \hbox (2.29155pt too wide) in paragraph at lines 167--189[]</tspan>
-<tspan x="0" dy="1.2em">Overfull \hbox (60.88887pt too wide) in paragraph at lines 315--1</tspan>
-<tspan x="0" dy="1.2em">Overfull \hbox (133.87517pt too wide) in paragraph at lines 324--328</tspan>
-<tspan x="0" dy="1.2em">Overfull \hbox (3.16684pt too wide) in paragraph at lines 366--399[]</tspan>
-<tspan x="0" dy="1.2em">Overfull \hbox (3.16684pt too wide) in paragraph at lines 405--438[]</tspan>
-<tspan x="0" dy="1.2em">Overfull \hbox (19.05382pt too wide) in paragraph at lines 441--446</tspan>
-<tspan x="0" dy="1.2em">Overfull \hbox (57.05534pt too wide) in paragraph at lines 483--1[]</tspan>
-<tspan x="0" dy="1.2em">Overfull \hbox (124.98038pt too wide) in paragraph at lines 498--1[]</tspan>
-<tspan x="0" dy="1.2em">Overfull \hbox (132.39355pt too wide) in paragraph at lines 517--1[]</tspan>
-<tspan x="0" dy="1.2em">Overfull \hbox (16.79181pt too wide) in paragraph at lines 564--565[]</tspan>
-<tspan x="0" dy="1.2em">Overfull \hbox (101.67455pt too wide) in paragraph at lines 572--577[]</tspan>
-<tspan x="0" dy="1.2em">Overfull \hbox (49.3802pt too wide) in paragraph at lines 596--596[]</tspan>
-<tspan x="0" dy="1.2em">Overfull \hbox (23.58412pt too wide) in paragraph at lines 636--658[]</tspan>
-<tspan x="0" dy="1.2em">Overfull \hbox (33.00833pt too wide) in paragraph at lines 663--685[]</tspan>
-<tspan x="0" dy="1.2em">Overfull \hbox (59.3748pt too wide) in paragraph at lines 691--695</tspan>
-<tspan x="0" dy="1.2em">Overfull \hbox (0.41914pt too wide) in paragraph at lines 716--720[]</tspan>
-<tspan x="0" dy="1.2em">Overfull \hbox (19.40459pt too wide) in paragraph at lines 816--818[]</tspan>
-<tspan x="0" dy="1.2em">Overfull \hbox (21.08952pt too wide) in paragraph at lines 849--854[]</tspan>
-<tspan x="0" dy="1.2em">Overfull \hbox (19.00052pt too wide) in paragraph at lines 1005--1010[]</tspan>
+<tspan x="0" dy="1.2em">Overfull \hbox (60.88887pt too wide) in paragraph at lines 323--1</tspan>
+<tspan x="0" dy="1.2em">Overfull \hbox (133.87517pt too wide) in paragraph at lines 332--336</tspan>
+<tspan x="0" dy="1.2em">Overfull \hbox (3.16684pt too wide) in paragraph at lines 374--407[]</tspan>
+<tspan x="0" dy="1.2em">Overfull \hbox (3.16684pt too wide) in paragraph at lines 413--446[]</tspan>
+<tspan x="0" dy="1.2em">Overfull \hbox (19.05382pt too wide) in paragraph at lines 449--454</tspan>
+<tspan x="0" dy="1.2em">Overfull \hbox (57.05534pt too wide) in paragraph at lines 491--1[]</tspan>
+<tspan x="0" dy="1.2em">Overfull \hbox (124.98038pt too wide) in paragraph at lines 506--1[]</tspan>
+<tspan x="0" dy="1.2em">Overfull \hbox (132.39355pt too wide) in paragraph at lines 525--1[]</tspan>
+<tspan x="0" dy="1.2em">Overfull \hbox (16.79181pt too wide) in paragraph at lines 572--573[]</tspan>
+<tspan x="0" dy="1.2em">Overfull \hbox (101.67455pt too wide) in paragraph at lines 580--585[]</tspan>
+<tspan x="0" dy="1.2em">Overfull \hbox (49.3802pt too wide) in paragraph at lines 604--604[]</tspan>
+<tspan x="0" dy="1.2em">Overfull \hbox (23.58412pt too wide) in paragraph at lines 644--666[]</tspan>
+<tspan x="0" dy="1.2em">Overfull \hbox (33.00833pt too wide) in paragraph at lines 671--693[]</tspan>
+<tspan x="0" dy="1.2em">Overfull \hbox (59.3748pt too wide) in paragraph at lines 699--703</tspan>
+<tspan x="0" dy="1.2em">Overfull \hbox (0.41914pt too wide) in paragraph at lines 724--728[]</tspan>
+<tspan x="0" dy="1.2em">Overfull \hbox (19.40459pt too wide) in paragraph at lines 824--826[]</tspan>
+<tspan x="0" dy="1.2em">Overfull \hbox (21.08952pt too wide) in paragraph at lines 857--862[]</tspan>
+<tspan x="0" dy="1.2em">Overfull \hbox (19.00052pt too wide) in paragraph at lines 1013--1018[]</tspan>
 <tspan x="0" dy="1.2em">Overfull \hbox (46.29196pt too wide) in paragraph at lines 27--27[]</tspan>
 <tspan x="0" dy="1.2em">Overfull \hbox (12.8885pt too wide) in paragraph at lines 153--153[]</tspan>
 <tspan x="0" dy="1.2em">Overfull \hbox (77.58801pt too wide) in paragraph at lines 1--239 []</tspan>
 <tspan x="0" dy="1.2em">Overfull \hbox (7.19618pt too wide) in paragraph at lines 369--372[]</tspan>
-<tspan x="0" dy="1.2em">Overfull \hbox (3.01855pt too wide) in paragraph at lines 209--215[]</tspan>
-<tspan x="0" dy="1.2em">Overfull \hbox (3.12395pt too wide) in paragraph at lines 288--291[]</tspan>
-<tspan x="0" dy="1.2em">Overfull \hbox (1.04492pt too wide) in paragraph at lines 302--305</tspan>
-<tspan x="0" dy="1.2em">Overfull \hbox (2.71367pt too wide) in paragraph at lines 353--355[]</tspan>
-<tspan x="0" dy="1.2em">Overfull \hbox (11.2731pt too wide) in paragraph at lines 355--356[]</tspan>
-<tspan x="0" dy="1.2em">Underfull \hbox (badness 10000) in paragraph at lines 765--770[]</tspan>
-<tspan x="0" dy="1.2em">Underfull \hbox (badness 10000) in paragraph at lines 1026--1029[]</tspan>
-<tspan x="0" dy="1.2em">Underfull \hbox (badness 10000) in paragraph at lines 1060--1064[]</tspan>
-<tspan x="0" dy="1.2em">Overfull \hbox (66.92613pt too wide) in paragraph at lines 1157--1161</tspan>
-<tspan x="0" dy="1.2em">Overfull \hbox (3.06592pt too wide) in paragraph at lines 1157--1161</tspan>
-<tspan x="0" dy="1.2em">Underfull \hbox (badness 1484) in paragraph at lines 1352--1352</tspan>
-<tspan x="0" dy="1.2em">Underfull \hbox (badness 1484) in paragraph at lines 1353--1353</tspan>
-<tspan x="0" dy="1.2em">Overfull \hbox (59.23671pt too wide) in paragraph at lines 1371--1373[]</tspan>
-<tspan x="0" dy="1.2em">Overfull \hbox (7.31541pt too wide) in paragraph at lines 1377--1381</tspan>
-<tspan x="0" dy="1.2em">Overfull \hbox (27.0287pt too wide) in paragraph at lines 1395--1398[]</tspan>
-<tspan x="0" dy="1.2em">Overfull \hbox (6.94974pt too wide) in paragraph at lines 1399--1404</tspan>
-<tspan x="0" dy="1.2em">Overfull \hbox (14.85356pt too wide) in paragraph at lines 1407--1411[]</tspan>
-<tspan x="0" dy="1.2em">Overfull \hbox (36.39565pt too wide) in paragraph at lines 1460--1464</tspan>
-<tspan x="0" dy="1.2em">Overfull \hbox (225.16933pt too wide) in paragraph at lines 1466--1469</tspan>
-<tspan x="0" dy="1.2em">Overfull \hbox (3.22318pt too wide) in paragraph at lines 1474--1476</tspan>
-<tspan x="0" dy="1.2em">Overfull \hbox (56.76094pt too wide) in paragraph at lines 1485--1489</tspan>
-<tspan x="0" dy="1.2em">Overfull \hbox (7.48936pt too wide) in paragraph at lines 1485--1489</tspan>
-<tspan x="0" dy="1.2em">Overfull \hbox (76.18787pt too wide) in paragraph at lines 1485--1489</tspan>
-<tspan x="0" dy="1.2em">Overfull \hbox (41.73323pt too wide) in paragraph at lines 1489--1493</tspan>
-<tspan x="0" dy="1.2em">Overfull \hbox (9.78194pt too wide) in paragraph at lines 1489--1493</tspan>
-<tspan x="0" dy="1.2em">Overfull \hbox (68.72116pt too wide) in paragraph at lines 1489--1493</tspan>
-<tspan x="0" dy="1.2em">Overfull \hbox (3.12395pt too wide) in paragraph at lines 1493--1497[]</tspan>
-<tspan x="0" dy="1.2em">Overfull \hbox (13.21342pt too wide) in paragraph at lines 1493--1497</tspan>
-<tspan x="0" dy="1.2em">Overfull \hbox (145.20375pt too wide) in paragraph at lines 1497--1499</tspan>
-<tspan x="0" dy="1.2em">Overfull \hbox (4.48825pt too wide) in paragraph at lines 1497--1499</tspan>
-<tspan x="0" dy="1.2em">Overfull \hbox (1.04492pt too wide) in paragraph at lines 1511--1515</tspan>
-<tspan x="0" dy="1.2em">Overfull \hbox (17.29805pt too wide) in paragraph at lines 1518--1519</tspan>
-<tspan x="0" dy="1.2em">Overfull \hbox (1.79419pt too wide) in paragraph at lines 1554--1557</tspan>
-<tspan x="0" dy="1.2em">Overfull \hbox (21.32695pt too wide) in paragraph at lines 1587--1591</tspan>
-<tspan x="0" dy="1.2em">Overfull \hbox (42.89444pt too wide) in paragraph at lines 1592--1595[]</tspan>
-<tspan x="0" dy="1.2em">Overfull \hbox (110.24847pt too wide) in paragraph at lines 1592--1595</tspan>
-<tspan x="0" dy="1.2em">Overfull \hbox (19.27367pt too wide) in paragraph at lines 1592--1595</tspan>
-<tspan x="0" dy="1.2em">Overfull \hbox (21.41335pt too wide) in paragraph at lines 1596--1597[]</tspan>
-<tspan x="0" dy="1.2em">Overfull \hbox (2.83774pt too wide) in paragraph at lines 1598--1603[]</tspan>
-<tspan x="0" dy="1.2em">Overfull \hbox (0.77126pt too wide) in paragraph at lines 1610--1612[]</tspan>
-<tspan x="0" dy="1.2em">Overfull \hbox (16.26814pt too wide) in paragraph at lines 1617--1620</tspan>
-<tspan x="0" dy="1.2em">Overfull \hbox (0.56296pt too wide) in paragraph at lines 1621--1628</tspan>
-<tspan x="0" dy="1.2em">Overfull \hbox (2.17865pt too wide) in paragraph at lines 1629--1630[]</tspan>
-<tspan x="0" dy="1.2em">Overfull \hbox (57.98373pt too wide) in paragraph at lines 1631--1634[]</tspan>
-<tspan x="0" dy="1.2em">Overfull \hbox (4.34633pt too wide) in paragraph at lines 1631--1634</tspan>
-<tspan x="0" dy="1.2em">Overfull \hbox (13.64133pt too wide) in paragraph at lines 1689--1692</tspan>
-<tspan x="0" dy="1.2em">Overfull \hbox (3.71806pt too wide) in paragraph at lines 1689--1692</tspan>
-<tspan x="0" dy="1.2em">Overfull \hbox (35.66911pt too wide) in paragraph at lines 1695--1696</tspan>
-<tspan x="0" dy="1.2em">Overfull \hbox (74.87704pt too wide) in paragraph at lines 1695--1696</tspan>
-<tspan x="0" dy="1.2em">Overfull \hbox (111.95926pt too wide) in paragraph at lines 1695--1696</tspan>
-<tspan x="0" dy="1.2em">Overfull \hbox (32.7304pt too wide) in paragraph at lines 1709--11</tspan>
 <tspan x="0" dy="1.2em">Overfull \hbox (42.68018pt too wide) in paragraph at lines 74--75[]</tspan>
 <tspan x="0" dy="1.2em">Overfull \hbox (5.63016pt too wide) in paragraph at lines 86--88[]</tspan>
 <tspan x="0" dy="1.2em">Overfull \hbox (5.75378pt too wide) in paragraph at lines 88--90[]</tspan>

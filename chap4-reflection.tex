@@ -1,5 +1,211 @@
 \chapter{Reflective Program Transformation} \label{ch:reflection}
 
+\section{Introduction} \label{sec:reification-by-parametricity:intro}
+
+\todo{talk about de Bruijn criterion again, how often building proof certificates is expensive}
+
+\todo{reformat this for flow, right now it's from reification-by-parametricity}
+Proof by reflection~\cite{ReflectionTACS97} is an established method for employing verified proof procedures, within larger proofs.
+There are a number of benefits to using verified functional programs written in the proof assistant's logic, instead of tactic scripts.
+We can often prove that procedures always terminate without attempting fallacious proof steps, and perhaps we can even prove that a procedure gives logically complete answers, for instance telling us definitively whether a proposition is true or false.
+In contrast, tactic-based procedures may encounter runtime errors or loop forever.
+As a consequence, those procedures must output proof terms, justifying their decisions, and these terms can grow large, making for slower proving and requiring transmission of large proof terms to be checked slowly by others.
+A verified procedure need not generate a certificate for each invocation.
+
+The starting point for proof by reflection is \emph{reification}: translating a ``native'' term of the logic into an explicit abstract syntax tree.
+We may then feed that tree to verified procedures or any other functional programs in the logic.
+The benefits listed above are particularly appealing in domains where goals are very large.
+For instance, consider verification of large software systems, where we might want to reify thousands of lines of source code.
+Popular methods turn out to be surprisingly slow, often to the point where, counter-intuitively, the majority of proof-execution time is spent in reification -- unless the proof engineer invests in writing a plugin directly in the proof assistant's metalanguage (e.g., OCaml for Coq).
+
+\todo{move this paragraph elsewhere}
+In this paper, we show that reification can be both simpler and faster than with standard methods.
+Perhaps surprisingly, we demonstrate how to reify terms almost entirely through reduction in the logic, with a small amount of tactic code for setup and no ML programming.
+Though our techniques should be broadly applicable, especially in proof assistants based on type theory, our experience is with Coq, and we review the requisite background in the remainder of this introduction.
+In \autoref{sec:reif-survey}, we summarize our survey into prior approaches to reification and provide high-quality implementations and documentation for them, serving a tutorial function independent of our new contributions.
+Experts on the subject might want to skip directly to \autoref{sec:reification-by-parametricity}, which explains our alternative technique.
+We benchmark our approach against 18 competitors in \autoref{sec:perf}.
+
+\subsection{Proof-Script Primer}
+Basic Coq proofs are often written as lists of steps such as \texttt{induction} on some structure, \texttt{rewrite} using a known equivalence, or \texttt{unfold} of a definition.
+Very quickly, proofs can become long and tedious, both to write and to read, and hence Coq provides \Ltac, a scripting language for proofs.
+As theorems and proofs grow in complexity, users frequently run into performance and maintainability issues with \Ltac.
+Consider the case where we want to prove that a large algebraic expression, involving many \letindots\space expressions, is even:
+\begin{verbatim}
+Inductive is_even : nat -> Prop :=
+| even_O : is_even O
+| even_SS : forall x, is_even x -> is_even (S (S x)).
+Goal is_even (let x := 100 * 100 * 100 * 100 in
+              let y := x * x * x * x in
+              y * y * y * y).
+\end{verbatim}
+Coq stack-overflows if we try to reduce this goal.
+As a workaround, we might write a lemma that talks about evenness of \letindots, plus one about evenness of multiplication, and we might then write a tactic that composes such lemmas.
+
+Even on smaller terms, though, proof size can quickly become an issue.
+If we give a naive proof that 7000 is even, the proof term will contain all of the even numbers between 0 and 7000, giving a proof-term-size blow-up at least quadratic in size (recalling that natural numbers are represented in unary; the challenges remain for more efficient base encodings).
+Clever readers will notice that Coq could share subterms in the proof tree, recovering a term that is linear in the size of the goal.
+However, such sharing would have to be preserved very carefully, to prevent size blow-up from unexpected loss of sharing, and today's Coq version does not do that sharing.
+Even if it did, tactics that rely on assumptions about Coq's sharing strategy become harder to debug, rather than easier.
+
+\subsection{Reflective-Automation Primer}\label{sec:evenness}
+Enter reflective automation, which simultaneously solves both the problem of performance and the problem of debuggability.
+Proof terms, in a sense, are traces of a proof script.
+They provide Coq's kernel with a term that it can check to verify that no illegal steps were taken.
+Listing every step results in large traces.
+
+\begin{wrapfigure}[9]{r}{5cm}
+%\vspace{-33pt}
+\begin{verbatim}
+Fixpoint check_is_even
+   (n : nat) : bool
+  := match n with
+     | 0 => true
+     | 1 => false
+     | S (S n)
+       => check_is_even n
+     end.
+\end{verbatim}
+%\vspace{-18pt}
+\caption{Evenness Checking}\label{fig:check-is-even}
+\end{wrapfigure}
+The idea of reflective automation is that, if we can get a formal encoding of our goal, plus an algorithm to \emph{check} the property we care about, then we can do much better than storing the entire trace of the program.
+We can prove that our checker is correct once and for all, removing the need to trace its steps.
+
+A simple evenness checker can just operate on the unary encoding of natural numbers (\autoref{fig:check-is-even}).
+We can use its correctness theorem to prove goals much more quickly:
+\begin{verbatim}
+Theorem soundness : forall n, check_is_even n = true -> is_even n.
+Goal is_even 2000.
+  Time repeat (apply even_SS || apply even_O). (* 1.8 s *)
+  Undo.
+  Time apply soundness; vm_compute; reflexivity. (* 0.004 s *)
+\end{verbatim}
+The tactic \texttt{vm\_compute} tells Coq to use its virtual machine for reduction, to compute the value of \texttt{check\_is\_even 2000}, after which \texttt{reflexivity} proves that \texttt{true = true}.
+Note how much faster this method is.
+In fact, even the asymptotic complexity is better; this new algorithm is linear rather than quadratic in \texttt{n}.
+
+However, even this procedure takes a bit over three minutes to prove \texttt{is\_even (10 * 10 * 10 * 10 * 10 * 10 * 10 * 10 * 10)}.
+To do better, we need a formal representation of terms or expressions.
+
+\subsection{Reflective-Syntax Primer}
+Sometimes, to achieve faster proofs, we must be able to tell, for example, whether we got a term by multiplication or by addition, and not merely whether its normal form is 0 or a successor.%
+%\footnote{%
+%  Sometimes this distinction is necessary for generating a proof at all, as is the case in \texttt{nsatz} and \texttt{romega}; there is no way to prove that addition is commutative if you cannot identify what things you were adding in the first place.%
+%}
+
+\begin{wrapfigure}[4]{r}{5cm}
+%\vspace{-45pt}
+\begin{verbatim}
+Inductive expr :=
+| NatO : expr
+| NatS (x : expr) : expr
+| NatMul (x y : expr) : expr.
+\end{verbatim}
+%\vspace{-15pt}
+\caption{Simple Expressions}\label{fig:inductive-expr-no-letin}
+\end{wrapfigure}
+
+A reflective automation procedure generally has two steps.
+The first step is to \emph{reify} the goal into some abstract syntactic representation, which we call the \emph{term language} or an \emph{expression language}.
+The second step is to run the algorithm on the reified syntax.
+
+What should our expression language include?
+At a bare minimum, we must have multiplication nodes, and we must have \texttt{nat} literals.
+If we encode \texttt{S} and \texttt{O} separately, a decision that will become important later in~\autoref{sec:reification-by-parametricity}, we get the inductive type of \autoref{fig:inductive-expr-no-letin}.
+
+Before diving into methods of reification, let us write the evenness checker.
+\begin{verbatim}
+Fixpoint check_is_even_expr (t : expr) : bool
+  := match t with
+     | NatO => true
+     | NatS x => negb (check_is_even_expr x)
+     | NatMul x y => orb (check_is_even_expr x) (check_is_even_expr y)
+     end.
+\end{verbatim}
+%We have used \texttt{negb} and \texttt{orb} from the standard library for boolean negation and disjunction respectively.
+
+Before we can state the soundness theorem (whenever this checker returns \texttt{true}, the represented number is even), we must write the function that tells us what number our expression represents, called \emph{denotation} or \emph{interpretation}:
+\begin{verbatim}
+Fixpoint denote (t : expr) : nat
+  := match t with
+     | NatO => O
+     | NatS x => S (denote x)
+     | NatMul x y => denote x * denote y
+     end.
+
+Theorem check_is_even_expr_sound (e : expr)
+  : check_is_even_expr e = true -> is_even (denote e).
+\end{verbatim}
+
+Given a tactic \texttt{Reify} to produce a reified term from a \verb|nat|, we can time \verb|check_is_even_expr|.
+It is instant on the last example.%, \texttt{10 * 10 * 10 * 10 * 10 * 10 * 10 * 10 * 10}.
+
+Before we proceed to reification, we will introduce one more complexity.
+If we want to support our initial example with \letindots\space efficiently, we must also have \texttt{let}-expressions.
+Our current procedure that inlines \texttt{let}-expressions takes 19 seconds, for example, on \texttt{let x0 := 10 * 10 in let x1 := x0 * x0 in \ldots\space let x24 := x23 * x23 in x24}.
+The choices of representation include higher-order abstract syntax (HOAS)~\cite{HOAS}, parametric higher-order abstract syntax (PHOAS)~\cite{PhoasICFP08}, and de Bruijn indices~\cite{debruijn1972}.
+The PHOAS representation is particularly convenient.
+In PHOAS, expression binders are represented by binders in Gallina, the functional language of Coq, and the expression language is parameterized over the type of the binder.
+%We make this binder type implicit so that we can often omit writing it.
+Let us define a constant and notation for \texttt{let} expressions as definitions (a common choice in real Coq developments, to block Coq's default behavior of inlining \texttt{let} binders silently; the same choice will also turn out to be useful for reification later).
+We thus have: \label{sec:phoas-expr-def}
+\begin{verbatim}
+Inductive expr {var : Type} :=
+| NatO : expr
+| NatS : expr -> expr
+| NatMul : expr -> expr -> expr
+| Var : var -> expr
+| LetIn : expr -> (var -> expr) -> expr.
+Definition Let_In {A B} (v : A) (f : A -> B) := let x := v in f x.
+Notation "'dlet' x := v 'in' f" := (Let_In v (fun x => f)).
+Notation "'elet' x := v 'in' f" := (LetIn v (fun x => f)).
+Fixpoint denote (t : @expr nat) : nat
+  := match t with
+     | NatO => O
+     | NatS x => S (denote x)
+     | NatMul x y => denote x * denote y
+     | Var v => v
+     | LetIn v f => dlet x := denote v in denote (f x)
+     end.
+\end{verbatim}
+
+A full treatment of evenness checking for PHOAS would require proving well-formedness of syntactic expressions; for a more complete discussion of PHOAS, we refer the reader elsewhere~\cite{PhoasICFP08}.
+\todo{give a full treatment of well-formedness}
+Using \texttt{Wf} to denote the well-formedness predicate, we could prove a theorem
+\begin{verbatim}
+Theorem check_is_even_expr_sound (e : ∀ var, @expr var) (H : Wf e)
+: check_is_even_expr (e bool) = true -> is_even (denote (e nat)).
+\end{verbatim}
+To complete the picture, we would need a tactic \texttt{Reify} which took in a term of type \texttt{nat} and gave back a term of type \texttt{forall var, @expr var}, plus a tactic \texttt{prove\_wf} which solved a goal of the form \texttt{Wf e} by repeated application of constructors.
+Given these, we could solve an evenness goal by writing%
+\footnote{%
+  Note that for the \texttt{refine} to be fast, we must issue something like \texttt{Strategy -10 [denote]} to tell Coq to unfold \texttt{denote} before \texttt{Let\_In}.
+  }
+\begin{verbatim}
+match goal with
+| [ |- is_even ?v ]
+  => let e := Reify v in
+     refine (check_is_even_expr_sound e _ _);
+     [ prove_wf | vm_compute; reflexivity ]
+end.
+\end{verbatim}
+%\todo{Should we mention that for the \texttt{refine} to be fast, we need a \texttt{Strategy} command to tell Coq to unfold \texttt{denote} before \texttt{Let\_In}?}
+
+\section{Reflective Program Tranformation}
+\todo{prep the reader for the upcoming chapter on the rewriter}
+
+\section{Reflective Proofs of Well-Formedness}
+\todo{figure out where this section belongs}
+\todo{talk about tricks for avoiding quadratic overhead in well-formedness proofs: minimizing the certificate size reflectively, and going via de Bruijn}
+
+\section{related work (incl. RTac)}
+\todo{talk about related work}
+\todo{figure out where this section belongs}
+
+\todo{should I talk about parsers at all?}
+
+\begin{comment}
 \begin{subappendices}
 
     \section{Transcript bits from Adam}
@@ -133,3 +339,4 @@ Okay, so I think to finish up what I was saying were. Relying on the fact that y
 
 \section{case study: parsers?}
 \end{subappendices}
+\end{comment}

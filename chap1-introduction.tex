@@ -26,34 +26,35 @@
 \paragraph{Paragraph 3: performance of tools is important and non-trivial, and what we're doing here is explaining / demonstrating how and why it's non-trivial, and how to fix nontrivial performance issues}
 \todo{explain that performance, including of build-time, is important}
 \todo{read and cite perf engineering study \url{https://arxiv.org/abs/2003.06458}}
-\todo{read / look into https://dl.acm.org/doi/pdf/10.1145/1297027.1297033}
-\todo{maybe read https://users.cs.northwestern.edu/~robby/courses/322-2013-spring/mytkowicz-wrong-data.pdf}
-\todo{Karl Palmskog: @Jason Gross I saw your post on performance optimization/measurements for proof assistants on Coq-Club. We summarize a lot of work on parallelization/selection for proof assistants in our regression proving papers (ASE 17 \& ISSTA 18): http://users.ece.utexas.edu/~gligoric/papers/CelikETAL17iCoq.pdf http://users.ece.utexas.edu/~gligoric/papers/PalmskogETAL18piCoq.pdf}
-\todo{read and cite https://leanprover.github.io/papers/tactic.pdf}
+\todo{read / look into \url{https://dl.acm.org/doi/pdf/10.1145/1297027.1297033}}
+\todo{maybe read \url{https://users.cs.northwestern.edu/~robby/courses/322-2013-spring/mytkowicz-wrong-data.pdf}}
+\todo{Karl Palmskog: @Jason Gross I saw your post on performance optimization/measurements for proof assistants on Coq-Club. We summarize a lot of work on parallelization/selection for proof assistants in our regression proving papers (ASE 17 \& ISSTA 18): \url{http://users.ece.utexas.edu/~gligoric/papers/CelikETAL17iCoq.pdf} \url{http://users.ece.utexas.edu/~gligoric/papers/PalmskogETAL18piCoq.pdf}}
+\todo{read and cite \url{https://leanprover.github.io/papers/tactic.pdf}}
 \todo{read Implementing Typed Intermediate Languages} by Zhong Shao, Christopher League, and Stefan Monnier
 In Proc. 1998 ACM SIGPLAN International Conference on Functional Programming (ICFP'98)
 ``It's not directly related to proof assistants, but the techniques described can be applicable to proof assistants and the experience \emph{may} be applicable to some extent.''
 \todo{read ``Inductive families need not store their indices'' by Edwin Brady, Connor McBride, James McKinna}
 \todo{read Aleksey Nogin's Cornell PhD thesis from the 1990s}
-\todo{read Grégoire and Leroy's paper from ICFP 2002 https://xavierleroy.org/bibrefs/Gregoire-Leroy-02.html}
+\todo{read Grégoire and Leroy's paper from ICFP 2002 \url{https://xavierleroy.org/bibrefs/Gregoire-Leroy-02.html}}
 \todo{read Dirk Kleeblatt's PhD thesis.}
 ``Both of these are about using compiled code in dependent type checkers instead of interpreters.''
-\todo{read Andras Kovacs has smalltt at https://github.com/AndrasKovacs/smalltt}``, which I don't think has been written up anywhere but has nonetheless been influential, both on Idris 2 and on Olle Fredriksson's reimplementation of Sixten at https://github.com/ollef/sixty''
-\todo{look at https://github.com/AndrasKovacs/normalization-bench}
-\todo{look at https://github.com/AndrasKovacs/smalltt}
-\todo{``I haven't yet updated the smalltt repo, but there's a simplified (https://gist.github.com/AndrasKovacs/a0e0938113b193d6b9c1c0620d853784) implementation of its evaluator, which seems to have roughly the same performance but which is much simpler to implement.''}
+\todo{read Andras Kovacs has smalltt at \url{https://github.com/AndrasKovacs/smalltt}}``, which I don't think has been written up anywhere but has nonetheless been influential, both on Idris 2 and on Olle Fredriksson's reimplementation of Sixten at \url{https://github.com/ollef/sixty}''
+\todo{look at \url{https://github.com/AndrasKovacs/normalization-bench}}
+\todo{look at \url{https://github.com/AndrasKovacs/smalltt}}
+\todo{``I haven't yet updated the smalltt repo, but there's a simplified (\url{https://gist.github.com/AndrasKovacs/a0e0938113b193d6b9c1c0620d853784}) implementation of its evaluator, which seems to have roughly the same performance but which is much simpler to implement.''}
+
 
 András Kovács wrote:
 \begin{quotation}
 The basic idea is that in elaboration there are two primary computational tasks, one is conversion checking and the other is generating solutions for metavariables. Clearly, we should use NbE/environment machines for evaluation, and implement conversion checking in the semantic domain. However, when we want to generate meta solutions, we need to compute syntactic terms, and vanilla NbE domain only supports quote/readback to normal forms. Normal forms are way too big and terrible for this purpose. Hence, we extend vanilla NbE domain with lazy non-deterministic choice between two or more evaluation strategies. In the simplest case, the point of divergence is whether we unfold some class of definitions or not. Then, the conversion checking algorithm can choose to take the full-unfolding branch, and the quoting operation can choose to take the non-unfolding branch. At the same time, we have a great deal of shared computation between the two branches; we avoid recomputing many things if we choose to look at both branches.
 
-I believe that a feature like this is absolutely necessary for robust performance. Otherwise, we choke on bad asymptotics, which is surprisingly common in dependent settings. In Agda and Coq, even something as trivial as elaborating a length-indexed vector expression has quadratic complexity in the length of the vector. 
+I believe that a feature like this is absolutely necessary for robust performance. Otherwise, we choke on bad asymptotics, which is surprisingly common in dependent settings. In Agda and Coq, even something as trivial as elaborating a length-indexed vector expression has quadratic complexity in the length of the vector.
 
-It is also extremely important to stick to the spirit of Coquand's semantic checking algorithm as much as possible. In summary: core syntax should support *no* expensive computation: no substitution, shifting, renaming, or other ad-hoc term massaging. Core syntax should be viewed as immutable machine code, which supports evaluation into various semantic domains, from which sometimes we can read syntax back; this also leaves it open to swap out the representation of core syntax to efficient alternatives such as bytecode or machine code. 
+It is also extremely important to stick to the spirit of Coquand's semantic checking algorithm as much as possible. In summary: core syntax should support *no* expensive computation: no substitution, shifting, renaming, or other ad-hoc term massaging. Core syntax should be viewed as immutable machine code, which supports evaluation into various semantic domains, from which sometimes we can read syntax back; this also leaves it open to swap out the representation of core syntax to efficient alternatives such as bytecode or machine code.
 
-Only after we get  the above two basic points right, can we start to think about more specific and esoteric optimizations. I am skeptical of proposed solutions which do not include these. Hash consing has been brought up many times, but it is very unsatisfying compared to non-deterministic NbE, because of its large constant costs, implementation complexity, and the failure to handle sharing loss from beta-redexes in any meaningful way (which is the most important source of sharing loss!). I am also skeptical of exotic evaluators such as interaction nets and optimal beta reducers; there is a good reason that all modern functional languages run on environment machines instead of interaction nets. 
+Only after we get  the above two basic points right, can we start to think about more specific and esoteric optimizations. I am skeptical of proposed solutions which do not include these. Hash consing has been brought up many times, but it is very unsatisfying compared to non-deterministic NbE, because of its large constant costs, implementation complexity, and the failure to handle sharing loss from beta-redexes in any meaningful way (which is the most important source of sharing loss!). I am also skeptical of exotic evaluators such as interaction nets and optimal beta reducers; there is a good reason that all modern functional languages run on environment machines instead of interaction nets.
 
-If we want to support type classes, then \href{https://arxiv.org/pdf/2001.04301.pdf}{tabled instance resolution} is also a must, otherwise we are again smothered by bad asymptotics even in modestly complex class hierarchies. This can be viewed as a specific instance of hash-consing (or rather ``memoization''), so while I think ubiquitous hash-consing is bad, some focused usage can do good. 
+If we want to support type classes, then \href{https://arxiv.org/pdf/2001.04301.pdf}{tabled instance resolution} is also a must, otherwise we are again smothered by bad asymptotics even in modestly complex class hierarchies. This can be viewed as a specific instance of hash-consing (or rather ``memoization''), so while I think ubiquitous hash-consing is bad, some focused usage can do good.
 
 Injectivity analysis is another thing which I believe has large potential impact. By this I mean checking whether functions are injective up to definitional equality, which is decidable, and can be used to more precisely optimize unfolding in conversion checking.
 
@@ -62,8 +63,12 @@ I'd be very interested in your findings about proof assistant performance. This 
 \todo{look into ``So technically, the lost sharing is the second-order sharing that is preserved
     in ``optimal reduction'' of lambda calculi [Levy-1980, Lamping-1990, Asperti-Laneve-1992],
     while hash consing normally is directly usable only for first-order sharing.''}
-\todo{look at https://math.stackexchange.com/questions/3466976/online-reference-book-for-implementing-concepts-in-type-theory}
-\todo{look at https://github.com/AndrasKovacs/elaboration-zoo/blob/0c7f8a676c0964cc05c247879393e97729f59e5b/AIMprez/AIMprez.pdf or https://eutypes.cs.ru.nl/eutypes\_pmwiki/uploads/Meetings/Kovacs\_slides.pdf}
+\todo{look at \url{https://math.stackexchange.com/questions/3466976/online-reference-book-for-implementing-concepts-in-type-theory}}
+\todo{look at \url{https://github.com/AndrasKovacs/elaboration-zoo/blob/0c7f8a676c0964cc05c247879393e97729f59e5b/AIMprez/AIMprez.pdf} or \url{https://eutypes.cs.ru.nl/eutypes\_pmwiki/uploads/Meetings/Kovacs\_slides.pdf}}
+Konrad Slind wrote:
+\todo{read \url{https://link.springer.com/chapter/10.1007/3-540-44659-1\_2}}
+\todo{\url{https://www.researchgate.net/publication/2390013\_Efficiency\_in\_a\_Fully-Expansive\_Theorem\_Prover}}
+\todo{Related to this is work on sound interfaces to external tools, also an enduring topic: \url{https://www.cs.utexas.edu/~kaufmann/itp-trusted-extensions-aug-2010/summary/summary.pdf}}
 
 \subsection{What are proof assistants?}
 \todo{wide look at various proof assistants and successes}

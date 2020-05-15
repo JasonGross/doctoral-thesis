@@ -33,13 +33,6 @@ Additionally, our strategy automatically provides error messages that are no les
   owner           = {Jason},
 }
 
-@Misc{beta1-zeta1,
-  author = {Jonathan Leivent},
-  date   = {2016-01},
-  title  = {[coqdev] beta1 and zeta1 reduction},
-  url    = {https://sympa.inria.fr/sympa/arc/coqdev/2016-01/msg00060.html},
-}
-
 @Misc{coq-pr-fast-rel-lookup,
   author = {Pierre-Marie P\'edrot},
   date   = {2017-12},
@@ -258,13 +251,6 @@ Additionally, our strategy automatically provides error messages that are no les
   booktitle = {Proc. CPP},
   date      = {2011},
   title     = {Full Reduction at Full Throttle},
-}
-
-@InProceedings{vmcompute,
-  author    = {Benjamin Grégoire and Xavier Leroy},
-  booktitle = {Proc. ICFP},
-  date      = {2002},
-  title     = {A compiled implementation of strong reduction},
 }
 
 @InProceedings{LMSVerify,
@@ -1201,7 +1187,7 @@ Implementations from our library were included in BoringSSL to replace existing 
   timestamp   = {2018.06.01},
 }
 
-@Article{QEDatLarge,
+@Article{ringer2020qed,
   author       = {Talia Ringer and Karl Palmskog and Ilya Sergey and Milos Gligoric and Zachary Tatlock},
   date         = {2020-03-13},
   journaltitle = {Foundations and Trends in Programming Languages, Vol. 5, No. 2-3 (Sept. 2019), pp. 102-281},
@@ -1216,7 +1202,7 @@ Implementations from our library were included in BoringSSL to replace existing 
   keywords     = {cs.LO, cs.PL, F.3.1; D.2.4; I.2.3},
 }
 
-@Article{RigorousJavaPerf2007,
+@Article{georges2007statistically,
   author    = {Georges, Andy and Buytaert, Dries and Eeckhout, Lieven},
   title     = {Statistically Rigorous Java Performance Evaluation},
   number    = {10},
@@ -1254,6 +1240,356 @@ sciences, we describe and demonstrate two methods, one
 for detecting (causal analysis) and one for avoiding (setup
 randomization) measurement bias.},
   publisher    = {ACM New York, NY, USA},
+}
+
+@InProceedings{CelikETAL17iCoq,
+  author       = {Celik, Ahmet and Palmskog, Karl and Gligoric, Milos},
+  booktitle    = {2017 32nd IEEE/ACM International Conference on Automated Software Engineering (ASE)},
+  title        = {{ɪCᴏǫ}: Regression Proof Selection forLarge-Scale Verification Projects},
+  organization = {IEEE},
+  pages        = {171--182},
+  url          = {https://users.ece.utexas.edu/~gligoric/papers/CelikETAL17iCoq.pdf},
+  abstract     = {Proof assistants such as Coq are used to construct
+and check formal proofs in many large-scale verification projects.
+As proofs grow in number and size, the need for tool support
+to quickly find failing proofs after revising a project increases.
+We present a technique for large-scale regression proof selection,
+suitable for use in continuous integration services, e.g., Travis CI.
+We instantiate the technique in a tool dubbed \textsc{iCoq}. \textsc{iCoq} tracks
+fine-grained dependencies between Coq definitions, propositions,
+and proofs, and only checks those proofs affected by changes
+between two revisions. \textsc{iCoq} additionally saves time by ignoring
+changes with no impact on semantics. We applied \textsc{iCoq} to track
+dependencies across many revisions in several large Coq projects
+and measured the time savings compared to proof checking from
+scratch and when using Coq’s timestamp-based toolchain for
+incremental checking. Our results show that proof checking with
+\textsc{iCoq} is up to 10 times faster than the former and up to 3 times
+faster than the latter.},
+  year         = {2017},
+}
+
+@InProceedings{PalmskogETAL18piCoq,
+  author    = {Palmskog, Karl and Celik, Ahmet and Gligoric, Milos},
+  booktitle = {Proceedings of the 27th ACM SIGSOFT International Symposium on Software Testing and Analysis},
+  title     = {{ᴘɪCᴏǫ}: Parallel regression proving for large-scale verification projects},
+  pages     = {344--355},
+  url       = {http://users.ece.utexas.edu/~gligoric/papers/PalmskogETAL18piCoq.pdf},
+  abstract  = {Large-scale verification projects using proof assistants typically
+contain many proofs that must be checked at each new project
+revision. While proof checking can sometimes be parallelized at
+the coarse-grained file level to save time, recent changes in some
+proof assistant in the LCF family, such as Coq, enable fine-grained
+parallelism at the level of proofs. However, these parallel techniques
+are not currently integrated with regression proof selection, a technique that checks only the subset of proofs affected by a change. We
+present techniques that blend the power of parallel proof checking
+and selection to speed up regression proving in verification projects,
+suitable for use both on users’ own machines and in workflows
+involving continuous integration services. We implemented the
+techniques in a tool, \textsc{piCoq}, which supports Coq projects. \textsc{piCoq}
+can track dependencies between files, definitions, and lemmas and
+perform parallel checking of only those files or proofs affected
+by changes between two project revisions. We applied \textsc{piCoq} to
+perform regression proving over many revisions of several large
+open source projects and measured the proof checking time. While
+gains from using proof-level parallelism and file selection can be
+considerable, our results indicate that proof-level parallelism and
+proof selection is consistently much faster than both sequential
+checking from scratch and sequential checking with proof selection.
+In particular, 4-way parallelization is up to 28.6 times faster than
+the former, and up to 2.8 times faster than the latter.},
+  year      = {2018},
+}
+
+@Article{lean-tactic-language,
+  author    = {Ebner, Gabriel and Ullrich, Sebastian and Roesch, Jared and Avigad, Jeremy and de Moura, Leonardo},
+  title     = {A Metaprogramming Framework for Formal Verification},
+  number    = {ICFP},
+  pages     = {1--29},
+  url       = {https://leanprover.github.io/papers/tactic.pdf},
+  volume    = {1},
+  journal   = {Proceedings of the ACM on Programming Languages},
+  publisher = {ACM New York, NY, USA},
+  year      = {2017},
+}
+
+@Article{Implementing1998Shao,
+  author    = {Shao, Zhong and League, Christopher and Monnier, Stefan},
+  title     = {Implementing Typed Intermediate Languages},
+  number    = {1},
+  pages     = {313--323},
+  url       = {https://dl.acm.org/doi/pdf/10.1145/291251.289460},
+  volume    = {34},
+  journal   = {ACM SIGPLAN Notices},
+  publisher = {ACM New York, NY, USA},
+  year      = {1998},
+}
+
+@InProceedings{Inductive2003Brady,
+  author       = {Brady, Edwin and McBride, Conor and McKinna, James},
+  booktitle    = {International Workshop on Types for Proofs and Programs},
+  title        = {Inductive Families Need Not Store Their Indices},
+  organization = {Springer},
+  pages        = {115--129},
+  url          = {https://eb.host.cs.st-andrews.ac.uk/writings/types2003.pdf},
+  year         = {2003},
+}
+
+@Book{thesis-nogin,
+  author    = {Nogin, Aleksey Yuryevich},
+  title     = {Theory and Implementation of an Efficient Tactic-Based Logical Framework},
+  publisher = {Cornell University},
+  url       = {http://www.nuprl.org/documents/Nogin/thesis-nogin.pdf},
+  abstract  = {Formal methods are successfully used in a wide range of applications — from hardware and software verification to formalizing mathematics and education. However their impact is limited and is very far from realizing the full potential of formal methods. Our investigation of these limitations shows that they can not be avoided by simply fine-tuning existing tools and methods. We demonstrate the need to concentrate on improving and extending the underlying theory and methodology of computer-aided formal reasoning.
+
+This thesis explores both practical and theoretical aspects of achieving these improvements; we present solutions for some of the outstanding problems and substantial improvements for others. In particular, we improve axiomatizations of the extant logics to make them more accessible to both users of the system and proof automating procedures. We also present methods for very significant speedup of the proof search process. Such additional speed means not only that the theorem prover will work faster, but also users can now take advantage of more advanced proof automation procedures that would have been prohibitively slow otherwise.
+
+This thesis also demonstrates how these wide ranging practical and theoretical results can be brought together in a more efficient and more generic tactic-based formal system. In particular, we present a generic derived rules mechanism and explain how such a mechanism can facilitate practical modularization of a formal system. We also present several approaches to establishing a generic layer of proof automation procedures (tactics) that apply to a wide variety of logical theories. Most of the ideas presented in this thesis were implemented in the MetaPRL logical framework taking advantage of an existing modular flexible design and making it even more modular and more flexible.
+
+After implementing these ideas in the MetaPRL logical framework, we use that system to improve a formalization of NuPRL intuitionistic type theory. In particular, we show how to modularize an axiomatization of a quotient type thus creating a formalization capable of expressing important concepts that were impossible to express in the original monolithic axiomatization. We also show how to add a limited form of classical reasoning to an intuitionistic type theory in a way that preserves many constructive aspects of the theory. Several theorems in this thesis were formally proven in the MetaPRL system.},
+  year      = {2002},
+}
+
+@InProceedings{Gregoire-Leroy-02,
+  author       = {Benjamin Gr{\'e}goire and Xavier Leroy},
+  booktitle    = {ICFP 2002: International Conference on Functional Programming},
+  title        = {A compiled implementation of strong reduction},
+  doi          = {10.1145/581478.581501},
+  pages        = {235--246},
+  publisher    = {ACM},
+  abstract     = {Motivated by applications to proof assistants based on dependent
+types, we develop and prove correct a strong reducer and
+$\beta$-equivalence checker for the $\lambda$-calculus with products,
+sums, and guarded fixpoints.  Our approach is based on compilation to
+the bytecode of an abstract machine performing weak reductions on
+non-closed terms, derived with minimal modifications from the ZAM
+machine used in the Objective Caml bytecode interpreter, and
+complemented by a recursive ``read back'' procedure.  An
+implementation in the Coq proof assistant demonstrates important
+speed-ups compared with the original interpreter-based implementation
+of strong reduction in Coq.},
+  urllocal     = {http://xavierleroy.org/publi/strong-reduction.pdf},
+  urlpublisher = {http://dx.doi.org/10.1145/581478.581501},
+  xranking     = {top},
+  xtopic       = {caml},
+  year         = {2002},
+}
+
+@PhdThesis{Strongly2011Kleeblatt,
+  author      = {Kleeblatt, Dirk},
+  institution = {Technischen Universität Berlin},
+  title       = {On a Strongly Normalizing {STG} Machine},
+  subtitle    = {With an Application to Dependent Type Checking},
+  type        = {phdthesis},
+  url         = {https://depositonce.tu-berlin.de/bitstream/11303/3095/1/Dokument_9.pdf},
+  year        = {2011},
+}
+
+@Software{smallttKovacs,
+  author = {András Kovács},
+  title  = {smalltt: Demo for high-performance type theory elaboration},
+  url    = {https://github.com/AndrasKovacs/smalltt},
+}
+
+@Misc{FastKovacs,
+  author   = {András Kovács},
+  date     = {2019-02-24},
+  title    = {Fast Elaboration for Dependent Type Theories},
+  location = {EUTypes WG Meeting, Krakow},
+  url      = {https://github.com/AndrasKovacs/smalltt/blob/fb56723b098cb1a95e8a5f3f9f5fce30bbcc67da/krakow-pres.pdf},
+}
+
+@Software{NormalizationKovacs,
+  author = {András Kovács},
+  title  = {Normalization Bench},
+  url    = {https://github.com/AndrasKovacs/normalization-bench},
+}
+
+@Article{GluedEvalKovacs,
+  author = {András Kovács},
+  title  = {Non-deterministic normalization-by-evaluation in Olle Fredriksson's flavor},
+  url    = {https://gist.github.com/AndrasKovacs/a0e0938113b193d6b9c1c0620d853784},
+}
+
+@Article{Tabled2020Selsam,
+  author      = {Daniel Selsam and Sebastian Ullrich and Leonardo de Moura},
+  date        = {2020-01-13},
+  title       = {Tabled Typeclass Resolution},
+  eprint      = {2001.04301v2},
+  eprintclass = {cs.PL},
+  eprinttype  = {arXiv},
+  abstract    = {Typeclasses provide an elegant and effective way of managing ad-hoc polymorphism in both programming languages and interactive proof assistants. However, the increasingly sophisticated uses of typeclasses within proof assistants, especially within Lean's burgeoning mathematics library, mathlib, have elevated once-theoretical limitations of existing typeclass resolution procedures into major impediments to ongoing progress. The two most devastating limitations of existing procedures are exponential running times in the presence of diamonds and divergence in the presence of cycles. We present a new procedure, tabled typeclass resolution, that solves both problems by tabling, which is a generalization of memoizing originally introduced to address similar limitations of early logic programming systems. We have implemented our procedure for the upcoming version (v4) of Lean, and have confirmed empirically that our implementation is exponentially faster than existing systems in the presence of diamonds. Although tabling is notoriously difficult to implement, our procedure is notably lightweight and could easily be implemented in other systems. We hope our new procedure facilitates even more sophisticated uses of typeclasses in both software development and interactive theorem proving.},
+  file        = {:http\://arxiv.org/pdf/2001.04301v2:PDF},
+  keywords    = {cs.PL, cs.LO},
+}
+
+@Article{Interaction1994Asperti,
+  author    = {Asperti, Andrea and Laneve, Cosimo},
+  title     = {Interaction Systems {I}: The theory of optimal reductions},
+  number    = {4},
+  pages     = {457--504},
+  url       = {https://hal.inria.fr/docs/00/07/69/88/PDF/RR-1748.pdf},
+  volume    = {4},
+  journal   = {Mathematical Structures in Computer Science},
+  publisher = {Cambridge University Press},
+  year      = {1994},
+}
+
+@InProceedings{asperti1995deltao,
+  author       = {Asperti, Andrea},
+  booktitle    = {International Conference on Rewriting Techniques and Applications},
+  title        = {$\delta$$\omicron$!$\epsilon$=1 Optimizing optimal $\lambda$-calculus implementations},
+  editor       = {Hsiang, Jieh},
+  isbn         = {978-3-540-49223-8},
+  organization = {Springer},
+  pages        = {102--116},
+  publisher    = {Springer Berlin Heidelberg},
+  abstract     = {In [As94], a correspondence between Lamping-Gonthier's operators for Optimal Reduction of the $\lambda$-calculus [Lam90, GAL92a] and the operations associated with the comonad ``!'' of Linear Logic was established. In this paper, we put this analogy at work, adding new rewriting rules directly suggested by the categorical equations of the comonad. These rules produce an impressive improvement of the performance of the reduction system, and provide a first step towards the solution of the well known and crucial problem of accumulation of control operators.},
+  address      = {Berlin, Heidelberg},
+  year         = {1995},
+}
+
+@TechReport{Bologna1995Asperti,
+  author      = {Asperti, Andrea and Giovannetti, Cecilia and Naletto, Andrea},
+  date        = {1995-03},
+  institution = {University of Bologna},
+  title       = {The Bologna Optimal Higher-order Machine},
+  url         = {https://pdfs.semanticscholar.org/3517/03af066fd2e65ad64c63108672d960b9d8fb.pdf},
+  year        = {1995},
+}
+
+@InProceedings{algorithm1989Lamping,
+  author    = {Lamping, John},
+  booktitle = {Proceedings of the 17th ACM SIGPLAN-SIGACT symposium on Principles of programming languages},
+  title     = {An algorithm for optimal lambda calculus reduction},
+  doi       = {10.1145/96709.96711},
+  pages     = {16--30},
+  year      = {1989},
+}
+
+@Misc{geometry1992Gonthier,
+  author = {Georges Gonthier and Martín Abadi and Jean-Jacques Lévy},
+  title  = {The geometry of optimal lambda reduction},
+  doi    = {10.1145/143165.143172},
+  year   = {1992},
+}
+
+@InCollection{Optimal1980Levy,
+  author    = {Jean-Jacques Lévy},
+  booktitle = {To {H}.~{B}.~{C}urry: Essays on Combinatory Logic, Lambda Calculus and Formalism},
+  date      = {1980},
+  title     = {Optimal reductions in the lambda-calculus},
+  editor    = {J. P. Seldin and J. R. Hindley},
+  publisher = {Academic Press},
+  url       = {http://pauillac.inria.fr/~levy/pubs/80curry.pdf},
+}
+
+@Electronic{SOOnlineTTReferenceKovacs,
+  author = {András Kovács},
+  date   = {2019-12-10},
+  title  = {Online reference book for *implementing* concepts in type theory.},
+  url    = {https://math.stackexchange.com/a/3468022/22982},
+}
+
+@Misc{SharingKovacs,
+  author   = {András Kovács},
+  date     = {2018-01},
+  title    = {Sharing-Preserving Elaboration with Precisely Scoped Metavariables},
+  location = {Agda Implementors’ Meeting XXVI},
+  url      = {https://github.com/AndrasKovacs/elaboration-zoo/blob/0c7f8a676c0964cc05c247879393e97729f59e5b/AIMprez/AIMprez.pdf},
+}
+
+@InProceedings{Programming2000Barras,
+  author    = {Barras, Bruno},
+  booktitle = {Theorem Proving in Higher Order Logics},
+  title     = {Programming and Computing in {HOL}},
+  editor    = {Aagaard, Mark and Harrison, John},
+  isbn      = {978-3-540-44659-0},
+  pages     = {17--37},
+  publisher = {Springer Berlin Heidelberg},
+  abstract  = {This article describes a set of derived inference rules and an abstract reduction machine using them that allow the inplementation of an interpreter for HOL terms, with the same complexity as with ML code. The latter fact allows us to use HOL as a computer algebra system in which the user can implement algorithms, provided he proved them correct.},
+  address   = {Berlin, Heidelberg},
+  year      = {2000},
+}
+
+@Book{Efficiency1994Boulton,
+  author    = {Boulton, Richard},
+  title     = {Efficiency in a Fully-Expansive Theorem Prover},
+  publisher = {University of Cambridge, Computer Laboratory},
+  series    = {Computer Laboratory Cambridge: Technical report},
+  url       = {https://books.google.com/books?id=7DAkAQAAIAAJ},
+  month     = {11},
+  year      = {1994},
+}
+
+@Article{LCF2019Paulson,
+  author      = {Lawrence C. Paulson and Tobias Nipkow and Makarius Wenzel},
+  date        = {2019-07-05},
+  title       = {From {LCF} to {I}sabelle/{HOL}},
+  eprint      = {1907.02836v2},
+  eprintclass = {cs.LO},
+  eprinttype  = {arXiv},
+  abstract    = {Interactive theorem provers have developed dramatically over the past four decades, from primitive beginnings to today's powerful systems. Here, we focus on Isabelle/HOL and its distinctive strengths. They include automatic proof search, borrowing techniques from the world of first order theorem proving, but also the automatic search for counterexamples. They include a highly readable structured language of proofs and a unique interactive development environment for editing live proof documents. Everything rests on the foundation conceived by Robin Milner for Edinburgh LCF: a proof kernel, using abstract types to ensure soundness and eliminate the need to store proofs. Compared with the research prototypes of the 1970s, Isabelle is a practical and versatile tool. It is used by system designers, mathematicians and many others.},
+  file        = {:http\://arxiv.org/pdf/1907.02836v2:PDF},
+  keywords    = {cs.LO},
+}
+
+@Misc{TrustedSlind,
+  author   = {Konrad Slind},
+  date     = {2010-08},
+  title    = {Trusted Extensions of Interactive Theorem Provers: Workshop Summary},
+  location = {Cambridge, England},
+  url      = {http://www.cs.utexas.edu/users/kaufmann/itp-trusted-extensions-aug-2010/summary/summary.pdf},
+}
+
+@Article{Should1999Lamport,
+  author     = {Lamport, Leslie and Paulson, Lawrence C.},
+  title      = {Should Your Specification Language Be Typed?},
+  doi        = {10.1145/319301.319317},
+  issn       = {0164-0925},
+  number     = {3},
+  pages      = {502–526},
+  url        = {https://lamport.azurewebsites.net/pubs/lamport-types.pdf},
+  volume     = {21},
+  address    = {New York, NY, USA},
+  issue_date = {May 1999},
+  journal    = {ACM Trans. Program. Lang. Syst.},
+  keywords   = {specification, types, set theory},
+  month      = may,
+  numpages   = {25},
+  publisher  = {Association for Computing Machinery},
+  year       = {1999},
+}
+
+@Article{Formalising2018Paulson,
+  author      = {Lawrence C. Paulson},
+  date        = {2018-04-20},
+  title       = {Formalising Mathematics In Simple Type Theory},
+  eprint      = {1804.07860v1},
+  eprintclass = {cs.LO},
+  eprinttype  = {arXiv},
+  abstract    = {Despite the considerable interest in new dependent type theories, simple type theory (which dates from 1940) is sufficient to formalise serious topics in mathematics. This point is seen by examining formal proofs of a theorem about stereographic projections. A formalisation using the HOL Light proof assistant is contrasted with one using Isabelle/HOL. Harrison's technique for formalising Euclidean spaces is contrasted with an approach using Isabelle/HOL's axiomatic type classes. However, every formal system can be outgrown, and mathematics should be formalised with a view that it will eventually migrate to a new formalism.},
+  file        = {:http\://arxiv.org/pdf/1804.07860v1:PDF},
+  keywords    = {cs.LO, 03A05},
+}
+
+@Article{Sealing2020Selsam,
+  author      = {Daniel Selsam and Simon Hudon and Leonardo de Moura},
+  date        = {2020-03-03},
+  title       = {Sealing Pointer-Based Optimizations Behind Pure Functions},
+  eprint      = {2003.01685v1},
+  eprintclass = {cs.PL},
+  eprinttype  = {arXiv},
+  abstract    = {Functional programming languages are particularly well-suited for building automated reasoning systems, since (among other reasons) a logical term is well modeled by an inductive type, traversing a term can be implemented generically as a higher-order combinator, and backtracking is dramatically simplified by persistent datastructures. However, existing pure functional programming languages all suffer a major limitation in these domains: traversing a term requires time proportional to the tree size of the term as opposed to its graph size. This limitation would be particularly devastating when building automation for interactive theorem provers such as Lean and Coq, for which the exponential blowup of term-tree sizes has proved to be both common and difficult to prevent. All that is needed to recover the optimal scaling is the ability to perform simple operations on the memory addresses of terms, and yet allowing these operations to be used freely would clearly violate the basic premise of referential transparency. We show how to use dependent types to seal the necessary pointer-address manipulations behind pure functional interfaces while requiring only a negligible amount of additional trust. We have implemented our approach for the upcoming version (v4) of Lean, and our approach could be adopted by other languages based on dependent type theory as well.},
+  file        = {:http\://arxiv.org/pdf/2003.01685v1:PDF},
+  keywords    = {cs.PL},
+}
+
+@Electronic{CC++Performance2017,
+  date         = {2017-11-11},
+  title        = {A Performance-Based Comparison of C/C++ Compilers},
+  url          = {https://colfaxresearch.com/compiler-comparison/},
+  organization = {Colfax Research},
 }
 
 @Comment{jabref-meta: databaseType:biblatex;}

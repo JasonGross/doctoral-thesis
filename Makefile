@@ -268,12 +268,12 @@ rewriting/PerfData.mk:
 print-errors:
 	$(HIDE)for i in jgross-thesis*-figure*.log; do \
 	  echo '============================'; \
-	  echo $$i; \
+	  echo "$$i"; \
 	  echo '============================'; \
-	  cat $$i; \
+	  cat "$$i"; \
 	  echo '============================'; \
 	done
-	exit 1
+	false
 .PHONY: print-errors
 
 $(PROPOSAL_PDFS) $(THESIS_PDFS) : %.pdf : %.tex

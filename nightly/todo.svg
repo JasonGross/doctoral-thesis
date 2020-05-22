@@ -1,5 +1,4 @@
-<svg xmlns="http://www.w3.org/2000/svg" width="165em" height="934em"><text x="0" y="0">
-<tspan x="0" dy="1.2em">TODO: Make sure to exclude no files (not rewriting) in file jgross-thesis.tex on input line 54.</tspan>
+<svg xmlns="http://www.w3.org/2000/svg" width="165em" height="999em"><text x="0" y="0">
 <tspan x="0" dy="1.2em">TODO: Run `make update-thesis' before submission to update the date on the cover page in file jgross-thesis.tex on input line 91.</tspan>
 <tspan x="0" dy="1.2em">TODO: change \string ^Linalfalse to \string ^Linaltrue  in file jgross-thesis.tex on input line 91.</tspan>
 <tspan x="0" dy="1.2em">TODO: Is the ``department committee chairman'' still Leslie A. Kolodziejski? in file cover.tex on input line 87.</tspan>
@@ -192,11 +191,14 @@
 <tspan x="0" dy="1.2em">Warning: Reference `fig:timing-make-destruct-record' on page 73 undefined on input line 259.</tspan>
 <tspan x="0" dy="1.2em">Warning: Reference `fig:timing-make-destruct-record' on page 73 undefined on input line 266.</tspan>
 <tspan x="0" dy="1.2em">Warning: Reference `fig:timing-make-destruct-record-definition-abstraction' on page 75 undefined on input line 371.</tspan>
-<tspan x="0" dy="1.2em">Warning: Reference `sec:category-of-categories' on page 151 undefined on input line 6.</tspan>
-<tspan x="0" dy="1.2em">Warning: Reference `sec:hit' on page 151 undefined on input line 6.</tspan>
+<tspan x="0" dy="1.2em">Warning: Citation 'vmcompute' on page 115 undefined on input line 866.</tspan>
+<tspan x="0" dy="1.2em">Warning: Reference `sec:category-of-categories' on page 201 undefined on input line 6.</tspan>
+<tspan x="0" dy="1.2em">Warning: Reference `sec:hit' on page 201 undefined on input line 6.</tspan>
 <tspan x="0" dy="1.2em">Font shape `U/stmry/m/n' in size &lt;8.41483&gt; not available; size &lt;8&gt; substituted on input line 91.</tspan>
 <tspan x="0" dy="1.2em">Font shape `TU/lmtt/bx/n' in size &lt;12&gt; not available; Font shape `TU/lmtt/b/n' tried instead on input line 2.</tspan>
 <tspan x="0" dy="1.2em">Font shape `TU/lmtt/bx/n' in size &lt;10&gt; not available; Font shape `TU/lmtt/b/n' tried instead on input line 2.</tspan>
+<tspan x="0" dy="1.2em">Font shape `TU/lmtt/bx/n' in size &lt;10.95&gt; not available; Font shape `TU/lmtt/b/n' tried instead on input line 2.</tspan>
+<tspan x="0" dy="1.2em">Font shape `TU/lmtt/bx/n' in size &lt;17.28&gt; not available; Font shape `TU/lmtt/b/n' tried instead on input line 1363.</tspan>
 <tspan x="0" dy="1.2em">Overfull \hbox (41.52351pt too wide) in paragraph at lines 105--1</tspan>
 <tspan x="0" dy="1.2em">Overfull \hbox (147.23547pt too wide) in paragraph at lines 105--1</tspan>
 <tspan x="0" dy="1.2em">Overfull \hbox (7.5715pt too wide) in paragraph at lines 64--71</tspan>
@@ -232,6 +234,58 @@
 <tspan x="0" dy="1.2em">Overfull \hbox (36.95601pt too wide) in paragraph at lines 104--104[]</tspan>
 <tspan x="0" dy="1.2em">Overfull \hbox (33.8728pt too wide) in paragraph at lines 142--144[]</tspan>
 <tspan x="0" dy="1.2em">Overfull \hbox (7.74554pt too wide) in paragraph at lines 174--177[]</tspan>
+<tspan x="0" dy="1.2em">Overfull \hbox (3.08109pt too wide) in paragraph at lines 209--215[]</tspan>
+<tspan x="0" dy="1.2em">Overfull \hbox (3.11697pt too wide) in paragraph at lines 288--291[]</tspan>
+<tspan x="0" dy="1.2em">Overfull \hbox (0.87762pt too wide) in paragraph at lines 302--305</tspan>
+<tspan x="0" dy="1.2em">Overfull \hbox (2.68085pt too wide) in paragraph at lines 353--355[]</tspan>
+<tspan x="0" dy="1.2em">Overfull \hbox (12.05663pt too wide) in paragraph at lines 355--356[]</tspan>
+<tspan x="0" dy="1.2em">Underfull \hbox (badness 10000) in paragraph at lines 765--770[]</tspan>
+<tspan x="0" dy="1.2em">Underfull \hbox (badness 10000) in paragraph at lines 1026--1029[]</tspan>
+<tspan x="0" dy="1.2em">Underfull \hbox (badness 10000) in paragraph at lines 1060--1064[]</tspan>
+<tspan x="0" dy="1.2em">Overfull \hbox (66.77979pt too wide) in paragraph at lines 1157--1161</tspan>
+<tspan x="0" dy="1.2em">Overfull \hbox (3.3011pt too wide) in paragraph at lines 1157--1161</tspan>
+<tspan x="0" dy="1.2em">Underfull \hbox (badness 1484) in paragraph at lines 1352--1352</tspan>
+<tspan x="0" dy="1.2em">Underfull \hbox (badness 1484) in paragraph at lines 1353--1353</tspan>
+<tspan x="0" dy="1.2em">Overfull \hbox (59.4558pt too wide) in paragraph at lines 1371--1373[]</tspan>
+<tspan x="0" dy="1.2em">Overfull \hbox (7.33438pt too wide) in paragraph at lines 1377--1381</tspan>
+<tspan x="0" dy="1.2em">Overfull \hbox (26.96805pt too wide) in paragraph at lines 1395--1398[]</tspan>
+<tspan x="0" dy="1.2em">Overfull \hbox (6.50948pt too wide) in paragraph at lines 1399--1404</tspan>
+<tspan x="0" dy="1.2em">Overfull \hbox (14.91994pt too wide) in paragraph at lines 1407--1411[]</tspan>
+<tspan x="0" dy="1.2em">Overfull \hbox (35.70116pt too wide) in paragraph at lines 1460--1464</tspan>
+<tspan x="0" dy="1.2em">Overfull \hbox (224.22025pt too wide) in paragraph at lines 1466--1469</tspan>
+<tspan x="0" dy="1.2em">Overfull \hbox (2.49203pt too wide) in paragraph at lines 1474--1476</tspan>
+<tspan x="0" dy="1.2em">Overfull \hbox (56.50882pt too wide) in paragraph at lines 1485--1489</tspan>
+<tspan x="0" dy="1.2em">Overfull \hbox (7.72444pt too wide) in paragraph at lines 1485--1489</tspan>
+<tspan x="0" dy="1.2em">Overfull \hbox (76.41965pt too wide) in paragraph at lines 1485--1489</tspan>
+<tspan x="0" dy="1.2em">Overfull \hbox (41.48393pt too wide) in paragraph at lines 1489--1493</tspan>
+<tspan x="0" dy="1.2em">Overfull \hbox (10.06763pt too wide) in paragraph at lines 1489--1493</tspan>
+<tspan x="0" dy="1.2em">Overfull \hbox (68.90768pt too wide) in paragraph at lines 1489--1493</tspan>
+<tspan x="0" dy="1.2em">Overfull \hbox (3.11697pt too wide) in paragraph at lines 1493--1497[]</tspan>
+<tspan x="0" dy="1.2em">Overfull \hbox (13.24908pt too wide) in paragraph at lines 1493--1497</tspan>
+<tspan x="0" dy="1.2em">Overfull \hbox (144.32993pt too wide) in paragraph at lines 1497--1499</tspan>
+<tspan x="0" dy="1.2em">Overfull \hbox (4.5518pt too wide) in paragraph at lines 1497--1499</tspan>
+<tspan x="0" dy="1.2em">Overfull \hbox (0.87762pt too wide) in paragraph at lines 1511--1515</tspan>
+<tspan x="0" dy="1.2em">Overfull \hbox (17.04411pt too wide) in paragraph at lines 1518--1519</tspan>
+<tspan x="0" dy="1.2em">Overfull \hbox (1.652pt too wide) in paragraph at lines 1554--1557</tspan>
+<tspan x="0" dy="1.2em">Overfull \hbox (20.94002pt too wide) in paragraph at lines 1587--1591</tspan>
+<tspan x="0" dy="1.2em">Overfull \hbox (42.54831pt too wide) in paragraph at lines 1592--1595[]</tspan>
+<tspan x="0" dy="1.2em">Overfull \hbox (109.94533pt too wide) in paragraph at lines 1592--1595</tspan>
+<tspan x="0" dy="1.2em">Overfull \hbox (19.42511pt too wide) in paragraph at lines 1592--1595</tspan>
+<tspan x="0" dy="1.2em">Overfull \hbox (0.18405pt too wide) in paragraph at lines 1592--1595</tspan>
+<tspan x="0" dy="1.2em">Overfull \hbox (21.50388pt too wide) in paragraph at lines 1596--1597[]</tspan>
+<tspan x="0" dy="1.2em">Overfull \hbox (2.9199pt too wide) in paragraph at lines 1598--1603[]</tspan>
+<tspan x="0" dy="1.2em">Overfull \hbox (0.90775pt too wide) in paragraph at lines 1610--1612[]</tspan>
+<tspan x="0" dy="1.2em">Overfull \hbox (16.51253pt too wide) in paragraph at lines 1617--1620</tspan>
+<tspan x="0" dy="1.2em">Overfull \hbox (0.69978pt too wide) in paragraph at lines 1621--1628</tspan>
+<tspan x="0" dy="1.2em">Overfull \hbox (2.32777pt too wide) in paragraph at lines 1629--1630[]</tspan>
+<tspan x="0" dy="1.2em">Overfull \hbox (58.08812pt too wide) in paragraph at lines 1631--1634[]</tspan>
+<tspan x="0" dy="1.2em">Overfull \hbox (4.51576pt too wide) in paragraph at lines 1631--1634</tspan>
+<tspan x="0" dy="1.2em">Overfull \hbox (13.80391pt too wide) in paragraph at lines 1689--1692</tspan>
+<tspan x="0" dy="1.2em">Overfull \hbox (3.8532pt too wide) in paragraph at lines 1689--1692</tspan>
+<tspan x="0" dy="1.2em">Overfull \hbox (35.80785pt too wide) in paragraph at lines 1695--1696</tspan>
+<tspan x="0" dy="1.2em">Overfull \hbox (75.21162pt too wide) in paragraph at lines 1695--1696</tspan>
+<tspan x="0" dy="1.2em">Overfull \hbox (112.25975pt too wide) in paragraph at lines 1695--1696</tspan>
+<tspan x="0" dy="1.2em">Overfull \hbox (33.09628pt too wide) in paragraph at lines 1709--11</tspan>
 <tspan x="0" dy="1.2em">Overfull \hbox (43.01947pt too wide) in paragraph at lines 74--75[]</tspan>
 <tspan x="0" dy="1.2em">Overfull \hbox (5.93951pt too wide) in paragraph at lines 86--88[]</tspan>
 <tspan x="0" dy="1.2em">Overfull \hbox (5.87964pt too wide) in paragraph at lines 88--90[]</tspan>

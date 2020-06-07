@@ -32,14 +32,14 @@ Basic Coq proofs are often written as lists of steps such as \texttt{induction} 
 Very quickly, proofs can become long and tedious, both to write and to read, and hence Coq provides \Ltac, a scripting language for proofs.
 As theorems and proofs grow in complexity, users frequently run into performance and maintainability issues with \Ltac.
 Consider the case where we want to prove that a large algebraic expression, involving many \letindots\space expressions, is even:
-\begin{verbatim}
+\begin{minted}{coq}
 Inductive is_even : nat -> Prop :=
 | even_O : is_even O
 | even_SS : forall x, is_even x -> is_even (S (S x)).
 Goal is_even (let x := 100 * 100 * 100 * 100 in
               let y := x * x * x * x in
               y * y * y * y).
-\end{verbatim}
+\end{minted}
 Coq stack-overflows if we try to reduce this goal.
 As a workaround, we might write a lemma that talks about evenness of \letindots, plus one about evenness of multiplication, and we might then write a tactic that composes such lemmas.
 
@@ -57,7 +57,7 @@ Listing every step results in large traces.
 
 \begin{wrapfigure}[9]{r}{5cm}
 %\vspace{-33pt}
-\begin{verbatim}
+\begin{minted}{coq}
 Fixpoint check_is_even
    (n : nat) : bool
   := match n with
@@ -66,7 +66,7 @@ Fixpoint check_is_even
      | S (S n)
        => check_is_even n
      end.
-\end{verbatim}
+\end{minted}
 %\vspace{-18pt}
 \caption{Evenness Checking}\label{fig:check-is-even}
 \end{wrapfigure}
@@ -75,13 +75,13 @@ We can prove that our checker is correct once and for all, removing the need to 
 
 A simple evenness checker can just operate on the unary encoding of natural numbers (\autoref{fig:check-is-even}).
 We can use its correctness theorem to prove goals much more quickly:
-\begin{verbatim}
+\begin{minted}{coq}
 Theorem soundness : forall n, check_is_even n = true -> is_even n.
 Goal is_even 2000.
   Time repeat (apply even_SS || apply even_O). (* 1.8 s *)
   Undo.
   Time apply soundness; vm_compute; reflexivity. (* 0.004 s *)
-\end{verbatim}
+\end{minted}
 The tactic \texttt{vm\_compute} tells Coq to use its virtual machine for reduction, to compute the value of \texttt{check\_is\_even 2000}, after which \texttt{reflexivity} proves that \texttt{true = true}.
 Note how much faster this method is.
 In fact, even the asymptotic complexity is better; this new algorithm is linear rather than quadratic in \texttt{n}.
@@ -97,12 +97,12 @@ Sometimes, to achieve faster proofs, we must be able to tell, for example, wheth
 
 \begin{wrapfigure}[4]{r}{5cm}
 %\vspace{-45pt}
-\begin{verbatim}
+\begin{minted}{coq}
 Inductive expr :=
 | NatO : expr
 | NatS (x : expr) : expr
 | NatMul (x y : expr) : expr.
-\end{verbatim}
+\end{minted}
 %\vspace{-15pt}
 \caption{Simple Expressions}\label{fig:inductive-expr-no-letin}
 \end{wrapfigure}
@@ -116,18 +116,18 @@ At a bare minimum, we must have multiplication nodes, and we must have \texttt{n
 If we encode \texttt{S} and \texttt{O} separately, a decision that will become important later in~\autoref{sec:reification-by-parametricity}, we get the inductive type of \autoref{fig:inductive-expr-no-letin}.
 
 Before diving into methods of reification, let us write the evenness checker.
-\begin{verbatim}
+\begin{minted}{coq}
 Fixpoint check_is_even_expr (t : expr) : bool
   := match t with
      | NatO => true
      | NatS x => negb (check_is_even_expr x)
      | NatMul x y => orb (check_is_even_expr x) (check_is_even_expr y)
      end.
-\end{verbatim}
+\end{minted}
 %We have used \texttt{negb} and \texttt{orb} from the standard library for boolean negation and disjunction respectively.
 
 Before we can state the soundness theorem (whenever this checker returns \texttt{true}, the represented number is even), we must write the function that tells us what number our expression represents, called \emph{denotation} or \emph{interpretation}:
-\begin{verbatim}
+\begin{minted}{coq}
 Fixpoint denote (t : expr) : nat
   := match t with
      | NatO => O
@@ -137,7 +137,7 @@ Fixpoint denote (t : expr) : nat
 
 Theorem check_is_even_expr_sound (e : expr)
   : check_is_even_expr e = true -> is_even (denote e).
-\end{verbatim}
+\end{minted}
 
 Given a tactic \texttt{Reify} to produce a reified term from a \verb|nat|, we can time \verb|check_is_even_expr|.
 It is instant on the last example.%, \texttt{10 * 10 * 10 * 10 * 10 * 10 * 10 * 10 * 10}.
@@ -151,7 +151,7 @@ In PHOAS, expression binders are represented by binders in Gallina, the function
 %We make this binder type implicit so that we can often omit writing it.
 Let us define a constant and notation for \texttt{let} expressions as definitions (a common choice in real Coq developments, to block Coq's default behavior of inlining \texttt{let} binders silently; the same choice will also turn out to be useful for reification later).
 We thus have: \label{sec:phoas-expr-def}
-\begin{verbatim}
+\begin{minted}{coq}
 Inductive expr {var : Type} :=
 | NatO : expr
 | NatS : expr -> expr
@@ -169,28 +169,28 @@ Fixpoint denote (t : @expr nat) : nat
      | Var v => v
      | LetIn v f => dlet x := denote v in denote (f x)
      end.
-\end{verbatim}
+\end{minted}
 
 A full treatment of evenness checking for PHOAS would require proving well-formedness of syntactic expressions; for a more complete discussion of PHOAS, we refer the reader elsewhere~\cite{PhoasICFP08}.
 \todo{give a full treatment of well-formedness}
 Using \texttt{Wf} to denote the well-formedness predicate, we could prove a theorem
-\begin{verbatim}
+\begin{minted}{coq}
 Theorem check_is_even_expr_sound (e : ∀ var, @expr var) (H : Wf e)
 : check_is_even_expr (e bool) = true -> is_even (denote (e nat)).
-\end{verbatim}
+\end{minted}
 To complete the picture, we would need a tactic \texttt{Reify} which took in a term of type \texttt{nat} and gave back a term of type \texttt{forall var, @expr var}, plus a tactic \texttt{prove\_wf} which solved a goal of the form \texttt{Wf e} by repeated application of constructors.
 Given these, we could solve an evenness goal by writing%
 \footnote{%
   Note that for the \texttt{refine} to be fast, we must issue something like \texttt{Strategy -10 [denote]} to tell Coq to unfold \texttt{denote} before \texttt{Let\_In}.
   }
-\begin{verbatim}
+\begin{minted}{coq}
 match goal with
 | [ |- is_even ?v ]
   => let e := Reify v in
      refine (check_is_even_expr_sound e _ _);
      [ prove_wf | vm_compute; reflexivity ]
 end.
-\end{verbatim}
+\end{minted}
 %\todo{Should we mention that for the \texttt{refine} to be fast, we need a \texttt{Strategy} command to tell Coq to unfold \texttt{denote} before \texttt{Let\_In}?}
 
 \section{Reflective Program Tranformation}

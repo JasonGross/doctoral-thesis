@@ -2,15 +2,13 @@
 
 \section{Introduction} \label{sec:reification-by-parametricity:intro}
 
-\todo{talk about de Bruijn criterion again, how often building proof certificates is expensive}
-
 \todo{reformat this for flow, right now it's from reification-by-parametricity}
-\todo{reformat code to match rest of paper}
+
 Proof by reflection~\cite{ReflectionTACS97} is an established method for employing verified proof procedures, within larger proofs.
 There are a number of benefits to using verified functional programs written in the proof assistant's logic, instead of tactic scripts.
 We can often prove that procedures always terminate without attempting fallacious proof steps, and perhaps we can even prove that a procedure gives logically complete answers, for instance telling us definitively whether a proposition is true or false.
 In contrast, tactic-based procedures may encounter runtime errors or loop forever.
-As a consequence, those procedures must output proof terms, justifying their decisions, and these terms can grow large, making for slower proving and requiring transmission of large proof terms to be checked slowly by others.
+As a consequence, if we want to keep the trusted codebase small, as discussed in \autoref{sec:debruijn-criterion}, these tactic procedures must output proof terms, justifying their decisions, and these terms can grow large, making for slower proving and requiring transmission of large proof terms to be checked slowly by others.
 A verified procedure need not generate a certificate for each invocation.
 
 The starting point for proof by reflection is \emph{reification}: translating a ``native'' term of the logic into an explicit abstract syntax tree.
@@ -28,7 +26,8 @@ Experts on the subject might want to skip directly to \autoref{sec:reification-b
 We benchmark our approach against 18 competitors in \autoref{sec:perf}.
 
 \subsection{Proof-Script Primer}
-Basic Coq proofs are often written as lists of steps such as \texttt{induction} on some structure, \texttt{rewrite} using a known equivalence, or \texttt{unfold} of a definition.
+\todo{rename this subsection}
+Basic Coq proofs are often written as lists of steps such as \mintinline{coq}{induction} on some structure, \mintinline{coq}{rewrite} using a known equivalence, or \mintinline{coq}{unfold} of a definition.
 Very quickly, proofs can become long and tedious, both to write and to read, and hence Coq provides \Ltac, a scripting language for proofs.
 As theorems and proofs grow in complexity, users frequently run into performance and maintainability issues with \Ltac.
 Consider the case where we want to prove that a large algebraic expression, involving many \letindots\space expressions, is even:
@@ -43,6 +42,7 @@ Goal is_even (let x := 100 * 100 * 100 * 100 in
 Coq stack-overflows if we try to reduce this goal.
 As a workaround, we might write a lemma that talks about evenness of \letindots, plus one about evenness of multiplication, and we might then write a tactic that composes such lemmas.
 
+\todo{factor some of this with chapter 2}
 Even on smaller terms, though, proof size can quickly become an issue.
 If we give a naive proof that 7000 is even, the proof term will contain all of the even numbers between 0 and 7000, giving a proof-term-size blow-up at least quadratic in size (recalling that natural numbers are represented in unary; the challenges remain for more efficient base encodings).
 Clever readers will notice that Coq could share subterms in the proof tree, recovering a term that is linear in the size of the goal.
@@ -82,17 +82,18 @@ Goal is_even 2000.
   Undo.
   Time apply soundness; vm_compute; reflexivity. (* 0.004 s *)
 \end{minted}
-The tactic \texttt{vm\_compute} tells Coq to use its virtual machine for reduction, to compute the value of \texttt{check\_is\_even 2000}, after which \texttt{reflexivity} proves that \texttt{true = true}.
+The tactic \mintinline{coq}{vm_compute} tells Coq to use its virtual machine for reduction, to compute the value of \mintinline{coq}{check_is_even 2000}, after which \mintinline{coq}{reflexivity} proves that \mintinline{coq}{true = true}.
 Note how much faster this method is.
-In fact, even the asymptotic complexity is better; this new algorithm is linear rather than quadratic in \texttt{n}.
+In fact, even the asymptotic complexity is better; this new algorithm is linear rather than quadratic in \mintinline{coq}{n}.
 
-However, even this procedure takes a bit over three minutes to prove \texttt{is\_even (10 * 10 * 10 * 10 * 10 * 10 * 10 * 10 * 10)}.
+However, even this procedure takes a bit over three minutes to prove \mintinline{coq}{is_even (10 * 10 * 10 * 10 * 10 * 10 * 10 * 10 * 10)}.
 To do better, we need a formal representation of terms or expressions.
 
 \subsection{Reflective-Syntax Primer}
+\todo{should the footnote be uncommented here?}
 Sometimes, to achieve faster proofs, we must be able to tell, for example, whether we got a term by multiplication or by addition, and not merely whether its normal form is 0 or a successor.%
 %\footnote{%
-%  Sometimes this distinction is necessary for generating a proof at all, as is the case in \texttt{nsatz} and \texttt{romega}; there is no way to prove that addition is commutative if you cannot identify what things you were adding in the first place.%
+%  Sometimes this distinction is necessary for generating a proof at all, as is the case in \mintinline{coq}{nsatz} and \mintinline{coq}{romega}; there is no way to prove that addition is commutative if you cannot identify what things you were adding in the first place.%
 %}
 
 \begin{wrapfigure}[4]{r}{5cm}
@@ -112,8 +113,8 @@ The first step is to \emph{reify} the goal into some abstract syntactic represen
 The second step is to run the algorithm on the reified syntax.
 
 What should our expression language include?
-At a bare minimum, we must have multiplication nodes, and we must have \texttt{nat} literals.
-If we encode \texttt{S} and \texttt{O} separately, a decision that will become important later in~\autoref{sec:reification-by-parametricity}, we get the inductive type of \autoref{fig:inductive-expr-no-letin}.
+At a bare minimum, we must have multiplication nodes, and we must have \mintinline{coq}{nat} literals.
+If we encode \mintinline{coq}{S} and \mintinline{coq}{O} separately, a decision that will become important later in~\autoref{sec:reification-by-parametricity}, we get the inductive type of \autoref{fig:inductive-expr-no-letin}.
 
 Before diving into methods of reification, let us write the evenness checker.
 \begin{minted}{coq}
@@ -124,9 +125,9 @@ Fixpoint check_is_even_expr (t : expr) : bool
      | NatMul x y => orb (check_is_even_expr x) (check_is_even_expr y)
      end.
 \end{minted}
-%We have used \texttt{negb} and \texttt{orb} from the standard library for boolean negation and disjunction respectively.
+%We have used \mintinline{coq}{negb} and \mintinline{coq}{orb} from the standard library for boolean negation and disjunction respectively.
 
-Before we can state the soundness theorem (whenever this checker returns \texttt{true}, the represented number is even), we must write the function that tells us what number our expression represents, called \emph{denotation} or \emph{interpretation}:
+Before we can state the soundness theorem (whenever this checker returns \mintinline{coq}{true}, the represented number is even), we must write the function that tells us what number our expression represents, called \emph{denotation} or \emph{interpretation}:
 \begin{minted}{coq}
 Fixpoint denote (t : expr) : nat
   := match t with
@@ -139,17 +140,18 @@ Theorem check_is_even_expr_sound (e : expr)
   : check_is_even_expr e = true -> is_even (denote e).
 \end{minted}
 
-Given a tactic \texttt{Reify} to produce a reified term from a \verb|nat|, we can time \verb|check_is_even_expr|.
-It is instant on the last example.%, \texttt{10 * 10 * 10 * 10 * 10 * 10 * 10 * 10 * 10}.
+Given a tactic \mintinline{coq}{Reify} to produce a reified term from a \mintinline{coq}{nat}, we can time \mintinline{coq}{check_is_even_expr}.
+It is instant on the last example.%, \mintinline{coq}{10 * 10 * 10 * 10 * 10 * 10 * 10 * 10 * 10}.
 
 Before we proceed to reification, we will introduce one more complexity.
-If we want to support our initial example with \letindots\space efficiently, we must also have \texttt{let}-expressions.
-Our current procedure that inlines \texttt{let}-expressions takes 19 seconds, for example, on \texttt{let x0 := 10 * 10 in let x1 := x0 * x0 in \ldots\space let x24 := x23 * x23 in x24}.
+If we want to support our initial example with \letindots\space efficiently, we must also have \mintinline{coq}{let}-expressions.
+Our current procedure that inlines \mintinline{coq}{let}-expressions takes 19 seconds, for example, on \mintinline{coq}{let x0 := 10 * 10 in let x1 := x0 * x0 in \ldots\space let x24 := x23 * x23 in x24}.
 The choices of representation include higher-order abstract syntax (HOAS)~\cite{HOAS}, parametric higher-order abstract syntax (PHOAS)~\cite{PhoasICFP08}, and de Bruijn indices~\cite{debruijn1972}.
+\todo{is this a place to cite POPLMark / encodings more generally?}
 The PHOAS representation is particularly convenient.
 In PHOAS, expression binders are represented by binders in Gallina, the functional language of Coq, and the expression language is parameterized over the type of the binder.
 %We make this binder type implicit so that we can often omit writing it.
-Let us define a constant and notation for \texttt{let} expressions as definitions (a common choice in real Coq developments, to block Coq's default behavior of inlining \texttt{let} binders silently; the same choice will also turn out to be useful for reification later).
+Let us define a constant and notation for \mintinline{coq}{let} expressions as definitions (a common choice in real Coq developments, to block Coq's default behavior of inlining \mintinline{coq}{let} binders silently; the same choice will also turn out to be useful for reification later).
 We thus have: \label{sec:phoas-expr-def}
 \begin{minted}{coq}
 Inductive expr {var : Type} :=
@@ -173,15 +175,15 @@ Fixpoint denote (t : @expr nat) : nat
 
 A full treatment of evenness checking for PHOAS would require proving well-formedness of syntactic expressions; for a more complete discussion of PHOAS, we refer the reader elsewhere~\cite{PhoasICFP08}.
 \todo{give a full treatment of well-formedness}
-Using \texttt{Wf} to denote the well-formedness predicate, we could prove a theorem
+Using \mintinline{coq}{Wf} to denote the well-formedness predicate, we could prove a theorem
 \begin{minted}{coq}
 Theorem check_is_even_expr_sound (e : ∀ var, @expr var) (H : Wf e)
 : check_is_even_expr (e bool) = true -> is_even (denote (e nat)).
 \end{minted}
-To complete the picture, we would need a tactic \texttt{Reify} which took in a term of type \texttt{nat} and gave back a term of type \texttt{forall var, @expr var}, plus a tactic \texttt{prove\_wf} which solved a goal of the form \texttt{Wf e} by repeated application of constructors.
+To complete the picture, we would need a tactic \mintinline{coq}{Reify} which took in a term of type \mintinline{coq}{nat} and gave back a term of type \mintinline{coq}{forall var, @expr var}, plus a tactic \mintinline{coq}{prove_wf} which solved a goal of the form \mintinline{coq}{Wf e} by repeated application of constructors.
 Given these, we could solve an evenness goal by writing%
 \footnote{%
-  Note that for the \texttt{refine} to be fast, we must issue something like \texttt{Strategy -10 [denote]} to tell Coq to unfold \texttt{denote} before \texttt{Let\_In}.
+  Note that for the \mintinline{coq}{refine} to be fast, we must issue something like \mintinline{coq}{Strategy -10 [denote]} to tell Coq to unfold \mintinline{coq}{denote} before \mintinline{coq}{Let_In}.
   }
 \begin{minted}{coq}
 match goal with
@@ -191,7 +193,7 @@ match goal with
      [ prove_wf | vm_compute; reflexivity ]
 end.
 \end{minted}
-%\todo{Should we mention that for the \texttt{refine} to be fast, we need a \texttt{Strategy} command to tell Coq to unfold \texttt{denote} before \texttt{Let\_In}?}
+%\todo{Should we mention that for the \mintinline{coq}{refine} to be fast, we need a \mintinline{coq}{Strategy} command to tell Coq to unfold \mintinline{coq}{denote} before \mintinline{coq}{Let_In}?}
 
 \section{Reflective Program Tranformation}
 \todo{prep the reader for the upcoming chapter on the rewriter}

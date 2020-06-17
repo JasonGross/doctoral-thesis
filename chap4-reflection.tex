@@ -146,7 +146,7 @@ It is instant on the last example.%, \mintinline{coq}{10 * 10 * 10 * 10 * 10 * 1
 Before we proceed to reification, we will introduce one more complexity.
 If we want to support our initial example with \letindots\space efficiently, we must also have \mintinline{coq}{let}-expressions.
 Our current procedure that inlines \mintinline{coq}{let}-expressions takes 19 seconds, for example, on \mintinline{coq}{let x0 := 10 * 10 in let x1 := x0 * x0 in \ldots\space let x24 := x23 * x23 in x24}.
-The choices of representation include higher-order abstract syntax (HOAS)~\cite{HOAS}, parametric higher-order abstract syntax (PHOAS)~\cite{PhoasICFP08}, and de Bruijn indices~\cite{debruijn1972}.
+The choices of representation include higher-order abstract syntax (HOAS)~\cite{HOAS}, parametric higher-order abstract syntax (PHOAS)~\cite{PhoasICFP08}, de Bruijn indices~\cite{debruijn1972}, nominal representations~\cite{Nominal2003Pitts}, 
 \todo{is this a place to cite POPLMark / encodings more generally?}
 The PHOAS representation is particularly convenient.
 In PHOAS, expression binders are represented by binders in Gallina, the functional language of Coq, and the expression language is parameterized over the type of the binder.

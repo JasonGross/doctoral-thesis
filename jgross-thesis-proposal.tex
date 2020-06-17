@@ -18,6 +18,7 @@
 \def\author{Jason Gross}
 \def\addrone{258 Prospect St, \#1L}
 \def\addrtwo{Cambridge, MA 02139}
+\def\authorsignedpdf{jgross-reader-agreement-signed}
 
 \def\degree{Doctor of Philosophy}
 %% Added \deptname for PhD proposals in other fields.
@@ -26,11 +27,12 @@
 \def\laboratory{Computer Science and Artificial Intelligence Laboratory}
 
 \def\submissiondate{\proposaldate}
-\def\completiondate{May 2020}
+\def\completiondate{September---December 2020}
 
 \def\supervisor{Professor Adam Chlipala}
 \def\supertitleone{Associate Professor of Computer Science}
 \def\supertitletwo{}%and Computer Science}
+\def\supervisorsignedpdf{adamc-reader-agreement-signed}
 
 % Suggestions from Adam: Thesis committee: Nickolai And Frans (Coq experience), maybe Saman (compilers producing fast code), Armando (general formal methods), maybe Mike Carbon
 \def\readerone{Professor Nickolai Zeldovich}
@@ -57,7 +59,9 @@
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%% Cover Page - Author signs %%%
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-
+\ifthenelse{\boolean{includesigned}}{%
+    \includepdf{\authorsignedpdf}%
+}{%
 \begin{center}
 {\Large \bf
    Massachusetts Institute of Technology
@@ -90,11 +94,14 @@
 {\bf \sc Brief Statement of the Problem:}
 
 \abstract
-
+}%
                  %%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \cleardoublepage %%% Supervision Agreement %%%
                  %%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-
+%\ifthenelse{\boolean{includesigned}}{%
+%    \includepdf{\supervisorsignedpdf}%
+%}
+{%
 \begin{flushright}
    Massachusetts Institute of Technology
 \\ Department of \deptname
@@ -155,7 +162,7 @@ Comments: \\
 %  \mbox{} \\ \cline{1-1} \mbox{} \\
 %  \mbox{} \\ \cline{1-1} \mbox{} \\
 \end{tabular}
-
+}%
                  %%%%%%%%%%%%%%%%%%%%%%%%%%
 \cleardoublepage %%% Reader I Agreement %%%
                  %%%%%%%%%%%%%%%%%%%%%%%%%%

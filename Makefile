@@ -6,11 +6,15 @@ PDFLATEX?=lualatex
 MD5?=md5sum
 OTHERFLAGS?=
 
-PROPOSAL_PDFS = jgross-thesis-proposal.pdf jgross-thesis-proposal-signed.pdf
+READER_AGREEMENT_PDFS := \
+	jgross-reader-agreement-unsigned.pdf adamc-reader-agreement-unsigned.pdf nickolai-reader-agreement-unsigned.pdf saman-reader-agreement-unsigned.pdf
+MAIN_PROPOSAL_PDFS := jgross-thesis-proposal.pdf jgross-thesis-proposal-signed.pdf
+PROPOSAL_PDFS = $(MAIN_PROPOSAL_PDFS) $(READER_AGREEMENT_PDFS)
 THESIS_PDFS = jgross-thesis.pdf
 MAIN_TEXS = $(patsubst \include{%},%.tex,$(filter \include{%},$(shell cat main-files.tex jgross-thesis.tex)))
 THESIS_TEXS = packages.tex contents.tex mitthesis.cls abstract.tex cover.tex new-date.tex todo.tex main-files.tex $(MAIN_TEXS)
 PROPOSAL_TEXS = new-date-proposal.tex abstract-proposal.tex
+READER_AGREEMENT_SIGNED_PDFS := $(subst unsigned,signed,$(READER_AGREEMENT_PDFS))
 PDFS = $(PROPOSAL_PDFS) $(THESIS_PDFS)
 
 export TEXMFCNF=.:
@@ -242,7 +246,8 @@ $(THESIS_PDFS): $(THESIS_TEXS)
 
 $(PROPOSAL_PDFS): $(PROPOSAL_TEXS)
 
-jgross-thesis-proposal-signed.pdf: jgross-thesis-proposal.tex
+jgross-thesis-proposal-signed.pdf: jgross-thesis-proposal.tex $(READER_AGREEMENT_SIGNED_PDFS)
+$(READER_AGREEMENT_PDFS): jgross-thesis-proposal.pdf
 
 include rewriting/PerfData.mk
 REWRITING_PERF_DATA_MD5 := $(addsuffix .md5,$(REWRITING_PERF_DATA))
@@ -278,7 +283,7 @@ print-errors:
 	false
 .PHONY: print-errors
 
-$(PROPOSAL_PDFS) $(THESIS_PDFS) : %.pdf : %.tex
+$(MAIN_PROPOSAL_PDFS) $(THESIS_PDFS) : %.pdf : %.tex
 	$(SHOW)"PDFLATEX (run 1)"
 	$(HIDE)$(PDFLATEX) $(LATEXFLAGS) $(OTHERFLAGS) $< || $(MAKE) print-errors
 	$(SHOW)"BIBER"
@@ -288,6 +293,10 @@ $(PROPOSAL_PDFS) $(THESIS_PDFS) : %.pdf : %.tex
 	$(SHOW)"PDFLATEX (run 2)"
 	$(HIDE)$(PDFLATEX) $(LATEXFLAGS) $(OTHERFLAGS) --interaction=nonstopmode $< 2>&1 >/dev/null || true
 	$(SHOW)"PDFLATEX (run 3)"
+	$(HIDE)$(PDFLATEX) $(LATEXFLAGS) $(OTHERFLAGS) $< || $(MAKE) print-errors
+
+$(READER_AGREEMENT_PDFS) : %.pdf : %.tex
+	$(SHOW)"PDFLATEX"
 	$(HIDE)$(PDFLATEX) $(LATEXFLAGS) $(OTHERFLAGS) $< || $(MAKE) print-errors
 
 .PHONY: rubber
@@ -318,6 +327,11 @@ todo: jgross-thesis.pdf
 
 todo.svg: jgross-thesis.pdf Makefile
 	$(MAKE_TODO) | etc/makesvg.sh > $@
+
+.PHONY: deploy
+deploy::
+	mkdir -p deploy/nightly
+	cp -f $(PDFS) todo.svg deploy/nightly/
 
 .PHONY: clean
 clean:

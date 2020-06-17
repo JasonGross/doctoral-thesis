@@ -56,7 +56,7 @@ update-thesis::
 	$(MAKE) thesis
 
 update-proposal::
-	echo '\\newcommand{\\proposaldate}{'"`date +'%B %-d, %Y'`}" > new-date-proposal.tex
+	printf '\\newcommand{\\proposaldate}{%s}\n' "`date +'%B %-d, %Y'`" > new-date-proposal.tex
 	$(MAKE) proposal
 
 download-packages: mathtools.sty mhsetup.sty etoolbox.sty biblatex.sty logreq.sty

@@ -1760,4 +1760,106 @@ of strong reduction in Coq.},
   keywords     = {Computers--Automation},
 }
 
+@TechReport{locally2007Leroy,
+  author      = {Xavier Leroy},
+  date        = {2007},
+  institution = {{INRIA}},
+  title       = {A locally nameless solution to the {POPL}mark challenge},
+  number      = {RR-6098},
+  pages       = {54},
+  type        = {Research Report},
+  url         = {https://hal.inria.fr/inria-00123945},
+  abstract    = {The POPLmark challenge is a collective experiment intended to assess the usability of theorem provers and proof assistants in the context of fundamental research on programming languages. In this report, we present a solution to the challenge, developed with the Coq proof assistant, and using the "locally nameless" presentation of terms with binders introduced by McKinna, Pollack, Gordon, and McBride.},
+  hal_id      = {inria-00123945},
+  hal_version = {v2},
+  keywords    = {POPLmark ; Coq ; locally nameless ; alpha-conversion ; binders ; type systems ; metatheory ; system F-sub},
+  pdf         = {https://hal.inria.fr/inria-00123945/file/RR-6098.pdf},
+}
+
+@InProceedings{POPLMark,
+  author    = {Aydemir, Brian E. and Bohannon, Aaron and Fairbairn, Matthew and Foster, J. Nathan and Pierce, Benjamin C. and Sewell, Peter and Vytiniotis, Dimitrios and Washburn, Geoffrey and Weirich, Stephanie and Zdancewic, Steve},
+  booktitle = {Theorem Proving in Higher Order Logics},
+  title     = {Mechanized Metatheory for the Masses: The {POPL}Mark Challenge},
+  doi       = {10.1007/11541868_4},
+  editor    = {Hurd, Joe and Melham, Tom},
+  isbn      = {978-3-540-31820-0},
+  pages     = {50--65},
+  publisher = {Springer Berlin Heidelberg},
+  abstract  = {How close are we to a world where every paper on programming languages is accompanied by an electronic appendix with machine-checked proofs?},
+  address   = {Berlin, Heidelberg},
+  year      = {2005},
+}
+
+@Article{weak2013Ciaffaglione,
+  author       = {Alberto Ciaffaglione and Ivan Scagnetto},
+  date         = {2013-03-29},
+  journaltitle = {EPTCS 113, 2013, pp. 109-124},
+  title        = {A weak {HOAS} approach to the {POPL}mark Challenge},
+  doi          = {10.4204/EPTCS.113.11},
+  eprint       = {1303.7332v1},
+  eprintclass  = {cs.LO},
+  eprinttype   = {arXiv},
+  abstract     = {Capitalizing on previous encodings and formal developments about nominal calculi and type systems, we propose a weak Higher-Order Abstract Syntax formalization of the type language of pure System F<: within Coq, a proof assistant based on the Calculus of Inductive Constructions. Our encoding allows us to accomplish the proof of the transitivity property of algorithmic subtyping, which is in fact the first of the three tasks stated by the POPLmark Challenge, a set of problems that capture the most critical issues in formalizing programming language metatheory.},
+  file         = {:http\://arxiv.org/pdf/1303.7332v1:PDF},
+  keywords     = {cs.LO, cs.PL},
+}
+
+@Article{Nested2012Hirschowitz,
+  author       = {André Hirschowitz and Marco Maggesi},
+  date         = {2012-10-01},
+  journaltitle = {Journal of Automated Reasoning},
+  title        = {Nested Abstract Syntax in {C}oq},
+  doi          = {10.1007/s10817-010-9207-9},
+  issn         = {1573-0670},
+  number       = {3},
+  pages        = {409--426},
+  url          = {https://math.unice.fr/~ah/div/fsubwf.pdf},
+  volume       = {49},
+  abstract     = {We illustrate Nested Abstract Syntax as a high-level alternative representation of languages with binding constructs, based on nested datatypes. Our running example is a partial solution in the Coq proof assistant to the POPLmark Challenge. The resulting formalization is very compact and does not require any extra library or special logical apparatus. Along the way, we propose an original, high-level perspective on environments.},
+  day          = {01},
+}
+
+@Article{deBruijn1999Bird,
+  author       = {Richard S. Bird and Ross Paterson},
+  date         = {1999},
+  journaltitle = {Journal of Functional Programming},
+  title        = {de {B}ruijn notation as a nested datatype},
+  doi          = {10.1017/S0956796899003366},
+  number       = {1},
+  pages        = {77--91},
+  url          = {http://www.cs.ox.ac.uk/people/richard.bird/online/BirdPaterson99DeBruijn.pdf},
+  volume       = {9},
+  abstract     = {“I have no data yet. It is a capital mistake to theorise before one has data.” Sir Arthur Conan Doyle The Adventures of Sherlock Holmes
+
+de Bruijn notation is a coding of lambda terms in which each occurrence of a bound variable x is replaced by a natural number, indicating the ‘distance’ from the occurrence to the abstraction that introduced x. One might suppose that in any datatype for representing de Bruijn terms, the distance restriction on numbers would have to be maintained as an explicit datatype invariant. However, by using a nested (or non-regular) datatype, we can define a representation in which all terms are well-formed, so that the invariant is enforced automatically by the type system.
+
+Programming with nested types is only a little more difficult than programming with regular types, provided we stick to well-established structuring techniques. These involve expressing inductively defined functions in terms of an appropriate fold function for the type, and using fusion laws to establish their properties. In particular, the definition of lambda abstraction and beta reduction is particularly simple, and the proof of their associated properties is entirely mechanical.},
+  publisher    = {Cambridge University Press},
+}
+
+@Article{POPLmark2005Stumpa,
+  author   = {Aaron Stump},
+  date     = {2005-12-30},
+  title    = {{POPL}mark 1a with Named Bound Variables},
+  url      = {https://citeseerx.ist.psu.edu/viewdoc/download?doi=10.1.1.521.5740&rep=rep1&type=pdf},
+  abstract = {A solution to the POPLmark challenge part 1a in Coq version 8.0 is described, where names are used for bound variables. The technical complexities associated with using names for bound variables are tamed using two main technical ideas: de Bruijn levels for free variables, and the Barendregt variable convention. The resulting solution stands at around 1250 lines of Coq (as written by a novice Coq user).},
+}
+
+@InProceedings{Engineering2008Aydemir,
+  author    = {Aydemir, Brian and Chargu\'{e}raud, Arthur and Pierce, Benjamin C. and Pollack, Randy and Weirich, Stephanie},
+  booktitle = {Proceedings of the 35th Annual ACM SIGPLAN-SIGACT Symposium on Principles of Programming Languages},
+  date      = {2008},
+  title     = {Engineering Formal Metatheory},
+  doi       = {10.1145/1328438.1328443},
+  isbn      = {9781595936899},
+  location  = {San Francisco, California, USA},
+  pages     = {3--15},
+  publisher = {Association for Computing Machinery},
+  series    = {POPL ’08},
+  url       = {https://www.cis.upenn.edu/~sweirich/papers/popl08-binders.pdf},
+  address   = {New York, NY, USA},
+  keywords  = {locally nameless, binding, coq},
+  numpages  = {13},
+}
+
 @Comment{jabref-meta: databaseType:biblatex;}

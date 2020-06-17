@@ -42,4 +42,4 @@ jobs:
 
 after_success:
   - mkdir -p deploy/nightly
-  - cp -f jgross-thesis-proposal.pdf jgross-thesis.pdf todo.svg deploy/nightly/
+  - cp -f jgross-thesis-proposal.pdf jgross-thesis-proposal-signed.pdf jgross-thesis.pdf todo.svg deploy/nightly/

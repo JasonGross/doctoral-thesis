@@ -6,7 +6,7 @@ PDFLATEX?=lualatex
 MD5?=md5sum
 OTHERFLAGS?=
 
-PROPOSAL_PDFS = jgross-thesis-proposal.pdf
+PROPOSAL_PDFS = jgross-thesis-proposal.pdf jgross-thesis-proposal-signed.pdf
 THESIS_PDFS = jgross-thesis.pdf
 MAIN_TEXS = $(patsubst \include{%},%.tex,$(filter \include{%},$(shell cat main-files.tex jgross-thesis.tex)))
 THESIS_TEXS = packages.tex contents.tex mitthesis.cls abstract.tex cover.tex new-date.tex todo.tex main-files.tex $(MAIN_TEXS)
@@ -241,6 +241,8 @@ $(PDFS): jgross-thesis.bib
 $(THESIS_PDFS): $(THESIS_TEXS)
 
 $(PROPOSAL_PDFS): $(PROPOSAL_TEXS)
+
+jgross-thesis-proposal-signed.pdf: jgross-thesis-proposal.tex
 
 include rewriting/PerfData.mk
 REWRITING_PERF_DATA_MD5 := $(addsuffix .md5,$(REWRITING_PERF_DATA))

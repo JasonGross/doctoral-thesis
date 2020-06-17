@@ -4,6 +4,9 @@
 \documentclass[twoside]{article}
 \usepackage{hyperref}
 \usepackage[maxbibnames=99,backend=biber]{biblatex}
+\usepackage{ifthen}
+\usepackage{pdfpages}
+\provideboolean{includesigned}
 \bibliography{jgross-thesis.bib}
 \input{new-date-proposal}
 
@@ -33,10 +36,12 @@
 \def\readerone{Professor Nickolai Zeldovich}
 \def\readeronetitleone{Professor of Electrical Engineering}
 \def\readeronetitletwo{and Computer Science}
+\def\readeronesignedpdf{nickolai-reader-agreement-signed}
 
 \def\readertwo{Professor Saman Amarasinghe}
 \def\readertwotitleone{Professor of Electrical Engineering}
 \def\readertwotitletwo{and Computer Science}
+\def\readertwosignedpdf{saman-reader-agreement-signed}
 
 %\def\readerthree{Professor TODO}
 %\def\readerthreetitleone{Associate Professor of Electrical Engineering}
@@ -151,10 +156,12 @@ Comments: \\
 %  \mbox{} \\ \cline{1-1} \mbox{} \\
 \end{tabular}
 
-                 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-\cleardoublepage %%% Supervision Agreement %%%
-                 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-
+                 %%%%%%%%%%%%%%%%%%%%%%%%%%
+\cleardoublepage %%% Reader I Agreement %%%
+                 %%%%%%%%%%%%%%%%%%%%%%%%%%
+\ifthenelse{\boolean{includesigned}}{%
+    \includepdf{\readeronesignedpdf}%
+}{%
 \begin{flushright}
    Massachusetts Institute of Technology
 \\ Department of \deptname
@@ -208,13 +215,15 @@ Comments: \\
   \mbox{} \\ \cline{1-1} \mbox{} \\
   \mbox{} \\ \cline{1-1} \mbox{} \\
 \end{tabular}
-
+}%
 
                   %%%%%%%%%%%%%%%%%%%%%%%%%%%
 \cleardoublepage  %%% Reader II Agreement %%%
                   %%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-
+\ifthenelse{\boolean{includesigned}}{%
+    \includepdf{\readertwosignedpdf}%
+}{%
 \begin{flushright}
    Massachusetts Institute of Technology
 \\ Department of \deptname
@@ -268,7 +277,7 @@ Comments: \\
   \mbox{} \\ \cline{1-1} \mbox{} \\
   \mbox{} \\ \cline{1-1} \mbox{} \\
 \end{tabular}
-
+}%
 \cleardoublepage
 
 \section{Background}

@@ -176,6 +176,9 @@ One particularly convenient choice, in Coq, would be using the efficient \mintin
 
 One unfortunate result is that the natural denotation function is no longer total.
 Here we have chosen to give a denotation function which returns a default element when a variable reference is too large, but we could instead choose to return an \mintinline{coq}{option nat}.
+This causes further problems when dealing with an AST type which can represent terms of multiple types.
+\todo{where should I introduce AST types indexed over type codes, and talk about tradeoffs here?}
+
 
 \todo{here}
 

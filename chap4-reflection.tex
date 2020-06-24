@@ -214,12 +214,20 @@ Fixpoint check_is_even_expr (t : @expr bool) : bool
      end.
 \end{minted}
 
-Note, importantly, that \mintinline{coq}{check_is_even_expr} and \mintinline{coq}{denote} take \mintinline{coq}{expr}s with \emph{different} instantiations of the \mininline{coq}{var} parameter.
+Note, importantly, that \mintinline{coq}{check_is_even_expr} and \mintinline{coq}{denote} take \mintinline{coq}{expr}s with \emph{different} instantiations of the \mintinline{coq}{var} parameter.
 This is necessary so that we can store the information about whether or not a particular \mintinline{coq}{let}-bound expression is even (or what its denotation is) in the variable node itself.
 However, this means that we cannot reuse the same expression as arguments to both functions to formulate the soundness condition.
 Instead, we must introduce a notion of \emph{relatedness} of expressions with different instantiations of the \mintinline{coq}{var} parameter.
 
-
+Such a relatedness predicate has one constructor for 
+\begin{minted}{coq}
+    Inductive expr {var : Type} :=
+    | NatO : expr
+    | NatS : expr -> expr
+    | NatMul : expr -> expr -> expr
+    | Var : var -> expr
+    | LetIn : expr -> (var -> expr) -> expr.
+\end{minted}
 
 \todo{HERE}
 

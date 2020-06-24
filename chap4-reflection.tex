@@ -179,11 +179,9 @@ Here we have chosen to give a denotation function which returns a default elemen
 This causes further problems when dealing with an AST type which can represent terms of multiple types.
 \todo{where should I introduce AST types indexed over type codes, and talk about tradeoffs here?}
 
+\subsubsection{PHOAS} \label{sec:binders:PHOAS}
 
-\todo{here}
-
-
-The PHOAS representation is particularly convenient.
+%The PHOAS representation is particularly convenient.
 In PHOAS, expression binders are represented by binders in Gallina, the functional language of Coq, and the expression language is parameterized over the type of the binder.
 %We make this binder type implicit so that we can often omit writing it.
 Let us define a constant and notation for \mintinline{coq}{let} expressions as definitions (a common choice in real Coq developments, to block Coq's default behavior of inlining \mintinline{coq}{let} binders silently; the same choice will also turn out to be useful for reification later).
@@ -206,7 +204,24 @@ Fixpoint denote (t : @expr nat) : nat
      | Var v => v
      | LetIn v f => dlet x := denote v in denote (f x)
      end.
+Fixpoint check_is_even_expr (t : @expr bool) : bool
+  := match t with
+     | NatO => true
+     | NatS x => negb (check_is_even_expr x)
+     | NatMul x y => orb (check_is_even_expr x) (check_is_even_expr y)
+     | Var v_even => v_even
+     | LetIn v f => let v_even := check_is_even_expr v in check_is_even_expr (f v_even)
+     end.
 \end{minted}
+
+Note, importantly, that \mintinline{coq}{check_is_even_expr} and \mintinline{coq}{denote} take \mintinline{coq}{expr}s with \emph{different} instantiations of the \mininline{coq}{var} parameter.
+This is necessary so that we can store the information about whether or not a particular \mintinline{coq}{let}-bound expression is even (or what its denotation is) in the variable node itself.
+However, this means that we cannot reuse the same expression as arguments to both functions to formulate the soundness condition.
+Instead, we must introduce a notion of \emph{relatedness} of expressions with different instantiations of the \mintinline{coq}{var} parameter.
+
+
+
+\todo{HERE}
 
 A full treatment of evenness checking for PHOAS would require proving well-formedness of syntactic expressions; for a more complete discussion of PHOAS, we refer the reader elsewhere~\cite{PhoasICFP08}.
 \todo{give a full treatment of well-formedness}

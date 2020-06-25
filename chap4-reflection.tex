@@ -336,7 +336,22 @@ Note that this generalizes nicely to codes for dependent types if the proof assi
 \todoask{Is there a better name for this section?}
 
 Although this representation enjoys both decidable equality of binders (like de Bruijn indices), as well as being well-typed-by-construction (like PHOAS), it's unfortunately unfit for coding algorithms that need to scale without massive assistance from the proof assistant.
-In particular, the na\"ive encoding of this inductive datatype incurs a quadratic overhead in representing terms involving binders, because each node stores the entire context
+In particular, the na\"ive encoding of this inductive datatype incurs a quadratic overhead in representing terms involving binders, because each node stores the entire context.
+It is possible in theory to avoid this blowup by dropping the indices of the inductive type from the runtime representation.~\cite{Inductive2003Brady}
+One way to simulate this in Coq would be to put \mintinline{coq}{context} in \mintinline{coq}{Prop} and then extract the code to OCaml, which erases the \mintinline{coq}{Prop}s.
+Alternatively, if Coq is extended with support for dropping irrelevant subterms~\cite{sprop} from the term representation, then this speedup could be accomplished even inside Coq.
+
+\subsubsection{Nominal} \label{sec:binders:nominal}
+Nominal representations use names rather than indices for binders.
+These representations have the benefit of being more human-readable, but require reasoning about freshness of names and
+\todo{here}
+
+\subsubsection{Locally Nameless} \label{sec:binders:locally-nameless}
+We mention the locally nameless representation because it is the term representation used by Coq itself.
+This representation uses de Bruijn indices for closed terms, and names for variables which are not bound in the current term.
+
+The choices of representation of binders, which are essential to encoding \mintinline{coq}{let}-expressions, include higher-order abstract syntax (HOAS)~\cite{HOAS}, parametric higher-order abstract syntax (PHOAS)~\cite{PhoasICFP08} also known as weak HOAS~\cite{weak2013Ciaffaglione}, de Bruijn indices~\cite{debruijn1972}, nominal representations~\cite{Nominal2003Pitts}, locally nameless representations~\cite{Locally2012Chargueraud,locally2007Leroy}, named representations, and nested abstract syntax~\cite{Nested2012Hirschowitz,deBruijn1999Bird}.
+
 \todo{here}
 
 

@@ -334,6 +334,7 @@ Inductive expr : context -> type -> Type :=
 Note that this generalizes nicely to codes for dependent types if the proof assistant supports induction-induction.
 \todoask{Is there a good citation for this sort of encoding?  Where did it originate?}
 \todoask{Is there a better name for this section?}
+\todo{cite https://link.springer.com/article/10.1007/s10817-011-9219-0 ``Strongly Typed Term Representations in Coq''}
 
 Although this representation enjoys both decidable equality of binders (like de Bruijn indices), as well as being well-typed-by-construction (like PHOAS), it's unfortunately unfit for coding algorithms that need to scale without massive assistance from the proof assistant.
 In particular, the na\"ive encoding of this inductive datatype incurs a quadratic overhead in representing terms involving binders, because each node stores the entire context.

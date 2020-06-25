@@ -150,38 +150,11 @@ The choices of representation of binders, which are essential to encoding \minti
 A survey of a number of options for binding can be found in \autocite{Engineering2008Aydemir}.
 \todoask{is this a place to cite POPLMark?  What should be said about it?  Should I mention more sorts of representations?}
 
-Although we will eventually choose the PHOAS representation for the tools presented in \autoref{ch:rewriting,ch:reification-by-parametricity}, we will first briefly survey some of the options for encoding binders, with an eye towards performance implications.
-
-\subsubsection{de Bruijn Indices} \label{sec:binders:de-bruijn}
-The idea behind \emph{de Bruijn indices} is that variables are encoded by numbers which count up starting from the nearest enclosing binder.
-We might write
-\begin{minted}{coq}
-Inductive expr :=
-| NatO : expr
-| NatS : expr -> expr
-| NatMul : expr -> expr -> expr
-| Var : nat -> expr
-| LetIn : expr -> expr -> expr.
-Fixpoint denote (default : nat) (Γ : list nat) (t : @expr nat) : nat
-  := match t with
-     | NatO => O
-     | NatS x => S (denote default Γ x)
-     | NatMul x y => denote default Γ x * denote default Γ y
-     | Var idx => nth_default default Γ idx
-     | LetIn v f => dlet x := denote default Γ v in denote default (x :: Γ) f
-     end.
-\end{minted}
-If we wanted a more efficient representation, we could choose better data-structures for the context $\Gamma$ and variable indices than linked lists and unary-encoded natural numbers.
-One particularly convenient choice, in Coq, would be using the efficient \mintinline{coq}{PositiveMap.t} data-structure which encodes a finite map of binary-encoded \mintinline{coq}{positive}s to any type.
-
-One unfortunate result is that the natural denotation function is no longer total.
-Here we have chosen to give a denotation function which returns a default element when a variable reference is too large, but we could instead choose to return an \mintinline{coq}{option nat}.
-This causes further problems when dealing with an AST type which can represent terms of multiple types.
-\todo{where should I introduce AST types indexed over type codes, and talk about tradeoffs here?}
+Although we will eventually choose the PHOAS representation for the tools presented in \autoref{ch:rewriting,ch:reification-by-parametricity}, we will also briefly survey some of the options for encoding binders, with an eye towards performance implications.
 
 \subsubsection{PHOAS} \label{sec:binders:PHOAS}
 
-%The PHOAS representation is particularly convenient.
+The PHOAS representation is particularly convenient.
 In PHOAS, expression binders are represented by binders in Gallina, the functional language of Coq, and the expression language is parameterized over the type of the binder.
 %We make this binder type implicit so that we can often omit writing it.
 Let us define a constant and notation for \mintinline{coq}{let} expressions as definitions (a common choice in real Coq developments, to block Coq's default behavior of inlining \mintinline{coq}{let} binders silently; the same choice will also turn out to be useful for reification later).
@@ -219,25 +192,30 @@ This is necessary so that we can store the information about whether or not a pa
 However, this means that we cannot reuse the same expression as arguments to both functions to formulate the soundness condition.
 Instead, we must introduce a notion of \emph{relatedness} of expressions with different instantiations of the \mintinline{coq}{var} parameter.
 
-Such a relatedness predicate has one constructor for 
+Such a relatedness predicate has one constructor for each constructor of \mintinline{coq}{expr}, essentially encoding that the two expressions have the same structure.
+For the \mintinline{coq}{Var} case, we defer to membership in a list of ``related'' variables, which we extend each time we go underneath a binder.
 \begin{minted}{coq}
-    Inductive expr {var : Type} :=
-    | NatO : expr
-    | NatS : expr -> expr
-    | NatMul : expr -> expr -> expr
-    | Var : var -> expr
-    | LetIn : expr -> (var -> expr) -> expr.
+Inductive related {var1 var2 : Type} : list (var1 * var2) -> @expr var1 -> @expr var2 -> Prop :=
+| RelatedNatO {Γ} : related Γ NatO NatO
+| RelatedNatS {Γ e1 e2} : related Γ e1 e2 -> related Γ (NatS e1) (NatS e2)
+| RelatedNatMul {Γ x1 x2 y1 y2} : related Γ x1 x2 -> related Γ y1 y2 -> related Γ (NatMul x1 y1) (NatMul x2 y2)
+| RelatedVar {Γ v1 v2} : (v1, v2) ∈ Γ -> related Γ (Var v1) (Var v2)
+| RelatedLetIn {Γ e1 e2 f1 f2}
+ : related Γ e1 e2 -> (∀ v1 v2, related ((v1, v2) :: Γ) (f v1) (f v2)) -> related Γ (LetIn e1 f1) (LetIn e2 f2).
 \end{minted}
 
-\todo{HERE}
-
-A full treatment of evenness checking for PHOAS would require proving well-formedness of syntactic expressions; for a more complete discussion of PHOAS, we refer the reader elsewhere~\cite{PhoasICFP08}.
-\todo{give a full treatment of well-formedness}
-Using \mintinline{coq}{Wf} to denote the well-formedness predicate, we could prove a theorem
+Conventionally, syntax trees are parametric over the value of the \mintinline{coq}{var} parameter, and we require that all instantiations give related ASTs (in the empty context), whence we call the parametric AST \emph{well-formed}:
 \begin{minted}{coq}
-Theorem check_is_even_expr_sound (e : ∀ var, @expr var) (H : Wf e)
+Definition Expr := ∀ var, @expr var.
+Definition Wf (e : Expr) := ∀ var1 var2, related [] (e var1) (e var2)
+\end{minted}
+
+We could then prove a modified form of our soundness theorem:
+\begin{minted}{coq}
+Theorem check_is_even_expr_sound (e : Expr) (H : Wf e)
 : check_is_even_expr (e bool) = true -> is_even (denote (e nat)).
 \end{minted}
+
 To complete the picture, we would need a tactic \mintinline{coq}{Reify} which took in a term of type \mintinline{coq}{nat} and gave back a term of type \mintinline{coq}{forall var, @expr var}, plus a tactic \mintinline{coq}{prove_wf} which solved a goal of the form \mintinline{coq}{Wf e} by repeated application of constructors.
 Given these, we could solve an evenness goal by writing%
 \footnote{%
@@ -252,6 +230,120 @@ match goal with
 end.
 \end{minted}
 %\todo{Should we mention that for the \mintinline{coq}{refine} to be fast, we need a \mintinline{coq}{Strategy} command to tell Coq to unfold \mintinline{coq}{denote} before \mintinline{coq}{Let_In}?}
+
+\subsubsection{Multiple Types} \label{sec:multiple-types-ASTs}
+One important point, not yet mentioned, is that sometimes we want our reflective language to handle multiple types of terms.
+For example, we might want to enrich our language of expressions with lists.
+Since expressions like ``take the successor of this list'' don't make sense, the natural choice is to index the inductive over codes for types.
+
+We might write:
+\begin{minted}{coq}
+Inductive type := Nat | List (_ : type).
+Inductive expr {var : type -> Type} : type -> Type :=
+| NatO : expr Nat
+| NatS : expr Nat -> expr Nat
+| NatMul : expr Nat -> expr Nat -> expr Nat
+| Var {t} : var t -> expr t
+| LetIn {t1 t2} : expr t1 -> (var t1 -> expr t2) -> expr t2
+| Nil {t} : expr (List t)
+| Cons {t} : expr t -> expr (List t) -> expr (List t)
+| Length {t} : expr (List t) -> expr Nat.
+\end{minted}
+We would then have to adjust the definitions of the other functions accordingly.
+The type signatures of the might functions become
+
+\begin{minted}{coq}
+Fixpoint denote_type (t : type) : Type
+  := match t with
+     | Nat => nat
+     | List t => list (denote_type t)
+     end.
+Fixpoint even_data_of_type (t : type) : Type
+  := match t with
+     | Nat => bool (* is the nat even or not? *)
+     | List t => list (even_data_of_type t)
+     end.
+Fixpoint denote {t} (e : @expr denote_type t) : denote_type t.
+Fixpoint check_is_even_expr {t} (e : @expr even_data_of_type t) : even_data_of_type t.
+Inductive related {var1 var2 : type -> Type} : list { t : type & var1 t * var2 t} -> ∀ {t}, @expr var1 t -> @expr var2 t -> Prop.
+Definition Expr (t : type) := ∀ var, @expr var t.
+Definition Wf {t} (e : Expr t) := ∀ var1 var2, related [] (e var1) (e var2).
+\end{minted}
+
+See, e.g., \autocite{PhoasICFP08} for a fuller treatment.
+
+\subsubsection{de Bruijn Indices} \label{sec:binders:de-bruijn}
+The idea behind \emph{de Bruijn indices} is that variables are encoded by numbers which count up starting from the nearest enclosing binder.
+We might write
+\begin{minted}{coq}
+Inductive expr :=
+| NatO : expr
+| NatS : expr -> expr
+| NatMul : expr -> expr -> expr
+| Var : nat -> expr
+| LetIn : expr -> expr -> expr.
+Fixpoint denote (default : nat) (Γ : list nat) (t : @expr nat) : nat
+  := match t with
+     | NatO => O
+     | NatS x => S (denote default Γ x)
+     | NatMul x y => denote default Γ x * denote default Γ y
+     | Var idx => nth_default default Γ idx
+     | LetIn v f => dlet x := denote default Γ v in denote default (x :: Γ) f
+     end.
+\end{minted}
+If we wanted a more efficient representation, we could choose better data-structures for the context $\Gamma$ and variable indices than linked lists and unary-encoded natural numbers.
+One particularly convenient choice, in Coq, would be using the efficient \mintinline{coq}{PositiveMap.t} data-structure which encodes a finite map of binary-encoded \mintinline{coq}{positive}s to any type.
+
+One unfortunate result is that the natural denotation function is no longer total.
+Here we have chosen to give a denotation function which returns a default element when a variable reference is too large, but we could instead choose to return an \mintinline{coq}{option nat}.
+
+This causes further problems when dealing with an AST type which can represent terms of multiple types.
+In that case, we might annotate each variable node with a type code, mandate decidable equality of type codes, and then during denotation, we'd check the type of the variable node with the type of the corresponding variable in the context.
+
+\subsubsection{Nested Abstract Syntax} \label{sec:binders:nested-abstract-syntax}
+If we want a variant of de Bruijn indices which guarantees well-typed syntax trees, we can use nested abstract syntax.
+On mono-typed ASTs, this looks like encoding the size of the context in the type of the expressions.
+For example, we could use \mintinline{coq}{option} types:~\cite{Nested2012Hirschowitz}
+\begin{minted}{coq}
+Notation "^ V" := (option V).
+Inductive expr : Type -> Type :=
+| NatO {V} : expr V
+| NatS {V} : expr V -> expr V
+| NatMul {V} : expr V -> expr V -> expr V
+| Var {V} : V -> expr V
+| LetIn {V} : expr V -> expr (^V) -> expr V.
+\end{minted}
+
+This may seem a bit strange to those accustomed to encodings of terms in proof assistants, but it generalizes to a quite familiar encoding of dependent type theory using types, contexts, and terms.
+Namely, when the expressions are multi-typed, we end up with something like
+\begin{minted}{coq}
+Inductive context :=
+| emp : context
+| push : type -> context -> context.
+Inductive var : context -> type -> Type :=
+| Var0 {t Γ} : var (push t Γ) t
+| VarS {t t' Γ} : var Γ t -> var (push t' Γ) t.
+Inductive expr : context -> type -> Type :=
+| NatO {Γ} : expr Γ Nat
+| NatS {Γ} : expr Γ Nat -> expr Γ Nat
+| NatMul {Γ} : expr Γ Nat -> expr Γ Nat -> expr Γ Nat
+| Var {t Γ} : var Γ t -> expr Γ t
+| LetIn {Γ t1 t2} : expr Γ t1 -> expr (push t1 Γ) t2 -> expr Γ t2.
+\end{minted}
+
+Note that this generalizes nicely to codes for dependent types if the proof assistant supports induction-induction.
+\todoask{Is there a good citation for this sort of encoding?  Where did it originate?}
+\todoask{Is there a better name for this section?}
+
+Although this representation enjoys both decidable equality of binders (like de Bruijn indices), as well as being well-typed-by-construction (like PHOAS), it's unfortunately unfit for coding algorithms that need to scale without massive assistance from the proof assistant.
+In particular, the na\"ive encoding of this inductive datatype incurs a quadratic overhead in representing terms involving binders, because each node stores the entire context
+\todo{here}
+
+
+
+\todo{where should I introduce AST types indexed over type codes, and talk about tradeoffs here?}
+
+
 
 \section{Reflective Program Tranformation}
 \todo{prep the reader for the upcoming chapter on the rewriter}

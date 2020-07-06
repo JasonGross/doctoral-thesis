@@ -387,49 +387,71 @@ Actually, the size of the proof term will still be logarithmic in the size of th
 proofs is to pick a more optimized representation for list membership and to convert the proposition to be an eliminator.
 This consists of replacing $A \wedge B$ with $\forall P, A \to B \to P$, and similar.
 \begin{minted}{coq}
-Fixpoint is_related_at (P : Prop) {var1 var2 : Type} (Γ : list (var1 * var2)) (e1 : @expr var1) (e2 : @expr var2) : Prop :=
+Fixpoint is_related_elim {var1 var2 : Type} (Γ : list (var1 * var2)) (e1 : @expr var1) (e2 : @expr var2) : Prop :=
   match e1, e2 with
-  | NatO, NatO => P
-  | NatS e1, NatS e2 => is_related_at P Γ e1 e2
-  | NatMul x1 y1, NatMul x2 y2
-    => let F1 := fun P => is_related_at P Γ x1 x2 in
-       let F2 := fun P => is_related_at P Γ y1 y2 in
-       F1 (F2 P)
-  | Var v1, Var v2 => forall n : N, List.nth_error Γ (N.to_nat n) = Some (v1, v2) -> P
-  | LetIn e1 f1, LetIn e2 f2
-    => let F1 := fun P => is_related_at P Γ e1 e2 in
-       let F2 := fun P => forall v1 v2, is_related_at P ((v1, v2) :: Γ) (f1 v1) (f2 v2) in
-       F1 (F2 P)
+  | NatO, NatO => True
+  | NatS e1, NatS e2 => is_related_elim Γ e1 e2
+  | NatMul x1 y1, NatMul x2 y2 => forall P : Prop,
+      (is_related_elim Γ x1 x2 -> is_related_elim Γ y1 y2 -> P) -> P
+  | Var v1, Var v2 => forall (P : Prop),
+      (forall n, List.nth_error Γ (N.to_nat n) = Some (v1, v2) -> P) -> P
+  | LetIn e1 f1, LetIn e2 f2 => forall P : Prop,
+      (is_related_elim Γ e1 e2 -> (forall v1 v2, is_related_elim ((v1, v2) :: Γ) (f1 v1) (f2 v2)) -> P)
+      -> P
   | _, _ => False
   end.
 \end{minted}
-We can now prove that \mintinline{coq}{(∀ P, P → is_related_at P Γ e1 e2) → is_related Γ e1 e2}.
-By instantiating \mintinline{coq}{P} with \mintinline{coq}{is_related Γ e1 e2} and the first argument with the identity function, we can prove that \mintinline{coq}{
+We can now prove that \mintinline{coq}{is_related_elim Γ e1 e2 → is_related Γ e1 e2}.
 
+Note that making use of the fixpoint is significantly more inconvenient than making use of the inductive; the proof of \mintinline{coq}{check_is_even_expr_sound}, for example, proceeds most naturally by induction on the relatedness hypothesis.
+We could instead induct on one of the ASTs and destruct the other one, but this becomes quite hairy when the ASTs are indexed over their types.
 
+\todo{Should I benchmark this and insert graphs?}
 
+\subsubsection{Via de Bruijn} \label{sec:wf:perf:de-bruijn}
 
+An alternative, ultimately superior, method of constructing compact proofs of relatedness involves a translation to a de Bruijn representation.
+We can define a boolean predicate on de Bruijn syntax representing well-formedness.
+\begin{minted}{coq}
+Fixpoint is_closed_under (max_index : nat) (e : expr) : bool :=
+  match expr with
+  | NatO => true
+  | NatS e => is_closed_under max_index e
+  | NatMul x y => is_closed_under max_index x && is_closed_under max_index y
+  | Var n => n <? max_index
+  | LetIn v f => is_closed_under max_index v && is_closed_under (S max_index) f
+  end.
+Definition is_closed := is_closed_under 0.
+\end{minted}
+Note that this check generalizes quite nicely to expressions indexed over their types---so long as type codes have decidable equality---where we can pass around a list (or more efficient map structure) of types for each variable, and just check that the types are equal.
 
-\todo{here}
+Now we can prove that whenever a de Bruijn \mintinline{coq}{expr} is closed, any two PHOAS \mintinline{coq}{expr}s created from that AST will be related in the empty context.
+Therefore, if the PHOAS \mintinline{coq}{expr} we start off with is the result of converting some de Bruijn \mintinline{coq}{expr} to PHOAS, we can easily prove that it's well-formed simply by running \mintinline{coq}{vm_compute} on the \mintinline{coq}{is_closed} procedure.
+How might we get such a de Bruijn \mintinline{coq}{expr}?
+The easiest way is to write a converter from PHOAS to de Bruijn.
 
+Hence we can prove the theorem \mintinline{coq}{∀ e, is_closed (PHOAS_to_deBruijn e) = true /\ e = deBruijn_to_PHOAS (PHOAS_to_deBruijn e) → Wf e}.
+The hypothesis of this theorem is quite easy to check; we simply run \mintinline{coq}{vm_compute} and then instantiate it with the proof term \mintinline{coq}{conj (eq_refl true) (eq_refl e)}, which is linear in the size of \mintinline{coq}{e}.
 
+\section{Reification}
 
-\todo{where should I introduce AST types indexed over type codes, and talk about tradeoffs here?}
+The one part of proof by reflection that we've neglected up to this point is reification.
+\todo{How much should be covered in this chapter?  How much in reification-by-parametricity?}
 
+\section{Related Work}
+\todo{this section}
+\todo{mention RTac, etc}
 
-
-\section{Reflective Program Tranformation}
+\section{Reflective Syntax Tranformation}
 \todo{prep the reader for the upcoming chapter on the rewriter}
 \todo{Maybe call this Reflective Syntax Transformation}
+\todo{should the content on slowness in non-reflective rewriting go here?}
 
-\section{Reflective Proofs of Well-Formedness}
-\todo{figure out where this section belongs}
-\todo{talk about tricks for avoiding quadratic overhead in well-formedness proofs: minimizing the certificate size reflectively, and going via de Bruijn}
+%\section{related work (incl. RTac)}
+%\todo{talk about related work}
+%\todo{figure out where this section belongs}
 
-\section{related work (incl. RTac)}
-\todo{talk about related work}
-\todo{figure out where this section belongs}
-
+\begin{comment}
 \todo{list:}
 \begin{itemize}
 \item Maybe expand on the trust story of reflective programming at the beginning
@@ -439,11 +461,15 @@ By instantiating \mintinline{coq}{P} with \mintinline{coq}{is_related Γ e1 e2} 
 \item Performance measurements of the various ways of doing reification, forward reference reification by parametricity chapter
 \item Related work section on reflective syntax transformation / uses of proof by reflection in general, brief intro to rewriting chapter
 \end{itemize}
+\end{comment}
 
 \todo{should I talk about parsers at all?}
 
 \begin{comment}
 \begin{subappendices}
+
+\section{Reflective Evenness Checking in Coq} \label{sec:evenness-in-coq}
+\input{coq-fragments/evenness.raw.tex}
 
     \section{Transcript bits from Adam}
      Okay, and then there'll be another section that is on program transformation and rewriting and this will be the other main section and this is like, I this is another week link in the thesis but this is this well, maybe it's not a week like oh this is the one that's sort of the performance issue is motivated by the grinding criterion that you have this separation between what you need to trust and what you can freely optimize and gives you this tension that makes.

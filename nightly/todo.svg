@@ -1,4 +1,5 @@
-<svg xmlns="http://www.w3.org/2000/svg" width="165em" height="64em"><text x="0" y="0">
+<svg xmlns="http://www.w3.org/2000/svg" width="165em" height="67em"><text x="0" y="0">
+<tspan x="0" dy="1.2em">TODO: Make sure to exclude no files (not rewriting) in file jgross-thesis.tex on input line 54.</tspan>
 <tspan x="0" dy="1.2em">TODO: Run `make update-thesis' before submission to update the date on the cover page in file jgross-thesis.tex on input line 91.</tspan>
 <tspan x="0" dy="1.2em">TODO: change \string ^Linalfalse to \string ^Linaltrue  in file jgross-thesis.tex on input line 91.</tspan>
 <tspan x="0" dy="1.2em">TODO: Is the ``department committee chairman'' still Leslie A. Kolodziejski? in file cover.tex on input line 87.</tspan>
@@ -50,6 +51,7 @@
 <tspan x="0" dy="1.2em">Warning: Label `sec:phoas-expr-def@cref' multiply defined.</tspan>
 <tspan x="0" dy="1.2em">Warning: Reference `sec:proof-by-reflection' on page 7 undefined on input line 149.</tspan>
 <tspan x="0" dy="1.2em">Font shape `U/stmry/m/n' in size &lt;8.41483&gt; not available; size &lt;8&gt; substituted on input line 91.</tspan>
+<tspan x="0" dy="1.2em">Font shape `TU/lmtt/bx/n' in size &lt;12&gt; not available; Font shape `TU/lmtt/b/n' tried instead on input line 149.</tspan>
 <tspan x="0" dy="1.2em">Overfull \hbox (41.52351pt too wide) in paragraph at lines 105--1</tspan>
 <tspan x="0" dy="1.2em">Overfull \hbox (147.23547pt too wide) in paragraph at lines 105--1</tspan>
 </text></svg>

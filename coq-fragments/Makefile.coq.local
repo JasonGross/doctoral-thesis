@@ -1,0 +1,7 @@
+RAWTEXFILES = $(VFILES:.v=.raw.tex)
+
+.PHONY: latex
+latex: $(RAWTEXFILES)
+
+$(RAWTEXFILES) : %.raw.tex: %.v %.vo
+	$(COQBIN)coqdoc -interpolate -utf8 -latex $< --body-only -o $@

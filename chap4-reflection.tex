@@ -201,7 +201,7 @@ Inductive related {var1 var2 : Type} : list (var1 * var2) -> @expr var1 -> @expr
 | RelatedNatMul {Γ x1 x2 y1 y2} : related Γ x1 x2 -> related Γ y1 y2 -> related Γ (NatMul x1 y1) (NatMul x2 y2)
 | RelatedVar {Γ v1 v2} : (v1, v2) ∈ Γ -> related Γ (Var v1) (Var v2)
 | RelatedLetIn {Γ e1 e2 f1 f2}
- : related Γ e1 e2 -> (∀ v1 v2, related ((v1, v2) :: Γ) (f v1) (f v2)) -> related Γ (LetIn e1 f1) (LetIn e2 f2).
+ : related Γ e1 e2 -> (∀ v1 v2, related ((v1, v2) :: Γ) (f1 v1) (f2 v2)) -> related Γ (LetIn e1 f1) (LetIn e2 f2).
 \end{minted}
 
 Conventionally, syntax trees are parametric over the value of the \mintinline{coq}{var} parameter, and we require that all instantiations give related ASTs (in the empty context), whence we call the parametric AST \emph{well-formed}:
@@ -376,6 +376,7 @@ Fixpoint is_related {var1 var2 : Type} (Γ : list (var1 * var2)) (e1 : @expr var
   | NatMul x1 y1, NatMul x2 y2 => is_related Γ x1 x2 /\ is_related Γ y1 y2
   | Var v1, Var v2 => List.In (v1, v2) Γ
   | LetIn e1 f1, LetIn e2 f2 => is_related Γ e1 e2 /\ forall v1 v2, is_related ((v1, v2) :: Γ) (f1 v1) (f2 v2)
+  | _, _ => False
   end.
 \end{minted}
 This unfortunately isn't quite linear in the size of the syntax tree, though it is significantly smaller.
@@ -391,14 +392,14 @@ Fixpoint is_related_at (P : Prop) {var1 var2 : Type} (Γ : list (var1 * var2)) (
   | NatO, NatO => P
   | NatS e1, NatS e2 => is_related_at P Γ e1 e2
   | NatMul x1 y1, NatMul x2 y2
-    => let f1 := fun P => is_related_at P Γ x1 x2 in
-       let f2 := fun P => is_related_at P Γ y1 y2 in
-       f1 (f2 P)
+    => let F1 := fun P => is_related_at P Γ x1 x2 in
+       let F2 := fun P => is_related_at P Γ y1 y2 in
+       F1 (F2 P)
   | Var v1, Var v2 => forall n : N, List.nth_error Γ (N.to_nat n) = Some (v1, v2) -> P
   | LetIn e1 f1, LetIn e2 f2
-    => let f1 := fun P => is_related_at P Γ e1 e2 in
-       let f2 := fun P => forall v1 v2, is_related_at P ((v1, v2) :: Γ) (f1 v1) (f2 v2) in
-       f1 (f2 P)
+    => let F1 := fun P => is_related_at P Γ e1 e2 in
+       let F2 := fun P => forall v1 v2, is_related_at P ((v1, v2) :: Γ) (f1 v1) (f2 v2) in
+       F1 (F2 P)
   | _, _ => False
   end.
 \end{minted}

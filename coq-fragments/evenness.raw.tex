@@ -1,0 +1,349 @@
+\coqlibrary{evenness}{Library }{evenness}
+
+\begin{coqdoccode}
+\coqdocnoindent
+\coqdockw{Require} \coqdockw{Import} \coqdocvar{Coq.Arith.Arith}.\coqdoceol
+\coqdocnoindent
+\coqdockw{Require} \coqdockw{Import} \coqdocvar{Coq.NArith.NArith}.\coqdoceol
+\coqdocnoindent
+\coqdockw{Require} \coqdockw{Import} \coqdocvar{Coq.micromega.Lia}.\coqdoceol
+\coqdocnoindent
+\coqdockw{Require} \coqdockw{Import} \coqdocvar{Coq.Lists.List}.\coqdoceol
+\coqdocemptyline
+\coqdocnoindent
+\coqdockw{Definition} \coqdocvar{Let\_In} \{\coqdocvar{A} \coqdocvar{B}\} (\coqdocvar{v} : \coqdocvar{A}) (\coqdocvar{f} : \coqdocvar{A} \ensuremath{\rightarrow} \coqdocvar{B}) := \coqdockw{let} \coqdocvar{x} := \coqdocvar{v} \coqdoctac{in} \coqdocvar{f} \coqdocvar{x}.\coqdoceol
+\coqdocnoindent
+\coqdockw{Notation} "'dlet' x := v 'in' f" := (\coqdocvar{Let\_In} \coqdocvar{v} (\coqdockw{fun} \coqdocvar{x} \ensuremath{\Rightarrow} \coqdocvar{f})) (\coqdocvar{x} \coqdocvar{ident}, \coqdoctac{at} \coqdockw{level} 200).\coqdoceol
+\coqdocemptyline
+\coqdocnoindent
+\coqdockw{Inductive} \coqdocvar{is\_even} : \coqdocvar{nat} \ensuremath{\rightarrow} \coqdockw{Prop} :=\coqdoceol
+\coqdocnoindent
+\ensuremath{|} \coqdocvar{even\_O} : \coqdocvar{is\_even} \coqdocvar{O}\coqdoceol
+\coqdocnoindent
+\ensuremath{|} \coqdocvar{even\_SS} : \coqdockw{\ensuremath{\forall}} \coqdocvar{x}, \coqdocvar{is\_even} \coqdocvar{x} \ensuremath{\rightarrow} \coqdocvar{is\_even} (\coqdocvar{S} (\coqdocvar{S} \coqdocvar{x})).\coqdoceol
+\coqdocemptyline
+\coqdocnoindent
+\coqdockw{Inductive} \coqdocvar{expr} \{\coqdocvar{var} : \coqdockw{Type}\} :=\coqdoceol
+\coqdocnoindent
+\ensuremath{|} \coqdocvar{NatO} : \coqdocvar{expr}\coqdoceol
+\coqdocnoindent
+\ensuremath{|} \coqdocvar{NatS} : \coqdocvar{expr} \ensuremath{\rightarrow} \coqdocvar{expr}\coqdoceol
+\coqdocnoindent
+\ensuremath{|} \coqdocvar{NatMul} : \coqdocvar{expr} \ensuremath{\rightarrow} \coqdocvar{expr} \ensuremath{\rightarrow} \coqdocvar{expr}\coqdoceol
+\coqdocnoindent
+\ensuremath{|} \coqdocvar{Var} : \coqdocvar{var} \ensuremath{\rightarrow} \coqdocvar{expr}\coqdoceol
+\coqdocnoindent
+\ensuremath{|} \coqdocvar{LetIn} : \coqdocvar{expr} \ensuremath{\rightarrow} (\coqdocvar{var} \ensuremath{\rightarrow} \coqdocvar{expr}) \ensuremath{\rightarrow} \coqdocvar{expr}.\coqdoceol
+\coqdocnoindent
+\coqdockw{Notation} "'elet' x := v 'in' f" := (\coqdocvar{LetIn} \coqdocvar{v} (\coqdockw{fun} \coqdocvar{x} \ensuremath{\Rightarrow} \coqdocvar{f})) (\coqdocvar{x} \coqdocvar{ident}, \coqdoctac{at} \coqdockw{level} 200).\coqdoceol
+\coqdocemptyline
+\coqdocnoindent
+\coqdockw{Fixpoint} \coqdocvar{denote} (\coqdocvar{t} : @\coqdocvar{expr} \coqdocvar{nat}) : \coqdocvar{nat}\coqdoceol
+\coqdocindent{1.00em}
+:= \coqdockw{match} \coqdocvar{t} \coqdockw{with}\coqdoceol
+\coqdocindent{2.50em}
+\ensuremath{|} \coqdocvar{NatO} \ensuremath{\Rightarrow} \coqdocvar{O}\coqdoceol
+\coqdocindent{2.50em}
+\ensuremath{|} \coqdocvar{NatS} \coqdocvar{x} \ensuremath{\Rightarrow} \coqdocvar{S} (\coqdocvar{denote} \coqdocvar{x})\coqdoceol
+\coqdocindent{2.50em}
+\ensuremath{|} \coqdocvar{NatMul} \coqdocvar{x} \coqdocvar{y} \ensuremath{\Rightarrow} \coqdocvar{denote} \coqdocvar{x} \ensuremath{\times} \coqdocvar{denote} \coqdocvar{y}\coqdoceol
+\coqdocindent{2.50em}
+\ensuremath{|} \coqdocvar{Var} \coqdocvar{v} \ensuremath{\Rightarrow} \coqdocvar{v}\coqdoceol
+\coqdocindent{2.50em}
+\ensuremath{|} \coqdocvar{LetIn} \coqdocvar{v} \coqdocvar{f} \ensuremath{\Rightarrow} \coqdocvar{dlet} \coqdocvar{x} := \coqdocvar{denote} \coqdocvar{v} \coqdoctac{in} \coqdocvar{denote} (\coqdocvar{f} \coqdocvar{x})\coqdoceol
+\coqdocindent{2.50em}
+\coqdockw{end}.\coqdoceol
+\coqdocemptyline
+\coqdocnoindent
+\coqdockw{Fixpoint} \coqdocvar{check\_is\_even\_expr} (\coqdocvar{t} : @\coqdocvar{expr} \coqdocvar{bool}) : \coqdocvar{bool}\coqdoceol
+\coqdocindent{1.00em}
+:= \coqdockw{match} \coqdocvar{t} \coqdockw{with}\coqdoceol
+\coqdocindent{2.50em}
+\ensuremath{|} \coqdocvar{NatO} \ensuremath{\Rightarrow} \coqdocvar{true}\coqdoceol
+\coqdocindent{2.50em}
+\ensuremath{|} \coqdocvar{NatS} \coqdocvar{x} \ensuremath{\Rightarrow} \coqdocvar{negb} (\coqdocvar{check\_is\_even\_expr} \coqdocvar{x})\coqdoceol
+\coqdocindent{2.50em}
+\ensuremath{|} \coqdocvar{NatMul} \coqdocvar{x} \coqdocvar{y} \ensuremath{\Rightarrow} \coqdocvar{orb} (\coqdocvar{check\_is\_even\_expr} \coqdocvar{x}) (\coqdocvar{check\_is\_even\_expr} \coqdocvar{y})\coqdoceol
+\coqdocindent{2.50em}
+\ensuremath{|} \coqdocvar{Var} \coqdocvar{v\_even} \ensuremath{\Rightarrow} \coqdocvar{v\_even}\coqdoceol
+\coqdocindent{2.50em}
+\ensuremath{|} \coqdocvar{LetIn} \coqdocvar{v} \coqdocvar{f} \ensuremath{\Rightarrow} \coqdockw{let} \coqdocvar{v\_even} := \coqdocvar{check\_is\_even\_expr} \coqdocvar{v} \coqdoctac{in} \coqdocvar{check\_is\_even\_expr} (\coqdocvar{f} \coqdocvar{v\_even})\coqdoceol
+\coqdocindent{2.50em}
+\coqdockw{end}.\coqdoceol
+\coqdocemptyline
+\coqdocnoindent
+\coqdockw{Definition} \coqdocvar{Expr} := \coqdockw{\ensuremath{\forall}} \coqdocvar{var}, @\coqdocvar{expr} \coqdocvar{var}.\coqdoceol
+\coqdocemptyline
+\coqdocnoindent
+\coqdockw{Inductive} \coqdocvar{related} \{\coqdocvar{var1} \coqdocvar{var2} : \coqdockw{Type}\} : \coqdocvar{list} (\coqdocvar{var1} \ensuremath{\times} \coqdocvar{var2}) \ensuremath{\rightarrow} @\coqdocvar{expr} \coqdocvar{var1} \ensuremath{\rightarrow} @\coqdocvar{expr} \coqdocvar{var2} \ensuremath{\rightarrow} \coqdockw{Prop} :=\coqdoceol
+\coqdocnoindent
+\ensuremath{|} \coqdocvar{RelatedNatO} \{\coqdocvar{Γ}\} : \coqdocvar{related} \coqdocvar{Γ} \coqdocvar{NatO} \coqdocvar{NatO}\coqdoceol
+\coqdocnoindent
+\ensuremath{|} \coqdocvar{RelatedNatS} \{\coqdocvar{Γ} \coqdocvar{e1} \coqdocvar{e2}\} : \coqdocvar{related} \coqdocvar{Γ} \coqdocvar{e1} \coqdocvar{e2} \ensuremath{\rightarrow} \coqdocvar{related} \coqdocvar{Γ} (\coqdocvar{NatS} \coqdocvar{e1}) (\coqdocvar{NatS} \coqdocvar{e2})\coqdoceol
+\coqdocnoindent
+\ensuremath{|} \coqdocvar{RelatedNatMul} \{\coqdocvar{Γ} \coqdocvar{x1} \coqdocvar{x2} \coqdocvar{y1} \coqdocvar{y2}\} : \coqdocvar{related} \coqdocvar{Γ} \coqdocvar{x1} \coqdocvar{x2} \ensuremath{\rightarrow} \coqdocvar{related} \coqdocvar{Γ} \coqdocvar{y1} \coqdocvar{y2} \ensuremath{\rightarrow} \coqdocvar{related} \coqdocvar{Γ} (\coqdocvar{NatMul} \coqdocvar{x1} \coqdocvar{y1}) (\coqdocvar{NatMul} \coqdocvar{x2} \coqdocvar{y2})\coqdoceol
+\coqdocnoindent
+\ensuremath{|} \coqdocvar{RelatedVar} \{\coqdocvar{Γ} \coqdocvar{v1} \coqdocvar{v2}\} : \coqdocvar{List.In} (\coqdocvar{v1}, \coqdocvar{v2}) \coqdocvar{Γ} \ensuremath{\rightarrow} \coqdocvar{related} \coqdocvar{Γ} (\coqdocvar{Var} \coqdocvar{v1}) (\coqdocvar{Var} \coqdocvar{v2})\coqdoceol
+\coqdocnoindent
+\ensuremath{|} \coqdocvar{RelatedLetIn} \{\coqdocvar{Γ} \coqdocvar{e1} \coqdocvar{e2} \coqdocvar{f1} \coqdocvar{f2}\}\coqdoceol
+\coqdocindent{0.50em}
+: \coqdocvar{related} \coqdocvar{Γ} \coqdocvar{e1} \coqdocvar{e2} \ensuremath{\rightarrow} (\coqdockw{\ensuremath{\forall}} \coqdocvar{v1} \coqdocvar{v2}, \coqdocvar{related} ((\coqdocvar{v1}, \coqdocvar{v2}) :: \coqdocvar{Γ}) (\coqdocvar{f1} \coqdocvar{v1}) (\coqdocvar{f2} \coqdocvar{v2})) \ensuremath{\rightarrow} \coqdocvar{related} \coqdocvar{Γ} (\coqdocvar{LetIn} \coqdocvar{e1} \coqdocvar{f1}) (\coqdocvar{LetIn} \coqdocvar{e2} \coqdocvar{f2}).\coqdoceol
+\coqdocemptyline
+\coqdocnoindent
+\coqdockw{Definition} \coqdocvar{Wf} (\coqdocvar{e} : \coqdocvar{Expr}) := \coqdockw{\ensuremath{\forall}} \coqdocvar{var1} \coqdocvar{var2}, \coqdocvar{related} \coqdocvar{nil} (\coqdocvar{e} \coqdocvar{var1}) (\coqdocvar{e} \coqdocvar{var2}).\coqdoceol
+\coqdocemptyline
+\coqdocnoindent
+\coqdockw{Theorem} \coqdocvar{check\_is\_even\_expr\_sound} (\coqdocvar{e} : \coqdocvar{Expr}) (\coqdocvar{H} : \coqdocvar{Wf} \coqdocvar{e})\coqdoceol
+\coqdocindent{1.00em}
+: \coqdocvar{check\_is\_even\_expr} (\coqdocvar{e} \coqdocvar{bool}) = \coqdocvar{true} \ensuremath{\rightarrow} \coqdocvar{is\_even} (\coqdocvar{denote} (\coqdocvar{e} \coqdocvar{nat})).\coqdoceol
+\coqdocnoindent
+\coqdocvar{Admitted}.\coqdoceol
+\coqdocemptyline
+\coqdocnoindent
+\coqdockw{Fixpoint} \coqdocvar{is\_related} \{\coqdocvar{var1} \coqdocvar{var2} : \coqdockw{Type}\} (\coqdocvar{Γ} : \coqdocvar{list} (\coqdocvar{var1} \ensuremath{\times} \coqdocvar{var2})) (\coqdocvar{e1} : @\coqdocvar{expr} \coqdocvar{var1}) (\coqdocvar{e2} : @\coqdocvar{expr} \coqdocvar{var2}) : \coqdockw{Prop} :=\coqdoceol
+\coqdocindent{1.00em}
+\coqdockw{match} \coqdocvar{e1}, \coqdocvar{e2} \coqdockw{with}\coqdoceol
+\coqdocindent{1.00em}
+\ensuremath{|} \coqdocvar{NatO}, \coqdocvar{NatO} \ensuremath{\Rightarrow} \coqdocvar{True}\coqdoceol
+\coqdocindent{1.00em}
+\ensuremath{|} \coqdocvar{NatS} \coqdocvar{e1}, \coqdocvar{NatS} \coqdocvar{e2} \ensuremath{\Rightarrow} \coqdocvar{is\_related} \coqdocvar{Γ} \coqdocvar{e1} \coqdocvar{e2}\coqdoceol
+\coqdocindent{1.00em}
+\ensuremath{|} \coqdocvar{NatMul} \coqdocvar{x1} \coqdocvar{y1}, \coqdocvar{NatMul} \coqdocvar{x2} \coqdocvar{y2} \ensuremath{\Rightarrow} \coqdocvar{is\_related} \coqdocvar{Γ} \coqdocvar{x1} \coqdocvar{x2} \ensuremath{\land} \coqdocvar{is\_related} \coqdocvar{Γ} \coqdocvar{y1} \coqdocvar{y2}\coqdoceol
+\coqdocindent{1.00em}
+\ensuremath{|} \coqdocvar{Var} \coqdocvar{v1}, \coqdocvar{Var} \coqdocvar{v2} \ensuremath{\Rightarrow} \coqdocvar{List.In} (\coqdocvar{v1}, \coqdocvar{v2}) \coqdocvar{Γ}\coqdoceol
+\coqdocindent{1.00em}
+\ensuremath{|} \coqdocvar{LetIn} \coqdocvar{e1} \coqdocvar{f1}, \coqdocvar{LetIn} \coqdocvar{e2} \coqdocvar{f2} \ensuremath{\Rightarrow} \coqdocvar{is\_related} \coqdocvar{Γ} \coqdocvar{e1} \coqdocvar{e2} \ensuremath{\land} \coqdockw{\ensuremath{\forall}} \coqdocvar{v1} \coqdocvar{v2}, \coqdocvar{is\_related} ((\coqdocvar{v1}, \coqdocvar{v2}) :: \coqdocvar{Γ}) (\coqdocvar{f1} \coqdocvar{v1}) (\coqdocvar{f2} \coqdocvar{v2})\coqdoceol
+\coqdocindent{1.00em}
+\ensuremath{|} \coqdocvar{\_}, \coqdocvar{\_} \ensuremath{\Rightarrow} \coqdocvar{False}\coqdoceol
+\coqdocindent{1.00em}
+\coqdockw{end}.\coqdoceol
+\coqdocemptyline
+\coqdocnoindent
+\coqdockw{Fixpoint} \coqdocvar{is\_related\_elim} \{\coqdocvar{var1} \coqdocvar{var2} : \coqdockw{Type}\} (\coqdocvar{Γ} : \coqdocvar{list} (\coqdocvar{var1} \ensuremath{\times} \coqdocvar{var2})) (\coqdocvar{e1} : @\coqdocvar{expr} \coqdocvar{var1}) (\coqdocvar{e2} : @\coqdocvar{expr} \coqdocvar{var2}) : \coqdockw{Prop} :=\coqdoceol
+\coqdocindent{1.00em}
+\coqdockw{match} \coqdocvar{e1}, \coqdocvar{e2} \coqdockw{with}\coqdoceol
+\coqdocindent{1.00em}
+\ensuremath{|} \coqdocvar{NatO}, \coqdocvar{NatO} \ensuremath{\Rightarrow} \coqdocvar{True}\coqdoceol
+\coqdocindent{1.00em}
+\ensuremath{|} \coqdocvar{NatS} \coqdocvar{e1}, \coqdocvar{NatS} \coqdocvar{e2} \ensuremath{\Rightarrow} \coqdocvar{is\_related\_elim} \coqdocvar{Γ} \coqdocvar{e1} \coqdocvar{e2}\coqdoceol
+\coqdocindent{1.00em}
+\ensuremath{|} \coqdocvar{NatMul} \coqdocvar{x1} \coqdocvar{y1}, \coqdocvar{NatMul} \coqdocvar{x2} \coqdocvar{y2} \ensuremath{\Rightarrow} \coqdockw{\ensuremath{\forall}} \coqdocvar{P} : \coqdockw{Prop},\coqdoceol
+\coqdocindent{3.00em}
+(\coqdocvar{is\_related\_elim} \coqdocvar{Γ} \coqdocvar{x1} \coqdocvar{x2} \ensuremath{\rightarrow} \coqdocvar{is\_related\_elim} \coqdocvar{Γ} \coqdocvar{y1} \coqdocvar{y2} \ensuremath{\rightarrow} \coqdocvar{P}) \ensuremath{\rightarrow} \coqdocvar{P}\coqdoceol
+\coqdocindent{1.00em}
+\ensuremath{|} \coqdocvar{Var} \coqdocvar{v1}, \coqdocvar{Var} \coqdocvar{v2} \ensuremath{\Rightarrow} \coqdockw{\ensuremath{\forall}} (\coqdocvar{P} : \coqdockw{Prop}),\coqdoceol
+\coqdocindent{3.00em}
+(\coqdockw{\ensuremath{\forall}} \coqdocvar{n}, \coqdocvar{List.nth\_error} \coqdocvar{Γ} (\coqdocvar{N.to\_nat} \coqdocvar{n}) = \coqdocvar{Some} (\coqdocvar{v1}, \coqdocvar{v2}) \ensuremath{\rightarrow} \coqdocvar{P}) \ensuremath{\rightarrow} \coqdocvar{P}\coqdoceol
+\coqdocindent{1.00em}
+\ensuremath{|} \coqdocvar{LetIn} \coqdocvar{e1} \coqdocvar{f1}, \coqdocvar{LetIn} \coqdocvar{e2} \coqdocvar{f2} \ensuremath{\Rightarrow} \coqdockw{\ensuremath{\forall}} \coqdocvar{P} : \coqdockw{Prop},\coqdoceol
+\coqdocindent{3.00em}
+(\coqdocvar{is\_related\_elim} \coqdocvar{Γ} \coqdocvar{e1} \coqdocvar{e2} \ensuremath{\rightarrow} (\coqdockw{\ensuremath{\forall}} \coqdocvar{v1} \coqdocvar{v2}, \coqdocvar{is\_related\_elim} ((\coqdocvar{v1}, \coqdocvar{v2}) :: \coqdocvar{Γ}) (\coqdocvar{f1} \coqdocvar{v1}) (\coqdocvar{f2} \coqdocvar{v2})) \ensuremath{\rightarrow} \coqdocvar{P})\coqdoceol
+\coqdocindent{3.00em}
+\ensuremath{\rightarrow} \coqdocvar{P}\coqdoceol
+\coqdocindent{1.00em}
+\ensuremath{|} \coqdocvar{\_}, \coqdocvar{\_} \ensuremath{\Rightarrow} \coqdocvar{False}\coqdoceol
+\coqdocindent{1.00em}
+\coqdockw{end}.\coqdoceol
+\coqdocemptyline
+\coqdocnoindent
+\coqdockw{Lemma} \coqdocvar{related\_of\_is\_related\_elim} \{\coqdocvar{var1} \coqdocvar{var2} \coqdocvar{Γ} \coqdocvar{e1} \coqdocvar{e2}\}\coqdoceol
+\coqdocindent{1.00em}
+: @\coqdocvar{is\_related\_elim} \coqdocvar{var1} \coqdocvar{var2} \coqdocvar{Γ} \coqdocvar{e1} \coqdocvar{e2} \ensuremath{\rightarrow} \coqdocvar{related} \coqdocvar{Γ} \coqdocvar{e1} \coqdocvar{e2}.\coqdoceol
+\coqdocnoindent
+\coqdockw{Proof}.\coqdoceol
+\coqdocindent{1.00em}
+\coqdocvar{revert} \coqdocvar{Γ} \coqdocvar{e2}; \coqdoctac{induction} \coqdocvar{e1}, \coqdocvar{e2}; \coqdocvar{cbn} [\coqdocvar{is\_related\_elim}] \coqdoctac{in} *;\coqdoceol
+\coqdocindent{2.00em}
+\coqdoctac{intro} \coqdocvar{H'}; \coqdoctac{try} \coqdoctac{constructor}; \coqdoctac{try} \coqdoctac{apply} \coqdocvar{H'}; \coqdoctac{try} \coqdocvar{now} \coqdoctac{auto}.\coqdoceol
+\coqdocindent{1.00em}
+\{ \coqdoctac{clear}; \coqdoctac{intro} \coqdocvar{n}; \coqdocvar{revert} \coqdocvar{n} \coqdocvar{Γ}.\coqdoceol
+\coqdocindent{2.00em}
+\coqdoctac{induction} \coqdocvar{n} \coqdockw{using} \coqdocvar{N.peano\_ind}; \coqdoctac{destruct} \coqdocvar{Γ};\coqdoceol
+\coqdocindent{3.00em}
+\coqdoctac{rewrite} ?\coqdocvar{N2Nat.inj\_succ};\coqdoceol
+\coqdocindent{3.00em}
+\coqdocvar{cbn} [\coqdocvar{List.In} \coqdocvar{nth\_error} \coqdocvar{N.to\_nat}];\coqdoceol
+\coqdocindent{3.00em}
+\coqdoctac{try} \coqdoctac{solve} [ \coqdoctac{intuition} \coqdoctac{congruence} ];\coqdoceol
+\coqdocindent{3.00em}
+\coqdoctac{eauto}. \}\coqdoceol
+\coqdocnoindent
+\coqdockw{Qed}.\coqdoceol
+\coqdocemptyline
+\coqdocnoindent
+\coqdockw{Ltac} \coqdocvar{find} \coqdocvar{ls} \coqdocvar{v} :=\coqdoceol
+\coqdocindent{1.00em}
+\coqdockw{lazymatch} \coqdocvar{ls} \coqdockw{with}\coqdoceol
+\coqdocindent{1.00em}
+\ensuremath{|} \coqdocvar{cons} \coqdocvar{v} \coqdocvar{\_} \ensuremath{\Rightarrow} \coqdockw{constr}:(\coqdocvar{O})\coqdoceol
+\coqdocindent{1.00em}
+\ensuremath{|} \coqdocvar{cons} \coqdocvar{\_} ?\coqdocvar{ls}\coqdoceol
+\coqdocindent{2.00em}
+\ensuremath{\Rightarrow} \coqdockw{let} \coqdocvar{n} := \coqdocvar{find} \coqdocvar{ls} \coqdocvar{v} \coqdoctac{in}\coqdoceol
+\coqdocindent{3.50em}
+\coqdockw{constr}:(\coqdocvar{S} \coqdocvar{n})\coqdoceol
+\coqdocindent{1.00em}
+\coqdockw{end}.\coqdoceol
+\coqdocnoindent
+\coqdockw{Ltac} \coqdocvar{solve\_is\_related\_elim} :=\coqdoceol
+\coqdocindent{1.00em}
+\coqdockw{lazymatch} \coqdockw{goal} \coqdockw{with}\coqdoceol
+\coqdocindent{1.00em}
+\ensuremath{|} [ \ensuremath{\vdash} \coqdocvar{is\_related\_elim} \coqdocvar{\_} \coqdocvar{\_} \coqdocvar{\_} ] \ensuremath{\Rightarrow} \coqdoctac{lazy} -[\coqdocvar{List.nth\_error} \coqdocvar{N.to\_nat}]\coqdoceol
+\coqdocindent{1.00em}
+\coqdockw{end};\coqdoceol
+\coqdocindent{1.00em}
+\coqdoctac{repeat} \coqdockw{lazymatch} \coqdockw{goal} \coqdockw{with}\coqdoceol
+\coqdocindent{4.50em}
+\ensuremath{|} [ \ensuremath{\vdash} \coqdocvar{True} ] \ensuremath{\Rightarrow} \coqdoctac{exact} \coqdocvar{I}\coqdoceol
+\coqdocindent{4.50em}
+\ensuremath{|} [ \ensuremath{\vdash} \coqdockw{\ensuremath{\forall}} \coqdocvar{P}, (?\coqdocvar{A} \ensuremath{\rightarrow} ?\coqdocvar{B} \ensuremath{\rightarrow} \coqdocvar{P}) \ensuremath{\rightarrow} \coqdocvar{P} ]\coqdoceol
+\coqdocindent{5.50em}
+\ensuremath{\Rightarrow} \coqdockw{let} \coqdocvar{P} := \coqdoctac{fresh} \coqdoctac{in}\coqdoceol
+\coqdocindent{7.00em}
+\coqdockw{let} \coqdocvar{H} := \coqdoctac{fresh} \coqdoctac{in}\coqdoceol
+\coqdocindent{7.00em}
+\coqdoctac{intros} \coqdocvar{P} \coqdocvar{H}; \coqdoctac{apply} \coqdocvar{H}; \coqdoctac{clear} \coqdocvar{P} \coqdocvar{H}\coqdoceol
+\coqdocindent{4.50em}
+\ensuremath{|} [ \ensuremath{\vdash} \coqdockw{\ensuremath{\forall}} \coqdocvar{P}, (\coqdockw{\ensuremath{\forall}} \coqdocvar{n}, \coqdocvar{List.nth\_error} ?\coqdocvar{Γ} (\coqdocvar{N.to\_nat} \coqdocvar{n}) = \coqdocvar{Some} ?\coqdocvar{v} \ensuremath{\rightarrow} \coqdocvar{P}) \ensuremath{\rightarrow} \coqdocvar{P} ]\coqdoceol
+\coqdocindent{5.50em}
+\ensuremath{\Rightarrow} \coqdockw{let} \coqdocvar{P} := \coqdoctac{fresh} \coqdoctac{in}\coqdoceol
+\coqdocindent{7.00em}
+\coqdockw{let} \coqdocvar{H} := \coqdoctac{fresh} \coqdoctac{in}\coqdoceol
+\coqdocindent{7.00em}
+\coqdockw{let} \coqdocvar{n} := \coqdocvar{find} \coqdocvar{Γ} \coqdocvar{v} \coqdoctac{in}\coqdoceol
+\coqdocindent{7.00em}
+\coqdockw{let} \coqdocvar{n} := (\coqdoctac{eval} \coqdoctac{cbv} \coqdoctac{in} (\coqdocvar{N.of\_nat} \coqdocvar{n})) \coqdoctac{in}\coqdoceol
+\coqdocindent{7.00em}
+\coqdoctac{intros} \coqdocvar{P} \coqdocvar{H}; \coqdoctac{apply} (\coqdocvar{H} \coqdocvar{n}); \coqdockw{vm\_compute}; \coqdoctac{reflexivity}\coqdoceol
+\coqdocindent{4.50em}
+\ensuremath{|} [ \ensuremath{\vdash} \coqdockw{\ensuremath{\forall}} \coqdocvar{v1} \coqdocvar{v2}, \coqdocvar{\_} ] \ensuremath{\Rightarrow} \coqdoctac{intros} ? ?\coqdoceol
+\coqdocindent{4.50em}
+\coqdockw{end}.\coqdoceol
+\coqdocemptyline
+\coqdocnoindent
+\coqdockw{Ltac} \coqdocvar{solve\_related} :=\coqdoceol
+\coqdocindent{1.00em}
+\coqdoctac{apply} \coqdocvar{related\_of\_is\_related\_elim}; \coqdocvar{solve\_is\_related\_elim}.\coqdoceol
+\coqdocemptyline
+\coqdocnoindent
+\coqdockw{Ltac} \coqdocvar{reify} \coqdocvar{var} \coqdocvar{Γ} \coqdocvar{e} :=\coqdoceol
+\coqdocindent{1.00em}
+\coqdockw{let} \coqdocvar{recr} \coqdocvar{e} := \coqdocvar{reify} \coqdocvar{var} \coqdocvar{Γ} \coqdocvar{e} \coqdoctac{in}\coqdoceol
+\coqdocindent{1.00em}
+\coqdockw{lazymatch} \coqdocvar{e} \coqdockw{with}\coqdoceol
+\coqdocindent{1.00em}
+\ensuremath{|} \coqdocvar{O} \ensuremath{\Rightarrow} \coqdocvar{uconstr}:(@\coqdocvar{NatO} \coqdocvar{var})\coqdoceol
+\coqdocindent{1.00em}
+\ensuremath{|} \coqdocvar{S} ?\coqdocvar{e} \ensuremath{\Rightarrow} \coqdockw{let} \coqdocvar{e'} := \coqdocvar{recr} \coqdocvar{e} \coqdoctac{in}\coqdoceol
+\coqdocindent{6.00em}
+\coqdocvar{uconstr}:(@\coqdocvar{NatS} \coqdocvar{var} \coqdocvar{e'})\coqdoceol
+\coqdocindent{1.00em}
+\ensuremath{|} \coqdocvar{Nat.mul} ?\coqdocvar{x} ?\coqdocvar{y}\coqdoceol
+\coqdocindent{2.00em}
+\ensuremath{\Rightarrow} \coqdockw{let} \coqdocvar{x'} := \coqdocvar{recr} \coqdocvar{x} \coqdoctac{in}\coqdoceol
+\coqdocindent{3.50em}
+\coqdockw{let} \coqdocvar{y'} := \coqdocvar{recr} \coqdocvar{y} \coqdoctac{in}\coqdoceol
+\coqdocindent{3.50em}
+\coqdocvar{uconstr}:(@\coqdocvar{NatMul} \coqdocvar{var} \coqdocvar{x'} \coqdocvar{y'})\coqdoceol
+\coqdocindent{1.00em}
+\ensuremath{|} (\coqdockw{let} \coqdocvar{x} := ?\coqdocvar{v} \coqdoctac{in} ?\coqdocvar{f})\coqdoceol
+\coqdocindent{2.00em}
+\ensuremath{\Rightarrow} \coqdocvar{recr} (\coqdocvar{dlet} \coqdocvar{x} := \coqdocvar{v} \coqdoctac{in} \coqdocvar{f})\coqdoceol
+\coqdocindent{1.00em}
+\ensuremath{|} (\coqdocvar{dlet} \coqdocvar{x} := ?\coqdocvar{v} \coqdoctac{in} ?\coqdocvar{f})\coqdoceol
+\coqdocindent{2.00em}
+\ensuremath{\Rightarrow} \coqdockw{let} \coqdocvar{f'} := \coqdoctac{fresh} \coqdoctac{in}\coqdoceol
+\coqdocindent{3.50em}
+\coqdockw{let} \coqdocvar{Γ'} := \coqdoctac{fresh} \coqdoctac{in}\coqdoceol
+\coqdocindent{3.50em}
+\coqdockw{let} \coqdocvar{v'} := \coqdoctac{fresh} \coqdoctac{in}\coqdoceol
+\coqdocindent{3.50em}
+\coqdockw{let} \coqdocvar{T} := \coqdockw{type} \coqdockw{of} \coqdocvar{v} \coqdoctac{in}\coqdoceol
+\coqdocindent{3.50em}
+\coqdockw{let} \coqdocvar{ve} := \coqdocvar{recr} \coqdocvar{v} \coqdoctac{in}\coqdoceol
+\coqdocindent{3.50em}
+\coqdockw{let} \coqdocvar{fe} := \coqdockw{lazymatch}\coqdoceol
+\coqdocindent{6.50em}
+\coqdockw{constr}:(\coqdoceol
+\coqdocindent{7.50em}
+\coqdockw{fun} (\coqdocvar{x} : \coqdocvar{T}) (\coqdocvar{v'} : \coqdocvar{var})\coqdoceol
+\coqdocindent{7.50em}
+\ensuremath{\Rightarrow} \coqdockw{match} \coqdocvar{f}, (\coqdocvar{x}, \coqdocvar{v'}) :: \coqdocvar{Γ} \coqdockw{return} \coqdocvar{\_} \coqdockw{with}\coqdoceol
+\coqdocindent{9.00em}
+\ensuremath{|} \coqdocvar{f'}, \coqdocvar{Γ'}\coqdoceol
+\coqdocindent{10.00em}
+\ensuremath{\Rightarrow} \coqdockw{ltac}:(\coqdockw{let} \coqdocvar{f} := (\coqdoctac{eval} \coqdoctac{cbv} \coqdockw{delta} [\coqdocvar{f'}] \coqdoctac{in} \coqdocvar{f'}) \coqdoctac{in}\coqdoceol
+\coqdocindent{14.50em}
+\coqdockw{let} \coqdocvar{Γ} := (\coqdoctac{eval} \coqdoctac{cbv} \coqdockw{delta} [\coqdocvar{Γ'}] \coqdoctac{in} \coqdocvar{Γ'}) \coqdoctac{in}\coqdoceol
+\coqdocindent{14.50em}
+\coqdockw{let} \coqdocvar{val} := \coqdocvar{reify} \coqdocvar{var} \coqdocvar{Γ} \coqdocvar{f} \coqdoctac{in}\coqdoceol
+\coqdocindent{14.50em}
+\coqdoctac{refine} \coqdocvar{val})\coqdoceol
+\coqdocindent{9.00em}
+\coqdockw{end}) \coqdockw{with}\coqdoceol
+\coqdocindent{5.50em}
+\ensuremath{|} \coqdockw{fun} \coqdocvar{\_} \ensuremath{\Rightarrow} ?\coqdocvar{f} \ensuremath{\Rightarrow} \coqdocvar{f}\coqdoceol
+\coqdocindent{5.50em}
+\ensuremath{|} ?\coqdocvar{e} \ensuremath{\Rightarrow} \coqdoctac{fail} 0 "Cannot eliminate functional dependencies of" \coqdocvar{e}\coqdoceol
+\coqdocindent{5.50em}
+\coqdockw{end} \coqdoctac{in}\coqdoceol
+\coqdocindent{3.50em}
+\coqdocvar{uconstr}:(@\coqdocvar{LetIn} \coqdocvar{var} \coqdocvar{ve} \coqdocvar{fe})\coqdoceol
+\coqdocindent{1.00em}
+\ensuremath{|} ?\coqdocvar{v}\coqdoceol
+\coqdocindent{2.00em}
+\ensuremath{\Rightarrow} \coqdockw{lazymatch} \coqdocvar{Γ} \coqdockw{with}\coqdoceol
+\coqdocindent{3.50em}
+\ensuremath{|} \coqdockw{context}[(\coqdocvar{v}, ?\coqdocvar{v'}) :: \coqdocvar{\_}]\coqdoceol
+\coqdocindent{4.50em}
+\ensuremath{\Rightarrow} \coqdocvar{uconstr}:(@\coqdocvar{Var} \coqdocvar{var} \coqdocvar{v'})\coqdoceol
+\coqdocindent{3.50em}
+\ensuremath{|} \coqdocvar{\_} \ensuremath{\Rightarrow} \coqdoctac{fail} 0 "Cannot reify" \coqdocvar{v}\coqdoceol
+\coqdocindent{3.50em}
+\coqdockw{end}\coqdoceol
+\coqdocindent{1.00em}
+\coqdockw{end}.\coqdoceol
+\coqdocnoindent
+\coqdockw{Ltac} \coqdocvar{Reify} \coqdocvar{e} :=\coqdoceol
+\coqdocindent{1.00em}
+\coqdockw{constr}:(\coqdockw{fun} \coqdocvar{var} : \coqdockw{Type}\coqdoceol
+\coqdocindent{5.00em}
+\ensuremath{\Rightarrow} \coqdockw{ltac}:(\coqdockw{let} \coqdocvar{r} := \coqdocvar{reify} \coqdocvar{var} \coqdocvar{uconstr}:(@\coqdocvar{nil} \coqdocvar{\_}) \coqdocvar{e} \coqdoctac{in}\coqdoceol
+\coqdocindent{9.50em}
+\coqdoctac{refine} \coqdocvar{r})).\coqdoceol
+\coqdocemptyline
+\coqdocnoindent
+\coqdocvar{Strategy} -10 [\coqdocvar{denote}].\coqdoceol
+\coqdocnoindent
+\coqdocvar{Strategy} 10 [\coqdocvar{Let\_In}].\coqdoceol
+\coqdocemptyline
+\coqdocnoindent
+\coqdockw{Goal} \coqdocvar{is\_even} (\coqdocvar{dlet} \coqdocvar{x} := 100 \ensuremath{\times} 100 \ensuremath{\times} 100 \ensuremath{\times} 100 \coqdoctac{in}\coqdoceol
+\coqdocindent{7.00em}
+\coqdocvar{dlet} \coqdocvar{y} := \coqdocvar{x} \ensuremath{\times} \coqdocvar{x} \ensuremath{\times} \coqdocvar{x} \ensuremath{\times} \coqdocvar{x} \coqdoctac{in}\coqdoceol
+\coqdocindent{7.00em}
+\coqdocvar{y} \ensuremath{\times} \coqdocvar{y} \ensuremath{\times} \coqdocvar{y} \ensuremath{\times} \coqdocvar{y}).\coqdoceol
+\coqdocindent{1.00em}
+\coqdockw{lazymatch} \coqdockw{goal} \coqdockw{with}\coqdoceol
+\coqdocindent{1.00em}
+\ensuremath{|} [ \ensuremath{\vdash} \coqdocvar{is\_even} ?\coqdocvar{v} ]\coqdoceol
+\coqdocindent{2.00em}
+\ensuremath{\Rightarrow} \coqdockw{let} \coqdocvar{r} := \coqdocvar{Reify} \coqdocvar{v} \coqdoctac{in}\coqdoceol
+\coqdocindent{3.50em}
+\coqdockw{let} \coqdocvar{e} := \coqdoctac{fresh} "e" \coqdoctac{in}\coqdoceol
+\coqdocindent{3.50em}
+\coqdoctac{pose} \coqdocvar{r} \coqdockw{as} \coqdocvar{e};\coqdoceol
+\coqdocindent{3.50em}
+\coqdoctac{change} (\coqdocvar{is\_even} (\coqdocvar{denote} (\coqdocvar{e} \coqdocvar{nat})))\coqdoceol
+\coqdocindent{1.00em}
+\coqdockw{end}.\coqdoceol
+\coqdocindent{1.00em}
+\coqdoctac{apply} \coqdocvar{check\_is\_even\_expr\_sound}.\coqdoceol
+\coqdocindent{1.00em}
+\{ \coqdoctac{intros} \coqdocvar{var1} \coqdocvar{var2}; \coqdocvar{solve\_related}. \}\coqdoceol
+\coqdocindent{1.00em}
+\{ \coqdockw{vm\_compute}; \coqdoctac{reflexivity}. \}\coqdoceol
+\coqdocnoindent
+\coqdockw{Qed}.\coqdoceol
+\end{coqdoccode}

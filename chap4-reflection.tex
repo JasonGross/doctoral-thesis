@@ -314,7 +314,7 @@ Inductive expr : Type -> Type :=
 | LetIn {V} : expr V -> expr (^V) -> expr V.
 \end{minted}
 
-This may seem a bit strange to those accustomed to encodings of terms in proof assistants, but it generalizes to a quite familiar encoding of dependent type theory using types, contexts, and terms.
+This may seem a bit strange to those accustomed to encodings of terms in proof assistants, but it generalizes to a quite familiar intrinsic encoding of dependent type theory using types, contexts, and terms.~\cite{Strongly2012Benton}
 Namely, when the expressions are multi-typed, we end up with something like
 \begin{minted}{coq}
 Inductive context :=
@@ -332,9 +332,7 @@ Inductive expr : context -> type -> Type :=
 \end{minted}
 
 Note that this generalizes nicely to codes for dependent types if the proof assistant supports induction-induction.
-\todoask{Is there a good citation for this sort of encoding?  Where did it originate?}
 \todoask{Is there a better name for this section?}
-\todo{cite https://link.springer.com/article/10.1007/s10817-011-9219-0 ``Strongly Typed Term Representations in Coq''}
 
 Although this representation enjoys both decidable equality of binders (like de Bruijn indices), as well as being well-typed-by-construction (like PHOAS), it's unfortunately unfit for coding algorithms that need to scale without massive assistance from the proof assistant.
 In particular, the na\"ive encoding of this inductive datatype incurs a quadratic overhead in representing terms involving binders, because each node stores the entire context.
@@ -344,14 +342,72 @@ Alternatively, if Coq is extended with support for dropping irrelevant subterms~
 
 \subsubsection{Nominal} \label{sec:binders:nominal}
 Nominal representations use names rather than indices for binders.
-These representations have the benefit of being more human-readable, but require reasoning about freshness of names and
-\todo{here}
+These representations have the benefit of being more human-readable, but require reasoning about freshness of names and capture-avoiding substitution.
+Additionally, if the representation of names is not sufficiently compact, the overhead of storing names at every binder node can become significant.
 
 \subsubsection{Locally Nameless} \label{sec:binders:locally-nameless}
 We mention the locally nameless representation because it is the term representation used by Coq itself.
 This representation uses de Bruijn indices for closed terms, and names for variables which are not bound in the current term.
 
-The choices of representation of binders, which are essential to encoding \mintinline{coq}{let}-expressions, include higher-order abstract syntax (HOAS)~\cite{HOAS}, parametric higher-order abstract syntax (PHOAS)~\cite{PhoasICFP08} also known as weak HOAS~\cite{weak2013Ciaffaglione}, de Bruijn indices~\cite{debruijn1972}, nominal representations~\cite{Nominal2003Pitts}, locally nameless representations~\cite{Locally2012Chargueraud,locally2007Leroy}, named representations, and nested abstract syntax~\cite{Nested2012Hirschowitz,deBruijn1999Bird}.
+Much like nominal representations, locally nameless representations also incur the overhead of generating and storing names.
+Na\"ive algorithms for generating fresh names, such as the algorithm used in Coq, can easily incur overhead that's linear in the size of the context.
+Generating $n$ fresh names then incurs $\mathcal \Theta(n^2)$ overhead.
+\todo{explain what evar substitutions are somewhere?  reference it here?}
+Additionally, using a locally nameless representation requires that evar substitutions be named.
+\todo{elaborate more on the performance bottlenecks of named evar substitutions}
+See also \autoref{sec:setoid-rewrite-bottlenecks}.
+
+\subsection{Performance of Proving Reflective Well-Formedness of PHOAS} \label{sec:wf:perf}
+
+We saw in \autoref{sec:binders:PHOAS} that in order to prove the soundness theorem, we needed a way to relate two PHOASTs, which generalized to a notion of well-formedness for the \mintinline{coq}{Expr} type.
+
+Unfortunately, the proof that two \mintinline{coq}{expr}s are \mintinline{coq}{related} is quadratic in the size of the expression, for much the same reason that proving conjunctions in \autoref{sec:quadratic-conj-certificate} resulted in a proof term which was quadratic in the number of conjuncts.
+We present two ways to encode linearly-sized proofs of well-formedness in PHOAS.
+
+\subsubsection{Iterating Reflection} \label{sec:wf:perf:reflective}
+
+The first method of encoding linearly-sized proofs of \mintinline{coq}{related} is itself a good study in how using proof by reflection can compress proof terms.
+Rather than constructing the inductive \mintinline{coq}{related} proof, we can instead write a fixed point:
+\begin{minted}{coq}
+Fixpoint is_related {var1 var2 : Type} (Γ : list (var1 * var2)) (e1 : @expr var1) (e2 : @expr var2) : Prop :=
+  match e1, e2 with
+  | NatO, NatO => True
+  | NatS e1, NatS e2 => is_related Γ e1 e2
+  | NatMul x1 y1, NatMul x2 y2 => is_related Γ x1 x2 /\ is_related Γ y1 y2
+  | Var v1, Var v2 => List.In (v1, v2) Γ
+  | LetIn e1 f1, LetIn e2 f2 => is_related Γ e1 e2 /\ forall v1 v2, is_related ((v1, v2) :: Γ) (f1 v1) (f2 v2)
+  end.
+\end{minted}
+This unfortunately isn't quite linear in the size of the syntax tree, though it is significantly smaller.
+One way to achieve truely linear%
+\footnote{%
+Actually, the size of the proof term will still be logarithmic in the size of the syntax tree, due to the way we represent list membership proofs.%
+}
+proofs is to pick a more optimized representation for list membership and to convert the proposition to be an eliminator.
+This consists of replacing $A \wedge B$ with $\forall P, A \to B \to P$, and similar.
+\begin{minted}{coq}
+Fixpoint is_related_at (P : Prop) {var1 var2 : Type} (Γ : list (var1 * var2)) (e1 : @expr var1) (e2 : @expr var2) : Prop :=
+  match e1, e2 with
+  | NatO, NatO => P
+  | NatS e1, NatS e2 => is_related_at P Γ e1 e2
+  | NatMul x1 y1, NatMul x2 y2
+    => let f1 := fun P => is_related_at P Γ x1 x2 in
+       let f2 := fun P => is_related_at P Γ y1 y2 in
+       f1 (f2 P)
+  | Var v1, Var v2 => forall n : N, List.nth_error Γ (N.to_nat n) = Some (v1, v2) -> P
+  | LetIn e1 f1, LetIn e2 f2
+    => let f1 := fun P => is_related_at P Γ e1 e2 in
+       let f2 := fun P => forall v1 v2, is_related_at P ((v1, v2) :: Γ) (f1 v1) (f2 v2) in
+       f1 (f2 P)
+  | _, _ => False
+  end.
+\end{minted}
+We can now prove that \mintinline{coq}{(∀ P, P → is_related_at P Γ e1 e2) → is_related Γ e1 e2}.
+By instantiating \mintinline{coq}{P} with \mintinline{coq}{is_related Γ e1 e2} and the first argument with the identity function, we can prove that \mintinline{coq}{
+
+
+
+
 
 \todo{here}
 

@@ -55,7 +55,7 @@ Proof terms, in a sense, are traces of a proof script.
 They provide Coq's kernel with a term that it can check to verify that no illegal steps were taken.
 Listing every step results in large traces.
 
-\begin{wrapfigure}[9]{r}{0pt}
+\begin{wrapfigure}[9]{r}{6cm}
 %\vspace{-33pt}
 \begin{minted}{coq}
 Fixpoint check_is_even (n : nat) : bool
@@ -94,7 +94,7 @@ Sometimes, to achieve faster proofs, we must be able to tell, for example, wheth
 %  Sometimes this distinction is necessary for generating a proof at all, as is the case in \mintinline{coq}{nsatz} and \mintinline{coq}{romega}; there is no way to prove that addition is commutative if you cannot identify what things you were adding in the first place.%
 %}
 
-\begin{wrapfigure}[4]{r}{0pt}
+\begin{wrapfigure}[4]{r}{6cm}
 %\vspace{-45pt}
 \begin{minted}{coq}
 Inductive expr :=

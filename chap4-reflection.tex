@@ -278,7 +278,7 @@ Definition Wf {t} (e : Expr t)
   := ∀ var1 var2, related [] (e var1) (e var2).
 \end{minted}
 
-See, e.g., \citet{PhoasICFP08} for a fuller treatment.
+See, e.g., \autocite{PhoasICFP08} for a fuller treatment.
 
 \subsubsection{de Bruijn Indices} \label{sec:binders:de-bruijn}
 The idea behind \emph{de Bruijn indices} is that variables are encoded by numbers which count up starting from the nearest enclosing binder.
@@ -480,7 +480,6 @@ The one part of proof by reflection that we've neglected up to this point is rei
 
 \todo{should I talk about parsers at all?}
 
-\begin{comment}
 \begin{subappendices}
 
 \section{Reflective Evenness Checking in Coq} \label{sec:evenness-in-coq}
@@ -617,5 +616,5 @@ Okay, so I think to finish up what I was saying were. Relying on the fact that y
 
 \section{case study: parsers?}
 \end{comment}
+
 \end{subappendices}
-\end{comment}

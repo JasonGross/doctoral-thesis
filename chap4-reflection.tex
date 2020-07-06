@@ -341,7 +341,6 @@ Inductive expr : context -> type -> Type :=
 \end{minted}
 
 Note that this generalizes nicely to codes for dependent types if the proof assistant supports induction-induction.
-\todoask{Is there a better name for this section?}
 
 Although this representation enjoys both decidable equality of binders (like de Bruijn indices), as well as being well-typed-by-construction (like PHOAS), it's unfortunately unfit for coding algorithms that need to scale without massive assistance from the proof assistant.
 In particular, the na\"ive encoding of this inductive datatype incurs a quadratic overhead in representing terms involving binders, because each node stores the entire context.
@@ -480,10 +479,16 @@ The one part of proof by reflection that we've neglected up to this point is rei
 
 \todo{should I talk about parsers at all?}
 
+\todo{cite related work thoughout as it's relevant}
+\todo{copy binder encoding citations to relevant sections}
+\todo{cite RTac, etc, in the introduction}
+\todo{copy the intro to reification from the parametricity paper, and extend it by explaining what's hard about binders, and forward-reference parametricity chapter}
+
 \begin{subappendices}
 
 \section{Reflective Evenness Checking in Coq} \label{sec:evenness-in-coq}
-\input{coq-fragments/evenness.raw.tex}
+\todo{fix input of this file}
+%\input{coq-fragments/evenness.raw.tex}
 \begin{comment}
     \section{Transcript bits from Adam}
      Okay, and then there'll be another section that is on program transformation and rewriting and this will be the other main section and this is like, I this is another week link in the thesis but this is this well, maybe it's not a week like oh this is the one that's sort of the performance issue is motivated by the grinding criterion that you have this separation between what you need to trust and what you can freely optimize and gives you this tension that makes.

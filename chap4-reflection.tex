@@ -447,10 +447,37 @@ The easiest way is to write a converter from PHOAS to de Bruijn.
 Hence we can prove the theorem \texttt{∀ e, is\_closed (PHOAS\_to\_deBruijn e) = true ∧ e = deBruijn\_to\_PHOAS (PHOAS\_to\_deBruijn e) → Wf e}.
 The hypothesis of this theorem is quite easy to check; we simply run \mintinline{coq}{vm_compute} and then instantiate it with the proof term \mintinline{coq}{conj (eq_refl true) (eq_refl e)}, which is linear in the size of \mintinline{coq}{e}.
 
-\section{Reification}
+\section{Reification} \label{sec:reif-survey}
 
 The one part of proof by reflection that we've neglected up to this point is reification.
-\todo{How much should be covered in this chapter?  How much in reification-by-parametricity?}
+There are many ways of performing reification; in \autoref{ch:reification-by-parametricity}, we discuss 18 different ways of implementing reification, using 6 different metaprogramming facilities in the Coq ecosystem: \Ltac, \LtacTwo, \Mtac~\cite{lessadhoc,Mtac2}, type classes~\cite{sozeau2008first}, canonical structures~\cite{gonthier2016small}, and reification-specific OCaml plugins (quote~\cite{quote-plugin}, template-coq~\cite{TemplateCoq}, ours).
+\autoref{fig:ltac-reify-nobinders} displays the simplest case: an Ltac script to reify a tree of function applications and constants.
+Unfortunately, all methods we surveyed become drastically more complicated or slower (and usually both) when adapted to reify terms with variable bindings such as \texttt{let}-\texttt{in} or \texttt{$\lambda$} nodes.
+
+\begin{wrapfigure}[10]{r}{6.4cm}
+%\vspace{-11pt}
+\begin{minted}{coq}
+Ltac f v x := (* reify var term *)
+  lazymatch x with
+  | O => constr:(@NatO v)
+  | S ?x => let X := f v x in
+            constr:(@NatS v X)
+  | ?x*?y => let X := f v x in
+             let Y := f v y in
+             constr:(@NatMul v X Y)
+  end.
+\end{minted}
+%\vspace{-20pt}
+\caption{Reification Without Binders in \Ltac}\label{fig:ltac-reify-nobinders}
+\end{wrapfigure}
+
+We have made detailed walkthroughs and source code of these implementations available\footnote{\url{https://github.com/mit-plv/reification-by-parametricity}} in hope that they will be useful for others considering implementing reification using one of these metaprogramming mechanisms, instructive as nontrivial examples of multiple metaprogramming facilities, or helpful as a case study in Coq performance engineering.
+\todo{Maybe include detailed walkthroughs in the appendix?}
+However, we do \emph{not} recommend reading these out of general interest:
+most of the complexity in the described implementations strikes us as needless,
+with significant aspects of the design being driven by surprising behaviors, misfeatures, bugs, and performance bottlenecks of the underlying machinery as opposed to the task of reification.
+
+\todo{Explain what's hard about binders}
 
 \section{Related Work}
 \todo{this section}

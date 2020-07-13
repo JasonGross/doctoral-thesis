@@ -1,4 +1,5 @@
-<svg xmlns="http://www.w3.org/2000/svg" width="165em" height="70em"><text x="0" y="0">
+<svg xmlns="http://www.w3.org/2000/svg" width="165em" height="71em"><text x="0" y="0">
+<tspan x="0" dy="1.2em">TODO: Make sure to exclude no files (not rewriting) in file jgross-thesis.tex on input line 54.</tspan>
 <tspan x="0" dy="1.2em">TODO: Run `make update-thesis' before submission to update the date on the cover page in file jgross-thesis.tex on input line 91.</tspan>
 <tspan x="0" dy="1.2em">TODO: change \string ^Linalfalse to \string ^Linaltrue  in file jgross-thesis.tex on input line 91.</tspan>
 <tspan x="0" dy="1.2em">TODO: Is the ``department committee chairman'' still Leslie A. Kolodziejski? in file cover.tex on input line 87.</tspan>

@@ -48,10 +48,11 @@
      with reflect {with_lets} {t} : expr t -> value' with_lets t
      ```
   - The NBE part of the rewriter, responsible for beta reduction and let-lifting, is now expressible:
+
     ```coq
     Local Notation "e <---- e' ; f" := (splice_value_with_lets e' (fun e => f%under_lets)) : under_lets_scope.
     Local Notation "e <----- e' ; f" := (splice_under_lets_with_value e' (fun e => f%under_lets)) : under_lets_scope.
-
+    (* Work Around PANDOCBUG(https://github.com/jgm/pandoc/issues/6533) *)
     Fixpoint rewrite_bottomup {t} (e : @expr value t) : value_with_lets t
       := match e with
          | expr.Ident t idc
@@ -270,8 +271,8 @@
       - We also define a relation `rawexpr_equiv` which says that two `rawexpr`s represent the same expression, up to different amounts of revealed structure.
         - Code:
           ```coq
-          Local Notation ```e1 === e2``` := (existT expr _ e1 = existT expr _ e2) : type_scope.
-
+          Local Notation "e1 === e2" := (existT expr _ e1 = existT expr _ e2) : type_scope.
+          (* Work Around PANDOCBUG(https://github.com/jgm/pandoc/issues/6533) *)
           Fixpoint rawexpr_equiv_expr {t0} (e1 : expr t0) (r2 : rawexpr) {struct r2} : Prop
             := match r2 with
                | rIdent _ t idc t' alt
@@ -288,7 +289,7 @@
                  => e === e1
                | rValue t e => False
                end.
-
+          (* Work Around PANDOCBUG(https://github.com/jgm/pandoc/issues/6533) *)
           Fixpoint rawexpr_equiv (r1 r2 : rawexpr) : Prop
             := match r1, r2 with
                | rExpr t e, r
@@ -331,7 +332,8 @@
           | Wf_rValue {t} G (v1 v2 : value t)
             : wf_value G v1 v2
               -> wf_rawexpr G (rValue v1) (reify v1) (rValue v2) (reify v2).
-          ``` --->
+          ```
+          --->
 - Evaluating the decision tree
   - Decision tree evaluation is performed by a single monolithic recursive function: `Fixpoint eval_decision_tree {T} (ctx : list rawexpr) (d : decision_tree) (cont : nat -> list rawexpr -> option T) {struct d} : option T`
     ```coq
@@ -447,7 +449,8 @@
                        -> (cont1 n ls1 = None <-> cont2 n ls2 = None)
                           /\ P (cont1 n ls1) (cont2 n ls2)),
             P (@eval_decision_tree var1 T1 ctx1 d cont1) (@eval_decision_tree var2 T2 ctx2 d cont2).
-        ``` --->
+        ```
+        --->
   - Definition
     - The `eval_decision_tree` procedure proceeds recursively on the structure of the `decision_tree`.
       - If the decision tree is a `TryLeaf k onfailure`, then we try the continuation on the `k`th rewrite rule.  If it fails (by returning `None`), we proceed with `onfailure`.  In the code, there is a bit of extra care taken to simplify the resulting output code when `onfailure` is just `Failure`, i.e., no remaining matches to try.  This probably does not impact performance, but it makes the output of the rewrite-rule-compilation procedure slightly easier to read and debug.

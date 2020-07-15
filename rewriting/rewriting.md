@@ -17,53 +17,53 @@
     If the let-bound variable contains any lambdas, lets, or applications of identifiers other than the above, then it is not inlined.
 
 ## Beta-Reduction and Let-Lifting
-  - We use the following data-type:
-    ```coq
-    Fixpoint value' (with_lets : bool) (t : type)
-      := match t with
-         | type.base t
-           => if with_lets then UnderLets (expr t) else expr t
-         | type.arrow s d
-           => value' false s -> value' true d
-         end.
-    Definition value := value' false.
-    Definition value_with_lets := value' true.
-    ```
-  - Here are some examples:
-    - `value Z := UnderLets (expr Z)`
-    - `value (Z -> Z) := expr Z -> UnderLets (expr Z)`
-    - `value (Z -> Z -> Z) := expr Z -> expr Z -> UnderLets (expr Z)`
-    - `value ((Z -> Z) -> Z) := (expr Z -> UnderLets (expr Z)) -> UnderLets (expr Z)`
-  - By converting expressions to values and using normalization-by-evaluation, we get beta reduction in the standard way.
-  - We use a couple of splicing combinators to perform let-lifting:
-    - `Fixpoint splice {A B} (x : UnderLets A) (e : A -> UnderLets B) : UnderLets B`
-    - `Fixpoint splice_list {A B} (ls : list (UnderLets A)) (e : list A -> UnderLets B) : UnderLets B`
-    - `Fixpoint splice_under_lets_with_value {T t} (x : UnderLets T) : (T -> value_with_lets t) -> value_with_lets t`
-    - `Definition splice_value_with_lets {t t'} : value_with_lets t -> (value t -> value_with_lets t') -> value_with_lets t'`
-  - There's one additional building block, which is responsible for deciding which lets to inline:
-    - `Fixpoint reify_and_let_binds_base_cps {t : base.type} : expr t -> forall T, (expr t -> UnderLets T) -> UnderLets T`
-  - As is typical for NBE, we make use of a reify-reflect pair of functions:
-     ```coq
-     Fixpoint reify {with_lets} {t} : value' with_lets t -> expr t
-     with reflect {with_lets} {t} : expr t -> value' with_lets t
-     ```
-  - The NBE part of the rewriter, responsible for beta reduction and let-lifting, is now expressible:
-    ```coq
-    Local Notation "e <---- e' ; f" := (splice_value_with_lets e' (fun e => f%under_lets)) : under_lets_scope.
-    Local Notation "e <----- e' ; f" := (splice_under_lets_with_value e' (fun e => f%under_lets)) : under_lets_scope.
+- We use the following data-type:
+  ```coq
+  Fixpoint value' (with_lets : bool) (t : type)
+    := match t with
+       | type.base t
+         => if with_lets then UnderLets (expr t) else expr t
+       | type.arrow s d
+         => value' false s -> value' true d
+       end.
+  Definition value := value' false.
+  Definition value_with_lets := value' true.
+  ```
+- Here are some examples:
+  - `value Z := UnderLets (expr Z)`
+  - `value (Z -> Z) := expr Z -> UnderLets (expr Z)`
+  - `value (Z -> Z -> Z) := expr Z -> expr Z -> UnderLets (expr Z)`
+  - `value ((Z -> Z) -> Z) := (expr Z -> UnderLets (expr Z)) -> UnderLets (expr Z)`
+- By converting expressions to values and using normalization-by-evaluation, we get beta reduction in the standard way.
+- We use a couple of splicing combinators to perform let-lifting:
+  - `Fixpoint splice {A B} (x : UnderLets A) (e : A -> UnderLets B) : UnderLets B`
+  - `Fixpoint splice_list {A B} (ls : list (UnderLets A)) (e : list A -> UnderLets B) : UnderLets B`
+  - `Fixpoint splice_under_lets_with_value {T t} (x : UnderLets T) : (T -> value_with_lets t) -> value_with_lets t`
+  - `Definition splice_value_with_lets {t t'} : value_with_lets t -> (value t -> value_with_lets t') -> value_with_lets t'`
+- There's one additional building block, which is responsible for deciding which lets to inline:
+  - `Fixpoint reify_and_let_binds_base_cps {t : base.type} : expr t -> forall T, (expr t -> UnderLets T) -> UnderLets T`
+- As is typical for NBE, we make use of a reify-reflect pair of functions:
+  ```coq
+  Fixpoint reify {with_lets} {t} : value' with_lets t -> expr t
+  with reflect {with_lets} {t} : expr t -> value' with_lets t
+  ```
+- The NBE part of the rewriter, responsible for beta reduction and let-lifting, is now expressible:
+  ```coq
+  Local Notation "e <---- e' ; f" := (splice_value_with_lets e' (fun e => f%under_lets)) : under_lets_scope.
+  Local Notation "e <----- e' ; f" := (splice_under_lets_with_value e' (fun e => f%under_lets)) : under_lets_scope.
 
-    Fixpoint rewrite_bottomup {t} (e : @expr value t) : value_with_lets t
-      := match e with
-         | expr.Ident t idc
-           => rewrite_head _ idc
-         | expr.App s d f x => let f : value s -> value_with_lets d := @rewrite_bottomup _ f in x <---- @rewrite_bottomup _ x; f x
-         | expr.LetIn A B x f => x <---- @rewrite_bottomup A x;
-                                   xv <----- reify_and_let_binds_cps x _ UnderLets.Base;
-                                   @rewrite_bottomup B (f (reflect xv))
-         | expr.Var t v => Base_value v
-         | expr.Abs s d f => fun x : value s => @rewrite_bottomup d (f x)
-         end%under_lets.
-    ```
+  Fixpoint rewrite_bottomup {t} (e : @expr value t) : value_with_lets t
+    := match e with
+       | expr.Ident t idc
+         => rewrite_head _ idc
+       | expr.App s d f x => let f : value s -> value_with_lets d := @rewrite_bottomup _ f in x <---- @rewrite_bottomup _ x; f x
+       | expr.LetIn A B x f => x <---- @rewrite_bottomup A x;
+                                 xv <----- reify_and_let_binds_cps x _ UnderLets.Base;
+                                 @rewrite_bottomup B (f (reflect xv))
+       | expr.Var t v => Base_value v
+       | expr.Abs s d f => fun x : value s => @rewrite_bottomup d (f x)
+       end%under_lets.
+  ```
 ## Rewriting
 ### There are three parts and one additional detail to rewriting:
 - Pattern matching compilation

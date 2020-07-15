@@ -101,7 +101,18 @@ Let-Lifting}\label{beta-reduction-and-let-lifting}}
 \begin{itemize}
 \item
   We use the following data-type:
-  \texttt{coq\ \ \ \ \ Fixpoint\ value\textquotesingle{}\ (with\_lets\ :\ bool)\ (t\ :\ type)\ \ \ \ \ ~\ :=\ match\ t\ with\ \ \ \ \ ~\ ~\ ~\textbar{}\ type.base\ t\ \ \ \ \ ~\ ~\ ~\ ~=\textgreater{}\ if\ with\_lets\ then\ UnderLets\ (expr\ t)\ else\ expr\ t\ \ \ \ \ ~\ ~\ ~\textbar{}\ type.arrow\ s\ d\ \ \ \ \ ~\ ~\ ~\ ~=\textgreater{}\ value\textquotesingle{}\ false\ s\ -\textgreater{}\ value\textquotesingle{}\ true\ d\ \ \ \ \ ~\ ~\ ~end.\ \ \ \ \ Definition\ value\ :=\ value\textquotesingle{}\ false.\ \ \ \ \ Definition\ value\_with\_lets\ :=\ value\textquotesingle{}\ true.}
+
+\begin{verbatim}
+Fixpoint value' (with_lets : bool) (t : type)
+  := match t with
+     | type.base t
+       => if with_lets then UnderLets (expr t) else expr t
+     | type.arrow s d
+       => value' false s -> value' true d
+     end.
+Definition value := value' false.
+Definition value_with_lets := value' true.
+\end{verbatim}
 \item
   Here are some examples:
 
@@ -146,7 +157,11 @@ Let-Lifting}\label{beta-reduction-and-let-lifting}}
 \item
   As is typical for NBE, we make use of a reify-reflect pair of
   functions:
-  \texttt{coq\ \ \ \ \ \ Fixpoint\ reify\ \{with\_lets\}\ \{t\}\ :\ value\textquotesingle{}\ with\_lets\ t\ -\textgreater{}\ expr\ t\ \ \ \ \ \ with\ reflect\ \{with\_lets\}\ \{t\}\ :\ expr\ t\ -\textgreater{}\ value\textquotesingle{}\ with\_lets\ t}
+
+\begin{verbatim}
+Fixpoint reify {with_lets} {t} : value' with_lets t -> expr t
+with reflect {with_lets} {t} : expr t -> value' with_lets t
+\end{verbatim}
 \item
   The NBE part of the rewriter, responsible for beta reduction and
   let-lifting, is now expressible:

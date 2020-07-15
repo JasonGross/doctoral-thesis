@@ -48,11 +48,10 @@
      with reflect {with_lets} {t} : expr t -> value' with_lets t
      ```
   - The NBE part of the rewriter, responsible for beta reduction and let-lifting, is now expressible:
-
     ```coq
     Local Notation "e <---- e' ; f" := (splice_value_with_lets e' (fun e => f%under_lets)) : under_lets_scope.
     Local Notation "e <----- e' ; f" := (splice_under_lets_with_value e' (fun e => f%under_lets)) : under_lets_scope.
-    (* Work Around PANDOCBUG(https://github.com/jgm/pandoc/issues/6533) *)
+
     Fixpoint rewrite_bottomup {t} (e : @expr value t) : value_with_lets t
       := match e with
          | expr.Ident t idc
@@ -272,7 +271,7 @@
         - Code:
           ```coq
           Local Notation "e1 === e2" := (existT expr _ e1 = existT expr _ e2) : type_scope.
-          (* Work Around PANDOCBUG(https://github.com/jgm/pandoc/issues/6533) *)
+
           Fixpoint rawexpr_equiv_expr {t0} (e1 : expr t0) (r2 : rawexpr) {struct r2} : Prop
             := match r2 with
                | rIdent _ t idc t' alt
@@ -289,7 +288,7 @@
                  => e === e1
                | rValue t e => False
                end.
-          (* Work Around PANDOCBUG(https://github.com/jgm/pandoc/issues/6533) *)
+
           Fixpoint rawexpr_equiv (r1 r2 : rawexpr) : Prop
             := match r1, r2 with
                | rExpr t e, r

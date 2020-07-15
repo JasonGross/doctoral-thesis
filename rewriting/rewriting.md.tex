@@ -2438,7 +2438,29 @@ Local Notation base_type_of t
     the rewrite replacement rule to the binding data, normalizes the
     applied rewrite replacement rule, calls the rewriter again on the
     output if it should, and returns the result.
-    \texttt{coq\ \ \ Definition\ rewrite\_with\_rule\ \{t\}\ e\textquotesingle{}\ (pf\ :\ rewrite\_ruleT)\ \ \ ~\ :\ option\ (UnderLets\ (expr\ t))\ \ \ ~\ :=\ let\ \textquotesingle{}existT\ p\ f\ :=\ pf\ in\ \ \ ~\ ~\ ~let\ should\_do\_again\ :=\ rew\_should\_do\_again\ f\ in\ \ \ ~\ ~\ ~unify\_pattern\ \ \ ~\ ~\ ~\ ~e\textquotesingle{}\ (pattern.pattern\_of\_anypattern\ p)\ \_\ \ \ ~\ ~\ ~\ ~(fun\ x\ \ \ ~\ ~\ ~\ ~\ =\textgreater{}\ app\_with\_unification\_resultT\_cps\ \ \ ~\ ~\ ~\ ~\ ~\ ~\ ~(rew\_replacement\ f)\ x\ \_\ \ \ ~\ ~\ ~\ ~\ ~\ ~\ ~(fun\ f\textquotesingle{}\ \ \ ~\ ~\ ~\ ~\ ~\ ~\ ~\ =\textgreater{}\ (tr\ \textless{}-\ type.try\_make\_transport\_cps\ (@base.try\_make\_transport\_cps)\ \_\ \_\ \_;\ \ \ ~\ ~\ ~\ ~\ ~\ ~\ ~\ ~\ ~\ ~\ (tr\ \textless{}-\ tr;\ \ \ ~\ ~\ ~\ ~\ ~\ ~\ ~\ ~\ ~\ ~\ ~\ ~(tr\textquotesingle{}\ \textless{}-\ type.try\_make\_transport\_cps\ (@base.try\_make\_transport\_cps)\ \_\ \_\ \_;\ \ \ ~\ ~\ ~\ ~\ ~\ ~\ ~\ ~\ ~\ ~\ ~\ ~\ ~\ (tr\textquotesingle{}\ \textless{}-\ tr\textquotesingle{};\ \ \ ~\ ~\ ~\ ~\ ~\ ~\ ~\ ~\ ~\ ~\ ~\ ~\ ~\ ~\ ~option\_bind\textquotesingle{}\ \ \ ~\ ~\ ~\ ~\ ~\ ~\ ~\ ~\ ~\ ~\ ~\ ~\ ~\ ~\ ~\ ~(normalize\_deep\_rewrite\_rule\ (projT2\ f\textquotesingle{}))\ \ \ ~\ ~\ ~\ ~\ ~\ ~\ ~\ ~\ ~\ ~\ ~\ ~\ ~\ ~\ ~\ ~(fun\ fv\ \ \ ~\ ~\ ~\ ~\ ~\ ~\ ~\ ~\ ~\ ~\ ~\ ~\ ~\ ~\ ~\ ~\ =\textgreater{}\ Some\ (fv\ \textless{}-\/-\ fv;\ \ \ ~\ ~\ ~\ ~\ ~\ ~\ ~\ ~\ ~\ ~\ ~\ ~\ ~\ ~\ ~\ ~\ ~\ ~\ ~\ ~\ ~\ ~fv\ \textless{}-\/-\ maybe\_do\_again\ should\_do\_again\ (base\_type\_of\ (type\_of\_rawexpr\ e\textquotesingle{}))\ (tr\ fv);\ \ \ ~\ ~\ ~\ ~\ ~\ ~\ ~\ ~\ ~\ ~\ ~\ ~\ ~\ ~\ ~\ ~\ ~\ ~\ ~\ ~\ ~\ ~UnderLets.Base\ (tr\textquotesingle{}\ fv))\%under\_lets))\%option)\%cps)\%option)\%cps)\%cps).}
+
+\begin{verbatim}
+Definition rewrite_with_rule {t} e' (pf : rewrite_ruleT)
+  : option (UnderLets (expr t))
+  := let 'existT p f := pf in
+     let should_do_again := rew_should_do_again f in
+     unify_pattern
+       e' (pattern.pattern_of_anypattern p) _
+       (fun x
+        => app_with_unification_resultT_cps
+             (rew_replacement f) x _
+             (fun f'
+              => (tr <- type.try_make_transport_cps (@base.try_make_transport_cps) _ _ _;
+                    (tr <- tr;
+                       (tr' <- type.try_make_transport_cps (@base.try_make_transport_cps) _ _ _;
+                          (tr' <- tr';
+                             option_bind'
+                               (normalize_deep_rewrite_rule (projT2 f'))
+                               (fun fv
+                                => Some (fv <-- fv;
+                                           fv <-- maybe_do_again should_do_again (base_type_of (type_of_rawexpr e')) (tr fv);
+                                           UnderLets.Base (tr' fv))%under_lets))%option)%cps)%option)%cps)%cps).
+\end{verbatim}
 
     \begin{itemize}
     \tightlist

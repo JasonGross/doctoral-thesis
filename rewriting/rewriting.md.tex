@@ -131,13 +131,17 @@ Fixpoint rewrite_bottomup {t} (e : @expr value t) : value_with_lets t
      | expr.Abs s d f => fun x : value s => @rewrite_bottomup d (f x)
      end%under_lets.
 \end{verbatim}
+\end{itemize}
 
-  \hypertarget{rewriting}{%
-  \subsection{Rewriting}\label{rewriting}}
+\hypertarget{rewriting}{%
+\subsection{Rewriting}\label{rewriting}}
 
-  \hypertarget{there-are-three-parts-and-one-additional-detail-to-rewriting}{%
-  \subsubsection{There are three parts and one additional detail to
-  rewriting:}\label{there-are-three-parts-and-one-additional-detail-to-rewriting}}
+\hypertarget{there-are-three-parts-and-one-additional-detail-to-rewriting}{%
+\subsubsection{There are three parts and one additional detail to
+rewriting:}\label{there-are-three-parts-and-one-additional-detail-to-rewriting}}
+
+\begin{itemize}
+\tightlist
 \item
   Pattern matching compilation
 \item
@@ -145,7 +149,14 @@ Fixpoint rewrite_bottomup {t} (e : @expr value t) : value_with_lets t
 \item
   Rewriting with a particular rewrite rule
 \item
-  Rewriting again in the output of a rewrite rule \#\#\# Overview
+  Rewriting again in the output of a rewrite rule
+\end{itemize}
+
+\hypertarget{overview}{%
+\subsubsection{Overview}\label{overview}}
+
+\begin{itemize}
+\tightlist
 \item
   Rewrite rules are patterns (things like \texttt{??\ +\ \#?} meaning
   ``any variable added to any literal'') paired with dependently typed
@@ -158,8 +169,15 @@ Fixpoint rewrite_bottomup {t} (e : @expr value t) : value_with_lets t
   correct type.
 \item
   A list of rewrite rules is compiled into (a) a decision tree, and (b)
-  a rewriter that functions by evaluating that decision tree. \#\#\# The
-  small extra detail: Rewriting again in the output of a rewrite rule
+  a rewriter that functions by evaluating that decision tree.
+\end{itemize}
+
+\hypertarget{the-small-extra-detail-rewriting-again-in-the-output-of-a-rewrite-rule}{%
+\subsubsection{The small extra detail: Rewriting again in the output of
+a rewrite
+rule}\label{the-small-extra-detail-rewriting-again-in-the-output-of-a-rewrite-rule}}
+
+\begin{itemize}
 \item
   We tie the entire rewriter together with a fueled repeat\_rewrite; the
   fuel is set to the length of the list of rewrite rules. This means
@@ -188,7 +206,14 @@ Fixpoint repeat_rewrite
   cons cells) in the output of the \texttt{flat\_map} rule
   (\texttt{flat\_map} on a literal list of cons cells maps the function
   over the list and joins the resulting lists with \texttt{List.app}).
-  \#\#\# Pattern matching compilation
+\end{itemize}
+
+\hypertarget{pattern-matching-compilation}{%
+\subsubsection{Pattern matching
+compilation}\label{pattern-matching-compilation}}
+
+\begin{itemize}
+\tightlist
 \item
   This part of the rewriter does not need to be verified, because the
   rewriter-compiler is proven correct independent of the decision tree
@@ -455,9 +480,17 @@ Definition compile_rewrites_step
       definition \texttt{compile\_rewrites} which extracts the
       well-typed patterns from a list of rewrite rules, associates them
       to indices, and strips the typing information off of the patterns
-      to create raw (untyped) patterns. \#\#\# Decision Tree Evaluation
+      to create raw (untyped) patterns.
     \end{itemize}
   \end{itemize}
+\end{itemize}
+
+\hypertarget{decision-tree-evaluation}{%
+\subsubsection{Decision Tree
+Evaluation}\label{decision-tree-evaluation}}
+
+\begin{itemize}
+\tightlist
 \item
   The next step in rewriting is to evaluate the decision tree to
   construct Gallina procedure that takes in an unknown (at
@@ -992,13 +1025,20 @@ Fixpoint eval_decision_tree {T} (ctx : list rawexpr) (d : decision_tree) (cont :
             that we have two different constants that we use for binding
             these arguments; they do the same thing, but one is reduced
             away completely at rewrite-rule-compilation time, and the
-            other is preserved. \#\#\# Rewriting with a particular
-            rewrite rule
+            other is preserved.
           \end{itemize}
         \end{itemize}
       \end{itemize}
     \end{itemize}
   \end{itemize}
+\end{itemize}
+
+\hypertarget{rewriting-with-a-particular-rewrite-rule}{%
+\subsubsection{Rewriting with a particular rewrite
+rule}\label{rewriting-with-a-particular-rewrite-rule}}
+
+\begin{itemize}
+\tightlist
 \item
   The final big piece of the rewriter is to rewrite with a particular
   rule, given a \texttt{rawexpr} with enough revealed structure, a
@@ -2483,13 +2523,15 @@ Lemma interp_rewrite_with_rule
     -> rawexpr_interp_related re (rew Ht in v2)
     -> UnderLets_interp_related v1 v2.
 \end{verbatim}
-
-        \hypertarget{tying-it-all-together}{%
-        \subsubsection{Tying it all
-        together}\label{tying-it-all-together}}
       \end{itemize}
     \end{itemize}
   \end{itemize}
+\end{itemize}
+
+\hypertarget{tying-it-all-together}{%
+\subsubsection{Tying it all together}\label{tying-it-all-together}}
+
+\begin{itemize}
 \item
   We can now say what it means to rewrite with a decision tree in a
   given \texttt{rawexpr} \texttt{re}. We evaluate the decision tree, and

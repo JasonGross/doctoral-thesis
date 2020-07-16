@@ -15,48 +15,87 @@ However, we believe some of the engineering effort serves as a good case-study f
 This chapter is about exposing the details relevant to understanding how the bottlenecks and principles identified elsewhere in this thesis played out in designing and implementing this tool.
 
 \section{A Brief Survey of the Engineering Challenges} \label{sec:rewriting-more:challenges-overview}
+
+While the core rewriting engine of the framework is about 1\,300 lines of code, and early simplified versions of the core engine were only about 150 lines of code%
+\footnote{%
+See \url{https://web.archive.org/web/20200716002534/https://github.com/JasonGross/fiat-crypto/blob/3b3e926e4186caa1a4003c81c65dad0a1c04b43d/src/Experiments/RewriteRulesSimpleNat.v} for the file \texttt{src/Experiments/RewriteRulesSimpleNat.v} from \href{https://github.com/JasonGross/fiat-crypto/tree/experiments-small-rewrite-rule-compilation}{the branch \texttt{experiments-small-rewrite-rule-compilation} on \texttt{JasonGross/fiat-crypto} on GitHub}.%
+}%
+, the correctness proofs take nearly another 8\,000 lines of code!
+% git ls-files "src/Rewriter/Rewriter/*.v" | grep -o 'src/Rewriter/Rewriter/[^/]*\.v' | xargs coqwc  | sort -h | less
+% add up totals, subtract off the lines in Rewriter.v
+As such, this tool, developed to solve performance scaling issues in verified syntax transformation, itself serves as a good case study of some of the pain that arises when scaling proof-based engineering projects.
+
+Our discussion in this section is organized by the conceptual structure of the normalization and pattern matching compilation engine;
+we hope that organizing the discussion in this way will make the examples more understandable, motivated, and incremental.
+We note, however, that many of the challenges fall into the same broad categories that we've identified earlier in this thesis:
+issues arising from the power and (mis)use of dependent types, as introduced in \fullref{sec:why-how-dependent-types};
+and issues arising arising from API mismatches, as described in \fullref{ch:api-design}.
+
+\subsection{NbE vs.~Pattern Matching Compilation: Mismatched Expression APIs}
+\begin{itemize}
+\item \todo{talk about rawexpr\_types\_ok}
+\item \todo{talk about how we can unify types at all (c.f.~\texttt{preunify\_types})}
+\end{itemize}
+\subsubsection{The Pain of Type-Indexed Swap}
+
 \subsection{Patterns with Type Variables -- The Three Kinds of Identifiers}
+
 \subsection{Pre-evaluation}
+\\
 \subsubsection{CPS}
+\\
 \subsubsection{Type Codes}
+\\
 \subsubsection{What Can We Unfold?}
-\todo{talk about the ``known'' parameter of rIdent}
-\todo{talk about multiple aliases like \texttt{option\_bind'}}
-\todo{talk about lack of help from the compiler / type-checker}
-\todo{talk about ``Note that here we are jumping through some extra hoops to get the right reduction behavior at rewrite-rule-compilation time.'' for \texttt{eval\_decision\_tree}}
-\todo{foward-reference pain with casts?}
-\todo{talk about whether or not to eliminate PositiveMap.t?} % ``In a possibly-gratuitous use of dependent typing to ensure that''
-\todo{talk about the general tradeoff between runtime checks and static proofs} % ``However, the proofs are much simpler if we simply do a wholesale check at the very end
-\todo{talk about the cost of inconsistent decisions spreading pain elsewhere} % ``Here we pay the price of an imperfect abstraction barrier (that we have types lying around, and we rely in some places on types lining up, but do not track everywhere that types line up).''
+\begin{itemize}
+\item \todo{talk about the ``known'' parameter of rIdent}
+\item \todo{talk about multiple aliases like \texttt{option\_bind'}}
+\item \todo{talk about lack of help from the compiler / type-checker}
+\item \todo{talk about ``Note that here we are jumping through some extra hoops to get the right reduction behavior at rewrite-rule-compilation time.'' for \texttt{eval\_decision\_tree}}
+\item \todo{foward-reference pain with casts?}
+\item \todo{talk about whether or not to eliminate PositiveMap.t?} % ``In a possibly-gratuitous use of dependent typing to ensure that''
+\item \todo{talk about the general tradeoff between runtime checks and static proofs} % ``However, the proofs are much simpler if we simply do a wholesale check at the very end
+\item \todo{talk about the cost of inconsistent decisions spreading pain elsewhere} % ``Here we pay the price of an imperfect abstraction barrier (that we have types lying around, and we rely in some places on types lining up, but do not track everywhere that types line up).''
+\end{itemize}
 \subsubsection{Revealing ``Enough'' Structure}
-\todo{talk also about tracking both the revealed and unrevealed structure}
-\todo{talk about $\eta$-expanding identifier matches}
+\begin{itemize}
+\item \todo{talk also about tracking both the revealed and unrevealed structure}
+\item \todo{talk about $\eta$-expanding identifier matches}
+\end{itemize}
+
 \subsection{The Let-In Monad: Missing Abstraction Barriers at the Type Level}
 \todo{Talk also about the pain of wf statements for, e.g., \texttt{wf\_normalize\_deep\_rewrite\_rule}, having to go underneath multiple monads}
-\subsection{NbE vs.~Pattern Matching Compilation: Mismatched Expression APIs}
-\todo{talk about rawexpr\_types\_ok}
-\todo{talk about how we can unify types at all (c.f.~\texttt{preunify\_types})}
-\subsubsection{The Pain of Type-Indexed Swap}
+
 \subsection{Delayed Rewriting in Variable Nodes}
 \todo{rValue vs rExpr}
+
 \subsection{Relating Expressions and Values}
 \todo{figure out where this goes, how to explain it, where it arises from:}
 ``In general, the stored values are only interp-related to the same things that the ``unrevealed structure'' expressions are interp-related to. There is no other relation (that we've found) between the values and the expressions, and this caused a great deal of pain when trying to specify the interpretation correctness properties.''
+
 \subsection{Rewriting Again in the Output of a Rewrite Rule}
+\\
 \subsection{Which Equivalence Relation?}
 \todo{talk about \texttt{rawexpr\_equiv}, 4-place \texttt{wf\_rawexpr}, nuance of revealing structure in CPS'd \texttt{eval\_decision\_tree}, non-obvious \texttt{wf\_value} binding list, \texttt{interp\_related\_gen} unsuccessfully avoiding funext (and also needing to be instantiated with \texttt{value\_interp\_related} sometimes), \texttt{rawexpr\_interp\_related} and separating (or not) goodness from relatedness, \texttt{rawexpr\_types\_ok}?, \texttt{unification\_resultT'\_interp\_related}?, \texttt{interp\_unify\_pattern'}?, interpretation-correctness related to rewriting again}
+
 \subsection{Dependently Typed Pain in Applying Rewrite Rules}
-\todo{talk about ``There are two steps to rewriting with a rule \ldots''}
+\begin{itemize}
+\item \todo{talk about ``There are two steps to rewriting with a rule \ldots''}
 ``\ldots\space both conceptually simple but in practice complicated by dependent types.
 We must unify a pattern with an expression, gathering binding data for the replacement rule as we go; and we must apply the replacement rule to the binding data (which is non-trivial because the rewrite rules are expressed as curried dependently-typed towers indexed over the rewrite rule pattern).
 In order to state the correctness conditions for gathering binding data, we must first talk about applying replacement rules to binding data.''
-\todo{mention a trade-off here: note that we can't eliminate equality tests/casts early if we introduce them in the wrong place, c.f.~\texttt{app\_transport\_with\_unification\_resultT'\_cps}}
+\item \todo{mention a trade-off here: note that we can't eliminate equality tests/casts early if we introduce them in the wrong place, c.f.~\texttt{app\_transport\_with\_unification\_resultT'\_cps}}
+\end{itemize}
+
 \subsection{Dependently Typed Pain in Indexing Over Types}
 \todo{this subsection}
 ``We can define a transformation that takes in a \texttt{PositiveMap.t} of pattern type variables to types, together with a \texttt{PositiveSet.t} of type variables that we care about, and re-creates a new \texttt{PositiveMap.t} in accordance with the \texttt{PositiveSet.t}.
 This is required to get some theorem types to line up, and is possibly an indication of a leaky abstraction barrier.''
+
 \subsection{What's the Ground Truth: Patterns Or Expressions?}
 \todo{default interpretation of a pattern --- complicated, but perhaps needed for phrasing correctness of unification}
+
+\section{Leaky Abstraction Barriers: NbE vs.~Pattern Matching Compilation}
 
 
 \todo{this chapter}

@@ -41,7 +41,10 @@ and issues arising arising from API mismatches, as described in \fullref{ch:api-
 $\left.\right.$
 
 \subsection{Patterns with Type Variables -- The Three Kinds of Identifiers}
-$\left.\right.$
+\begin{itemize}
+\item \todo{talk about the default of having syntax indexed over the set of available type variables}
+\item \todo{talk about how lifting causes pain due to dependent types, also linear traversal of term}
+\end{itemize}
 
 \subsection{Pre-evaluation}
 $\left.\right.$
@@ -69,6 +72,9 @@ $\left.\right.$
 \subsection{The Let-In Monad: Missing Abstraction Barriers at the Type Level}
 \todo{Talk also about the pain of wf statements for, e.g., \texttt{wf\_normalize\_deep\_rewrite\_rule}, having to go underneath multiple monads}
 
+\subsection{Rewriting Again in the Output of a Rewrite Rule}
+$\left.\right.$
+
 \subsection{Delayed Rewriting in Variable Nodes}
 \todo{rValue vs rExpr}
 
@@ -76,8 +82,6 @@ $\left.\right.$
 \todo{figure out where this goes, how to explain it, where it arises from:}
 ``In general, the stored values are only interp-related to the same things that the ``unrevealed structure'' expressions are interp-related to. There is no other relation (that we've found) between the values and the expressions, and this caused a great deal of pain when trying to specify the interpretation correctness properties.''
 
-\subsection{Rewriting Again in the Output of a Rewrite Rule}
-$\left.\right.$
 \subsection{Which Equivalence Relation?}
 \todo{talk about \texttt{rawexpr\_equiv}, 4-place \texttt{wf\_rawexpr}, nuance of revealing structure in CPS'd \texttt{eval\_decision\_tree}, non-obvious \texttt{wf\_value} binding list, \texttt{interp\_related\_gen} unsuccessfully avoiding funext (and also needing to be instantiated with \texttt{value\_interp\_related} sometimes), \texttt{rawexpr\_interp\_related} and separating (or not) goodness from relatedness, \texttt{rawexpr\_types\_ok}?, \texttt{unification\_resultT'\_interp\_related}?, \texttt{interp\_unify\_pattern'}?, interpretation-correctness related to rewriting again}
 

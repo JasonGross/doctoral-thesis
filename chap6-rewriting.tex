@@ -32,13 +32,101 @@ We note, however, that many of the challenges fall into the same broad categorie
 issues arising from the power and (mis)use of dependent types, as introduced in \fullref{sec:why-how-dependent-types};
 and issues arising arising from API mismatches, as described in \fullref{ch:api-design}.
 
+\subsection{Pre-Reduction} \label{sec:rewriting-more:pre-reduction}
+
 \subsection{NbE vs.~Pattern Matching Compilation: Mismatched Expression APIs}
+\todo{should I be consistent about naming syntax that's well-typed by construction?  I call it ``intrinsically-typed syntax'', ``syntax that is well-typed by construction'', ``intrinsically-well-typed syntax'', and ``type-indexed sytnax''\ldots}
+We introduced normalization by evaluation (NbE)~\cite{NbE} in \autoref{sec:our-solution} and expanded on it in \autoref{sec:thunk-eval-subst-term} as a way to support higher-order reduction of $\lambda$-terms.
+The termination argument for NbE proceeds by recursion on the type of the term we're reducing.
+In particular, the most natural way to define these functions in a proof assistant is to proceed by structural recursion on the type of the term being reduced.
+This feature suggests that using intrinsically-typed syntax is more natural for NbE, and we saw in \autoref{sec:binders:de-bruijn} that denotation functions are also simpler on syntax that is well-typed by construction.
+
+However, the pattern-matching compilation algorithm of \textcite{maranget2008compiling} inherently operates on untyped syntax.
+We thus have four options:
+(1) use intrinsically-well-typed syntax everywhere, paying the cost in the pattern-matching compilation and evaluation algorithm;
+(2) use untyped syntax in both NbE and rewriting, paying the associated costs in NbE, denotation, and in our proofs;
+(3) use intrinsically-well-typed syntax in most passes, and untyped syntax for pattern matching compilation;
+(4) invent a pattern-matching compilation algorithm that is well-suited to type-indexed sytnax.
+We ultimately chose option (3).
+I was not clever enough to follow through on option (4), and while options (1) and (2) are both interesting, option (3) seemed to follow the well-established convention of using whichever datatype is best-suited to the task at hand.
+As we'll shortly see, all of these options come with significant costs, and (3) is not as obviously a good choice as it might seem at first glance.
+
+\subsubsection{Pattern-Matching Evaluation on Type-Indexed Terms}
+While the cost of performing pattern-matching compilation on type-indexed terms is noticable, it's relatively insignificant compared to the cost of evaluating decisions trees directly on type-indexed terms.
+In particular, pattern-matching compilation effectively throws away the type information whenever it encounters it; whether we do this early or late does not matter much, and we only perform this compilation once for any given set of rewrite rules.
+
+By contrast, evaluation of the decision tree needs to produce \emph{term ASTs} that are used in rewriting, and hence we need to preserve type information in the input.
+Recall from \autoref{sec:pattern-matching-compilation-and-evaluation} that decision-tree evaluation operates on lists of terms.
+Here already we hit our first snag: if we want to operate on well-typed terms, we must index our lists over a list of types.
+This is not so bad, but recall also from \autoref{sec:pattern-matching-compilation-and-evaluation} that decision trees contain four constructors:
+\begin{itemize}
+  \item \texttt{TryLeaf k onfailure}: Try the $k^\text{th}$ rewrite rule; if it fails, keep going with \texttt{onfailure}.
+  \item \texttt{Failure}: Abort; nothing left to try.
+  \item \texttt{Switch icases app\_case default}:
+    With the first element of the vector, match on its kind; if it is an identifier matching something in \texttt{icases}, which is a list of pairs of identifiers and decision trees, remove the first element of the vector and run that decision tree; if it is an application and \texttt{app\_case} is not \texttt{None}, try the \texttt{app\_case} decision tree, replacing the first element of each vector with the two elements of the function and the argument it is applied to; otherwise, do not modify the vectors and use the \texttt{default} decision tree.
+  \item \texttt{Swap i cont}: Swap the first element of the vector with the $i^\texttt{th}$ element (0-indexed) and keep going with \texttt{cont}.
+\end{itemize}
+The first two constructors are not very interesting, as far as overhead goes, but the third and fourth constructors are quite painful.
+
+Note that the type of \mintinline{coq}{eval_decision_tree} would be something like \mintinline{coq}{∀ {T : Type} (d : decision_tree) (ts : list type) (es : exprlist ts) (K : exprlist ts → option T), option T}.
+
+
+We cover the \mintinline{coq}{Swap} case first, because it is simpler.
+To perform a \mintinline{coq}{Swap}, we must exchange two elements of the type-indexed list.
+Hence we need both two swap the elements of the list of types, and then to have a separate, dependently-typed swap function for the vector of expressions.
+Moreover, since we need to undo the swapping inside the continutation \todo{does this need more explanation or code?}, we must have an \emph{separate} unswap function on expression vectors which goes from a swapped type list to the original one.
+We could instead elide the swap node, but then we could no longer use matching, \mintinline{coq}{hd}, and \mintinline{coq}{tl} to operate on the expressions, and would instead need special operations to do surgery in the middle of the list, in a way that preserves type-indexing.
+
+To perform a \mintinline{coq}{Switch}, we must break apart the first element of our type-indexed list, determining whether it is an application, and identifier, or other.
+Note that even with dependent types, we cannot avoid needing a failure case for when the type-indexed list is empty, even though such a case should never occur.
+This mismatch---the need to include failure cases that one might expect to be eliminated by dependent typing information---is a sign that the amount of dependency in the types is wrong.
+It may be too little, whence the developer should see if there is a way to incorporate the lack-of-error into the typing information (which in this case would require indexing the type of the decision tree over the length of the vector).
+It may alternatively be to much dependent typing, and the developer might be well-served by removing more dependency from the types and letting more things fall into the error case.
+
+After breaking apart the first element, we must convoy \todo{should I cite CPDT or somewhere in this thesis for the convoy pattern?} the continuation across the \mintinline{coq}{match} statement so that we can pass an expression vector of the correct type to the continuation \mintinline{coq}{K}.
+In code, this branch might look something like
+\begin{minted}{coq}
+…
+| Switch icases app_case default
+  => match es in exprlist ts return (exprlist ts → option T) → option T with
+     | [] => λ _, None
+     | e :: es
+       => match e in expr t return (exprlist (t :: ts) → option T) → option T with
+          | App s d f x => λ K,
+              let K' : exprlist ((s → d) :: s :: ts) (* new continuation to pass on recursively *)
+                := λ es', K (App (hd es') (hd (tl es')) :: tl (tl es')) in
+              … (* do something with app_case *)
+          | Ident t idc => λ K, … (* do something with icases *)
+          | _ => λ K,
+              let K' : exprlist ts (* new continuation to pass on recursively *)
+                := λ es', K (Ident idc :: es') in
+              … (* do something with default, eventually calling  *)
+          end
+     end K
+…
+\end{minted}
+Note that \mintinline{coq}{hd} and \mintinline{coq}{tl} \emph{must} be type-indexed, and we \emph{cannot} simply match on \mintinline{coq}{es'} in the \mintinline{coq}{App} case;
+there is no way to preserve the connection between the types of the first two elements of \mintinline{coq}{es'} inside such a \mintinline{coq}{match} statement.
+
+This may not look too bad, but it gets worse.
+Since the \mintinline{coq}{match} on \mintinline{coq}{e} will not be known until we are actually doing the rewriting on a concrete expression, and the continuation is convoyed across this \mintinline{coq}{match}, there is no way to evaluate the continuation during compilation of rewrite rules.
+If we don't want to evaluate the continutation early, we'd have to be very careful not to duplicate it across all of the decision tree evaluation cases, as we might otherwise incur a super-linear runtime factor in the number of rewrite rules.
+As noted in \autoref{sec:rewriting-more:pre-reduction}, our early reduction nets us a $2\times$ speedup in runtime of rewriting, and is therefore relatively important to be able to do.
+
+Here we see something interesting, which does not appear to be as much of a concern in other programming languages:
+the representation of our data forces our hand about how much efficiency can be gained from precomputation, even when the representation choices are relatively minor.
+
+\subsubsection{Untyped Syntax in NbE}
+There is no good way around the fact that NbE requires typing information to argue termination.
+Since NbE will be called on subterms of the overall term, even if we use syntax that is not guaranteed to be type-correct, we must still store the type information in the nodes of the AST.
+
+
+
+
 \begin{itemize}
 \item \todo{talk about rawexpr\_types\_ok}
 \item \todo{talk about how we can unify types at all (c.f.~\texttt{preunify\_types})}
 \end{itemize}
-\subsubsection{The Pain of Type-Indexed Swap}
-$\left.\right.$
 
 \subsection{Patterns with Type Variables -- The Three Kinds of Identifiers}
 \begin{itemize}

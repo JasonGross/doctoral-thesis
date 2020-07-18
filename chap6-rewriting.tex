@@ -1,4 +1,5 @@
 \chapter{Engineering Challenges in the Rewriter}\label{ch:rewriting-more}
+\setboolean{zerowidthscripts}{true}%
 
 \begin{quote}
   premature optimization is the root of all evil
@@ -33,7 +34,35 @@ issues arising from the power and (mis)use of dependent types, as introduced in 
 and issues arising arising from API mismatches, as described in \fullref{ch:api-design}.
 
 \subsection{Pre-Reduction}\label{sec:rewriting-more:pre-reduction}
-\todo{this section}
+The the two biggest underlying causes of engineering challenges are expression API mismatch, which we'll discuss in \fullref{sec:rewriting-more:AST:choices}, and our desire to reduce away known computations in the rewriting engine once and for all when compiling rewriting rules, rather than again and again every time we perform a rewrite.
+In pratice, performing this early reduction nets us an approximately $2\times$ speed-up.
+
+\subsubsection{What does this reduction consist of?}\label{sec:rewriting-more:pre-reduction:what-reduction}
+Recall from \autoref{sec:pattern-matching-compilation-and-evaluation} that the core of our rewriting engine consists of three steps:
+\begin{enumerate}
+\item
+  The first step is pattern-matching compilation: we must compile the lefthand sides of the rewrite rules to a decision tree that describes how and in what order to decompose the expression, as well as describing which rewrite rules to try at which steps of decomposition.
+\item
+  The second step is decision-tree evaluation, during which we decompose the expression as per the decision tree, selecting which rewrite rules to attempt.
+\item
+  The third and final step is to actually rewrite with the chosen rule.
+\end{enumerate}
+The first step is performed once and for all; it depends only on the rewrite rules, and not on the expression we are rewriting in.
+The second and third steps do, in fact, depend on the expression being rewritten, and it is in these steps that we seek to eliminate needless work early.
+
+The key insight, which allows us to perform this precompilation at all, is that the most of the decisions we seek to eliminate depend only on the \emph{head identifier} of any application.%
+\footnote{%
+  In order to make this simplification, we need to restrict the rewrite rules we support a little bit.
+  In particular, we only support rewrite rules operating on $\eta$-long applications of concrete identifiers to arguments.
+  This means that we cannot support identifiers with variable arrow structure (e.g., a variadic \mintinline{coq}{curry} function) nor do we support rewriting things like \mintinline{coq}{List.map f} to \mintinline{coq}{List.map g}---we only support rewriting \mintinline{coq}{List.map f xs} to \mintinline{coq}{List.map g ys}.%
+}
+We thus augment the $\text{reduce}(c)$ constant case of \autoref{fig:nbe} in \autoref{sec:thunk-eval-subst-term} by first $\eta$-expanding the identifier, before proceeding to $\eta$-expand the identifier application and perform rewriting with \text{rewrite-head} once we have an $\eta$-long form.
+
+Now that we know what the reduction consists of, we can
+{sec:rewriting-more:revealing-enough-structure}
+
+
+
 
 \subsection{NbE vs.~Pattern Matching Compilation: Mismatched Expression APIs}\label{sec:rewriting-more:AST:choices}
 \todo{should I be consistent about naming syntax that's well-typed by construction?  I call it ``intrinsically-typed syntax'', ``syntax that is well-typed by construction'', ``intrinsically-well-typed syntax'', and ``type-indexed sytnax''\ldots}
@@ -153,6 +182,7 @@ We can actually relax this constraint a little bit: by designing the untyped rep
 As such, we need to be able to embed well-typed syntax directly into the non-type-indexed representation at cost $\mathcal{O}(1)$.
 
 As the entire purpose of the untyped syntax is to (a) allow us to perform matching on the AST to determine which rewrite rule to use, and furthermore (b) allow us to reuse the decomposition work so as to avoid needing to decompose the term multiple times, we need an inductive type which can embed PHOAS expressions, and has separate nodes for the structure that we need, namely application and identifiers:
+
 \begin{minted}{coq}
 Inductive rawexpr : Type :=
 | rIdent (known : bool) {t} (idc : ident t) {t'} (alt : expr t')
@@ -176,10 +206,19 @@ There are three perhaps-unexpected things to note about this inductive type, whi
 
 With this inductive type in hand, it's easy to see how \mintinline{coq}{rExpr} allows us $\mathcal{O}(1)$ embedding of intrinsically typed \mintinline{coq}{expr}s into untyped \mintinline{coq}{rawexpr}s.
 
+While it's likely that sufficiently good abstraction barriers around this datatype would allow us to use it with relatively little pain, we did not succeed in designing good enough abstraction barriers.
+The bright side of this failure is that we now have a number of examples for this thesis of ways in which inadequate abstraction barriers cause pain.
 
+We will discuss the many issues that arise from leaks in this abstraction barrier in the upcoming subsections.
+%While some of these issues will be discussed in \Autoref{sec:rewriting-more:delayed-rewriting,sec:rewriting-more:revealing-enough-structure,sec:rewriting-more:rIdent-known} where we discuss the perhaps-unexpected additions to the \mintinline{coq}{rawexpr} constructors, we can discuss a few complications here.
 
-(3) use intrinsically-well-typed syntax in most passes, and untyped syntax for pattern matching compilation;
-(4) invent a pattern-matching compilation algorithm that is well-suited to type-indexed sytnax.
+%\paragraph{Equivalence Relations}
+%Correctness conditions on PHOAS transformations are frequently stated in terms of two (partial) equivalence relations: the well-formedness relation \mintinline{coq}{Wf} defined in \autoref{sec:PHOAS:Wf-def}; and pointwise equality---that is, equality up to function extensionality---of the interpretations of the expressions.
+%\todo{make sure I'm being consistent about ``interpretation'' vs ``denotation'' across the thesis}
+
+\subsubsection{Pattern Matching Compilation Made For Intrinsically-Typed Syntax}\label{sec:rewriting-more:AST:better-pattern-matching}
+The cost of this fourth option is the cleverness required to come up with a version of the pattern matching compilation which, rather than being hindered by types in its syntax, instead puts them to good use.
+Lacking this cleverness, we were unable to pay the requisite cost, and hence have not much to say in this section.
 
 \subsection{Patterns with Type Variables -- The Three Kinds of Identifiers}
 \begin{itemize}
@@ -208,7 +247,7 @@ $\left.\right.$
 \subsubsection{Revealing ``Enough'' Structure}\label{sec:rewriting-more:revealing-enough-structure}
 \begin{itemize}
 \item \todo{talk also about tracking both the revealed and unrevealed structure}
-\item \todo{talk about $\eta$-expanding identifier matches}
+\item \todo{talk about $\eta$-expanding identifier matches, reference \autoref{sec:rewriting-more:pre-reduction}}
 \item \todo{talk about rawexpr\_types\_ok}
 \end{itemize}
 
@@ -276,3 +315,5 @@ This is required to get some theorem types to line up, and is possibly an indica
 \setlist[itemize,20]{label=\textperiodcentered}%
 
 \input{rewriting/rewriting.md.tex}
+
+\setboolean{zerowidthscripts}{false}%

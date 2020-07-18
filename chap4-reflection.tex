@@ -215,6 +215,7 @@ Conventionally, syntax trees are parametric over the value of the \mintinline{co
 Definition Expr := ∀ var, @expr var.
 Definition Wf (e : Expr) := ∀ var1 var2, related [] (e var1) (e var2)
 \end{minted}
+\label{sec:PHOAS:Wf-def}
 
 We could then prove a modified form of our soundness theorem:
 \begin{minted}{coq}

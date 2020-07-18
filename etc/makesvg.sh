@@ -3,7 +3,7 @@
 # https://stackoverflow.com/a/246128/377022
 DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" >/dev/null 2>&1 && pwd )"
 
-lines="$(cat - | sed 's/^/~/g' | fold -w 70 -s | sed 's/^/  /g; s/^\s*~//g')"
+lines="$(cat - | sed 's/^/~/g' | fold -w 80 -s | sed 's/^/  /g; s/^\s*~//g')"
 nlines="$(( ( 11 + $(echo "$lines" | wc -l) * 12 ) / 10 ))em"
 # https://www.unix.com/shell-programming-and-scripting/32049-line-maximum-no-characters.html
 #nchars="$(echo "$lines" | awk ' length > max { max=length;row=NR } END{ print max}')em"

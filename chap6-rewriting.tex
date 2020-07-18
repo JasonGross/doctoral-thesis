@@ -1,4 +1,4 @@
-\chapter{Engineering Challenges in the Rewriter} \label{ch:rewriting-more}
+\chapter{Engineering Challenges in the Rewriter}\label{ch:rewriting-more}
 
 \begin{quote}
   premature optimization is the root of all evil
@@ -8,14 +8,14 @@
 \end{flushright}
 
 \todo{Better chapter title?}
-\section{Introduction} \label{sec:rewriting-more:intro}
+\section{Introduction}\label{sec:rewriting-more:intro}
 \autoref{ch:rewriting} discussed in detail our framework for building verified partial evaluators, going into the context, motivation, and the techniques used to put the framework together.
 However, there was a great deal of engineering effort that went into building this tool which we glossed over.
 Much of the engineering effort was mundane, and we elide the details entirely.
 However, we believe some of the engineering effort serves as a good case-study for the difficulties of building proof-based systems at scale.
 This chapter is about exposing the details relevant to understanding how the bottlenecks and principles identified elsewhere in this thesis played out in designing and implementing this tool.
 
-\section{A Brief Survey of the Engineering Challenges} \label{sec:rewriting-more:challenges-overview}
+\section{A Brief Survey of the Engineering Challenges}\label{sec:rewriting-more:challenges-overview}
 
 While the core rewriting engine of the framework is about 1\,300 lines of code, and early simplified versions of the core engine were only about 150 lines of code%
 \footnote{%
@@ -32,9 +32,10 @@ We note, however, that many of the challenges fall into the same broad categorie
 issues arising from the power and (mis)use of dependent types, as introduced in \fullref{sec:why-how-dependent-types};
 and issues arising arising from API mismatches, as described in \fullref{ch:api-design}.
 
-\subsection{Pre-Reduction} \label{sec:rewriting-more:pre-reduction}
+\subsection{Pre-Reduction}\label{sec:rewriting-more:pre-reduction}
+\todo{this section}
 
-\subsection{NbE vs.~Pattern Matching Compilation: Mismatched Expression APIs}
+\subsection{NbE vs.~Pattern Matching Compilation: Mismatched Expression APIs}\label{sec:rewriting-more:AST:choices}
 \todo{should I be consistent about naming syntax that's well-typed by construction?  I call it ``intrinsically-typed syntax'', ``syntax that is well-typed by construction'', ``intrinsically-well-typed syntax'', and ``type-indexed sytnax''\ldots}
 We introduced normalization by evaluation (NbE)~\cite{NbE} in \autoref{sec:our-solution} and expanded on it in \autoref{sec:thunk-eval-subst-term} as a way to support higher-order reduction of $\lambda$-terms.
 The termination argument for NbE proceeds by recursion on the type of the term we're reducing.
@@ -51,7 +52,7 @@ We ultimately chose option (3).
 I was not clever enough to follow through on option (4), and while options (1) and (2) are both interesting, option (3) seemed to follow the well-established convention of using whichever datatype is best-suited to the task at hand.
 As we'll shortly see, all of these options come with significant costs, and (3) is not as obviously a good choice as it might seem at first glance.
 
-\subsubsection{Pattern-Matching Evaluation on Type-Indexed Terms}
+\subsubsection{Pattern-Matching Evaluation on Type-Indexed Terms}\label{sec:rewriting-more:AST:type-indexed-pattern-matching}
 While the cost of performing pattern-matching compilation on type-indexed terms is noticable, it's relatively insignificant compared to the cost of evaluating decisions trees directly on type-indexed terms.
 In particular, pattern-matching compilation effectively throws away the type information whenever it encounters it; whether we do this early or late does not matter much, and we only perform this compilation once for any given set of rewrite rules.
 
@@ -88,19 +89,25 @@ In code, this branch might look something like
 \begin{minted}{coq}
 …
 | Switch icases app_case default
-  => match es in exprlist ts return (exprlist ts → option T) → option T with
+  => match es in exprlist ts
+       return (exprlist ts → option T) → option T
+     with
      | [] => λ _, None
      | e :: es
-       => match e in expr t return (exprlist (t :: ts) → option T) → option T with
+       => match e in expr t
+            return (exprlist (t :: ts) → option T) → option T
+          with
           | App s d f x => λ K,
-              let K' : exprlist ((s → d) :: s :: ts) (* new continuation to pass on recursively *)
+              let K' : exprlist ((s → d) :: s :: ts)
+                 (* new continuation to pass on recursively *)
                 := λ es', K (App (hd es') (hd (tl es')) :: tl (tl es')) in
               … (* do something with app_case *)
-          | Ident t idc => λ K, … (* do something with icases *)
-          | _ => λ K,
-              let K' : exprlist ts (* new continuation to pass on recursively *)
+          | Ident t idc => λ K,
+              let K' : exprlist ts
+                 (* new continuation to pass on recursively *)
                 := λ es', K (Ident idc :: es') in
-              … (* do something with default, eventually calling  *)
+              … (* do something with icases *)
+          | _ => λ K, … (* do something with default *)
           end
      end K
 …
@@ -116,22 +123,74 @@ As noted in \autoref{sec:rewriting-more:pre-reduction}, our early reduction nets
 Here we see something interesting, which does not appear to be as much of a concern in other programming languages:
 the representation of our data forces our hand about how much efficiency can be gained from precomputation, even when the representation choices are relatively minor.
 
-\subsubsection{Untyped Syntax in NbE}
+\subsubsection{Untyped Syntax in NbE}\label{sec:rewriting-more:AST:untyped-nbe}
 There is no good way around the fact that NbE requires typing information to argue termination.
 Since NbE will be called on subterms of the overall term, even if we use syntax that is not guaranteed to be type-correct, we must still store the type information in the nodes of the AST.
 
+Furthermore, as we say in \fullref{sec:binders:de-bruijn}, converting from untyped syntax to intrinsically-typed syntax, as well as writing a denotation function, requires either that all types be non-empty, or that we carry around a proof of well-typedness to use during recursion.
+\todoask{Is there a good reference for these sorts of issues?  Are they well-known?  Well-studied?}
+As discussed in \autoref{ch:design} and specifically in \fullref{ch:when-how-dependent-types}, needing to mix proofs with programs is often a big warning flag, unless the mixing can be hidden behind a well-designed API.
+However, if we are going to be hiding the syntax behind an API of being well-typed, it seems like we might as well just use intrinsically well-typed syntax, which natrually inhabits that API.
+Furthermore, unlike in many cases where the API is best treated as opaque everywhere, here the API mixing proofs and programs needs to have adequate behavior under reduction, and ought to have good behavior even under partial reduction.
+This severely complicates the task of building a good abstraction barrier, as we not only need to ensure that the abstraction barrier does not need to be broken in the course of term-building and typechecking, but we must also ensure that the abstraction barrier can be broken in a principled way via reduction without introducing significant overhead.
+
+%Despite all of these problems, in retrospect, it seems that this option might in fact be the least-costly option to choose.
+%Admittedly, we have not actually implemented it, so there might remain hidden engineering challenges.
+
+\subsubsection{Mixing Typed and Untyped Syntax}\label{sec:rewriting-more:AST:both}
+The third option is to use whichever datatype is most naturally suited for each pass, and to convert between them as necessary.
+This is the option that we ultimately chose, and the one, we believe, that would be most natural to choose to engineers and developers coming from non-dependently-typed languages.
+
+There are a number of considerations that arose when fleshing out this design, and a number of engineering-pain-points that we encountered.
+The theme to all of these, as in \autoref{ch:api-design}, is that imperfectly opaque abstraction barriers cause headaches in a non-local manner.
+
+We got lucky, in some sense, that the rewriting pass \emph{always} has a well-typed default option: do no rewriting.
+Hence we do not need to worry about carrying around proofs of well-typedness, and this avoids some of the biggest issues described in \nameref{sec:rewriting-more:AST:untyped-nbe}.
+
+The biggest constraint driving our design decisions is that we need conversion between the two representations to be $\mathcal{O}(1)$; if we need to walk the entire syntax tree to convert between typed and untyped representations at every rewriting location, we'll incur quadratic overhead in the size of the term being rewritten.
+We can actually relax this constraint a little bit: by designing the untyped representation to be completely evaluated away during the compilation of rewrite rules, we can allow conversion from the untyped syntax to the typed syntax to walk any part of the term that already needed to be revealed for rewriting, giving us amortized constant time rather than truely constant time.
+\todo{is this last sentence understandable?}
+As such, we need to be able to embed well-typed syntax directly into the non-type-indexed representation at cost $\mathcal{O}(1)$.
+
+As the entire purpose of the untyped syntax is to (a) allow us to perform matching on the AST to determine which rewrite rule to use, and furthermore (b) allow us to reuse the decomposition work so as to avoid needing to decompose the term multiple times, we need an inductive type which can embed PHOAS expressions, and has separate nodes for the structure that we need, namely application and identifiers:
+\begin{minted}{coq}
+Inductive rawexpr : Type :=
+| rIdent (known : bool) {t} (idc : ident t) {t'} (alt : expr t')
+| rApp (f x : rawexpr) {t} (alt : expr t)
+| rExpr {t} (e : expr t)
+| rValue {t} (e : NbEₜ t).
+\end{minted}
+\label{sec:rewriting-more:rawexpr-def}%
+There are three perhaps-unexpected things to note about this inductive type, which we will discuss in later subsections:
+\begin{enumerate}
+\item
+  The constructor \mintinline{coq}{rValue} holds an NbE-value of the type \mintinline{coq}{NbEₜ} introduced in \autoref{sec:thunk-eval-subst-term}.
+  We will discuss this in \fullref{sec:rewriting-more:delayed-rewriting}.
+\item
+  The constructors \mintinline{coq}{rIdent} and \mintinline{coq}{rExpr} hold ``alternate'' PHOAS expressions.
+  We will discuss this in \fullref{sec:rewriting-more:revealing-enough-structure}.
+\item
+  The constructor \mintinline{coq}{rIdent} has an extra boolean \mintinline{coq}{known}.
+  We will discuss this in \fullref{sec:rewriting-more:rIdent-known}.
+\end{enumerate}
+
+With this inductive type in hand, it's easy to see how \mintinline{coq}{rExpr} allows us $\mathcal{O}(1)$ embedding of intrinsically typed \mintinline{coq}{expr}s into untyped \mintinline{coq}{rawexpr}s.
+
+
+
+(3) use intrinsically-well-typed syntax in most passes, and untyped syntax for pattern matching compilation;
+(4) invent a pattern-matching compilation algorithm that is well-suited to type-indexed sytnax.
 
 
 
 \begin{itemize}
-\item \todo{talk about rawexpr\_types\_ok}
-\item \todo{talk about how we can unify types at all (c.f.~\texttt{preunify\_types})}
 \end{itemize}
 
 \subsection{Patterns with Type Variables -- The Three Kinds of Identifiers}
 \begin{itemize}
 \item \todo{talk about the default of having syntax indexed over the set of available type variables}
 \item \todo{talk about how lifting causes pain due to dependent types, also linear traversal of term}
+\item \todo{talk about how we can unify types at all (c.f.~\texttt{preunify\_types})}
 \end{itemize}
 
 \subsection{Pre-evaluation}
@@ -142,7 +201,7 @@ $\left.\right.$
 $\left.\right.$
 \subsubsection{What Can We Unfold?}
 \begin{itemize}
-\item \todo{talk about the ``known'' parameter of rIdent}
+\item \todo{talk about the ``known'' parameter of rIdent} \label{sec:rewriting-more:rIdent-known}
 \item \todo{talk about multiple aliases like \texttt{option\_bind'}}
 \item \todo{talk about lack of help from the compiler / type-checker}
 \item \todo{talk about ``Note that here we are jumping through some extra hoops to get the right reduction behavior at rewrite-rule-compilation time.'' for \texttt{eval\_decision\_tree}}
@@ -151,10 +210,11 @@ $\left.\right.$
 \item \todo{talk about the general tradeoff between runtime checks and static proofs} % ``However, the proofs are much simpler if we simply do a wholesale check at the very end
 \item \todo{talk about the cost of inconsistent decisions spreading pain elsewhere} % ``Here we pay the price of an imperfect abstraction barrier (that we have types lying around, and we rely in some places on types lining up, but do not track everywhere that types line up).''
 \end{itemize}
-\subsubsection{Revealing ``Enough'' Structure}
+\subsubsection{Revealing ``Enough'' Structure}\label{sec:rewriting-more:revealing-enough-structure}
 \begin{itemize}
 \item \todo{talk also about tracking both the revealed and unrevealed structure}
 \item \todo{talk about $\eta$-expanding identifier matches}
+\item \todo{talk about rawexpr\_types\_ok}
 \end{itemize}
 
 \subsection{The Let-In Monad: Missing Abstraction Barriers at the Type Level}
@@ -163,14 +223,14 @@ $\left.\right.$
 \subsection{Rewriting Again in the Output of a Rewrite Rule}
 $\left.\right.$
 
-\subsection{Delayed Rewriting in Variable Nodes}
+\subsection{Delayed Rewriting in Variable Nodes}\label{sec:rewriting-more:delayed-rewriting}
 \todo{rValue vs rExpr}
 
 \subsection{Relating Expressions and Values}
 \todo{figure out where this goes, how to explain it, where it arises from:}
 ``In general, the stored values are only interp-related to the same things that the ``unrevealed structure'' expressions are interp-related to. There is no other relation (that we've found) between the values and the expressions, and this caused a great deal of pain when trying to specify the interpretation correctness properties.''
 
-\subsection{Which Equivalence Relation?}
+\subsection{Which Equivalence Relation?}\label{sec:rewriting-more:which-equivalence}
 \todo{talk about \texttt{rawexpr\_equiv}, 4-place \texttt{wf\_rawexpr}, nuance of revealing structure in CPS'd \texttt{eval\_decision\_tree}, non-obvious \texttt{wf\_value} binding list, \texttt{interp\_related\_gen} unsuccessfully avoiding funext (and also needing to be instantiated with \texttt{value\_interp\_related} sometimes), \texttt{rawexpr\_interp\_related} and separating (or not) goodness from relatedness, \texttt{rawexpr\_types\_ok}?, \texttt{unification\_resultT'\_interp\_related}?, \texttt{interp\_unify\_pattern'}?, interpretation-correctness related to rewriting again}
 
 \subsection{Dependently Typed Pain in Applying Rewrite Rules}

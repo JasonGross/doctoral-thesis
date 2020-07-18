@@ -308,6 +308,7 @@ One unfortunate result is that the natural denotation function is no longer tota
 Here we have chosen to give a denotation function which returns a default element when a variable reference is too large, but we could instead choose to return an \mintinline{coq}{option nat}.
 In general, however, returning an optional result significantly complicates the denotation function when binders are involved, because the types \mintinline{coq}{A -> option B} and \mintinline{coq}{option (A -> B)} are not isomorphic.
 On the other hand, requiring a default denotation prevents syntax trees from being able to represent possibly empty types.
+\todoask{Is there a good reference for these sorts of issues?  Are they well-known?  Well-studied?}
 
 This causes further problems when dealing with an AST type which can represent terms of multiple types.
 In that case, we might annotate each variable node with a type code, mandate decidable equality of type codes, and then during denotation, we'd check the type of the variable node with the type of the corresponding variable in the context.

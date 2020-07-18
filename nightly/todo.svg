@@ -1,97 +1,99 @@
-<svg xmlns="http://www.w3.org/2000/svg" width="36em" height="134em"><text x="0" y="0">
+<svg xmlns="http://www.w3.org/2000/svg" width="37em" height="136em"><text x="0" y="0">
+<tspan x="0" dy="1.2em">TODO: Make sure to exclude no files (not rewriting) in file </tspan>
+<tspan x="0" dy="1.2em">  jgross-thesis.tex on input line 54.</tspan>
 <tspan x="0" dy="1.2em">TODO: Run `make update-thesis' before submission to update the date </tspan>
-<tspan x="0" dy="1.2em">on the cover page in file jgross-thesis.tex on input line 91.</tspan>
+<tspan x="0" dy="1.2em">  on the cover page in file jgross-thesis.tex on input line 91.</tspan>
 <tspan x="0" dy="1.2em">TODO: change \string ^Linalfalse to \string ^Linaltrue  in file </tspan>
-<tspan x="0" dy="1.2em">jgross-thesis.tex on input line 91.</tspan>
+<tspan x="0" dy="1.2em">  jgross-thesis.tex on input line 91.</tspan>
 <tspan x="0" dy="1.2em">TODO: Is the ``department committee chairman'' still Leslie A. </tspan>
-<tspan x="0" dy="1.2em">Kolodziejski? in file cover.tex on input line 87.</tspan>
+<tspan x="0" dy="1.2em">  Kolodziejski? in file cover.tex on input line 87.</tspan>
 <tspan x="0" dy="1.2em">TODO: More formal wording in file abstract.tex on input line 40.</tspan>
 <tspan x="0" dy="1.2em">TODO: Fix runon sentence in file abstract.tex on input line 51.</tspan>
 <tspan x="0" dy="1.2em">TODO: Maybe instead use the alternative from the thesis-proposal? in </tspan>
-<tspan x="0" dy="1.2em">file abstract.tex on input line 55.</tspan>
+<tspan x="0" dy="1.2em">  file abstract.tex on input line 55.</tspan>
 <tspan x="0" dy="1.2em">TODO: uniform style in file cover.tex on input line 132.</tspan>
 <tspan x="0" dy="1.2em">TODO: rearrange in file cover.tex on input line 133.</tspan>
 <tspan x="0" dy="1.2em">TODO: Add more acknowledgments in file cover.tex on input line 135.</tspan>
 <tspan x="0" dy="1.2em">TODO: cite various grants in file cover.tex on input line 137.</tspan>
 <tspan x="0" dy="1.2em">TODO: rearrange in file cover.tex on input line 143.</tspan>
 <tspan x="0" dy="1.2em">TODO: how to format citations here in file cover.tex on input line </tspan>
-<tspan x="0" dy="1.2em">146.</tspan>
+<tspan x="0" dy="1.2em">  146.</tspan>
 <tspan x="0" dy="1.2em">TODO: Download and fill out \url </tspan>
-<tspan x="0" dy="1.2em">{https://libraries.mit.edu/wp-content/uploads/2019/08/umi-proquest-for</tspan>
-<tspan x="0" dy="1.2em">m.pdf} in file jgross-thesis.tex on input line 106.</tspan>
-<tspan x="0" dy="1.2em">TODO: Change biblatex cite format to author-year or something so that </tspan>
-<tspan x="0" dy="1.2em">it's easy to pick up references from the paper in file </tspan>
-<tspan x="0" dy="1.2em">jgross-thesis.tex on input line 107.</tspan>
+<tspan x="0" dy="1.2em">  {https://libraries.mit.edu/wp-content/uploads/2019/08/umi-proquest-for</tspan>
+<tspan x="0" dy="1.2em">  m.pdf} in file jgross-thesis.tex on input line 106.</tspan>
+<tspan x="0" dy="1.2em">TODO: Change biblatex cite format to author-year or something so </tspan>
+<tspan x="0" dy="1.2em">  that it's easy to pick up references from the paper in file </tspan>
+<tspan x="0" dy="1.2em">  jgross-thesis.tex on input line 107.</tspan>
 <tspan x="0" dy="1.2em">TODO: Share thesis with Eric Marion (cf 2020-05-14 15:53 Facebook </tspan>
-<tspan x="0" dy="1.2em">Messenger) in file jgross-thesis.tex on input line 108.</tspan>
+<tspan x="0" dy="1.2em">  Messenger) in file jgross-thesis.tex on input line 108.</tspan>
 <tspan x="0" dy="1.2em">TODO: Share thesis with AndrM-CM-!s KovM-CM-!cs (cf 2020-03-12 11:15 gmail </tspan>
-<tspan x="0" dy="1.2em">\url </tspan>
-<tspan x="0" dy="1.2em">{https://mail.google.com/mail/u/0/\#search/andras/QgrcJHrnvrhWwVxKMQFs</tspan>
-<tspan x="0" dy="1.2em">ctxrGQxvPrtflgB}) in file jgross-thesis.tex on input line 109.</tspan>
+<tspan x="0" dy="1.2em">  \url </tspan>
+<tspan x="0" dy="1.2em">  {https://mail.google.com/mail/u/0/\#search/andras/QgrcJHrnvrhWwVxKMQFs</tspan>
+<tspan x="0" dy="1.2em">  ctxrGQxvPrtflgB}) in file jgross-thesis.tex on input line 109.</tspan>
 <tspan x="0" dy="1.2em">TODO: Share thesis with Talia Ringer and ppedrot in file </tspan>
-<tspan x="0" dy="1.2em">jgross-thesis.tex on input line 110.</tspan>
+<tspan x="0" dy="1.2em">  jgross-thesis.tex on input line 110.</tspan>
 <tspan x="0" dy="1.2em">TODO: decide on chapter/section capitalization and be consistent in </tspan>
-<tspan x="0" dy="1.2em">file main-files.tex on input line 2.</tspan>
+<tspan x="0" dy="1.2em">  file main-files.tex on input line 2.</tspan>
 <tspan x="0" dy="1.2em">TODO: figure out if regression stats should be included, and, if so, </tspan>
-<tspan x="0" dy="1.2em">how to calculate them in file main-files.tex on input line 3.</tspan>
+<tspan x="0" dy="1.2em">  how to calculate them in file main-files.tex on input line 3.</tspan>
 <tspan x="0" dy="1.2em">TODO: make sure all appendices are at the very end, so we keep a </tspan>
-<tspan x="0" dy="1.2em">linear progression in file main-files.tex on input line 4.</tspan>
+<tspan x="0" dy="1.2em">  linear progression in file main-files.tex on input line 4.</tspan>
 <tspan x="0" dy="1.2em">TODO: update rewriting paper chapter with camera-ready file before </tspan>
-<tspan x="0" dy="1.2em">editing in file main-files.tex on input line 5.</tspan>
+<tspan x="0" dy="1.2em">  editing in file main-files.tex on input line 5.</tspan>
 <tspan x="0" dy="1.2em">TODO: Initial intro paragraphs in file chap1-introduction.tex on </tspan>
-<tspan x="0" dy="1.2em">input line 20.</tspan>
-<tspan x="0" dy="1.2em">TODO: transition to foundational tools in file chap1-introduction.tex </tspan>
-<tspan x="0" dy="1.2em">on input line 23.</tspan>
+<tspan x="0" dy="1.2em">  input line 20.</tspan>
+<tspan x="0" dy="1.2em">TODO: transition to foundational tools in file </tspan>
+<tspan x="0" dy="1.2em">  chap1-introduction.tex on input line 23.</tspan>
 <tspan x="0" dy="1.2em">TODO: explain how foundational tools like Coq are already useful in </tspan>
-<tspan x="0" dy="1.2em">file chap1-introduction.tex on input line 24.</tspan>
-<tspan x="0" dy="1.2em">TODO: explain that performance, including of build-time, is important </tspan>
-<tspan x="0" dy="1.2em">in file chap1-introduction.tex on input line 27.</tspan>
+<tspan x="0" dy="1.2em">  file chap1-introduction.tex on input line 24.</tspan>
+<tspan x="0" dy="1.2em">TODO: explain that performance, including of build-time, is </tspan>
+<tspan x="0" dy="1.2em">  important in file chap1-introduction.tex on input line 27.</tspan>
 <tspan x="0" dy="1.2em">TODO: read and cite perf engineering study 	extcite </tspan>
-<tspan x="0" dy="1.2em">{ringer2020qed} in file chap1-introduction.tex on input line 28.</tspan>
-<tspan x="0" dy="1.2em">TODO: read / look into 	extcite {georges2007statistically} in file </tspan>
-<tspan x="0" dy="1.2em">chap1-introduction.tex on input line 29.</tspan>
+<tspan x="0" dy="1.2em">  {ringer2020qed} in file chap1-introduction.tex on input line 28.</tspan>
+<tspan x="0" dy="1.2em">TODO: read / look into 	extcite {georges2007statistically} in </tspan>
+<tspan x="0" dy="1.2em">  file chap1-introduction.tex on input line 29.</tspan>
 <tspan x="0" dy="1.2em">TODO: maybe read 	extcite {mytkowicz-wrong-data} in file </tspan>
-<tspan x="0" dy="1.2em">chap1-introduction.tex on input line 30.</tspan>
+<tspan x="0" dy="1.2em">  chap1-introduction.tex on input line 30.</tspan>
 <tspan x="0" dy="1.2em">TODO: Karl Palmskog: @Jason Gross I saw your post on performance </tspan>
-<tspan x="0" dy="1.2em">optimization/measurements for proof assistants on Coq-Club. We </tspan>
-<tspan x="0" dy="1.2em">summarize a lot of work on parallelization/selection for proof </tspan>
-<tspan x="0" dy="1.2em">assistants in our regression proving papers (ASE 17 \ ISSTA 18): </tspan>
-<tspan x="0" dy="1.2em">	extcite {CelikETAL17iCoq} 	extcite {PalmskogETAL18piCoq} </tspan>
-<tspan x="0" dy="1.2em">in file chap1-introduction.tex on input line 31.</tspan>
+<tspan x="0" dy="1.2em">  optimization/measurements for proof assistants on Coq-Club. We </tspan>
+<tspan x="0" dy="1.2em">  summarize a lot of work on parallelization/selection for proof </tspan>
+<tspan x="0" dy="1.2em">  assistants in our regression proving papers (ASE 17 \ ISSTA 18): </tspan>
+<tspan x="0" dy="1.2em">  	extcite {CelikETAL17iCoq} 	extcite {PalmskogETAL18piCoq} </tspan>
+<tspan x="0" dy="1.2em">  in file chap1-introduction.tex on input line 31.</tspan>
 <tspan x="0" dy="1.2em">TODO: read and cite 	extcite {lean-tactic-language} in file </tspan>
-<tspan x="0" dy="1.2em">chap1-introduction.tex on input line 32.</tspan>
+<tspan x="0" dy="1.2em">  chap1-introduction.tex on input line 32.</tspan>
 <tspan x="0" dy="1.2em">TODO: read 	extcite {Implementing1998Shao} in file </tspan>
-<tspan x="0" dy="1.2em">chap1-introduction.tex on input line 33.</tspan>
+<tspan x="0" dy="1.2em">  chap1-introduction.tex on input line 33.</tspan>
 <tspan x="0" dy="1.2em">TODO: read 	extcite {Inductive2003Brady} in file </tspan>
-<tspan x="0" dy="1.2em">chap1-introduction.tex on input line 35.</tspan>
+<tspan x="0" dy="1.2em">  chap1-introduction.tex on input line 35.</tspan>
 <tspan x="0" dy="1.2em">TODO: read 	extcite {thesis-nogin} in file chap1-introduction.tex </tspan>
-<tspan x="0" dy="1.2em">on input line 36.</tspan>
+<tspan x="0" dy="1.2em">  on input line 36.</tspan>
 <tspan x="0" dy="1.2em">TODO: read GrM-CM-)goire and Leroy's paper from ICFP 2002 	extcite </tspan>
-<tspan x="0" dy="1.2em">{Gregoire-Leroy-02} in file chap1-introduction.tex on input line 37.</tspan>
+<tspan x="0" dy="1.2em">  {Gregoire-Leroy-02} in file chap1-introduction.tex on input line 37.</tspan>
 <tspan x="0" dy="1.2em">TODO: read Dirk Kleeblatt's PhD thesis 	extcite </tspan>
-<tspan x="0" dy="1.2em">{Strongly2011Kleeblatt}. in file chap1-introduction.tex on input line </tspan>
-<tspan x="0" dy="1.2em">38.</tspan>
+<tspan x="0" dy="1.2em">  {Strongly2011Kleeblatt}. in file chap1-introduction.tex on input line </tspan>
+<tspan x="0" dy="1.2em">  38.</tspan>
 <tspan x="0" dy="1.2em">TODO: read Andras Kovacs has smalltt at 	extcite </tspan>
-<tspan x="0" dy="1.2em">{smallttKovacs} in file chap1-introduction.tex on input line 40.</tspan>
+<tspan x="0" dy="1.2em">  {smallttKovacs} in file chap1-introduction.tex on input line 40.</tspan>
 <tspan x="0" dy="1.2em">TODO: look at \url </tspan>
-<tspan x="0" dy="1.2em">{https://github.com/AndrasKovacs/normalization-bench} in file </tspan>
-<tspan x="0" dy="1.2em">chap1-introduction.tex on input line 41.</tspan>
+<tspan x="0" dy="1.2em">  {https://github.com/AndrasKovacs/normalization-bench} in file </tspan>
+<tspan x="0" dy="1.2em">  chap1-introduction.tex on input line 41.</tspan>
 <tspan x="0" dy="1.2em">TODO: look at \url {https://github.com/AndrasKovacs/smalltt} in file </tspan>
-<tspan x="0" dy="1.2em">chap1-introduction.tex on input line 42.</tspan>
+<tspan x="0" dy="1.2em">  chap1-introduction.tex on input line 42.</tspan>
 <tspan x="0" dy="1.2em">TODO: ``I haven't yet updated the smalltt repo, but there's a </tspan>
-<tspan x="0" dy="1.2em">simplified (\url </tspan>
-<tspan x="0" dy="1.2em">{https://gist.github.com/AndrasKovacs/a0e0938113b193d6b9c1c0620d853784</tspan>
-<tspan x="0" dy="1.2em">}) implementation of its evaluator, which seems to have roughly the </tspan>
-<tspan x="0" dy="1.2em">same performance but which is much simpler to implement.'' in file </tspan>
-<tspan x="0" dy="1.2em">chap1-introduction.tex on input line 43.</tspan>
+<tspan x="0" dy="1.2em">  simplified (\url </tspan>
+<tspan x="0" dy="1.2em">  {https://gist.github.com/AndrasKovacs/a0e0938113b193d6b9c1c0620d853784</tspan>
+<tspan x="0" dy="1.2em">  }) implementation of its evaluator, which seems to have roughly the </tspan>
+<tspan x="0" dy="1.2em">  same performance but which is much simpler to implement.'' in file </tspan>
+<tspan x="0" dy="1.2em">  chap1-introduction.tex on input line 43.</tspan>
 <tspan x="0" dy="1.2em">TODO: </tspan>
 <tspan x="0" dy="1.2em">QUESTION FOR ADAM: Decide on whether to copyright myself or MIT; </tspan>
-<tspan x="0" dy="1.2em">Adam, are there considerations to be aware of here? in file </tspan>
-<tspan x="0" dy="1.2em">jgross-thesis.tex on input line 105.</tspan>
+<tspan x="0" dy="1.2em">  Adam, are there considerations to be aware of here? in file </tspan>
+<tspan x="0" dy="1.2em">  jgross-thesis.tex on input line 105.</tspan>
 <tspan x="0" dy="1.2em">Warning: Label `sec:reification-by-parametricity:intro' multiply </tspan>
-<tspan x="0" dy="1.2em">defined.</tspan>
-<tspan x="0" dy="1.2em">Warning: Label `sec:reification-by-parametricity:intro@cref' multiply </tspan>
-<tspan x="0" dy="1.2em">defined.</tspan>
+<tspan x="0" dy="1.2em">  defined.</tspan>
+<tspan x="0" dy="1.2em">Warning: Label `sec:reification-by-parametricity:intro@cref' </tspan>
+<tspan x="0" dy="1.2em">  multiply defined.</tspan>
 <tspan x="0" dy="1.2em">Warning: Label `sec:evenness' multiply defined.</tspan>
 <tspan x="0" dy="1.2em">Warning: Label `sec:evenness@cref' multiply defined.</tspan>
 <tspan x="0" dy="1.2em">Warning: Label `fig:check-is-even' multiply defined.</tspan>
@@ -105,9 +107,9 @@
 <tspan x="0" dy="1.2em">Warning: Label `fig:ltac-reify-nobinders' multiply defined.</tspan>
 <tspan x="0" dy="1.2em">Warning: Label `fig:ltac-reify-nobinders@cref' multiply defined.</tspan>
 <tspan x="0" dy="1.2em">Warning: Reference `sec:proof-by-reflection' on page 7 undefined on </tspan>
-<tspan x="0" dy="1.2em">input line 149.</tspan>
+<tspan x="0" dy="1.2em">  input line 149.</tspan>
 <tspan x="0" dy="1.2em">Font shape `U/stmry/m/n' in size &lt;8.41483&gt; not available; size &lt;8&gt; </tspan>
-<tspan x="0" dy="1.2em">substituted on input line 91.</tspan>
+<tspan x="0" dy="1.2em">  substituted on input line 91.</tspan>
 <tspan x="0" dy="1.2em">Overfull \hbox (41.52351pt too wide) in paragraph at lines 105--1</tspan>
 <tspan x="0" dy="1.2em">Overfull \hbox (147.23547pt too wide) in paragraph at lines 105--1</tspan>
 </text></svg>

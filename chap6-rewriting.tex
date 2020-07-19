@@ -129,6 +129,82 @@ Note that the reader is not expected to understand this statement, and the autho
  | None => …
  end
 \end{minted}
+\begin{comment}
+\begin{minted}{coq}
+Require Import Coq.Program.Program.
+Inductive type := arrow (a b : type) | prod (a b : type).
+Delimit Scope etype_scope with etype.
+Bind Scope etype_scope with type.
+Infix "->" := arrow : etype_scope.
+Infix "*" := prod : etype_scope.
+Inductive ident : type -> Set :=
+| fst {a b : type} : ident (a * b -> a)
+| pair {a b : type} : ident (a -> b -> a * b)
+.
+Inductive expr {var : type -> Type} : type -> Type :=
+| App {s d} (f : expr (s -> d)) (x : expr s) : expr d
+| Ident {t} (idc : ident t) : expr t
+.
+
+Definition foo : forall var t (e : @expr var t),
+    match e : @expr var _ in expr t return option (@expr var t) with
+    | App f v
+      => let f
+             := (match f in expr t return option (ident t) with
+                 | Ident idc => Some idc
+                 | _ => None
+                 end) in
+         match f with
+         | Some maybe_fst
+           => match v in expr s return ident (s -> _) -> _ with
+              | App f y
+                => match f in expr _s
+                         return match _s with arrow b _ => expr b | _ => unit end
+                                -> match _s with arrow _ ab => ident (ab -> _) | _ => unit end
+                                -> _
+                   with
+                   | App f x
+                     => let f := (match f in expr t return option (ident t) with
+                                  | Ident idc => Some idc
+                                  | _ => None
+                                  end) in
+                        match f with
+                        | Some maybe_pair
+                          => match maybe_pair in ident t
+                                   return
+                                   match t with arrow a _ => expr a | _ => unit end
+                                   -> match t with arrow a (arrow b _) => expr b | _ => unit end
+                                   -> match t with arrow a (arrow b ab) => ident (ab -> _) | _ => unit end
+                                   -> _
+                             with
+                             | @pair a b
+                               => fun (x : expr a) (y : expr b) (maybe_fst : ident _)
+                                  => let is_fst := match maybe_fst with fst => true | _ => false end in
+                                     if is_fst
+                                     then None
+                                     else None
+                             | _ => fun _ _ _ => None
+                             end x
+                        | None => fun _ _ => None
+                        end
+                   | _ => fun _ _ => None
+                   end y
+              | _ => fun _ => None
+              end maybe_fst
+         | None => None
+         end
+    | _ => None
+    end
+    = None.
+repeat first [ progress cbv beta iota zeta
+             | progress intros
+             | reflexivity
+             | match goal with
+               | [ |- context[match ?e with _ => _ end] ] => is_var e; destruct e || dependent destruction e
+               end ].
+Defined.
+\end{minted}
+\end{comment}
 This is quite the mouthful.
 
 Furthermore, there are two additional complications.
@@ -145,9 +221,8 @@ In order to prove anything about such functions without assuming UIP, the proof 
 However, since they are not to be replicated exactly, but merely be generated from the same insights, such proof terms often have to be written almost entirely by hand.
 These proofs are furthermore quite hard to maintain, as even small changes in the structure of the function often require intricate changes in the proof script.
 
-
-
-\todo{Write this subsubsection}
+Due to a lack of foresight and an unfortunate reluctance to take the design back to the drawing board after we already had working code, we ended up mixing these two approaches, getting, not quite the worst of both worlds, but definitely a significant fraction of the pain of both worlds:
+We must deal with both the pain of indexing our term unification information over our type unification information, and we must still insert typecasts in places where we have lost the information that the types will line up.
 
 \subsubsection{What Can We Unfold?}\label{sec:rewriting-more:pre-reduction:tracking-unfolding}
 

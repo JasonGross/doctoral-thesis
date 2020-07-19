@@ -1,4 +1,6 @@
-<svg xmlns="http://www.w3.org/2000/svg" width="41em" height="125em"><text x="0" y="0">
+<svg xmlns="http://www.w3.org/2000/svg" width="41em" height="135em"><text x="0" y="0">
+<tspan x="0" dy="1.2em">TODO: Make sure to exclude no files (not rewriting) in file jgross-thesis.tex </tspan>
+<tspan x="0" dy="1.2em">  on input line 54.</tspan>
 <tspan x="0" dy="1.2em">TODO: Run `make update-thesis' before submission to update the date on the </tspan>
 <tspan x="0" dy="1.2em">  cover page in file jgross-thesis.tex on input line 91.</tspan>
 <tspan x="0" dy="1.2em">TODO: change \string ^Linalfalse to \string ^Linaltrue  in file </tspan>
@@ -83,6 +85,12 @@
 <tspan x="0" dy="1.2em">QUESTION FOR ADAM: Decide on whether to copyright myself or MIT; Adam, are </tspan>
 <tspan x="0" dy="1.2em">  there considerations to be aware of here? in file jgross-thesis.tex on input </tspan>
 <tspan x="0" dy="1.2em">  line 105.</tspan>
+<tspan x="0" dy="1.2em">Warning: Label `sec:rewriting-more:rIdent-known' multiply defined.</tspan>
+<tspan x="0" dy="1.2em">Warning: Label `sec:rewriting-more:rIdent-known@cref' multiply defined.</tspan>
+<tspan x="0" dy="1.2em">Warning: Label `sec:rewriting-more:revealing-enough-structure' multiply </tspan>
+<tspan x="0" dy="1.2em">  defined.</tspan>
+<tspan x="0" dy="1.2em">Warning: Label `sec:rewriting-more:revealing-enough-structure@cref' multiply </tspan>
+<tspan x="0" dy="1.2em">  defined.</tspan>
 <tspan x="0" dy="1.2em">Warning: Label `sec:reification-by-parametricity:intro' multiply defined.</tspan>
 <tspan x="0" dy="1.2em">Warning: Label `sec:reification-by-parametricity:intro@cref' multiply defined.</tspan>
 <tspan x="0" dy="1.2em">Warning: Label `sec:evenness' multiply defined.</tspan>

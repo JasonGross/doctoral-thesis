@@ -58,8 +58,115 @@ The key insight, which allows us to perform this precompilation at all, is that 
 }
 We thus augment the $\text{reduce}(c)$ constant case of \autoref{fig:nbe} in \autoref{sec:thunk-eval-subst-term} by first $\eta$-expanding the identifier, before proceeding to $\eta$-expand the identifier application and perform rewriting with \text{rewrite-head} once we have an $\eta$-long form.
 
-Now that we know what the reduction consists of, we can
-{sec:rewriting-more:revealing-enough-structure}
+Now that we know what the reduction consists of, we can now discuss what goes in to making the reduction possible, and the engineering challenges that arise.
+
+\subsubsection{CPS}\label{sec:rewriting-more:pre-reduction:cps}
+Due to the pervasive use of Gallina \mintinline{coq}{match} statements on terms which are not known during this compilation phase, we need to write essentially all of the decision-tree-evaluation code in continuation-passing style.
+This causes a moderate amount of pain, distributed over the entire rewriter.
+We will come back to this in \autoref{sec:rewriting-more:pre-reduction-again:cps}, after we have introduced the constructions necessary to understand the code.
+
+\subsubsection{Type Codes}\label{sec:rewriting-more:pre-reduction:type-codes}
+The pattern-matching compilation algorithm of \textcite{Aehlig} does not deal with types.
+In general, unification of types is somewhat more complicated than unification of terms, because terms are indexed over types.
+We have two options, here:
+\begin{enumerate}
+\item
+  We can treat terms and types as independent and untyped, simply collecting a map of unification variables to types, checking non-linear occurences (such as the types in \mintinline{coq}{@fst ?A ?B (@pair ?A ?B ?x ?y)}) for equality, and run a typechecking pass afterwards to reconstruct well-typedness.
+  In this case, we would consider the rewriting to have failed if the replacement is not well-typed.
+\item
+  We can perform matching on types first, taking care to preserve typing information, and then perform matching on terms afterwards, taking care to preserve typing information.
+\end{enumerate}
+Following standard practice in dependently-typed languages, we chose the second option.
+We now believe that this was a mistake, as it's fiendishly hard to deconstruct the expressions in a way that preserves enough typing information to completely avoid the need to compare type codes for equality and cast across proofs.
+For example, to preserve typing information when matching for \mintinline{coq}{@fst ?A ?B (@pair ?A ?B ?x ?y)}, we would have to end up with the following \mintinline{coq}{match} statement.
+Note that the reader is not expected to understand this statement, and the author was only able to construct it with some help from Coq's typechecker.
+\begin{minted}{coq}
+| App f v =>
+ let f :=
+  match f in expr t return option (ident t) with
+  | Ident idc => Some idc
+  | _ => None
+  end in
+ match f with
+ | Some maybe_fst =>
+   match v in expr s return ident (s -> _) -> _ with
+   | App f y =>
+     match f in expr _s
+      return
+       match _s with arrow b _ => expr b | _ => unit end
+       -> match _s with arrow _ ab => ident (ab -> _) | _ => unit end
+       -> _
+     with
+     | App f x =>
+       let f :=
+        match f in expr t return option (ident t) with
+        | Ident idc => Some idc
+        | _ => None
+        end in
+       match f with
+       | Some maybe_pair =>
+         match maybe_pair in ident t
+          return
+           match t with arrow a _ => expr a | _ => unit end
+           -> match t with arrow a (arrow b _) => expr b | _ => unit end
+           -> match t with arrow a (arrow b ab) => ident (ab -> _) | _ => unit end
+           -> _
+         with
+         | @pair a b =>
+           fun (x : expr a) (y : expr b) (maybe_fst : ident _) =>
+            let is_fst := match maybe_fst with fst => true | _ => false end in
+            if is_fst
+            then … (* now we can finally do something with a, b, x, and y *)
+            else …
+         | _ => …
+         end x
+       | None => …
+       end
+     | _ => …
+     end y
+   | _ => …
+   end maybe_fst
+ | None => …
+ end
+\end{minted}
+This is quite the mouthful.
+
+Furthermore, there are two additional complications.
+First, this sort of match expression must be generated \emph{automatically}.
+Since pattern-matching evaluation happens on \emph{lists} of expressions, we'd need to know exactly what each match reveals about the types of all other expressions in the list.
+Additionally, in order to allow reduction to happen where it should, we need to make sure to match the head identifier \emph{first}, without convoying it across matches on unknown variables.
+\todo{should I cite CPDT about the convoy pattern?}
+Note that in the code above, we did not follow this requirement, as it would complicate the \mintinline{coq}{return} clauses even more (presuming we wanted to propagate typing information as we'd have to in the general case rather than cutting corners).
+
+Second, trying to prove anything about functions written like this is an enormous pain.
+Because of the intricate dependencies in typing information involved in the convoy pattern, Coq's \mintinline{coq}{destruct} tactic is useless.
+The \mintinline{coq}{dependent destruction} tactic is sometimes able to handle such goals, but even when it can, it often introduces a dependency on the axiom \mintinline{coq}{JMeq_eq}, which is equivalent to assuming \emph{uniqueness of identity proofs} (UIP), that all proofs of equality are equal---note that this contradicts, for example, the popular univalence axiom of homotopy type theory~\cite{HoTTBook}.
+In order to prove anything about such functions without assuming UIP, the proof effectively needs to replicate the complicated \mintinline{coq}{return} clauses of the function definition.
+However, since they are not to be replicated exactly, but merely be generated from the same insights, such proof terms often have to be written almost entirely by hand.
+These proofs are furthermore quite hard to maintain, as even small changes in the structure of the function often require intricate changes in the proof script.
+
+
+
+\todo{Write this subsubsection}
+
+\subsubsection{What Can We Unfold?}\label{sec:rewriting-more:pre-reduction:tracking-unfolding}
+
+\begin{itemize}
+\item \todo{talk about the ``known'' parameter of rIdent} \label{sec:rewriting-more:rIdent-known}
+\item \todo{talk about multiple aliases like \texttt{option\_bind'}}
+\item \todo{talk about lack of help from the compiler / type-checker}
+\item \todo{talk about ``Note that here we are jumping through some extra hoops to get the right reduction behavior at rewrite-rule-compilation time.'' for \texttt{eval\_decision\_tree}}
+\item \todo{foward-reference pain with casts?}
+\item \todo{talk about whether or not to eliminate PositiveMap.t?} % ``In a possibly-gratuitous use of dependent typing to ensure that''
+\item \todo{talk about the general tradeoff between runtime checks and static proofs} % ``However, the proofs are much simpler if we simply do a wholesale check at the very end
+\item \todo{talk about the cost of inconsistent decisions spreading pain elsewhere} % ``Here we pay the price of an imperfect abstraction barrier (that we have types lying around, and we rely in some places on types lining up, but do not track everywhere that types line up).''
+\end{itemize}
+\subsubsection{Revealing ``Enough'' Structure}\label{sec:rewriting-more:revealing-enough-structure}
+\begin{itemize}
+\item \todo{talk also about tracking both the revealed and unrevealed structure}
+\item \todo{talk about $\eta$-expanding identifier matches, reference \autoref{sec:rewriting-more:pre-reduction}}
+\item \todo{talk about rawexpr\_types\_ok}
+\end{itemize}
 
 
 
@@ -229,7 +336,7 @@ Lacking this cleverness, we were unable to pay the requisite cost, and hence hav
 
 \subsection{Pre-evaluation}
 $\left.\right.$
-\subsubsection{CPS}
+\subsubsection{CPS}\label{sec:rewriting-more:pre-reduction-again:cps}
 $\left.\right.$
 \subsubsection{Type Codes}
 $\left.\right.$

@@ -9,7 +9,7 @@
 \end{flushright}
 
 \todo{Better chapter title?}
-\section{Introduction}\label{sec:rewriting-more:intro}
+%\section{Introduction}\label{sec:rewriting-more:intro}
 \autoref{ch:rewriting} discussed in detail our framework for building verified partial evaluators, going into the context, motivation, and the techniques used to put the framework together.
 However, there was a great deal of engineering effort that went into building this tool which we glossed over.
 Much of the engineering effort was mundane, and we elide the details entirely.
@@ -76,6 +76,9 @@ We have two options, here:
 \item
   We can perform matching on types first, taking care to preserve typing information, and then perform matching on terms afterwards, taking care to preserve typing information.
 \end{enumerate}
+
+The obvious tradeoff between these options is that the former option requires doing more work at runtime, because we end up doing needless comparisons that we could know in advance will always turn out a particular way.
+
 Following standard practice in dependently-typed languages, we chose the second option.
 We now believe that this was a mistake, as it's fiendishly hard to deconstruct the expressions in a way that preserves enough typing information to completely avoid the need to compare type codes for equality and cast across proofs.
 For example, to preserve typing information when matching for \mintinline{coq}{@fst ?A ?B (@pair ?A ?B ?x ?y)}, we would have to end up with the following \mintinline{coq}{match} statement.
@@ -224,27 +227,27 @@ These proofs are furthermore quite hard to maintain, as even small changes in th
 Due to a lack of foresight and an unfortunate reluctance to take the design back to the drawing board after we already had working code, we ended up mixing these two approaches, getting, not quite the worst of both worlds, but definitely a significant fraction of the pain of both worlds:
 We must deal with both the pain of indexing our term unification information over our type unification information, and we must still insert typecasts in places where we have lost the information that the types will line up.
 
-\subsubsection{What Can We Unfold?}\label{sec:rewriting-more:pre-reduction:tracking-unfolding}
+\subsubsection{How Do We Know What We Can Unfold?}\label{sec:rewriting-more:pre-reduction:tracking-unfolding}
+Coq's built-in reduction is somewhat limited, especially when we want it to have reasonable performance.
+This is, after all, a large part of the problem this tool is intended to solve.
 
-\begin{itemize}
-\item \todo{talk about the ``known'' parameter of rIdent} \label{sec:rewriting-more:rIdent-known}
-\item \todo{talk about multiple aliases like \texttt{option\_bind'}}
-\item \todo{talk about lack of help from the compiler / type-checker}
-\item \todo{talk about ``Note that here we are jumping through some extra hoops to get the right reduction behavior at rewrite-rule-compilation time.'' for \texttt{eval\_decision\_tree}}
-\item \todo{foward-reference pain with casts?}
-\item \todo{talk about whether or not to eliminate PositiveMap.t?} % ``In a possibly-gratuitous use of dependent typing to ensure that''
-\item \todo{talk about the general tradeoff between runtime checks and static proofs} % ``However, the proofs are much simpler if we simply do a wholesale check at the very end
-\item \todo{talk about the cost of inconsistent decisions spreading pain elsewhere} % ``Here we pay the price of an imperfect abstraction barrier (that we have types lying around, and we rely in some places on types lining up, but do not track everywhere that types line up).''
-\end{itemize}
-\subsubsection{Revealing ``Enough'' Structure}\label{sec:rewriting-more:revealing-enough-structure}
-\begin{itemize}
-\item \todo{talk also about tracking both the revealed and unrevealed structure}
-\item \todo{talk about $\eta$-expanding identifier matches, reference \autoref{sec:rewriting-more:pre-reduction}}
-\item \todo{talk about rawexpr\_types\_ok}
-\end{itemize}
+In practice, we make use of three reduction passes; that we cannot interleave them is a limitation of the built-in reduction:
+\begin{enumerate}
+\item First, we unfold everything except for a specific list of constants; these constants are the ones that contain computations on information not fully known at pre-evaluation time.
+\item Next, we unfold all instances of a particular set of constants; these constants are the ones that we make sure to only use when we know that inlining them won't incur extra overhead.
+\item Finally, we use \mintinline{coq}{cbn} to simplify a small set of constants in only the locations that these constants are applied to constructors.
+\end{enumerate}
 
+Ideally, we'd either be able to do the entire simplification in the third step, or we'd be able to avoid the third step entirely.
+Unfortunately, Coq's reduction is not fast enough to do the former, and the latter requires a significant amount of effort.
+In particular, the strategy that we'd need to follow is to have two versions of every function which sometimes computes on known data and sometimes computes on unknown data, and we'd need to track in all locations which data is known and which data is unknown.
 
+We already track known and unknown data to some extent (see, for example, the \mintinline{coq}{known} argument to the \mintinline{coq}{rIdent} constructor discussed below).
+Additionally, we have two versions of a couple of functions, such as the bind function of the option monad, where we decide which to use based on, e.g., whether or not the option value that we're binding will definitely be known at pre-reduction time.
 
+Note that tracking this sort of information is non-trivial, as there's no help from the typechecker.
+
+We'll come back to this in \autoref{sec:rewriting-more:pre-reduction-again:tracking-unfolding}.
 
 \subsection{NbE vs.~Pattern Matching Compilation: Mismatched Expression APIs}\label{sec:rewriting-more:AST:choices}
 \todo{should I be consistent about naming syntax that's well-typed by construction?  I call it ``intrinsically-typed syntax'', ``syntax that is well-typed by construction'', ``intrinsically-well-typed syntax'', and ``type-indexed sytnax''\ldots}
@@ -255,6 +258,7 @@ This feature suggests that using intrinsically-typed syntax is more natural for 
 
 However, the pattern-matching compilation algorithm of \textcite{maranget2008compiling} inherently operates on untyped syntax.
 We thus have four options:
+\todo{maybe use enumerate environment here}
 (1) use intrinsically-well-typed syntax everywhere, paying the cost in the pattern-matching compilation and evaluation algorithm;
 (2) use untyped syntax in both NbE and rewriting, paying the associated costs in NbE, denotation, and in our proofs;
 (3) use intrinsically-well-typed syntax in most passes, and untyped syntax for pattern matching compilation;
@@ -330,6 +334,7 @@ This may not look too bad, but it gets worse.
 Since the \mintinline{coq}{match} on \mintinline{coq}{e} will not be known until we are actually doing the rewriting on a concrete expression, and the continuation is convoyed across this \mintinline{coq}{match}, there is no way to evaluate the continuation during compilation of rewrite rules.
 If we don't want to evaluate the continutation early, we'd have to be very careful not to duplicate it across all of the decision tree evaluation cases, as we might otherwise incur a super-linear runtime factor in the number of rewrite rules.
 As noted in \autoref{sec:rewriting-more:pre-reduction}, our early reduction nets us a $2\times$ speedup in runtime of rewriting, and is therefore relatively important to be able to do.
+\todo{redo performance experiments here, maybe insert a plot}
 
 Here we see something interesting, which does not appear to be as much of a concern in other programming languages:
 the representation of our data forces our hand about how much efficiency can be gained from precomputation, even when the representation choices are relatively minor.
@@ -340,7 +345,7 @@ Since NbE will be called on subterms of the overall term, even if we use syntax 
 
 Furthermore, as we say in \fullref{sec:binders:de-bruijn}, converting from untyped syntax to intrinsically-typed syntax, as well as writing a denotation function, requires either that all types be non-empty, or that we carry around a proof of well-typedness to use during recursion.
 \todoask{Is there a good reference for these sorts of issues?  Are they well-known?  Well-studied?}
-As discussed in \autoref{ch:design} and specifically in \fullref{ch:when-how-dependent-types}, needing to mix proofs with programs is often a big warning flag, unless the mixing can be hidden behind a well-designed API.
+As discussed in \autoref{ch:design} and specifically in \fullref{sec:when-how-dependent-types}, needing to mix proofs with programs is often a big warning flag, unless the mixing can be hidden behind a well-designed API.
 However, if we are going to be hiding the syntax behind an API of being well-typed, it seems like we might as well just use intrinsically well-typed syntax, which natrually inhabits that API.
 Furthermore, unlike in many cases where the API is best treated as opaque everywhere, here the API mixing proofs and programs needs to have adequate behavior under reduction, and ought to have good behavior even under partial reduction.
 This severely complicates the task of building a good abstraction barrier, as we not only need to ensure that the abstraction barrier does not need to be broken in the course of term-building and typechecking, but we must also ensure that the abstraction barrier can be broken in a principled way via reduction without introducing significant overhead.
@@ -402,54 +407,50 @@ We will discuss the many issues that arise from leaks in this abstraction barrie
 The cost of this fourth option is the cleverness required to come up with a version of the pattern matching compilation which, rather than being hindered by types in its syntax, instead puts them to good use.
 Lacking this cleverness, we were unable to pay the requisite cost, and hence have not much to say in this section.
 
-\subsection{Patterns with Type Variables -- The Three Kinds of Identifiers}
+\subsection{Patterns with Type Variables -- The Three Kinds of Identifiers}\label{sec:rewriting-more:three-identifier-inductives}
 \begin{itemize}
 \item \todo{talk about the default of having syntax indexed over the set of available type variables}
 \item \todo{talk about how lifting causes pain due to dependent types, also linear traversal of term}
 \item \todo{talk about how we can unify types at all (c.f.~\texttt{preunify\_types})}
 \end{itemize}
 
-\subsection{Pre-evaluation}
+\subsection{Pre-evaluation}\label{sec:rewriting-more:pre-reduction-again}
 $\left.\right.$
 \subsubsection{CPS}\label{sec:rewriting-more:pre-reduction-again:cps}
-$\left.\right.$
-\subsubsection{Type Codes}
-$\left.\right.$
-\subsubsection{What Can We Unfold?}
+\todo{insert code examples}
+\subsubsection{How Do We Know What We Can Unfold?}\label{sec:rewriting-more:pre-reduction-again:tracking-unfolding}
 \begin{itemize}
 \item \todo{talk about the ``known'' parameter of rIdent} \label{sec:rewriting-more:rIdent-known}
-\item \todo{talk about multiple aliases like \texttt{option\_bind'}}
-\item \todo{talk about lack of help from the compiler / type-checker}
 \item \todo{talk about ``Note that here we are jumping through some extra hoops to get the right reduction behavior at rewrite-rule-compilation time.'' for \texttt{eval\_decision\_tree}}
 \item \todo{foward-reference pain with casts?}
 \item \todo{talk about whether or not to eliminate PositiveMap.t?} % ``In a possibly-gratuitous use of dependent typing to ensure that''
 \item \todo{talk about the general tradeoff between runtime checks and static proofs} % ``However, the proofs are much simpler if we simply do a wholesale check at the very end
 \item \todo{talk about the cost of inconsistent decisions spreading pain elsewhere} % ``Here we pay the price of an imperfect abstraction barrier (that we have types lying around, and we rely in some places on types lining up, but do not track everywhere that types line up).''
 \end{itemize}
-\subsubsection{Revealing ``Enough'' Structure}\label{sec:rewriting-more:revealing-enough-structure}
+\subsubsection{Revealing ``Enough'' Structure}\label{sec:rewriting-more:pre-reduction-again:revealing-enough-structure}
 \begin{itemize}
 \item \todo{talk also about tracking both the revealed and unrevealed structure}
 \item \todo{talk about $\eta$-expanding identifier matches, reference \autoref{sec:rewriting-more:pre-reduction}}
 \item \todo{talk about rawexpr\_types\_ok}
 \end{itemize}
 
-\subsection{The Let-In Monad: Missing Abstraction Barriers at the Type Level}
+\subsection{The Let-In Monad: Missing Abstraction Barriers at the Type Level}\label{sec:rewriting-more:let-in-monad}
 \todo{Talk also about the pain of wf statements for, e.g., \texttt{wf\_normalize\_deep\_rewrite\_rule}, having to go underneath multiple monads}
 
-\subsection{Rewriting Again in the Output of a Rewrite Rule}
+\subsection{Rewriting Again in the Output of a Rewrite Rule}\label{sec:rewriting-more:do-again}
 $\left.\right.$
 
 \subsection{Delayed Rewriting in Variable Nodes}\label{sec:rewriting-more:delayed-rewriting}
 \todo{rValue vs rExpr}
 
-\subsection{Relating Expressions and Values}
+\subsection{Relating Expressions and Values}\label{sec:rewriting-more:values-and-expressions}
 \todo{figure out where this goes, how to explain it, where it arises from:}
 ``In general, the stored values are only interp-related to the same things that the ``unrevealed structure'' expressions are interp-related to. There is no other relation (that we've found) between the values and the expressions, and this caused a great deal of pain when trying to specify the interpretation correctness properties.''
 
 \subsection{Which Equivalence Relation?}\label{sec:rewriting-more:which-equivalence}
 \todo{talk about \texttt{rawexpr\_equiv}, 4-place \texttt{wf\_rawexpr}, nuance of revealing structure in CPS'd \texttt{eval\_decision\_tree}, non-obvious \texttt{wf\_value} binding list, \texttt{interp\_related\_gen} unsuccessfully avoiding funext (and also needing to be instantiated with \texttt{value\_interp\_related} sometimes), \texttt{rawexpr\_interp\_related} and separating (or not) goodness from relatedness, \texttt{rawexpr\_types\_ok}?, \texttt{unification\_resultT'\_interp\_related}?, \texttt{interp\_unify\_pattern'}?, interpretation-correctness related to rewriting again}
 
-\subsection{Dependently Typed Pain in Applying Rewrite Rules}
+\subsection{Dependently Typed Pain in Applying Rewrite Rules}\label{sec:rewriting-more:dependently-typed-pain:applying-rewrite-rules}
 \begin{itemize}
 \item \todo{talk about ``There are two steps to rewriting with a rule \ldots''}
 ``\ldots\space both conceptually simple but in practice complicated by dependent types.
@@ -458,7 +459,7 @@ In order to state the correctness conditions for gathering binding data, we must
 \item \todo{mention a trade-off here: note that we can't eliminate equality tests/casts early if we introduce them in the wrong place, c.f.~\texttt{app\_transport\_with\_unification\_resultT'\_cps}}
 \end{itemize}
 
-\subsection{Dependently Typed Pain in Indexing Over Types}
+\subsection{Dependently Typed Pain in Indexing Over Types}\label{sec:rewriting-more:dependently-typed-pain:indexing-over-types}
 \todo{this subsection}
 ``We can define a transformation that takes in a \texttt{PositiveMap.t} of pattern type variables to types, together with a \texttt{PositiveSet.t} of type variables that we care about, and re-creates a new \texttt{PositiveMap.t} in accordance with the \texttt{PositiveSet.t}.
 This is required to get some theorem types to line up, and is possibly an indication of a leaky abstraction barrier.''

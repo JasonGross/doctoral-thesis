@@ -149,7 +149,7 @@
 
 \newboolean{zerowidthscripts}
 \newboolean{fullwidthscripts}
-\newcommand{\mathsubsup}[2]{
+\newcommand{\mathsubsup}[2]{%
 \ifthenelse{\boolean{zerowidthscripts}}{%
   \aswidthof{\ensuremath{{}#1{#2}}}{}%
 }{\ifthenelse{\boolean{fullwidthscripts}}{%

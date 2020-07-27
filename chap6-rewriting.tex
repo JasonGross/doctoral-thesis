@@ -78,6 +78,11 @@ We have two options, here:
 \end{enumerate}
 
 The obvious tradeoff between these options is that the former option requires doing more work at runtime, because we end up doing needless comparisons that we could know in advance will always turn out a particular way.
+Importantly, note that Coq's reduction will not be able to reduce away these runtime comparisons; reduction alone is not enough to deduce that a boolean equality function defined by recursion will return true when passed identical arguments, if the arguments are not also concrete terms.
+%
+%\todo{mention a trade-off here: note that we can't eliminate equality tests/casts early if we introduce them in the wrong place, c.f.~\texttt{app\_transport\_with\_unification\_resultT'\_cps}}
+%
+%\todo{talk about the general tradeoff between runtime checks and static proofs} % ``However, the proofs are much simpler if we simply do a wholesale check at the very end
 
 Following standard practice in dependently-typed languages, we chose the second option.
 We now believe that this was a mistake, as it's fiendishly hard to deconstruct the expressions in a way that preserves enough typing information to completely avoid the need to compare type codes for equality and cast across proofs.
@@ -226,6 +231,7 @@ These proofs are furthermore quite hard to maintain, as even small changes in th
 
 Due to a lack of foresight and an unfortunate reluctance to take the design back to the drawing board after we already had working code, we ended up mixing these two approaches, getting, not quite the worst of both worlds, but definitely a significant fraction of the pain of both worlds:
 We must deal with both the pain of indexing our term unification information over our type unification information, and we must still insert typecasts in places where we have lost the information that the types will line up.
+% \todo{talk about the cost of inconsistent decisions spreading pain elsewhere} % ``Here we pay the price of an imperfect abstraction barrier (that we have types lying around, and we rely in some places on types lining up, but do not track everywhere that types line up).''
 
 \subsubsection{How Do We Know What We Can Unfold?}\label{sec:rewriting-more:pre-reduction:tracking-unfolding}
 Coq's built-in reduction is somewhat limited, especially when we want it to have reasonable performance.
@@ -249,7 +255,7 @@ Note that tracking this sort of information is non-trivial, as there's no help f
 
 We'll come back to this in \autoref{sec:rewriting-more:pre-reduction-again:tracking-unfolding}.
 
-\subsection{NbE vs.~Pattern Matching Compilation: Mismatched Expression APIs}\label{sec:rewriting-more:AST:choices}
+\subsection{NbE vs.~Pattern Matching Compilation: Mismatched Expression APIs and Leaky Abstraction Barriers}\label{sec:rewriting-more:AST:choices}
 \todo{should I be consistent about naming syntax that's well-typed by construction?  I call it ``intrinsically-typed syntax'', ``syntax that is well-typed by construction'', ``intrinsically-well-typed syntax'', and ``type-indexed sytnax''\ldots}
 We introduced normalization by evaluation (NbE)~\cite{NbE} in \autoref{sec:our-solution} and expanded on it in \autoref{sec:thunk-eval-subst-term} as a way to support higher-order reduction of $\lambda$-terms.
 The termination argument for NbE proceeds by recursion on the type of the term we're reducing.
@@ -408,11 +414,90 @@ The cost of this fourth option is the cleverness required to come up with a vers
 Lacking this cleverness, we were unable to pay the requisite cost, and hence have not much to say in this section.
 
 \subsection{Patterns with Type Variables -- The Three Kinds of Identifiers}\label{sec:rewriting-more:three-identifier-inductives}
+We have one final bit of infrastructure to explain and motivate before we have enough of the structure sketched out to give all of the rest of the engineering challenges: representing the identifiers.
+Recall from \fullref{sec:nine-steps} that we automatically emit an inductive type describing all available primitive functions.
+
+When deciding how to represent identifiers, there are roughly three options we have to choose from:
+\begin{enumerate}
+\item
+  We could use an untyped representation of identifiers, such as Coq strings (as in \textcite{TemplateCoq}, for example), or integers indexing into some finite map.
+\item
+  We could index the expression type over a finite map of valid identifiers, and use dependent typing to ensure that we only have well-typed identifiers.
+\item
+  We could have a fixed set of valid identifiers, using types to ensure that we have only valid expressions.
+\end{enumerate}
+
+The first option results in expressions that are not always well-typed.
+As discussed in \autoref{ch:design} and seen in the preceeding sections, having leaky abstraction barriers is often worse than having none at all, and we expect that having partially-well-typed expressions would be no exception.
+
+The second option is probably the way to go if we want truly extensible identifier-sets.
+There are two issues.
+First, this adds a linear overhead in the number of identifiers---or more precisely, in the total size of the types of the identifiers---because every AST node will store a copy of the entire finite map.
+Second, because our expression syntax is simply typed, polymorphic identifiers pose a problem.
+To support identifiers like \mintinline{coq}{fst} and \mintinline{coq}{snd}, which have types \mintinline{coq}{∀ A B, A * B → A} and \mintinline{coq}{∀ A B, A * B → B} respectively, we must either replicate the identifiers with all of the ways they might be applied, or else we must add support in our language for dependent types or for explicit type polymorphism.
+
+Instead, we chose to go with the third option, which we believe is the simplest.
+The inductive type of identifiers is indexed over the type of the identifier, and type polymorphism is expressed via meta-level arguments to the constructor.
+So, for example, the identifier code for \mintinline{coq}{fst} takes two type-code arguments \mintinline{coq}{A} and \mintinline{coq}{B}, and has type \mintinline{coq}{ident (A * B → A)}.
+Hence all fully-applied identifier codes have simple types (such as \mintinline{coq}{A * B → A}), and our inductive type still supports polymorphic constants.
+An additional benefit of this approach is that unification of identifiers is just pattern matching in Gallina, and hence we can rely on the pattern-matching compilation schemes of Coq's fast reduction machines, or the OCaml compiler itself, to further speed up our rewriting.
+
+This brings us to the question of how to do pattern matching for rewriting with identifiers.
+We want to be able to support type variables, for example to rewrite \mintinline{coq}{@fst ?A ?B (@pair ?A ?B ?x ?y)} to \mintinline{coq}{x}.
+While it would arguably be more elegant to treat term and type variables identically, doing this would require a language supporting dependent types, and we are not aware of any extension of PHOAS to dependent types.
+Extensions of HOAS to dependent types are known~\cite{Outrageous2010McBride}, but the obvious modifications of such syntax that in the simply-typed case turn HOAS into PHOAS result in infinite self-referential types in the dependently-typed case.
+
+As such, insofar as we are using intrinsically well-typed syntax at all, we need to treat type variables separately from term variables.
+We need three different sorts of identifiers:
 \begin{itemize}
-\item \todo{talk about the default of having syntax indexed over the set of available type variables}
-\item \todo{talk about how lifting causes pain due to dependent types, also linear traversal of term}
-\item \todo{talk about how we can unify types at all (c.f.~\texttt{preunify\_types})}
+\item
+  identifiers whose types contain no type variables, for use in external-facing expressions and the denotation function,
+\item
+  identifiers whose types are permitted to contain type variables, for use in patterns, and
+\item
+  identifers with no polymorphic type information, for use in pattern-matching compilation.
 \end{itemize}
+The first two are relatively self-explanatory.
+The third of these is required because pattern-matching compilation proceeds in an untyped way; there's no obvious place to keep the typing information associated to identifiers in the decision tree, which must be computed before we do any unification, type variables or otherwise.
+\todo{is this sufficiently understandable?}
+
+We could, in theory, use a single inductive type of type codes for all three of these.
+We could parameterize the inductive of type codes over the set of free type variables (or even just over a boolean declaring whether or not type variables are allowed), and conventionally use the type code for unit in all type-code arguments when building decision trees.
+
+This sort of reuse, however, is likely to introduce more problems than it solves.
+
+The identifier codes used in pattern-matching compilation must be untyped, to match the decision we made for expressions in \autoref{sec:rewriting-more:AST:choices}.
+Having them conventionally be typed pattern codes instantiated with unit types is, in some sense, just more opportunity to mess up and try to inspect the types when we really shouldn't.
+There is a clear abstraction barrier here, of having these identifier codes not carry types, and we might as well take advantage of that and codify the abstraction barrier in our code.
+
+The question of type variables is more nuanced.
+If we are only tracking whether or not a type is allowed to have type variables, then we might as well use two different inductive types; there is not much benefit to indexing the type codes over a boolean rather than having two copies of the inductive, for there's not much that can be done generically in whether or not type variables are allowed.
+Note also that we must track at least this much information, for identifiers in expressions passed to the denotation function must not have uninstantiated type variables, and identifiers in patterns must be permitted to have uninstantiated type variables.
+
+However, there is some potential benefit to indexing over the set of uninstantiated type variables.
+This might allow us to write type signatures for functions that guarantee some invariants, possibly allowing for easier proofs.
+However, it's not clear to us where this would actually be useful; most functions already care only about whether or not we permit type variables at all.
+Our current code in fact performs a poor approximation of this strategy in some places: we index over the entire pattern where indexing over the free variables of the pattern would suffice.
+
+This unneeded indexing causes an enormous amount of pain, and is yet another example of how poorly designed abstraction barriers incur outsized overhead.
+Rewrite rule replacements are expressed as dependently-typed towers indexed first over the type variables of a pattern, and then again over the term variables.
+This design is a historical artifact, from when we expected to be writing rewrite rule ASTs by hand rather than reifying them from Gallina, and found the curried towers more convenient to write.
+\todo{should I elaborate more on the pain?}
+%``\ldots\space both conceptually simple but in practice complicated by dependent types.
+%We must unify a pattern with an expression, gathering binding data for the replacement rule as we go; and we must apply the replacement rule to the binding data (which is non-trivial because the rewrite rules are expressed as curried dependently-typed towers indexed over the rewrite rule pattern).
+%In order to state the correctness conditions for gathering binding data, we must first talk about applying replacement rules to binding data.''
+%``We can define a transformation that takes in a \texttt{PositiveMap.t} of pattern type variables to types, together with a \texttt{PositiveSet.t} of type variables that we care about, and re-creates a new \texttt{PositiveMap.t} in accordance with the \texttt{PositiveSet.t}.
+%This is required to get some theorem types to line up, and is possibly an indication of a leaky abstraction barrier.''
+This design, however, is absolutely a mistake, especially given the concession we make in \fullref{sec:rewriting-more:pre-reduction:type-codes} to not track enough typing information to avoid all typechecking.
+
+While indexing over only the set of permitted type variables would simplify proofs significantly, we'd benefit even more by indexing only over whether or not we permit type variables at all.
+None of our proofs are made simpler by tracking the set of permitted type variables.
+%
+%\todo{talk about ``There are two steps to rewriting with a rule \ldots''}
+%
+%\todo{talk about how lifting causes pain due to dependent types, also linear traversal of term}
+%
+%\todo{talk about how we can unify types at all (c.f.~\texttt{preunify\_types})}
 
 \subsection{Pre-evaluation}\label{sec:rewriting-more:pre-reduction-again}
 $\left.\right.$
@@ -422,10 +507,8 @@ $\left.\right.$
 \begin{itemize}
 \item \todo{talk about the ``known'' parameter of rIdent} \label{sec:rewriting-more:rIdent-known}
 \item \todo{talk about ``Note that here we are jumping through some extra hoops to get the right reduction behavior at rewrite-rule-compilation time.'' for \texttt{eval\_decision\_tree}}
-\item \todo{foward-reference pain with casts?}
+%\item \todo{foward-reference pain with casts?}
 \item \todo{talk about whether or not to eliminate PositiveMap.t?} % ``In a possibly-gratuitous use of dependent typing to ensure that''
-\item \todo{talk about the general tradeoff between runtime checks and static proofs} % ``However, the proofs are much simpler if we simply do a wholesale check at the very end
-\item \todo{talk about the cost of inconsistent decisions spreading pain elsewhere} % ``Here we pay the price of an imperfect abstraction barrier (that we have types lying around, and we rely in some places on types lining up, but do not track everywhere that types line up).''
 \end{itemize}
 \subsubsection{Revealing ``Enough'' Structure}\label{sec:rewriting-more:pre-reduction-again:revealing-enough-structure}
 \begin{itemize}
@@ -443,31 +526,15 @@ $\left.\right.$
 \subsection{Delayed Rewriting in Variable Nodes}\label{sec:rewriting-more:delayed-rewriting}
 \todo{rValue vs rExpr}
 
-\subsection{Relating Expressions and Values}\label{sec:rewriting-more:values-and-expressions}
+\subsubsection{Relating Expressions and Values}\label{sec:rewriting-more:values-and-expressions}
 \todo{figure out where this goes, how to explain it, where it arises from:}
 ``In general, the stored values are only interp-related to the same things that the ``unrevealed structure'' expressions are interp-related to. There is no other relation (that we've found) between the values and the expressions, and this caused a great deal of pain when trying to specify the interpretation correctness properties.''
 
-\subsection{Which Equivalence Relation?}\label{sec:rewriting-more:which-equivalence}
+\subsubsection{Which Equivalence Relation?}\label{sec:rewriting-more:which-equivalence}
 \todo{talk about \texttt{rawexpr\_equiv}, 4-place \texttt{wf\_rawexpr}, nuance of revealing structure in CPS'd \texttt{eval\_decision\_tree}, non-obvious \texttt{wf\_value} binding list, \texttt{interp\_related\_gen} unsuccessfully avoiding funext (and also needing to be instantiated with \texttt{value\_interp\_related} sometimes), \texttt{rawexpr\_interp\_related} and separating (or not) goodness from relatedness, \texttt{rawexpr\_types\_ok}?, \texttt{unification\_resultT'\_interp\_related}?, \texttt{interp\_unify\_pattern'}?, interpretation-correctness related to rewriting again}
 
-\subsection{Dependently Typed Pain in Applying Rewrite Rules}\label{sec:rewriting-more:dependently-typed-pain:applying-rewrite-rules}
-\begin{itemize}
-\item \todo{talk about ``There are two steps to rewriting with a rule \ldots''}
-``\ldots\space both conceptually simple but in practice complicated by dependent types.
-We must unify a pattern with an expression, gathering binding data for the replacement rule as we go; and we must apply the replacement rule to the binding data (which is non-trivial because the rewrite rules are expressed as curried dependently-typed towers indexed over the rewrite rule pattern).
-In order to state the correctness conditions for gathering binding data, we must first talk about applying replacement rules to binding data.''
-\item \todo{mention a trade-off here: note that we can't eliminate equality tests/casts early if we introduce them in the wrong place, c.f.~\texttt{app\_transport\_with\_unification\_resultT'\_cps}}
-\end{itemize}
-
-\subsection{Dependently Typed Pain in Indexing Over Types}\label{sec:rewriting-more:dependently-typed-pain:indexing-over-types}
-\todo{this subsection}
-``We can define a transformation that takes in a \texttt{PositiveMap.t} of pattern type variables to types, together with a \texttt{PositiveSet.t} of type variables that we care about, and re-creates a new \texttt{PositiveMap.t} in accordance with the \texttt{PositiveSet.t}.
-This is required to get some theorem types to line up, and is possibly an indication of a leaky abstraction barrier.''
-
-\subsection{What's the Ground Truth: Patterns Or Expressions?}
+\subsection{What's the Ground Truth: Patterns Or Expressions?}\label{sec:rewriting-more:patterns-vs-expressions}
 \todo{default interpretation of a pattern --- complicated, but perhaps needed for phrasing correctness of unification}
-
-\section{Leaky Abstraction Barriers: NbE vs.~Pattern Matching Compilation}
 
 \clearpage
 

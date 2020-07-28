@@ -16,7 +16,7 @@ Much of the engineering effort was mundane, and we elide the details entirely.
 However, we believe some of the engineering effort serves as a good case-study for the difficulties of building proof-based systems at scale.
 This chapter is about exposing the details relevant to understanding how the bottlenecks and principles identified elsewhere in this thesis played out in designing and implementing this tool.
 
-\section{A Brief Survey of the Engineering Challenges}\label{sec:rewriting-more:challenges-overview}
+%\section{A Brief Survey of the Engineering Challenges}\label{sec:rewriting-more:challenges-overview}
 
 While the core rewriting engine of the framework is about 1\,300 lines of code, and early simplified versions of the core engine were only about 150 lines of code%
 \footnote{%
@@ -264,11 +264,16 @@ This feature suggests that using intrinsically-typed syntax is more natural for 
 
 However, the pattern-matching compilation algorithm of \textcite{maranget2008compiling} inherently operates on untyped syntax.
 We thus have four options:
-\todo{maybe use enumerate environment here}
-(1) use intrinsically-well-typed syntax everywhere, paying the cost in the pattern-matching compilation and evaluation algorithm;
-(2) use untyped syntax in both NbE and rewriting, paying the associated costs in NbE, denotation, and in our proofs;
-(3) use intrinsically-well-typed syntax in most passes, and untyped syntax for pattern matching compilation;
-(4) invent a pattern-matching compilation algorithm that is well-suited to type-indexed sytnax.
+\begin{enumerate}[(1)]
+\item
+  use intrinsically-well-typed syntax everywhere, paying the cost in the pattern-matching compilation and evaluation algorithm;
+\item
+  use untyped syntax in both NbE and rewriting, paying the associated costs in NbE, denotation, and in our proofs;
+\item
+  use intrinsically-well-typed syntax in most passes, and untyped syntax for pattern matching compilation;
+\item
+  invent a pattern-matching compilation algorithm that is well-suited to type-indexed sytnax.
+\end{enumerate}
 We ultimately chose option (3).
 I was not clever enough to follow through on option (4), and while options (1) and (2) are both interesting, option (3) seemed to follow the well-established convention of using whichever datatype is best-suited to the task at hand.
 As we'll shortly see, all of these options come with significant costs, and (3) is not as obviously a good choice as it might seem at first glance.
@@ -442,7 +447,24 @@ So, for example, the identifier code for \mintinline{coq}{fst} takes two type-co
 Hence all fully-applied identifier codes have simple types (such as \mintinline{coq}{A * B → A}), and our inductive type still supports polymorphic constants.
 An additional benefit of this approach is that unification of identifiers is just pattern matching in Gallina, and hence we can rely on the pattern-matching compilation schemes of Coq's fast reduction machines, or the OCaml compiler itself, to further speed up our rewriting.
 
-This brings us to the question of how to do pattern matching for rewriting with identifiers.
+\paragraph{Aside: Why Use Pattern Matching Compilation At All?}
+Given the fact that, after pre-reduction, there is no trace of the decision tree remaining, one might ask why we use pattern matching compilation at all, rather than just leaving it to the pattern-matching compiler of Coq or OCaml to be performant.
+We have three answers to this question.
+
+The first, perhaps most honest answer, is that it is a historical accident; we prematurely optimized this part of the rewriting engine when writing it.
+
+The second answer is that it allows us to easily prune useless work.
+The pattern matching compilation algorithm naturally prunes away patterns that can be known to not work, given the structure that we've revealed.
+By contrast, if we just record what information we've already revealed as we're performing pattern unification, it's quite tricky to avoid decomposition which can be known to be useless based on only the structure that's been revealed already.
+\todo{Does this need more explanation?  A code example?  Something else?}
+
+\todo{be consistent about ``pattern matching compilation'' vs ``pattern-matching compilation''?}
+The third and final answer is that pattern matching compilation is a good abstraction barrier for factoring out the work of revealing enough structure from the work of unifying a pattern with an expression.
+Said another way, even though we reduce away the decision tree and its evaluation, there is basically no wasted work; removing pattern matching compilation while preserving all the benefits would effectively just be inlining all of the functions, and there would be no dead code revealed by this inlining.
+\todo{does this need more or better explanation?  or a code example?}
+
+\paragraph{Pattern Matching For Rewriting}
+We now arrive at the question of how to do pattern matching for rewriting with identifiers.
 We want to be able to support type variables, for example to rewrite \mintinline{coq}{@fst ?A ?B (@pair ?A ?B ?x ?y)} to \mintinline{coq}{x}.
 While it would arguably be more elegant to treat term and type variables identically, doing this would require a language supporting dependent types, and we are not aware of any extension of PHOAS to dependent types.
 Extensions of HOAS to dependent types are known~\cite{Outrageous2010McBride}, but the obvious modifications of such syntax that in the simply-typed case turn HOAS into PHOAS result in infinite self-referential types in the dependently-typed case.
@@ -455,7 +477,7 @@ We need three different sorts of identifiers:
 \item
   identifiers whose types are permitted to contain type variables, for use in patterns, and
 \item
-  identifers with no polymorphic type information, for use in pattern-matching compilation.
+  identifers with no type information, for use in pattern-matching compilation.
 \end{itemize}
 The first two are relatively self-explanatory.
 The third of these is required because pattern-matching compilation proceeds in an untyped way; there's no obvious place to keep the typing information associated to identifiers in the decision tree, which must be computed before we do any unification, type variables or otherwise.

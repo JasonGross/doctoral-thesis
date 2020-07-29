@@ -248,6 +248,7 @@
 
 % Minted red box around greek characters - https://tex.stackexchange.com/a/343506/2066
 \usemintedstyle{bw}
+\setmintedinline{breaklines}
 \makeatletter
 \AtBeginEnvironment{minted}{\dontdofcolorbox}
 \def\dontdofcolorbox{\renewcommand\fcolorbox[4][]{##4}}

@@ -254,6 +254,8 @@
 \def\dontdofcolorbox{\renewcommand\fcolorbox[4][]{##4}}
 \xpatchcmd{\inputminted}{\minted@fvset}{\minted@fvset\dontdofcolorbox}{}{}
 \xpatchcmd{\mintinline}{\minted@fvset}{\minted@fvset\dontdofcolorbox}{}{}
+% Work around bug(https://github.com/gpoore/minted/issues/273)
+\newcommand{\textmintinline}[2]{\text{\mintinline{#1}{#2}}}
 \makeatother
 
 \renewcommand{\chapterautorefname}{Chapter}

@@ -571,7 +571,7 @@ Definition Rewrite {t} (E : Expr t) : Expr t
 
 One subtlety hidden above in implicit arguments is in the final clause of \texttt{reduce}, where the two applications of the \texttt{Ident} constructor use different variable representations.
 With all those details hashed out, we can prove a pleasingly simple correctness theorem, with a lemma for each main definition, with inductive structure mirroring recursive structure of the definition, also appealing to correctness of last section's pattern-compilation operations.
-$$\forall t, E : \mintinline{coq}{Expr t}. \; \llbracket \mintinline{coq}{Rewrite}(E) \rrbracket = \llbracket E \rrbracket$$
+$$\forall t, E : \textmintinline{coq}{Expr t}. \; \llbracket \textmintinline{coq}{Rewrite}(E) \rrbracket = \llbracket E \rrbracket$$
 
 Even before getting to the correctness theorem, we needed to convince Coq that the function terminates.
 While for \textcite{Aehlig}, a termination proof would have been a whole separate enterprise, it turns out that PHOAS and NbE line up so well that Coq accepts the above code with no additional termination proof.
@@ -582,8 +582,8 @@ Therefore, we should restrict ourselves to (1) running full reduction in the sty
 
 Operationally, then, we apply our tactic in a goal containing a term $e$ that we want to partially evaluate.
 In standard proof-by-reflection style, we \emph{reify} $e$ into some $E$ where $\llbracket E \rrbracket = e$, replacing $e$ accordingly, asking Coq's kernel to validate the equivalence via standard reduction.
-Now we use the \mintinline{coq}{Rewrite} correctness theorem to replace $\llbracket E \rrbracket$ with $\llbracket \mintinline{coq}{Rewrite}(E) \rrbracket$.
-Next we may ask the Coq kernel to simplify $\mintinline{coq}{Rewrite}(E)$ by \emph{full reduction via compilation to native code}, since we carefully designed $\mintinline{coq}{Rewrite}(E)$ and its dependencies to produce closed syntax trees.
+Now we use the \mintinline{coq}{Rewrite} correctness theorem to replace $\llbracket E \rrbracket$ with $\llbracket \textmintinline{coq}{Rewrite}(E) \rrbracket$.
+Next we may ask the Coq kernel to simplify $\textmintinline{coq}{Rewrite}(E)$ by \emph{full reduction via compilation to native code}, since we carefully designed $\textmintinline{coq}{Rewrite}(E)$ and its dependencies to produce closed syntax trees.
 Finally, where $E'$ is the result of that reduction, we simplify $\llbracket E' \rrbracket$ with standard reduction, producing a normal-looking Coq term.
 
 %% The payoffs from fully satisfying Coq's type checker are:

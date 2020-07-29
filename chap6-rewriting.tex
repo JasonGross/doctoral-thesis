@@ -594,25 +594,29 @@ The other correctness condition is significantly more subtle, and corresponds to
 This one is a monster.
 We present the code before explaining it to show just how much of a mouthful it is.
 \begin{minted}{coq}
-Lemma wf_eval_decision_tree {T1 T2} G d (P : option T1 → option T2 → Prop) (HPNone : P None None)
- : ∀ (ctx1 : list (@rawexpr var1))
+Lemma wf_eval_decision_tree {T1 T2} G d (P : option T1 → option T2 → Prop)
+ : ∀ (HPNone : P None None)
+     (ctx1 : list (@rawexpr var1))
      (ctx2 : list (@rawexpr var2))
      (ctxe : list { t : type & @expr var1 t * @expr var2 t }%type)
      (Hctx1 : length ctx1 = length ctxe)
      (Hctx2 : length ctx2 = length ctxe)
      (Hwf : ∀ t re1 e1 re2 e2,
-         List.In ((re1, re2), existT _ t (e1, e2)) (List.combine (List.combine ctx1 ctx2) ctxe)
+         List.In ((re1, re2), existT _ t (e1, e2))
+                 (List.combine (List.combine ctx1 ctx2) ctxe)
          → @wf_rawexpr G t re1 e1 re2 e2)
      cont1 cont2
      (Hcont : ∀ n ls1 ls2,
          length ls1 = length ctxe
          → length ls2 = length ctxe
          → (forall t re1 e1 re2 e2,
-                List.In ((re1, re2), existT _ t (e1, e2)) (List.combine (List.combine ls1 ls2) ctxe)
+                List.In ((re1, re2), existT _ t (e1, e2))
+                        (List.combine (List.combine ls1 ls2) ctxe)
                 → @wf_rawexpr G t re1 e1 re2 e2)
          → (cont1 n ls1 = None ↔ cont2 n ls2 = None)
             ∧ P (cont1 n ls1) (cont2 n ls2)),
-   P (@eval_decision_tree var1 T1 ctx1 d cont1) (@eval_decision_tree var2 T2 ctx2 d cont2).
+   P (@eval_decision_tree var1 T1 ctx1 d cont1)
+     (@eval_decision_tree var2 T2 ctx2 d cont2).
 \end{minted}
 This is one particular way to express the following meaning:
 Suppose that we have two calls to \mintinline{coq}{eval_decision_tree} with different PHOAS \mintinline{coq}{var} types, different return types \mintinline{coq}{T1} and \mintinline{coq}{T2}, different continuations \mintinline{coq}{cont1} and \mintinline{coq}{cont1}, different expression lists \mintinline{coq}{ctx1} and \mintinline{coq}{ctx2}, and the same decision tree.

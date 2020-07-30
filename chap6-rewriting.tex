@@ -8,7 +8,19 @@
   --- Donald Knuth
 \end{flushright}
 
+\todo{do these before Monday and remove this comment}
+\begin{comment}
+TODO before Monday:
+\todo{Add code example of how CPS helps with reduction of blocked matches}
+TODO Yes, cite CPDT about convoy
+\todo{include example about recursing into something like $x + (y + 1)$ and $(a + b) + (c * 2)$}
+\todo{add code example about +}
+\todo{should I discuss why we can't just fuse them?  or how we decide when to put NbE values into rExpr (when they have base types rather than arrow types)?  Adam says yes}
+\todo{Add a paragraph about correctness conditions, and how the two sorts of correctness conditions are about denotational semantics, and about syntactic well-formedness, which for PHOAS relates two ASTs with different \mintinline{coq}{var} types}
+\end{comment}
+
 \todo{Better chapter title?}
+\todo{consider replacing ``pain'' with more formal words like ``overhead'', ``bottleneck'', etc (Adam says it's possibly too informal)}
 %\section{Introduction}\label{sec:rewriting-more:intro}
 \autoref{ch:rewriting} discussed in detail our framework for building verified partial evaluators, going into the context, motivation, and the techniques used to put the framework together.
 However, there was a great deal of engineering effort that went into building this tool which we glossed over.
@@ -65,6 +77,7 @@ Now that we know what the reduction consists of, we can now discuss what goes in
 Due to the pervasive use of Gallina \mintinline{coq}{match} statements on terms which are not known during this compilation phase, we need to write essentially all of the decision-tree-evaluation code in continuation-passing style.
 This causes a moderate amount of pain, distributed over the entire rewriter.
 %We will come back to this in \autoref{sec:rewriting-more:pre-reduction-again:cps}, after we have introduced the constructions necessary to understand the code.
+\todo{Add code example of how CPS helps with reduction of blocked matches (maybe example: mapping 2* over a list choice based on an option)}
 
 \subsection{Type Codes}\label{sec:rewriting-more:pre-reduction:type-codes}
 The pattern-matching compilation algorithm of \textcite{Aehlig} does not deal with types.
@@ -306,13 +319,15 @@ Moreover, since we need to undo the swapping inside the continutation \todo{does
 We could instead elide the swap node, but then we could no longer use matching, \mintinline{coq}{hd}, and \mintinline{coq}{tl} to operate on the expressions, and would instead need special operations to do surgery in the middle of the list, in a way that preserves type-indexing.
 
 To perform a \mintinline{coq}{Switch}, we must break apart the first element of our type-indexed list, determining whether it is an application, and identifier, or other.
-Note that even with dependent types, we cannot avoid needing a failure case for when the type-indexed list is empty, even though such a case should never occur.
+Note that even with dependent types, we cannot avoid needing a failure case for when the type-indexed list is empty, even though such a case should never occur because good decision trees will never have a \mintinline{coq}{Switch} node after consuming the entire vector of expressions.
+This failure case cannot be avoided because there is no type-level relation between the expression vector and the decision tree.
 This mismatch---the need to include failure cases that one might expect to be eliminated by dependent typing information---is a sign that the amount of dependency in the types is wrong.
 It may be too little, whence the developer should see if there is a way to incorporate the lack-of-error into the typing information (which in this case would require indexing the type of the decision tree over the length of the vector).
 It may alternatively be to much dependent typing, and the developer might be well-served by removing more dependency from the types and letting more things fall into the error case.
 
-After breaking apart the first element, we must convoy \todo{should I cite CPDT or somewhere in this thesis for the convoy pattern?} the continuation across the \mintinline{coq}{match} statement so that we can pass an expression vector of the correct type to the continuation \mintinline{coq}{K}.
+After breaking apart the first element, we must convoy \todo{cite CPDT or somewhere in this thesis for the convoy pattern?} the continuation across the \mintinline{coq}{match} statement so that we can pass an expression vector of the correct type to the continuation \mintinline{coq}{K}.
 In code, this branch might look something like
+\todo{Note that Adam found this code hard to understand; should more prose be added to clarify it?}
 \begin{minted}{coq}
 …
 | Switch icases app_case default
@@ -458,11 +473,13 @@ The second answer is that it allows us to easily prune useless work.
 The pattern matching compilation algorithm naturally prunes away patterns that can be known to not work, given the structure that we've revealed.
 By contrast, if we just record what information we've already revealed as we're performing pattern unification, it's quite tricky to avoid decomposition which can be known to be useless based on only the structure that's been revealed already.
 \todo{Does this need more explanation?  A code example?  Something else?}
+\todo{include example about recursing into something like $x + (y + 1)$ and $(a + b) + (c * 2)$}
+\todo{swap second and thir answers for flow reasons}
 
 \todo{be consistent about ``pattern matching compilation'' vs ``pattern-matching compilation''?}
 The third and final answer is that pattern matching compilation is a good abstraction barrier for factoring out the work of revealing enough structure from the work of unifying a pattern with an expression.
 Said another way, even though we reduce away the decision tree and its evaluation, there is basically no wasted work; removing pattern matching compilation while preserving all the benefits would effectively just be inlining all of the functions, and there would be no dead code revealed by this inlining.
-\todo{does this need more or better explanation?  or a code example?}
+%\todo{does this need more or better explanation?}
 
 \paragraph{Pattern Matching For Rewriting}
 We now arrive at the question of how to do pattern matching for rewriting with identifiers.
@@ -505,7 +522,7 @@ Our current code in fact performs a poor approximation of this strategy in some 
 This unneeded indexing causes an enormous amount of pain, and is yet another example of how poorly designed abstraction barriers incur outsized overhead.
 Rewrite rule replacements are expressed as dependently-typed towers indexed first over the type variables of a pattern, and then again over the term variables.
 This design is a historical artifact, from when we expected to be writing rewrite rule ASTs by hand rather than reifying them from Gallina, and found the curried towers more convenient to write.
-\todo{should I elaborate more on the pain?}
+\todo{should Ie laborate more on the pain?}
 %``\ldots\space both conceptually simple but in practice complicated by dependent types.
 %We must unify a pattern with an expression, gathering binding data for the replacement rule as we go; and we must apply the replacement rule to the binding data (which is non-trivial because the rewrite rules are expressed as curried dependently-typed towers indexed over the rewrite rule pattern).
 %In order to state the correctness conditions for gathering binding data, we must first talk about applying replacement rules to binding data.''
@@ -540,7 +557,8 @@ This argument is used to track what sorts of operations can be unfolded early.
 In particular, if a given identifier has no type arguments (for example, addition on $\mathbb{Z}$s), and we have already matched against it, then when performing further matches to unify with other patterns, we can directly match it against pattern identifiers.
 By contrast, if the identifier has not yet been matched against, or if it has unknown type arguments, we cannot guarantee that \mintinline{coq}{match}es will reduce.
 Tracking this information adds a not-insignificant amount of pain to the code.
-\todo{does this need to be explained more? How?}
+\todo{does this need to be explained more? How?  Adam says yes}
+\todo{add code example about +}
 
 \paragraph{Gratuitous Dependent Types: How much do we actually want to unfold?}
 When computing the replacement of a given expression, how much do we want to unfold?
@@ -670,9 +688,11 @@ Although it would seem that no rewrite rule applies to either argument, in fact 
 Hence when doing decision tree evaluation, it's important to keep this thunk waiting, rather than forcing it early with a generic variable node.
 The \mintinline{coq}{rValue} constructor allows us to do this.
 The \mintinline{coq}{rExpr} constructor, by contrast, holds expressions which we are allowed to do further matching on.
-\todo{should I discuss why we can't just fuse them?  or how we decide when to put NbE values into rExpr (when they have base types rather than arrow types)?}
+\todo{should I discuss why we can't just fuse them?  or how we decide when to put NbE values into rExpr (when they have base types rather than arrow types)?  Adam says yes}
 
 \subsection{Relating Expressions and Values}\label{sec:rewriting-more:values-and-expressions}
+\todo{Add a paragraph about correctness conditions, and how the two sorts of correctness conditions are about denotational semantics, and about syntactic well-formedness, which for PHOAS relates two ASTs with different \mintinline{coq}{var} types}
+
 The fact that NbE values contain thunked rewriting creates a great deal of subtlety in relating \mintinline{coq}{rawexpr}s.
 As the only correctness conditions on the rewriter are that it preserves denotational semantics of expressions and that it maps related expressions to related expressions, these are the only facts that hold about the \mintinline{coq}{NbEₜ} values in \mintinline{coq}{rValue}.
 Since native PHOAS expressions do not permit such thunked values, we can only relate \mintinline{coq}{NbEₜ} values to the interpretation of such expressions.
@@ -738,7 +758,7 @@ Second, we cannot simply interpret the expression which surrounds the \mintinlin
 Note that it's not even obvious how to materialize the function they must be extensionally related to.
 When trying to prove that the application of \mintinline{coq}{(λ f x. v₁ (f x))} to \mintinline{coq}{NbEₜ} values \mintinline{coq}{v₂} and \mintinline{coq}{v₃} is appropriately related to the interpreted integer $5$, how do we materialize the interpreted functions equivalent to \mintinline{coq}{(λ f x. v₁ (f x))} and \mintinline{coq}{v₂}?
 The answer is ``not very well'', as we were unable to materialize them in a sufficiently constructive manner as to eliminate all uses of the axiom of function extensionality, despite sinking many hours into our attempt to eliminate this axiom.\footnote{%
-  Our current thoughts are that you might be able to prove that an interpreted function being related to any expression implies that the function respects function extensionality.
+  Our current thoughts are that it might be possible to prove that an interpreted function being related to any expression implies that the function respects function extensionality.
   We invite any brave and masochistic readers to take a stab at eliminating this axiom for us.%
 }
 

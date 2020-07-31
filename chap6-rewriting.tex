@@ -8,17 +8,6 @@
   --- Donald Knuth
 \end{flushright}
 
-\todo{do these before Monday and remove this comment}
-\begin{comment}
-TODO before Monday:
-\todo{Add code example of how CPS helps with reduction of blocked matches}
-TODO Yes, cite CPDT about convoy
-\todo{include example about recursing into something like $x + (y + 1)$ and $(a + b) + (c * 2)$}
-\todo{add code example about +}
-\todo{should I discuss why we can't just fuse them?  or how we decide when to put NbE values into rExpr (when they have base types rather than arrow types)?  Adam says yes}
-\todo{Add a paragraph about correctness conditions, and how the two sorts of correctness conditions are about denotational semantics, and about syntactic well-formedness, which for PHOAS relates two ASTs with different \mintinline{coq}{var} types}
-\end{comment}
-
 \todo{Better chapter title?}
 \todo{consider replacing ``pain'' with more formal words like ``overhead'', ``bottleneck'', etc (Adam says it's possibly too informal)}
 %\section{Introduction}\label{sec:rewriting-more:intro}
@@ -77,7 +66,76 @@ Now that we know what the reduction consists of, we can now discuss what goes in
 Due to the pervasive use of Gallina \mintinline{coq}{match} statements on terms which are not known during this compilation phase, we need to write essentially all of the decision-tree-evaluation code in continuation-passing style.
 This causes a moderate amount of pain, distributed over the entire rewriter.
 %We will come back to this in \autoref{sec:rewriting-more:pre-reduction-again:cps}, after we have introduced the constructions necessary to understand the code.
-\todo{Add code example of how CPS helps with reduction of blocked matches (maybe example: mapping 2* over a list choice based on an option)}
+
+\todo{find a better transition}
+The way that CPS permits reduction under blocked \mintinline{coq}{match} statements is essentially the same as the way it permits reduction of functions in the presence of unreduced \mintinline{coq}{let} binders in \fullref{sec:under-lets}.
+Consider the expression
+\begin{center}
+\begin{minted}{coq}
+option_map List.length (option_map (λ x. List.repeat x 5) y)
+\end{minted}
+\end{center}
+\noindent
+where \mintinline{coq}{option_map : (A → B) → option A → option B} maps a function over an option, and \mintinline{coq}{List.repeat x n} creates a list consisting of \mintinline{coq}{n} copies of \mintinline{coq}{x}.
+If we fully reduce this term, we get the Gallina term
+\begin{minted}{coq}
+match
+  match y with
+  | Some x => Some [x; x; x; x; x]
+  | None => None
+  end
+with
+| Some x =>
+    Some
+      ((fix Ffix (x0 : list _) : nat :=
+          match x0 with
+          | [] => 0
+          | _ :: x2 => S (Ffix x2)
+          end) x)
+| None => None
+end
+\end{minted}
+
+Consider now a CPS'd version of \mintinline{coq}{option_map}:
+\begin{minted}{coq}
+Definition option_map_cps {A B} (f : A → B) (x : option A)
+   : ∀ {T}, (option B → T) → T
+  := λ T cont.
+        match x with
+        | Some x => cont (Some (f x))
+        | None => cont None
+        end.
+\end{minted}
+\noindent
+Then we could write the somewhat more confusing term
+\begin{minted}{coq}
+option_map_cps (λ x. List.repeat x 5) y (option_map List.length)
+\end{minted}
+\noindent
+whence reduction gives us
+\begin{minted}{coq}
+match y with
+| Some _ => Some 5
+| None => None
+end
+\end{minted}
+\noindent
+So we see that rewriting terms in continuation-passing style allows reduction to proceed without getting blocked on unknown terms.
+
+Note that if we wanted to pass this list length into a further continuation, we'd need to instead write a term like
+\begin{minted}{coq}
+λ cont.
+   option_map_cps (λ x. List.repeat x 5) y
+     (λ ls. option_map_cps List.length ls cont)
+\end{minted}
+\noindent
+which reduces to
+\begin{minted}{coq}
+λ cont. match y with
+        | Some _ => cont (Some 5)
+        | None => cont None
+        end
+\end{minted}
 
 \subsection{Type Codes}\label{sec:rewriting-more:pre-reduction:type-codes}
 The pattern-matching compilation algorithm of \textcite{Aehlig} does not deal with types.
@@ -233,8 +291,8 @@ Furthermore, there are two additional complications.
 First, this sort of match expression must be generated \emph{automatically}.
 Since pattern-matching evaluation happens on \emph{lists} of expressions, we'd need to know exactly what each match reveals about the types of all other expressions in the list.
 Additionally, in order to allow reduction to happen where it should, we need to make sure to match the head identifier \emph{first}, without convoying it across matches on unknown variables.
-\todo{should I cite CPDT about the convoy pattern?}
 Note that in the code above, we did not follow this requirement, as it would complicate the \mintinline{coq}{return} clauses even more (presuming we wanted to propagate typing information as we'd have to in the general case rather than cutting corners).
+The convoy pattern, for those unfamiliar with it, is explained in detail in \href{http://adam.chlipala.net/cpdt/html/Cpdt.MoreDep.html#lab54}{Chapter 8 (``More Dependent Types'') of \emph{Certified Programming with Dependent Types}}.~\cite{cpdt}
 
 Second, trying to prove anything about functions written like this is an enormous pain.
 Because of the intricate dependencies in typing information involved in the convoy pattern, Coq's \mintinline{coq}{destruct} tactic is useless.
@@ -325,7 +383,7 @@ This mismatch---the need to include failure cases that one might expect to be el
 It may be too little, whence the developer should see if there is a way to incorporate the lack-of-error into the typing information (which in this case would require indexing the type of the decision tree over the length of the vector).
 It may alternatively be to much dependent typing, and the developer might be well-served by removing more dependency from the types and letting more things fall into the error case.
 
-After breaking apart the first element, we must convoy \todo{cite CPDT or somewhere in this thesis for the convoy pattern?} the continuation across the \mintinline{coq}{match} statement so that we can pass an expression vector of the correct type to the continuation \mintinline{coq}{K}.
+After breaking apart the first element, we must convoy the continuation across the \mintinline{coq}{match} statement so that we can pass an expression vector of the correct type to the continuation \mintinline{coq}{K}.
 In code, this branch might look something like
 \todo{Note that Adam found this code hard to understand; should more prose be added to clarify it?}
 \begin{minted}{coq}
@@ -469,17 +527,23 @@ We have three answers to this question.
 
 The first, perhaps most honest answer, is that it is a historical accident; we prematurely optimized this part of the rewriting engine when writing it.
 
-The second answer is that it allows us to easily prune useless work.
-The pattern matching compilation algorithm naturally prunes away patterns that can be known to not work, given the structure that we've revealed.
-By contrast, if we just record what information we've already revealed as we're performing pattern unification, it's quite tricky to avoid decomposition which can be known to be useless based on only the structure that's been revealed already.
-\todo{Does this need more explanation?  A code example?  Something else?}
-\todo{include example about recursing into something like $x + (y + 1)$ and $(a + b) + (c * 2)$}
-\todo{swap second and thir answers for flow reasons}
-
-\todo{be consistent about ``pattern matching compilation'' vs ``pattern-matching compilation''?}
-The third and final answer is that pattern matching compilation is a good abstraction barrier for factoring out the work of revealing enough structure from the work of unifying a pattern with an expression.
+The second answer is that pattern matching compilation is a good abstraction barrier for factoring out the work of revealing enough structure from the work of unifying a pattern with an expression.
 Said another way, even though we reduce away the decision tree and its evaluation, there is basically no wasted work; removing pattern matching compilation while preserving all the benefits would effectively just be inlining all of the functions, and there would be no dead code revealed by this inlining.
 %\todo{does this need more or better explanation?}
+
+The third and final answer is that it allows us to easily prune useless work.
+The pattern matching compilation algorithm naturally prunes away patterns that can be known to not work, given the structure that we've revealed.
+By contrast, if we just record what information we've already revealed as we're performing pattern unification, it's quite tricky to avoid decomposition which can be known to be useless based on only the structure that's been revealed already.
+
+Consider, for example, rewriting with two rules whose left-hand-sides are $x + (y + 1)$ and $(a + b) + (c * 2)$.
+When revealing structure for the first rewrite rule, the engine will first decompose the (unknown) expression into the application of the $+$ identifier to two arguments, and then decompose the second argument into the application of the $+$ identifier to two arguments, and then finally decompose the second inner argument into a literal identifier to check if it is the literal $1$.
+If the decomposition succeeds, but the literal is not $1$ (or if the second inner argument is not a literal at all), then rewiting will fall back to the second rewrite rule.
+If we are doing structure decomposition in the na\"ive way, we will then decompose the outer first argument (bound to $x$ in the first rewrite rule) into the application of the identifier $+$ to two arguments.
+We will then attempt to decompose the secound outer argument into the application of the identifier $*$ to two arguments.
+Since there is no way an identifier can be both $+$ and $*$, this decomposition will fail.
+However, we could have avoided doing the work of decomposing $x$ into $a + b$ by realizing that the second rewrite rule is incompatible with the first; this is exatly what pattern-matching compilation and decision-tree evaluation does.
+\todo{Does this need more explanation?  Is it understandable?}
+\todo{be consistent about ``pattern matching compilation'' vs ``pattern-matching compilation''?}
 
 \paragraph{Pattern Matching For Rewriting}
 We now arrive at the question of how to do pattern matching for rewriting with identifiers.
@@ -557,8 +621,57 @@ This argument is used to track what sorts of operations can be unfolded early.
 In particular, if a given identifier has no type arguments (for example, addition on $\mathbb{Z}$s), and we have already matched against it, then when performing further matches to unify with other patterns, we can directly match it against pattern identifiers.
 By contrast, if the identifier has not yet been matched against, or if it has unknown type arguments, we cannot guarantee that \mintinline{coq}{match}es will reduce.
 Tracking this information adds a not-insignificant amount of pain to the code.
-\todo{does this need to be explained more? How?  Adam says yes}
-\todo{add code example about +}
+
+Consider the following two cases, where we will make use of both \mintinline{coq}{true} and \mintinline{coq}{false} for the \mintinline{coq}{known} argument.
+
+First, let us consider the simpler case of wanting \mintinline{coq}{known} to be \mintinline{coq}{false}.
+As a toy example, suppose we are rewriting with the rules \mintinline{coq}{@List.map A B f (x::xs) = f x :: List.map f xs} and \mintinline{coq}{@List.map (option A) (option B) (option_map f) (List.map (@Some A) xs) = xs}.
+When decomposing structure for the first rewrite rule, we will match on the head identifier to see if it is \mintinline{coq}{List.map}.
+Supposing that the final argument is not a cons cell, we will fall back to the second rewrite rule.
+While we know that the first identifier is a \mintinline{coq}{List.map}, we do not know its type arguments.
+Therefore, when we want to try to substitute with the second rewrite rule, we must match on the type structure of the first type argument to \mintinline{coq}{List.map} to see if it is an option, and, if so, extract the underlying type to put into unification data.
+However, this decomposition will block on the type arguments to \mintinline{coq}{List.map}, so we don't want to fully unfold it during early reduction.
+Note that the first rewrite rule is not really necessary in this example; the essential point is that we don't want to be unfolding complicated recursive matches on the type structure that are not going to reduce.\footnote{%
+  In the current codebase, removing the first rewrite rule would, unfortunately, result in unfolding of the matching on the type structure, due to an oversight in how we compute the \mintinline{coq}{known} argument.
+  See the next footnote for more details.%
+}
+
+There are two cases where we want to reduce the \mintinline{coq}{match} on an identifier.
+One of them is when the identifier is known from the initial $\eta$-expansion of identifiers discussed in \autoref{sec:rewriting-more:pre-reduction:what-reduction} (note that this is distinct from the $\eta$-expansion of identifier applications), and the identifier has no type arguments.\footnote{%
+  In our current implementation we don't actually check that the identifier has no type arguments in this case.
+  This is an oversight, and the correct design would be able to distinguish between ``this identifier is known and it has no type arguments'', ``this identifier is known but it has unknown type arguments'', and ``this identifier is completely unknown''.
+  Failure to distinguish these cases does not seem to cause too much trouble, because the way the code is structured luckily ensures that we only match on the type arguments once, and because everything is CPS'd, this matching does not block further reduction.%
+}
+The other case is when we have tested an identifier against a pattern identifer, and it has no type arguments.
+In this case, when we eventually get around to collecting unification data for this identifier, we know that we can reduce away the check on this identifier.
+Whether or not the overhead is worth it in this second case is unclear; the design of this part of the rewriting engine suffers from the lack of a unified picture about what, exactly, is worth reducing, and what is not.
+
+%Note that, so far, we could instead case on the status of the pattern identifier, and whether or not it has type arguments, rather than carrying around data about whther or not the identifier we've revealed has type arguments and is known.
+%This would not actually let us track, however, which equality tests could be reduced early and which couldn't, as we'll see in the next paragraph.
+
+\begin{comment}
+Note: This paragraph is FALSE.  It does not match the implementation.  So we comment it out.
+Let us consider the case of setting \mintinline{coq}{known} to be \mintinline{coq}{true}.
+This is, essentially, the case of communicating information about expressions between different branches of the decision tree.
+Consider now the example of rewriting with the rules $(x + y) + (z + w) = (x + (y + z)) + w$, $x + 0 = x$, and $(x + y) * z = x * z + y * z$.
+A partial decision tree for this is
+\[\resizebox{230px}{!}{\xymatrix@R-1pc{
+  *++[o][F-]\txt{} \ar[d]_{\txt{App}} \\
+  *++[o][F-]\txt{} \ar[d]_{\txt{App}} \\
+  *++[o][F-]\txt{} \ar[d]_{+} \\
+  *++[o][F-]\txt{} \ar[r]^{\txt{App}} \ar[d]_{\txt{default}} & *++[o][F-]\txt{} \ar[r]^-{\txt{App}} & *++[o][F-]\txt{} \ar[r]^-{\txt{App}} & \cdots & *++[o][F-]\txt{TryLeaf 0} \\
+  *++[o][F-]\txt{Swap 0$\leftrightarrow$1} \ar[rr]^-{\txt{\texttt{Literal~0}}} \ar[d]_{\txt{default}} && *++[o][F-]\txt{TryLeaf 1} \\
+  *++[o][F-]\txt{Swap 0$\leftrightarrow$1} \ar[r]_{\txt{App}} & *++[o][F-]\txt{} \ar[r]^-{\txt{App}} & \cdots & *++[o][F-]\txt{TryLeaf 2}
+}}\]
+Let us walk through the decomposition in words.
+The engine will first decompose the expression into an application of $+$ to two arguments; all three rules require this.
+Then, we decompose the first argument into an application of $+$ to two arguments $x$ and $y$.
+Assuming that succeeds, we will decompose the second argument into an application of $+$ to two arguments.
+If it succeeds, we'll rewrite with the rule.
+The interesting case is when this third decomposition fails; we will then fall into the default case, because we don't require that the decomposition of the first argument into $x + y$ succeeded to apply the second rewrite rule.
+If the decomposition for the second rewrite rule also fails---due to the second argument to the top-level $+$ not being the literal 0---then we move on to the third rule.
+In this case, we want to reuse the knowledge, from the first rule's decomposition, that
+\end{comment}
 
 \paragraph{Gratuitous Dependent Types: How much do we actually want to unfold?}
 When computing the replacement of a given expression, how much do we want to unfold?
@@ -612,8 +725,9 @@ The other correctness condition is significantly more subtle, and corresponds to
 This one is a monster.
 We present the code before explaining it to show just how much of a mouthful it is.
 \begin{minted}{coq}
-Lemma wf_eval_decision_tree {T1 T2} G d (P : option T1 → option T2 → Prop)
- : ∀ (HPNone : P None None)
+Lemma wf_eval_decision_tree {T1 T2} G d
+ : ∀ (P : option T1 → option T2 → Prop)
+     (HPNone : P None None)
      (ctx1 : list (@rawexpr var1))
      (ctx2 : list (@rawexpr var2))
      (ctxe : list { t : type & @expr var1 t * @expr var2 t }%type)
@@ -688,10 +802,28 @@ Although it would seem that no rewrite rule applies to either argument, in fact 
 Hence when doing decision tree evaluation, it's important to keep this thunk waiting, rather than forcing it early with a generic variable node.
 The \mintinline{coq}{rValue} constructor allows us to do this.
 The \mintinline{coq}{rExpr} constructor, by contrast, holds expressions which we are allowed to do further matching on.
-\todo{should I discuss why we can't just fuse them?  or how we decide when to put NbE values into rExpr (when they have base types rather than arrow types)?  Adam says yes}
+
+How does the use of these different constructors show up?
+Recall from \autoref{fig:nbe} in \autoref{sec:thunk-eval-subst-term} that we put constants into $\eta$-long application form by calling $\text{reflect}$ at the base case of $\text{reduce}(c)$.
+When performing this $\eta$-expansion, we build up a \mintinline{coq}{rawexpr}.
+When we encounter an argument with an arrow type, we drop it directly into an \mintinline{coq}{rValue} constructor, marking it as not subject to structure revealing.
+When we encounter an argument whose type is not an arrow, we can guarantee that there is no thunked rewriting, and so we can put the value into an \mintinline{coq}{rExpr} constructor, marking it as subject to structure decomposition.
+
+One might ask: since we distinguish the creation of \mintinline{coq}{rExpr} and \mintinline{coq}{rValue} on the basis of their type, could we not just use the same constructor for both?
+The reason we cannot do this is that when revealing structure, we may decompose an expression in an \mintinline{coq}{rExpr} node into an application of an expression to another expression.
+In this case, the first of these will have an arrow type, and both must be placed into the \mintinline{coq}{rExpr} constructor and be marked as subject to further decomposition.
+Hence we cannot distinguish these cases just on the basis of the type, and we do in fact need two constructors.
 
 \subsection{Relating Expressions and Values}\label{sec:rewriting-more:values-and-expressions}
-\todo{Add a paragraph about correctness conditions, and how the two sorts of correctness conditions are about denotational semantics, and about syntactic well-formedness, which for PHOAS relates two ASTs with different \mintinline{coq}{var} types}
+First, some background context:
+When writing PHOAS compiler passes, there are in general two correctness conditions that must be proven about them.
+The first is a soundness theorem.
+In \autoref{sec:PHOAS:Wf-def}, we called this theorem \mintinline{coq}{check_is_even_expr_sound}.
+For compiler passes that produce syntax trees, this theorem will relate the denotation of the input AST to the denotation of the output AST, and might hence alternatively be called a \emph{semantics preservation} theorem, or an \emph{interpretation correctness} theorem.
+The second theorem, only applicable to compiler passes that produce ASTs (unlike our evenness checker from \autoref{sec:evenness}), is a syntactic well-formedness theorem.
+It will say that if the input AST is well-formed, then the output AST will also be well-formed.
+As seen in \autoref{sec:PHOAS:Wf-def}, the definition of well-formed for PHOAS relates two expressions with different \mintinline{coq}{var} arguments.
+Hence most PHOAS well-formedness theorems are proven by showing that a given compiler pass preserves relatedness between PHOASTs with different \mintinline{coq}{var} arguments.
 
 The fact that NbE values contain thunked rewriting creates a great deal of subtlety in relating \mintinline{coq}{rawexpr}s.
 As the only correctness conditions on the rewriter are that it preserves denotational semantics of expressions and that it maps related expressions to related expressions, these are the only facts that hold about the \mintinline{coq}{NbEₜ} values in \mintinline{coq}{rValue}.
@@ -775,7 +907,8 @@ Design Question: What is the relation between the permitted related variables li
 Spoiler: The list for $\text{NbE}_t(t_1)$ is unconstrained, and is prepended to the list for $\text{NbE}_t(t_1 \to t_2)$ (which is given) to get the list for $\text{NbE}_t(t_2)$.
 That is, we write
 \begin{align*}
-  \text{related\_NbE}_{t_1 \to t_2}(\Gamma, f_1, f_2) & \defeq \forall \Gamma'\ v_1\ v_2, \text{related\_NbE}_{t_1}(\Gamma', v_1, v_2) \to \text{related\_NbE}_{t_2}(\Gamma' ++ \Gamma, f_1(v_1), f_2(v_2)) \\
+  \text{related\_NbE}_{t_1 \to t_2}(\Gamma, f_1, f_2) & \defeq \forall\ \Gamma'\ v_1\ v_2, \text{related\_NbE}_{t_1}(\Gamma', v_1, v_2) \\
+  & \phantom{\defeq\forall~~}\to \text{related\_NbE}_{t_2}(\Gamma' \mathop{++} \Gamma, f_1(v_1), f_2(v_2)) \\
   \text{related\_NbE}_b(\Gamma, e_1, e_2) & \defeq \text{related}(\Gamma, e_1, e_2)
 \end{align*}
 

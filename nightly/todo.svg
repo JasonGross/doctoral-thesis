@@ -1,4 +1,6 @@
-<svg xmlns="http://www.w3.org/2000/svg" width="41em" height="133em"><text x="0" y="0">
+<svg xmlns="http://www.w3.org/2000/svg" width="41em" height="137em"><text x="0" y="0">
+<tspan x="0" dy="1.2em">TODO: Make sure to exclude no files (not rewriting) in file jgross-thesis.tex </tspan>
+<tspan x="0" dy="1.2em">  on input line 54.</tspan>
 <tspan x="0" dy="1.2em">TODO: Run `make update-thesis' before submission to update the date on the </tspan>
 <tspan x="0" dy="1.2em">  cover page in file jgross-thesis.tex on input line 91.</tspan>
 <tspan x="0" dy="1.2em">TODO: change \string ^Linalfalse to \string ^Linaltrue  in file </tspan>
@@ -44,6 +46,8 @@
 <tspan x="0" dy="1.2em">  main-files.tex on input line 6.</tspan>
 <tspan x="0" dy="1.2em">TODO: Decide whether or not to use contractions (less formal, but okay for </tspan>
 <tspan x="0" dy="1.2em">  thesis if I make a conscious decision) in file main-files.tex on input line 7.</tspan>
+<tspan x="0" dy="1.2em">TODO: be consistent about $\lambda x. body$ vs.~$\lambda x, body$ (note that </tspan>
+<tspan x="0" dy="1.2em">  Coq only accepts the latter) in file main-files.tex on input line 8.</tspan>
 <tspan x="0" dy="1.2em">TODO: Initial intro paragraphs in file chap1-introduction.tex on input line 20.</tspan>
 <tspan x="0" dy="1.2em">TODO: transition to foundational tools in file chap1-introduction.tex on input </tspan>
 <tspan x="0" dy="1.2em">  line 23.</tspan>

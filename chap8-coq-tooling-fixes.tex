@@ -1,4 +1,51 @@
-\chapter{Tooling fixes (improvements in Coq)} \label{ch:coq-tooling-fixes}
+\chapter{A Retrospective on Performance Improvements} \label{ch:coq-tooling-fixes}
+Throughout this thesis, we've looked at the problem of performance in proof assistants, especially those based on dependent type theory, with Coq as our primary tool under investigation.
+\autoref{part:introduction} aimed to convince the reader that this problem is interesting, important, challenging, and understudied, as it differs in non-trivial ways from performance bottlenecks in non-dependently-typed languages.
+\autoref{part:design} discussed design principles to avoid performance pitfalls, and \autoref{part:rewriting} took a deep dive into a particular set of performance bottlenecks and presented a tool, and, we hope, exposed the underlying design methodology, that allows eliminating asymptotic bottlenecks in one important part of proof assistant systems.
+
+In this chapter, we will look instead at the successes of the past decade\footnote{%
+  Actually, the time span we're considering is the course of the author's experience with Coq, which is a bit less than a decade.%
+}%
+, ways in which performance has improved in major ways.
+\autoref{sec:fixes:minutiae} will discuss specific improvements in the implementation of Coq which resulted in performance gains, paying special attention to the underlying bottleneck being addressed.
+Those without special interest in the low-level details of proof assistant implementation may want to skip to \autoref{sec:fixes:coq-theory}, which will discuss changes to the underlying type theory of Coq which make possible drastic performance improvements.
+While we will again have our eye on Coq in \autoref{sec:fixes:coq-theory}, we will broaden our perspective in \autoref{sec:fixes:theory} to discuss new discoveries of the past decade or so in dependent type theory which enable performance improvements but have not yet made their way into Coq.
+
+\section{Concrete Performance Advancements in Coq}\label{sec:fixes:minutiae}
+$\left.\right.$
+\subsection{Removing Pervasive Evar Normalization}\label{sec:econstr}
+$\left.\right.$
+\subsection{The \Ltac\space Profiler}\label{sec:ltac-prof}
+$\left.\right.$
+\subsection{Compilation to Native Code}\label{sec:native-compiler}
+$\left.\right.$
+\subsection{Primitive Integers and Arrays}\label{sec:prim-ints-arrays}
+$\left.\right.$
+
+% https://github.com/coq/coq/issues/1169 - fixed 2007, ring doing unnecessary reductions in the goal
+
+\section{Performance-Enhancing Advancements in the Type Theory of Coq}\label{sec:fixes:coq-theory}
+$\left.\right.$
+\subsection{Universe Polymorphism}\label{sec:fixes:theory:univ-poly}\label{sec:univ-poly}
+$\left.\right.$
+\subsection{Judgmental η for Record Types}\label{sec:fixes:theory:record-eta}\label{sec:record-eta}
+$\left.\right.$
+\subsection{Primitive Projections for Record Types}\label{sec:fixes:theory:primitive-projections}\label{sec:primitive-projections}
+$\left.\right.$
+
+\section{Performance-Enhancing Advancements in Type Theory at Large}\label{sec:fixes:theory}
+$\left.\right.$
+\subsection{Univalence and Isomorphism Transport}\label{sec:fixes:theory:univalence}\label{sec:univalence}
+$\left.\right.$
+\subsection{Higher Inductive Types: Setoids for Free}\label{sec:fixes:theory:HITs}\label{sec:HITs}
+$\left.\right.$
+\subsection{Cubical Type Theory}\label{sec:fixes:theory:cubical}\label{sec:cubical}
+$\left.\right.$
+
+
+In this chapter, we'll take a look at ways that
+The purpose of this chapter is to convince the reader that the issue of performance in proof assistants is non-trivial in ways that differ from performance bottlenecks in non-dependently-typed languages.
+
 
 \todo{Mention how ever single tactic used to be slow}
 

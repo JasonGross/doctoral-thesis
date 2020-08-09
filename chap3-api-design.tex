@@ -56,6 +56,24 @@ In the process of rewriting our library to be compatible with homotopy type theo
 Plugging the holes there reduced goal sizes by two orders of magnitude\footnote{The word count of the larger of the two relevant goals went from 7,312 to 191.}, which led to a factor of ten speedup in that file (from 39s to 3s), but incurred a factor of three slow-down in the file where we defined the abstraction barriers (from 7s to 21s).
 Working around slow projections of $\Sigma$ types (\autoref{sec:nested-sigma-types}) and being more careful about code reuse each gave us back half of that lost time.
 
+Although pre-existing formalizations of category theory in proof assistants abound~\cite{Ahrens2013,megacz-coq-categories,o2004towards,copumpkin/categories,ConCaT%
+%fullbib:,CatsInZFC%
+,spitters2010developing%
+%fullbib:,kozen2006automating%
+,math-overflow-formalizations%
+%fullbib:,benediktahrens/coinductives,benediktahrens-Foundations-typesystems,Carvalho1998,jmchapman/restriction-categories,konn/category-agda,crypto-agda/crypto-agda,mattam82-cat,Coalgebras,Algebra,ahrens2010categorical,weber02program,pcapriotti/agda-categories,huet2000constructive,altucher1990mechanically,Category2-AFP,MathClasses,benediktahrens/rezk-completion,mohri1995formalization,spiwackverified%
+%,rs-/triangles%
+%fullbib:,caccamo2001higher,aczel1993galois,wilander2005bicategory,logical2001implicit,dyckhoff1985category,wilander2012constructing,harrison1996formalized,agerholm1995experiments,nuo2013second%
+}, %\footnote{This list very incomplete; see also \url{http://mathoverflow.net/questions/152497}% is more comprehensive, but we decided to cap our bibliography at one page, given the page limit.
+%}
+we chose to implement our library~\cite{HoTT/HoTT-categories} from scratch.
+\todo{reword this paragraph a bit}
+Beginning from scratch allowed the first author to familiarize himself with both category theory and Coq, without simultaneously having to familiarize himself with a large pre-existing code base.
+%Additionally, starting from scratch forced us to confront all of the decisions involved in designing such a library, and gave us the confidence to change the definitions of basic concepts multiple times to try out various designs, including fully rewriting the library at least three times.
+%Although this paper is much more about the design of category theory libraries in general than our library in particular, we include a comparison of our library~\cite{HoTT/HoTT-categories} with selected extant category theory libraries in \autoref{sec:compare-libraries}.
+%At present, our library subsumes many of the constructions in most other such Coq libraries, and is not lacking any constructions in other libraries that are of a complexity requiring significant type checking time, other than monoidal categories.
+
+
 \medskip
 
 We begin our discussion in \autoref{sec:categories} considering a mundane aspect of type definitions that has large consequences for usability and performance.

@@ -12,34 +12,198 @@ Those without special interest in the low-level details of proof assistant imple
 While we will again have our eye on Coq in \autoref{sec:fixes:coq-theory}, we will broaden our perspective in \autoref{sec:fixes:theory} to discuss new discoveries of the past decade or so in dependent type theory which enable performance improvements but have not yet made their way into Coq.
 
 \section{Concrete Performance Advancements in Coq}\label{sec:fixes:minutiae}
-$\left.\right.$
+In this section, we dive into the minutiae: concrete changes to Coq that have measurably increased performance.
 \subsection{Removing Pervasive Evar Normalization}\label{sec:econstr}
-$\left.\right.$
+Back when I started using Coq, in version 8.4, almost every single tactic was at least linear in performance in the size of the goal.
+This included tactics like ``add new hypothesis to the context of type \mintinline{coq}{True}'' (\mintinline{coq}{pose proof I}) and tactics like ``give me the type of the most recently added hypothesis'' (\mintinline{coq}{match goal with H : ?T |- _ => T end}).
+The reason for this was pervasive \emph{evar normalization}.
+
+Let us review some details of the way Coq handles proof scripts.
+\todo{if this is described earlier, refer back to it}
+Coq a partial proof term, where not-yet-given subterms are \emph{existential variables}, or evars, which may show up as goals.
+For example, when proving the goal \mintinline{coq}{True ∧ True}, after running \mintinline{coq}{split}, the proof term would be \mintinline{coq}{conj ?Goal1 ?Goal2}, where \mintinline{coq}{?Goal1} and \mintinline{coq}{?Goal2} are evars.
+There are two subtleties:
+\begin{enumerate}
+\item
+  Evars may be under binders.
+  Coq uses a locally nameless representation of terms (c.f.~\autoref{sec:binders:locally-nameless}), where closed terms use de Bruijn indices, but open terms, i.e., evars, refer to the variables in their context by name.
+  Hence each evar carries with it a named context, which causes a great deal of trouble as described in \fullref{sec:perf:quadratic-evar-subst}.
+\item
+  Coq supports backtracking, so we must remember the history of partial proof terms.
+  In particular, we cannot simply mutate partial proof terms to instantiate the evars, and copying the entire partial proof term just to update a small part of it would also incur a great deal of overhead.
+  Instead, Coq never mutates the terms, and instead simply keeps a map of which evars have been instantiated with which terms, called the \emph{evar map}.
+\end{enumerate}
+
+There is an issue with the straightforward implementation of evars and evar maps.
+When walking terms, care must be taken with the evar case, to check whether or not the evar has in fact been instantiated or not.
+Subtle bugs in unification and other areas of Coq resulted from some functions being incorrectly sensitive to whether or not a term had been built via evar instantiation or given directly.%
+\footnote{%
+  See the discussion at \textcite{coq-pr-econstr} for more details.%
+}
+The fast-and-easy solution used in older versions of Coq was to simply evar-normalize the goal before walking it.
+That is, every tactic that had to walk the goal for any reason whatsoever would create a copy of the type of the goal---and sometimes the proof context as well---replacing all instantiated evars with their instantiation.
+Needless to say, this was very expensive when the size of the goal was large.
+
+\todo{include performance graphs?}
+
+As of Coq 8.7, most tactics no longer perform useless evar normalization, and instead walk terms using a dedicated API which does on-the-fly normalization as necessary.~\cite{coq-pr-econstr}
+This brought speedups of over 10\% to some developments, and improved asymptotic performance of some tactic scripts and interactive proof development.
+
+\subsection{Delaying the Externalization of Application Arguments}\label{sec:delayed-externalization}
+Coq has many representations of terms.
+There is \texttt{constr\_expr}, the AST produced by Coq's parser.
+Interalization turns \texttt{constr\_expr} into the untyped \texttt{glob\_constr} representation of terms by performing name resolution, bound variable checks, notation desugaring, and implicit argument insertion.~\cite{Constrintern}
+Type inference fills in the holes in untyped \texttt{glob\_constr}s to turn them into typed \texttt{constr}s, possibly with remaining existential variables.~\cite{Pretyping}
+In order to display proof goals, this process must be reversed.
+The internal representation of \texttt{constr} must be ``detyped'' into \texttt{glob\_constr}s, which involves primarily just turning de Bruijn indices into names.~\cite{Detyping}
+Finally, implicit arguments must be erased and notations must be re-sugared when externalizing \texttt{glob\_constr}s into \texttt{constr\_expr}s, which can be printed relatively straightforwardly.~\cite{Constrextern,Ppconstr}
+
+In old versions, Coq would externalize the entire goal, including subterms that were never printed due to being hidden by notations and implicit arguments.
+Starting in version 8.5pl2, lazy externalization of function arguments was implemented.~\cite{coq-commit-delayed-externalization}
+This resulted in massive speed-ups to interactive development involving large goals whose biggest subterms were mostly hidden.
+
+Changes like this one can be a game-changer for interactive proof development.
+The kind of development that can happen when it takes a tenth of a second to see the goal after executing a tactic is vastly different from the kind of development that can happen when it takes a full second or two.
+In the former case, the proof engine can almost feel like an extension of the coder's mind, responding to thoughts about strategies to try almost as fast as they can be typed.
+In the latter case, development is significantly more clunky and involves much more friction.
+
+In the same vein, bugs such as \coqbug{3691} and \coqbug{4819}, where Coq crawled the entire evar map in \texttt{-emacs} mode (used for ProofGeneral/Emacs) looking at all instantiated evars, resulted in interactive proof times of up to half-a-second for every goal display, even when the goal was small and there was nothing in the context.
+Fixed in Coq 8.6, these bugs, too, got in the way of seamless proof development.
+
 \subsection{The \Ltac\space Profiler}\label{sec:ltac-prof}
-$\left.\right.$
+\begin{quote}
+  The most common mistake in performance engineering is to blindly optimize without profiling; you most often spend your time optimizing parts that aren't actually bottlenecks.
+\end{quote}
+\begin{flushright}
+  --- Charles Leiserson (heavily paraphrased, reconstructed from memory of 6.172)
+\end{flushright}
+
+In old versions of Coq, there was no good way to profile tactic execution.
+Users could wrap some invocations in \mintinline{coq}{time} to see how long a given tactic took, or could regularly print some output to see where execution hung.
+Both of these are very low-tech methods of performance deubugging, and work well enough for small tactics.
+For debugging hundreds or thousands of lines of \Ltac\space code, though, these methods are insufficient.
+
+A genuine profiler for \Ltac\space was developed in 2015 and integrated into Coq itself in version 8.6.~\cite{coqpl-15-ltac-profiler}
+
+For those interested in amusing quirks of implementation details, the profiler itself was relatively easy to implement.
+Since \Ltac\space already records backtraces for error reporting, it was a relatively simple matter to hook into the stack-trace-recorder and track how much time was spent in each call-stack.
+
+\todo{should I include more text here, extracting from the abstract submitted to CoqPL?}
+
 \subsection{Compilation to Native Code}\label{sec:native-compiler}
+Starting in version 8.5, Coq allows users to compile their functional Gallina programs to native code and fully reduce them to determine their output.~\cite{nativecompute,coq-commit-native-compiler}
+In some cases, the native compiler is almost $10\times$ faster%
+\footnote{\url{https://github.com/coq/coq/pull/12405\#issuecomment-633612308}}
+than the optimized call-by-value evaluation bytecode-based virtual machine described in \textcite{Gregoire-Leroy-02}.
+
+\todo{finish this section}
 $\left.\right.$
 \subsection{Primitive Integers and Arrays}\label{sec:prim-ints-arrays}
-$\left.\right.$
-
-% https://github.com/coq/coq/issues/1169 - fixed 2007, ring doing unnecessary reductions in the goal
-
-\section{Performance-Enhancing Advancements in the Type Theory of Coq}\label{sec:fixes:coq-theory}
-$\left.\right.$
-\subsection{Universe Polymorphism}\label{sec:fixes:theory:univ-poly}\label{sec:univ-poly}
-$\left.\right.$
-\subsection{Judgmental η for Record Types}\label{sec:fixes:theory:record-eta}\label{sec:record-eta}
 $\left.\right.$
 \subsection{Primitive Projections for Record Types}\label{sec:fixes:theory:primitive-projections}\label{sec:primitive-projections}
 \todo{which section does this belong in, maybe make a note}
 $\left.\right.$
+
+% https://github.com/coq/coq/pull/263 - Fast lookup in named contexts
+% https://github.com/coq/coq/pull/6506 - Fast rel lookup
+% https://github.com/coq/coq/pull/8255 - Fast typing of application nodes
+
+
+\section{Performance-Enhancing Advancements in the Type Theory of Coq}\label{sec:fixes:coq-theory}
+$\left.\right.$
+\subsection{Universe Polymorphism}\label{sec:fixes:theory:univ-poly}\label{sec:univ-poly}
+
+Recall that the main case study of \autoref{ch:design} was our implementation of a category theory library.
+
+\todo{see if we've defined categories before}
+\begin{comment}
+
+\subsection{Complications from Categories of Categories}
+
+    Some complications arise in applying the last subsection's definition of categories to the full range of common constructs in category theory.  One particularly prominent example formalizes the structure of a collection of categories, showing that this collection itself may be considered as a category.
+
+    The morphisms in such a category are \emph{functors},\label{sec:define-functor} maps between categories consisting of a function on objects, a function on hom-types, and proofs that these functions respect composition and identity~\cite{mac1998categories,awodey2010category,HoTTBook}.
+
+    The na\"ive concept of a ``category of all categories,'' \label{sec:category-of-categories} which includes even itself, leads into mathematical inconsistencies, which manifest as universe inconsistency errors in Coq.  The standard resolution is to introduce a hierarchy of categories, where, for instance, most intuitive constructions are considered \emph{small} categories, and then we also have \emph{large} categories, one of which is the category of small categories.  Both definitions wind up with literally the same text in Coq, giving:
+\begin{coqcode}
+\coqdockw{Definition} \coqdocdefinition{SmallCat} : \coqdocrecord{LargeCategory} :=
+  \{| \coqdocprojection{Ob} := \coqdocrecord{SmallCategory};
+     \coqdocprojection{Hom} \coqdocvariable{C} \coqdocvariable{D} := \coqdocrecord{SmallFunctor} \coqdocvariable{C} \coqdocvariable{D}; ... |\}.
+\end{coqcode}
+
+    It seems a shame to copy-and-paste this definition (and those of \texttt{Category}, \texttt{Functor}, etc.) $n$ times to define an $n$-level hierarchy.  Coq 8.4 and some earlier versions support a flavor of \emph{universe polymorphism} that allows the universe of a definition to vary as a function of the universes of its arguments.  Unfortunately, it is not natural to parametrize \texttt{Cat} by anything but a universe level, which does not have first-class status in Coq anyway.  We found the connection between universe polymorphism and arguments to definitions to be rather inconvenient, and it forced us to modify the definition of \texttt{Category} so that the record field \texttt{Ob} changes into a parameter of the type family.  Then we were able to use the following slightly awkward construction:
+\begin{coqcode}
+\coqdockw{Definition} \coqdocdefinition{Cat_helper} \coqdocvariable{I} \coqdocvariable{ObOf} (\coqdocvariable{CatOf} : \coqdockw{∀} \coqdocvariable{i} : \coqdocvariable{I}, \coqdocrecord{Category} (\coqdocvariable{ObOf} \coqdocvariable{i}))
+    : \coqdocrecord{Category} \coqdocvariable{I}
+ := \{| \coqdocprojection{Hom} \coqdocvariable{C} \coqdocvariable{D} := \coqdocrecord{Functor} (\coqdocvariable{CatOf} \coqdocvariable{C}) (\coqdocvariable{CatOf} \coqdocvariable{D}); ... |\}.
+\coqdockw{Notation} \coqdocdefinition{Cat} := (\coqdocdefinition{Cat_helper} \{\coqdocvariable{T} : \coqdockw{Type} \& \coqdocrecord{Category} \coqdocvariable{T}\} \coqdocprojection{projT1} \coqdocprojection{projT2}).
+\end{coqcode}
+Now the definition is genuinely reusable for an infinite hierarchy of sorts of category, because the \texttt{Notation} gives us a fresh universe each time we invoke it, but we have paid the price of adding extra parameters to both \texttt{Category} and \texttt{Cat\_helper}, and this seemingly innocent change produces substantial blow-up in the sizes of proof goals arising during interesting constructions.  So, in summary, we decided that the basic type theoretical design of Coq 8.4 did not provide very good support for pleasing definitions that can be reasoned about efficiently.
+
+This realization (and a few more that will come up shortly) pushed us to become early adopters of the modified version of Coq developed by homotopy type theorists~\cite{HoTT/coq}.  Here, an established kind of more general universe polymorphism~\cite{Harper1991107}, previously implemented only in NuPRL, is available, and the definitions we wanted from the start work as desired.
+
+\end{comment}
+$\left.\right.$
+\subsection{Judgmental η for Record Types}\label{sec:fixes:theory:record-eta}\label{sec:record-eta}
+$\left.\right.$
+See also \autoref{sec:no-judgmental-eta}.
+\subsection{SProp: The Definitionally Proof Irrelevant Universe}\label{sec:fixes:theory:sprop}\label{sec:sprop}
+$\left.\right.$
+% https://github.com/coq/coq/pull/8817
 
 \section{Performance-Enhancing Advancements in Type Theory at Large}\label{sec:fixes:theory}
 $\left.\right.$
 \subsection{Univalence and Isomorphism Transport}\label{sec:fixes:theory:univalence}\label{sec:univalence}
 $\left.\right.$
 \subsection{Higher Inductive Types: Setoids for Free}\label{sec:fixes:theory:HITs}\label{sec:HITs}
+Recall again that the main case study of \autoref{ch:design} was our implementation of a category theory library.
 $\left.\right.$
+\begin{comment}
+  \subsection{Equality} \label{sec:equality}
+    Equality, which has recently become a very hot topic in type theory~\cite{HoTTBook} and higher category theory~\cite{Leinster2007}, provides another example of a design decision where most usage is independent of the exact implementation details.  Although the question of what it means for objects or morphisms to be equal does not come up much in classical 1-category theory, it is more important when formalizing category theory in a proof assistant, for reasons seemingly unrelated to its importance in higher category theory.  We consider some possible notions of equality.
+
+    \subsubsection{Setoids}
+      A setoid~\cite{bishop1967foundations} is a carrier type equipped with an equivalence relation; a map of setoids is a function between the carrier types and a proof that the function respects the equivalence relations of its domain and codomain.  Many authors \cite{copumpkin/categories,MathClasses,megacz-coq-categories,huet2000constructive% %fullbib:,benediktahrens/coinductives,ahrens2010categorical,konn/category-agda,Algebra,mattam82-cat,Carvalho1998,wilander2012constructing%
+      %,rs-/triangles%
+      }
+      choose to use a setoid of morphisms, which allows for the definition of the category of set(oid)s, as well as the category of (small) categories, without assuming functional extensionality, and allows for the definition of categories where the objects are quotient types.  However, there is significant overhead associated with using setoids everywhere, which can lead to slower compile times.  Every type that we talk about needs to come with a relation and a proof that this relation is an equivalence relation.  Every function that we use needs to come with a proof that it sends equivalent elements to equivalent elements.  Even worse, if we need an equivalence relation on the universe of ``types with equivalence relations,'' we need to provide a transport function between equivalent types that respects the equivalence relations of those types.
+
+    \subsubsection{Propositional Equality}
+      An alternative to setoids is propositional equality, which carries none of the overhead of setoids, but does not allow an easy formulation of quotient types, and requires assuming functional extensionality to construct the category of sets.
+
+      Intensional type theories like Coq's have a built-in notion of equality, often called definitional equality or judgmental equality, and denoted as $x \equiv y$.  This notion of equality, which is generally internal to an intensional type theory and therefore cannot be explicitly reasoned about inside of that type theory, is the equality that holds between $\beta\delta\iota\zeta\eta$-convertible terms.
+
+      Coq's standard library defines what is called \emph{propositional equality} on top of judgmental equality, denoted $x = y$. One is allowed to conclude that propositional equality holds between any judgmentally equal terms.
+
+      Using propositional equality rather than setoids is convenient because there is already significant machinery made for reasoning about propositional equalities, and there is much less overhead.  However, we ran into significant trouble when attempting to prove that the category of sets has all colimits, which amounts to proving that it is closed under disjoint unions and quotienting; quotient types cannot be encoded without assuming a number of other axioms.
+
+
+    \subsubsection{Higher Inductive Types}\label{sec:hit}
+      The recent emergence of higher inductive types allows the best of both worlds.  The idea of higher inductive types~\cite{HoTTBook} is to allow inductive types to be equipped with extra proofs of equality between constructors. They originated as a way to allow homotopy type theorists to construct types with non-trivial higher paths.  A very simple example is the interval type, from which functional extensionality can be proven~\cite{interval-implies-funext}.\footnote{This assumes a computational interpretation of higher inductives, an open problem.}  The interval type consists of two inhabitants \texttt{zero}~\texttt{:}~\texttt{Interval} and \texttt{one}~\texttt{:}~\texttt{Interval}, and a proof \texttt{seg~:~zero~=~one}.  In a hypothetical type theory with higher inductive types, the type checker does the work of carrying around an equivalence relation on each type for us, and forbids users from constructing functions that do not respect the equivalence relation of any input type.  For example, we can, hypothetically, prove functional extensionality as follows:
+\begin{coqcode}
+\coqdockw{Definition} \coqdocdefinition{f_equal} \{\coqdocvariable{A B x y}\} (\coqdocvariable{f} : \coqdocvariable{A} → \coqdocvariable{B}) : \coqdocvariable{x} = \coqdocvariable{y} → \coqdocvariable{f x} = \coqdocvariable{f y}.
+\coqdockw{Definition} \coqdocdefinition{functional_extensionality} \{\coqdocvariable{A B}\} (\coqdocvariable{f g} : \coqdocvariable{A} → \coqdocvariable{B})
+    : (\coqdockw{∀} \coqdocvariable{x}, \coqdocvariable{f x} = \coqdocvariable{g x}) → \coqdocvariable{f} = \coqdocvariable{g}
+  := \coqdockw{λ} (\coqdocvariable{H} : \coqdockw{∀} \coqdocvariable{x}, \coqdocvariable{f x} = \coqdocvariable{g x})
+       ⇒ \coqdocdefinition{f_equal} (\coqdockw{λ} (\coqdocvariable{i} : \coqdocind{Interval}) (\coqdocvariable{x} : \coqdocvariable{A})
+                     ⇒ \coqdockw{match} \coqdocvariable{i} \coqdockw{with}
+                         | \coqdocconstructor{zero} ⇒ \coqdocvariable{f x}
+                         | \coqdocconstructor{one}  ⇒ \coqdocvariable{g x}
+                         | \coqdocconstructor{seg}  ⇒ \coqdocvariable{H x}
+                       \coqdockw{end})
+                  \coqdocconstructor{seg}.
+\end{coqcode}
+      Had we neglected to include the branch for \texttt{seg}, the type checker should complain about an incomplete match; the function \texttt{\coqdockw{$\lambda$}~\coqdocvariable{i}~:~\coqdocinductive{Interval} $\Rightarrow$~\coqdockw{match}~\coqdocvariable{i}~\coqdockw{with} \coqdocconstructor{zero}~$\Rightarrow$~\coqdocconstructor{true} |~\coqdocconstructor{one}~$\Rightarrow$~\coqdocconstructor{false} \coqdockw{end}} of type \texttt{Interval $\to$ bool} should not typecheck for this reason.
+
+      The key insight is that most types do not need any special equivalence relation, and, moreover, if we are not explicitly dealing with a type with a special equivalence relation, then it is impossible (by parametricity) to fail to respect the equivalence relation.  Said another way, the only way to construct a function that might fail to respect the equivalence relation would be by some eliminator like pattern matching, so all we have to do is guarantee that direct invocations of the eliminator result in functions that respect the equivalence relation.
+
+      As with the choice involved in defining categories, using propositional equality with higher inductive types rather than setoids derives many of its benefits from not having to deal with all of the overhead of custom equivalence relations in constructions that do not need them.  In this case, we avoid the overhead by making the type checker or the metatheory deal with the parts we usually do not care about.  Most of our definitions do not need custom equivalence relations, so the overhead of using setoids would be very large for very little gain.  We plan to use higher inductive types\footnote{We fake these in Coq using Yves Bertot's Private Inductive Types extension~\cite{Bertot2013}.} to define quotients, which are necessary to show the existence of certain functors involving the category of sets.  We also currently use higher inductive types to define propositional truncation~\cite{HoTTBook}, which we use to define what it means for a function to be surjective, and prove that in the category of sets, being an isomorphism (an invertible morphism) is equivalent to being injective and surjective.
+
+  %\subsection{Univalence}
+    %When considering higher inductive types, the question ``when are two types equivalent?'' arises naturally.  The standard answer in the past has been ``when they are syntactically equal''.  The result of this is that two inductive types that are defined in the same way, but with different names, will not be equal.  Voevodsky's univalence principle gives a different answer: two types are equal when they are isomorphic.
+
+    %Although it is natural to extend this idea to categories, and declare that two objects should be equal when they are isomorphic, we have found that basic category theory constructions work fine without univalence and without making assumptions about what it means for two objects to be equal.  However, it is likely that more advanced or exploratory category theory will benefit from this univalence requirement on categories; for example, it makes it impossible to do anything evil.\footnote{A construction in category theory is \emph{evil} if it is not invariant under isomorphisms.  By widening the notion of equality to be the same as the notion of isomorphism, we get for free that every construction we do is invariant under isomorphism.}  See \cite{}(HoTT Book, Ch 9) for more details.
+\end{comment}
 \subsection{Cubical Type Theory}\label{sec:fixes:theory:cubical}\label{sec:cubical}
 $\left.\right.$
 

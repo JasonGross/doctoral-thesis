@@ -148,5 +148,30 @@ In particular:
 
 \Autoref{sec:proof-by-reflection,sec:reification-by-parametricity:intro} is based on the introduction to \textcite{reification-by-parametricity}.
 
+\todo{should we include acknowledgements from various papers?}
+Category theory paper: This work was supported in part by the MIT bigdata@CSAIL initiative, NSF grant CCF-1253229, ONR grant N000141310260, and AFOSR grant FA9550-14-1-0031.  We also thank Benedikt Ahrens, Daniel R.~Grayson, Robert Harper, Bas Spitters, and Edward Z.~Yang for feedback on this paper.
+
+Reification by parametricity paper:
+We would like to thank Hugo Herbelin for sharing the trick with \texttt{type of} to propagate universe constraints%
+\footnote{%
+    \url{https://github.com/coq/coq/issues/5996\#issuecomment-338405694}%
+}
+as well as useful conversations on Coq's bug tracker that allowed us to track down performance issues.%
+\footnote{%
+    \url{https://github.com/coq/coq/issues/6252}%
+}
+We would like to thank Pierre-Marie P\'edrot for conversations on Coq's Gitter and his help in tracking down performance bottlenecks in earlier versions of our reification scripts and in Coq's tactics.
+We would like to thank Beta Ziliani for his help in using Mtac2, as well as his invaluable guidance in figuring out how to use canonical structures to reify to PHOAS.
+We also thank John Wiegley for feedback on the paper.
+% \todo{Figure out if anyone else needs mentioning}
+
+For those interested in history, our method of reification by parametricity was inspired by the \texttt{evm\_compute} tactic~\cite{MirrorShardITP14}.
+We first made use of \texttt{pattern} to allow \texttt{vm\_compute} to replace \texttt{cbv}-with-an-explicit-blacklist when we discovered \texttt{cbv} was too slow and the blacklist too hard to maintain.
+We then noticed that in the sequence of doing abstraction; \texttt{vm\_compute}; application; $\beta$-reduction; reification, we could move $\beta$-reduction to the end of the sequence if we fused reification with application, and thus reification by parametricity was born.
+
+This work was supported in part by a Google Research Award and National Science Foundation grants CCF-1253229, CCF-1512611, and CCF-1521584.
+
+
+
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % -*-latex-*-

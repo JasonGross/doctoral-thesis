@@ -1,4 +1,6 @@
-<svg xmlns="http://www.w3.org/2000/svg" width="41em" height="135em"><text x="0" y="0">
+<svg xmlns="http://www.w3.org/2000/svg" width="41em" height="153em"><text x="0" y="0">
+<tspan x="0" dy="1.2em">TODO: Make sure to exclude no files (not rewriting) in file jgross-thesis.tex </tspan>
+<tspan x="0" dy="1.2em">  on input line 54.</tspan>
 <tspan x="0" dy="1.2em">TODO: Run `make update-thesis' before submission to update the date on the </tspan>
 <tspan x="0" dy="1.2em">  cover page in file jgross-thesis.tex on input line 91.</tspan>
 <tspan x="0" dy="1.2em">TODO: change \string ^Linalfalse to \string ^Linaltrue  in file </tspan>
@@ -15,6 +17,8 @@
 <tspan x="0" dy="1.2em">TODO: cite various grants in file cover.tex on input line 137.</tspan>
 <tspan x="0" dy="1.2em">TODO: rearrange in file cover.tex on input line 143.</tspan>
 <tspan x="0" dy="1.2em">TODO: how to format citations here in file cover.tex on input line 146.</tspan>
+<tspan x="0" dy="1.2em">TODO: should we include acknowledgements from various papers? in file </tspan>
+<tspan x="0" dy="1.2em">  cover.tex on input line 151.</tspan>
 <tspan x="0" dy="1.2em">TODO: Download and fill out \url </tspan>
 <tspan x="0" dy="1.2em">  {https://libraries.mit.edu/wp-content/uploads/2019/08/umi-proquest-form.pdf} in </tspan>
 <tspan x="0" dy="1.2em">  file jgross-thesis.tex on input line 106.</tspan>
@@ -46,6 +50,9 @@
 <tspan x="0" dy="1.2em">  thesis if I make a conscious decision) in file main-files.tex on input line 7.</tspan>
 <tspan x="0" dy="1.2em">TODO: be consistent about $\lambda x. body$ vs.~$\lambda x, body$ (note that </tspan>
 <tspan x="0" dy="1.2em">  Coq only accepts the latter) in file main-files.tex on input line 8.</tspan>
+<tspan x="0" dy="1.2em">TODO: move any citations which point at people.csail.mit.edu to point at a </tspan>
+<tspan x="0" dy="1.2em">  github.io version, and move my personal website there in file main-files.tex on </tspan>
+<tspan x="0" dy="1.2em">  input line 9.</tspan>
 <tspan x="0" dy="1.2em">TODO: Initial intro paragraphs in file chap1-introduction.tex on input line 20.</tspan>
 <tspan x="0" dy="1.2em">TODO: transition to foundational tools in file chap1-introduction.tex on input </tspan>
 <tspan x="0" dy="1.2em">  line 23.</tspan>
@@ -55,38 +62,46 @@
 <tspan x="0" dy="1.2em">  chap1-introduction.tex on input line 27.</tspan>
 <tspan x="0" dy="1.2em">TODO: read and cite perf engineering study 	extcite {ringer2020qed} in file </tspan>
 <tspan x="0" dy="1.2em">  chap1-introduction.tex on input line 28.</tspan>
-<tspan x="0" dy="1.2em">TODO: read / look into 	extcite {georges2007statistically} in file </tspan>
+<tspan x="0" dy="1.2em">TODO: cite Formal ProofM-bM-^@M-^TThe FourColor Theorem </tspan>
+<tspan x="0" dy="1.2em">  https://pdfs.semanticscholar.org/1921/899c005c4cf1ee15358377c2f63eb6c99d07.pdf, </tspan>
+<tspan x="0" dy="1.2em">  ``While we tackled this project mainly to explore the capabilities of a modern </tspan>
+<tspan x="0" dy="1.2em">  formal proof systemM-bM-^@M-^Tat first, to benchmark speedM-bM-^@M-^T'' in file </tspan>
 <tspan x="0" dy="1.2em">  chap1-introduction.tex on input line 29.</tspan>
-<tspan x="0" dy="1.2em">TODO: maybe read 	extcite {mytkowicz-wrong-data} in file </tspan>
+<tspan x="0" dy="1.2em">TODO: maybe cite ``Proving Equalities in a Commutative Ring: Done Right in </tspan>
+<tspan x="0" dy="1.2em">  Coq'' as prior work on performance being important in file </tspan>
 <tspan x="0" dy="1.2em">  chap1-introduction.tex on input line 30.</tspan>
+<tspan x="0" dy="1.2em">TODO: read / look into 	extcite {georges2007statistically} in file </tspan>
+<tspan x="0" dy="1.2em">  chap1-introduction.tex on input line 31.</tspan>
+<tspan x="0" dy="1.2em">TODO: maybe read 	extcite {mytkowicz-wrong-data} in file </tspan>
+<tspan x="0" dy="1.2em">  chap1-introduction.tex on input line 32.</tspan>
 <tspan x="0" dy="1.2em">TODO: Karl Palmskog: @Jason Gross I saw your post on performance </tspan>
 <tspan x="0" dy="1.2em">  optimization/measurements for proof assistants on Coq-Club. We summarize a lot </tspan>
 <tspan x="0" dy="1.2em">  of work on parallelization/selection for proof assistants in our regression </tspan>
 <tspan x="0" dy="1.2em">  proving papers (ASE 17 \ ISSTA 18): 	extcite {CelikETAL17iCoq} 	extcite </tspan>
-<tspan x="0" dy="1.2em">  {PalmskogETAL18piCoq} in file chap1-introduction.tex on input line 31.</tspan>
+<tspan x="0" dy="1.2em">  {PalmskogETAL18piCoq} in file chap1-introduction.tex on input line 33.</tspan>
 <tspan x="0" dy="1.2em">TODO: read and cite 	extcite {lean-tactic-language} in file </tspan>
-<tspan x="0" dy="1.2em">  chap1-introduction.tex on input line 32.</tspan>
+<tspan x="0" dy="1.2em">  chap1-introduction.tex on input line 34.</tspan>
 <tspan x="0" dy="1.2em">TODO: read 	extcite {Implementing1998Shao} in file chap1-introduction.tex </tspan>
-<tspan x="0" dy="1.2em">  on input line 33.</tspan>
+<tspan x="0" dy="1.2em">  on input line 35.</tspan>
 <tspan x="0" dy="1.2em">TODO: read 	extcite {Inductive2003Brady} in file chap1-introduction.tex on </tspan>
-<tspan x="0" dy="1.2em">  input line 35.</tspan>
+<tspan x="0" dy="1.2em">  input line 37.</tspan>
 <tspan x="0" dy="1.2em">TODO: read 	extcite {thesis-nogin} in file chap1-introduction.tex on input </tspan>
-<tspan x="0" dy="1.2em">  line 36.</tspan>
+<tspan x="0" dy="1.2em">  line 38.</tspan>
 <tspan x="0" dy="1.2em">TODO: read GrM-CM-)goire and Leroy's paper from ICFP 2002 	extcite </tspan>
-<tspan x="0" dy="1.2em">  {Gregoire-Leroy-02} in file chap1-introduction.tex on input line 37.</tspan>
+<tspan x="0" dy="1.2em">  {Gregoire-Leroy-02} in file chap1-introduction.tex on input line 39.</tspan>
 <tspan x="0" dy="1.2em">TODO: read Dirk Kleeblatt's PhD thesis 	extcite </tspan>
-<tspan x="0" dy="1.2em">  {Strongly2011Kleeblatt}. in file chap1-introduction.tex on input line 38.</tspan>
+<tspan x="0" dy="1.2em">  {Strongly2011Kleeblatt}. in file chap1-introduction.tex on input line 40.</tspan>
 <tspan x="0" dy="1.2em">TODO: read Andras Kovacs has smalltt at 	extcite {smallttKovacs} in file </tspan>
-<tspan x="0" dy="1.2em">  chap1-introduction.tex on input line 40.</tspan>
-<tspan x="0" dy="1.2em">TODO: look at \url {https://github.com/AndrasKovacs/normalization-bench} in </tspan>
-<tspan x="0" dy="1.2em">  file chap1-introduction.tex on input line 41.</tspan>
-<tspan x="0" dy="1.2em">TODO: look at \url {https://github.com/AndrasKovacs/smalltt} in file </tspan>
 <tspan x="0" dy="1.2em">  chap1-introduction.tex on input line 42.</tspan>
+<tspan x="0" dy="1.2em">TODO: look at \url {https://github.com/AndrasKovacs/normalization-bench} in </tspan>
+<tspan x="0" dy="1.2em">  file chap1-introduction.tex on input line 43.</tspan>
+<tspan x="0" dy="1.2em">TODO: look at \url {https://github.com/AndrasKovacs/smalltt} in file </tspan>
+<tspan x="0" dy="1.2em">  chap1-introduction.tex on input line 44.</tspan>
 <tspan x="0" dy="1.2em">TODO: ``I haven't yet updated the smalltt repo, but there's a simplified (\url </tspan>
 <tspan x="0" dy="1.2em">  {https://gist.github.com/AndrasKovacs/a0e0938113b193d6b9c1c0620d853784}) </tspan>
 <tspan x="0" dy="1.2em">  implementation of its evaluator, which seems to have roughly the same </tspan>
 <tspan x="0" dy="1.2em">  performance but which is much simpler to implement.'' in file </tspan>
-<tspan x="0" dy="1.2em">  chap1-introduction.tex on input line 43.</tspan>
+<tspan x="0" dy="1.2em">  chap1-introduction.tex on input line 45.</tspan>
 <tspan x="0" dy="1.2em">TODO: </tspan>
 <tspan x="0" dy="1.2em">QUESTION FOR ADAM: Decide on whether to copyright myself or MIT; Adam, are </tspan>
 <tspan x="0" dy="1.2em">  there considerations to be aware of here? in file jgross-thesis.tex on input </tspan>

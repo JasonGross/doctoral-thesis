@@ -74,7 +74,8 @@ Konrad Slind wrote:
 \todo{Related to this is work on sound interfaces to external tools, also an enduring topic: \textcite{TrustedSlind}}
 
 \subsection{What are proof assistants?}
-\todo{wide look at various proof assistants and successes}
+\todo{wide look at various proof assistants (historical overview of how the field got to where it is today, maybe with weight according to importance) and successes (applications of proof assistants like compcert, sel4 (kernel), cakeml, nqthm, ACL2, crypto???, flyspec, 4-color-theorem, odd-order-theorem)}
+\todo{look at OSDI submission (papers/lightbulb/) and mine related work}
 \todo{read and cite Talia's paper \textcite{ringer2020qed}?}
 
 \section{Basic Design Choices}
@@ -82,11 +83,18 @@ Konrad Slind wrote:
 
 \subsection{Dependent Types: What? Why? How?} \label{sec:why-how-dependent-types}
 %\subsection{Dependent Type Theory}
+\todo{note: target audience: Saman (or POPL/PLDI)}
+\todo{explain what dependent types are at all}
+\todo{explain the idea of reducing proof checking to typechecking (with examples)}
+\todo{explain idea of structuring programming so that some properties are true by construction}
+\todo{maybe explain extensional vs intensional}
+\todo{maybe mention lego as early implementation of dependent types}
 \todo{explain dependent type theory, motivate using it}
 \todo{read and cite \textcite{Should1999Lamport} and \textcite{Formalising2018Paulson} h/t Karl Palmskog @palmskog on gitter \url{https://gitter.im/coq/coq?at=5e5ec0ae4eefc06dcf31943f}}
 
 \subsection{The De Bruijn Criterion} \label{sec:debruijn-criterion}
 \todo{explain the De Bruijn criterion}
+\todo{explain why it's worth following this, and what goes wrong if you don't}
 \todo{look into \textcite{Sealing2020Selsam} Sealing Pointer-Based Optimizations Behind Pure Functions}
 \todo{example: Ltac vs Gallina, kind-of}
 

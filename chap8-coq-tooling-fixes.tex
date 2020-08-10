@@ -96,25 +96,110 @@ In some cases, the native compiler is almost $10\times$ faster%
 \footnote{\url{https://github.com/coq/coq/pull/12405\#issuecomment-633612308}}
 than the optimized call-by-value evaluation bytecode-based virtual machine described in \textcite{Gregoire-Leroy-02}.
 
-\todo{finish this section}
-$\left.\right.$
+The native compiler shines most at optimizing algorithmic and computational bottlenecks.
+For example, computing the number of primes less than $n$ via the Sieve of Eratosthenes is about $2\times$ to $5\times$ faster in the native compiler than in the VM.
+\todo{should I include code and/or plots?}
+By contrast, when the input term is very large compared to the amount of computation, the compilation time can dwarf the running time, eating up any gains that the native compiler has over the VM.
+This can be seen by comparing the times it takes to get the head of the explicit list of all unary-encoded natural numbers less than, say, 3000, on which the native compiler (1.7s) is about 5\% slower than the VM (1.6s) which itself is about $2\times$ slower than built-in call-by-value reduction machine (0.79s) which requires no translation.
+Furthermore, when the output is large, both the VM and the native compiler suffer from inefficiencies in the readback code.
+\todo{should I add an example or plots?}
+%Fixpoint walk {A} (ls : list A) : unit := match ls with nil => tt | cons _ xs => walk xs end.
+%Time Check ltac:(restart_timer;
+%                let v := (eval vm_compute in (walk (seq 0 (Z.to_nat 2000)))) in
+%                finish_timing ("Tactic call 1(vm)");
+%                restart_timer;
+%                let v := (eval native_compute in (walk (seq 0 (Z.to_nat 2000)))) in
+%                finish_timing ("Tactic call 1(native)");
+%                let v := (eval vm_compute in (seq 0 3000)) in
+%                restart_timer;
+%                let __ := (eval lazy in (List.hd 0%nat v)) in
+%                finish_timing ("Tactic call 2(lazy)");
+%                restart_timer;
+%                let __ := (eval cbv in (List.hd 0%nat v)) in
+%                finish_timing ("Tactic call 2(cbv)");
+%                restart_timer;
+%                let __ := (eval native_compute in (List.hd 0%nat v)) in
+%                finish_timing ("Tactic call 2(native)");
+%                restart_timer;
+%                let __ := (eval vm_compute in (List.hd 0%nat v)) in
+%                finish_timing ("Tactic call 2(vm)");
+%                exact 0).
+
+
+\todo{Should I add more to this section?  What should I say?}
+
 \subsection{Primitive Integers and Arrays}\label{sec:prim-ints-arrays}
-$\left.\right.$
+Primitive 31-bit integer arithmetic operations were added to Coq in 2007.~\cite{coq-commit-int31,Extending2010Armand}
+Although most of Coq merely used an inductive representation of 31-bit integers, the VM included code for compiling these constants to native machine integers.%
+\footnote{%
+  The integer arithmetic is 31-bit rather than 32-bit because OCaml reserves the lowest bit for tagging whether a value is a pointer address to a tagged value or an integer.%
+}
+After hitting memory limits in storing the inductive representations in proofs involving proof traces from SMT solvers, work was started to allow the use of primitive datatypes that would be stored efficiently in proof terms.~\cite{denes2013prim-ints-arrays}
+
+Some of this work has since been merged into Coq, including IEEE 754-2008 binary64 floating point numbers merged in Coq 8.11~\cite{coq-pr-floats}, 63-bit integers merged in Coq 8.10~\cite{coq-pr-int63}, and persistent arrays~\cite{Persistent2007Conchon} merged into Coq 8.13~\cite{coq-pr-parray}.
+Work enabling primitive recursion over these native datatypes is still underway,~\cite{coq-pr-parray-prim-recursion} and the actual use of these primitive datatypes to reap the performance benefits is still to come as of the writing of this thesis.
+
 \subsection{Primitive Projections for Record Types}\label{sec:fixes:theory:primitive-projections}\label{sec:primitive-projections}
-\todo{which section does this belong in, maybe make a note}
-$\left.\right.$
+Since version 8.5, Coq has had the ability to define record types with projections whose arguments are not stored in the term representation.~\cite{coq-commit-polyproj}
+This allows asymptotic speedups, as discussed in \fullref{sec:prim-record-proj}.
+\todo{what should be said in this section?}
 
-% https://github.com/coq/coq/pull/263 - Fast lookup in named contexts
-% https://github.com/coq/coq/pull/6506 - Fast rel lookup
-% https://github.com/coq/coq/pull/8255 - Fast typing of application nodes
+Note that this is a specific instance of a more general theory of implicit arguments~\cite{logical2001implicit,barras2008implicit}, and there has been other work on how to eliminate useless arguments from term representations.~\cite{Inductive2003Brady}
 
+\subsection{Fast Typing of Application Nodes}
+In \fullref{sec:perf:quadratic-application}, we discussed how the typing rule for function application resulted in quadratic performance behavior when there was in fact only linear work that needed to be done.
+As of Coq 8.10, when typechecking applications in the kernel, substitution is delayed so as to achieve linear performance.~\cite{coq-pr-fast-application-typing}
+\todo{does this need more of a recap?}
+Unfortunately, the pretyping and type inference algorithm is still quadratic, due to the type theory rules used for type inference.
+
+\todo{should I talk about https://github.com/coq/coq/pull/263 - Fast lookup in named contexts?}
+\todo{should I talk about https://github.com/coq/coq/pull/6506 - Fast rel lookup?}
 
 \section{Performance-Enhancing Advancements in the Type Theory of Coq}\label{sec:fixes:coq-theory}
-$\left.\right.$
+While some of the above performance enhancements touch the trusted kernel of Coq, they do not fundamentally change the type theory.
+Some performance enhancements require significant changes to the type theory.
+In this section we will review a couple of particularly important changes of this kind.
+
 \subsection{Universe Polymorphism}\label{sec:fixes:theory:univ-poly}\label{sec:univ-poly}
 
 Recall that the main case study of \autoref{ch:design} was our implementation of a category theory library.
+Recall also from \nameref{sec:abstraction-barriers:packed-records} how the choice of whether to use packed or unpacked records impacts performance; while unpacked records are more friendly for developing algebraic hierarchies, packed records achieve significantly better performance when large towers of dependent concepts (such as categories, functors between categories, and natural transformations between functors) are formalized.
 
+This section addresses a particular feature which allows an entire-library $2\times$ speed-up when using fully-packed records.
+How is such a large performance gain achievable?
+Without this feature, called \emph{universe polymorphism}, encoding some mathematical objects requires \emph{duplicating} the entire library!
+Removing this duplication of code will halve the compile-time.
+
+\subsubsection{What is universe polymorphism?}\label{sec:universe-polymorphism-def}
+Universes are type theory's answer to Russell's paradox.~\cite{sep-russell-paradox}
+Russell's paradox, a famous paradox discovered in 1901, proceeds as follows.
+A \emph{set} is an unordered collection of distinct objects.
+Since each \emph{set} is an object, we may consider the set of all sets.
+Does this set contain itself?
+It must, for by definition it contains all sets.
+
+So we see by example that some sets contain themselves, while others (such as the empty set with no objects) do not.
+Let us consider now the set consisting of exactly the sets that do not contain themselves.
+Does this set contain itself?
+If it does not, then it fails to live up to its description as the set of \emph{all} sets that do not contain themselves.
+However, if it does contain itself, then it also fails to live up to its description as a set consisting \emph{only} of sets that do not contain themselves.
+Paradox!
+
+The resolution to this paradox is to forbid sets from containing themselves.
+The collection of all sets is too big to be a set, so let's call it (and collections of its size) a proper class.
+We can nest this construction, as type theory does:
+We have \mintinline{coq}{Type₀}, the \mintinline{coq}{Type₁} of all small types, and we have \mintinline{coq}{Type₁}, the \mintinline{coq}{Type₂} of all \mintinline{coq}{Type₁}s, etc.
+These subscripts are called \emph{universe levels}, and the subscriped \mintinline{coq}{Type}s are sometimes called \emph{universes}.
+
+Most constructions in Coq work just fine if we simply place them in a single, high-enough, universe.
+In fact, the entire standard library in Coq effectively uses only three universes.
+Most of the standard library in fact only needs one universe.
+We need a second universe for the few constructions that talk about equality between types, and a third for the encoding of a variant of Russell's paradox in Coq.
+
+However, one universe is not sufficent for category theory, even if we don't need to talk about equality of types nor prove that \mintinline{coq}{Type : Type} is inconsistent.
+
+The reason is that category theory, much like set theory, talks about itself.
+\todo{HERE}
 \todo{see if we've defined categories before}
 \begin{comment}
 
@@ -207,12 +292,6 @@ $\left.\right.$
 \subsection{Cubical Type Theory}\label{sec:fixes:theory:cubical}\label{sec:cubical}
 $\left.\right.$
 
-
-In this chapter, we'll take a look at ways that
-The purpose of this chapter is to convince the reader that the issue of performance in proof assistants is non-trivial in ways that differ from performance bottlenecks in non-dependently-typed languages.
-
-
-\todo{Mention how ever single tactic used to be slow}
 
 \begin{subappendices}
     \section{Fragments from the category theory paper}

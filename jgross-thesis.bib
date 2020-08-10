@@ -843,20 +843,6 @@ Additionally, our strategy automatically provides error messages that are no les
   timestamp = {2013.12.12},
 }
 
-@InProceedings{logical2001implicit,
-  author       = {Alexandre Miquel},
-  booktitle    = {Typed Lambda Calculi and Applications},
-  date         = {2001},
-  title        = {The Implicit Calculus of Constructions},
-  organization = {Springer},
-  pages        = {344},
-  url          = {http://www.pps.univ-paris-diderot.fr/~miquel/publis/tlca01.pdf},
-  volume       = {2044},
-  local-url    = {http://people.csail.mit.edu/jgross/personal-website/papers/academic-papers-local/tlca01.pdf},
-  owner        = {Jason},
-  timestamp    = {2014.01.08},
-}
-
 @MastersThesis{mohri1995formalization,
   author       = {Mohri, Takahisa},
   date         = {1995},
@@ -1980,6 +1966,115 @@ Programming with nested types is only a little more difficult than programming w
   date   = {2013-01-22},
   title  = {New implementation of the conversion test, using normalization by evaluation to native OCaml code · coq/coq@6b908b5},
   url    = {https://github.com/coq/coq/commit/6b908b5185a55a27a82c2b0fce4713812adde156},
+}
+
+@InProceedings{Extending2010Armand,
+  author    = {Armand, Micha{\"e}l and Gr{\'e}goire, Benjamin and Spiwack, Arnaud and Th{\'e}ry, Laurent},
+  booktitle = {Interactive Theorem Proving},
+  date      = {2010},
+  title     = {Extending {C}oq with Imperative Features and Its Application to {SAT} Verification},
+  doi       = {10.1007/978-3-642-14052-5_8},
+  editor    = {Kaufmann, Matt and Paulson, Lawrence C.},
+  isbn      = {978-3-642-14052-5},
+  location  = {Berlin, Heidelberg},
+  pages     = {83--98},
+  publisher = {Springer Berlin Heidelberg},
+  url       = {https://hal.inria.fr/inria-00502496v2/document},
+  abstract  = {Coq has within its logic a programming language that can be used to replace many deduction steps into a single computation, this is the so-called reflection. In this paper, we present two extensions of the evaluation mechanism that preserve its correctness and make it possible to deal with cpu-intensive tasks such as proof checking of SAT traces.},
+}
+
+@Misc{coq-pr-int63,
+  author    = {Maxime Dénès and Benjamin Grégoire},
+  date      = {2018-03-05},
+  title     = {Primitive integers by maximedenes · Pull Request \#6914 · coq/coq},
+  url       = {https://github.com/coq/coq/pull/6914},
+  mergedate = {2019-02-04},
+}
+
+@Misc{coq-pr-parray,
+  author    = {Maxime Dénès},
+  date      = {2020-02-14},
+  title     = {Primitive persistent arrays by maximedenes · Pull Request \#11604 · coq/coq},
+  url       = {https://github.com/coq/coq/pull/11604},
+  mergedate = {2020-07-06},
+}
+
+@Misc{coq-commit-int31,
+  author = {Arnaud Spiwack},
+  date   = {2007-05-11},
+  title  = {Processor integers + Print assumption (see coqdev mailing list for the details). · coq/coq@2dbe106},
+  url    = {https://github.com/coq/coq/commit/2dbe106c09b60690b87e31e58d505b1f4e05b57f},
+}
+
+@InProceedings{Persistent2007Conchon,
+  author    = {Conchon, Sylvain and Filli\^{a}tre, Jean-Christophe},
+  booktitle = {Proceedings of the 2007 Workshop on Workshop on ML},
+  date      = {2007},
+  title     = {A Persistent Union-Find Data Structure},
+  doi       = {10.1145/1292535.1292541},
+  isbn      = {9781595936769},
+  location  = {Freiburg, Germany},
+  pages     = {37–46},
+  publisher = {Association for Computing Machinery},
+  series    = {ML ’07},
+  url       = {https://www.lri.fr/~filliatr/puf/},
+  address   = {New York, NY, USA},
+  keywords  = {formal verification, union-find, persistence},
+  numpages  = {10},
+}
+
+@Misc{coq-pr-parray-prim-recursion,
+  author = {Maxime Dénès},
+  date   = {2020-06-05},
+  title  = {Comment by maximedenes on Primitive integers by maximedenes · Pull Request \#6914 · coq/coq},
+  url    = {https://github.com/coq/coq/pull/11604\#issuecomment-639566223},
+}
+
+@InProceedings{logical2001implicit,
+  author       = {Alexandre Miquel},
+  booktitle    = {Proceedings of the 5th International Conference on Typed Lambda Calculi and Applications},
+  date         = {2001},
+  title        = {The Implicit Calculus of Constructions},
+  isbn         = {3540419608},
+  location     = {Krak\'{o}w, Poland},
+  organization = {Springer},
+  pages        = {344--359},
+  publisher    = {Springer-Verlag},
+  series       = {TLCA’01},
+  subtitle     = {Extending Pure Type Systems with an Intersection Type Binder and Subtyping},
+  url          = {http://www.pps.univ-paris-diderot.fr/~miquel/publis/tlca01.pdf},
+  volume       = {2044},
+  address      = {Berlin, Heidelberg},
+  local-url    = {http://people.csail.mit.edu/jgross/personal-website/papers/academic-papers-local/tlca01.pdf},
+  numpages     = {16},
+  owner        = {Jason},
+  timestamp    = {2014.01.08},
+  year         = {2001},
+}
+
+@Misc{coq-pr-fast-application-typing,
+  author = {Pierre-Marie P\'edrot},
+  date   = {2018-08-15},
+  title  = {Fast typing of application nodes by ppedrot · Pull Request \#8255 · coq/coq},
+  url    = {https://github.com/coq/coq/pull/8255},
+}
+
+@Misc{coq-commit-polyproj,
+  author = {Matthieu Sozeau},
+  date   = {2014-05-06},
+  title  = {This commit adds full universe polymorphism and fast projections to Coq. · coq/coq@a404360},
+  url    = {https://github.com/coq/coq/commit/a4043608f704f026de7eb5167a109ca48e00c221},
+}
+
+@InCollection{sep-russell-paradox,
+  author    = {Irvine, Andrew David and Deutsch, Harry},
+  booktitle = {The {S}tanford Encyclopedia of Philosophy},
+  date      = {2016},
+  title     = {{R}ussell's Paradox},
+  edition   = {Winter 2016},
+  editor    = {Edward N. Zalta},
+  publisher = {Metaphysics Research Lab, Stanford University},
+  url       = {https://plato.stanford.edu/archives/win2016/entries/russell-paradox/},
 }
 
 @Comment{jabref-meta: databaseType:biblatex;}

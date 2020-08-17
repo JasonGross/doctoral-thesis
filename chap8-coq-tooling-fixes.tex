@@ -199,6 +199,27 @@ We need a second universe for the few constructions that talk about equality bet
 However, one universe is not sufficent for category theory, even if we don't need to talk about equality of types nor prove that \mintinline{coq}{Type : Type} is inconsistent.
 
 The reason is that category theory, much like set theory, talks about itself.
+\todo{check if category has been defined before}
+
+In standard mathematical practice, a category \cat{C} can be defined~\cite{awodey2010category} to consist of:
+\begin{itemize}
+  \item
+    a class \Ob[C] of \emph{objects}
+  \item
+    for all objects $a, b \in \Ob[C]$, a class $\Hom[C](a, b)$ of \emph{morphisms from $a$ to $b$}
+  \item
+    for each object $x \in \Ob[C]$, an \emph{identity morphism} $\Id[x] \in \Hom[C](x, x)$
+  \item
+    for each triple of objects $a, b, c \in \Ob[C]$, a \emph{composition function} $\circ : \Hom[C](b, c) \times \Hom[C](a, b) \to \Hom[C](a, c)$
+\end{itemize}
+satisfying the following axioms:
+\begin{itemize}
+  \item
+    associativity: for composable morphisms $f$, $g$, $h$, we have $f \circ (g \circ h) = (f \circ g) \circ h$.
+  \item
+    identity: for any morphism $f \in \Hom[C](a, b)$, we have $\Id[b] \circ f = f = f \circ \Id[a]$
+\end{itemize}
+
 \todo{HERE}
 \todo{see if we've defined categories before}
 \todo{make a note about explosion of universes itself being a performance bottleneck}

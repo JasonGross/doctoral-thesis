@@ -1049,6 +1049,12 @@ If we use an unpacked definition of monoid with $n$ type parameters, then a simi
 In higher category theory, it's common to talk about morphisms between morphisms, and every additional layer here doubles the number of type arguments, and this can quickly lead to very large terms, resulting is major performance bottlenecks.
 Note that number of type parameters determines the constant factor out front of the exponential growth in the number of layers of mathematical constructions.
 
+How much is this overhead concretely?
+When developing a category theory library~\cite{category-coq-experience}, we sped up overall compilation time by approximately a factor of two, from around 16 minutes to around 8 minutes, by changing one of the two parameters to a field in the definition of a category.%
+\footnote{%
+  See \href{https://github.com/JasonGross/catdb/commit/209231ae3e94d5dbbc678c94930dcf585d53d555}{commit 209231ae3e94d5dbbc678c94930dcf585d53d555 of JasonGross/catdb on GitHub} for details.%
+}
+
 \todo{maybe figure out some examples and include perf data?}
 \todo{does this need more exposition?}
 

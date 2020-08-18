@@ -251,7 +251,7 @@ While judicious use of universe polymorphism can reduce code duplication, carele
   This slowdown is likely the one of \coqbug{4537}.
 
   Coq actually had an implementation of full universe polymorphism between versions 8.3 and 8.4, implemented in \href{https://github.com/coq/coq/commit/d98dfbcae463f8d699765e2d7004becd7714d6cf}{commit d98dfbcae463f8d699765e2d7004becd7714d6cf} and reverted mere minutes later in \href{https://github.com/coq/coq/commit/60bc3cbe72083f4fa1aa759914936e4fa3d6b42e}{commit 60bc3cbe72083f4fa1aa759914936e4fa3d6b42e}.
-  In-person discussion, either with Matthieu himself or with Bob Harper, revealed that Matthieu abandoned this initial attempt after finding that universe polymorphism was too slow, and it was only by implementing the algorithm of \citet{Harper1991107} that universe polymorphism with typical ambiguity~\cite{Universe2012Shulman,Typical1966Specker,Harper1991107}, where users need not write universe variables explicitly, was able to be implemented in a way that was sufficiently performant.%
+  In-person discussion, either with Matthieu himself or with Bob Harper, revealed that Matthieu abandoned this initial attempt after finding that universe polymorphism was too slow, and it was only by implementing the algorithm of \textcite{Harper1991107} that universe polymorphism with typical ambiguity~\cite{Universe2012Shulman,Typical1966Specker,Harper1991107}, where users need not write universe variables explicitly, was able to be implemented in a way that was sufficiently performant.%
 }
 
 \subsection{Judgmental η for Record Types}\label{sec:fixes:theory:record-eta}\label{sec:record-eta}

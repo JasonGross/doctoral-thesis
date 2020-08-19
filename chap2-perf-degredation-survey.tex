@@ -1,5 +1,5 @@
 \chapter{The Performance Landscape in Type-Theoretic Proof Assistants} \label{ch:perf-failures}
-\section{The Story}
+\section{The Story}\label{sec:perf-failures:story}
 \todo{come up with a better name for this section}
 The purpose of this chapter is to convince the reader that the issue of performance in proof assistants is non-trivial in ways that differ from performance bottlenecks in non-dependently-typed languages.
 I intend to do this by first sketching out what I see as the main difference between performance issues in dependently-typed proof assistants vs performance issues in other languages, and then supporting this claim with a palette of real performance issues that have arisen in Coq.
@@ -36,6 +36,7 @@ After scaling the input size a bit more, the proof-checking time will be noticea
 Scaling the input just a tiny bit more, though, will result in the compiler not finishing even if you let it run for a day or more.
 This is what working in an exponential performance domain is like.
 
+\label{sec:fiat-crypto-codegen-numbers}%
 To put numbers on this, a project I was working on\todo{cite fiat-crypto} involved generating C code to do arithmetic on very large numbers.
 The code generation was parameterized on the number of machine words needed to represent a single big integer.
 Our smallest toy example used two machine words; our largest---slightly unrealistic---example used 17.

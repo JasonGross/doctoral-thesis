@@ -2197,4 +2197,159 @@ This chapter describes the simple theory of types and some of its extensions. Th
   publisher    = {Association for Computing Machinery},
 }
 
+@Online{DAO2018Guecluetuerk,
+  author       = {Osman Gazi Güçlütürk},
+  date         = {2018-08-01},
+  title        = {The {DAO} Hack Explained: Unfortunate Take-off of Smart Contracts},
+  url          = {https://medium.com/@ogucluturk/the-dao-hack-explained-unfortunate-take-off-of-smart-contracts-2bd8c8db3562},
+  organization = {Medium},
+}
+
+@Online{Therac,
+  title        = {Therac-25},
+  url          = {https://en.wikipedia.org/wiki/Therac-25},
+  journaltitle = {Wikipedia, the free encyclopedia},
+}
+
+@Online{curve25519-donna-commit-correct-bounds,
+  author   = {Adam Langley},
+  date     = {2014-06-15},
+  title    = {Correct bounds in 32-bit code. · agl/curve25519-donna@2647eeb},
+  url      = {https://github.com/agl/curve25519-donna/commit/2647eeba59fb628914c79ce691df794a8edc799f},
+  abstract = {The 32-bit code was illustrative of the tricks used in the original
+curve25519 paper rather than rigorous. However, it has proven quite
+popular.
+
+This change fixes an issue that Robert Ransom found where outputs between
+$2^{255}-19$ and $2^{255}-1$ weren't correctly reduced in fcontract. This
+appears to leak a small fraction of a bit of security of private keys.
+
+Additionally, the code has been cleaned up to reflect the real-world
+needs. The ref10 code also exists for 32-bit, generic C but is somewhat
+slower and objections around the lack of qhasm availibility have been
+raised.},
+}
+
+@Report{naur1969software,
+  date      = {1970-04},
+  title     = {Software Engineering Techniques},
+  location  = {Rome, Italy},
+  subtitle  = {Report of a conference sponsored by the {NATO} Science Committee, Garmisch, Germany, 7th--11th October 1968},
+  url       = {http://homepages.cs.ncl.ac.uk/brian.randell/NATO/nato1969.PDF},
+  editor    = {J. N. Buxton and B. Randell},
+  publisher = {{NATO} Science Committee},
+}
+
+@Article{Reflections1984Thompson,
+  author       = {Thompson, Ken},
+  date         = {1984-08},
+  journaltitle = {Communications of the ACM},
+  title        = {Reflections on Trusting Trust},
+  doi          = {10.1145/358198.358210},
+  issn         = {0001-0782},
+  number       = {8},
+  pages        = {761--763},
+  volume       = {27},
+  abstract     = {To what extent should one trust a statement that a program is free of Trojan horses? Perhaps it is more important to trust the people who wrote the software.},
+  issue_date   = {Aug 1984},
+  location     = {New York, NY, USA},
+  numpages     = {3},
+  publisher    = {Association for Computing Machinery},
+}
+
+@InCollection{sep-goedel-incompleteness,
+  author    = {Raatikainen, Panu},
+  booktitle = {The {S}tanford Encyclopedia of Philosophy},
+  date      = {2020},
+  title     = {Gödel's Incompleteness Theorems},
+  edition   = {Fall 2020},
+  editor    = {Edward N. Zalta},
+  publisher = {Metaphysics Research Lab, Stanford University},
+  url       = {https://plato.stanford.edu/archives/fall2020/entries/goedel-incompleteness/},
+}
+
+@InProceedings{Network2015Chlipala,
+  author    = {Chlipala, Adam},
+  booktitle = {Proceedings of the 42nd Annual ACM SIGPLAN-SIGACT Symposium on Principles of Programming Languages},
+  date      = {2015},
+  title     = {From Network Interface to Multithreaded Web Applications: A Case Study in Modular Program Verification},
+  doi       = {10.1145/2676726.2677003},
+  isbn      = {9781450333009},
+  location  = {Mumbai, India},
+  pages     = {609–622},
+  publisher = {Association for Computing Machinery},
+  series    = {POPL '15},
+  url       = {http://adam.chlipala.net/papers/BedrockPOPL15/},
+  abstract  = {Many verifications of realistic software systems are monolithic, in the sense that they define single global invariants over complete system state. More modular proof techniques promise to support reuse of component proofs and even reduce the effort required to verify one concrete system, just as modularity simplifies standard software development. This paper reports on one case study applying modular proof techniques in the Coq proof assistant. To our knowledge, it is the first modular verification certifying a system that combines infrastructure with an application of interest to end users. We assume a nonblocking API for managing TCP networking streams, and on top of that we work our way up to certifying multithreaded, database-backed Web applications. Key verified components include a cooperative threading library and an implementation of a domain-specific language for XML processing. We have deployed our case-study system on mobile robots, where it interfaces with off-the-shelf components for sensing, actuation, and control.},
+  address   = {New York, NY, USA},
+  keywords  = {thread libraries, proof assistants, modular program verification, internet servers, domain-specific languages},
+  numpages  = {14},
+}
+
+@Article{gonthier2008formal,
+  author       = {Gonthier, Georges},
+  date         = {2008},
+  journaltitle = {Notices of the AMS},
+  title        = {Formal Proof--The Four-Color Theorem},
+  number       = {11},
+  pages        = {1382--1393},
+  url          = {https://www.ams.org/notices/200811/tx081101382p.pdf},
+  volume       = {55},
+}
+
+@InProceedings{gonthier2013machine,
+  author       = {Gonthier, Georges and Asperti, Andrea and Avigad, Jeremy and Bertot, Yves and Cohen, Cyril and Garillot, Fran{\c{c}}ois and Le Roux, St{\'e}phane and Mahboubi, Assia and O’Connor, Russell and Biha, Sidi Ould and others},
+  booktitle    = {International Conference on Interactive Theorem Proving},
+  date         = {2013},
+  title        = {A Machine-Checked Proof of the Odd Order Theorem},
+  doi          = {10.1007/978-3-642-39634-2_14},
+  eprint       = {hal-00816699},
+  organization = {Springer},
+  pages        = {163--179},
+  url          = {https://hal.inria.fr/file/index/docid/816699/filename/main.pdf},
+}
+
+@InProceedings{Proving2005Benjamin,
+  author       = {Benjamin Grégoire and Assia Mahboubi},
+  booktitle    = {Theorem Proving in Higher Order Logics},
+  date         = {2005},
+  title        = {Proving Equalities in a Commutative Ring Done Right in {C}oq},
+  doi          = {10.1007/11541868_7},
+  editor       = {Hurd, Joe and Melham, Tom},
+  isbn         = {978-3-540-31820-0},
+  location     = {Berlin, Heidelberg},
+  pages        = {98--113},
+  publisher    = {Springer Berlin Heidelberg},
+  abstract     = {We present a new implementation of a reflexive tactic which solves equalities in a ring structure inside the Coq system. The efficiency is improved to a point that we can now prove equalities that were previously beyond reach. A special care has been taken to implement efficient algorithms while keeping the complexity of the correctness proofs low. This leads to a single tool, with a single implementation, which can be addressed for a ring or for a semi-ring, abstract or not, using the Leibniz equality or a setoid equality. This example shows that such reflective methods can be effectively used in symbolic computation.},
+  journaltitle = {Theorem Proving in Higher Order Logics},
+  year         = {2005},
+}
+
+@InProceedings{Recognizing1989Benanav,
+  author    = {Benanav, Dan},
+  booktitle = {Proceedings of the 11th International Joint Conference on Artificial Intelligence - Volume 1},
+  date      = {1989},
+  title     = {Recognizing Unnecessary Inference},
+  location  = {Detroit, Michigan},
+  pages     = {366--371},
+  publisher = {Morgan Kaufmann Publishers Inc.},
+  series    = {IJCAI'89},
+  abstract  = {Intelligent reasoners sometimes draw conclusions that lack new or relevant information. Similarly, automated reasoning systems can produce formulas that are not necessary for the problem at hand. We concentrate on the problem of unnecessary inference in the context of resolution based systems. In such systems several strategies have been developed that allow for the deletion of clauses without sacrificing completeness. Unfortunately these strategies fail to recognize other frequently generated unnecessary formulas. We will present a generalized subsumption theorem that can be used to recognize such formulas and to develop new deletion methods which retain completeness.},
+  address   = {San Francisco, CA, USA},
+  numpages  = {6},
+}
+
+@InProceedings{mechanical1990Pierce,
+  author    = {Pierce, William},
+  booktitle = {10th International Conference on Automated Deduction},
+  title     = {Toward Mechanical Methods for Streamlining Proofs},
+  editor    = {Stickel, Mark E.},
+  isbn      = {978-3-540-47171-4},
+  pages     = {351--365},
+  publisher = {Springer Berlin Heidelberg},
+  abstract  = {We present preliminary work on the problem of mechanical proof simplification. Our approach is to take advantage of the correspondence between proofs and programs. Techniques from the field of program transformation may be used to transform the computational content of a proof. Using examples from elementary number theory, we illustrate how such transformations can lead to simpler proofs.},
+  address   = {Berlin, Heidelberg},
+  year      = {1990},
+}
+
 @Comment{jabref-meta: databaseType:biblatex;}

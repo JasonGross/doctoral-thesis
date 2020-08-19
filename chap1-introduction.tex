@@ -12,22 +12,78 @@
   --- Donald Knuth
 \end{flushright}
 
+\begin{quote}
+  Testing shows the presence, not the absence of bugs
+\end{quote}
+\begin{flushright}
+  --- Edsger Wybe Dijkstra, 1969~\cite{naur1969software}
+\end{flushright}
+
+
 \chapter{Introduction}\label{ch:intro}
 
-\section{Introduction}
+\section{Introduction}\label{sec:intro:intro}
 
-\paragraph{Paragraph 1: Orient the reader to very broad things} Software w/o bugs via formal methods
-\todo{Initial intro paragraphs}
+%\paragraph{Paragraph 1: Orient the reader to very broad things} Software w/o bugs via formal methods
+As our world comes to rely more and more on large and complex software, the impact of bugs in our code grows ever more severe.
+Bugs in the software of the Therac-25, a radiation-therapy machine, killed three people and injured at least three more between 1985 and 1987 by delivering potentially leathal doses of radiation.~\cite{Therac}
+\todoask{do I need a better citation than wikipedia?}
+\todo{should I mention the pricing bug on amazon? https://www.usatoday.com/story/tech/2019/07/19/amazon-prime-day-error-sold-13-000-camera-equipment-94-report/1775314001/, https://www.theguardian.com/money/2014/dec/14/amazon-glitch-prices-penny-repricerexpress, http://www.michaeleisen.org/blog/?p=358}
+More recently, unforseen edge-cases in DAO smart-contracts nearly cost investors over 40 million USD.~\cite{DAO2018Guecluetuerk}
+\todo{should I mention anything else? the pentium bug costing Intel \$475 million? http://top-100s.blogspot.com/2009/05/10-most-expensive-software-blunders.html, \$500 million Ariane Rocket disaster? , https://www.olenick.com/blog/articles/infamous-software-bugs-fdiv-bug}
+\todo{should I pull from https://xavierleroy.org/talks/Milner-award-lecture.pdf? ``Fiat-Chrysler recalled 1.5 M vehicles for software update.''}
 
-\paragraph{Paragraph 2: Success of foundational tools}
-\todo{transition to foundational tools}
-\todo{explain how foundational tools like Coq are already useful}
+While testing of various kinds is widely used to catch bugs, it's quite costly \todoask{should I email Xavier Leroy and ask if he has references on how much the airline industry spends on testing?} and does not guarantee a lack of bugs.
+In some adversarial contexts, random testing cannot hope to eliminate all bugs.
+For example, some bugs in cryptographic code only occur in as few as 19 out of $2^{255}$ cases.~\cite{curve25519-donna-commit-correct-bounds}
+Suppose you wanted to catch this bug in a ``modest'' twenty years of continuous random testing.
+You'd need to have over a thousand times as many computers as there are atoms in the solar system!
+% https://www.wolframalpha.com/input/?i=%282%5E255%2F19+*+529812+%2F+%285+ghz%29+%2F+%2820+years%29+%2F+%28atoms+in+the+solar+system%29%29+*+1+atom = 533260
+% (2^255/19 * 529812 / (5 ghz) / (20 years) / (atoms in the solar system)) * 1 atom
 
-\paragraph{Paragraph 3: performance of tools is important and non-trivial, and what we're doing here is explaining / demonstrating how and why it's non-trivial, and how to fix nontrivial performance issues}
+%\paragraph{Paragraph 2: Success of foundational tools}
+One appealing solution to this problem is to \emph{prove} critical software correct.
+The idea is that if we can write down in formal mathematical language what we'd like our software to do, then we can try to prove that the code that actually runs behaves in the same way that the math specifies.
+Ideally, the specification will be relatively simple, and much easier to trust, than the millions of lines of code making up the software we use every day.
+
+While proofs of algorithms tend to be done with pen-and-paper (consider the ubiquitous proofs that various sorting algorithms are correct in introductory algorithms classes), proofs of actual code are much harder.
+For reasons of performance, historical accident, interfacing with real users, or otherwise, code in the real-world tends to be much more complicated than code in an algorithms textbook.
+Proofs of code-correctness thus tend to be filled with tedious case-analysis with only sparse mathematical insights, and attempts to create and check these proofs by hand are subject to the same issues of human falibility as writing the programs in the first place.
+
+%\todo{transition to foundational tools}
+%\todo{explain how foundational tools like Coq are already useful}
+Enter machine-checked proofs.
+Foundational tools which allow users to write down theorems and proofs to be checked by machine free the proof author from error-prone case analysis; the computer will check that no cases were missed.
+Although you can never gain complete confidence in your software---the layer underneath may be untrustworthy in ways you cannot see~\cite{Reflections1984Thompson}, you can never prove that the mathematical system you're working in is correct~\cite{sep-goedel-incompleteness}, and most proof-checkers are not yet themselves proven correct---machine-checked proofs allow a drastic reduction in how much code needs to be trusted.
+Rather than trusting the millions of lines of code of the software being verified, you only need to trust the specifications of the software, and the likely-much-smaller codebase of the proof checker.
+Furthermore, it's very unlikely that bugs in the proof checker will overlap with bugs in the proof in just the right way to allow bugs only in one particular piece of software to slip through.
+Said another way, we no longer need to write tests for every piece of software separately; writing tests for the proof-checker helps eliminate bugs in \emph{all} software proven by that checker.
+
+%\paragraph{Paragraph 3: performance of tools is important and non-trivial, and what we're doing here is explaining / demonstrating how and why it's non-trivial, and how to fix nontrivial performance issues}
+We come now to the main thrust of this thesis.
+Tools for machine-checked proofs have already had many successes, in both software verification and traditional mathematics proof formalization, from compilers~\cite{Compcert} to microkernels~\cite{seL4SOSP09} to webservers~\cite{Network2015Chlipala} to cryptography code~\cite{FiatCryptoSP19}, from the Four-Color Theorem~\cite{gonthier2008formal} to the Odd-Order Theorem~\cite{gonthier2013machine} to Homotopy Type Theory~\cite{HoTTBook}.
+While compiler performance---both the time it takes to compile code and the time it takes to run the generated code---has long been an active field of study~\cite{CC++Performance2017}\todo{find more citiations here}, to our knowledge there is no extant body of work systematically investigating the performance of proof assistants, nor even any work primarily focused on the problem of proof assistant performance writ large.
+\todo{integrate stuff from \textcite{Efficiency1994Boulton} such as ``For example, much of the research in the field of automated reasoning is concerned with producing proofs more efficiently''}
+
+\todo{work on this paragraph}
+Why is this problem worthy of study?
+This thesis argues that the problem of \emph{compile-time performance} or \emph{proof-checking performance} is both significantly different from the problem of performance of more typical programs in industry and that it is nontrivial.
+While many papers mention performance, obliquely or otherwise, and some are even driven by performance concerns of a particular algorithm or part of the system,~\cites[p.~1382]{gonthier2008formal}{Efficiency1994Boulton}{Proving2005Benjamin}{Idris2Faster2020Brady}{Recognizing1989Benanav}{mechanical1990Pierce}, we have not found any that investigate the performance problems that arise \emph{asymptotically}, when proof assistants are used to verify programs at large scale.
+% ``While we tackled this project mainly to explore the capabilities of a modern formal proof system—at first, to benchmark speed—'' - gonthier2008formal
+% ``We present a new implementation of a reflexive tactic whichsolves equalities in a ring structure inside the Coq system.The efficiencyis improved to a point that we can now prove equalities that were previ-ously beyond reach.'' - Proving2005Benjamin
+
+Unlike many other performance domains, in our experience, the time it takes to check proofs as we scale the size of the input is almost always super-linear---quadratic at best, commonly cubic or exponential, ocassionally even worse.
+Empirially, this might look like a proof script that checks in tens of seconds on the smallest of toy examples; takes about a minute on the smallest real-world example, which might be twice the size of the toy example; takes twenty hours to generate and check the proof of an example only twice that size; and, on a (perhaps not-quite-realistic) example twice the size of the twenty-hour example, the script might not finish within a year, or even a thousand years---see \autoref{sec:fiat-crypto-codegen-numbers} for more details.
+In just three doublings of input size, we might go from tens of seconds to thousands of years.
+Moreover, this is not an isolated experience in proof assistants; this sort of performance behavior is \emph{typical}.
+
+Drawing experience from case studies in category theory~\cite{category-coq-experience}, parsers~\cite{jgross-masters-thesis}, and generation of low-level cryptographic code~\cite{FiatCryptoSP19}, we investigate and seek to explicate a broad swath of performance issues and bottlenecks.
+While we propose some design principles for avoiding these performance issues in \autoref{part:design} and present a research prototype of a tool and methodology for achieving acceptable performance at scale in \autoref{part:rewriting}---and we claim both of these are original contributions of this PhD\todo{how to write PhD in text?  with periods? not?}---the story this thesis aims to tell is that in order for proof assistants to scale to industrial uses, \emph{we must get the basics of asymptotic performance right}.
+
+
+
 \todo{explain that performance, including of build-time, is important}
 \todo{read and cite perf engineering study \textcite{ringer2020qed}}
-\todo{cite Formal Proof—The FourColor Theorem https://pdfs.semanticscholar.org/1921/899c005c4cf1ee15358377c2f63eb6c99d07.pdf, ``While we tackled this project mainly to explore the capabilities of a modern formal proof system—at first, to benchmark speed—''}
-\todo{maybe cite ``Proving Equalities in a Commutative Ring: Done Right in Coq'' as prior work on performance being important}
 \todo{read / look into \textcite{georges2007statistically}}
 \todo{maybe read \textcite{mytkowicz-wrong-data}}
 \todo{Karl Palmskog: @Jason Gross I saw your post on performance optimization/measurements for proof assistants on Coq-Club. We summarize a lot of work on parallelization/selection for proof assistants in our regression proving papers (ASE 17 \& ISSTA 18): \textcite{CelikETAL17iCoq} \textcite{PalmskogETAL18piCoq}}
@@ -75,6 +131,7 @@ Konrad Slind wrote:
 
 \subsection{What are proof assistants?}
 \todo{wide look at various proof assistants (historical overview of how the field got to where it is today, maybe with weight according to importance) and successes (applications of proof assistants like compcert, sel4 (kernel), cakeml, nqthm, ACL2, crypto???, flyspec, 4-color-theorem, odd-order-theorem)}
+\todo{https://www.eeweb.com/profile/adarbari/articles/a-brief-history-of-formal-verification}
 \todo{look at OSDI submission (papers/lightbulb/) and mine related work}
 \todo{read and cite Talia's paper \textcite{ringer2020qed}?}
 

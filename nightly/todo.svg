@@ -1,4 +1,6 @@
-<svg xmlns="http://www.w3.org/2000/svg" width="41em" height="185em"><text x="0" y="0">
+<svg xmlns="http://www.w3.org/2000/svg" width="41em" height="236em"><text x="0" y="0">
+<tspan x="0" dy="1.2em">TODO: Make sure to exclude no files (not rewriting) in file jgross-thesis.tex </tspan>
+<tspan x="0" dy="1.2em">  on input line 54.</tspan>
 <tspan x="0" dy="1.2em">TODO: Run `make update-thesis' before submission to update the date on the </tspan>
 <tspan x="0" dy="1.2em">  cover page in file jgross-thesis.tex on input line 91.</tspan>
 <tspan x="0" dy="1.2em">TODO: change \string ^Linalfalse to \string ^Linaltrue  in file </tspan>
@@ -15,8 +17,9 @@
 <tspan x="0" dy="1.2em">TODO: cite various grants in file cover.tex on input line 137.</tspan>
 <tspan x="0" dy="1.2em">TODO: rearrange in file cover.tex on input line 143.</tspan>
 <tspan x="0" dy="1.2em">TODO: how to format citations here in file cover.tex on input line 146.</tspan>
+<tspan x="0" dy="1.2em">TODO: cite rewriting in file cover.tex on input line 150.</tspan>
 <tspan x="0" dy="1.2em">TODO: should we include acknowledgements from various papers? in file </tspan>
-<tspan x="0" dy="1.2em">  cover.tex on input line 152.</tspan>
+<tspan x="0" dy="1.2em">  cover.tex on input line 155.</tspan>
 <tspan x="0" dy="1.2em">TODO: Download and fill out \url </tspan>
 <tspan x="0" dy="1.2em">  {https://libraries.mit.edu/wp-content/uploads/2019/08/umi-proquest-form.pdf} in </tspan>
 <tspan x="0" dy="1.2em">  file jgross-thesis.tex on input line 106.</tspan>
@@ -79,45 +82,79 @@
 <tspan x="0" dy="1.2em">  example, much of the research in the field of automated reasoning is concerned </tspan>
 <tspan x="0" dy="1.2em">  with producing proofs more efficiently'' in file chap1-introduction.tex on </tspan>
 <tspan x="0" dy="1.2em">  input line 66.</tspan>
-<tspan x="0" dy="1.2em">TODO: work on this paragraph in file chap1-introduction.tex on input line 68.</tspan>
+<tspan x="0" dy="1.2em">TODO: Related to this is work on sound interfaces to external tools, also an </tspan>
+<tspan x="0" dy="1.2em">  enduring topic: 	extcite {TrustedSlind} in file chap1-introduction.tex </tspan>
+<tspan x="0" dy="1.2em">  on input line 67.</tspan>
+<tspan x="0" dy="1.2em">TODO: work on this paragraph in file chap1-introduction.tex on input line 69.</tspan>
 <tspan x="0" dy="1.2em">TODO: how to write PhD in text? with periods? not? in file </tspan>
-<tspan x="0" dy="1.2em">  chap1-introduction.tex on input line 81.</tspan>
-<tspan x="0" dy="1.2em">TODO: explain that performance, including of build-time, is important in file </tspan>
-<tspan x="0" dy="1.2em">  chap1-introduction.tex on input line 85.</tspan>
-<tspan x="0" dy="1.2em">TODO: read and cite perf engineering study 	extcite {ringer2020qed} in file </tspan>
-<tspan x="0" dy="1.2em">  chap1-introduction.tex on input line 86.</tspan>
-<tspan x="0" dy="1.2em">TODO: read / look into 	extcite {georges2007statistically} in file </tspan>
-<tspan x="0" dy="1.2em">  chap1-introduction.tex on input line 87.</tspan>
-<tspan x="0" dy="1.2em">TODO: maybe read 	extcite {mytkowicz-wrong-data} in file </tspan>
-<tspan x="0" dy="1.2em">  chap1-introduction.tex on input line 88.</tspan>
-<tspan x="0" dy="1.2em">TODO: Karl Palmskog: @Jason Gross I saw your post on performance </tspan>
-<tspan x="0" dy="1.2em">  optimization/measurements for proof assistants on Coq-Club. We summarize a lot </tspan>
-<tspan x="0" dy="1.2em">  of work on parallelization/selection for proof assistants in our regression </tspan>
-<tspan x="0" dy="1.2em">  proving papers (ASE 17 \ ISSTA 18): 	extcite {CelikETAL17iCoq} 	extcite </tspan>
-<tspan x="0" dy="1.2em">  {PalmskogETAL18piCoq} in file chap1-introduction.tex on input line 89.</tspan>
-<tspan x="0" dy="1.2em">TODO: read and cite 	extcite {lean-tactic-language} in file </tspan>
-<tspan x="0" dy="1.2em">  chap1-introduction.tex on input line 90.</tspan>
-<tspan x="0" dy="1.2em">TODO: read 	extcite {Implementing1998Shao} in file chap1-introduction.tex </tspan>
-<tspan x="0" dy="1.2em">  on input line 91.</tspan>
-<tspan x="0" dy="1.2em">TODO: read 	extcite {Inductive2003Brady} in file chap1-introduction.tex on </tspan>
-<tspan x="0" dy="1.2em">  input line 93.</tspan>
-<tspan x="0" dy="1.2em">TODO: read 	extcite {thesis-nogin} in file chap1-introduction.tex on input </tspan>
-<tspan x="0" dy="1.2em">  line 94.</tspan>
-<tspan x="0" dy="1.2em">TODO: read GrM-CM-)goire and Leroy's paper from ICFP 2002 	extcite </tspan>
-<tspan x="0" dy="1.2em">  {Gregoire-Leroy-02} in file chap1-introduction.tex on input line 95.</tspan>
-<tspan x="0" dy="1.2em">TODO: read Dirk Kleeblatt's PhD thesis 	extcite </tspan>
-<tspan x="0" dy="1.2em">  {Strongly2011Kleeblatt}. in file chap1-introduction.tex on input line 96.</tspan>
-<tspan x="0" dy="1.2em">TODO: read Andras Kovacs has smalltt at 	extcite {smallttKovacs} in file </tspan>
+<tspan x="0" dy="1.2em">  chap1-introduction.tex on input line 82.</tspan>
+<tspan x="0" dy="1.2em">TODO: wide look at various proof assistants (historical overview of how the </tspan>
+<tspan x="0" dy="1.2em">  field got to where it is today, maybe with weight according to importance) and </tspan>
+<tspan x="0" dy="1.2em">  successes (applications of proof assistants like compcert, sel4 (kernel), </tspan>
+<tspan x="0" dy="1.2em">  cakeml, nqthm, ACL2, crypto???, flyspec, 4-color-theorem, odd-order-theorem) in </tspan>
+<tspan x="0" dy="1.2em">  file chap1-introduction.tex on input line 88.</tspan>
+<tspan x="0" dy="1.2em">TODO: </tspan>
+<tspan x="0" dy="1.2em">  https://www.eeweb.com/profile/adarbari/articles/a-brief-history-of-formal-verifi</tspan>
+<tspan x="0" dy="1.2em">  cation in file chap1-introduction.tex on input line 89.</tspan>
+<tspan x="0" dy="1.2em">TODO: look at OSDI submission (papers/lightbulb/) and mine related work in </tspan>
+<tspan x="0" dy="1.2em">  file chap1-introduction.tex on input line 90.</tspan>
+<tspan x="0" dy="1.2em">TODO: read and cite Talia's paper 	extcite {ringer2020qed}? in file </tspan>
+<tspan x="0" dy="1.2em">  chap1-introduction.tex on input line 91.</tspan>
+<tspan x="0" dy="1.2em">TODO: introduce section where we talk about what some big design decisions are </tspan>
+<tspan x="0" dy="1.2em">  and why we might make them the way we do in file chap1-introduction.tex on </tspan>
+<tspan x="0" dy="1.2em">  input line 94.</tspan>
+<tspan x="0" dy="1.2em">TODO: note: target audience: Saman (or POPL/PLDI) in file </tspan>
 <tspan x="0" dy="1.2em">  chap1-introduction.tex on input line 98.</tspan>
+<tspan x="0" dy="1.2em">TODO: explain what dependent types are at all in file chap1-introduction.tex </tspan>
+<tspan x="0" dy="1.2em">  on input line 99.</tspan>
+<tspan x="0" dy="1.2em">TODO: explain the idea of reducing proof checking to typechecking (with </tspan>
+<tspan x="0" dy="1.2em">  examples) in file chap1-introduction.tex on input line 100.</tspan>
+<tspan x="0" dy="1.2em">TODO: explain idea of structuring programming so that some properties are true </tspan>
+<tspan x="0" dy="1.2em">  by construction in file chap1-introduction.tex on input line 101.</tspan>
+<tspan x="0" dy="1.2em">TODO: maybe explain extensional vs intensional in file chap1-introduction.tex </tspan>
+<tspan x="0" dy="1.2em">  on input line 102.</tspan>
+<tspan x="0" dy="1.2em">TODO: maybe mention lego as early implementation of dependent types in file </tspan>
+<tspan x="0" dy="1.2em">  chap1-introduction.tex on input line 103.</tspan>
+<tspan x="0" dy="1.2em">TODO: explain dependent type theory, motivate using it in file </tspan>
+<tspan x="0" dy="1.2em">  chap1-introduction.tex on input line 104.</tspan>
+<tspan x="0" dy="1.2em">TODO: read and cite 	extcite {Should1999Lamport} and 	extcite </tspan>
+<tspan x="0" dy="1.2em">  {Formalising2018Paulson} h/t Karl Palmskog @palmskog on gitter \url </tspan>
+<tspan x="0" dy="1.2em">  {https://gitter.im/coq/coq?at=5e5ec0ae4eefc06dcf31943f} in file </tspan>
+<tspan x="0" dy="1.2em">  chap1-introduction.tex on input line 105.</tspan>
+<tspan x="0" dy="1.2em">TODO: explain the De Bruijn criterion in file chap1-introduction.tex on input </tspan>
+<tspan x="0" dy="1.2em">  line 108.</tspan>
+<tspan x="0" dy="1.2em">TODO: explain why it's worth following this, and what goes wrong if you don't </tspan>
+<tspan x="0" dy="1.2em">  in file chap1-introduction.tex on input line 109.</tspan>
+<tspan x="0" dy="1.2em">TODO: look into 	extcite {Sealing2020Selsam} Sealing Pointer-Based </tspan>
+<tspan x="0" dy="1.2em">  Optimizations Behind Pure Functions in file chap1-introduction.tex on input </tspan>
+<tspan x="0" dy="1.2em">  line 110.</tspan>
+<tspan x="0" dy="1.2em">TODO: example: Ltac vs Gallina, kind-of in file chap1-introduction.tex on </tspan>
+<tspan x="0" dy="1.2em">  input line 111.</tspan>
+<tspan x="0" dy="1.2em">TODO: cite also the rewriter paper in file chap1-introduction.tex on input </tspan>
+<tspan x="0" dy="1.2em">  line 125.</tspan>
+<tspan x="0" dy="1.2em">TODO: read and cite 	extcite {lean-tactic-language} in file </tspan>
+<tspan x="0" dy="1.2em">  chap1-introduction.tex on input line 141.</tspan>
+<tspan x="0" dy="1.2em">TODO: read 	extcite {Implementing1998Shao} in file chap1-introduction.tex </tspan>
+<tspan x="0" dy="1.2em">  on input line 142.</tspan>
+<tspan x="0" dy="1.2em">TODO: read 	extcite {Inductive2003Brady} in file chap1-introduction.tex on </tspan>
+<tspan x="0" dy="1.2em">  input line 144.</tspan>
+<tspan x="0" dy="1.2em">TODO: read 	extcite {thesis-nogin} in file chap1-introduction.tex on input </tspan>
+<tspan x="0" dy="1.2em">  line 145.</tspan>
+<tspan x="0" dy="1.2em">TODO: read GrM-CM-)goire and Leroy's paper from ICFP 2002 	extcite </tspan>
+<tspan x="0" dy="1.2em">  {Gregoire-Leroy-02} in file chap1-introduction.tex on input line 146.</tspan>
+<tspan x="0" dy="1.2em">TODO: read Dirk Kleeblatt's PhD thesis 	extcite </tspan>
+<tspan x="0" dy="1.2em">  {Strongly2011Kleeblatt}. in file chap1-introduction.tex on input line 147.</tspan>
+<tspan x="0" dy="1.2em">TODO: read Andras Kovacs has smalltt at 	extcite {smallttKovacs} in file </tspan>
+<tspan x="0" dy="1.2em">  chap1-introduction.tex on input line 149.</tspan>
 <tspan x="0" dy="1.2em">TODO: look at \url {https://github.com/AndrasKovacs/normalization-bench} in </tspan>
-<tspan x="0" dy="1.2em">  file chap1-introduction.tex on input line 99.</tspan>
+<tspan x="0" dy="1.2em">  file chap1-introduction.tex on input line 150.</tspan>
 <tspan x="0" dy="1.2em">TODO: look at \url {https://github.com/AndrasKovacs/smalltt} in file </tspan>
-<tspan x="0" dy="1.2em">  chap1-introduction.tex on input line 100.</tspan>
+<tspan x="0" dy="1.2em">  chap1-introduction.tex on input line 151.</tspan>
 <tspan x="0" dy="1.2em">TODO: ``I haven't yet updated the smalltt repo, but there's a simplified (\url </tspan>
 <tspan x="0" dy="1.2em">  {https://gist.github.com/AndrasKovacs/a0e0938113b193d6b9c1c0620d853784}) </tspan>
 <tspan x="0" dy="1.2em">  implementation of its evaluator, which seems to have roughly the same </tspan>
 <tspan x="0" dy="1.2em">  performance but which is much simpler to implement.'' in file </tspan>
-<tspan x="0" dy="1.2em">  chap1-introduction.tex on input line 101.</tspan>
+<tspan x="0" dy="1.2em">  chap1-introduction.tex on input line 152.</tspan>
 <tspan x="0" dy="1.2em">TODO: </tspan>
 <tspan x="0" dy="1.2em">QUESTION FOR ADAM: Decide on whether to copyright myself or MIT; Adam, are </tspan>
 <tspan x="0" dy="1.2em">  there considerations to be aware of here? in file jgross-thesis.tex on input </tspan>
@@ -143,8 +180,12 @@
 <tspan x="0" dy="1.2em">Warning: Label `fig:ltac-reify-nobinders@cref' multiply defined.</tspan>
 <tspan x="0" dy="1.2em">Warning: Label `sec:category-of-categories' multiply defined.</tspan>
 <tspan x="0" dy="1.2em">Warning: Label `sec:category-of-categories@cref' multiply defined.</tspan>
+<tspan x="0" dy="1.2em">Warning: Reference `ch:rewriting' on page 7 undefined on input line 150.</tspan>
 <tspan x="0" dy="1.2em">Warning: Reference `sec:proof-by-reflection' on page 7 undefined on input line </tspan>
-<tspan x="0" dy="1.2em">  150.</tspan>
+<tspan x="0" dy="1.2em">  152.</tspan>
+<tspan x="0" dy="1.2em">Warning: Reference `ch:rewriting' on page 20 undefined on input line 125.</tspan>
+<tspan x="0" dy="1.2em">Warning: Reference `ch:rewriting' on page 20 undefined on input line 125.</tspan>
+<tspan x="0" dy="1.2em">Warning: Reference `ch:rewriting' on page 20 undefined on input line 126.</tspan>
 <tspan x="0" dy="1.2em">Font shape `U/stmry/m/n' in size &lt;8.41483&gt; not available; size &lt;8&gt; substituted </tspan>
 <tspan x="0" dy="1.2em">  on input line 91.</tspan>
 <tspan x="0" dy="1.2em">Overfull \hbox (41.52351pt too wide) in paragraph at lines 105--1</tspan>
@@ -153,4 +194,5 @@
 <tspan x="0" dy="1.2em">Overfull \hbox (60.55226pt too wide) in paragraph at lines 28--35</tspan>
 <tspan x="0" dy="1.2em">Overfull \hbox (7.66692pt too wide) in paragraph at lines 28--35</tspan>
 <tspan x="0" dy="1.2em">Overfull \hbox (15.79704pt too wide) in paragraph at lines 36--43[]</tspan>
+<tspan x="0" dy="1.2em">Overfull \hbox (174.85077pt too wide) in paragraph at lines 88--92</tspan>
 </text></svg>

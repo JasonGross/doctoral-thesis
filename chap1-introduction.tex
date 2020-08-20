@@ -9,7 +9,7 @@
   premature optimization is the root of all evil
 \end{quote}
 \begin{flushright}
-  --- Donald Knuth
+  --- Donald Knuth~\cite[p.~671]{KnuthPrematureOptimization}
 \end{flushright}
 
 \begin{quote}
@@ -62,13 +62,14 @@ Said another way, we no longer need to write tests for every piece of software s
 %\paragraph{Paragraph 3: performance of tools is important and non-trivial, and what we're doing here is explaining / demonstrating how and why it's non-trivial, and how to fix nontrivial performance issues}
 We come now to the main thrust of this thesis.
 Tools for machine-checked proofs have already had many successes, in both software verification and traditional mathematics proof formalization, from compilers~\cite{Compcert} to microkernels~\cite{seL4SOSP09} to webservers~\cite{Network2015Chlipala} to cryptography code~\cite{FiatCryptoSP19}, from the Four-Color Theorem~\cite{gonthier2008formal} to the Odd-Order Theorem~\cite{gonthier2013machine} to Homotopy Type Theory~\cite{HoTTBook}.
-While compiler performance---both the time it takes to compile code and the time it takes to run the generated code---has long been an active field of study~\cite{CC++Performance2017}\todo{find more citiations here}, to our knowledge there is no extant body of work systematically investigating the performance of proof assistants, nor even any work primarily focused on the problem of proof assistant performance writ large.
+While compiler performance---both the time it takes to compile code and the time it takes to run the generated code---has long been an active field of study~\cite{CC++Performance2017,georges2007statistically,mytkowicz-wrong-data}\todo{find more citiations here}, to our knowledge there is no extant body of work systematically investigating the performance of proof assistants, nor even any work primarily focused on the problem of proof assistant performance writ large.
 \todo{integrate stuff from \textcite{Efficiency1994Boulton} such as ``For example, much of the research in the field of automated reasoning is concerned with producing proofs more efficiently''}
+\todo{Related to this is work on sound interfaces to external tools, also an enduring topic: \textcite{TrustedSlind}}
 
 \todo{work on this paragraph}
 Why is this problem worthy of study?
 This thesis argues that the problem of \emph{compile-time performance} or \emph{proof-checking performance} is both significantly different from the problem of performance of more typical programs in industry and that it is nontrivial.
-While many papers mention performance, obliquely or otherwise, and some are even driven by performance concerns of a particular algorithm or part of the system,~\cites[p.~1382]{gonthier2008formal}{Efficiency1994Boulton}{Proving2005Benjamin}{Idris2Faster2020Brady}{Recognizing1989Benanav}{mechanical1990Pierce}, we have not found any that investigate the performance problems that arise \emph{asymptotically}, when proof assistants are used to verify programs at large scale.
+While many papers mention performance, obliquely or otherwise, and some are even driven by performance concerns of a particular algorithm or part of the system,~\cites[p.~1382]{gonthier2008formal}{Efficiency1994Boulton}{Proving2005Benjamin}{Idris2Faster2020Brady}{Recognizing1989Benanav}{mechanical1990Pierce}{CelikETAL17iCoq}{PalmskogETAL18piCoq}{Gregoire-Leroy-02}{thesis-nogin}{Idris2Faster2020Brady}, we have not found any that investigate the performance problems that arise \emph{asymptotically}, when proof assistants are used to verify programs at large scale.
 % ``While we tackled this project mainly to explore the capabilities of a modern formal proof system—at first, to benchmark speed—'' - gonthier2008formal
 % ``We present a new implementation of a reflexive tactic whichsolves equalities in a ring structure inside the Coq system.The efficiencyis improved to a point that we can now prove equalities that were previ-ously beyond reach.'' - Proving2005Benjamin
 
@@ -80,13 +81,63 @@ Moreover, this is not an isolated experience in proof assistants; this sort of p
 Drawing experience from case studies in category theory~\cite{category-coq-experience}, parsers~\cite{jgross-masters-thesis}, and generation of low-level cryptographic code~\cite{FiatCryptoSP19}, we investigate and seek to explicate a broad swath of performance issues and bottlenecks.
 While we propose some design principles for avoiding these performance issues in \autoref{part:design} and present a research prototype of a tool and methodology for achieving acceptable performance at scale in \autoref{part:rewriting}---and we claim both of these are original contributions of this PhD\todo{how to write PhD in text?  with periods? not?}---the story this thesis aims to tell is that in order for proof assistants to scale to industrial uses, \emph{we must get the basics of asymptotic performance right}.
 
+\subsection{What are proof assistants?}\label{sec:intro:history}
+Before diving into the details of performance bottlenecks and solutions, we review the history of formal verification and proof assistants to bring the reader up to speed on the context of our work and investigation.
 
 
-\todo{explain that performance, including of build-time, is important}
-\todo{read and cite perf engineering study \textcite{ringer2020qed}}
-\todo{read / look into \textcite{georges2007statistically}}
-\todo{maybe read \textcite{mytkowicz-wrong-data}}
-\todo{Karl Palmskog: @Jason Gross I saw your post on performance optimization/measurements for proof assistants on Coq-Club. We summarize a lot of work on parallelization/selection for proof assistants in our regression proving papers (ASE 17 \& ISSTA 18): \textcite{CelikETAL17iCoq} \textcite{PalmskogETAL18piCoq}}
+\todo{wide look at various proof assistants (historical overview of how the field got to where it is today, maybe with weight according to importance) and successes (applications of proof assistants like compcert, sel4 (kernel), cakeml, nqthm, ACL2, crypto???, flyspec, 4-color-theorem, odd-order-theorem)}
+\todo{https://www.eeweb.com/profile/adarbari/articles/a-brief-history-of-formal-verification}
+\todo{look at OSDI submission (papers/lightbulb/) and mine related work}
+\todo{read and cite Talia's paper \textcite{ringer2020qed}?}
+
+\section{Basic Design Choices}\label{sec:intro:proof-assistant-design-choices}
+\todo{introduce section where we talk about what some big design decisions are and why we might make them the way we do}
+
+\subsection{Dependent Types: What? Why? How?}\label{sec:why-how-dependent-types}
+%\subsection{Dependent Type Theory}
+\todo{note: target audience: Saman (or POPL/PLDI)}
+\todo{explain what dependent types are at all}
+\todo{explain the idea of reducing proof checking to typechecking (with examples)}
+\todo{explain idea of structuring programming so that some properties are true by construction}
+\todo{maybe explain extensional vs intensional}
+\todo{maybe mention lego as early implementation of dependent types}
+\todo{explain dependent type theory, motivate using it}
+\todo{read and cite \textcite{Should1999Lamport} and \textcite{Formalising2018Paulson} h/t Karl Palmskog @palmskog on gitter \url{https://gitter.im/coq/coq?at=5e5ec0ae4eefc06dcf31943f}}
+
+\subsection{The De Bruijn Criterion}\label{sec:debruijn-criterion}
+\todo{explain the De Bruijn criterion}
+\todo{explain why it's worth following this, and what goes wrong if you don't}
+\todo{look into \textcite{Sealing2020Selsam} Sealing Pointer-Based Optimizations Behind Pure Functions}
+\todo{example: Ltac vs Gallina, kind-of}
+
+\section{Look ahead: Layout and contributions of the thesis}\label{sec:intro:layout}
+In the remainder of \autoref{part:introduction}, we will finish laying out the landscape of performance bottlenecks in dependetly-typed proof assistants;
+\fullref{ch:perf-failures} gives a more in-depth investigation into what makes performance optimization in dependent type theory hard, different, and unique, followed by describing major axes of super-linear performance bottlenecks in \fullref{sec:perf-axes}.
+
+\fullref{part:design} is devoted, by and large, to the performance bottlenecks that arise from the use of dependent types as the basis of a proof assistant as introduced in \autoref{sec:why-how-dependent-types};
+in \fullref{ch:design}, we discuss lessons on engineering libraries at scale drawn from our case study in formalizing category theory %~\cite{category-coq-experience}
+and augmented by our other experience.
+The category theory library formalized as part of this doctoral work, available at \textcite{HoTT/HoTT-categories}, is described briefly in this chapter; a more thorough description can be found in the paper we published on our experience formalizing this library.~\cite{category-coq-experience}
+
+\fullref{part:rewriting} is devoted, in some sense, to performance bottlenecks that arise from the de Bruijn criterion of \autoref{sec:debruijn-criterion}.
+We investigate one particular method for avoiding these performance bottlenecks.
+We introduce this method, variously called \emph{proof by reflection} or \emph{reflective automation}, in \fullref{ch:reflection}, with a special emphasis on a particularly common use case---transformation of syntax trees.
+\fullref{ch:rewriting} describes our original contribution of a framework for leveraging reflection to perform rewriting and program transformation at scale, driven by our need to synthesize efficient, proven-correct, low-level cryptographic primitives.~\cite{FiatCryptoSP19}\todo{cite also the rewriter paper}
+Where \autoref{ch:rewriting} addresses the performance challenges of verified or proof-producing program transformation, \fullref{ch:rewriting-more} is a deep-dive into the performance challenges of engineering the tool itself, and serves as a sort-of microcosm of the performance bottlenecks previously discussed and the solutions we've proposed to them.
+Unlike the other chapters of this thesis, \autoref{ch:rewriting-more} at times assumes a great deal of familiarity with the details of the Coq proof assistant.
+Finally, \fullref{ch:reification-by-parametricity} presents a way to efficiently, elegantly, and easily perform \emph{reification}, the first step of proof by reflection, which is often a bottleneck in its own right.
+We discovered---or invented---this trick in the course of working on our library for synthesis of low-level cryptographic primitives.~\cite{FiatCryptoSP19,reification-by-parametricity}
+
+\fullref{part:conclusion} is in some sense the mirror image of \autoref{part:introduction}:
+Where \autoref{ch:perf-failures} is a broad look at what is currently lacking and where performance bottlenecks arise, \fullref{ch:coq-tooling-fixes} takes a historical perspective on what advancements have already been made in the performance of proof assistants, and Coq in particular.
+Finally, while the present chapter which we are now concluding has looked back on the present state and history of formal verification, \fullref{ch:conclusion} looks forward to what we believe are the most important next steps in the perhaps-nascent field of proof-assistant performance at scale.
+
+\begin{subappendices}
+
+\section{TODOs from \autoref{sec:intro:intro}}
+%\todo{read / look into \textcite{georges2007statistically}}
+%\todo{maybe read \textcite{mytkowicz-wrong-data}}
+%\todo{Karl Palmskog: @Jason Gross I saw your post on performance optimization/measurements for proof assistants on Coq-Club. We summarize a lot of work on parallelization/selection for proof assistants in our regression proving papers (ASE 17 \& ISSTA 18): \textcite{CelikETAL17iCoq} \textcite{PalmskogETAL18piCoq}}
 \todo{read and cite \textcite{lean-tactic-language}}
 \todo{read \textcite{Implementing1998Shao}}
 ``It's not directly related to proof assistants, but the techniques described can be applicable to proof assistants and the experience \emph{may} be applicable to some extent.''
@@ -99,7 +150,7 @@ While we propose some design principles for avoiding these performance issues in
 \todo{look at \url{https://github.com/AndrasKovacs/normalization-bench}}
 \todo{look at \url{https://github.com/AndrasKovacs/smalltt}}
 \todo{``I haven't yet updated the smalltt repo, but there's a simplified (\url{https://gist.github.com/AndrasKovacs/a0e0938113b193d6b9c1c0620d853784}) implementation of its evaluator, which seems to have roughly the same performance but which is much simpler to implement.''}
-\todo{\cite{Idris2Faster2020Brady}}
+%\todo{\cite{Idris2Faster2020Brady}}
 \todo{\cite{NewCoqTactics2016Pedrot} about why not LCF tactics in dependently typed setting}
 
 
@@ -127,40 +178,8 @@ I'd be very interested in your findings about proof assistant performance. This 
 Konrad Slind wrote:
 \todo{read \textcite{Programming2000Barras}}
 \todo{\textcite{Efficiency1994Boulton}}
-\todo{Related to this is work on sound interfaces to external tools, also an enduring topic: \textcite{TrustedSlind}}
 
-\subsection{What are proof assistants?}
-\todo{wide look at various proof assistants (historical overview of how the field got to where it is today, maybe with weight according to importance) and successes (applications of proof assistants like compcert, sel4 (kernel), cakeml, nqthm, ACL2, crypto???, flyspec, 4-color-theorem, odd-order-theorem)}
-\todo{https://www.eeweb.com/profile/adarbari/articles/a-brief-history-of-formal-verification}
-\todo{look at OSDI submission (papers/lightbulb/) and mine related work}
-\todo{read and cite Talia's paper \textcite{ringer2020qed}?}
-
-\section{Basic Design Choices}
-\todo{introduce section where we talk about what some big design decisions are and why we might make them the way we do}
-
-\subsection{Dependent Types: What? Why? How?} \label{sec:why-how-dependent-types}
-%\subsection{Dependent Type Theory}
-\todo{note: target audience: Saman (or POPL/PLDI)}
-\todo{explain what dependent types are at all}
-\todo{explain the idea of reducing proof checking to typechecking (with examples)}
-\todo{explain idea of structuring programming so that some properties are true by construction}
-\todo{maybe explain extensional vs intensional}
-\todo{maybe mention lego as early implementation of dependent types}
-\todo{explain dependent type theory, motivate using it}
-\todo{read and cite \textcite{Should1999Lamport} and \textcite{Formalising2018Paulson} h/t Karl Palmskog @palmskog on gitter \url{https://gitter.im/coq/coq?at=5e5ec0ae4eefc06dcf31943f}}
-
-\subsection{The De Bruijn Criterion} \label{sec:debruijn-criterion}
-\todo{explain the De Bruijn criterion}
-\todo{explain why it's worth following this, and what goes wrong if you don't}
-\todo{look into \textcite{Sealing2020Selsam} Sealing Pointer-Based Optimizations Behind Pure Functions}
-\todo{example: Ltac vs Gallina, kind-of}
-
-\section{Look ahead: Layout and contributions of the thesis}
-\todo{describe layout}
-\todo{describe main contributions}
-
-\begin{subappendices}
-
+\begin{comment}
 \section{Transcript bits from talking with Adam}
 And my phone is now recording.
 
@@ -376,10 +395,10 @@ High level story:
 Coq and proof assistance are important. Performance in them is important, especially at scale. Performance engineering in proof assistants has some unique challenges that don't show up in other programming languages.
 
 And I want to paint a picture of what the unique challenges are.  There are two main areas in the existing system that I want to call attention to, in regards to performance bottlenecks.  I will describe them, and describe the performance issues, and propose some reasons about why there might be performance bottlenecks, and describe solutions for them. And maybe also there'll be another section that has some miscellaneous other performance bottlenecks.
+\end{comment}
 
-
-\todo{where does this description of Coq's design go?}
 \section{Coq's design}
+\todo{where does this description of Coq's design go?}
 Coq is split into two parts.
 
 There's the part of the system that is called the kernel or the trusted code base.
@@ -389,7 +408,6 @@ You're like ``I have an arithmetic expression please prove that it's true'' and 
 If the part generating the arithmetic proof is wrong then the users come complaining to you that you have a bug.
 If the part checking the proofs is wrong, then you don't see the bug and now suddenly your users can prove anything they want.
 And the system is no longer trustworthy right and so for that bit of it you need to be very careful with any changes you make.
-
 \end{subappendices}
 %\begin{itemize}
 %  \item Mention domains: math/CT and program transformation

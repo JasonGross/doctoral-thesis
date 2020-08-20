@@ -304,7 +304,7 @@ rubber:
 	rubber --shell-escape -d -m lualatex jgross-thesis.tex
 
 # pdflatex -synctex=1 -interaction=nonstopmode -enable-write18 jgross-thesis.tex 2>&1
-MAKE_TODO := LINES="$$(cat jgross-thesis.log | \
+MAKE_TODO := TEXT="$$(cat jgross-thesis.log | \
 	grep -C 10 '^LaTeX Warning:\|on input line\|in paragraph at lines\|Xy-pic Warning:\|^Package [^ ]* Warning:' | \
 	tr '\r' '&' | \
 	tr '\n' '&' | \
@@ -313,17 +313,25 @@ MAKE_TODO := LINES="$$(cat jgross-thesis.log | \
 	grep -o 'LaTeX Warning:.*\|Xy-pic Warning:.*\|Font shape [^ ]* in size [^ ]* not available.*\|Package biblatex Warning: The following entry could not be found in the database: [^ ]*\|\(Under\|Over\)full ..box ([^)]*) in paragraph at lines.*' | \
 	grep -o 'TODO.*\|QUESTION.*\|Warning: Reference.*\|Warning: Citation.*\|Warning: Label.*\|Xy-pic Warning:.*\|Font shape [^ ]* in size [^ ]* not available.*\|Package [^ ]* Warning: .*\|\(Under\|Over\)full ..box ([^)]*) in paragraph at lines.*')$$(echo; (cat jgross-thesis-biber.log | \
 	grep '^WARN'))"; \
-	((echo "$$LINES" | grep TODO); \
-	(echo "$$LINES" | grep 'QUESTION FOR ADAM'); \
-	(echo "$$LINES" | grep '^Warning:'); \
-	(echo "$$LINES" | grep -v '^Warning:' | grep 'Warning:'); \
-	(echo "$$LINES" | grep 'WARN'); \
-	(echo "$$LINES" | grep 'Font shape'); \
-	(echo "$$LINES" | grep -v 'TODO\|QUESTION FOR ADAM\|Warning:\|Font shape\|WARN')) | \
+	((echo "$$TEXT" | grep TODO); \
+	(echo "$$TEXT" | grep 'QUESTION FOR ADAM'); \
+	(echo "$$TEXT" | grep '^Warning:'); \
+	(echo "$$TEXT" | grep -v '^Warning:' | grep 'Warning:'); \
+	(echo "$$TEXT" | grep 'WARN'); \
+	(echo "$$TEXT" | grep 'Font shape'); \
+	(echo "$$TEXT" | grep -v 'TODO\|QUESTION FOR ADAM\|Warning:\|Font shape\|WARN')) | \
 	grep --color=auto 'TODO:\|QUESTION FOR ADAM:\|Warning: Reference\|Warning: Citation\|Warning:\|WARN\|'
 .PHONY: todo
 todo: jgross-thesis.pdf
 	$(MAKE_TODO)
+
+MAKE_LOG_RECOGNIZED := TEXT="$$(cat jgross-thesis.log | \
+	grep -v '^[ ()\.\*]*$\|^This is LuaTeX\|^ system commands\|^Lua module:\|^LaTeX2e\|^Document Class:\|^luaotfload | conf :\|^luaotfload | init :\|^Lua-only attribute \|^Inserting `luaotfload\|^luaotfload | main : initialization completed \|^Babel <\|^\\[^=]*=\|^Copyright given to author,\|^Package: luatex85\|^Single spaced\|^Course VI/VIII\|^File: \|^luaotfload | db : \|^Package: \|^LaTeX Font Info:    Redeclaring font encoding\|^LaTeX Font Info:    Try loading font information\|^LaTeX Font Info:    Overwriting \|^(Font).*-->\|LaTeX Info: Redefining\|^For additional information on amsmath\|^[)( ]\+[^ )/]*/\|^)<<\|^Package [^ ]* [Ii]nfo\|^Driver file for \|^Package pgfplots: loading \|^touch \|^rm -f \|^===== Image \|^. LaTeX info: .xparse/\|^. Defining command \|^. Redefining command\|^. I.m going to patch macro\|^ Style option: \|^. lualatex-math info:\|^. unicode-math info:\|^LaTeX Info: Thecontrolsequence\|^Proof Tree (bussproofs) style macros\|^LaTeX Font Info:    Checking defaults\|^LaTeX Font Info:    ... okay\|^(load luc:')$$(cat jgross-thesis-biber.log | \
+	grep '^WARN'))"; \
+	echo "$$TEXT"
+.PHONY: print-log-recognized
+print-log-recognized:
+	$(MAKE_LOG_RECOGNIZED)
 
 todo.svg: jgross-thesis.pdf Makefile
 	$(MAKE_TODO) | etc/makesvg.sh > $@

@@ -1,4 +1,6 @@
-<svg xmlns="http://www.w3.org/2000/svg" width="41em" height="236em"><text x="0" y="0">
+<svg xmlns="http://www.w3.org/2000/svg" width="41em" height="243em"><text x="0" y="0">
+<tspan x="0" dy="1.2em">TODO: Make sure to exclude no files (not rewriting) in file jgross-thesis.tex </tspan>
+<tspan x="0" dy="1.2em">  on input line 54.</tspan>
 <tspan x="0" dy="1.2em">TODO: Run `make update-thesis' before submission to update the date on the </tspan>
 <tspan x="0" dy="1.2em">  cover page in file jgross-thesis.tex on input line 91.</tspan>
 <tspan x="0" dy="1.2em">TODO: change \string ^Linalfalse to \string ^Linaltrue  in file </tspan>
@@ -184,8 +186,12 @@
 <tspan x="0" dy="1.2em">Warning: Label `fig:ltac-reify-nobinders@cref' multiply defined.</tspan>
 <tspan x="0" dy="1.2em">Warning: Label `sec:category-of-categories' multiply defined.</tspan>
 <tspan x="0" dy="1.2em">Warning: Label `sec:category-of-categories@cref' multiply defined.</tspan>
+<tspan x="0" dy="1.2em">Warning: Reference `ch:rewriting' on page 7 undefined on input line 153.</tspan>
 <tspan x="0" dy="1.2em">Warning: Reference `sec:proof-by-reflection' on page 7 undefined on input line </tspan>
 <tspan x="0" dy="1.2em">  155.</tspan>
+<tspan x="0" dy="1.2em">Warning: Reference `ch:rewriting' on page 20 undefined on input line 125.</tspan>
+<tspan x="0" dy="1.2em">Warning: Reference `ch:rewriting' on page 20 undefined on input line 125.</tspan>
+<tspan x="0" dy="1.2em">Warning: Reference `ch:rewriting' on page 20 undefined on input line 126.</tspan>
 <tspan x="0" dy="1.2em">Font shape `U/stmry/m/n' in size &lt;8.41483&gt; not available; size &lt;8&gt; substituted </tspan>
 <tspan x="0" dy="1.2em">  on input line 91.</tspan>
 <tspan x="0" dy="1.2em">Overfull \hbox (41.52351pt too wide) in paragraph at lines 105--1</tspan>

@@ -1,4 +1,6 @@
-<svg xmlns="http://www.w3.org/2000/svg" width="41em" height="229em"><text x="0" y="0">
+<svg xmlns="http://www.w3.org/2000/svg" width="41em" height="243em"><text x="0" y="0">
+<tspan x="0" dy="1.2em">TODO: Make sure to exclude no files (not rewriting) in file jgross-thesis.tex </tspan>
+<tspan x="0" dy="1.2em">  on input line 54.</tspan>
 <tspan x="0" dy="1.2em">TODO: Run `make update-thesis' before submission to update the date on the </tspan>
 <tspan x="0" dy="1.2em">  cover page in file jgross-thesis.tex on input line 91.</tspan>
 <tspan x="0" dy="1.2em">TODO: change \string ^Linalfalse to \string ^Linaltrue  in file </tspan>
@@ -13,11 +15,17 @@
 <tspan x="0" dy="1.2em">TODO: rearrange in file cover.tex on input line 133.</tspan>
 <tspan x="0" dy="1.2em">TODO: Add more acknowledgments in file cover.tex on input line 135.</tspan>
 <tspan x="0" dy="1.2em">TODO: cite various grants in file cover.tex on input line 137.</tspan>
-<tspan x="0" dy="1.2em">TODO: rearrange in file cover.tex on input line 143.</tspan>
-<tspan x="0" dy="1.2em">TODO: how to format citations here in file cover.tex on input line 146.</tspan>
-<tspan x="0" dy="1.2em">TODO: cite rewriting in file cover.tex on input line 150.</tspan>
+<tspan x="0" dy="1.2em">TODO: thank various other people: Pierre-Marie PM-CM-)drot, Rajee Agrawal, </tspan>
+<tspan x="0" dy="1.2em">  friends, Allison Strandberg (incl. for chatting with me about thesis), Matthieu </tspan>
+<tspan x="0" dy="1.2em">  Sozeau, coqdevs more generally, maybe AndrM-CM-!s KovM-CM-!cs on perf discussions in </tspan>
+<tspan x="0" dy="1.2em">  file cover.tex on input line 138.</tspan>
+<tspan x="0" dy="1.2em">TODO: Rajee or Rajashree? in file cover.tex on input line 139.</tspan>
+<tspan x="0" dy="1.2em">TODO: rearrange in file cover.tex on input line 145.</tspan>
+<tspan x="0" dy="1.2em">TODO: make sure we didn't miss anything in file cover.tex on input line 146.</tspan>
+<tspan x="0" dy="1.2em">TODO: how to format citations here in file cover.tex on input line 149.</tspan>
+<tspan x="0" dy="1.2em">TODO: cite rewriting in file cover.tex on input line 153.</tspan>
 <tspan x="0" dy="1.2em">TODO: should we include acknowledgements from various papers? in file </tspan>
-<tspan x="0" dy="1.2em">  cover.tex on input line 155.</tspan>
+<tspan x="0" dy="1.2em">  cover.tex on input line 158.</tspan>
 <tspan x="0" dy="1.2em">TODO: Download and fill out \url </tspan>
 <tspan x="0" dy="1.2em">  {https://libraries.mit.edu/wp-content/uploads/2019/08/umi-proquest-form.pdf} in </tspan>
 <tspan x="0" dy="1.2em">  file jgross-thesis.tex on input line 106.</tspan>
@@ -142,7 +150,7 @@
 <tspan x="0" dy="1.2em">  {Gregoire-Leroy-02} in file chap1-introduction.tex on input line 146.</tspan>
 <tspan x="0" dy="1.2em">TODO: read Dirk Kleeblatt's PhD thesis 	extcite </tspan>
 <tspan x="0" dy="1.2em">  {Strongly2011Kleeblatt}. in file chap1-introduction.tex on input line 147.</tspan>
-<tspan x="0" dy="1.2em">TODO: read Andras Kovacs has smalltt at 	extcite {smallttKovacs} in file </tspan>
+<tspan x="0" dy="1.2em">TODO: read AndrM-CM-!s KovM-CM-!cs has smalltt at 	extcite {smallttKovacs} in file </tspan>
 <tspan x="0" dy="1.2em">  chap1-introduction.tex on input line 149.</tspan>
 <tspan x="0" dy="1.2em">TODO: look at \url {https://github.com/AndrasKovacs/normalization-bench} in </tspan>
 <tspan x="0" dy="1.2em">  file chap1-introduction.tex on input line 150.</tspan>
@@ -178,8 +186,12 @@
 <tspan x="0" dy="1.2em">Warning: Label `fig:ltac-reify-nobinders@cref' multiply defined.</tspan>
 <tspan x="0" dy="1.2em">Warning: Label `sec:category-of-categories' multiply defined.</tspan>
 <tspan x="0" dy="1.2em">Warning: Label `sec:category-of-categories@cref' multiply defined.</tspan>
+<tspan x="0" dy="1.2em">Warning: Reference `ch:rewriting' on page 7 undefined on input line 153.</tspan>
 <tspan x="0" dy="1.2em">Warning: Reference `sec:proof-by-reflection' on page 7 undefined on input line </tspan>
-<tspan x="0" dy="1.2em">  152.</tspan>
+<tspan x="0" dy="1.2em">  155.</tspan>
+<tspan x="0" dy="1.2em">Warning: Reference `ch:rewriting' on page 20 undefined on input line 125.</tspan>
+<tspan x="0" dy="1.2em">Warning: Reference `ch:rewriting' on page 20 undefined on input line 125.</tspan>
+<tspan x="0" dy="1.2em">Warning: Reference `ch:rewriting' on page 20 undefined on input line 126.</tspan>
 <tspan x="0" dy="1.2em">Font shape `U/stmry/m/n' in size &lt;8.41483&gt; not available; size &lt;8&gt; substituted </tspan>
 <tspan x="0" dy="1.2em">  on input line 91.</tspan>
 <tspan x="0" dy="1.2em">Overfull \hbox (41.52351pt too wide) in paragraph at lines 105--1</tspan>

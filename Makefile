@@ -305,20 +305,23 @@ rubber:
 
 # pdflatex -synctex=1 -interaction=nonstopmode -enable-write18 jgross-thesis.tex 2>&1
 .PHONY: todo
-todo: jgross-thesis.pdf
+todo:
 	etc/make-todo.sh
 
-.PHONY: print-log-recognized
-print-log-recognized:
-	etc/make-log-recognized.sh
+.PHONY: full-todo
+full-todo:
+	etc/make-full-todo.sh
 
-todo.svg: jgross-thesis.pdf Makefile etc/make-todo.sh etc/make-svg.sh
+todo.svg: jgross-thesis.pdf Makefile etc/make-todo.sh etc/makesvg.sh
 	etc/make-todo.sh | etc/makesvg.sh > $@
+
+full-todo.svg: jgross-thesis.pdf Makefile etc/make-full-todo.sh etc/makesvg.sh
+	etc/make-full-todo.sh | etc/makesvg.sh > $@
 
 .PHONY: deploy
 deploy::
 	mkdir -p deploy/nightly
-	cp -f $(PDFS) todo.svg deploy/nightly/
+	cp -f $(PDFS) todo.svg full-todo.svg deploy/nightly/
 
 .PHONY: clean
 clean:

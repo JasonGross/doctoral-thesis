@@ -11,8 +11,24 @@ TEXT="$(cat jgross-thesis.log |
 	grep '^WARN')))"
 
 PREFIX=""
-for i in '^TODO' '^QUESTION FOR ADAM' '^Warning:' 'Warning:' 'WARN' 'Missing character:' 'Font shape' '^warning' 'Font Info' 'luaotfload'; do
-    PREFIX="${PREFIX}$(echo; (echo "$TEXT" | grep "$i"))"
+for i in '^TODO' \
+             '^QUESTION FOR ADAM' \
+             '^Warning: Label .* multiply defined' \
+             '^Warning: Reference .* undefined' \
+             '^Warning: Citation .* undefined' \
+             '^Warning:' \
+             'Warning:' \
+             'WARN' \
+             'Missing character:' \
+             'Font shape' \
+             '^warning' \
+             'Font Info' \
+             'luaotfload | aux : font no ' \
+             'luaotfload | aux : no font ' \
+             'luaotfload' \
+             #
+do
+    PREFIX="${PREFIX}$(echo; (echo "$TEXT" | grep "$i" | uniq))"
     TEXT="$(echo "$TEXT" | grep -v "$i")"
 done
 

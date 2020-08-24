@@ -1,496 +1,496 @@
-<svg xmlns="http://www.w3.org/2000/svg" width="41em" height="1749em"><text x="0" y="0">
+<svg xmlns="http://www.w3.org/2000/svg" width="41em" height="1451em"><text x="0" y="0">
+<tspan x="0" dy="1.2em">TODO: Make sure to exclude no files (not rewriting) in file jgross-thesis.tex </tspan>
+<tspan x="0" dy="1.2em">&#160;&#160;on input line 54.</tspan>
 <tspan x="0" dy="1.2em">TODO: Run `make update-thesis' before submission to update the date on the </tspan>
-<tspan x="0" dy="1.2em">&nbsp;&nbsp;cover page in file jgross-thesis.tex on input line 91.</tspan>
+<tspan x="0" dy="1.2em">&#160;&#160;cover page in file jgross-thesis.tex on input line 91.</tspan>
 <tspan x="0" dy="1.2em">TODO: change \string \finalfalse to \string \finaltrue  in file </tspan>
-<tspan x="0" dy="1.2em">&nbsp;&nbsp;jgross-thesis.tex on input line 91.</tspan>
+<tspan x="0" dy="1.2em">&#160;&#160;jgross-thesis.tex on input line 91.</tspan>
 <tspan x="0" dy="1.2em">TODO: Is the ``department committee chairman'' still Leslie A. Kolodziejski? </tspan>
-<tspan x="0" dy="1.2em">&nbsp;&nbsp;in file cover.tex on input line 87.</tspan>
+<tspan x="0" dy="1.2em">&#160;&#160;in file cover.tex on input line 87.</tspan>
 <tspan x="0" dy="1.2em">TODO: More formal wording in file abstract.tex on input line 40.</tspan>
 <tspan x="0" dy="1.2em">TODO: Fix runon sentence in file abstract.tex on input line 51.</tspan>
 <tspan x="0" dy="1.2em">TODO: Maybe instead use the alternative from the thesis-proposal? in file </tspan>
-<tspan x="0" dy="1.2em">&nbsp;&nbsp;abstract.tex on input line 55.</tspan>
+<tspan x="0" dy="1.2em">&#160;&#160;abstract.tex on input line 55.</tspan>
 <tspan x="0" dy="1.2em">TODO: uniform style in file cover.tex on input line 132.</tspan>
 <tspan x="0" dy="1.2em">TODO: rearrange in file cover.tex on input line 133.</tspan>
 <tspan x="0" dy="1.2em">TODO: Add more acknowledgments in file cover.tex on input line 135.</tspan>
 <tspan x="0" dy="1.2em">TODO: cite various grants in file cover.tex on input line 137.</tspan>
 <tspan x="0" dy="1.2em">TODO: thank various other people: Pierre-Marie PM-CM-)drot, Rajee Agrawal, </tspan>
-<tspan x="0" dy="1.2em">&nbsp;&nbsp;friends, Allison Strandberg (incl. for chatting with me about thesis), Matthieu </tspan>
-<tspan x="0" dy="1.2em">&nbsp;&nbsp;Sozeau, coqdevs more generally, maybe AndrM-CM-!s KovM-CM-!cs on perf discussions in </tspan>
-<tspan x="0" dy="1.2em">&nbsp;&nbsp;file cover.tex on input line 138.</tspan>
+<tspan x="0" dy="1.2em">&#160;&#160;friends, Allison Strandberg (incl. for chatting with me about thesis), Matthieu </tspan>
+<tspan x="0" dy="1.2em">&#160;&#160;Sozeau, coqdevs more generally, maybe AndrM-CM-!s KovM-CM-!cs on perf discussions in </tspan>
+<tspan x="0" dy="1.2em">&#160;&#160;file cover.tex on input line 138.</tspan>
 <tspan x="0" dy="1.2em">TODO: Rajee or Rajashree? in file cover.tex on input line 139.</tspan>
 <tspan x="0" dy="1.2em">TODO: rearrange in file cover.tex on input line 145.</tspan>
 <tspan x="0" dy="1.2em">TODO: make sure we didn't miss anything in file cover.tex on input line 146.</tspan>
 <tspan x="0" dy="1.2em">TODO: how to format citations here in file cover.tex on input line 149.</tspan>
 <tspan x="0" dy="1.2em">TODO: cite rewriting in file cover.tex on input line 153.</tspan>
 <tspan x="0" dy="1.2em">TODO: should we include acknowledgements from various papers? in file </tspan>
-<tspan x="0" dy="1.2em">&nbsp;&nbsp;cover.tex on input line 158.</tspan>
+<tspan x="0" dy="1.2em">&#160;&#160;cover.tex on input line 158.</tspan>
 <tspan x="0" dy="1.2em">TODO: Download and fill out \url </tspan>
-<tspan x="0" dy="1.2em">&nbsp;&nbsp;{https://libraries.mit.edu/wp-content/uploads/2019/08/umi-proquest-form.pdf} in </tspan>
-<tspan x="0" dy="1.2em">&nbsp;&nbsp;file jgross-thesis.tex on input line 106.</tspan>
+<tspan x="0" dy="1.2em">&#160;&#160;{https://libraries.mit.edu/wp-content/uploads/2019/08/umi-proquest-form.pdf} in </tspan>
+<tspan x="0" dy="1.2em">&#160;&#160;file jgross-thesis.tex on input line 106.</tspan>
 <tspan x="0" dy="1.2em">TODO: Change biblatex cite format to author-year or something so that it's </tspan>
-<tspan x="0" dy="1.2em">&nbsp;&nbsp;easy to pick up references from the paper in file jgross-thesis.tex on input </tspan>
-<tspan x="0" dy="1.2em">&nbsp;&nbsp;line 107.</tspan>
+<tspan x="0" dy="1.2em">&#160;&#160;easy to pick up references from the paper in file jgross-thesis.tex on input </tspan>
+<tspan x="0" dy="1.2em">&#160;&#160;line 107.</tspan>
 <tspan x="0" dy="1.2em">TODO: Share thesis with Eric Marion (cf 2020-05-14 15:53 Facebook Messenger) </tspan>
-<tspan x="0" dy="1.2em">&nbsp;&nbsp;in file jgross-thesis.tex on input line 108.</tspan>
+<tspan x="0" dy="1.2em">&#160;&#160;in file jgross-thesis.tex on input line 108.</tspan>
 <tspan x="0" dy="1.2em">TODO: Share thesis with AndrM-CM-!s KovM-CM-!cs (cf 2020-03-12 11:15 gmail \url </tspan>
-<tspan x="0" dy="1.2em">&nbsp;&nbsp;{https://mail.google.com/mail/u/0/\#search/andras/QgrcJHrnvrhWwVxKMQFsctxrGQxvPr</tspan>
-<tspan x="0" dy="1.2em">&nbsp;&nbsp;tflgB}) in file jgross-thesis.tex on input line 109.</tspan>
+<tspan x="0" dy="1.2em">&#160;&#160;{https://mail.google.com/mail/u/0/\#search/andras/QgrcJHrnvrhWwVxKMQFsctxrGQxvPr</tspan>
+<tspan x="0" dy="1.2em">&#160;&#160;tflgB}) in file jgross-thesis.tex on input line 109.</tspan>
 <tspan x="0" dy="1.2em">TODO: Share thesis with Talia Ringer and ppedrot in file jgross-thesis.tex on </tspan>
-<tspan x="0" dy="1.2em">&nbsp;&nbsp;input line 110.</tspan>
+<tspan x="0" dy="1.2em">&#160;&#160;input line 110.</tspan>
 <tspan x="0" dy="1.2em">TODO: single space or dobule space? in file jgross-thesis.tex on input line </tspan>
-<tspan x="0" dy="1.2em">&nbsp;&nbsp;111.</tspan>
+<tspan x="0" dy="1.2em">&#160;&#160;111.</tspan>
 <tspan x="0" dy="1.2em">TODO: maybe remove ``introduction'' section headings? in file </tspan>
-<tspan x="0" dy="1.2em">&nbsp;&nbsp;jgross-thesis.tex on input line 112.</tspan>
+<tspan x="0" dy="1.2em">&#160;&#160;jgross-thesis.tex on input line 112.</tspan>
 <tspan x="0" dy="1.2em">TODO: decide on chapter/section capitalization and be consistent in file </tspan>
-<tspan x="0" dy="1.2em">&nbsp;&nbsp;main-files.tex on input line 2.</tspan>
+<tspan x="0" dy="1.2em">&#160;&#160;main-files.tex on input line 2.</tspan>
 <tspan x="0" dy="1.2em">TODO: figure out if regression stats should be included, and, if so, how to </tspan>
-<tspan x="0" dy="1.2em">&nbsp;&nbsp;calculate them in file main-files.tex on input line 3.</tspan>
+<tspan x="0" dy="1.2em">&#160;&#160;calculate them in file main-files.tex on input line 3.</tspan>
 <tspan x="0" dy="1.2em">TODO: make sure all appendices are at the very end, so we keep a linear </tspan>
-<tspan x="0" dy="1.2em">&nbsp;&nbsp;progression in file main-files.tex on input line 4.</tspan>
+<tspan x="0" dy="1.2em">&#160;&#160;progression in file main-files.tex on input line 4.</tspan>
 <tspan x="0" dy="1.2em">TODO: update rewriting paper chapter with camera-ready file before editing in </tspan>
-<tspan x="0" dy="1.2em">&nbsp;&nbsp;file main-files.tex on input line 5.</tspan>
+<tspan x="0" dy="1.2em">&#160;&#160;file main-files.tex on input line 5.</tspan>
 <tspan x="0" dy="1.2em">TODO: add labels on every section, ensure no duplicate labels in file </tspan>
-<tspan x="0" dy="1.2em">&nbsp;&nbsp;main-files.tex on input line 6.</tspan>
+<tspan x="0" dy="1.2em">&#160;&#160;main-files.tex on input line 6.</tspan>
 <tspan x="0" dy="1.2em">TODO: Decide whether or not to use contractions (less formal, but okay for </tspan>
-<tspan x="0" dy="1.2em">&nbsp;&nbsp;thesis if I make a conscious decision) in file main-files.tex on input line 7.</tspan>
+<tspan x="0" dy="1.2em">&#160;&#160;thesis if I make a conscious decision) in file main-files.tex on input line 7.</tspan>
 <tspan x="0" dy="1.2em">TODO: be consistent about $\lambda x. body$ vs.~$\lambda x, body$ (note that </tspan>
-<tspan x="0" dy="1.2em">&nbsp;&nbsp;Coq only accepts the latter) in file main-files.tex on input line 8.</tspan>
+<tspan x="0" dy="1.2em">&#160;&#160;Coq only accepts the latter) in file main-files.tex on input line 8.</tspan>
 <tspan x="0" dy="1.2em">TODO: move any citations which point at people.csail.mit.edu to point at a </tspan>
-<tspan x="0" dy="1.2em">&nbsp;&nbsp;github.io version, and move my personal website there in file main-files.tex on </tspan>
-<tspan x="0" dy="1.2em">&nbsp;&nbsp;input line 9.</tspan>
+<tspan x="0" dy="1.2em">&#160;&#160;github.io version, and move my personal website there in file main-files.tex on </tspan>
+<tspan x="0" dy="1.2em">&#160;&#160;input line 9.</tspan>
 <tspan x="0" dy="1.2em">TODO: maybe include all code in an appendix? in file main-files.tex on input </tspan>
-<tspan x="0" dy="1.2em">&nbsp;&nbsp;line 10.</tspan>
+<tspan x="0" dy="1.2em">&#160;&#160;line 10.</tspan>
 <tspan x="0" dy="1.2em">TODO: be consistent about function extensionality vs functional extensionality </tspan>
-<tspan x="0" dy="1.2em">&nbsp;&nbsp;in file main-files.tex on input line 11.</tspan>
+<tspan x="0" dy="1.2em">&#160;&#160;in file main-files.tex on input line 11.</tspan>
 <tspan x="0" dy="1.2em">TODO: include github code links for contributions in file main-files.tex on </tspan>
-<tspan x="0" dy="1.2em">&nbsp;&nbsp;input line 12.</tspan>
+<tspan x="0" dy="1.2em">&#160;&#160;input line 12.</tspan>
 <tspan x="0" dy="1.2em">TODO: should I mention the pricing bug on amazon? </tspan>
-<tspan x="0" dy="1.2em">&nbsp;&nbsp;https://www.usatoday.com/story/tech/2019/07/19/amazon-prime-day-error-sold-13-00</tspan>
-<tspan x="0" dy="1.2em">&nbsp;&nbsp;0-camera-equipment-94-report/1775314001/, </tspan>
-<tspan x="0" dy="1.2em">&nbsp;&nbsp;https://www.theguardian.com/money/2014/dec/14/amazon-glitch-prices-penny-reprice</tspan>
-<tspan x="0" dy="1.2em">&nbsp;&nbsp;rexpress, http://www.michaeleisen.org/blog/?p=358 in file </tspan>
-<tspan x="0" dy="1.2em">&nbsp;&nbsp;chap1-introduction.tex on input line 31.</tspan>
+<tspan x="0" dy="1.2em">&#160;&#160;https://www.usatoday.com/story/tech/2019/07/19/amazon-prime-day-error-sold-13-00</tspan>
+<tspan x="0" dy="1.2em">&#160;&#160;0-camera-equipment-94-report/1775314001/, </tspan>
+<tspan x="0" dy="1.2em">&#160;&#160;https://www.theguardian.com/money/2014/dec/14/amazon-glitch-prices-penny-reprice</tspan>
+<tspan x="0" dy="1.2em">&#160;&#160;rexpress, http://www.michaeleisen.org/blog/?p=358 in file </tspan>
+<tspan x="0" dy="1.2em">&#160;&#160;chap1-introduction.tex on input line 31.</tspan>
 <tspan x="0" dy="1.2em">TODO: should I mention anything else? the pentium bug costing Intel \$475 </tspan>
-<tspan x="0" dy="1.2em">&nbsp;&nbsp;million? </tspan>
-<tspan x="0" dy="1.2em">&nbsp;&nbsp;http://top-100s.blogspot.com/2009/05/10-most-expensive-software-blunders.html, </tspan>
-<tspan x="0" dy="1.2em">&nbsp;&nbsp;\$500 million Ariane Rocket disaster? , </tspan>
-<tspan x="0" dy="1.2em">&nbsp;&nbsp;https://www.olenick.com/blog/articles/infamous-software-bugs-fdiv-bug in file </tspan>
-<tspan x="0" dy="1.2em">&nbsp;&nbsp;chap1-introduction.tex on input line 33.</tspan>
+<tspan x="0" dy="1.2em">&#160;&#160;million? </tspan>
+<tspan x="0" dy="1.2em">&#160;&#160;http://top-100s.blogspot.com/2009/05/10-most-expensive-software-blunders.html, </tspan>
+<tspan x="0" dy="1.2em">&#160;&#160;\$500 million Ariane Rocket disaster? , </tspan>
+<tspan x="0" dy="1.2em">&#160;&#160;https://www.olenick.com/blog/articles/infamous-software-bugs-fdiv-bug in file </tspan>
+<tspan x="0" dy="1.2em">&#160;&#160;chap1-introduction.tex on input line 33.</tspan>
 <tspan x="0" dy="1.2em">TODO: should I pull from </tspan>
-<tspan x="0" dy="1.2em">&nbsp;&nbsp;https://xavierleroy.org/talks/Milner-award-lecture.pdf? ``Fiat-Chrysler </tspan>
-<tspan x="0" dy="1.2em">&nbsp;&nbsp;recalled 1.5 M vehicles for software update.'' in file chap1-introduction.tex </tspan>
-<tspan x="0" dy="1.2em">&nbsp;&nbsp;on input line 34.</tspan>
+<tspan x="0" dy="1.2em">&#160;&#160;https://xavierleroy.org/talks/Milner-award-lecture.pdf? ``Fiat-Chrysler </tspan>
+<tspan x="0" dy="1.2em">&#160;&#160;recalled 1.5 M vehicles for software update.'' in file chap1-introduction.tex </tspan>
+<tspan x="0" dy="1.2em">&#160;&#160;on input line 34.</tspan>
 <tspan x="0" dy="1.2em">TODO: find more citiations here in file chap1-introduction.tex on input line </tspan>
-<tspan x="0" dy="1.2em">&nbsp;&nbsp;65.</tspan>
+<tspan x="0" dy="1.2em">&#160;&#160;65.</tspan>
 <tspan x="0" dy="1.2em">TODO: integrate stuff from \textcite {Efficiency1994Boulton} such as ``For </tspan>
-<tspan x="0" dy="1.2em">&nbsp;&nbsp;example, much of the research in the field of automated reasoning is concerned </tspan>
-<tspan x="0" dy="1.2em">&nbsp;&nbsp;with producing proofs more efficiently'' in file chap1-introduction.tex on </tspan>
-<tspan x="0" dy="1.2em">&nbsp;&nbsp;input line 66.</tspan>
+<tspan x="0" dy="1.2em">&#160;&#160;example, much of the research in the field of automated reasoning is concerned </tspan>
+<tspan x="0" dy="1.2em">&#160;&#160;with producing proofs more efficiently'' in file chap1-introduction.tex on </tspan>
+<tspan x="0" dy="1.2em">&#160;&#160;input line 66.</tspan>
 <tspan x="0" dy="1.2em">TODO: Related to this is work on sound interfaces to external tools, also an </tspan>
-<tspan x="0" dy="1.2em">&nbsp;&nbsp;enduring topic: \textcite {TrustedSlind} in file chap1-introduction.tex on </tspan>
-<tspan x="0" dy="1.2em">&nbsp;&nbsp;input line 67.</tspan>
+<tspan x="0" dy="1.2em">&#160;&#160;enduring topic: \textcite {TrustedSlind} in file chap1-introduction.tex on </tspan>
+<tspan x="0" dy="1.2em">&#160;&#160;input line 67.</tspan>
 <tspan x="0" dy="1.2em">TODO: work on this paragraph in file chap1-introduction.tex on input line 69.</tspan>
 <tspan x="0" dy="1.2em">TODO: how to write PhD in text? with periods? not? in file </tspan>
-<tspan x="0" dy="1.2em">&nbsp;&nbsp;chap1-introduction.tex on input line 82.</tspan>
+<tspan x="0" dy="1.2em">&#160;&#160;chap1-introduction.tex on input line 82.</tspan>
 <tspan x="0" dy="1.2em">TODO: wide look at various proof assistants (historical overview of how the </tspan>
-<tspan x="0" dy="1.2em">&nbsp;&nbsp;field got to where it is today, maybe with weight according to importance) and </tspan>
-<tspan x="0" dy="1.2em">&nbsp;&nbsp;successes (applications of proof assistants like compcert, sel4 (kernel), </tspan>
-<tspan x="0" dy="1.2em">&nbsp;&nbsp;cakeml, nqthm, ACL2, crypto???, flyspec, 4-color-theorem, odd-order-theorem) in </tspan>
-<tspan x="0" dy="1.2em">&nbsp;&nbsp;file chap1-introduction.tex on input line 88.</tspan>
+<tspan x="0" dy="1.2em">&#160;&#160;field got to where it is today, maybe with weight according to importance) and </tspan>
+<tspan x="0" dy="1.2em">&#160;&#160;successes (applications of proof assistants like compcert, sel4 (kernel), </tspan>
+<tspan x="0" dy="1.2em">&#160;&#160;cakeml, nqthm, ACL2, crypto???, flyspec, 4-color-theorem, odd-order-theorem) in </tspan>
+<tspan x="0" dy="1.2em">&#160;&#160;file chap1-introduction.tex on input line 88.</tspan>
 <tspan x="0" dy="1.2em">TODO: </tspan>
-<tspan x="0" dy="1.2em">&nbsp;&nbsp;https://www.eeweb.com/profile/adarbari/articles/a-brief-history-of-formal-verifi</tspan>
-<tspan x="0" dy="1.2em">&nbsp;&nbsp;cation in file chap1-introduction.tex on input line 89.</tspan>
+<tspan x="0" dy="1.2em">&#160;&#160;https://www.eeweb.com/profile/adarbari/articles/a-brief-history-of-formal-verifi</tspan>
+<tspan x="0" dy="1.2em">&#160;&#160;cation in file chap1-introduction.tex on input line 89.</tspan>
 <tspan x="0" dy="1.2em">TODO: look at OSDI submission (papers/lightbulb/) and mine related work in </tspan>
-<tspan x="0" dy="1.2em">&nbsp;&nbsp;file chap1-introduction.tex on input line 90.</tspan>
+<tspan x="0" dy="1.2em">&#160;&#160;file chap1-introduction.tex on input line 90.</tspan>
 <tspan x="0" dy="1.2em">TODO: read and cite Talia's paper \textcite {ringer2020qed}? in file </tspan>
-<tspan x="0" dy="1.2em">&nbsp;&nbsp;chap1-introduction.tex on input line 91.</tspan>
+<tspan x="0" dy="1.2em">&#160;&#160;chap1-introduction.tex on input line 91.</tspan>
 <tspan x="0" dy="1.2em">TODO: introduce section where we talk about what some big design decisions are </tspan>
-<tspan x="0" dy="1.2em">&nbsp;&nbsp;and why we might make them the way we do in file chap1-introduction.tex on </tspan>
-<tspan x="0" dy="1.2em">&nbsp;&nbsp;input line 94.</tspan>
+<tspan x="0" dy="1.2em">&#160;&#160;and why we might make them the way we do in file chap1-introduction.tex on </tspan>
+<tspan x="0" dy="1.2em">&#160;&#160;input line 94.</tspan>
 <tspan x="0" dy="1.2em">TODO: note: target audience: Saman (or POPL/PLDI) in file </tspan>
-<tspan x="0" dy="1.2em">&nbsp;&nbsp;chap1-introduction.tex on input line 98.</tspan>
+<tspan x="0" dy="1.2em">&#160;&#160;chap1-introduction.tex on input line 98.</tspan>
 <tspan x="0" dy="1.2em">TODO: explain what dependent types are at all in file chap1-introduction.tex </tspan>
-<tspan x="0" dy="1.2em">&nbsp;&nbsp;on input line 99.</tspan>
+<tspan x="0" dy="1.2em">&#160;&#160;on input line 99.</tspan>
 <tspan x="0" dy="1.2em">TODO: explain the idea of reducing proof checking to typechecking (with </tspan>
-<tspan x="0" dy="1.2em">&nbsp;&nbsp;examples) in file chap1-introduction.tex on input line 100.</tspan>
+<tspan x="0" dy="1.2em">&#160;&#160;examples) in file chap1-introduction.tex on input line 100.</tspan>
 <tspan x="0" dy="1.2em">TODO: explain idea of structuring programming so that some properties are true </tspan>
-<tspan x="0" dy="1.2em">&nbsp;&nbsp;by construction in file chap1-introduction.tex on input line 101.</tspan>
+<tspan x="0" dy="1.2em">&#160;&#160;by construction in file chap1-introduction.tex on input line 101.</tspan>
 <tspan x="0" dy="1.2em">TODO: maybe explain extensional vs intensional in file chap1-introduction.tex </tspan>
-<tspan x="0" dy="1.2em">&nbsp;&nbsp;on input line 102.</tspan>
+<tspan x="0" dy="1.2em">&#160;&#160;on input line 102.</tspan>
 <tspan x="0" dy="1.2em">TODO: maybe mention lego as early implementation of dependent types in file </tspan>
-<tspan x="0" dy="1.2em">&nbsp;&nbsp;chap1-introduction.tex on input line 103.</tspan>
+<tspan x="0" dy="1.2em">&#160;&#160;chap1-introduction.tex on input line 103.</tspan>
 <tspan x="0" dy="1.2em">TODO: explain dependent type theory, motivate using it in file </tspan>
-<tspan x="0" dy="1.2em">&nbsp;&nbsp;chap1-introduction.tex on input line 104.</tspan>
+<tspan x="0" dy="1.2em">&#160;&#160;chap1-introduction.tex on input line 104.</tspan>
 <tspan x="0" dy="1.2em">TODO: read and cite \textcite {Should1999Lamport} and \textcite </tspan>
-<tspan x="0" dy="1.2em">&nbsp;&nbsp;{Formalising2018Paulson} h/t Karl Palmskog @palmskog on gitter \url </tspan>
-<tspan x="0" dy="1.2em">&nbsp;&nbsp;{https://gitter.im/coq/coq?at=5e5ec0ae4eefc06dcf31943f} in file </tspan>
-<tspan x="0" dy="1.2em">&nbsp;&nbsp;chap1-introduction.tex on input line 105.</tspan>
+<tspan x="0" dy="1.2em">&#160;&#160;{Formalising2018Paulson} h/t Karl Palmskog @palmskog on gitter \url </tspan>
+<tspan x="0" dy="1.2em">&#160;&#160;{https://gitter.im/coq/coq?at=5e5ec0ae4eefc06dcf31943f} in file </tspan>
+<tspan x="0" dy="1.2em">&#160;&#160;chap1-introduction.tex on input line 105.</tspan>
 <tspan x="0" dy="1.2em">TODO: explain the De Bruijn criterion in file chap1-introduction.tex on input </tspan>
-<tspan x="0" dy="1.2em">&nbsp;&nbsp;line 108.</tspan>
+<tspan x="0" dy="1.2em">&#160;&#160;line 108.</tspan>
 <tspan x="0" dy="1.2em">TODO: explain why it's worth following this, and what goes wrong if you don't </tspan>
-<tspan x="0" dy="1.2em">&nbsp;&nbsp;in file chap1-introduction.tex on input line 109.</tspan>
+<tspan x="0" dy="1.2em">&#160;&#160;in file chap1-introduction.tex on input line 109.</tspan>
 <tspan x="0" dy="1.2em">TODO: look into \textcite {Sealing2020Selsam} Sealing Pointer-Based </tspan>
-<tspan x="0" dy="1.2em">&nbsp;&nbsp;Optimizations Behind Pure Functions in file chap1-introduction.tex on input </tspan>
-<tspan x="0" dy="1.2em">&nbsp;&nbsp;line 110.</tspan>
+<tspan x="0" dy="1.2em">&#160;&#160;Optimizations Behind Pure Functions in file chap1-introduction.tex on input </tspan>
+<tspan x="0" dy="1.2em">&#160;&#160;line 110.</tspan>
 <tspan x="0" dy="1.2em">TODO: example: Ltac vs Gallina, kind-of in file chap1-introduction.tex on </tspan>
-<tspan x="0" dy="1.2em">&nbsp;&nbsp;input line 111.</tspan>
+<tspan x="0" dy="1.2em">&#160;&#160;input line 111.</tspan>
 <tspan x="0" dy="1.2em">TODO: cite also the rewriter paper in file chap1-introduction.tex on input </tspan>
-<tspan x="0" dy="1.2em">&nbsp;&nbsp;line 125.</tspan>
+<tspan x="0" dy="1.2em">&#160;&#160;line 125.</tspan>
 <tspan x="0" dy="1.2em">TODO: read and cite \textcite {lean-tactic-language} in file </tspan>
-<tspan x="0" dy="1.2em">&nbsp;&nbsp;chap1-introduction.tex on input line 141.</tspan>
+<tspan x="0" dy="1.2em">&#160;&#160;chap1-introduction.tex on input line 141.</tspan>
 <tspan x="0" dy="1.2em">TODO: read \textcite {Implementing1998Shao} in file chap1-introduction.tex on </tspan>
-<tspan x="0" dy="1.2em">&nbsp;&nbsp;input line 142.</tspan>
+<tspan x="0" dy="1.2em">&#160;&#160;input line 142.</tspan>
 <tspan x="0" dy="1.2em">TODO: read \textcite {Inductive2003Brady} in file chap1-introduction.tex on </tspan>
-<tspan x="0" dy="1.2em">&nbsp;&nbsp;input line 144.</tspan>
+<tspan x="0" dy="1.2em">&#160;&#160;input line 144.</tspan>
 <tspan x="0" dy="1.2em">TODO: read \textcite {thesis-nogin} in file chap1-introduction.tex on input </tspan>
-<tspan x="0" dy="1.2em">&nbsp;&nbsp;line 145.</tspan>
+<tspan x="0" dy="1.2em">&#160;&#160;line 145.</tspan>
 <tspan x="0" dy="1.2em">TODO: read GrM-CM-)goire and Leroy's paper from ICFP 2002 \textcite </tspan>
-<tspan x="0" dy="1.2em">&nbsp;&nbsp;{Gregoire-Leroy-02} in file chap1-introduction.tex on input line 146.</tspan>
+<tspan x="0" dy="1.2em">&#160;&#160;{Gregoire-Leroy-02} in file chap1-introduction.tex on input line 146.</tspan>
 <tspan x="0" dy="1.2em">TODO: read Dirk Kleeblatt's PhD thesis \textcite {Strongly2011Kleeblatt}. in </tspan>
-<tspan x="0" dy="1.2em">&nbsp;&nbsp;file chap1-introduction.tex on input line 147.</tspan>
+<tspan x="0" dy="1.2em">&#160;&#160;file chap1-introduction.tex on input line 147.</tspan>
 <tspan x="0" dy="1.2em">TODO: read AndrM-CM-!s KovM-CM-!cs has smalltt at \textcite {smallttKovacs} in file </tspan>
-<tspan x="0" dy="1.2em">&nbsp;&nbsp;chap1-introduction.tex on input line 149.</tspan>
+<tspan x="0" dy="1.2em">&#160;&#160;chap1-introduction.tex on input line 149.</tspan>
 <tspan x="0" dy="1.2em">TODO: look at \url {https://github.com/AndrasKovacs/normalization-bench} in </tspan>
-<tspan x="0" dy="1.2em">&nbsp;&nbsp;file chap1-introduction.tex on input line 150.</tspan>
+<tspan x="0" dy="1.2em">&#160;&#160;file chap1-introduction.tex on input line 150.</tspan>
 <tspan x="0" dy="1.2em">TODO: look at \url {https://github.com/AndrasKovacs/smalltt} in file </tspan>
-<tspan x="0" dy="1.2em">&nbsp;&nbsp;chap1-introduction.tex on input line 151.</tspan>
+<tspan x="0" dy="1.2em">&#160;&#160;chap1-introduction.tex on input line 151.</tspan>
 <tspan x="0" dy="1.2em">TODO: ``I haven't yet updated the smalltt repo, but there's a simplified (\url </tspan>
-<tspan x="0" dy="1.2em">&nbsp;&nbsp;{https://gist.github.com/AndrasKovacs/a0e0938113b193d6b9c1c0620d853784}) </tspan>
-<tspan x="0" dy="1.2em">&nbsp;&nbsp;implementation of its evaluator, which seems to have roughly the same </tspan>
-<tspan x="0" dy="1.2em">&nbsp;&nbsp;performance but which is much simpler to implement.'' in file </tspan>
-<tspan x="0" dy="1.2em">&nbsp;&nbsp;chap1-introduction.tex on input line 152.</tspan>
+<tspan x="0" dy="1.2em">&#160;&#160;{https://gist.github.com/AndrasKovacs/a0e0938113b193d6b9c1c0620d853784}) </tspan>
+<tspan x="0" dy="1.2em">&#160;&#160;implementation of its evaluator, which seems to have roughly the same </tspan>
+<tspan x="0" dy="1.2em">&#160;&#160;performance but which is much simpler to implement.'' in file </tspan>
+<tspan x="0" dy="1.2em">&#160;&#160;chap1-introduction.tex on input line 152.</tspan>
 <tspan x="0" dy="1.2em">TODO: \cite {NewCoqTactics2016Pedrot} about why not LCF tactics in dependently </tspan>
-<tspan x="0" dy="1.2em">&nbsp;&nbsp;typed setting in file chap1-introduction.tex on input line 154.</tspan>
+<tspan x="0" dy="1.2em">&#160;&#160;typed setting in file chap1-introduction.tex on input line 154.</tspan>
 <tspan x="0" dy="1.2em">TODO: look into ``So technically, the lost sharing is the second-order sharing </tspan>
-<tspan x="0" dy="1.2em">&nbsp;&nbsp;that is preserved in ``optimal reduction'' of lambda calculi [Levy-1980, </tspan>
-<tspan x="0" dy="1.2em">&nbsp;&nbsp;Lamping-1990, Asperti-Laneve-1992], while hash consing normally is directly </tspan>
-<tspan x="0" dy="1.2em">&nbsp;&nbsp;usable only for first-order sharing.'' in file chap1-introduction.tex on input </tspan>
-<tspan x="0" dy="1.2em">&nbsp;&nbsp;line 175.</tspan>
+<tspan x="0" dy="1.2em">&#160;&#160;that is preserved in ``optimal reduction'' of lambda calculi [Levy-1980, </tspan>
+<tspan x="0" dy="1.2em">&#160;&#160;Lamping-1990, Asperti-Laneve-1992], while hash consing normally is directly </tspan>
+<tspan x="0" dy="1.2em">&#160;&#160;usable only for first-order sharing.'' in file chap1-introduction.tex on input </tspan>
+<tspan x="0" dy="1.2em">&#160;&#160;line 175.</tspan>
 <tspan x="0" dy="1.2em">TODO: look at \url </tspan>
-<tspan x="0" dy="1.2em">&nbsp;&nbsp;{https://math.stackexchange.com/questions/3466976/online-reference-book-for-impl</tspan>
-<tspan x="0" dy="1.2em">&nbsp;&nbsp;ementing-concepts-in-type-theory} in file chap1-introduction.tex on input line </tspan>
-<tspan x="0" dy="1.2em">&nbsp;&nbsp;176.</tspan>
+<tspan x="0" dy="1.2em">&#160;&#160;{https://math.stackexchange.com/questions/3466976/online-reference-book-for-impl</tspan>
+<tspan x="0" dy="1.2em">&#160;&#160;ementing-concepts-in-type-theory} in file chap1-introduction.tex on input line </tspan>
+<tspan x="0" dy="1.2em">&#160;&#160;176.</tspan>
 <tspan x="0" dy="1.2em">TODO: look at \url </tspan>
-<tspan x="0" dy="1.2em">&nbsp;&nbsp;{https://github.com/AndrasKovacs/elaboration-zoo/blob/0c7f8a676c0964cc05c2478793</tspan>
-<tspan x="0" dy="1.2em">&nbsp;&nbsp;93e97729f59e5b/AIMprez/AIMprez.pdf} or \url </tspan>
-<tspan x="0" dy="1.2em">&nbsp;&nbsp;{https://eutypes.cs.ru.nl/eutypes\_pmwiki/uploads/Meetings/Kovacs\_slides.pdf} </tspan>
-<tspan x="0" dy="1.2em">&nbsp;&nbsp;in file chap1-introduction.tex on input line 177.</tspan>
+<tspan x="0" dy="1.2em">&#160;&#160;{https://github.com/AndrasKovacs/elaboration-zoo/blob/0c7f8a676c0964cc05c2478793</tspan>
+<tspan x="0" dy="1.2em">&#160;&#160;93e97729f59e5b/AIMprez/AIMprez.pdf} or \url </tspan>
+<tspan x="0" dy="1.2em">&#160;&#160;{https://eutypes.cs.ru.nl/eutypes\_pmwiki/uploads/Meetings/Kovacs\_slides.pdf} </tspan>
+<tspan x="0" dy="1.2em">&#160;&#160;in file chap1-introduction.tex on input line 177.</tspan>
 <tspan x="0" dy="1.2em">TODO: read \textcite {Programming2000Barras} in file chap1-introduction.tex on </tspan>
-<tspan x="0" dy="1.2em">&nbsp;&nbsp;input line 179.</tspan>
+<tspan x="0" dy="1.2em">&#160;&#160;input line 179.</tspan>
 <tspan x="0" dy="1.2em">TODO: \textcite {Efficiency1994Boulton} in file chap1-introduction.tex on </tspan>
-<tspan x="0" dy="1.2em">&nbsp;&nbsp;input line 180.</tspan>
+<tspan x="0" dy="1.2em">&#160;&#160;input line 180.</tspan>
 <tspan x="0" dy="1.2em">TODO: where does this description of Coq's design go? in file </tspan>
-<tspan x="0" dy="1.2em">&nbsp;&nbsp;chap1-introduction.tex on input line 401.</tspan>
+<tspan x="0" dy="1.2em">&#160;&#160;chap1-introduction.tex on input line 401.</tspan>
 <tspan x="0" dy="1.2em">TODO: this chapter in file chap1-introduction.tex on input line 416.</tspan>
 <tspan x="0" dy="1.2em">TODO: come up with a better name for this section in file </tspan>
-<tspan x="0" dy="1.2em">&nbsp;&nbsp;chap2-perf-degredation-survey.tex on input line 3.</tspan>
+<tspan x="0" dy="1.2em">&#160;&#160;chap2-perf-degredation-survey.tex on input line 3.</tspan>
 <tspan x="0" dy="1.2em">TODO: cite https://github.com/coq/coq/issues/12200 in file </tspan>
-<tspan x="0" dy="1.2em">&nbsp;&nbsp;chap2-perf-degredation-survey.tex on input line 22.</tspan>
+<tspan x="0" dy="1.2em">&#160;&#160;chap2-perf-degredation-survey.tex on input line 22.</tspan>
 <tspan x="0" dy="1.2em">TODO: literature search on perf of compiletime in mainstream compilers? in </tspan>
-<tspan x="0" dy="1.2em">&nbsp;&nbsp;file chap2-perf-degredation-survey.tex on input line 25.</tspan>
+<tspan x="0" dy="1.2em">&#160;&#160;file chap2-perf-degredation-survey.tex on input line 25.</tspan>
 <tspan x="0" dy="1.2em">TODO: cite? in file chap2-perf-degredation-survey.tex on input line 26.</tspan>
 <tspan x="0" dy="1.2em">TODO: cite fiat-crypto in file chap2-perf-degredation-survey.tex on input line </tspan>
-<tspan x="0" dy="1.2em">&nbsp;&nbsp;40.</tspan>
+<tspan x="0" dy="1.2em">&#160;&#160;40.</tspan>
 <tspan x="0" dy="1.2em">TODO: cite \url </tspan>
-<tspan x="0" dy="1.2em">&nbsp;&nbsp;{https://gcc.gnu.org/onlinedocs/gcc-7.5.0/cpp/Implementation-limits.html} in </tspan>
-<tspan x="0" dy="1.2em">&nbsp;&nbsp;file chap2-perf-degredation-survey.tex on input line 118.</tspan>
+<tspan x="0" dy="1.2em">&#160;&#160;{https://gcc.gnu.org/onlinedocs/gcc-7.5.0/cpp/Implementation-limits.html} in </tspan>
+<tspan x="0" dy="1.2em">&#160;&#160;file chap2-perf-degredation-survey.tex on input line 118.</tspan>
 <tspan x="0" dy="1.2em">TODO: incorporate Andres' suggestions: in file </tspan>
-<tspan x="0" dy="1.2em">&nbsp;&nbsp;chap2-perf-degredation-survey.tex on input line 129.</tspan>
+<tspan x="0" dy="1.2em">&#160;&#160;chap2-perf-degredation-survey.tex on input line 129.</tspan>
 <tspan x="0" dy="1.2em">TODO: Some sort of summary of argument-so-far here in file </tspan>
-<tspan x="0" dy="1.2em">&nbsp;&nbsp;chap2-perf-degredation-survey.tex on input line 193.</tspan>
+<tspan x="0" dy="1.2em">&#160;&#160;chap2-perf-degredation-survey.tex on input line 193.</tspan>
 <tspan x="0" dy="1.2em">TODO: Find a place for this (h/t conversation with Andres) in file </tspan>
-<tspan x="0" dy="1.2em">&nbsp;&nbsp;chap2-perf-degredation-survey.tex on input line 199.</tspan>
+<tspan x="0" dy="1.2em">&#160;&#160;chap2-perf-degredation-survey.tex on input line 199.</tspan>
 <tspan x="0" dy="1.2em">TODO: find a place for this: in file chap2-perf-degredation-survey.tex on </tspan>
-<tspan x="0" dy="1.2em">&nbsp;&nbsp;input line 201.</tspan>
+<tspan x="0" dy="1.2em">&#160;&#160;input line 201.</tspan>
 <tspan x="0" dy="1.2em">TODO: incorparate Andres' suggestions in file </tspan>
-<tspan x="0" dy="1.2em">&nbsp;&nbsp;chap2-perf-degredation-survey.tex on input line 207.</tspan>
+<tspan x="0" dy="1.2em">&#160;&#160;chap2-perf-degredation-survey.tex on input line 207.</tspan>
 <tspan x="0" dy="1.2em">TODO: introduce this section better in file chap2-perf-degredation-survey.tex </tspan>
-<tspan x="0" dy="1.2em">&nbsp;&nbsp;on input line 218.</tspan>
+<tspan x="0" dy="1.2em">&#160;&#160;on input line 218.</tspan>
 <tspan x="0" dy="1.2em">TODO: Mention possibility of not building proof terms at all somewhere in file </tspan>
-<tspan x="0" dy="1.2em">&nbsp;&nbsp;chap2-perf-degredation-survey.tex on input line 230.</tspan>
+<tspan x="0" dy="1.2em">&#160;&#160;chap2-perf-degredation-survey.tex on input line 230.</tspan>
 <tspan x="0" dy="1.2em">TODO: improve data collection on perf test in file </tspan>
-<tspan x="0" dy="1.2em">&nbsp;&nbsp;chap2-perf-degredation-survey.tex on input line 245.</tspan>
+<tspan x="0" dy="1.2em">&#160;&#160;chap2-perf-degredation-survey.tex on input line 245.</tspan>
 <tspan x="0" dy="1.2em">TODO: make a note about more complicated types causing scaling factors to be </tspan>
-<tspan x="0" dy="1.2em">&nbsp;&nbsp;worse, and not just impacting the leaves in file </tspan>
-<tspan x="0" dy="1.2em">&nbsp;&nbsp;chap2-perf-degredation-survey.tex on input line 246.</tspan>
+<tspan x="0" dy="1.2em">&#160;&#160;worse, and not just impacting the leaves in file </tspan>
+<tspan x="0" dy="1.2em">&#160;&#160;chap2-perf-degredation-survey.tex on input line 246.</tspan>
 <tspan x="0" dy="1.2em">TODO: Find a place for this note: in file chap2-perf-degredation-survey.tex on </tspan>
-<tspan x="0" dy="1.2em">&nbsp;&nbsp;input line 325.</tspan>
+<tspan x="0" dy="1.2em">&#160;&#160;input line 325.</tspan>
 <tspan x="0" dy="1.2em">TODO: maybe look into TAPL in file chap2-perf-degredation-survey.tex on input </tspan>
-<tspan x="0" dy="1.2em">&nbsp;&nbsp;line 326.</tspan>
+<tspan x="0" dy="1.2em">&#160;&#160;line 326.</tspan>
 <tspan x="0" dy="1.2em">TODO: explain structural and nominal typing more in file </tspan>
-<tspan x="0" dy="1.2em">&nbsp;&nbsp;chap2-perf-degredation-survey.tex on input line 327.</tspan>
+<tspan x="0" dy="1.2em">&#160;&#160;chap2-perf-degredation-survey.tex on input line 327.</tspan>
 <tspan x="0" dy="1.2em">TODO: have we explained inductive types yet? in file </tspan>
-<tspan x="0" dy="1.2em">&nbsp;&nbsp;chap2-perf-degredation-survey.tex on input line 328.</tspan>
+<tspan x="0" dy="1.2em">&#160;&#160;chap2-perf-degredation-survey.tex on input line 328.</tspan>
 <tspan x="0" dy="1.2em">TODO: have we explained records yet? in file chap2-perf-degredation-survey.tex </tspan>
-<tspan x="0" dy="1.2em">&nbsp;&nbsp;on input line 328.</tspan>
+<tspan x="0" dy="1.2em">&#160;&#160;on input line 328.</tspan>
 <tspan x="0" dy="1.2em">TODO: have we explained parameters vs indices and inductive type families yet? </tspan>
-<tspan x="0" dy="1.2em">&nbsp;&nbsp;in file chap2-perf-degredation-survey.tex on input line 328.</tspan>
+<tspan x="0" dy="1.2em">&#160;&#160;in file chap2-perf-degredation-survey.tex on input line 328.</tspan>
 <tspan x="0" dy="1.2em">TODO: mention where the name ``phantom'' comes from? in file </tspan>
-<tspan x="0" dy="1.2em">&nbsp;&nbsp;chap2-perf-degredation-survey.tex on input line 329.</tspan>
+<tspan x="0" dy="1.2em">&#160;&#160;chap2-perf-degredation-survey.tex on input line 329.</tspan>
 <tspan x="0" dy="1.2em">TODO: Come up with better justification for having nominal typing available? </tspan>
-<tspan x="0" dy="1.2em">&nbsp;&nbsp;in file chap2-perf-degredation-survey.tex on input line 336.</tspan>
+<tspan x="0" dy="1.2em">&#160;&#160;in file chap2-perf-degredation-survey.tex on input line 336.</tspan>
 <tspan x="0" dy="1.2em">TODO: explain this better in file chap2-perf-degredation-survey.tex on input </tspan>
-<tspan x="0" dy="1.2em">&nbsp;&nbsp;line 340.</tspan>
+<tspan x="0" dy="1.2em">&#160;&#160;line 340.</tspan>
 <tspan x="0" dy="1.2em">TODO: improve data collection on perf test in file </tspan>
-<tspan x="0" dy="1.2em">&nbsp;&nbsp;chap2-perf-degredation-survey.tex on input line 370.</tspan>
+<tspan x="0" dy="1.2em">&#160;&#160;chap2-perf-degredation-survey.tex on input line 370.</tspan>
 <tspan x="0" dy="1.2em">TODO: find pdf of manual for styling in file chap2-perf-degredation-survey.tex </tspan>
-<tspan x="0" dy="1.2em">&nbsp;&nbsp;on input line 408.</tspan>
+<tspan x="0" dy="1.2em">&#160;&#160;on input line 408.</tspan>
 <tspan x="0" dy="1.2em">TODO: cite appendix with typing rules of Coq? in file </tspan>
-<tspan x="0" dy="1.2em">&nbsp;&nbsp;chap2-perf-degredation-survey.tex on input line 450.</tspan>
+<tspan x="0" dy="1.2em">&#160;&#160;chap2-perf-degredation-survey.tex on input line 450.</tspan>
 <tspan x="0" dy="1.2em">TODO: maybe look in https://github.com/achlipala/frap and/or TAPL by Benjamin </tspan>
-<tspan x="0" dy="1.2em">&nbsp;&nbsp;C. Pierce for how to render typing rules in file </tspan>
-<tspan x="0" dy="1.2em">&nbsp;&nbsp;chap2-perf-degredation-survey.tex on input line 451.</tspan>
+<tspan x="0" dy="1.2em">&#160;&#160;C. Pierce for how to render typing rules in file </tspan>
+<tspan x="0" dy="1.2em">&#160;&#160;chap2-perf-degredation-survey.tex on input line 451.</tspan>
 <tspan x="0" dy="1.2em">TODO: cite https://github.com/coq/coq/issues/8232 maybe? in file </tspan>
-<tspan x="0" dy="1.2em">&nbsp;&nbsp;chap2-perf-degredation-survey.tex on input line 539.</tspan>
+<tspan x="0" dy="1.2em">&#160;&#160;chap2-perf-degredation-survey.tex on input line 539.</tspan>
 <tspan x="0" dy="1.2em">TODO: Should we run though typechecking in more detail here? in file </tspan>
-<tspan x="0" dy="1.2em">&nbsp;&nbsp;chap2-perf-degredation-survey.tex on input line 541.</tspan>
+<tspan x="0" dy="1.2em">&#160;&#160;chap2-perf-degredation-survey.tex on input line 541.</tspan>
 <tspan x="0" dy="1.2em">TODO: maybe cite https://github.com/coq/coq/issues/11838? in file </tspan>
-<tspan x="0" dy="1.2em">&nbsp;&nbsp;chap2-perf-degredation-survey.tex on input line 546.</tspan>
+<tspan x="0" dy="1.2em">&#160;&#160;chap2-perf-degredation-survey.tex on input line 546.</tspan>
 <tspan x="0" dy="1.2em">TODO: reference quadratic cbv here, which had a similar issue? in file </tspan>
-<tspan x="0" dy="1.2em">&nbsp;&nbsp;chap2-perf-degredation-survey.tex on input line 548.</tspan>
+<tspan x="0" dy="1.2em">&#160;&#160;chap2-perf-degredation-survey.tex on input line 548.</tspan>
 <tspan x="0" dy="1.2em">TODO: some sort of section division marker here? in file </tspan>
-<tspan x="0" dy="1.2em">&nbsp;&nbsp;chap2-perf-degredation-survey.tex on input line 550.</tspan>
+<tspan x="0" dy="1.2em">&#160;&#160;chap2-perf-degredation-survey.tex on input line 550.</tspan>
 <tspan x="0" dy="1.2em">TODO: explain and cite hashconsing? in file chap2-perf-degredation-survey.tex </tspan>
-<tspan x="0" dy="1.2em">&nbsp;&nbsp;on input line 554.</tspan>
+<tspan x="0" dy="1.2em">&#160;&#160;on input line 554.</tspan>
 <tspan x="0" dy="1.2em">TODO: cite hashconsing needing to be full to get perf benefit in file </tspan>
-<tspan x="0" dy="1.2em">&nbsp;&nbsp;chap2-perf-degredation-survey.tex on input line 557.</tspan>
+<tspan x="0" dy="1.2em">&#160;&#160;chap2-perf-degredation-survey.tex on input line 557.</tspan>
 <tspan x="0" dy="1.2em">TODO: explain this more, find citation for hashconsing being hard with disk in </tspan>
-<tspan x="0" dy="1.2em">&nbsp;&nbsp;file chap2-perf-degredation-survey.tex on input line 559.</tspan>
+<tspan x="0" dy="1.2em">&#160;&#160;file chap2-perf-degredation-survey.tex on input line 559.</tspan>
 <tspan x="0" dy="1.2em">TODO: flesh out hashconsing section more in file </tspan>
-<tspan x="0" dy="1.2em">&nbsp;&nbsp;chap2-perf-degredation-survey.tex on input line 560.</tspan>
+<tspan x="0" dy="1.2em">&#160;&#160;chap2-perf-degredation-survey.tex on input line 560.</tspan>
 <tspan x="0" dy="1.2em">TODO: maybe cite </tspan>
-<tspan x="0" dy="1.2em">&nbsp;&nbsp;https://github.com/coq/coq/issues/9028\#issuecomment-600013284 about </tspan>
-<tspan x="0" dy="1.2em">&nbsp;&nbsp;hashconsing being slow in file chap2-perf-degredation-survey.tex on input line </tspan>
-<tspan x="0" dy="1.2em">&nbsp;&nbsp;561.</tspan>
+<tspan x="0" dy="1.2em">&#160;&#160;https://github.com/coq/coq/issues/9028\#issuecomment-600013284 about </tspan>
+<tspan x="0" dy="1.2em">&#160;&#160;hashconsing being slow in file chap2-perf-degredation-survey.tex on input line </tspan>
+<tspan x="0" dy="1.2em">&#160;&#160;561.</tspan>
 <tspan x="0" dy="1.2em">TODO: maybe move some text form the sharing section to here? in file </tspan>
-<tspan x="0" dy="1.2em">&nbsp;&nbsp;chap2-perf-degredation-survey.tex on input line 575.</tspan>
+<tspan x="0" dy="1.2em">&#160;&#160;chap2-perf-degredation-survey.tex on input line 575.</tspan>
 <tspan x="0" dy="1.2em">TODO: discussion of conversion checking, and conversion modulo delta-beta in </tspan>
-<tspan x="0" dy="1.2em">&nbsp;&nbsp;file chap2-perf-degredation-survey.tex on input line 579.</tspan>
+<tspan x="0" dy="1.2em">&#160;&#160;file chap2-perf-degredation-survey.tex on input line 579.</tspan>
 <tspan x="0" dy="1.2em">TODO: should we define polymorphic identity function somewhere? in file </tspan>
-<tspan x="0" dy="1.2em">&nbsp;&nbsp;chap2-perf-degredation-survey.tex on input line 582.</tspan>
+<tspan x="0" dy="1.2em">&#160;&#160;chap2-perf-degredation-survey.tex on input line 582.</tspan>
 <tspan x="0" dy="1.2em">TODO: reference above example about fiat-crypto in file </tspan>
-<tspan x="0" dy="1.2em">&nbsp;&nbsp;chap2-perf-degredation-survey.tex on input line 612.</tspan>
+<tspan x="0" dy="1.2em">&#160;&#160;chap2-perf-degredation-survey.tex on input line 612.</tspan>
 <tspan x="0" dy="1.2em">TODO: maybe forward reference to the number of abstraction barriers in file </tspan>
-<tspan x="0" dy="1.2em">&nbsp;&nbsp;chap2-perf-degredation-survey.tex on input line 614.</tspan>
+<tspan x="0" dy="1.2em">&#160;&#160;chap2-perf-degredation-survey.tex on input line 614.</tspan>
 <tspan x="0" dy="1.2em">TODO: maybe include more about real-world fiat-crypto example here? in file </tspan>
-<tspan x="0" dy="1.2em">&nbsp;&nbsp;chap2-perf-degredation-survey.tex on input line 615.</tspan>
+<tspan x="0" dy="1.2em">&#160;&#160;chap2-perf-degredation-survey.tex on input line 615.</tspan>
 <tspan x="0" dy="1.2em">TODO: make sure we've explained proof engine and Ltac by here in file </tspan>
-<tspan x="0" dy="1.2em">&nbsp;&nbsp;chap2-perf-degredation-survey.tex on input line 623.</tspan>
+<tspan x="0" dy="1.2em">&#160;&#160;chap2-perf-degredation-survey.tex on input line 623.</tspan>
 <tspan x="0" dy="1.2em">TODO: mention Coq version automatically, mention why we're using a different </tspan>
-<tspan x="0" dy="1.2em">&nbsp;&nbsp;Coq version in file chap2-perf-degredation-survey.tex on input line 641.</tspan>
+<tspan x="0" dy="1.2em">&#160;&#160;Coq version in file chap2-perf-degredation-survey.tex on input line 641.</tspan>
 <tspan x="0" dy="1.2em">TODO: Is this called internalization or is it called elaboration in file </tspan>
-<tspan x="0" dy="1.2em">&nbsp;&nbsp;chap2-perf-degredation-survey.tex on input line 697.</tspan>
+<tspan x="0" dy="1.2em">&#160;&#160;chap2-perf-degredation-survey.tex on input line 697.</tspan>
 <tspan x="0" dy="1.2em">TODO: ADD PLOT: try to come up with a graph for renaming stuff in file </tspan>
-<tspan x="0" dy="1.2em">&nbsp;&nbsp;chap2-perf-degredation-survey.tex on input line 707.</tspan>
+<tspan x="0" dy="1.2em">&#160;&#160;chap2-perf-degredation-survey.tex on input line 707.</tspan>
 <tspan x="0" dy="1.2em">TODO: ADD PLOT: check if confounders come up in file </tspan>
-<tspan x="0" dy="1.2em">&nbsp;&nbsp;chap2-perf-degredation-survey.tex on input line 708.</tspan>
+<tspan x="0" dy="1.2em">&#160;&#160;chap2-perf-degredation-survey.tex on input line 708.</tspan>
 <tspan x="0" dy="1.2em">TODO: make sure that this is mentioned previously, and that we're not </tspan>
-<tspan x="0" dy="1.2em">&nbsp;&nbsp;rehashing things too much in file chap2-perf-degredation-survey.tex on input </tspan>
-<tspan x="0" dy="1.2em">&nbsp;&nbsp;line 711.</tspan>
+<tspan x="0" dy="1.2em">&#160;&#160;rehashing things too much in file chap2-perf-degredation-survey.tex on input </tspan>
+<tspan x="0" dy="1.2em">&#160;&#160;line 711.</tspan>
 <tspan x="0" dy="1.2em">TODO: cite original idea for evars? (what is it?) in file </tspan>
-<tspan x="0" dy="1.2em">&nbsp;&nbsp;chap2-perf-degredation-survey.tex on input line 713.</tspan>
+<tspan x="0" dy="1.2em">&#160;&#160;chap2-perf-degredation-survey.tex on input line 713.</tspan>
 <tspan x="0" dy="1.2em">TODO: define identity and lifting substitutions in file </tspan>
-<tspan x="0" dy="1.2em">&nbsp;&nbsp;chap2-perf-degredation-survey.tex on input line 723.</tspan>
+<tspan x="0" dy="1.2em">&#160;&#160;chap2-perf-degredation-survey.tex on input line 723.</tspan>
 <tspan x="0" dy="1.2em">TODO: Justify it? Discuss other representations? Say why and how it's </tspan>
-<tspan x="0" dy="1.2em">&nbsp;&nbsp;convenient? in file chap2-perf-degredation-survey.tex on input line 726.</tspan>
+<tspan x="0" dy="1.2em">&#160;&#160;convenient? in file chap2-perf-degredation-survey.tex on input line 726.</tspan>
 <tspan x="0" dy="1.2em">TODO: cite the rules / reference an appendix in file </tspan>
-<tspan x="0" dy="1.2em">&nbsp;&nbsp;chap2-perf-degredation-survey.tex on input line 819.</tspan>
+<tspan x="0" dy="1.2em">&#160;&#160;chap2-perf-degredation-survey.tex on input line 819.</tspan>
 <tspan x="0" dy="1.2em">TODO: explain or forward-reference NbE in file </tspan>
-<tspan x="0" dy="1.2em">&nbsp;&nbsp;chap2-perf-degredation-survey.tex on input line 859.</tspan>
+<tspan x="0" dy="1.2em">&#160;&#160;chap2-perf-degredation-survey.tex on input line 859.</tspan>
 <tspan x="0" dy="1.2em">TODO: Read stuff in \url </tspan>
-<tspan x="0" dy="1.2em">&nbsp;&nbsp;{https://github.com/HoTT/book/issues/995\#issuecomment-418825844} for NbE stuff </tspan>
-<tspan x="0" dy="1.2em">&nbsp;&nbsp;in file chap2-perf-degredation-survey.tex on input line 860.</tspan>
+<tspan x="0" dy="1.2em">&#160;&#160;{https://github.com/HoTT/book/issues/995\#issuecomment-418825844} for NbE stuff </tspan>
+<tspan x="0" dy="1.2em">&#160;&#160;in file chap2-perf-degredation-survey.tex on input line 860.</tspan>
 <tspan x="0" dy="1.2em">TODO: Say more about it than that it's ``nifty'' in file </tspan>
-<tspan x="0" dy="1.2em">&nbsp;&nbsp;chap2-perf-degredation-survey.tex on input line 861.</tspan>
+<tspan x="0" dy="1.2em">&#160;&#160;chap2-perf-degredation-survey.tex on input line 861.</tspan>
 <tspan x="0" dy="1.2em">TODO: reference explanation of PHOAS in file chap2-perf-degredation-survey.tex </tspan>
-<tspan x="0" dy="1.2em">&nbsp;&nbsp;on input line 865.</tspan>
+<tspan x="0" dy="1.2em">&#160;&#160;on input line 865.</tspan>
 <tspan x="0" dy="1.2em">TODO: maybe give a better introductory justification to the vm and native </tspan>
-<tspan x="0" dy="1.2em">&nbsp;&nbsp;compiler than ``it's important''? in file chap2-perf-degredation-survey.tex on </tspan>
-<tspan x="0" dy="1.2em">&nbsp;&nbsp;input line 913.</tspan>
+<tspan x="0" dy="1.2em">&#160;&#160;compiler than ``it's important''? in file chap2-perf-degredation-survey.tex on </tspan>
+<tspan x="0" dy="1.2em">&#160;&#160;input line 913.</tspan>
 <tspan x="0" dy="1.2em">TODO: cite \url {https://flint.cs.yale.edu/shao/papers/escc.html} or its </tspan>
-<tspan x="0" dy="1.2em">&nbsp;&nbsp;references for closure compilation in file chap2-perf-degredation-survey.tex on </tspan>
-<tspan x="0" dy="1.2em">&nbsp;&nbsp;input line 916.</tspan>
+<tspan x="0" dy="1.2em">&#160;&#160;references for closure compilation in file chap2-perf-degredation-survey.tex on </tspan>
+<tspan x="0" dy="1.2em">&#160;&#160;input line 916.</tspan>
 <tspan x="0" dy="1.2em">TODO: cite something for flat closure compilation in file </tspan>
-<tspan x="0" dy="1.2em">&nbsp;&nbsp;chap2-perf-degredation-survey.tex on input line 918.</tspan>
+<tspan x="0" dy="1.2em">&#160;&#160;chap2-perf-degredation-survey.tex on input line 918.</tspan>
 <tspan x="0" dy="1.2em">TODO: reorganize this paragraph, improve it in file </tspan>
-<tspan x="0" dy="1.2em">&nbsp;&nbsp;chap2-perf-degredation-survey.tex on input line 929.</tspan>
+<tspan x="0" dy="1.2em">&#160;&#160;chap2-perf-degredation-survey.tex on input line 929.</tspan>
 <tspan x="0" dy="1.2em">TODO: maybe more examples here? in file chap2-perf-degredation-survey.tex on </tspan>
-<tspan x="0" dy="1.2em">&nbsp;&nbsp;input line 983.</tspan>
+<tspan x="0" dy="1.2em">&#160;&#160;input line 983.</tspan>
 <tspan x="0" dy="1.2em">TODO: ADD PLOT: This section requires digging into the historical performance </tspan>
-<tspan x="0" dy="1.2em">&nbsp;&nbsp;issues around this to find convincing stand-alone examples so we can have </tspan>
-<tspan x="0" dy="1.2em">&nbsp;&nbsp;graphs here. in file chap2-perf-degredation-survey.tex on input line 987.</tspan>
+<tspan x="0" dy="1.2em">&#160;&#160;issues around this to find convincing stand-alone examples so we can have </tspan>
+<tspan x="0" dy="1.2em">&#160;&#160;graphs here. in file chap2-perf-degredation-survey.tex on input line 987.</tspan>
 <tspan x="0" dy="1.2em">TODO: should I spell this example out more? in file </tspan>
-<tspan x="0" dy="1.2em">&nbsp;&nbsp;chap2-perf-degredation-survey.tex on input line 992.</tspan>
+<tspan x="0" dy="1.2em">&#160;&#160;chap2-perf-degredation-survey.tex on input line 992.</tspan>
 <tspan x="0" dy="1.2em">TODO: add example? in file chap2-perf-degredation-survey.tex on input line </tspan>
-<tspan x="0" dy="1.2em">&nbsp;&nbsp;1000.</tspan>
+<tspan x="0" dy="1.2em">&#160;&#160;1000.</tspan>
 <tspan x="0" dy="1.2em">TODO: maybe be more concrete here? in file chap2-perf-degredation-survey.tex </tspan>
-<tspan x="0" dy="1.2em">&nbsp;&nbsp;on input line 1026.</tspan>
+<tspan x="0" dy="1.2em">&#160;&#160;on input line 1026.</tspan>
 <tspan x="0" dy="1.2em">TODO: cite math-classes and HoTT for past design work here in file </tspan>
-<tspan x="0" dy="1.2em">&nbsp;&nbsp;chap2-perf-degredation-survey.tex on input line 1045.</tspan>
+<tspan x="0" dy="1.2em">&#160;&#160;chap2-perf-degredation-survey.tex on input line 1045.</tspan>
 <tspan x="0" dy="1.2em">TODO: maybe figure out some examples and include perf data? in file </tspan>
-<tspan x="0" dy="1.2em">&nbsp;&nbsp;chap2-perf-degredation-survey.tex on input line 1059.</tspan>
+<tspan x="0" dy="1.2em">&#160;&#160;chap2-perf-degredation-survey.tex on input line 1059.</tspan>
 <tspan x="0" dy="1.2em">TODO: does this need more exposition? in file </tspan>
-<tspan x="0" dy="1.2em">&nbsp;&nbsp;chap2-perf-degredation-survey.tex on input line 1060.</tspan>
+<tspan x="0" dy="1.2em">&#160;&#160;chap2-perf-degredation-survey.tex on input line 1060.</tspan>
 <tspan x="0" dy="1.2em">TODO: How should this chapter be concluded? in file </tspan>
-<tspan x="0" dy="1.2em">&nbsp;&nbsp;chap2-perf-degredation-survey.tex on input line 1063.</tspan>
+<tspan x="0" dy="1.2em">&#160;&#160;chap2-perf-degredation-survey.tex on input line 1063.</tspan>
 <tspan x="0" dy="1.2em">TODO: Maybe another look-forward at what comes next? in file </tspan>
-<tspan x="0" dy="1.2em">&nbsp;&nbsp;chap2-perf-degredation-survey.tex on input line 1064.</tspan>
+<tspan x="0" dy="1.2em">&#160;&#160;chap2-perf-degredation-survey.tex on input line 1064.</tspan>
 <tspan x="0" dy="1.2em">TODO: adjust the tone of what comes after the colon in the previous sentence </tspan>
-<tspan x="0" dy="1.2em">&nbsp;&nbsp;to fit with this paper in file chap3-api-design.tex on input line 20.</tspan>
+<tspan x="0" dy="1.2em">&#160;&#160;to fit with this paper in file chap3-api-design.tex on input line 20.</tspan>
 <tspan x="0" dy="1.2em">TODO: cite math classes, etc in file chap3-api-design.tex on input line 22.</tspan>
 <tspan x="0" dy="1.2em">TODO: flesh out this section in file chap3-api-design.tex on input line 35.</tspan>
 <tspan x="0" dy="1.2em">TODO: More examples from the rewriter? in file chap3-api-design.tex on input </tspan>
-<tspan x="0" dy="1.2em">&nbsp;&nbsp;line 36.</tspan>
+<tspan x="0" dy="1.2em">&#160;&#160;line 36.</tspan>
 <tspan x="0" dy="1.2em">TODO: reword this paragraph a bit in file chap3-api-design.tex on input line </tspan>
-<tspan x="0" dy="1.2em">&nbsp;&nbsp;70.</tspan>
+<tspan x="0" dy="1.2em">&#160;&#160;70.</tspan>
 <tspan x="0" dy="1.2em">TODO: this is duplicative with text above in file chap3-api-design.tex on </tspan>
-<tspan x="0" dy="1.2em">&nbsp;&nbsp;input line 86.</tspan>
+<tspan x="0" dy="1.2em">&#160;&#160;input line 86.</tspan>
 <tspan x="0" dy="1.2em">TODO: maybe this section should come first? in file chap3-api-design.tex on </tspan>
-<tspan x="0" dy="1.2em">&nbsp;&nbsp;input line 185.</tspan>
+<tspan x="0" dy="1.2em">&#160;&#160;input line 185.</tspan>
 <tspan x="0" dy="1.2em">TODO: figure out why spacing is strange above this code example in file </tspan>
-<tspan x="0" dy="1.2em">&nbsp;&nbsp;chap3-api-design.tex on input line 254.</tspan>
+<tspan x="0" dy="1.2em">&#160;&#160;chap3-api-design.tex on input line 254.</tspan>
 <tspan x="0" dy="1.2em">TODO: remove use of ``you'' in file chap3-api-design.tex on input line 287.</tspan>
 <tspan x="0" dy="1.2em">TODO: cite unimath in file chap3-api-design.tex on input line 288.</tspan>
 <tspan x="0" dy="1.2em">TODO: explain reasoning in file chap3-api-design.tex on input line 288.</tspan>
 <tspan x="0" dy="1.2em">TODO: cite https://github.com/coq/coq/issues/12269 in file </tspan>
-<tspan x="0" dy="1.2em">&nbsp;&nbsp;chap3-api-design.tex on input line 384.</tspan>
+<tspan x="0" dy="1.2em">&#160;&#160;chap3-api-design.tex on input line 384.</tspan>
 <tspan x="0" dy="1.2em">TODO: make this timing graph in file chap3-api-design.tex on input line 391.</tspan>
 <tspan x="0" dy="1.2em">TODO: move figures up to be closer to references in file chap3-api-design.tex </tspan>
-<tspan x="0" dy="1.2em">&nbsp;&nbsp;on input line 392.</tspan>
+<tspan x="0" dy="1.2em">&#160;&#160;on input line 392.</tspan>
 <tspan x="0" dy="1.2em">TODO: Find more examples to talk about here? in file chap3-api-design.tex on </tspan>
-<tspan x="0" dy="1.2em">&nbsp;&nbsp;input line 735.</tspan>
+<tspan x="0" dy="1.2em">&#160;&#160;input line 735.</tspan>
 <tspan x="0" dy="1.2em">TODO: reformat this for flow, right now it's from reification-by-parametricity </tspan>
-<tspan x="0" dy="1.2em">&nbsp;&nbsp;in file chap4-reflection.tex on input line 5.</tspan>
+<tspan x="0" dy="1.2em">&#160;&#160;in file chap4-reflection.tex on input line 5.</tspan>
 <tspan x="0" dy="1.2em">TODO: should we cite this many things here, or remove some of them? in file </tspan>
-<tspan x="0" dy="1.2em">&nbsp;&nbsp;chap4-reflection.tex on input line 8.</tspan>
+<tspan x="0" dy="1.2em">&#160;&#160;chap4-reflection.tex on input line 8.</tspan>
 <tspan x="0" dy="1.2em">TODO: move this paragraph elsewhere in file chap4-reflection.tex on input line </tspan>
-<tspan x="0" dy="1.2em">&nbsp;&nbsp;21.</tspan>
+<tspan x="0" dy="1.2em">&#160;&#160;21.</tspan>
 <tspan x="0" dy="1.2em">TODO: rename this subsection in file chap4-reflection.tex on input line 30.</tspan>
 <tspan x="0" dy="1.2em">TODO: factor some of this with chapter 2 in file chap4-reflection.tex on input </tspan>
-<tspan x="0" dy="1.2em">&nbsp;&nbsp;line 46.</tspan>
+<tspan x="0" dy="1.2em">&#160;&#160;line 46.</tspan>
 <tspan x="0" dy="1.2em">TODO: should the footnote be uncommented here? in file chap4-reflection.tex on </tspan>
-<tspan x="0" dy="1.2em">&nbsp;&nbsp;input line 92.</tspan>
+<tspan x="0" dy="1.2em">&#160;&#160;input line 92.</tspan>
 <tspan x="0" dy="1.2em">TODO: explain what evar substitutions are somewhere? reference it here? in </tspan>
-<tspan x="0" dy="1.2em">&nbsp;&nbsp;file chap4-reflection.tex on input line 368.</tspan>
+<tspan x="0" dy="1.2em">&#160;&#160;file chap4-reflection.tex on input line 368.</tspan>
 <tspan x="0" dy="1.2em">TODO: elaborate more on the performance bottlenecks of named evar </tspan>
-<tspan x="0" dy="1.2em">&nbsp;&nbsp;substitutions in file chap4-reflection.tex on input line 370.</tspan>
+<tspan x="0" dy="1.2em">&#160;&#160;substitutions in file chap4-reflection.tex on input line 370.</tspan>
 <tspan x="0" dy="1.2em">TODO: Should I benchmark this and insert graphs? in file chap4-reflection.tex </tspan>
-<tspan x="0" dy="1.2em">&nbsp;&nbsp;on input line 428.</tspan>
+<tspan x="0" dy="1.2em">&#160;&#160;on input line 428.</tspan>
 <tspan x="0" dy="1.2em">TODO: Maybe include detailed walkthroughs in the appendix? in file </tspan>
-<tspan x="0" dy="1.2em">&nbsp;&nbsp;chap4-reflection.tex on input line 480.</tspan>
+<tspan x="0" dy="1.2em">&#160;&#160;chap4-reflection.tex on input line 480.</tspan>
 <tspan x="0" dy="1.2em">TODO: should this paragraph be here, or above the last one? in file </tspan>
-<tspan x="0" dy="1.2em">&nbsp;&nbsp;chap4-reflection.tex on input line 485.</tspan>
+<tspan x="0" dy="1.2em">&#160;&#160;chap4-reflection.tex on input line 485.</tspan>
 <tspan x="0" dy="1.2em">TODO: what's a good way to end this chapter? in file chap4-reflection.tex on </tspan>
-<tspan x="0" dy="1.2em">&nbsp;&nbsp;input line 494.</tspan>
+<tspan x="0" dy="1.2em">&#160;&#160;input line 494.</tspan>
 <tspan x="0" dy="1.2em">TODO: fix input of this file in file chap4-reflection.tex on input line 523.</tspan>
-<tspan x="0" dy="1.2em">TODO: update this chapter with camera-ready file before editing in file </tspan>
-<tspan x="0" dy="1.2em">&nbsp;&nbsp;rewriting.tex on input line 2.</tspan>
 <tspan x="0" dy="1.2em">TODO: Better chapter title? in file chap6-rewriting.tex on input line 11.</tspan>
 <tspan x="0" dy="1.2em">TODO: consider replacing ``pain'' with more formal words like ``overhead'', </tspan>
-<tspan x="0" dy="1.2em">&nbsp;&nbsp;``bottleneck'', etc (Adam says it's possibly too informal) in file </tspan>
-<tspan x="0" dy="1.2em">&nbsp;&nbsp;chap6-rewriting.tex on input line 12.</tspan>
+<tspan x="0" dy="1.2em">&#160;&#160;``bottleneck'', etc (Adam says it's possibly too informal) in file </tspan>
+<tspan x="0" dy="1.2em">&#160;&#160;chap6-rewriting.tex on input line 12.</tspan>
 <tspan x="0" dy="1.2em">TODO: find a better transition in file chap6-rewriting.tex on input line 70.</tspan>
 <tspan x="0" dy="1.2em">TODO: should I be consistent about naming syntax that's well-typed by </tspan>
-<tspan x="0" dy="1.2em">&nbsp;&nbsp;construction? I call it ``intrinsically-typed syntax'', ``syntax that is </tspan>
-<tspan x="0" dy="1.2em">&nbsp;&nbsp;well-typed by construction'', ``intrinsically-well-typed syntax'', and </tspan>
-<tspan x="0" dy="1.2em">&nbsp;&nbsp;``type-indexed sytnax''\ldots  in file chap6-rewriting.tex on input line 331.</tspan>
+<tspan x="0" dy="1.2em">&#160;&#160;construction? I call it ``intrinsically-typed syntax'', ``syntax that is </tspan>
+<tspan x="0" dy="1.2em">&#160;&#160;well-typed by construction'', ``intrinsically-well-typed syntax'', and </tspan>
+<tspan x="0" dy="1.2em">&#160;&#160;``type-indexed sytnax''\ldots  in file chap6-rewriting.tex on input line 331.</tspan>
 <tspan x="0" dy="1.2em">TODO: does this need more explanation or code? in file chap6-rewriting.tex on </tspan>
-<tspan x="0" dy="1.2em">&nbsp;&nbsp;input line 376.</tspan>
+<tspan x="0" dy="1.2em">&#160;&#160;input line 376.</tspan>
 <tspan x="0" dy="1.2em">TODO: Note that Adam found this code hard to understand; should more prose be </tspan>
-<tspan x="0" dy="1.2em">&nbsp;&nbsp;added to clarify it? in file chap6-rewriting.tex on input line 388.</tspan>
+<tspan x="0" dy="1.2em">&#160;&#160;added to clarify it? in file chap6-rewriting.tex on input line 388.</tspan>
 <tspan x="0" dy="1.2em">TODO: redo performance experiments here, maybe insert a plot in file </tspan>
-<tspan x="0" dy="1.2em">&nbsp;&nbsp;chap6-rewriting.tex on input line 422.</tspan>
+<tspan x="0" dy="1.2em">&#160;&#160;chap6-rewriting.tex on input line 422.</tspan>
 <tspan x="0" dy="1.2em">TODO: is this last sentence understandable? in file chap6-rewriting.tex on </tspan>
-<tspan x="0" dy="1.2em">&nbsp;&nbsp;input line 453.</tspan>
+<tspan x="0" dy="1.2em">&#160;&#160;input line 453.</tspan>
 <tspan x="0" dy="1.2em">TODO: Does this need more explanation? Is it understandable? in file </tspan>
-<tspan x="0" dy="1.2em">&nbsp;&nbsp;chap6-rewriting.tex on input line 545.</tspan>
+<tspan x="0" dy="1.2em">&#160;&#160;chap6-rewriting.tex on input line 545.</tspan>
 <tspan x="0" dy="1.2em">TODO: be consistent about ``pattern matching compilation'' vs </tspan>
-<tspan x="0" dy="1.2em">&nbsp;&nbsp;``pattern-matching compilation''? in file chap6-rewriting.tex on input line 546.</tspan>
+<tspan x="0" dy="1.2em">&#160;&#160;``pattern-matching compilation''? in file chap6-rewriting.tex on input line 546.</tspan>
 <tspan x="0" dy="1.2em">TODO: is this sufficiently understandable? in file chap6-rewriting.tex on </tspan>
-<tspan x="0" dy="1.2em">&nbsp;&nbsp;input line 566.</tspan>
+<tspan x="0" dy="1.2em">&#160;&#160;input line 566.</tspan>
 <tspan x="0" dy="1.2em">TODO: should Ie laborate more on the pain? in file chap6-rewriting.tex on </tspan>
-<tspan x="0" dy="1.2em">&nbsp;&nbsp;input line 589.</tspan>
+<tspan x="0" dy="1.2em">&#160;&#160;input line 589.</tspan>
 <tspan x="0" dy="1.2em">TODO: is this enough? does it need more? should we keep it here at all? in </tspan>
-<tspan x="0" dy="1.2em">&nbsp;&nbsp;file chap6-rewriting.tex on input line 687.</tspan>
+<tspan x="0" dy="1.2em">&#160;&#160;file chap6-rewriting.tex on input line 687.</tspan>
 <tspan x="0" dy="1.2em">TODO: should I try to talk about more of this pain? in file </tspan>
-<tspan x="0" dy="1.2em">&nbsp;&nbsp;chap6-rewriting.tex on input line 791.</tspan>
+<tspan x="0" dy="1.2em">&#160;&#160;chap6-rewriting.tex on input line 791.</tspan>
 <tspan x="0" dy="1.2em">TODO: should I talk about anything else here? in file chap6-rewriting.tex on </tspan>
-<tspan x="0" dy="1.2em">&nbsp;&nbsp;input line 920.</tspan>
+<tspan x="0" dy="1.2em">&#160;&#160;input line 920.</tspan>
 <tspan x="0" dy="1.2em">TODO: include the trick from </tspan>
-<tspan x="0" dy="1.2em">&nbsp;&nbsp;https://github.com/coq/coq/issues/5996\#issuecomment-670955273 in file </tspan>
-<tspan x="0" dy="1.2em">&nbsp;&nbsp;reification-by-parametricity.tex on input line 2.</tspan>
+<tspan x="0" dy="1.2em">&#160;&#160;https://github.com/coq/coq/issues/5996\#issuecomment-670955273 in file </tspan>
+<tspan x="0" dy="1.2em">&#160;&#160;reification-by-parametricity.tex on input line 2.</tspan>
 <tspan x="0" dy="1.2em">TODO: if this is described earlier, refer back to it in file </tspan>
-<tspan x="0" dy="1.2em">&nbsp;&nbsp;chap8-coq-tooling-fixes.tex on input line 22.</tspan>
+<tspan x="0" dy="1.2em">&#160;&#160;chap8-coq-tooling-fixes.tex on input line 22.</tspan>
 <tspan x="0" dy="1.2em">TODO: include performance graphs? in file chap8-coq-tooling-fixes.tex on input </tspan>
-<tspan x="0" dy="1.2em">&nbsp;&nbsp;line 47.</tspan>
+<tspan x="0" dy="1.2em">&#160;&#160;line 47.</tspan>
 <tspan x="0" dy="1.2em">TODO: should I include more text here, extracting from the abstract submitted </tspan>
-<tspan x="0" dy="1.2em">&nbsp;&nbsp;to CoqPL? in file chap8-coq-tooling-fixes.tex on input line 91.</tspan>
+<tspan x="0" dy="1.2em">&#160;&#160;to CoqPL? in file chap8-coq-tooling-fixes.tex on input line 91.</tspan>
 <tspan x="0" dy="1.2em">TODO: should I include code and/or plots? in file chap8-coq-tooling-fixes.tex </tspan>
-<tspan x="0" dy="1.2em">&nbsp;&nbsp;on input line 101.</tspan>
+<tspan x="0" dy="1.2em">&#160;&#160;on input line 101.</tspan>
 <tspan x="0" dy="1.2em">TODO: should I add an example or plots? in file chap8-coq-tooling-fixes.tex on </tspan>
-<tspan x="0" dy="1.2em">&nbsp;&nbsp;input line 105.</tspan>
+<tspan x="0" dy="1.2em">&#160;&#160;input line 105.</tspan>
 <tspan x="0" dy="1.2em">TODO: Should I add more to this section? What should I say? in file </tspan>
-<tspan x="0" dy="1.2em">&nbsp;&nbsp;chap8-coq-tooling-fixes.tex on input line 129.</tspan>
+<tspan x="0" dy="1.2em">&#160;&#160;chap8-coq-tooling-fixes.tex on input line 129.</tspan>
 <tspan x="0" dy="1.2em">TODO: what should be said in this section? in file chap8-coq-tooling-fixes.tex </tspan>
-<tspan x="0" dy="1.2em">&nbsp;&nbsp;on input line 145.</tspan>
+<tspan x="0" dy="1.2em">&#160;&#160;on input line 145.</tspan>
 <tspan x="0" dy="1.2em">TODO: does this need more of a recap? in file chap8-coq-tooling-fixes.tex on </tspan>
-<tspan x="0" dy="1.2em">&nbsp;&nbsp;input line 152.</tspan>
+<tspan x="0" dy="1.2em">&#160;&#160;input line 152.</tspan>
 <tspan x="0" dy="1.2em">TODO: should I talk about https://github.com/coq/coq/pull/263 - Fast lookup in </tspan>
-<tspan x="0" dy="1.2em">&nbsp;&nbsp;named contexts? in file chap8-coq-tooling-fixes.tex on input line 155.</tspan>
+<tspan x="0" dy="1.2em">&#160;&#160;named contexts? in file chap8-coq-tooling-fixes.tex on input line 155.</tspan>
 <tspan x="0" dy="1.2em">TODO: should I talk about https://github.com/coq/coq/pull/6506 - Fast rel </tspan>
-<tspan x="0" dy="1.2em">&nbsp;&nbsp;lookup? in file chap8-coq-tooling-fixes.tex on input line 156.</tspan>
+<tspan x="0" dy="1.2em">&#160;&#160;lookup? in file chap8-coq-tooling-fixes.tex on input line 156.</tspan>
 <tspan x="0" dy="1.2em">TODO: check if category has been defined before in file </tspan>
-<tspan x="0" dy="1.2em">&nbsp;&nbsp;chap8-coq-tooling-fixes.tex on input line 202.</tspan>
+<tspan x="0" dy="1.2em">&#160;&#160;chap8-coq-tooling-fixes.tex on input line 202.</tspan>
 <tspan x="0" dy="1.2em">TODO: make sure we've talked about judgmental equality and conversion in file </tspan>
-<tspan x="0" dy="1.2em">&nbsp;&nbsp;chap8-coq-tooling-fixes.tex on input line 261.</tspan>
+<tspan x="0" dy="1.2em">&#160;&#160;chap8-coq-tooling-fixes.tex on input line 261.</tspan>
 <tspan x="0" dy="1.2em">TODO: should more be said here? in file chap8-coq-tooling-fixes.tex on input </tspan>
-<tspan x="0" dy="1.2em">&nbsp;&nbsp;line 266.</tspan>
+<tspan x="0" dy="1.2em">&#160;&#160;line 266.</tspan>
 <tspan x="0" dy="1.2em">TODO: should more be said here? in file chap8-coq-tooling-fixes.tex on input </tspan>
-<tspan x="0" dy="1.2em">&nbsp;&nbsp;line 271.</tspan>
+<tspan x="0" dy="1.2em">&#160;&#160;line 271.</tspan>
 <tspan x="0" dy="1.2em">TODO: is this sentence redundant? in file chap8-coq-tooling-fixes.tex on input </tspan>
-<tspan x="0" dy="1.2em">&nbsp;&nbsp;line 277.</tspan>
+<tspan x="0" dy="1.2em">&#160;&#160;line 277.</tspan>
 <tspan x="0" dy="1.2em">TODO: fix the intro to this subsection in file chap8-coq-tooling-fixes.tex on </tspan>
-<tspan x="0" dy="1.2em">&nbsp;&nbsp;input line 278.</tspan>
+<tspan x="0" dy="1.2em">&#160;&#160;input line 278.</tspan>
 <tspan x="0" dy="1.2em">TODO: fix flow in file chap8-coq-tooling-fixes.tex on input line 279.</tspan>
 <tspan x="0" dy="1.2em">TODO: check if we've defined propositional equality before in file </tspan>
-<tspan x="0" dy="1.2em">&nbsp;&nbsp;chap8-coq-tooling-fixes.tex on input line 301.</tspan>
+<tspan x="0" dy="1.2em">&#160;&#160;chap8-coq-tooling-fixes.tex on input line 301.</tspan>
 <tspan x="0" dy="1.2em">TODO: should I talk about the difference between isomorphism and equivalence? </tspan>
-<tspan x="0" dy="1.2em">&nbsp;&nbsp;in file chap8-coq-tooling-fixes.tex on input line 356.</tspan>
+<tspan x="0" dy="1.2em">&#160;&#160;in file chap8-coq-tooling-fixes.tex on input line 356.</tspan>
 <tspan x="0" dy="1.2em">TODO: what more should be said here? in file chap8-coq-tooling-fixes.tex on </tspan>
-<tspan x="0" dy="1.2em">&nbsp;&nbsp;input line 357.</tspan>
+<tspan x="0" dy="1.2em">&#160;&#160;input line 357.</tspan>
 <tspan x="0" dy="1.2em">TODO: define point vs path constructors in file chap8-coq-tooling-fixes.tex on </tspan>
-<tspan x="0" dy="1.2em">&nbsp;&nbsp;input line 367.</tspan>
+<tspan x="0" dy="1.2em">&#160;&#160;input line 367.</tspan>
 <tspan x="0" dy="1.2em">TODO: Decide between options, maybe add more text in file chap9-conclusion.tex </tspan>
-<tspan x="0" dy="1.2em">&nbsp;&nbsp;on input line 17.</tspan>
+<tspan x="0" dy="1.2em">&#160;&#160;on input line 17.</tspan>
 <tspan x="0" dy="1.2em">TODO: insert category theory diagram of an End here in file </tspan>
-<tspan x="0" dy="1.2em">&nbsp;&nbsp;chap9-conclusion.tex on input line 25.</tspan>
+<tspan x="0" dy="1.2em">&#160;&#160;chap9-conclusion.tex on input line 25.</tspan>
 <tspan x="0" dy="1.2em">TODO: What do I name this part? in file jgross-thesis.tex on input line 116.</tspan>
 <tspan x="0" dy="1.2em">TODO: maybe include all code in an appendix? in file appendix-files.tex on </tspan>
-<tspan x="0" dy="1.2em">&nbsp;&nbsp;input line 1.</tspan>
+<tspan x="0" dy="1.2em">&#160;&#160;input line 1.</tspan>
 <tspan x="0" dy="1.2em">QUESTION FOR ADAM: Decide on whether to copyright myself or MIT; Adam, are </tspan>
-<tspan x="0" dy="1.2em">&nbsp;&nbsp;there considerations to be aware of here? in file jgross-thesis.tex on input </tspan>
-<tspan x="0" dy="1.2em">&nbsp;&nbsp;line 105.</tspan>
+<tspan x="0" dy="1.2em">&#160;&#160;there considerations to be aware of here? in file jgross-thesis.tex on input </tspan>
+<tspan x="0" dy="1.2em">&#160;&#160;line 105.</tspan>
 <tspan x="0" dy="1.2em">QUESTION FOR ADAM: do I need a better citation than wikipedia? in file </tspan>
-<tspan x="0" dy="1.2em">&nbsp;&nbsp;chap1-introduction.tex on input line 30.</tspan>
+<tspan x="0" dy="1.2em">&#160;&#160;chap1-introduction.tex on input line 30.</tspan>
 <tspan x="0" dy="1.2em">QUESTION FOR ADAM: should I email Xavier Leroy and ask if he has references on </tspan>
-<tspan x="0" dy="1.2em">&nbsp;&nbsp;how much the airline industry spends on testing? in file chap1-introduction.tex </tspan>
-<tspan x="0" dy="1.2em">&nbsp;&nbsp;on input line 36.</tspan>
+<tspan x="0" dy="1.2em">&#160;&#160;how much the airline industry spends on testing? in file chap1-introduction.tex </tspan>
+<tspan x="0" dy="1.2em">&#160;&#160;on input line 36.</tspan>
 <tspan x="0" dy="1.2em">QUESTION FOR ADAM: What's the suggested way of pretty-printing typing rules? </tspan>
-<tspan x="0" dy="1.2em">&nbsp;&nbsp;in file chap2-perf-degredation-survey.tex on input line 452.</tspan>
+<tspan x="0" dy="1.2em">&#160;&#160;in file chap2-perf-degredation-survey.tex on input line 452.</tspan>
 <tspan x="0" dy="1.2em">QUESTION FOR ADAM: Which way do substitution brackets go? in file </tspan>
-<tspan x="0" dy="1.2em">&nbsp;&nbsp;chap2-perf-degredation-survey.tex on input line 453.</tspan>
+<tspan x="0" dy="1.2em">&#160;&#160;chap2-perf-degredation-survey.tex on input line 453.</tspan>
 <tspan x="0" dy="1.2em">QUESTION FOR ADAM: What convention should we use for typing rules with regard </tspan>
-<tspan x="0" dy="1.2em">&nbsp;&nbsp;to things being types? Maybe just copy the HoTT book? in file </tspan>
-<tspan x="0" dy="1.2em">&nbsp;&nbsp;chap2-perf-degredation-survey.tex on input line 454.</tspan>
+<tspan x="0" dy="1.2em">&#160;&#160;to things being types? Maybe just copy the HoTT book? in file </tspan>
+<tspan x="0" dy="1.2em">&#160;&#160;chap2-perf-degredation-survey.tex on input line 454.</tspan>
 <tspan x="0" dy="1.2em">QUESTION FOR ADAM: how much should I talk about the category theory library </tspan>
-<tspan x="0" dy="1.2em">&nbsp;&nbsp;itself in my thesis? in file chap3-api-design.tex on input line 190.</tspan>
+<tspan x="0" dy="1.2em">&#160;&#160;itself in my thesis? in file chap3-api-design.tex on input line 190.</tspan>
 <tspan x="0" dy="1.2em">QUESTION FOR ADAM: is this a place to cite POPLMark? What should be said about </tspan>
-<tspan x="0" dy="1.2em">&nbsp;&nbsp;it? Should I mention more sorts of representations? in file </tspan>
-<tspan x="0" dy="1.2em">&nbsp;&nbsp;chap4-reflection.tex on input line 150.</tspan>
+<tspan x="0" dy="1.2em">&#160;&#160;it? Should I mention more sorts of representations? in file </tspan>
+<tspan x="0" dy="1.2em">&#160;&#160;chap4-reflection.tex on input line 150.</tspan>
 <tspan x="0" dy="1.2em">QUESTION FOR ADAM: Is there a good reference for these sorts of issues? Are </tspan>
-<tspan x="0" dy="1.2em">&nbsp;&nbsp;they well-known? Well-studied? in file chap4-reflection.tex on input line 312.</tspan>
+<tspan x="0" dy="1.2em">&#160;&#160;they well-known? Well-studied? in file chap4-reflection.tex on input line 312.</tspan>
 <tspan x="0" dy="1.2em">QUESTION FOR ADAM: Is there a good reference for these sorts of issues? Are </tspan>
-<tspan x="0" dy="1.2em">&nbsp;&nbsp;they well-known? Well-studied? in file chap6-rewriting.tex on input line 432.</tspan>
+<tspan x="0" dy="1.2em">&#160;&#160;they well-known? Well-studied? in file chap6-rewriting.tex on input line 432.</tspan>
 <tspan x="0" dy="1.2em">Warning: Label `sec:reification-by-parametricity:intro' multiply defined.</tspan>
 <tspan x="0" dy="1.2em">Warning: Label `sec:reification-by-parametricity:intro@cref' multiply defined.</tspan>
 <tspan x="0" dy="1.2em">Warning: Label `sec:evenness' multiply defined.</tspan>
@@ -507,52 +507,81 @@
 <tspan x="0" dy="1.2em">Warning: Label `fig:ltac-reify-nobinders@cref' multiply defined.</tspan>
 <tspan x="0" dy="1.2em">Warning: Label `sec:category-of-categories' multiply defined.</tspan>
 <tspan x="0" dy="1.2em">Warning: Label `sec:category-of-categories@cref' multiply defined.</tspan>
+<tspan x="0" dy="1.2em">Warning: Reference `ch:rewriting' on page 7 undefined on input line 153.</tspan>
 <tspan x="0" dy="1.2em">Warning: Reference `sec:proof-by-reflection' on page 7 undefined on input line </tspan>
-<tspan x="0" dy="1.2em">&nbsp;&nbsp;155.</tspan>
-<tspan x="0" dy="1.2em">Warning: Reference `sec:categories' on page 63 undefined on input line 79.</tspan>
-<tspan x="0" dy="1.2em">Warning: Reference `sec:other' on page 64 undefined on input line 85.</tspan>
-<tspan x="0" dy="1.2em">Warning: Reference `sec:arguments-vs-fields' on page 68 undefined on input </tspan>
-<tspan x="0" dy="1.2em">&nbsp;&nbsp;line 207.</tspan>
-<tspan x="0" dy="1.2em">Warning: Reference `fig:timing-make-destruct-record' on page 71 undefined on </tspan>
-<tspan x="0" dy="1.2em">&nbsp;&nbsp;input line 277.</tspan>
-<tspan x="0" dy="1.2em">Warning: Reference `fig:timing-make-destruct-record' on page 71 undefined on </tspan>
-<tspan x="0" dy="1.2em">&nbsp;&nbsp;input line 284.</tspan>
+<tspan x="0" dy="1.2em">&#160;&#160;155.</tspan>
+<tspan x="0" dy="1.2em">Warning: Reference `ch:rewriting' on page 20 undefined on input line 125.</tspan>
+<tspan x="0" dy="1.2em">Warning: Reference `ch:rewriting' on page 20 undefined on input line 126.</tspan>
+<tspan x="0" dy="1.2em">Warning: Reference `sec:categories' on page 61 undefined on input line 79.</tspan>
+<tspan x="0" dy="1.2em">Warning: Reference `sec:other' on page 62 undefined on input line 85.</tspan>
+<tspan x="0" dy="1.2em">Warning: Reference `sec:arguments-vs-fields' on page 66 undefined on input </tspan>
+<tspan x="0" dy="1.2em">&#160;&#160;line 207.</tspan>
+<tspan x="0" dy="1.2em">Warning: Reference `fig:timing-make-destruct-record' on page 69 undefined on </tspan>
+<tspan x="0" dy="1.2em">&#160;&#160;input line 277.</tspan>
+<tspan x="0" dy="1.2em">Warning: Reference `fig:timing-make-destruct-record' on page 69 undefined on </tspan>
+<tspan x="0" dy="1.2em">&#160;&#160;input line 284.</tspan>
 <tspan x="0" dy="1.2em">Warning: Reference `fig:timing-make-destruct-record-definition-abstraction' on </tspan>
-<tspan x="0" dy="1.2em">&nbsp;&nbsp;page 73 undefined on input line 389.</tspan>
-<tspan x="0" dy="1.2em">Warning: Reference `ch:rewriting,ch:reification-by-parametricity' on page 86 </tspan>
-<tspan x="0" dy="1.2em">&nbsp;&nbsp;undefined on input line 152.</tspan>
-<tspan x="0" dy="1.2em">Warning: Reference `sec:setoid-rewrite-bottlenecks' on page 92 undefined on </tspan>
-<tspan x="0" dy="1.2em">&nbsp;&nbsp;input line 371.</tspan>
+<tspan x="0" dy="1.2em">&#160;&#160;page 71 undefined on input line 389.</tspan>
+<tspan x="0" dy="1.2em">Warning: Reference `ch:rewriting,ch:reification-by-parametricity' on page 84 </tspan>
+<tspan x="0" dy="1.2em">&#160;&#160;undefined on input line 152.</tspan>
+<tspan x="0" dy="1.2em">Warning: Reference `sec:setoid-rewrite-bottlenecks' on page 90 undefined on </tspan>
+<tspan x="0" dy="1.2em">&#160;&#160;input line 371.</tspan>
+<tspan x="0" dy="1.2em">Warning: Reference `ch:rewriting' on page 95 undefined on input line 14.</tspan>
+<tspan x="0" dy="1.2em">Warning: Reference `sec:pattern-matching-compilation-and-evaluation' on page </tspan>
+<tspan x="0" dy="1.2em">&#160;&#160;96 undefined on input line 43.</tspan>
+<tspan x="0" dy="1.2em">Warning: Reference `fig:nbe' on page 96 undefined on input line 61.</tspan>
+<tspan x="0" dy="1.2em">Warning: Reference `sec:thunk-eval-subst-term' on page 96 undefined on input </tspan>
+<tspan x="0" dy="1.2em">&#160;&#160;line 61.</tspan>
+<tspan x="0" dy="1.2em">Warning: Reference `sec:under-lets' on page 97 undefined on input line 71.</tspan>
+<tspan x="0" dy="1.2em">Warning: Reference `sec:our-solution' on page 102 undefined on input line 332.</tspan>
+<tspan x="0" dy="1.2em">Warning: Reference `sec:thunk-eval-subst-term' on page 102 undefined on input </tspan>
+<tspan x="0" dy="1.2em">&#160;&#160;line 332.</tspan>
+<tspan x="0" dy="1.2em">Warning: Reference `sec:pattern-matching-compilation-and-evaluation' on page </tspan>
+<tspan x="0" dy="1.2em">&#160;&#160;103 undefined on input line 358.</tspan>
+<tspan x="0" dy="1.2em">Warning: Reference `sec:pattern-matching-compilation-and-evaluation' on page </tspan>
+<tspan x="0" dy="1.2em">&#160;&#160;103 undefined on input line 360.</tspan>
+<tspan x="0" dy="1.2em">Warning: Reference `sec:thunk-eval-subst-term' on page 107 undefined on input </tspan>
+<tspan x="0" dy="1.2em">&#160;&#160;line 469.</tspan>
+<tspan x="0" dy="1.2em">Warning: Reference `sec:nine-steps' on page 108 undefined on input line 497.</tspan>
+<tspan x="0" dy="1.2em">Warning: Reference `sec:under-lets' on page 113 undefined on input line 708.</tspan>
+<tspan x="0" dy="1.2em">Warning: Reference `fig:nbe' on page 117 undefined on input line 807.</tspan>
+<tspan x="0" dy="1.2em">Warning: Reference `sec:thunk-eval-subst-term' on page 117 undefined on input </tspan>
+<tspan x="0" dy="1.2em">&#160;&#160;line 807.</tspan>
+<tspan x="0" dy="1.2em">Warning: Reference `sec:thunk-eval-subst-term' on page 119 undefined on input </tspan>
+<tspan x="0" dy="1.2em">&#160;&#160;line 900.</tspan>
 <tspan x="0" dy="1.2em">Warning: Citation 'commonsense-perf-engineering-order-of-operations' on page </tspan>
-<tspan x="0" dy="1.2em">&nbsp;&nbsp;27 undefined on input line 7.</tspan>
-<tspan x="0" dy="1.2em">Warning: Citation 'bogosort' on page 27 undefined on input line 8.</tspan>
-<tspan x="0" dy="1.2em">Warning: Citation 'bogosort-name' on page 27 undefined on input line 8.</tspan>
-<tspan x="0" dy="1.2em">Warning: Citation 'structural-typing' on page 36 undefined on input line 324.</tspan>
-<tspan x="0" dy="1.2em">Warning: Citation 'nominal-typing' on page 36 undefined on input line 324.</tspan>
-<tspan x="0" dy="1.2em">Warning: Citation 'https://github.com/coq/coq/issues/5293' on page 39 </tspan>
-<tspan x="0" dy="1.2em">&nbsp;&nbsp;undefined on input line 334.</tspan>
-<tspan x="0" dy="1.2em">Warning: Citation 'locally-nameless' on page 49 undefined on input line 725.</tspan>
-<tspan x="0" dy="1.2em">Warning: Citation 'vmcompute' on page 122 undefined on input line 867.</tspan>
-<tspan x="0" dy="1.2em">Warning: Float too large for page by 16.14775pt on input line 243.</tspan>
+<tspan x="0" dy="1.2em">&#160;&#160;25 undefined on input line 7.</tspan>
+<tspan x="0" dy="1.2em">Warning: Citation 'bogosort' on page 25 undefined on input line 8.</tspan>
+<tspan x="0" dy="1.2em">Warning: Citation 'bogosort-name' on page 25 undefined on input line 8.</tspan>
+<tspan x="0" dy="1.2em">Warning: Citation 'structural-typing' on page 34 undefined on input line 324.</tspan>
+<tspan x="0" dy="1.2em">Warning: Citation 'nominal-typing' on page 34 undefined on input line 324.</tspan>
+<tspan x="0" dy="1.2em">Warning: Citation 'https://github.com/coq/coq/issues/5293' on page 37 </tspan>
+<tspan x="0" dy="1.2em">&#160;&#160;undefined on input line 334.</tspan>
+<tspan x="0" dy="1.2em">Warning: Citation 'locally-nameless' on page 47 undefined on input line 725.</tspan>
+<tspan x="0" dy="1.2em">Warning: Hyper reference `ch:rewriting' on page 20 undefined on input line 125.</tspan>
+<tspan x="0" dy="1.2em">Warning: Hyper reference `sec:under-lets' on page 97 undefined on input line </tspan>
+<tspan x="0" dy="1.2em">&#160;&#160;71.</tspan>
+<tspan x="0" dy="1.2em">Warning: Hyper reference `sec:nine-steps' on page 108 undefined on input line </tspan>
+<tspan x="0" dy="1.2em">&#160;&#160;497.</tspan>
 <tspan x="0" dy="1.2em">Warning: There were undefined references.</tspan>
 <tspan x="0" dy="1.2em">Warning: There were multiply-defined labels.</tspan>
 <tspan x="0" dy="1.2em">Package gnuplottex Warning: Shell escape not enabled. You'll need to convert </tspan>
-<tspan x="0" dy="1.2em">&nbsp;&nbsp;the graphs yourself..</tspan>
+<tspan x="0" dy="1.2em">&#160;&#160;the graphs yourself..</tspan>
 <tspan x="0" dy="1.2em">LaTeX Font Warning: Font shape `TU/cmr/m/n' undefined using `TU/lmr/m/n' </tspan>
-<tspan x="0" dy="1.2em">&nbsp;&nbsp;instead on input line 749.</tspan>
+<tspan x="0" dy="1.2em">&#160;&#160;instead on input line 749.</tspan>
 <tspan x="0" dy="1.2em">LaTeX Font Warning: Font shape `U/stmry/m/n' in size &lt;8.41483&gt; not available </tspan>
-<tspan x="0" dy="1.2em">&nbsp;&nbsp;size &lt;8&gt; substituted on input line 91.</tspan>
+<tspan x="0" dy="1.2em">&#160;&#160;size &lt;8&gt; substituted on input line 91.</tspan>
 <tspan x="0" dy="1.2em">Package biblatex Warning: No driver for entry type 'software'. Using fallback </tspan>
-<tspan x="0" dy="1.2em">&nbsp;&nbsp;driver on input line 9.</tspan>
+<tspan x="0" dy="1.2em">&#160;&#160;driver on input line 9.</tspan>
 <tspan x="0" dy="1.2em">LaTeX Font Warning: Size substitutions with differences up to 2.01157pt have </tspan>
-<tspan x="0" dy="1.2em">&nbsp;&nbsp;occurred.</tspan>
+<tspan x="0" dy="1.2em">&#160;&#160;occurred.</tspan>
 <tspan x="0" dy="1.2em">LaTeX Font Warning: Some font shapes were not available, defaults substituted.</tspan>
 <tspan x="0" dy="1.2em">Package biblatex Warning: Please (re)run Biber on the file: jgross-thesis and </tspan>
-<tspan x="0" dy="1.2em">&nbsp;&nbsp;rerun LaTeX afterwards.</tspan>
+<tspan x="0" dy="1.2em">&#160;&#160;rerun LaTeX afterwards.</tspan>
 <tspan x="0" dy="1.2em">WARN - Duplicate entry key: 'coq-pr-floats' in file 'jgross-thesis.bib', </tspan>
-<tspan x="0" dy="1.2em">&nbsp;&nbsp;skipping ...</tspan>
+<tspan x="0" dy="1.2em">&#160;&#160;skipping ...</tspan>
 <tspan x="0" dy="1.2em">WARN - ISBN '01687433' in entry 'Locally2012Chargueraud' is invalid - run </tspan>
-<tspan x="0" dy="1.2em">&nbsp;&nbsp;biber with '--validate_datamodel' for details.)</tspan>
+<tspan x="0" dy="1.2em">&#160;&#160;biber with '--validate_datamodel' for details.)</tspan>
 <tspan x="0" dy="1.2em">Missing character: There is no M-bM-^HM-^H (U+2208) in font [lmmono12-regular]:!</tspan>
 <tspan x="0" dy="1.2em">Missing character: There is no M-bM-^KM-. (U+22EE) in font [lmmono12-regular]:!</tspan>
 <tspan x="0" dy="1.2em">Missing character: There is no M-IM-* (U+026A) in font [lmroman12-regular]:+tlig;!</tspan>
@@ -561,87 +590,73 @@
 <tspan x="0" dy="1.2em">Missing character: There is no M-IM-* (U+026A) in font [lmroman12-regular]:+tlig;!</tspan>
 <tspan x="0" dy="1.2em">Missing character: There is no M-aM-4M-^O (U+1D0F) in font [lmroman12-regular]:+tlig;!</tspan>
 <tspan x="0" dy="1.2em">LaTeX Font Info:    Font shape `TU/latinmodern-math.otf(2)/m/n' will be scaled </tspan>
-<tspan x="0" dy="1.2em">&nbsp;&nbsp;to size 12.00018pt on input line 91.</tspan>
+<tspan x="0" dy="1.2em">&#160;&#160;to size 12.00018pt on input line 91.</tspan>
 <tspan x="0" dy="1.2em">LaTeX Font Info:    Font shape `TU/latinmodern-math.otf(2)/m/n' will be scaled </tspan>
-<tspan x="0" dy="1.2em">&nbsp;&nbsp;to size 8.41495pt on input line 91.</tspan>
+<tspan x="0" dy="1.2em">&#160;&#160;to size 8.41495pt on input line 91.</tspan>
 <tspan x="0" dy="1.2em">LaTeX Font Info:    Font shape `TU/latinmodern-math.otf(2)/m/n' will be scaled </tspan>
-<tspan x="0" dy="1.2em">&nbsp;&nbsp;to size 5.97696pt on input line 91.</tspan>
+<tspan x="0" dy="1.2em">&#160;&#160;to size 5.97696pt on input line 91.</tspan>
 <tspan x="0" dy="1.2em">LaTeX Font Info:    Font shape `TU/latinmodern-math.otf(3)/m/n' will be scaled </tspan>
-<tspan x="0" dy="1.2em">&nbsp;&nbsp;to size 11.99982pt on input line 91.</tspan>
+<tspan x="0" dy="1.2em">&#160;&#160;to size 11.99982pt on input line 91.</tspan>
 <tspan x="0" dy="1.2em">LaTeX Font Info:    Font shape `TU/latinmodern-math.otf(3)/m/n' will be scaled </tspan>
-<tspan x="0" dy="1.2em">&nbsp;&nbsp;to size 8.41469pt on input line 91.</tspan>
+<tspan x="0" dy="1.2em">&#160;&#160;to size 8.41469pt on input line 91.</tspan>
 <tspan x="0" dy="1.2em">LaTeX Font Info:    Font shape `TU/latinmodern-math.otf(3)/m/n' will be scaled </tspan>
-<tspan x="0" dy="1.2em">&nbsp;&nbsp;to size 5.97679pt on input line 91.</tspan>
+<tspan x="0" dy="1.2em">&#160;&#160;to size 5.97679pt on input line 91.</tspan>
 <tspan x="0" dy="1.2em">LaTeX Font Info:    Font shape `TU/latinmodern-math.otf(2)/m/n' will be scaled </tspan>
-<tspan x="0" dy="1.2em">&nbsp;&nbsp;to size 10.00015pt on input line 165.</tspan>
+<tspan x="0" dy="1.2em">&#160;&#160;to size 10.00015pt on input line 165.</tspan>
 <tspan x="0" dy="1.2em">LaTeX Font Info:    Font shape `TU/latinmodern-math.otf(2)/m/n' will be scaled </tspan>
-<tspan x="0" dy="1.2em">&nbsp;&nbsp;to size 7.0001pt on input line 165.</tspan>
+<tspan x="0" dy="1.2em">&#160;&#160;to size 7.0001pt on input line 165.</tspan>
 <tspan x="0" dy="1.2em">LaTeX Font Info:    Font shape `TU/latinmodern-math.otf(2)/m/n' will be scaled </tspan>
-<tspan x="0" dy="1.2em">&nbsp;&nbsp;to size 5.00008pt on input line 165.</tspan>
+<tspan x="0" dy="1.2em">&#160;&#160;to size 5.00008pt on input line 165.</tspan>
 <tspan x="0" dy="1.2em">LaTeX Font Info:    Font shape `TU/latinmodern-math.otf(3)/m/n' will be scaled </tspan>
-<tspan x="0" dy="1.2em">&nbsp;&nbsp;to size 9.99985pt on input line 165.</tspan>
+<tspan x="0" dy="1.2em">&#160;&#160;to size 9.99985pt on input line 165.</tspan>
 <tspan x="0" dy="1.2em">LaTeX Font Info:    Font shape `TU/latinmodern-math.otf(3)/m/n' will be scaled </tspan>
-<tspan x="0" dy="1.2em">&nbsp;&nbsp;to size 6.9999pt on input line 165.</tspan>
+<tspan x="0" dy="1.2em">&#160;&#160;to size 6.9999pt on input line 165.</tspan>
 <tspan x="0" dy="1.2em">LaTeX Font Info:    Font shape `TU/latinmodern-math.otf(3)/m/n' will be scaled </tspan>
-<tspan x="0" dy="1.2em">&nbsp;&nbsp;to size 4.99992pt on input line 165.</tspan>
+<tspan x="0" dy="1.2em">&#160;&#160;to size 4.99992pt on input line 165.</tspan>
 <tspan x="0" dy="1.2em">LaTeX Font Info:    Font shape `TU/lmtt/bx/n' in size &lt;12&gt; not available Font </tspan>
-<tspan x="0" dy="1.2em">&nbsp;&nbsp;shape `TU/lmtt/b/n' tried instead on input line 2.</tspan>
+<tspan x="0" dy="1.2em">&#160;&#160;shape `TU/lmtt/b/n' tried instead on input line 2.</tspan>
 <tspan x="0" dy="1.2em">LaTeX Font Info:    Font shape `TU/latinmodern-math.otf(2)/m/n' will be scaled </tspan>
-<tspan x="0" dy="1.2em">&nbsp;&nbsp;to size 14.4002pt on input line 235.</tspan>
+<tspan x="0" dy="1.2em">&#160;&#160;to size 14.4002pt on input line 235.</tspan>
 <tspan x="0" dy="1.2em">LaTeX Font Info:    Font shape `TU/latinmodern-math.otf(3)/m/n' will be scaled </tspan>
-<tspan x="0" dy="1.2em">&nbsp;&nbsp;to size 14.39977pt on input line 235.</tspan>
+<tspan x="0" dy="1.2em">&#160;&#160;to size 14.39977pt on input line 235.</tspan>
 <tspan x="0" dy="1.2em">LaTeX Font Info:    Font shape `TU/lmtt/bx/n' in size &lt;10&gt; not available Font </tspan>
-<tspan x="0" dy="1.2em">&nbsp;&nbsp;shape `TU/lmtt/b/n' tried instead on input line 2.</tspan>
-<tspan x="0" dy="1.2em">LaTeX Font Info:    Font shape `TU/lmtt/bx/n' in size &lt;10.95&gt; not available </tspan>
-<tspan x="0" dy="1.2em">&nbsp;&nbsp;Font shape `TU/lmtt/b/n' tried instead on input line 2.</tspan>
+<tspan x="0" dy="1.2em">&#160;&#160;shape `TU/lmtt/b/n' tried instead on input line 2.</tspan>
 <tspan x="0" dy="1.2em">LaTeX Font Info:    Font shape `TU/latinmodern-math.otf(2)/m/n' will be scaled </tspan>
-<tspan x="0" dy="1.2em">&nbsp;&nbsp;to size 10.95015pt on input line 4.</tspan>
+<tspan x="0" dy="1.2em">&#160;&#160;to size 24.88037pt on input line 1.</tspan>
 <tspan x="0" dy="1.2em">LaTeX Font Info:    Font shape `TU/latinmodern-math.otf(2)/m/n' will be scaled </tspan>
-<tspan x="0" dy="1.2em">&nbsp;&nbsp;to size 8.00012pt on input line 4.</tspan>
+<tspan x="0" dy="1.2em">&#160;&#160;to size 20.74031pt on input line 1.</tspan>
 <tspan x="0" dy="1.2em">LaTeX Font Info:    Font shape `TU/latinmodern-math.otf(2)/m/n' will be scaled </tspan>
-<tspan x="0" dy="1.2em">&nbsp;&nbsp;to size 6.00009pt on input line 4.</tspan>
+<tspan x="0" dy="1.2em">&#160;&#160;to size 17.28026pt on input line 1.</tspan>
 <tspan x="0" dy="1.2em">LaTeX Font Info:    Font shape `TU/latinmodern-math.otf(3)/m/n' will be scaled </tspan>
-<tspan x="0" dy="1.2em">&nbsp;&nbsp;to size 10.94983pt on input line 4.</tspan>
+<tspan x="0" dy="1.2em">&#160;&#160;to size 24.87962pt on input line 1.</tspan>
 <tspan x="0" dy="1.2em">LaTeX Font Info:    Font shape `TU/latinmodern-math.otf(3)/m/n' will be scaled </tspan>
-<tspan x="0" dy="1.2em">&nbsp;&nbsp;to size 7.99988pt on input line 4.</tspan>
+<tspan x="0" dy="1.2em">&#160;&#160;to size 20.73969pt on input line 1.</tspan>
 <tspan x="0" dy="1.2em">LaTeX Font Info:    Font shape `TU/latinmodern-math.otf(3)/m/n' will be scaled </tspan>
-<tspan x="0" dy="1.2em">&nbsp;&nbsp;to size 5.99991pt on input line 4.</tspan>
-<tspan x="0" dy="1.2em">LaTeX Font Info:    Font shape `TU/lmtt/bx/n' in size &lt;17.28&gt; not available </tspan>
-<tspan x="0" dy="1.2em">&nbsp;&nbsp;Font shape `TU/lmtt/b/n' tried instead on input line 1364.</tspan>
-<tspan x="0" dy="1.2em">LaTeX Font Info:    Font shape `TU/latinmodern-math.otf(2)/m/n' will be scaled </tspan>
-<tspan x="0" dy="1.2em">&nbsp;&nbsp;to size 24.88037pt on input line 1.</tspan>
-<tspan x="0" dy="1.2em">LaTeX Font Info:    Font shape `TU/latinmodern-math.otf(2)/m/n' will be scaled </tspan>
-<tspan x="0" dy="1.2em">&nbsp;&nbsp;to size 20.74031pt on input line 1.</tspan>
-<tspan x="0" dy="1.2em">LaTeX Font Info:    Font shape `TU/latinmodern-math.otf(2)/m/n' will be scaled </tspan>
-<tspan x="0" dy="1.2em">&nbsp;&nbsp;to size 17.28026pt on input line 1.</tspan>
-<tspan x="0" dy="1.2em">LaTeX Font Info:    Font shape `TU/latinmodern-math.otf(3)/m/n' will be scaled </tspan>
-<tspan x="0" dy="1.2em">&nbsp;&nbsp;to size 24.87962pt on input line 1.</tspan>
-<tspan x="0" dy="1.2em">LaTeX Font Info:    Font shape `TU/latinmodern-math.otf(3)/m/n' will be scaled </tspan>
-<tspan x="0" dy="1.2em">&nbsp;&nbsp;to size 20.73969pt on input line 1.</tspan>
-<tspan x="0" dy="1.2em">LaTeX Font Info:    Font shape `TU/latinmodern-math.otf(3)/m/n' will be scaled </tspan>
-<tspan x="0" dy="1.2em">&nbsp;&nbsp;to size 17.27972pt on input line 1.</tspan>
+<tspan x="0" dy="1.2em">&#160;&#160;to size 17.27972pt on input line 1.</tspan>
 <tspan x="0" dy="1.2em">LaTeX Font Info:    No file TUcmr.fd. on input line 749.</tspan>
 <tspan x="0" dy="1.2em">LaTeX Font Info:    Encoding `OT1' has changed to `TU' for symbol font </tspan>
-<tspan x="0" dy="1.2em">&nbsp;&nbsp;`operators' in the math version `normal' on input line 91.</tspan>
+<tspan x="0" dy="1.2em">&#160;&#160;`operators' in the math version `normal' on input line 91.</tspan>
 <tspan x="0" dy="1.2em">LaTeX Font Info:    Encoding `OT1' has changed to `TU' for symbol font </tspan>
-<tspan x="0" dy="1.2em">&nbsp;&nbsp;`operators' in the math version `bold' on input line 91.</tspan>
+<tspan x="0" dy="1.2em">&#160;&#160;`operators' in the math version `bold' on input line 91.</tspan>
 <tspan x="0" dy="1.2em">LaTeX Font Info:    Encoding `OMS' has changed to `TU' for symbol font </tspan>
-<tspan x="0" dy="1.2em">&nbsp;&nbsp;`symbols' in the math version `normal' on input line 91.</tspan>
+<tspan x="0" dy="1.2em">&#160;&#160;`symbols' in the math version `normal' on input line 91.</tspan>
 <tspan x="0" dy="1.2em">LaTeX Font Info:    Encoding `OMS' has changed to `TU' for symbol font </tspan>
-<tspan x="0" dy="1.2em">&nbsp;&nbsp;`symbols' in the math version `bold' on input line 91.</tspan>
+<tspan x="0" dy="1.2em">&#160;&#160;`symbols' in the math version `bold' on input line 91.</tspan>
 <tspan x="0" dy="1.2em">LaTeX Font Info:    Encoding `OMX' has changed to `TU' for symbol font </tspan>
-<tspan x="0" dy="1.2em">&nbsp;&nbsp;`largesymbols' in the math version `normal' on input line 91.</tspan>
+<tspan x="0" dy="1.2em">&#160;&#160;`largesymbols' in the math version `normal' on input line 91.</tspan>
 <tspan x="0" dy="1.2em">LaTeX Font Info:    Encoding `OMX' has changed to `TU' for symbol font </tspan>
-<tspan x="0" dy="1.2em">&nbsp;&nbsp;`largesymbols' in the math version `bold' on input line 91.</tspan>
+<tspan x="0" dy="1.2em">&#160;&#160;`largesymbols' in the math version `bold' on input line 91.</tspan>
 <tspan x="0" dy="1.2em">luaotfload | aux : font no 37 (nil) does not define feature smcp for script </tspan>
-<tspan x="0" dy="1.2em">&nbsp;&nbsp;math with language dflt</tspan>
+<tspan x="0" dy="1.2em">&#160;&#160;math with language dflt</tspan>
 <tspan x="0" dy="1.2em">luaotfload | aux : no font with id 37</tspan>
+<tspan x="0" dy="1.2em">No file rewriting.aux.</tspan>
 <tspan x="0" dy="1.2em">Package pgfplots notification 'compat/show suggested version=true': document </tspan>
-<tspan x="0" dy="1.2em">&nbsp;&nbsp;has been generated with the most recent feature set (\pgfplotsset{compat=1.15}).</tspan>
+<tspan x="0" dy="1.2em">&#160;&#160;has been generated with the most recent feature set (\pgfplotsset{compat=1.15}).</tspan>
 <tspan x="0" dy="1.2em">[1</tspan>
-<tspan x="0" dy="1.2em">[1</tspan>
-<tspan x="0" dy="1.2em">Non-PDF special ignored!</tspan>
-<tspan x="0" dy="1.2em">] [2</tspan>
+<tspan x="0" dy="1.2em">) [1</tspan>
+<tspan x="0" dy="1.2em">Non-PDF special ignored!]</tspan>
+<tspan x="0" dy="1.2em">[2</tspan>
+<tspan x="0" dy="1.2em">] [4</tspan>
 <tspan x="0" dy="1.2em">) [5</tspan>
 <tspan x="0" dy="1.2em">] [6]</tspan>
 <tspan x="0" dy="1.2em">Underfull \vbox (badness 10000) has occurred while \output is active []</tspan>
@@ -649,106 +664,106 @@
 <tspan x="0" dy="1.2em">]) [8]</tspan>
 <tspan x="0" dy="1.2em">Overfull \hbox (41.52351pt too wide) in paragraph at lines 105--1</tspan>
 <tspan x="0" dy="1.2em">\TU/lmtt/m/n/12 </tspan>
-<tspan x="0" dy="1.2em">&nbsp;&nbsp;//libraries.mit.edu/wp-[]content/uploads/2019/08/umi-[]proquest-[]form.pdf$[]\TU</tspan>
-<tspan x="0" dy="1.2em">&nbsp;&nbsp;/lmr/m/n/12 ][] [][\TU/lmr/bx/n/12 TODO:</tspan>
+<tspan x="0" dy="1.2em">&#160;&#160;//libraries.mit.edu/wp-[]content/uploads/2019/08/umi-[]proquest-[]form.pdf$[]\TU</tspan>
+<tspan x="0" dy="1.2em">&#160;&#160;/lmr/m/n/12 ][] [][\TU/lmr/bx/n/12 TODO:</tspan>
 <tspan x="0" dy="1.2em"> []</tspan>
 <tspan x="0" dy="1.2em">Overfull \hbox (147.23547pt too wide) in paragraph at lines 105--1</tspan>
 <tspan x="0" dy="1.2em">\TU/lmr/m/n/12 11:15 gmail []$\TU/lmtt/m/n/12 </tspan>
-<tspan x="0" dy="1.2em">&nbsp;&nbsp;https://mail.google.com/mail/u/0/#search/andras/QgrcJHrnvrhWwVxKMQFsctxrGQxvPrtf</tspan>
-<tspan x="0" dy="1.2em">&nbsp;&nbsp;lgB$[]\TU/lmr/m/n/12 )][]</tspan>
+<tspan x="0" dy="1.2em">&#160;&#160;https://mail.google.com/mail/u/0/#search/andras/QgrcJHrnvrhWwVxKMQFsctxrGQxvPrtf</tspan>
+<tspan x="0" dy="1.2em">&#160;&#160;lgB$[]\TU/lmr/m/n/12 )][]</tspan>
 <tspan x="0" dy="1.2em"> []</tspan>
 <tspan x="0" dy="1.2em">[9</tspan>
 <tspan x="0" dy="1.2em">]</tspan>
-<tspan x="0" dy="1.2em">) [14]</tspan>
-<tspan x="0" dy="1.2em">[15</tspan>
-<tspan x="0" dy="1.2em">] [16</tspan>
+<tspan x="0" dy="1.2em">) [13]</tspan>
+<tspan x="0" dy="1.2em">[14</tspan>
+<tspan x="0" dy="1.2em">] [15</tspan>
 <tspan x="0" dy="1.2em">]</tspan>
-<tspan x="0" dy="1.2em">] [18</tspan>
 <tspan x="0" dy="1.2em">]</tspan>
 <tspan x="0" dy="1.2em">Chapter 1.</tspan>
 <tspan x="0" dy="1.2em">Overfull \hbox (93.09636pt too wide) in paragraph at lines 28--35</tspan>
 <tspan x="0" dy="1.2em">\TU/lmr/m/n/12 </tspan>
-<tspan x="0" dy="1.2em">&nbsp;&nbsp;to-ry/tech/2019/07/19/amazon-prime-day-error-sold-13-000-camera-equipment-94-rep</tspan>
-<tspan x="0" dy="1.2em">&nbsp;&nbsp;ort/1775314001/,</tspan>
+<tspan x="0" dy="1.2em">&#160;&#160;to-ry/tech/2019/07/19/amazon-prime-day-error-sold-13-000-camera-equipment-94-rep</tspan>
+<tspan x="0" dy="1.2em">&#160;&#160;ort/1775314001/,</tspan>
 <tspan x="0" dy="1.2em"> []</tspan>
 <tspan x="0" dy="1.2em">Overfull \hbox (60.55226pt too wide) in paragraph at lines 28--35</tspan>
 <tspan x="0" dy="1.2em">\TU/lmr/m/n/12 </tspan>
-<tspan x="0" dy="1.2em">&nbsp;&nbsp;https://www.the-guardian.com/-money/2014/dec/14/amazon-glitch-prices-penny-repri</tspan>
-<tspan x="0" dy="1.2em">&nbsp;&nbsp;cerexpress,</tspan>
+<tspan x="0" dy="1.2em">&#160;&#160;https://www.the-guardian.com/-money/2014/dec/14/amazon-glitch-prices-penny-repri</tspan>
+<tspan x="0" dy="1.2em">&#160;&#160;cerexpress,</tspan>
 <tspan x="0" dy="1.2em"> []</tspan>
 <tspan x="0" dy="1.2em">Overfull \hbox (7.66692pt too wide) in paragraph at lines 28--35</tspan>
 <tspan x="0" dy="1.2em">\TU/lmr/m/n/12 bugs-fdiv-bug][] [][\TU/lmr/bx/n/12 TODO: \TU/lmr/m/n/12 should </tspan>
-<tspan x="0" dy="1.2em">&nbsp;&nbsp;I pull from https://x-avier-leroy.org/talks/Milner-award-</tspan>
+<tspan x="0" dy="1.2em">&#160;&#160;I pull from https://x-avier-leroy.org/talks/Milner-award-</tspan>
 <tspan x="0" dy="1.2em"> []</tspan>
 <tspan x="0" dy="1.2em">Overfull \hbox (15.79704pt too wide) in paragraph at lines 36--43</tspan>
 <tspan x="0" dy="1.2em">[]\TU/lmr/m/n/12 While test-ing of var-i-ous kinds is widely used to catch </tspan>
-<tspan x="0" dy="1.2em">&nbsp;&nbsp;bugs, itM-bM-^@M-^Ys quite costly [][\TU/lmr/bx/n/12 QUESTION</tspan>
+<tspan x="0" dy="1.2em">&#160;&#160;bugs, itM-bM-^@M-^Ys quite costly [][\TU/lmr/bx/n/12 QUESTION</tspan>
+<tspan x="0" dy="1.2em"> []</tspan>
+<tspan x="0" dy="1.2em">Underfull \vbox (badness 10000) has occurred while \output is active []</tspan>
+<tspan x="0" dy="1.2em"> [17</tspan>
+<tspan x="0" dy="1.2em">]</tspan>
+<tspan x="0" dy="1.2em">Underfull \vbox (badness 10000) has occurred while \output is active []</tspan>
+<tspan x="0" dy="1.2em"> [18]</tspan>
+<tspan x="0" dy="1.2em">Overfull \hbox (174.85077pt too wide) in paragraph at lines 88--92</tspan>
+<tspan x="0" dy="1.2em">\TU/lmr/m/n/12 crypto???, fly-spec, 4-color-theorem, odd-order-theorem)][] </tspan>
+<tspan x="0" dy="1.2em">&#160;&#160;[][\TU/lmr/bx/n/12 TODO: \TU/lmr/m/n/12 </tspan>
+<tspan x="0" dy="1.2em">&#160;&#160;https://www.eeweb.com/profile/adarbari/articles/a-</tspan>
 <tspan x="0" dy="1.2em"> []</tspan>
 <tspan x="0" dy="1.2em">Underfull \vbox (badness 10000) has occurred while \output is active []</tspan>
 <tspan x="0" dy="1.2em"> [19]</tspan>
-<tspan x="0" dy="1.2em">Underfull \vbox (badness 10000) has occurred while \output is active []</tspan>
-<tspan x="0" dy="1.2em"> [20]</tspan>
-<tspan x="0" dy="1.2em">Overfull \hbox (174.85077pt too wide) in paragraph at lines 88--92</tspan>
-<tspan x="0" dy="1.2em">\TU/lmr/m/n/12 crypto???, fly-spec, 4-color-theorem, odd-order-theorem)][] </tspan>
-<tspan x="0" dy="1.2em">&nbsp;&nbsp;[][\TU/lmr/bx/n/12 TODO: \TU/lmr/m/n/12 </tspan>
-<tspan x="0" dy="1.2em">&nbsp;&nbsp;https://www.eeweb.com/profile/adarbari/articles/a-</tspan>
-<tspan x="0" dy="1.2em"> []</tspan>
-<tspan x="0" dy="1.2em">Underfull \vbox (badness 10000) has occurred while \output is active []</tspan>
-<tspan x="0" dy="1.2em"> [21]</tspan>
-<tspan x="0" dy="1.2em">[22]</tspan>
+<tspan x="0" dy="1.2em">[20]</tspan>
 <tspan x="0" dy="1.2em">Overfull \hbox (2.7487pt too wide) in paragraph at lines 141--155</tspan>
 <tspan x="0" dy="1.2em">\TU/lmr/m/n/12 the smalltt repo, but thereM-bM-^@M-^Ys a sim-pli-fied </tspan>
-<tspan x="0" dy="1.2em">&nbsp;&nbsp;([]$\TU/lmtt/m/n/12 https://gist.github.com/AndrasKovacs/</tspan>
+<tspan x="0" dy="1.2em">&#160;&#160;([]$\TU/lmtt/m/n/12 https://gist.github.com/AndrasKovacs/</tspan>
 <tspan x="0" dy="1.2em"> []</tspan>
-<tspan x="0" dy="1.2em">[23] [24]</tspan>
+<tspan x="0" dy="1.2em">[21] [22]</tspan>
 <tspan x="0" dy="1.2em">Overfull \hbox (7.5715pt too wide) in paragraph at lines 175--181</tspan>
 <tspan x="0" dy="1.2em">\TU/lmtt/m/n/12 </tspan>
-<tspan x="0" dy="1.2em">&nbsp;&nbsp;3466976/online-[]reference-[]book-[]for-[]implementing-[]concepts-[]in-[]type-[]</tspan>
-<tspan x="0" dy="1.2em">&nbsp;&nbsp;theory$[]\TU/lmr/m/n/12 ][]</tspan>
+<tspan x="0" dy="1.2em">&#160;&#160;3466976/online-[]reference-[]book-[]for-[]implementing-[]concepts-[]in-[]type-[]</tspan>
+<tspan x="0" dy="1.2em">&#160;&#160;theory$[]\TU/lmr/m/n/12 ][]</tspan>
 <tspan x="0" dy="1.2em"> []</tspan>
 <tspan x="0" dy="1.2em">Overfull \hbox (234.7194pt too wide) in paragraph at lines 175--181</tspan>
 <tspan x="0" dy="1.2em">[]\TU/lmr/m/n/12 [\TU/lmr/bx/n/12 TODO: \TU/lmr/m/n/12 look at </tspan>
-<tspan x="0" dy="1.2em">&nbsp;&nbsp;[]$\TU/lmtt/m/n/12 </tspan>
-<tspan x="0" dy="1.2em">&nbsp;&nbsp;https://github.com/AndrasKovacs/elaboration-[]zoo/blob/0c7f8a676c0964cc05c247879</tspan>
-<tspan x="0" dy="1.2em">&nbsp;&nbsp;393e97729f59e5b/</tspan>
+<tspan x="0" dy="1.2em">&#160;&#160;[]$\TU/lmtt/m/n/12 </tspan>
+<tspan x="0" dy="1.2em">&#160;&#160;https://github.com/AndrasKovacs/elaboration-[]zoo/blob/0c7f8a676c0964cc05c247879</tspan>
+<tspan x="0" dy="1.2em">&#160;&#160;393e97729f59e5b/</tspan>
 <tspan x="0" dy="1.2em"> []</tspan>
 <tspan x="0" dy="1.2em">Overfull \hbox (21.10396pt too wide) in paragraph at lines 175--181</tspan>
 <tspan x="0" dy="1.2em">\TU/lmtt/m/n/12 Meetings/Kovacs_slides.pdf$[]\TU/lmr/m/n/12 ][] Kon-rad Slind </tspan>
-<tspan x="0" dy="1.2em">&nbsp;&nbsp;wrote: [][\TU/lmr/bx/n/12 TODO: \TU/lmr/m/n/12 read Bar-ras [[]25[]]][] </tspan>
-<tspan x="0" dy="1.2em">&nbsp;&nbsp;[][\TU/lmr/bx/n/12 TODO:</tspan>
+<tspan x="0" dy="1.2em">&#160;&#160;wrote: [][\TU/lmr/bx/n/12 TODO: \TU/lmr/m/n/12 read Bar-ras [[]25[]]][] </tspan>
+<tspan x="0" dy="1.2em">&#160;&#160;[][\TU/lmr/bx/n/12 TODO:</tspan>
 <tspan x="0" dy="1.2em"> []</tspan>
-<tspan x="0" dy="1.2em">) [25]</tspan>
+<tspan x="0" dy="1.2em">) [23]</tspan>
 <tspan x="0" dy="1.2em">]</tspan>
 <tspan x="0" dy="1.2em">Chapter 2.</tspan>
 <tspan x="0" dy="1.2em">Overfull \hbox (161.06018pt too wide) in paragraph at lines 7--13</tspan>
 <tspan x="0" dy="1.2em">[]\TU/lmr/m/n/12 The widespread com-mon-sense in per-for-mance </tspan>
-<tspan x="0" dy="1.2em">&nbsp;&nbsp;en-gi-neer-ing[[]]</tspan>
+<tspan x="0" dy="1.2em">&#160;&#160;en-gi-neer-ing[[]]</tspan>
 <tspan x="0" dy="1.2em"> []</tspan>
-<tspan x="0" dy="1.2em">[27]</tspan>
+<tspan x="0" dy="1.2em">[25]</tspan>
 <tspan x="0" dy="1.2em">Overfull \hbox (14.89865pt too wide) in paragraph at lines 50--71</tspan>
 <tspan x="0" dy="1.2em">[][] </tspan>
 <tspan x="0" dy="1.2em"> []</tspan>
 <tspan x="0" dy="1.2em">Underfull \vbox (badness 10000) has occurred while \output is active []</tspan>
-<tspan x="0" dy="1.2em"> [28]</tspan>
+<tspan x="0" dy="1.2em"> [26]</tspan>
 <tspan x="0" dy="1.2em">Underfull \vbox (badness 10000) has occurred while \output is active []</tspan>
-<tspan x="0" dy="1.2em">[31] (./fiat-crypto-perf-logs/montgomery-fesub-after.txt)</tspan>
+<tspan x="0" dy="1.2em">[29] (./fiat-crypto-perf-logs/montgomery-fesub-after.txt)</tspan>
 <tspan x="0" dy="1.2em">Overfull \hbox (4.84007pt too wide) in paragraph at lines 168--190</tspan>
 <tspan x="0" dy="1.2em">[][] </tspan>
 <tspan x="0" dy="1.2em"> []</tspan>
-<tspan x="0" dy="1.2em">[32] [33&lt;./jgross-thesis-chap2-perf-degredation-survey-figure2.pdf&gt;] </tspan>
-<tspan x="0" dy="1.2em">&nbsp;&nbsp;[34&lt;./jgross-thesis-chap2-perf-degredation-survey-figure3.pdf&gt;]</tspan>
-<tspan x="0" dy="1.2em">[35]</tspan>
+<tspan x="0" dy="1.2em">[30] [31&lt;./jgross-thesis-chap2-perf-degredation-survey-figure2.pdf&gt;] </tspan>
+<tspan x="0" dy="1.2em">&#160;&#160;[32&lt;./jgross-thesis-chap2-perf-degredation-survey-figure3.pdf&gt;]</tspan>
+<tspan x="0" dy="1.2em">[33]</tspan>
 <tspan x="0" dy="1.2em">Overfull \hbox (60.98026pt too wide) in paragraph at lines 324--1</tspan>
 <tspan x="0" dy="1.2em">\TU/lmr/m/n/12 The first op-tion re-quires that the proof as-sis-tant </tspan>
-<tspan x="0" dy="1.2em">&nbsp;&nbsp;im-ple-ment struc-tural typ-ing [[]]</tspan>
+<tspan x="0" dy="1.2em">&#160;&#160;im-ple-ment struc-tural typ-ing [[]]</tspan>
 <tspan x="0" dy="1.2em"> []</tspan>
-<tspan x="0" dy="1.2em">[36] [37&lt;./jgross-thesis-chap2-perf-degredation-survey-figure4.pdf&gt;] </tspan>
-<tspan x="0" dy="1.2em">&nbsp;&nbsp;[38&lt;./jgross-thesis-chap2-perf-degredation-survey-figure5.pdf&gt;])</tspan>
+<tspan x="0" dy="1.2em">[34] [35&lt;./jgross-thesis-chap2-perf-degredation-survey-figure4.pdf&gt;] </tspan>
+<tspan x="0" dy="1.2em">&#160;&#160;[36&lt;./jgross-thesis-chap2-perf-degredation-survey-figure5.pdf&gt;])</tspan>
 <tspan x="0" dy="1.2em">Overfull \hbox (134.0441pt too wide) in paragraph at lines 333--337</tspan>
 <tspan x="0" dy="1.2em">\TU/lmtt/m/n/12 nat \TU/lmr/m/n/12 and \TU/lmtt/m/n/12 bool \TU/lmr/m/n/12 are </tspan>
-<tspan x="0" dy="1.2em">&nbsp;&nbsp;not the same. I have re-quested this fea-ture in [[]].</tspan>
+<tspan x="0" dy="1.2em">&#160;&#160;not the same. I have re-quested this fea-ture in [[]].</tspan>
 <tspan x="0" dy="1.2em"> []</tspan>
-<tspan x="0" dy="1.2em">[39] (./performance-experiments/conj-True-let-ltac2.txt)</tspan>
+<tspan x="0" dy="1.2em">[37] (./performance-experiments/conj-True-let-ltac2.txt)</tspan>
 <tspan x="0" dy="1.2em">Overfull \hbox (4.53596pt too wide) in paragraph at lines 375--408</tspan>
 <tspan x="0" dy="1.2em">[][] </tspan>
 <tspan x="0" dy="1.2em"> []</tspan>
@@ -757,17 +772,17 @@
 <tspan x="0" dy="1.2em"> []</tspan>
 <tspan x="0" dy="1.2em">Overfull \hbox (19.01999pt too wide) in paragraph at lines 450--455</tspan>
 <tspan x="0" dy="1.2em">\TU/lmr/bx/n/12 FOR ADAM: \TU/lmr/m/n/12 WhatM-bM-^@M-^Ys the sug-gested way of </tspan>
-<tspan x="0" dy="1.2em">&nbsp;&nbsp;pretty-printing typ-ing rules?][] [][\TU/lmr/bx/n/12 QUESTION</tspan>
+<tspan x="0" dy="1.2em">&#160;&#160;pretty-printing typ-ing rules?][] [][\TU/lmr/bx/n/12 QUESTION</tspan>
 <tspan x="0" dy="1.2em"> []</tspan>
-<tspan x="0" dy="1.2em">[40&lt;./jgross-thesis-chap2-perf-degredation-survey-figure6.pdf&gt;] </tspan>
-<tspan x="0" dy="1.2em">&nbsp;&nbsp;[41&lt;./jgross-thesis-chap2-perf-degredation-survey-figure7.pdf&gt;]</tspan>
-<tspan x="0" dy="1.2em">[43]</tspan>
+<tspan x="0" dy="1.2em">[38&lt;./jgross-thesis-chap2-perf-degredation-survey-figure6.pdf&gt;] </tspan>
+<tspan x="0" dy="1.2em">&#160;&#160;[39&lt;./jgross-thesis-chap2-perf-degredation-survey-figure7.pdf&gt;]</tspan>
+<tspan x="0" dy="1.2em">[41]</tspan>
 <tspan x="0" dy="1.2em">Overfull \hbox (16.82501pt too wide) in paragraph at lines 573--574</tspan>
 <tspan x="0" dy="1.2em">[]\TU/lmr/m/n/12 How-ever, some seem-ingly rea-son-able de-ci-sions can </tspan>
-<tspan x="0" dy="1.2em">&nbsp;&nbsp;re-sult in type-check-ing tak-ing quadratic</tspan>
+<tspan x="0" dy="1.2em">&#160;&#160;re-sult in type-check-ing tak-ing quadratic</tspan>
 <tspan x="0" dy="1.2em"> []</tspan>
 <tspan x="0" dy="1.2em">Underfull \vbox (badness 10000) has occurred while \output is active []</tspan>
-<tspan x="0" dy="1.2em"> [46]</tspan>
+<tspan x="0" dy="1.2em"> [44]</tspan>
 <tspan x="0" dy="1.2em">Overfull \hbox (25.20618pt too wide) in paragraph at lines 645--667</tspan>
 <tspan x="0" dy="1.2em">[][] </tspan>
 <tspan x="0" dy="1.2em"> []</tspan>
@@ -777,447 +792,183 @@
 <tspan x="0" dy="1.2em">Underfull \vbox (badness 10000) has occurred while \output is active []</tspan>
 <tspan x="0" dy="1.2em">Overfull \hbox (0.47623pt too wide) in paragraph at lines 725--729</tspan>
 <tspan x="0" dy="1.2em">[]\TU/lmr/m/n/12 One pop-u-lar rep-re-sen-ta-tion is the lo-cally name-less </tspan>
-<tspan x="0" dy="1.2em">&nbsp;&nbsp;rep-re-sen-ta-tion. [[]]</tspan>
+<tspan x="0" dy="1.2em">&#160;&#160;rep-re-sen-ta-tion. [[]]</tspan>
 <tspan x="0" dy="1.2em"> []</tspan>
-<tspan x="0" dy="1.2em">[49] (./performance-experiments/do-n-open-constr-True.txt)</tspan>
+<tspan x="0" dy="1.2em">[47] (./performance-experiments/do-n-open-constr-True.txt)</tspan>
 <tspan x="0" dy="1.2em">Underfull \vbox (badness 1158) has occurred while \output is active []</tspan>
 <tspan x="0" dy="1.2em">Overfull \hbox (19.46986pt too wide) in paragraph at lines 825--827</tspan>
 <tspan x="0" dy="1.2em">[]\TU/lmr/m/n/12 Note that this is im-por-tant, for ex-am-ple, if you want to </tspan>
-<tspan x="0" dy="1.2em">&nbsp;&nbsp;avoid the prob-lem of quadratically-</tspan>
+<tspan x="0" dy="1.2em">&#160;&#160;avoid the prob-lem of quadratically-</tspan>
 <tspan x="0" dy="1.2em"> []</tspan>
-<tspan x="0" dy="1.2em">[53] [54&lt;./jgross-thesis-chap2-perf-degredation-survey-figure14.pdf&gt;] </tspan>
-<tspan x="0" dy="1.2em">&nbsp;&nbsp;(./performance-experiments/quadratic-vm-PHOAS.txt)</tspan>
+<tspan x="0" dy="1.2em">[51] [52&lt;./jgross-thesis-chap2-perf-degredation-survey-figure14.pdf&gt;] </tspan>
+<tspan x="0" dy="1.2em">&#160;&#160;(./performance-experiments/quadratic-vm-PHOAS.txt)</tspan>
 <tspan x="0" dy="1.2em">Underfull \vbox (badness 10000) has occurred while \output is active []</tspan>
 <tspan x="0" dy="1.2em">Underfull \vbox (badness 10000) has occurred while \output is active []</tspan>
-<tspan x="0" dy="1.2em"> [57]</tspan>
-<tspan x="0" dy="1.2em">[58]</tspan>
-<tspan x="0" dy="1.2em">) [59] [60</tspan>
+<tspan x="0" dy="1.2em"> [55]</tspan>
+<tspan x="0" dy="1.2em">[56]</tspan>
+<tspan x="0" dy="1.2em">) [57] [58</tspan>
 <tspan x="0" dy="1.2em">]</tspan>
 <tspan x="0" dy="1.2em">Chapter 3.</tspan>
 <tspan x="0" dy="1.2em">Underfull \vbox (badness 10000) has occurred while \output is active []</tspan>
-<tspan x="0" dy="1.2em"> [61</tspan>
+<tspan x="0" dy="1.2em"> [59</tspan>
 <tspan x="0" dy="1.2em">]</tspan>
 <tspan x="0" dy="1.2em">Overfull \hbox (44.22382pt too wide) in paragraph at lines 27--27</tspan>
 <tspan x="0" dy="1.2em">[]\TU/lmr/bx/n/17.28 When And How To Use De-pen-dent Types Painlessly </tspan>
 <tspan x="0" dy="1.2em"> []</tspan>
-<tspan x="0" dy="1.2em">[62]</tspan>
+<tspan x="0" dy="1.2em">[60]</tspan>
 <tspan x="0" dy="1.2em">Overfull \hbox (0.28029pt too wide) in paragraph at lines 59--75</tspan>
 <tspan x="0" dy="1.2em">[]\TU/lmr/m/n/12 Al-though pre-existing for-mal-iza-tions of cat-e-gory </tspan>
-<tspan x="0" dy="1.2em">&nbsp;&nbsp;the-ory in proof as-sis-tants abound [[]11[],</tspan>
+<tspan x="0" dy="1.2em">&#160;&#160;the-ory in proof as-sis-tants abound [[]11[],</tspan>
 <tspan x="0" dy="1.2em"> []</tspan>
-<tspan x="0" dy="1.2em">[63]</tspan>
+<tspan x="0" dy="1.2em">[61]</tspan>
 <tspan x="0" dy="1.2em">Overfull \hbox (11.30377pt too wide) in paragraph at lines 171--171</tspan>
 <tspan x="0" dy="1.2em">[]\TU/lmr/bx/n/14.4 Mov-ing For-ward: Com-pu-ta-tion Rules for Pat-tern Match-</tspan>
 <tspan x="0" dy="1.2em"> []</tspan>
-<tspan x="0" dy="1.2em">[67]</tspan>
-<tspan x="0" dy="1.2em">[68]</tspan>
-<tspan x="0" dy="1.2em"> [69]</tspan>
+<tspan x="0" dy="1.2em">[65]</tspan>
+<tspan x="0" dy="1.2em">[66]</tspan>
+<tspan x="0" dy="1.2em"> [67]</tspan>
 <tspan x="0" dy="1.2em">Underfull \vbox (badness 10000) has occurred while \output is active []</tspan>
-<tspan x="0" dy="1.2em"> [70]</tspan>
+<tspan x="0" dy="1.2em"> [68]</tspan>
 <tspan x="0" dy="1.2em">Underfull \vbox (badness 10000) has occurred while \output is active []</tspan>
-<tspan x="0" dy="1.2em"> [72])</tspan>
+<tspan x="0" dy="1.2em"> [70])</tspan>
 <tspan x="0" dy="1.2em">Overfull \hbox (7.14569pt too wide) in paragraph at lines 387--390</tspan>
 <tspan x="0" dy="1.2em">[]\TU/lmr/m/n/12 We can, how-ever, avoid this cost by turn-ing on prim-i-tive </tspan>
-<tspan x="0" dy="1.2em">&nbsp;&nbsp;pro-jec-tions via \remove@tlig Set Primitive</tspan>
+<tspan x="0" dy="1.2em">&#160;&#160;pro-jec-tions via \remove@tlig Set Primitive</tspan>
 <tspan x="0" dy="1.2em"> []</tspan>
-<tspan x="0" dy="1.2em">) [74] [75&lt;./jgross-thesis-chap3-api-design-figure0.pdf&gt;] </tspan>
-<tspan x="0" dy="1.2em">&nbsp;&nbsp;[76&lt;./jgross-thesis-chap3-api-design-figure1.pdf&gt;] </tspan>
-<tspan x="0" dy="1.2em">&nbsp;&nbsp;[77&lt;./jgross-thesis-chap3-api-design-figure2.pdf&gt;] </tspan>
-<tspan x="0" dy="1.2em">&nbsp;&nbsp;[78&lt;./jgross-thesis-chap3-api-design-figure3.pdf&gt;] </tspan>
-<tspan x="0" dy="1.2em">&nbsp;&nbsp;[79&lt;./jgross-thesis-chap3-api-design-figure4.pdf&gt;] </tspan>
-<tspan x="0" dy="1.2em">&nbsp;&nbsp;[80&lt;./jgross-thesis-chap3-api-design-figure5.pdf&gt;] </tspan>
-<tspan x="0" dy="1.2em">&nbsp;&nbsp;[81&lt;./jgross-thesis-chap3-api-design-figure6.pdf&gt;] [82</tspan>
+<tspan x="0" dy="1.2em">) [72] [73&lt;./jgross-thesis-chap3-api-design-figure0.pdf&gt;] </tspan>
+<tspan x="0" dy="1.2em">&#160;&#160;[74&lt;./jgross-thesis-chap3-api-design-figure1.pdf&gt;] </tspan>
+<tspan x="0" dy="1.2em">&#160;&#160;[75&lt;./jgross-thesis-chap3-api-design-figure2.pdf&gt;] </tspan>
+<tspan x="0" dy="1.2em">&#160;&#160;[76&lt;./jgross-thesis-chap3-api-design-figure3.pdf&gt;] </tspan>
+<tspan x="0" dy="1.2em">&#160;&#160;[77&lt;./jgross-thesis-chap3-api-design-figure4.pdf&gt;] </tspan>
+<tspan x="0" dy="1.2em">&#160;&#160;[78&lt;./jgross-thesis-chap3-api-design-figure5.pdf&gt;] </tspan>
+<tspan x="0" dy="1.2em">&#160;&#160;[79&lt;./jgross-thesis-chap3-api-design-figure6.pdf&gt;] [80</tspan>
 <tspan x="0" dy="1.2em">]</tspan>
 <tspan x="0" dy="1.2em">Chapter 4.</tspan>
 <tspan x="0" dy="1.2em">Underfull \vbox (badness 10000) has occurred while \output is active []</tspan>
-<tspan x="0" dy="1.2em"> [83</tspan>
+<tspan x="0" dy="1.2em"> [81</tspan>
 <tspan x="0" dy="1.2em">]</tspan>
-<tspan x="0" dy="1.2em">[84]</tspan>
+<tspan x="0" dy="1.2em">[82]</tspan>
 <tspan x="0" dy="1.2em">Overfull \hbox (34.23283pt too wide) in paragraph at lines 142--144</tspan>
 <tspan x="0" dy="1.2em">[]\TU/lmr/m/n/12 Given a tac-tic \remove@tlig Reify \TU/lmr/m/n/12 to pro-duce </tspan>
-<tspan x="0" dy="1.2em">&nbsp;&nbsp;a rei-fied term from a \TU/lmtt/b/n/12 nat\TU/lmr/m/n/12 , we can time </tspan>
-<tspan x="0" dy="1.2em">&nbsp;&nbsp;\remove@tlig check_is_even_expr\TU/lmr/m/n/12 .</tspan>
+<tspan x="0" dy="1.2em">&#160;&#160;a rei-fied term from a \TU/lmtt/b/n/12 nat\TU/lmr/m/n/12 , we can time </tspan>
+<tspan x="0" dy="1.2em">&#160;&#160;\remove@tlig check_is_even_expr\TU/lmr/m/n/12 .</tspan>
 <tspan x="0" dy="1.2em"> []</tspan>
 <tspan x="0" dy="1.2em">Overfull \hbox (0.6322pt too wide) in paragraph at lines 145--151</tspan>
 <tspan x="0" dy="1.2em">\TU/lmr/m/n/12 para-met-ric higher-order ab-stract syn-tax (PHOAS) [[]50[]] </tspan>
-<tspan x="0" dy="1.2em">&nbsp;&nbsp;also known as weak HOAS [[]51[]],</tspan>
+<tspan x="0" dy="1.2em">&#160;&#160;also known as weak HOAS [[]51[]],</tspan>
 <tspan x="0" dy="1.2em"> []</tspan>
-<tspan x="0" dy="1.2em">[86]</tspan>
+<tspan x="0" dy="1.2em">[84]</tspan>
 <tspan x="0" dy="1.2em">])</tspan>
-<tspan x="0" dy="1.2em">[90]</tspan>
+<tspan x="0" dy="1.2em">[88]</tspan>
 <tspan x="0" dy="1.2em">Underfull \hbox (badness 1331) in paragraph at lines 476--476</tspan>
 <tspan x="0" dy="1.2em">[]\TU/lmr/m/n/12 Fig-ure 4-3: |Reifi-ca-tion With-out</tspan>
 <tspan x="0" dy="1.2em"> []</tspan>
 <tspan x="0" dy="1.2em">Underfull \hbox (badness 1406) in paragraph at lines 479--484</tspan>
 <tspan x="0" dy="1.2em">[][]\TU/lmr/m/n/12 We have made de-tailed walk-throughs and</tspan>
 <tspan x="0" dy="1.2em"> []</tspan>
-<tspan x="0" dy="1.2em">[95]</tspan>
-<tspan x="0" dy="1.2em">) [96]</tspan>
+<tspan x="0" dy="1.2em">[93]</tspan>
+<tspan x="0" dy="1.2em">) [94]</tspan>
 <tspan x="0" dy="1.2em">Chapter 5.</tspan>
-<tspan x="0" dy="1.2em">[97</tspan>
-<tspan x="0" dy="1.2em">]</tspan>
-<tspan x="0" dy="1.2em">Underfull \vbox (badness 10000) has occurred while \output is active []</tspan>
-<tspan x="0" dy="1.2em"> [98]</tspan>
-<tspan x="0" dy="1.2em">Overfull \hbox (3.08109pt too wide) in paragraph at lines 210--216</tspan>
-<tspan x="0" dy="1.2em">[]\TU/lmr/m/n/12 Across a va-ri-ety of proof as-sis-tants, sim-pli-fi-ca-tion </tspan>
-<tspan x="0" dy="1.2em">&nbsp;&nbsp;of func-tional pro-grams is a workhorse</tspan>
-<tspan x="0" dy="1.2em"> []</tspan>
-<tspan x="0" dy="1.2em">[103]</tspan>
-<tspan x="0" dy="1.2em">Underfull \vbox (badness 10000) has occurred while \output is active []</tspan>
-<tspan x="0" dy="1.2em"> [104] </tspan>
-<tspan x="0" dy="1.2em">&nbsp;&nbsp;[105&lt;./rewriting/trust1.pdf&gt;&lt;./rewriting/trust2.pdf&gt;&lt;./rewriting/trust3.pdf&gt;&lt;./r</tspan>
-<tspan x="0" dy="1.2em">&nbsp;&nbsp;ewriting/trust4.pdf&gt;]</tspan>
-<tspan x="0" dy="1.2em">Overfull \hbox (3.11697pt too wide) in paragraph at lines 289--292</tspan>
-<tspan x="0" dy="1.2em">[]\TU/lmr/m/n/12 The state-ments of rewrite rules are rei-fied, and we prove </tspan>
-<tspan x="0" dy="1.2em">&nbsp;&nbsp;sound-ness and syntactic-</tspan>
-<tspan x="0" dy="1.2em"> []</tspan>
-<tspan x="0" dy="1.2em">[106]</tspan>
-<tspan x="0" dy="1.2em">Overfull \hbox (0.87762pt too wide) in paragraph at lines 303--306</tspan>
-<tspan x="0" dy="1.2em">\TU/lmr/m/n/12 plied to the same rei-fied term. We use CoqM-bM-^@M-^Ys built-in full </tspan>
-<tspan x="0" dy="1.2em">&nbsp;&nbsp;re-duc-tion (\remove@tlig vm[]compute\TU/lmr/m/n/12 )</tspan>
-<tspan x="0" dy="1.2em"> []</tspan>
-<tspan x="0" dy="1.2em">[107]</tspan>
-<tspan x="0" dy="1.2em">Overfull \hbox (2.68085pt too wide) in paragraph at lines 354--356</tspan>
-<tspan x="0" dy="1.2em">[]\remove@tlig Switch icases app[]case default\TU/lmr/m/n/12 : With the first </tspan>
-<tspan x="0" dy="1.2em">&nbsp;&nbsp;el-e-ment of the vec-tor, match</tspan>
-<tspan x="0" dy="1.2em"> []</tspan>
-<tspan x="0" dy="1.2em">Overfull \hbox (12.05663pt too wide) in paragraph at lines 356--357</tspan>
-<tspan x="0" dy="1.2em">[]\remove@tlig Swap i cont\TU/lmr/m/n/12 : Swap the first el-e-ment of the </tspan>
-<tspan x="0" dy="1.2em">&nbsp;&nbsp;vec-tor with the $\TU/latinmodern-math.otf(1)/m/n/12 M-pM-^]M-^QM-^V[]$ \TU/lmr/m/n/12 </tspan>
-<tspan x="0" dy="1.2em">&nbsp;&nbsp;el-e-ment (0-indexed)</tspan>
-<tspan x="0" dy="1.2em"> []</tspan>
-<tspan x="0" dy="1.2em">[108] &lt;xymatrix 6x3 441&gt;</tspan>
-<tspan x="0" dy="1.2em">Underfull \vbox (badness 10000) has occurred while \output is active []</tspan>
-<tspan x="0" dy="1.2em"> [110]</tspan>
-<tspan x="0" dy="1.2em">Underfull \vbox (badness 10000) has occurred while \output is active []</tspan>
-<tspan x="0" dy="1.2em"> [111]</tspan>
-<tspan x="0" dy="1.2em">Underfull \vbox (badness 1997) has occurred while \output is active []</tspan>
-<tspan x="0" dy="1.2em"> [114]</tspan>
-<tspan x="0" dy="1.2em">Underfull \vbox (badness 1590) has occurred while \output is active []</tspan>
-<tspan x="0" dy="1.2em"> [117] (./rewriting/perf-UnderLetsPlus0-cbv;rewrite-strat(bottomup).txt) </tspan>
-<tspan x="0" dy="1.2em">&nbsp;&nbsp;(./rewriting/perf-UnderLetsPlus0-cbv;rewrite-strat(topdown).txt) </tspan>
-<tspan x="0" dy="1.2em">&nbsp;&nbsp;(./rewriting/perf-UnderLetsPlus0-cbv;setoid-rewrite.txt) </tspan>
-<tspan x="0" dy="1.2em">&nbsp;&nbsp;(./rewriting/perf-UnderLetsPlus0-Rewrite-for.txt) </tspan>
-<tspan x="0" dy="1.2em">&nbsp;&nbsp;(./rewriting/perf-UnderLetsPlus0-rewriting.txt)</tspan>
-<tspan x="0" dy="1.2em">Underfull \hbox (badness 10000) in paragraph at lines 766--771</tspan>
-<tspan x="0" dy="1.2em">[][] [][]</tspan>
-<tspan x="0" dy="1.2em"> []</tspan>
-<tspan x="0" dy="1.2em">Underfull \vbox (badness 2443) has occurred while \output is active []</tspan>
-<tspan x="0" dy="1.2em"> [122] [123]</tspan>
-<tspan x="0" dy="1.2em">])</tspan>
-<tspan x="0" dy="1.2em">Underfull \hbox (badness 10000) in paragraph at lines 1027--1030</tspan>
-<tspan x="0" dy="1.2em">[][] [][]</tspan>
-<tspan x="0" dy="1.2em"> []</tspan>
-<tspan x="0" dy="1.2em">Underfull \hbox (badness 10000) in paragraph at lines 1061--1065</tspan>
-<tspan x="0" dy="1.2em">[][] [][]</tspan>
-<tspan x="0" dy="1.2em"> []</tspan>
-<tspan x="0" dy="1.2em">Overfull \hbox (66.77979pt too wide) in paragraph at lines 1158--1162</tspan>
-<tspan x="0" dy="1.2em">\remove@tlig (cbn [list[]rect]; (rewrite[]strat (try repeat bottomup hints </tspan>
-<tspan x="0" dy="1.2em">&nbsp;&nbsp;db1)); (rewrite[]strat</tspan>
-<tspan x="0" dy="1.2em"> []</tspan>
-<tspan x="0" dy="1.2em">Overfull \hbox (3.3011pt too wide) in paragraph at lines 1158--1162</tspan>
-<tspan x="0" dy="1.2em">\remove@tlig (try repeat bottomup hints db2)))\TU/lmr/m/n/12 . Note that the </tspan>
-<tspan x="0" dy="1.2em">&nbsp;&nbsp;rewrit-ing with \remove@tlig lift_let_cons</tspan>
-<tspan x="0" dy="1.2em"> []</tspan>
-<tspan x="0" dy="1.2em">[130] (./rewriting/perf-SieveOfEratosthenes-simpl.txt) </tspan>
-<tspan x="0" dy="1.2em">&nbsp;&nbsp;(./rewriting/perf-SieveOfEratosthenes-cbn.txt) </tspan>
-<tspan x="0" dy="1.2em">&nbsp;&nbsp;(./rewriting/perf-SieveOfEratosthenes-lazy.txt) </tspan>
-<tspan x="0" dy="1.2em">&nbsp;&nbsp;(./rewriting/perf-SieveOfEratosthenes-Rewrite-for.txt) </tspan>
-<tspan x="0" dy="1.2em">&nbsp;&nbsp;(./rewriting/perf-SieveOfEratosthenes-rewriting.txt) </tspan>
-<tspan x="0" dy="1.2em">&nbsp;&nbsp;(./rewriting/perf-SieveOfEratosthenes-cbv.txt) </tspan>
-<tspan x="0" dy="1.2em">&nbsp;&nbsp;(./rewriting/perf-SieveOfEratosthenes-vm-compute.txt) </tspan>
-<tspan x="0" dy="1.2em">&nbsp;&nbsp;(./rewriting/perf-SieveOfEratosthenes-native(2)(real).txt)</tspan>
-<tspan x="0" dy="1.2em">Underfull \hbox (badness 1484) in paragraph at lines 1353--1353</tspan>
-<tspan x="0" dy="1.2em">\TU/cmr/m/n/10 mod-u-lus grows (only word-by-word Mont-</tspan>
-<tspan x="0" dy="1.2em"> []</tspan>
-<tspan x="0" dy="1.2em">Underfull \hbox (badness 1484) in paragraph at lines 1354--1354</tspan>
-<tspan x="0" dy="1.2em">\TU/cmr/m/n/10 mod-u-lus grows (only word-by-word Mont-</tspan>
-<tspan x="0" dy="1.2em"> []</tspan>
-<tspan x="0" dy="1.2em">Underfull \vbox (badness 1082) has occurred while \output is active []</tspan>
-<tspan x="0" dy="1.2em"> [134] </tspan>
-<tspan x="0" dy="1.2em">&nbsp;&nbsp;[135&lt;./jgross-thesis-rewriting-figure19.pdf&gt;&lt;./jgross-thesis-rewriting-figure20.</tspan>
-<tspan x="0" dy="1.2em">&nbsp;&nbsp;pdf&gt;&lt;./jgross-thesis-rewriting-figure21.pdf&gt;&lt;./jgross-thesis-rewriting-figure22.</tspan>
-<tspan x="0" dy="1.2em">&nbsp;&nbsp;pdf&gt;]</tspan>
-<tspan x="0" dy="1.2em">Overfull \hbox (59.4558pt too wide) in paragraph at lines 1372--1374</tspan>
-<tspan x="0" dy="1.2em">[]\TU/lmr/m/n/12 We have at-tached this ex-per-i-ment us-ing []\remove@tlig </tspan>
-<tspan x="0" dy="1.2em">&nbsp;&nbsp;rewrite_strat \TU/lmr/m/n/12 as []\remove@tlig </tspan>
-<tspan x="0" dy="1.2em">&nbsp;&nbsp;fiat_crypto_via_rewrite_strat.v\TU/lmr/m/n/12 ,</tspan>
-<tspan x="0" dy="1.2em"> []</tspan>
-<tspan x="0" dy="1.2em">Overfull \hbox (7.33438pt too wide) in paragraph at lines 1378--1382</tspan>
-<tspan x="0" dy="1.2em">\TU/lmr/m/n/12 ra-phy code as a sup-ple-ment as well. We used Lean ver-sion </tspan>
-<tspan x="0" dy="1.2em">&nbsp;&nbsp;3.4.2, com-mit cbd2b6686ddb,</tspan>
-<tspan x="0" dy="1.2em"> []</tspan>
-<tspan x="0" dy="1.2em">Underfull \vbox (badness 5036) has occurred while \output is active []</tspan>
-<tspan x="0" dy="1.2em"> [136]</tspan>
-<tspan x="0" dy="1.2em">Overfull \hbox (26.96805pt too wide) in paragraph at lines 1396--1399</tspan>
-<tspan x="0" dy="1.2em">[]\TU/lmr/m/n/12 The per-for-mance data for the mi-crobench-marks can be </tspan>
-<tspan x="0" dy="1.2em">&nbsp;&nbsp;re-built us-ing \remove@tlig make perf-SuperFast</tspan>
-<tspan x="0" dy="1.2em"> []</tspan>
-<tspan x="0" dy="1.2em">Overfull \hbox (6.50948pt too wide) in paragraph at lines 1400--1405</tspan>
-<tspan x="0" dy="1.2em"> []</tspan>
-<tspan x="0" dy="1.2em">Overfull \hbox (14.91994pt too wide) in paragraph at lines 1408--1412</tspan>
-<tspan x="0" dy="1.2em">[]\TU/lmr/m/n/12 The rewrite rules used in Fiat Cryp-tog-ra-phy are de-fined </tspan>
-<tspan x="0" dy="1.2em">&nbsp;&nbsp;in \remove@tlig fiat-crypto/src/Rewriter/</tspan>
-<tspan x="0" dy="1.2em"> []</tspan>
-<tspan x="0" dy="1.2em">Overfull \hbox (35.70116pt too wide) in paragraph at lines 1461--1465</tspan>
-<tspan x="0" dy="1.2em">\TU/lmr/m/n/12 file \remove@tlig </tspan>
-<tspan x="0" dy="1.2em">&nbsp;&nbsp;perf[]word[]by[]word[]montgomery.v\TU/lmr/m/n/12 , and in the source files </tspan>
-<tspan x="0" dy="1.2em">&nbsp;&nbsp;\remove@tlig saturated[]solinas.v\TU/lmr/m/n/12 ,</tspan>
-<tspan x="0" dy="1.2em"> []</tspan>
-<tspan x="0" dy="1.2em">Overfull \hbox (224.22025pt too wide) in paragraph at lines 1467--1470</tspan>
-<tspan x="0" dy="1.2em">\remove@tlig </tspan>
-<tspan x="0" dy="1.2em">&nbsp;&nbsp;fiat-crypto/src/Rewriter/PerfTesting/Specific/generated/p2384m2128m296p232m1[][]</tspan>
-<tspan x="0" dy="1.2em">&nbsp;&nbsp;*[][]word[]by[]word[]montgomery[]*\TU/lmr/m/n/12 .</tspan>
-<tspan x="0" dy="1.2em"> []</tspan>
-<tspan x="0" dy="1.2em">Overfull \hbox (2.49203pt too wide) in paragraph at lines 1475--1477</tspan>
-<tspan x="0" dy="1.2em">\TU/lmr/m/n/12 These tac-tics bot-tom out in tac-tics de-fined at the bot-tom </tspan>
-<tspan x="0" dy="1.2em">&nbsp;&nbsp;of \remove@tlig rewriter/src/Rewriter/</tspan>
-<tspan x="0" dy="1.2em"> []</tspan>
-<tspan x="0" dy="1.2em">Overfull \hbox (56.50882pt too wide) in paragraph at lines 1486--1490</tspan>
-<tspan x="0" dy="1.2em">\remove@tlig src/Rewriter/Util/plugins/rewriter[]build.ml \TU/lmr/m/n/12 </tspan>
-<tspan x="0" dy="1.2em">&nbsp;&nbsp;in-vok-ing tac-tics, like \remove@tlig make[]base[]elim</tspan>
-<tspan x="0" dy="1.2em"> []</tspan>
-<tspan x="0" dy="1.2em">Overfull \hbox (7.72444pt too wide) in paragraph at lines 1486--1490</tspan>
-<tspan x="0" dy="1.2em">\TU/lmr/m/n/12 in \remove@tlig </tspan>
-<tspan x="0" dy="1.2em">&nbsp;&nbsp;rewriter/src/Rewriter/Language/IdentifiersBasicGenerate.v\TU/lmr/m/n/12 , on </tspan>
-<tspan x="0" dy="1.2em">&nbsp;&nbsp;goals</tspan>
-<tspan x="0" dy="1.2em"> []</tspan>
-<tspan x="0" dy="1.2em">Overfull \hbox (76.41965pt too wide) in paragraph at lines 1486--1490</tspan>
-<tspan x="0" dy="1.2em">\TU/lmr/m/n/12 headed by con-stants from \remove@tlig </tspan>
-<tspan x="0" dy="1.2em">&nbsp;&nbsp;rewriter/src/Rewriter/Language/IdentifiersBasicLibrary.v\TU/lmr/m/n/12 ,</tspan>
-<tspan x="0" dy="1.2em"> []</tspan>
-<tspan x="0" dy="1.2em">[139]</tspan>
-<tspan x="0" dy="1.2em">Overfull \hbox (41.48393pt too wide) in paragraph at lines 1490--1494</tspan>
-<tspan x="0" dy="1.2em">\remove@tlig src/Rewriter/Util/plugins/rewriter[]build.ml \TU/lmr/m/n/12 which </tspan>
-<tspan x="0" dy="1.2em">&nbsp;&nbsp;in-vokes \remove@tlig make[]rewriter[]all</tspan>
-<tspan x="0" dy="1.2em"> []</tspan>
-<tspan x="0" dy="1.2em">Overfull \hbox (10.06763pt too wide) in paragraph at lines 1490--1494</tspan>
-<tspan x="0" dy="1.2em">\TU/lmr/m/n/12 file \remove@tlig </tspan>
-<tspan x="0" dy="1.2em">&nbsp;&nbsp;rewriter/src/Rewriter/Language/IdentifiersBasicGenerate.v \TU/lmr/m/n/12 and </tspan>
-<tspan x="0" dy="1.2em">&nbsp;&nbsp;also</tspan>
-<tspan x="0" dy="1.2em"> []</tspan>
-<tspan x="0" dy="1.2em">Overfull \hbox (68.90768pt too wide) in paragraph at lines 1490--1494</tspan>
-<tspan x="0" dy="1.2em">\TU/lmr/m/n/12 in the Coq source file found in \remove@tlig </tspan>
-<tspan x="0" dy="1.2em">&nbsp;&nbsp;rewriter/src/Rewriter/Language/IdentifiersGenerate.v</tspan>
-<tspan x="0" dy="1.2em"> []</tspan>
-<tspan x="0" dy="1.2em">Overfull \hbox (3.11697pt too wide) in paragraph at lines 1494--1498</tspan>
-<tspan x="0" dy="1.2em">[]\TU/lmr/m/n/12 The state-ments of rewrite rules are rei-fied, and we prove </tspan>
-<tspan x="0" dy="1.2em">&nbsp;&nbsp;sound-ness and syntactic-</tspan>
-<tspan x="0" dy="1.2em"> []</tspan>
-<tspan x="0" dy="1.2em">Overfull \hbox (13.24908pt too wide) in paragraph at lines 1494--1498</tspan>
-<tspan x="0" dy="1.2em">\remove@tlig Build[]Rewriter \TU/lmr/m/n/12 from \remove@tlig </tspan>
-<tspan x="0" dy="1.2em">&nbsp;&nbsp;rewriter/src/Rewriter/Rewriter/AllTactics.v\TU/lmr/m/n/12 . Reifi-</tspan>
-<tspan x="0" dy="1.2em"> []</tspan>
-<tspan x="0" dy="1.2em">Overfull \hbox (144.32993pt too wide) in paragraph at lines 1498--1500</tspan>
-<tspan x="0" dy="1.2em">\TU/lmr/m/n/12 passed by name to the rewrit-ing tac-tic. This step is also </tspan>
-<tspan x="0" dy="1.2em">&nbsp;&nbsp;per-formed by \remove@tlig make[]rewriter[]of[]scraped[]and[]ind</tspan>
-<tspan x="0" dy="1.2em"> []</tspan>
-<tspan x="0" dy="1.2em">Overfull \hbox (4.5518pt too wide) in paragraph at lines 1498--1500</tspan>
-<tspan x="0" dy="1.2em">\TU/lmr/m/n/12 in the source file \remove@tlig </tspan>
-<tspan x="0" dy="1.2em">&nbsp;&nbsp;rewriter/src/Rewriter/Util/plugins/rewriter[]build.ml\TU/lmr/m/n/12 . </tspan>
-<tspan x="0" dy="1.2em"> []</tspan>
-<tspan x="0" dy="1.2em">[140]</tspan>
-<tspan x="0" dy="1.2em">Overfull \hbox (0.87762pt too wide) in paragraph at lines 1512--1516</tspan>
-<tspan x="0" dy="1.2em">\TU/lmr/m/n/12 plied to the same rei-fied term. We use CoqM-bM-^@M-^Ys built-in full </tspan>
-<tspan x="0" dy="1.2em">&nbsp;&nbsp;re-duc-tion (\remove@tlig vm[]compute\TU/lmr/m/n/12 )</tspan>
-<tspan x="0" dy="1.2em"> []</tspan>
-<tspan x="0" dy="1.2em">Overfull \hbox (17.04411pt too wide) in paragraph at lines 1519--1520</tspan>
-<tspan x="0" dy="1.2em">\TU/lmr/m/n/12 These steps are put to-gether in the tac-tic \remove@tlig </tspan>
-<tspan x="0" dy="1.2em">&nbsp;&nbsp;Rewrite[]for[]gen \TU/lmr/m/n/12 in \remove@tlig rewriter/src/Rewriter/</tspan>
-<tspan x="0" dy="1.2em"> []</tspan>
-<tspan x="0" dy="1.2em">[141]</tspan>
-<tspan x="0" dy="1.2em">Overfull \hbox (1.652pt too wide) in paragraph at lines 1555--1558</tspan>
-<tspan x="0" dy="1.2em">\remove@tlig open[]constr:([]) in replace &lt;some term&gt; with v \TU/lmr/m/n/12 </tspan>
-<tspan x="0" dy="1.2em">&nbsp;&nbsp;and then rewrit-ing in the</tspan>
-<tspan x="0" dy="1.2em"> []</tspan>
-<tspan x="0" dy="1.2em">[142]</tspan>
-<tspan x="0" dy="1.2em">Overfull \hbox (20.94002pt too wide) in paragraph at lines 1588--1592</tspan>
-<tspan x="0" dy="1.2em">\remove@tlig InterpProofs.v \TU/lmr/m/n/12 and the the-o-rem \remove@tlig </tspan>
-<tspan x="0" dy="1.2em">&nbsp;&nbsp;wf[]eval[]rewrite[]rules \TU/lmr/m/n/12 in \remove@tlig rewriter/src/Rewriter/</tspan>
-<tspan x="0" dy="1.2em"> []</tspan>
-<tspan x="0" dy="1.2em">Overfull \hbox (42.54831pt too wide) in paragraph at lines 1593--1596</tspan>
-<tspan x="0" dy="1.2em">[]\TU/lmr/m/n/12 The third step of rewrit-ing with a given rule is per-formed </tspan>
-<tspan x="0" dy="1.2em">&nbsp;&nbsp;by the def-i-ni-tion \remove@tlig rewrite[]with[]rule</tspan>
-<tspan x="0" dy="1.2em"> []</tspan>
-<tspan x="0" dy="1.2em">Overfull \hbox (109.94533pt too wide) in paragraph at lines 1593--1596</tspan>
-<tspan x="0" dy="1.2em">\TU/lmr/m/n/12 in \remove@tlig </tspan>
-<tspan x="0" dy="1.2em">&nbsp;&nbsp;rewriter/src/Rewriter/Rewriter/Rewriter.v\TU/lmr/m/n/12 . The cor-rect-ness </tspan>
-<tspan x="0" dy="1.2em">&nbsp;&nbsp;proof is \remove@tlig interp[]rewrite[]with[]rule</tspan>
-<tspan x="0" dy="1.2em"> []</tspan>
-<tspan x="0" dy="1.2em">Overfull \hbox (19.42511pt too wide) in paragraph at lines 1593--1596</tspan>
-<tspan x="0" dy="1.2em">\TU/lmr/m/n/12 in \remove@tlig </tspan>
-<tspan x="0" dy="1.2em">&nbsp;&nbsp;rewriter/src/Rewriter/Rewriter/InterpProofs.v\TU/lmr/m/n/12 . Note that the </tspan>
-<tspan x="0" dy="1.2em">&nbsp;&nbsp;well-formedness-</tspan>
-<tspan x="0" dy="1.2em"> []</tspan>
-<tspan x="0" dy="1.2em">Overfull \hbox (0.18405pt too wide) in paragraph at lines 1593--1596</tspan>
-<tspan x="0" dy="1.2em">\TU/lmr/m/n/12 preservation proof for this def-i-ni-tion in in-lined into the </tspan>
-<tspan x="0" dy="1.2em">&nbsp;&nbsp;proof []\remove@tlig wf_eval_rewrite_rules</tspan>
-<tspan x="0" dy="1.2em"> []</tspan>
-<tspan x="0" dy="1.2em">[143]</tspan>
-<tspan x="0" dy="1.2em">Overfull \hbox (21.50388pt too wide) in paragraph at lines 1597--1598</tspan>
-<tspan x="0" dy="1.2em">[]\TU/lmr/m/n/12 The in-duc-tive de-scrip-tion of de-ci-sion trees is </tspan>
-<tspan x="0" dy="1.2em">&nbsp;&nbsp;[]\remove@tlig decision_tree \TU/lmr/m/n/12 in \remove@tlig </tspan>
-<tspan x="0" dy="1.2em">&nbsp;&nbsp;rewriter/src/Rewriter/</tspan>
-<tspan x="0" dy="1.2em"> []</tspan>
-<tspan x="0" dy="1.2em">Overfull \hbox (2.9199pt too wide) in paragraph at lines 1599--1604</tspan>
-<tspan x="0" dy="1.2em">[]\TU/lmr/m/n/12 The pat-tern lan-guage is de-fined as the in-duc-tive </tspan>
-<tspan x="0" dy="1.2em">&nbsp;&nbsp;[]\remove@tlig pattern \TU/lmr/m/n/12 in \remove@tlig rewriter/src/Rewriter/</tspan>
-<tspan x="0" dy="1.2em"> []</tspan>
-<tspan x="0" dy="1.2em">Overfull \hbox (0.90775pt too wide) in paragraph at lines 1611--1613</tspan>
-<tspan x="0" dy="1.2em">[]\TU/lmr/m/n/12 The func-tions []\remove@tlig reify \TU/lmr/m/n/12 and </tspan>
-<tspan x="0" dy="1.2em">&nbsp;&nbsp;[]\remove@tlig reflect \TU/lmr/m/n/12 are de-fined in \remove@tlig </tspan>
-<tspan x="0" dy="1.2em">&nbsp;&nbsp;rewriter/src/Rewriter/Rewriter/</tspan>
-<tspan x="0" dy="1.2em"> []</tspan>
-<tspan x="0" dy="1.2em">Overfull \hbox (16.51253pt too wide) in paragraph at lines 1618--1621</tspan>
-<tspan x="0" dy="1.2em">\remove@tlig Rewriter/Language/Language.v\TU/lmr/m/n/12 . The def-i-ni-tion </tspan>
-<tspan x="0" dy="1.2em">&nbsp;&nbsp;[]\remove@tlig denoteE \TU/lmr/m/n/12 is []\remove@tlig </tspan>
-<tspan x="0" dy="1.2em">&nbsp;&nbsp;expr.interp\TU/lmr/m/n/12 , and []\remove@tlig DenoteE</tspan>
-<tspan x="0" dy="1.2em"> []</tspan>
-<tspan x="0" dy="1.2em">Overfull \hbox (0.69978pt too wide) in paragraph at lines 1622--1629</tspan>
-<tspan x="0" dy="1.2em">\TU/lmr/m/n/12 are de-fined in \remove@tlig </tspan>
-<tspan x="0" dy="1.2em">&nbsp;&nbsp;rewriter/src/Rewriter/Rewriter/Rewriter.v \TU/lmr/m/n/12 and share names with</tspan>
-<tspan x="0" dy="1.2em"> []</tspan>
-<tspan x="0" dy="1.2em">[144]</tspan>
-<tspan x="0" dy="1.2em">Overfull \hbox (2.32777pt too wide) in paragraph at lines 1630--1631</tspan>
-<tspan x="0" dy="1.2em">[]\TU/lmr/m/n/12 The cor-rect-ness the-o-rems are []\remove@tlig InterpRewrite </tspan>
-<tspan x="0" dy="1.2em">&nbsp;&nbsp;\TU/lmr/m/n/12 in \remove@tlig rewriter/src/Rewriter/Rewriter/</tspan>
-<tspan x="0" dy="1.2em"> []</tspan>
-<tspan x="0" dy="1.2em">Overfull \hbox (58.08812pt too wide) in paragraph at lines 1632--1635</tspan>
-<tspan x="0" dy="1.2em">[]\TU/lmr/m/n/12 Pack-ages con-tain-ing rewrit-ers and their cor-rect-ness </tspan>
-<tspan x="0" dy="1.2em">&nbsp;&nbsp;the-o-rems are in the record []\remove@tlig VerifiedRewriter</tspan>
-<tspan x="0" dy="1.2em"> []</tspan>
-<tspan x="0" dy="1.2em">Overfull \hbox (4.51576pt too wide) in paragraph at lines 1632--1635</tspan>
-<tspan x="0" dy="1.2em">\TU/lmr/m/n/12 then passed to the tac-tic []\remove@tlig Rewrite_for_gen </tspan>
-<tspan x="0" dy="1.2em">&nbsp;&nbsp;\TU/lmr/m/n/12 from \remove@tlig rewriter/src/Rewriter/Rewriter/</tspan>
-<tspan x="0" dy="1.2em"> []</tspan>
-<tspan x="0" dy="1.2em">Overfull \hbox (13.80391pt too wide) in paragraph at lines 1690--1693</tspan>
-<tspan x="0" dy="1.2em">\TU/lmr/m/n/12 port for the reifi-ca-tion of []\remove@tlig ident.literal </tspan>
-<tspan x="0" dy="1.2em">&nbsp;&nbsp;\TU/lmr/m/n/12 (de-fined in the mod-ule []\remove@tlig RewriteRuleNotations</tspan>
-<tspan x="0" dy="1.2em"> []</tspan>
-<tspan x="0" dy="1.2em">Overfull \hbox (3.8532pt too wide) in paragraph at lines 1690--1693</tspan>
-<tspan x="0" dy="1.2em">\TU/lmr/m/n/12 in \remove@tlig </tspan>
-<tspan x="0" dy="1.2em">&nbsp;&nbsp;rewriter/src/Rewriter/Language/Pre.v\TU/lmr/m/n/12 ) threaded through-out the </tspan>
-<tspan x="0" dy="1.2em">&nbsp;&nbsp;rewriter. The</tspan>
-<tspan x="0" dy="1.2em"> []</tspan>
-<tspan x="0" dy="1.2em">Overfull \hbox (35.80785pt too wide) in paragraph at lines 1696--1697</tspan>
-<tspan x="0" dy="1.2em">\TU/lmr/m/n/12 The abstract-interpretation pass is de-fined in \remove@tlig </tspan>
-<tspan x="0" dy="1.2em">&nbsp;&nbsp;fiat-crypto/src/AbstractInterpretation/</tspan>
-<tspan x="0" dy="1.2em"> []</tspan>
-<tspan x="0" dy="1.2em">Overfull \hbox (75.21162pt too wide) in paragraph at lines 1696--1697</tspan>
-<tspan x="0" dy="1.2em">\TU/lmr/m/n/12 tions []\remove@tlig </tspan>
-<tspan x="0" dy="1.2em">&nbsp;&nbsp;arith_with_casts_rewrite_rulesT\TU/lmr/m/n/12 , in ad-di-tion to []\remove@tlig </tspan>
-<tspan x="0" dy="1.2em">&nbsp;&nbsp;strip_literal_casts_rewrite_rulesT\TU/lmr/m/n/12 ,</tspan>
-<tspan x="0" dy="1.2em"> []</tspan>
-<tspan x="0" dy="1.2em">Overfull \hbox (112.25975pt too wide) in paragraph at lines 1696--1697</tspan>
-<tspan x="0" dy="1.2em">\TU/lmr/m/n/12 in ad-di-tion to []\remove@tlig </tspan>
-<tspan x="0" dy="1.2em">&nbsp;&nbsp;fancy_with_casts_rewrite_rulesT\TU/lmr/m/n/12 , and fi-nally in ad-di-tion to </tspan>
-<tspan x="0" dy="1.2em">&nbsp;&nbsp;[]\remove@tlig mul_split_rewrite_rulesT\TU/lmr/m/n/12 ,</tspan>
-<tspan x="0" dy="1.2em"> []</tspan>
-<tspan x="0" dy="1.2em">[146]</tspan>
-<tspan x="0" dy="1.2em">Overfull \hbox (33.09628pt too wide) in paragraph at lines 1710--20</tspan>
-<tspan x="0" dy="1.2em">\remove@tlig IdentifiersBasicGENERATED.v\TU/lmr/m/n/12 , \remove@tlig </tspan>
-<tspan x="0" dy="1.2em">&nbsp;&nbsp;fiat-crypto/src/Language/IdentifiersGENERATED.v\TU/lmr/m/n/12 ,</tspan>
-<tspan x="0" dy="1.2em"> []</tspan>
-<tspan x="0" dy="1.2em">[147]</tspan>
-<tspan x="0" dy="1.2em">]</tspan>
-<tspan x="0" dy="1.2em">Chapter 6.</tspan>
 <tspan x="0" dy="1.2em">Overfull \hbox (267.79004pt too wide) in paragraph at lines 26--26</tspan>
 <tspan x="0" dy="1.2em">[][][]\TU/cmr/m/n/10 See []\TU/lmtt/m/n/10 </tspan>
-<tspan x="0" dy="1.2em">&nbsp;&nbsp;https://github.com/JasonGross/fiat-crypto/blob/3b3e926e4186caa1a4003c81c65dad0a1</tspan>
-<tspan x="0" dy="1.2em">&nbsp;&nbsp;c04b43d/src/Experiments/RewriteRulesSimpleNat.v[]</tspan>
+<tspan x="0" dy="1.2em">&#160;&#160;https://github.com/JasonGross/fiat-crypto/blob/3b3e926e4186caa1a4003c81c65dad0a1</tspan>
+<tspan x="0" dy="1.2em">&#160;&#160;c04b43d/src/Experiments/RewriteRulesSimpleNat.v[]</tspan>
 <tspan x="0" dy="1.2em"> []</tspan>
 <tspan x="0" dy="1.2em">Underfull \hbox (badness 10000) in paragraph at lines 26--26</tspan>
 <tspan x="0" dy="1.2em">\TU/cmr/m/n/10 for the file \TU/lmtt/m/n/10 </tspan>
-<tspan x="0" dy="1.2em">&nbsp;&nbsp;src/Experiments/RewriteRulesSimpleNat.v \TU/cmr/m/n/10 from []the branch</tspan>
+<tspan x="0" dy="1.2em">&#160;&#160;src/Experiments/RewriteRulesSimpleNat.v \TU/cmr/m/n/10 from []the branch</tspan>
 <tspan x="0" dy="1.2em"> []</tspan>
-<tspan x="0" dy="1.2em">[149]</tspan>
-<tspan x="0" dy="1.2em">[156]</tspan>
+<tspan x="0" dy="1.2em">[95</tspan>
+<tspan x="0" dy="1.2em">]</tspan>
+<tspan x="0" dy="1.2em">[96]</tspan>
+<tspan x="0" dy="1.2em">[102]</tspan>
 <tspan x="0" dy="1.2em">Overfull \hbox (2.68085pt too wide) in paragraph at lines 364--366</tspan>
 <tspan x="0" dy="1.2em">[]\remove@tlig Switch icases app[]case default\TU/lmr/m/n/12 : With the first </tspan>
-<tspan x="0" dy="1.2em">&nbsp;&nbsp;el-e-ment of the vec-tor, match</tspan>
+<tspan x="0" dy="1.2em">&#160;&#160;el-e-ment of the vec-tor, match</tspan>
 <tspan x="0" dy="1.2em"> []</tspan>
 <tspan x="0" dy="1.2em">Overfull \hbox (12.05663pt too wide) in paragraph at lines 366--367</tspan>
 <tspan x="0" dy="1.2em">[]\remove@tlig Swap i cont\TU/lmr/m/n/12 : Swap the first el-e-ment of the </tspan>
-<tspan x="0" dy="1.2em">&nbsp;&nbsp;vec-tor with the $\TU/latinmodern-math.otf(1)/m/n/12 M-pM-^]M-^QM-^V[]$ \TU/lmr/m/n/12 </tspan>
-<tspan x="0" dy="1.2em">&nbsp;&nbsp;el-e-ment (0-indexed)</tspan>
+<tspan x="0" dy="1.2em">&#160;&#160;vec-tor with the $\TU/latinmodern-math.otf(1)/m/n/12 M-pM-^]M-^QM-^V[]$ \TU/lmr/m/n/12 </tspan>
+<tspan x="0" dy="1.2em">&#160;&#160;el-e-ment (0-indexed)</tspan>
 <tspan x="0" dy="1.2em"> []</tspan>
-<tspan x="0" dy="1.2em">[157]</tspan>
+<tspan x="0" dy="1.2em">[103]</tspan>
 <tspan x="0" dy="1.2em">Overfull \hbox (11.81952pt too wide) in paragraph at lines 370--371</tspan>
 <tspan x="0" dy="1.2em">\remove@tlig (d : decision_tree) (ts : \TU/lmtt/b/n/12 list \remove@tlig type) </tspan>
-<tspan x="0" dy="1.2em">&nbsp;&nbsp;(es : exprlist ts) (K : exprlist ts</tspan>
+<tspan x="0" dy="1.2em">&#160;&#160;(es : exprlist ts) (K : exprlist ts</tspan>
 <tspan x="0" dy="1.2em"> []</tspan>
-<tspan x="0" dy="1.2em">Underfull \vbox (badness 10000) has occurred while \output is active []</tspan>
-<tspan x="0" dy="1.2em"> [159]</tspan>
-<tspan x="0" dy="1.2em">[160]</tspan>
+<tspan x="0" dy="1.2em">[105]</tspan>
+<tspan x="0" dy="1.2em">[106]</tspan>
 <tspan x="0" dy="1.2em">Overfull \hbox (13.53455pt too wide) in paragraph at lines 495--495</tspan>
 <tspan x="0" dy="1.2em">[]\TU/lmr/bx/n/17.28 Pat-terns with Type Vari-ables -- The Three Kinds</tspan>
 <tspan x="0" dy="1.2em"> []</tspan>
 <tspan x="0" dy="1.2em">Underfull \vbox (badness 1448) has occurred while \output is active []</tspan>
-<tspan x="0" dy="1.2em"> [163]</tspan>
-<tspan x="0" dy="1.2em">[164]</tspan>
+<tspan x="0" dy="1.2em"> [109]</tspan>
+<tspan x="0" dy="1.2em">[110]</tspan>
 <tspan x="0" dy="1.2em">Underfull \vbox (badness 10000) has occurred while \output is active []</tspan>
-<tspan x="0" dy="1.2em"> [165]</tspan>
+<tspan x="0" dy="1.2em"> [111]</tspan>
 <tspan x="0" dy="1.2em">Overfull \hbox (16.9515pt too wide) in paragraph at lines 627--638</tspan>
 <tspan x="0" dy="1.2em">\remove@tlig List.map f xs \TU/lmr/m/n/12 and \remove@tlig @List.map (option </tspan>
-<tspan x="0" dy="1.2em">&nbsp;&nbsp;A) (option B) (option_map f) (List.map</tspan>
+<tspan x="0" dy="1.2em">&#160;&#160;A) (option B) (option_map f) (List.map</tspan>
 <tspan x="0" dy="1.2em"> []</tspan>
+<tspan x="0" dy="1.2em">Underfull \vbox (badness 1163) has occurred while \output is active []</tspan>
+<tspan x="0" dy="1.2em"> [113]</tspan>
 <tspan x="0" dy="1.2em">Overfull \hbox (1.70361pt too wide) in paragraph at lines 714--718</tspan>
 <tspan x="0" dy="1.2em">\TU/lmtt/b/n/12 list \remove@tlig rawexpr) (d : decision_tree) (K : </tspan>
-<tspan x="0" dy="1.2em">&nbsp;&nbsp;|$\TU/latinmodern-math.otf(1)/m/n/12 M-bM-^DM-^U$ |$M-bM-^FM-^R$ \TU/lmtt/b/n/12 list </tspan>
-<tspan x="0" dy="1.2em">&nbsp;&nbsp;\remove@tlig rawexpr |$\TU/latinmodern-math.otf(1)/m/n/12 M-bM-^FM-^R$ \remove@tlig </tspan>
-<tspan x="0" dy="1.2em">&nbsp;&nbsp;option T),</tspan>
+<tspan x="0" dy="1.2em">&#160;&#160;|$\TU/latinmodern-math.otf(1)/m/n/12 M-bM-^DM-^U$ |$M-bM-^FM-^R$ \TU/lmtt/b/n/12 list </tspan>
+<tspan x="0" dy="1.2em">&#160;&#160;\remove@tlig rawexpr |$\TU/latinmodern-math.otf(1)/m/n/12 M-bM-^FM-^R$ \remove@tlig </tspan>
+<tspan x="0" dy="1.2em">&#160;&#160;option T),</tspan>
 <tspan x="0" dy="1.2em"> []</tspan>
 <tspan x="0" dy="1.2em">Overfull \hbox (56.3921pt too wide) in paragraph at lines 769--773</tspan>
 <tspan x="0" dy="1.2em">[]\TU/lmr/m/n/12 The func-tion that rewrites with a par-tic-u-lar rule re-lies </tspan>
-<tspan x="0" dy="1.2em">&nbsp;&nbsp;on the in-vari-ant that \remove@tlig eval_decision_tree</tspan>
+<tspan x="0" dy="1.2em">&#160;&#160;on the in-vari-ant that \remove@tlig eval_decision_tree</tspan>
 <tspan x="0" dy="1.2em"> []</tspan>
-<tspan x="0" dy="1.2em">[170]</tspan>
+<tspan x="0" dy="1.2em">[115]</tspan>
+<tspan x="0" dy="1.2em">Underfull \vbox (badness 10000) has occurred while \output is active []</tspan>
+<tspan x="0" dy="1.2em"> [116]</tspan>
 <tspan x="0" dy="1.2em">Overfull \hbox (18.97015pt too wide) in paragraph at lines 818--827</tspan>
 <tspan x="0" dy="1.2em">\TU/lmr/m/n/12 sound-ness the-o-rem. In []Sec-tion 4.1.3[][], we called this </tspan>
-<tspan x="0" dy="1.2em">&nbsp;&nbsp;the-o-rem \remove@tlig check_is_even_expr_sound\TU/lmr/m/n/12 .</tspan>
+<tspan x="0" dy="1.2em">&#160;&#160;the-o-rem \remove@tlig check_is_even_expr_sound\TU/lmr/m/n/12 .</tspan>
 <tspan x="0" dy="1.2em"> []</tspan>
-<tspan x="0" dy="1.2em">[171]</tspan>
+<tspan x="0" dy="1.2em">[117]</tspan>
 <tspan x="0" dy="1.2em">Overfull \hbox (16.44891pt too wide) in paragraph at lines 866--874</tspan>
-<tspan x="0" dy="1.2em">[]\TU/lmtt/b/n/12 wf_rawexpr[] \TU/lmr/m/n/12 In []Sec-tion 6.5[][], we </tspan>
-<tspan x="0" dy="1.2em">&nbsp;&nbsp;in-tro-duced with-out def-i-ni-tion the four-place \remove@tlig wf_rawexpr</tspan>
+<tspan x="0" dy="1.2em">[]\TU/lmtt/b/n/12 wf_rawexpr[] \TU/lmr/m/n/12 In []Sec-tion 5.5[][], we </tspan>
+<tspan x="0" dy="1.2em">&#160;&#160;in-tro-duced with-out def-i-ni-tion the four-place \remove@tlig wf_rawexpr</tspan>
 <tspan x="0" dy="1.2em"> []</tspan>
-<tspan x="0" dy="1.2em">[172]</tspan>
-<tspan x="0" dy="1.2em">Underfull \vbox (badness 3525) has occurred while \output is active []</tspan>
-<tspan x="0" dy="1.2em"> [173]</tspan>
-<tspan x="0" dy="1.2em">[174]) [175]</tspan>
+<tspan x="0" dy="1.2em">[118]</tspan>
+<tspan x="0" dy="1.2em">[120]) [121]</tspan>
 <tspan x="0" dy="1.2em">]</tspan>
-<tspan x="0" dy="1.2em">Chapter 7.</tspan>
+<tspan x="0" dy="1.2em">Chapter 6.</tspan>
 <tspan x="0" dy="1.2em">Overfull \hbox (21.18825pt too wide) in paragraph at lines 2--3</tspan>
 <tspan x="0" dy="1.2em">[]\TU/lmr/m/n/12 [\TU/lmr/bx/n/12 TODO: \TU/lmr/m/n/12 in-clude the trick from </tspan>
-<tspan x="0" dy="1.2em">&nbsp;&nbsp;https://github.com/-co-q/-co-q/is-sues/5996#issuecomment-</tspan>
+<tspan x="0" dy="1.2em">&#160;&#160;https://github.com/-co-q/-co-q/is-sues/5996#issuecomment-</tspan>
 <tspan x="0" dy="1.2em"> []</tspan>
 <tspan x="0" dy="1.2em">Underfull \vbox (badness 10000) has occurred while \output is active []</tspan>
-<tspan x="0" dy="1.2em"> [177] [178]</tspan>
+<tspan x="0" dy="1.2em"> [123] [124]</tspan>
 <tspan x="0" dy="1.2em">Overfull \hbox (12.23604pt too wide) in paragraph at lines 77--77</tspan>
 <tspan x="0" dy="1.2em">[]       \remove@tlig =&gt; check_is_even n[] </tspan>
 <tspan x="0" dy="1.2em"> []</tspan>
 <tspan x="0" dy="1.2em">Underfull \hbox (badness 10000) in paragraph at lines 81--81</tspan>
-<tspan x="0" dy="1.2em">[]\TU/lmr/m/n/12 Fig-ure 7-1: |Even-ness</tspan>
+<tspan x="0" dy="1.2em">[]\TU/lmr/m/n/12 Fig-ure 6-1: |Even-ness</tspan>
 <tspan x="0" dy="1.2em"> []</tspan>
-<tspan x="0" dy="1.2em">[179]</tspan>
+<tspan x="0" dy="1.2em">[125]</tspan>
 <tspan x="0" dy="1.2em">Overfull \hbox (6.05605pt too wide) in paragraph at lines 113--113</tspan>
 <tspan x="0" dy="1.2em">[]\remove@tlig | NatS (x : expr) : expr[] </tspan>
 <tspan x="0" dy="1.2em"> []</tspan>
 <tspan x="0" dy="1.2em">Overfull \hbox (36.95601pt too wide) in paragraph at lines 114--114</tspan>
 <tspan x="0" dy="1.2em">[]\remove@tlig | NatMul (x y : expr) : expr.[] </tspan>
 <tspan x="0" dy="1.2em"> []</tspan>
-<tspan x="0" dy="1.2em">[180]</tspan>
+<tspan x="0" dy="1.2em">[126]</tspan>
 <tspan x="0" dy="1.2em">Overfull \hbox (33.8728pt too wide) in paragraph at lines 152--154</tspan>
 <tspan x="0" dy="1.2em">[]\TU/lmr/m/n/12 Given a tac-tic \remove@tlig Reify \TU/lmr/m/n/12 to pro-duce </tspan>
-<tspan x="0" dy="1.2em">&nbsp;&nbsp;a rei-fied term from a []\remove@tlig nat\TU/lmr/m/n/12 , we can time </tspan>
-<tspan x="0" dy="1.2em">&nbsp;&nbsp;[]\remove@tlig check_is_even_expr\TU/lmr/m/n/12 .</tspan>
+<tspan x="0" dy="1.2em">&#160;&#160;a rei-fied term from a []\remove@tlig nat\TU/lmr/m/n/12 , we can time </tspan>
+<tspan x="0" dy="1.2em">&#160;&#160;[]\remove@tlig check_is_even_expr\TU/lmr/m/n/12 .</tspan>
 <tspan x="0" dy="1.2em"> []</tspan>
 <tspan x="0" dy="1.2em">Overfull \hbox (7.74554pt too wide) in paragraph at lines 184--186</tspan>
 <tspan x="0" dy="1.2em">[]\TU/lmr/m/n/12 A full treat-ment of even-ness check-ing for PHOAS would </tspan>
-<tspan x="0" dy="1.2em">&nbsp;&nbsp;re-quire prov-ing well-formedness</tspan>
+<tspan x="0" dy="1.2em">&#160;&#160;re-quire prov-ing well-formedness</tspan>
 <tspan x="0" dy="1.2em"> []</tspan>
 <tspan x="0" dy="1.2em">Underfull \vbox (badness 10000) has occurred while \output is active []</tspan>
-<tspan x="0" dy="1.2em"> [181]</tspan>
+<tspan x="0" dy="1.2em"> [127]</tspan>
 <tspan x="0" dy="1.2em">Overfull \hbox (28.0223pt too wide) in paragraph at lines 214--214</tspan>
 <tspan x="0" dy="1.2em">[]\remove@tlig Ltac f v x := (* reify var term *)[] </tspan>
 <tspan x="0" dy="1.2em"> []</tspan>
@@ -1234,226 +985,227 @@
 <tspan x="0" dy="1.2em">[]             \remove@tlig constr:(@NatMul v X Y)[] </tspan>
 <tspan x="0" dy="1.2em"> []</tspan>
 <tspan x="0" dy="1.2em">Underfull \hbox (badness 1331) in paragraph at lines 225--225</tspan>
-<tspan x="0" dy="1.2em">[]\TU/lmr/m/n/12 Fig-ure 7-3: |Reifi-ca-tion With-out</tspan>
+<tspan x="0" dy="1.2em">[]\TU/lmr/m/n/12 Fig-ure 6-3: |Reifi-ca-tion With-out</tspan>
 <tspan x="0" dy="1.2em"> []</tspan>
 <tspan x="0" dy="1.2em">Underfull \hbox (badness 1406) in paragraph at lines 228--232</tspan>
 <tspan x="0" dy="1.2em">[][]\TU/lmr/m/n/12 We have made de-tailed walk-throughs and</tspan>
 <tspan x="0" dy="1.2em"> []</tspan>
 <tspan x="0" dy="1.2em">Underfull \vbox (badness 7740) has occurred while \output is active []</tspan>
-<tspan x="0" dy="1.2em"> [182] &lt;xymatrix 3x3 278&gt;</tspan>
+<tspan x="0" dy="1.2em"> [128] &lt;xymatrix 3x3 278&gt;</tspan>
 <tspan x="0" dy="1.2em">Overfull \hbox (6.35478pt too wide) detected at line 255</tspan>
 <tspan x="0" dy="1.2em">[]</tspan>
 <tspan x="0" dy="1.2em"> []</tspan>
 <tspan x="0" dy="1.2em">Overfull \hbox (17.13881pt too wide) detected at line 384</tspan>
 <tspan x="0" dy="1.2em">[]</tspan>
 <tspan x="0" dy="1.2em"> []</tspan>
-<tspan x="0" dy="1.2em">[185] &lt;xymatrix 4x6 538&gt;</tspan>
+<tspan x="0" dy="1.2em">[131] &lt;xymatrix 4x6 538&gt;</tspan>
 <tspan x="0" dy="1.2em">Underfull \vbox (badness 10000) has occurred while \output is active []</tspan>
-<tspan x="0" dy="1.2em"> [186]</tspan>
+<tspan x="0" dy="1.2em"> [132]</tspan>
 <tspan x="0" dy="1.2em">Overfull \hbox (1.34116pt too wide) detected at line 458</tspan>
 <tspan x="0" dy="1.2em"> []$[][] \TU/latinmodern-math.otf(1)/m/n/12 (M-bM-^DM-^U M-bM-^FM-^R M-bM-^DM-^U) (M-pM-^]M-^\M-^FM-pM-^]M-^QM-%. M-pM-^]M-^QM-%) </tspan>
-<tspan x="0" dy="1.2em">&nbsp;&nbsp;(M-pM-^]M-^\M-^FM-pM-^]M-^QM-^[[]. M-pM-^]M-^\M-^F[][]. M-pM-^]M-^\M-^FM-pM-^]M-^QM-%. []M-pM-^]M-^QM-%[] M-bM-^HM-6= M-pM-^]M-^QM-% M-CM-^W M-pM-^]M-^QM-%[][][] M-pM-^]M-^QM-%[])[] 1 </tspan>
-<tspan x="0" dy="1.2em">&nbsp;&nbsp;100  $ </tspan>
+<tspan x="0" dy="1.2em">&#160;&#160;(M-pM-^]M-^\M-^FM-pM-^]M-^QM-^[[]. M-pM-^]M-^\M-^F[][]. M-pM-^]M-^\M-^FM-pM-^]M-^QM-%. []M-pM-^]M-^QM-%[] M-bM-^HM-6= M-pM-^]M-^QM-% M-CM-^W M-pM-^]M-^QM-%[][][] M-pM-^]M-^QM-%[])[] 1 </tspan>
+<tspan x="0" dy="1.2em">&#160;&#160;100  $ </tspan>
 <tspan x="0" dy="1.2em"> []</tspan>
 <tspan x="0" dy="1.2em">Overfull \hbox (76.12323pt too wide) in paragraph at lines 492--495</tspan>
 <tspan x="0" dy="1.2em">[]\TU/lmr/m/n/12 We can now ap-ply this term to \remove@tlig </tspan>
-<tspan x="0" dy="1.2em">&nbsp;&nbsp;expr\TU/lmr/m/n/12 , \remove@tlig NatMul\TU/lmr/m/n/12 , \remove@tlig </tspan>
-<tspan x="0" dy="1.2em">&nbsp;&nbsp;NatS\TU/lmr/m/n/12 , \remove@tlig NatO\TU/lmr/m/n/12 , and, fi-nally, </tspan>
-<tspan x="0" dy="1.2em">&nbsp;&nbsp;$\TU/latinmodern-math.otf(1)/m/n/12 (M-pM-^]M-^\M-^FM-pM-^]M-^QM-# M-pM-^]M-^QM-^S. [] M-pM-^]M-^QM-# (M-pM-^]M-^\M-^FM-pM-^]M-^QM-%. M-pM-^]M-^QM-^S ([] </tspan>
-<tspan x="0" dy="1.2em">&nbsp;&nbsp;M-pM-^]M-^QM-%)))$\TU/lmr/m/n/12 .</tspan>
+<tspan x="0" dy="1.2em">&#160;&#160;expr\TU/lmr/m/n/12 , \remove@tlig NatMul\TU/lmr/m/n/12 , \remove@tlig </tspan>
+<tspan x="0" dy="1.2em">&#160;&#160;NatS\TU/lmr/m/n/12 , \remove@tlig NatO\TU/lmr/m/n/12 , and, fi-nally, </tspan>
+<tspan x="0" dy="1.2em">&#160;&#160;$\TU/latinmodern-math.otf(1)/m/n/12 (M-pM-^]M-^\M-^FM-pM-^]M-^QM-# M-pM-^]M-^QM-^S. [] M-pM-^]M-^QM-# (M-pM-^]M-^\M-^FM-pM-^]M-^QM-%. M-pM-^]M-^QM-^S ([] </tspan>
+<tspan x="0" dy="1.2em">&#160;&#160;M-pM-^]M-^QM-%)))$\TU/lmr/m/n/12 .</tspan>
 <tspan x="0" dy="1.2em"> []</tspan>
 <tspan x="0" dy="1.2em">Overfull \hbox (44.16794pt too wide) in paragraph at lines 554--556</tspan>
 <tspan x="0" dy="1.2em">\TU/lmr/m/n/12 The syntax-tree datatype used in this ex-am-ple can be found in </tspan>
-<tspan x="0" dy="1.2em">&nbsp;&nbsp;\remove@tlig ExampleMoreParametricity.v\TU/lmr/m/n/12 . </tspan>
+<tspan x="0" dy="1.2em">&#160;&#160;\remove@tlig ExampleMoreParametricity.v\TU/lmr/m/n/12 . </tspan>
 <tspan x="0" dy="1.2em"> []</tspan>
-<tspan x="0" dy="1.2em">[189]</tspan>
+<tspan x="0" dy="1.2em">[135]</tspan>
 <tspan x="0" dy="1.2em">Overfull \hbox (21.93007pt too wide) detected at line 651</tspan>
 <tspan x="0" dy="1.2em">[]</tspan>
 <tspan x="0" dy="1.2em"> []</tspan>
 <tspan x="0" dy="1.2em">Underfull \hbox (badness 1189) in paragraph at lines 655--661</tspan>
 <tspan x="0" dy="1.2em">\TU/lmr/m/n/12 the as-so-ci-ated di-a-gram, from []Fig-</tspan>
 <tspan x="0" dy="1.2em"> []</tspan>
-<tspan x="0" dy="1.2em">[191]</tspan>
+<tspan x="0" dy="1.2em">[137]</tspan>
 <tspan x="0" dy="1.2em">Underfull \vbox (badness 10000) has occurred while \output is active []</tspan>
 <tspan x="0" dy="1.2em">]</tspan>
-<tspan x="0" dy="1.2em">Chapter 8.</tspan>
+<tspan x="0" dy="1.2em">Chapter 7.</tspan>
 <tspan x="0" dy="1.2em">Underfull \vbox (badness 10000) has occurred while \output is active []</tspan>
-<tspan x="0" dy="1.2em"> [195</tspan>
+<tspan x="0" dy="1.2em"> [141</tspan>
 <tspan x="0" dy="1.2em">]</tspan>
-<tspan x="0" dy="1.2em">[196] [197]</tspan>
-<tspan x="0" dy="1.2em">[198]</tspan>
+<tspan x="0" dy="1.2em">[142] [143]</tspan>
+<tspan x="0" dy="1.2em">[144]</tspan>
 <tspan x="0" dy="1.2em">Overfull \hbox (6.86827pt too wide) in paragraph at lines 155--157</tspan>
 <tspan x="0" dy="1.2em">\TU/lmr/m/n/12 named con-texts?][] [][\TU/lmr/bx/n/12 TODO: \TU/lmr/m/n/12 </tspan>
-<tspan x="0" dy="1.2em">&nbsp;&nbsp;should I talk about https://github.com/-co-q/-co-q/pull/6506</tspan>
+<tspan x="0" dy="1.2em">&#160;&#160;should I talk about https://github.com/-co-q/-co-q/pull/6506</tspan>
 <tspan x="0" dy="1.2em"> []</tspan>
 <tspan x="0" dy="1.2em">Underfull \vbox (badness 1436) has occurred while \output is active []</tspan>
-<tspan x="0" dy="1.2em"> [199]</tspan>
+<tspan x="0" dy="1.2em"> [145]</tspan>
 <tspan x="0" dy="1.2em">]</tspan>
 <tspan x="0" dy="1.2em">Overfull \hbox (6.4152pt too wide) in paragraph at lines 273--273</tspan>
 <tspan x="0" dy="1.2em">[]\TU/lmr/bx/n/17.28 Performance-Enhancing Ad-vance-ments in Type</tspan>
 <tspan x="0" dy="1.2em"> []</tspan>
-<tspan x="0" dy="1.2em">[203]</tspan>
+<tspan x="0" dy="1.2em">[149]</tspan>
 <tspan x="0" dy="1.2em">]</tspan>
-<tspan x="0" dy="1.2em">Chapter 9.</tspan>
-<tspan x="0" dy="1.2em">[209]</tspan>
-<tspan x="0" dy="1.2em">[210]</tspan>
+<tspan x="0" dy="1.2em">Chapter 8.</tspan>
+<tspan x="0" dy="1.2em">[155]</tspan>
+<tspan x="0" dy="1.2em">[156]</tspan>
 <tspan x="0" dy="1.2em">Underfull \vbox (badness 10000) has occurred while \output is active []</tspan>
-<tspan x="0" dy="1.2em"> [211]</tspan>
+<tspan x="0" dy="1.2em"> [157]</tspan>
 <tspan x="0" dy="1.2em">Underfull \vbox (badness 10000) has occurred while \output is active []</tspan>
-<tspan x="0" dy="1.2em"> [212]</tspan>
+<tspan x="0" dy="1.2em"> [158]</tspan>
 <tspan x="0" dy="1.2em">Underfull \vbox (badness 10000) has occurred while \output is active []</tspan>
-<tspan x="0" dy="1.2em"> [213]) [214]) [215</tspan>
+<tspan x="0" dy="1.2em"> [159]) [160]) [161</tspan>
 <tspan x="0" dy="1.2em">]</tspan>
-<tspan x="0" dy="1.2em">[216]</tspan>
+<tspan x="0" dy="1.2em">[162]</tspan>
 <tspan x="0" dy="1.2em">Overfull \hbox (1.1899pt too wide) in paragraph at lines 9--9</tspan>
 <tspan x="0" dy="1.2em">[]\TU/lmr/m/n/12 Benedikt Ahrens. \TU/lmr/m/it/12 Coin-duc-tives\TU/lmr/m/n/12 </tspan>
-<tspan x="0" dy="1.2em">&nbsp;&nbsp;. \TU/lmr/m/sc/12 url\TU/lmr/m/n/12 : []$\remove@tlig https : / / github . com </tspan>
-<tspan x="0" dy="1.2em">&nbsp;&nbsp;/ benediktahrens /</tspan>
+<tspan x="0" dy="1.2em">&#160;&#160;. \TU/lmr/m/sc/12 url\TU/lmr/m/n/12 : []$\remove@tlig https : / / github . com </tspan>
+<tspan x="0" dy="1.2em">&#160;&#160;/ benediktahrens /</tspan>
 <tspan x="0" dy="1.2em"> []</tspan>
 <tspan x="0" dy="1.2em">Overfull \hbox (54.93181pt too wide) in paragraph at lines 9--9</tspan>
 <tspan x="0" dy="1.2em">[]\TU/lmr/m/n/12 Benedikt Ahrens, Chris Ka-pulkin, and Michael Shul-man. </tspan>
-<tspan x="0" dy="1.2em">&nbsp;&nbsp;\TU/lmr/m/it/12 benedik-tahren-s/rezk[]completion\TU/lmr/m/n/12 .</tspan>
+<tspan x="0" dy="1.2em">&#160;&#160;\TU/lmr/m/it/12 benedik-tahren-s/rezk[]completion\TU/lmr/m/n/12 .</tspan>
 <tspan x="0" dy="1.2em"> []</tspan>
 <tspan x="0" dy="1.2em">Overfull \hbox (2.60489pt too wide) in paragraph at lines 9--9</tspan>
 <tspan x="0" dy="1.2em">\TU/lmr/m/n/12 In: \TU/lmr/m/it/12 Manuscript, avail-able on-line </tspan>
-<tspan x="0" dy="1.2em">&nbsp;&nbsp;\TU/lmr/m/n/12 (2006). \TU/lmr/m/sc/12 url\TU/lmr/m/n/12 : []$\remove@tlig http </tspan>
-<tspan x="0" dy="1.2em">&nbsp;&nbsp;: / / www . strictlypositive .</tspan>
+<tspan x="0" dy="1.2em">&#160;&#160;\TU/lmr/m/n/12 (2006). \TU/lmr/m/sc/12 url\TU/lmr/m/n/12 : []$\remove@tlig http </tspan>
+<tspan x="0" dy="1.2em">&#160;&#160;: / / www . strictlypositive .</tspan>
 <tspan x="0" dy="1.2em"> []</tspan>
-<tspan x="0" dy="1.2em">[217</tspan>
+<tspan x="0" dy="1.2em">[163</tspan>
 <tspan x="0" dy="1.2em">]</tspan>
 <tspan x="0" dy="1.2em">Overfull \hbox (5.52477pt too wide) in paragraph at lines 9--9</tspan>
 <tspan x="0" dy="1.2em">\TU/lmr/m/n/12 Ver-i-fied Sys-tems Pro-gram-ming''. In: \TU/lmr/m/it/12 Proc. </tspan>
-<tspan x="0" dy="1.2em">&nbsp;&nbsp;POPL\TU/lmr/m/n/12 . 2017. \TU/lmr/m/sc/12 doi\TU/lmr/m/n/12 : []$\remove@tlig </tspan>
-<tspan x="0" dy="1.2em">&nbsp;&nbsp;10 . 1145 / 3093333 .</tspan>
+<tspan x="0" dy="1.2em">&#160;&#160;POPL\TU/lmr/m/n/12 . 2017. \TU/lmr/m/sc/12 doi\TU/lmr/m/n/12 : []$\remove@tlig </tspan>
+<tspan x="0" dy="1.2em">&#160;&#160;10 . 1145 / 3093333 .</tspan>
 <tspan x="0" dy="1.2em"> []</tspan>
-<tspan x="0" dy="1.2em">[218]</tspan>
+<tspan x="0" dy="1.2em">[164]</tspan>
 <tspan x="0" dy="1.2em">Overfull \hbox (11.65428pt too wide) in paragraph at lines 9--9</tspan>
 <tspan x="0" dy="1.2em">[]\TU/lmr/m/n/12 Nick Ben-ton, Chung-Kil Hur, An-drew J. Kennedy, and Conor </tspan>
-<tspan x="0" dy="1.2em">&nbsp;&nbsp;McBride. ``Strongly</tspan>
+<tspan x="0" dy="1.2em">&#160;&#160;McBride. ``Strongly</tspan>
 <tspan x="0" dy="1.2em"> []</tspan>
-<tspan x="0" dy="1.2em">[219]</tspan>
+<tspan x="0" dy="1.2em">[165]</tspan>
 <tspan x="0" dy="1.2em">Overfull \hbox (2.63239pt too wide) in paragraph at lines 9--9</tspan>
 <tspan x="0" dy="1.2em">\TU/lmr/m/it/12 NATO Sci-ence Com-mit-tee, Garmisch, Ger-many, 7th--11th </tspan>
-<tspan x="0" dy="1.2em">&nbsp;&nbsp;Oc-to-ber 1968\TU/lmr/m/n/12 . Rome,</tspan>
+<tspan x="0" dy="1.2em">&#160;&#160;Oc-to-ber 1968\TU/lmr/m/n/12 . Rome,</tspan>
 <tspan x="0" dy="1.2em"> []</tspan>
-<tspan x="0" dy="1.2em">[220]</tspan>
+<tspan x="0" dy="1.2em">[166]</tspan>
 <tspan x="0" dy="1.2em">Overfull \hbox (14.84471pt too wide) in paragraph at lines 9--9</tspan>
 <tspan x="0" dy="1.2em">\TU/lmr/m/it/12 tro-duc-tion to the Coq Proof As-sis-tant\TU/lmr/m/n/12 . MIT </tspan>
-<tspan x="0" dy="1.2em">&nbsp;&nbsp;Press, Dec. 2013. \TU/lmr/m/sc/12 isbn\TU/lmr/m/n/12 : 9780262026659.</tspan>
+<tspan x="0" dy="1.2em">&#160;&#160;Press, Dec. 2013. \TU/lmr/m/sc/12 isbn\TU/lmr/m/n/12 : 9780262026659.</tspan>
 <tspan x="0" dy="1.2em"> []</tspan>
-<tspan x="0" dy="1.2em">[221</tspan>
+<tspan x="0" dy="1.2em">[167</tspan>
 <tspan x="0" dy="1.2em">]</tspan>
 <tspan x="0" dy="1.2em">Overfull \hbox (1.444pt too wide) in paragraph at lines 9--9</tspan>
 <tspan x="0" dy="1.2em">[]\TU/lmr/m/n/12 Syl-vain Con-chon and Jean-Christophe Fil-liM-CM-"tre. ``A </tspan>
-<tspan x="0" dy="1.2em">&nbsp;&nbsp;Per-sis-tent Union-Find Data</tspan>
+<tspan x="0" dy="1.2em">&#160;&#160;Per-sis-tent Union-Find Data</tspan>
 <tspan x="0" dy="1.2em"> []</tspan>
 <tspan x="0" dy="1.2em">Overfull \hbox (63.09552pt too wide) in paragraph at lines 9--9</tspan>
 <tspan x="0" dy="1.2em">[]$\remove@tlig https : / / github . com / coq / coq / commit / </tspan>
-<tspan x="0" dy="1.2em">&nbsp;&nbsp;6b908b5185a55a27a82c2b0fce4713812adde156$[]\TU/lmr/m/n/12 . </tspan>
+<tspan x="0" dy="1.2em">&#160;&#160;6b908b5185a55a27a82c2b0fce4713812adde156$[]\TU/lmr/m/n/12 . </tspan>
 <tspan x="0" dy="1.2em"> []</tspan>
-<tspan x="0" dy="1.2em">[222]</tspan>
+<tspan x="0" dy="1.2em">[168]</tspan>
 <tspan x="0" dy="1.2em">Overfull \hbox (2.68237pt too wide) in paragraph at lines 9--9</tspan>
 <tspan x="0" dy="1.2em">\TU/lmr/m/n/12 and Jean-FranM-CM-'ois Raskin. Berlin, Hei-del-berg: Springer </tspan>
-<tspan x="0" dy="1.2em">&nbsp;&nbsp;Berlin Hei-del-berg, 2016,</tspan>
+<tspan x="0" dy="1.2em">&#160;&#160;Berlin Hei-del-berg, 2016,</tspan>
 <tspan x="0" dy="1.2em"> []</tspan>
-<tspan x="0" dy="1.2em">[223] [224]</tspan>
+<tspan x="0" dy="1.2em">[169] [170]</tspan>
 <tspan x="0" dy="1.2em">Overfull \hbox (25.72964pt too wide) in paragraph at lines 9--9</tspan>
 <tspan x="0" dy="1.2em">\TU/lmr/m/it/12 Smart Con-tracts\TU/lmr/m/n/12 . Medium. Aug. 1, 2018. </tspan>
-<tspan x="0" dy="1.2em">&nbsp;&nbsp;\TU/lmr/m/sc/12 url\TU/lmr/m/n/12 : []$\remove@tlig https : / / medium . com / </tspan>
-<tspan x="0" dy="1.2em">&nbsp;&nbsp;@ogucluturk /</tspan>
+<tspan x="0" dy="1.2em">&#160;&#160;\TU/lmr/m/sc/12 url\TU/lmr/m/n/12 : []$\remove@tlig https : / / medium . com / </tspan>
+<tspan x="0" dy="1.2em">&#160;&#160;@ogucluturk /</tspan>
 <tspan x="0" dy="1.2em"> []</tspan>
-<tspan x="0" dy="1.2em">[225]</tspan>
+<tspan x="0" dy="1.2em">[171]</tspan>
 <tspan x="0" dy="1.2em">Overfull \hbox (4.72989pt too wide) in paragraph at lines 9--9</tspan>
 <tspan x="0" dy="1.2em">[]\TU/lmr/m/n/12 Hi-romi Ishii. \TU/lmr/m/it/12 </tspan>
-<tspan x="0" dy="1.2em">&nbsp;&nbsp;konn/category-agda\TU/lmr/m/n/12 . \TU/lmr/m/sc/12 url\TU/lmr/m/n/12 : </tspan>
-<tspan x="0" dy="1.2em">&nbsp;&nbsp;[]$\remove@tlig https : / / github . com / konn / category -</tspan>
+<tspan x="0" dy="1.2em">&#160;&#160;konn/category-agda\TU/lmr/m/n/12 . \TU/lmr/m/sc/12 url\TU/lmr/m/n/12 : </tspan>
+<tspan x="0" dy="1.2em">&#160;&#160;[]$\remove@tlig https : / / github . com / konn / category -</tspan>
 <tspan x="0" dy="1.2em"> []</tspan>
 <tspan x="0" dy="1.2em">Overfull \hbox (2.69815pt too wide) in paragraph at lines 9--9</tspan>
 <tspan x="0" dy="1.2em">\TU/lmr/m/it/12 Pro-gram Gen-er-a-tion\TU/lmr/m/n/12 . Pren-tice Hall </tspan>
-<tspan x="0" dy="1.2em">&nbsp;&nbsp;In-ter-na-tional, June 1993. \TU/lmr/m/sc/12 isbn\TU/lmr/m/n/12 : 0-13-020249-</tspan>
+<tspan x="0" dy="1.2em">&#160;&#160;In-ter-na-tional, June 1993. \TU/lmr/m/sc/12 isbn\TU/lmr/m/n/12 : 0-13-020249-</tspan>
 <tspan x="0" dy="1.2em"> []</tspan>
-<tspan x="0" dy="1.2em">[226]</tspan>
+<tspan x="0" dy="1.2em">[172]</tspan>
 <tspan x="0" dy="1.2em">Overfull \hbox (10.36758pt too wide) in paragraph at lines 9--9</tspan>
 <tspan x="0" dy="1.2em">\remove@tlig smalltt / blob / fb56723b098cb1a95e8a5f3f9f5fce30bbcc67da / </tspan>
-<tspan x="0" dy="1.2em">&nbsp;&nbsp;krakow - pres .</tspan>
+<tspan x="0" dy="1.2em">&#160;&#160;krakow - pres .</tspan>
 <tspan x="0" dy="1.2em"> []</tspan>
 <tspan x="0" dy="1.2em">Overfull \hbox (10.98807pt too wide) in paragraph at lines 9--9</tspan>
 <tspan x="0" dy="1.2em">[]\TU/lmr/m/n/12 An-drM-CM-!s KovM-CM-!cs. ``Non-deterministic </tspan>
-<tspan x="0" dy="1.2em">&nbsp;&nbsp;normalization-by-evaluation in Olle Fredriks-</tspan>
+<tspan x="0" dy="1.2em">&#160;&#160;normalization-by-evaluation in Olle Fredriks-</tspan>
 <tspan x="0" dy="1.2em"> []</tspan>
 <tspan x="0" dy="1.2em">Overfull \hbox (21.12593pt too wide) in paragraph at lines 9--9</tspan>
 <tspan x="0" dy="1.2em">[]\TU/lmr/m/n/12 An-drM-CM-!s KovM-CM-!cs. \TU/lmr/m/it/12 Nor-mal-iza-tion </tspan>
-<tspan x="0" dy="1.2em">&nbsp;&nbsp;Bench\TU/lmr/m/n/12 . \TU/lmr/m/sc/12 url\TU/lmr/m/n/12 : []$\remove@tlig https </tspan>
-<tspan x="0" dy="1.2em">&nbsp;&nbsp;: / / github . com / AndrasKovacs /</tspan>
+<tspan x="0" dy="1.2em">&#160;&#160;Bench\TU/lmr/m/n/12 . \TU/lmr/m/sc/12 url\TU/lmr/m/n/12 : []$\remove@tlig https </tspan>
+<tspan x="0" dy="1.2em">&#160;&#160;: / / github . com / AndrasKovacs /</tspan>
 <tspan x="0" dy="1.2em"> []</tspan>
 <tspan x="0" dy="1.2em">Overfull \hbox (2.96373pt too wide) in paragraph at lines 9--9</tspan>
 <tspan x="0" dy="1.2em">[]\TU/lmr/m/n/12 An-drM-CM-!s KovM-CM-!cs. \TU/lmr/m/it/12 Sharing-Preserving </tspan>
-<tspan x="0" dy="1.2em">&nbsp;&nbsp;Elab-o-ra-tion with Pre-cisely Scoped Metavari-</tspan>
+<tspan x="0" dy="1.2em">&#160;&#160;Elab-o-ra-tion with Pre-cisely Scoped Metavari-</tspan>
 <tspan x="0" dy="1.2em"> []</tspan>
 <tspan x="0" dy="1.2em">Overfull \hbox (90.65952pt too wide) in paragraph at lines 9--9</tspan>
 <tspan x="0" dy="1.2em">\remove@tlig com / AndrasKovacs / elaboration - zoo / blob / </tspan>
-<tspan x="0" dy="1.2em">&nbsp;&nbsp;0c7f8a676c0964cc05c247879393e97729f59e5b /</tspan>
+<tspan x="0" dy="1.2em">&#160;&#160;0c7f8a676c0964cc05c247879393e97729f59e5b /</tspan>
 <tspan x="0" dy="1.2em"> []</tspan>
-<tspan x="0" dy="1.2em">[227]</tspan>
+<tspan x="0" dy="1.2em">[173]</tspan>
 <tspan x="0" dy="1.2em">Overfull \hbox (3.13213pt too wide) in paragraph at lines 9--9</tspan>
 <tspan x="0" dy="1.2em">[]\TU/lmr/m/n/12 Adam Lan-g-ley. \TU/lmr/m/it/12 Cor-rect bounds in 32-bit </tspan>
-<tspan x="0" dy="1.2em">&nbsp;&nbsp;code. $\TU/latinmodern-math.otf(1)/m/n/12 M-bM-^KM-^E$ \TU/lmr/m/it/12 </tspan>
-<tspan x="0" dy="1.2em">&nbsp;&nbsp;agl/curve25519-donna@2647eeb\TU/lmr/m/n/12 .</tspan>
+<tspan x="0" dy="1.2em">&#160;&#160;code. $\TU/latinmodern-math.otf(1)/m/n/12 M-bM-^KM-^E$ \TU/lmr/m/it/12 </tspan>
+<tspan x="0" dy="1.2em">&#160;&#160;agl/curve25519-donna@2647eeb\TU/lmr/m/n/12 .</tspan>
 <tspan x="0" dy="1.2em"> []</tspan>
 <tspan x="0" dy="1.2em">Overfull \hbox (28.54227pt too wide) in paragraph at lines 9--9</tspan>
 <tspan x="0" dy="1.2em">[]\TU/lmr/m/n/12 Jean-Jacques LM-CM-)vy. ``Op-ti-mal re-duc-tions in the </tspan>
-<tspan x="0" dy="1.2em">&nbsp;&nbsp;lambda-calculus''. In: \TU/lmr/m/it/12 To H. B. Curry:</tspan>
+<tspan x="0" dy="1.2em">&#160;&#160;lambda-calculus''. In: \TU/lmr/m/it/12 To H. B. Curry:</tspan>
 <tspan x="0" dy="1.2em"> []</tspan>
-<tspan x="0" dy="1.2em">[228]</tspan>
+<tspan x="0" dy="1.2em">[174]</tspan>
 <tspan x="0" dy="1.2em">Overfull \hbox (4.10385pt too wide) in paragraph at lines 9--9</tspan>
 <tspan x="0" dy="1.2em">[]\TU/lmr/m/n/12 Gre-gory Malecha, Adam Chli-pala, and Thomas Braibant. </tspan>
-<tspan x="0" dy="1.2em">&nbsp;&nbsp;``Com-po-si-tional Com-</tspan>
+<tspan x="0" dy="1.2em">&#160;&#160;``Com-po-si-tional Com-</tspan>
 <tspan x="0" dy="1.2em"> []</tspan>
 <tspan x="0" dy="1.2em">Overfull \hbox (0.4079pt too wide) in paragraph at lines 9--9</tspan>
 <tspan x="0" dy="1.2em">[]\TU/lmr/m/n/12 Erik Martin-Dorel. \TU/lmr/m/it/12 Im-ple-ment-ing </tspan>
-<tspan x="0" dy="1.2em">&nbsp;&nbsp;prim-i-tive floats (bi-nary64 floating-point num-</tspan>
+<tspan x="0" dy="1.2em">&#160;&#160;prim-i-tive floats (bi-nary64 floating-point num-</tspan>
 <tspan x="0" dy="1.2em"> []</tspan>
-<tspan x="0" dy="1.2em">[229] [230</tspan>
+<tspan x="0" dy="1.2em">[175] [176</tspan>
 <tspan x="0" dy="1.2em">]</tspan>
 <tspan x="0" dy="1.2em">Overfull \hbox (16.59555pt too wide) in paragraph at lines 9--9</tspan>
 <tspan x="0" dy="1.2em">[]$\remove@tlig http : / / repository . cmu . edu / cgi / viewcontent . cgi ? </tspan>
-<tspan x="0" dy="1.2em">&nbsp;&nbsp;article = 2846&context =</tspan>
+<tspan x="0" dy="1.2em">&#160;&#160;article = 2846&context =</tspan>
 <tspan x="0" dy="1.2em"> []</tspan>
 <tspan x="0" dy="1.2em">Overfull \hbox (2.83705pt too wide) in paragraph at lines 9--9</tspan>
 <tspan x="0" dy="1.2em">\TU/lmr/m/it/12 10th In-ter-na-tional Con-fer-ence on Au-to-mated </tspan>
-<tspan x="0" dy="1.2em">&nbsp;&nbsp;De-duc-tion\TU/lmr/m/n/12 . Ed. by Mark E. Stickel.</tspan>
+<tspan x="0" dy="1.2em">&#160;&#160;De-duc-tion\TU/lmr/m/n/12 . Ed. by Mark E. Stickel.</tspan>
 <tspan x="0" dy="1.2em"> []</tspan>
 <tspan x="0" dy="1.2em">Overfull \hbox (4.54984pt too wide) in paragraph at lines 9--9</tspan>
 <tspan x="0" dy="1.2em">[]\TU/lmr/m/n/12 LoM-CM-/c Pot-tier. \TU/lmr/m/it/12 Al-ge-bra\TU/lmr/m/n/12 . </tspan>
-<tspan x="0" dy="1.2em">&nbsp;&nbsp;\TU/lmr/m/sc/12 url\TU/lmr/m/n/12 : []$\remove@tlig http : / / coq . inria . fr </tspan>
-<tspan x="0" dy="1.2em">&nbsp;&nbsp;/ pylons / pylons / contribs /</tspan>
+<tspan x="0" dy="1.2em">&#160;&#160;\TU/lmr/m/sc/12 url\TU/lmr/m/n/12 : []$\remove@tlig http : / / coq . inria . fr </tspan>
+<tspan x="0" dy="1.2em">&#160;&#160;/ pylons / pylons / contribs /</tspan>
 <tspan x="0" dy="1.2em"> []</tspan>
-<tspan x="0" dy="1.2em">[231]</tspan>
+<tspan x="0" dy="1.2em">[177]</tspan>
 <tspan x="0" dy="1.2em">Overfull \hbox (14.60994pt too wide) in paragraph at lines 9--9</tspan>
 <tspan x="0" dy="1.2em">[]\TU/lmr/m/n/12 Matthieu Sozeau. \TU/lmr/m/it/12 mat-tam82/coq </tspan>
-<tspan x="0" dy="1.2em">&nbsp;&nbsp;polyproj\TU/lmr/m/n/12 . \TU/lmr/m/sc/12 url\TU/lmr/m/n/12 : []$\remove@tlig </tspan>
-<tspan x="0" dy="1.2em">&nbsp;&nbsp;https : / / github . com / mattam82 /</tspan>
+<tspan x="0" dy="1.2em">&#160;&#160;polyproj\TU/lmr/m/n/12 . \TU/lmr/m/sc/12 url\TU/lmr/m/n/12 : []$\remove@tlig </tspan>
+<tspan x="0" dy="1.2em">&#160;&#160;https : / / github . com / mattam82 /</tspan>
 <tspan x="0" dy="1.2em"> []</tspan>
-<tspan x="0" dy="1.2em">[232]</tspan>
+<tspan x="0" dy="1.2em">[178]</tspan>
 <tspan x="0" dy="1.2em">Overfull \hbox (5.82991pt too wide) in paragraph at lines 9--9</tspan>
 <tspan x="0" dy="1.2em">\remove@tlig 71067 - 7 _ 23$[]\TU/lmr/m/n/12 . \TU/lmr/m/sc/12 </tspan>
-<tspan x="0" dy="1.2em">&nbsp;&nbsp;url\TU/lmr/m/n/12 : []$\remove@tlig https : / / www . irif . fr / ~sozeau / </tspan>
-<tspan x="0" dy="1.2em">&nbsp;&nbsp;research / publications /</tspan>
+<tspan x="0" dy="1.2em">&#160;&#160;url\TU/lmr/m/n/12 : []$\remove@tlig https : / / www . irif . fr / ~sozeau / </tspan>
+<tspan x="0" dy="1.2em">&#160;&#160;research / publications /</tspan>
 <tspan x="0" dy="1.2em"> []</tspan>
-<tspan x="0" dy="1.2em">[233]</tspan>
+<tspan x="0" dy="1.2em">[179]</tspan>
 <tspan x="0" dy="1.2em">Overfull \hbox (7.52264pt too wide) in paragraph at lines 9--9</tspan>
 <tspan x="0" dy="1.2em">[]\TU/lmr/m/n/12 Markus M. Wen-zel. ``Is-abelle/Isar --- a ver-sa-tile </tspan>
-<tspan x="0" dy="1.2em">&nbsp;&nbsp;en-vi-ron-ment for human-readable</tspan>
+<tspan x="0" dy="1.2em">&#160;&#160;en-vi-ron-ment for human-readable</tspan>
 <tspan x="0" dy="1.2em"> []</tspan>
 <tspan x="0" dy="1.2em">Overfull \hbox (20.82231pt too wide) in paragraph at lines 9--9</tspan>
 <tspan x="0" dy="1.2em">\TU/lmr/m/n/12 for-mal proof doc-u-ments''. Dis-ser-ta-tion. MM-CM-&lt;nchen: </tspan>
-<tspan x="0" dy="1.2em">&nbsp;&nbsp;Tech-nis-che Uni-ver-sitM-CM-$t MM-CM-&lt;nchen,</tspan>
+<tspan x="0" dy="1.2em">&#160;&#160;Tech-nis-che Uni-ver-sitM-CM-$t MM-CM-&lt;nchen,</tspan>
 <tspan x="0" dy="1.2em"> []</tspan>
 <tspan x="0" dy="1.2em">Overfull \hbox (6.57191pt too wide) in paragraph at lines 9--9</tspan>
 <tspan x="0" dy="1.2em">[]\TU/lmr/m/n/12 Beta Zil-iani, Derek Dreyer, Nee-lakan-tan R Kr-ish-naswami, </tspan>
-<tspan x="0" dy="1.2em">&nbsp;&nbsp;Alek-san-dar Nanevski,</tspan>
+<tspan x="0" dy="1.2em">&#160;&#160;Alek-san-dar Nanevski,</tspan>
 <tspan x="0" dy="1.2em"> []</tspan>
-<tspan x="0" dy="1.2em">[234]) [235]</tspan>
-<tspan x="0" dy="1.2em">) [236</tspan>
+<tspan x="0" dy="1.2em">[180]) [181]</tspan>
+<tspan x="0" dy="1.2em">) [182</tspan>
 <tspan x="0" dy="1.2em">]</tspan>
+<tspan x="0" dy="1.2em">No file rewriting.aux.</tspan>
 </text></svg>

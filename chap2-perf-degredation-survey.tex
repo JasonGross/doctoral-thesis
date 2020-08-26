@@ -234,6 +234,8 @@ There's some work on typechecking LF, in the Twelf system, where there can be pe
 
 The most glaringly obvious performance bottleneck in Coq is that it builds proof terms, when one should really use the futuristic technique of using data abstraction, in the type system, to distinguish ``proposition'' from ``theorem''; as done in that state-of-the-art system, Edinburgh LCF.  And presumably HOL, HOL light, Isabelle/HOL, etc.
 \end{quotation}
+\todo{mention the issue that LCF approach does not fully satisfy de Bruijn criterion, does not protect against plugins and Obj.magic}
+\todo{share reasoning of ppedrot from \textcite{NewCoqTactics2016Pedrot}}
 
 The obvious certificate to prove a conjunction $A \wedge B$ is to hold a certificate $a$ proving $A$ and a certificate $b$ proving $B$.
 In Coq, this certificate is called \texttt{conj} and it takes four parameters: $A$, $B$, $a : A$, and $b : B$.

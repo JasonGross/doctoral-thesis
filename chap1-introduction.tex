@@ -32,6 +32,7 @@ Bugs in the software of the Therac-25, a radiation-therapy machine, killed three
 More recently, unforseen edge-cases in DAO smart-contracts nearly cost investors over 40 million USD.~\cite{DAO2018Guecluetuerk}
 \todo{should I mention anything else? the pentium bug costing Intel \$475 million? http://top-100s.blogspot.com/2009/05/10-most-expensive-software-blunders.html, \$500 million Ariane Rocket disaster? , https://www.olenick.com/blog/articles/infamous-software-bugs-fdiv-bug}
 \todo{should I pull from https://xavierleroy.org/talks/Milner-award-lecture.pdf? ``Fiat-Chrysler recalled 1.5 M vehicles for software update.''}
+\todo{\textcite{zhivich2009real}}
 
 While testing of various kinds is widely used to catch bugs, it's quite costly \todoask{should I email Xavier Leroy and ask if he has references on how much the airline industry spends on testing?} and does not guarantee a lack of bugs.
 In some adversarial contexts, random testing cannot hope to eliminate all bugs.
@@ -88,13 +89,23 @@ Formal verification can be traced back to the early 1950's.~\cite{Brief2019Darba
 The first formally verified proof, achieved in 1954, was of the theorem that the sum of two even numbers is even.~\cite{davis2001early}
 
 \todo{\textcite{luckham1979stanford}}
-\todo{wide look at various proof assistants (historical overview of how the field got to where it is today, maybe with weight according to importance) and successes (applications of proof assistants like compcert~\cite{Compcert}, sel4 (kernel)~\cite{seL4SOSP09}, cakeml~\cite{CakeML}, nqthm~\cite{Nqthm,wiki:Nqthm}, ACL2~\cite{ACL2,ACL2Applications}, crypto???, flyspeck~\cite{flyspeck2014Hales}, 4-color-theorem~\cite{gonthier2008formal}, odd-order-theorem~\cite{gonthier2013machine})}
+\todo{talk about LCF approach~\cite{harrison2001lcf}}
+\todo{wide look at various proof assistants (historical overview of how the field got to where it is today, maybe with weight according to importance) and successes (applications of proof assistants like compcert~\cite{Compcert}, sel4 (kernel)~\cite{seL4SOSP09}, cakeml~\cite{CakeML}, nqthm~\cite{Nqthm,wiki:Nqthm}, ACL2~\cite{ACL2,ACL2Applications}, crypto???, flyspeck~\cite{flyspeck,flyspeck2014Hales}, 4-color-theorem~\cite{gonthier2008formal}, odd-order-theorem~\cite{gonthier2013machine})}
+\todo{LCF~\cite{LCF2000Gordon,gordon1979edinburgh,gordon1978metalanguage}, Isabelle/HOL~\cite{LCF2019Paulson,Isabelle/Isar2002Wenzel,Isabelle,paulson1994isabelle}, HOL4~\cite{slind2008brief}, HOL Light~\cite{harrison1996hol}, LF~\cite{pfenning1991logic,harper93}, Twelf~\cite{pfenning1999system}, Matita~\cite{asperti2007user,Matita2011Asperti}, PVS~\cite{owre1996pvs,PVS1992Owre}, Mizar~\cite{harrison-mizar}, Automath~\cite{wiki:AutoMath,mathematical1970Bruijn,Survey1994deBruijn}}
 \todo{https://www.eeweb.com/profile/adarbari/articles/a-brief-history-of-formal-verification}
 \todo{look at OSDI submission (papers/lightbulb/) and mine related work}
 \todo{read and cite Talia's paper \textcite{ringer2020qed}?}
 
 \section{Basic Design Choices}\label{sec:intro:proof-assistant-design-choices}
-\todo{introduce section where we talk about what some big design decisions are and why we might make them the way we do}
+Although the design-space of proof assistants is quite large, as we've touched on in \autoref{sec:intro:history}, there are only two main design decisions which we want to assume for the investigations of this thesis.
+The first is the use of dependent type theory as a basis for formal proofs, as is done in Coq~\cite{coq}, Agda~\cite{Dependently2009Norell}, Idris~\cite{Idris2013Brady}, Lean~\cite{Lean2015Moura}, Nuprl~\cite{nuprl}, Matita~\cite{Matita2011Asperti}, and others, rather than on some other logic, as is done in
+The second is the \emph{de Bruijn criterion}, mandating independent checking of proofs by a small trusted kernel.~\cite{challenge2005Barendregt}
+We have found that many of the performance bottlenecks are fundamentally a result of one or the other of these two design decisions.
+
+In this section, we will explain these two design choices in detail;
+by the end of this section, the reader should understand what each design choice entails, and, we hope, why these are reasonable choices to make.
+
+\todo{do I need to say any more before the subsections?}
 
 \subsection{Dependent Types: What? Why? How?}\label{sec:why-how-dependent-types}
 %\subsection{Dependent Type Theory}
@@ -106,9 +117,16 @@ The first formally verified proof, achieved in 1954, was of the theorem that the
 \todo{maybe mention lego as early implementation of dependent types}
 \todo{explain dependent type theory, motivate using it}
 \todo{read and cite \textcite{Should1999Lamport} and \textcite{Formalising2018Paulson} h/t Karl Palmskog @palmskog on gitter \url{https://gitter.im/coq/coq?at=5e5ec0ae4eefc06dcf31943f}}
+\todo{``Another variation of the basic architecture that is part of the Coq proof assistant is the inclusion of aconversion rulein its logical core.  Arguments that are based solely on computation of functions definedin the logic, such as the fact that 1+1=2, are ubiquitous throughout formal proofs.  If we record allthe steps required to show that such arguments are valid as part of the proof objects,  their size soonbecomes prohibitively large.  It has been argued that such arguments should not be recorded in formalproofs but rather should be automatically decided through computation – a principle that has been called the Poincaré principle'' \cite[p.~1167]{barendregt2001proof} \cite{stampoulis2013veriml}}
 
-\subsection{The De Bruijn Criterion}\label{sec:debruijn-criterion}
-\todo{explain the De Bruijn criterion}
+\subsection{The de Bruijn Criterion}\label{sec:debruijn-criterion}
+\begin{quote}
+  A Mathematical Assistant satisfying the possibility of independent checking by a small program is said to satisfy the \emph{de Bruijn} criterion.
+\end{quote}
+\begin{flushright}
+  --- Henk Barendregt~\cite{challenge2005Barendregt}
+\end{flushright}
+\todo{explain the de Bruijn criterion}
 \todo{explain why it's worth following this, and what goes wrong if you don't}
 \todo{look into \textcite{Sealing2020Selsam} Sealing Pointer-Based Optimizations Behind Pure Functions}
 \todo{example: Ltac vs Gallina, kind-of}

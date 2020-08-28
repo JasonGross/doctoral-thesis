@@ -27,7 +27,8 @@
 %\paragraph{Paragraph 1: Orient the reader to very broad things} Software w/o bugs via formal methods
 As our world comes to rely more and more on large and complex software, the impact of bugs in our code grows ever more severe.
 Bugs in the software of the Therac-25, a radiation-therapy machine, killed three people and injured at least three more between 1985 and 1987 by delivering potentially leathal doses of radiation.~\cite{Therac}
-\todoask{do I need a better citation than wikipedia?}
+\todo{Yes: Include more text from the following (at least three examples in this paragraph)}
+\todo{do I need a better citation than wikipedia? Answer: Yes, find a primary source, especially as the citation is so early}
 \todo{should I mention the pricing bug on amazon? https://www.usatoday.com/story/tech/2019/07/19/amazon-prime-day-error-sold-13-000-camera-equipment-94-report/1775314001/, https://www.theguardian.com/money/2014/dec/14/amazon-glitch-prices-penny-repricerexpress, http://www.michaeleisen.org/blog/?p=358}
 More recently, unforseen edge-cases in DAO smart-contracts nearly cost investors over 40 million USD.~\cite{DAO2018Guecluetuerk}
 \todo{should I mention anything else? the pentium bug costing Intel \$475 million? http://top-100s.blogspot.com/2009/05/10-most-expensive-software-blunders.html, \$500 million Ariane Rocket disaster? , https://www.olenick.com/blog/articles/infamous-software-bugs-fdiv-bug}
@@ -95,6 +96,16 @@ The first formally verified proof, achieved in 1954, was of the theorem that the
 \todo{https://www.eeweb.com/profile/adarbari/articles/a-brief-history-of-formal-verification}
 \todo{look at OSDI submission (papers/lightbulb/) and mine related work}
 \todo{read and cite Talia's paper \textcite{ringer2020qed}?}
+
+\todo{goals: simultaneously let people know that there's been a lot of thought and effort, let people know about success stories (because it possibly hasn't touched them, and hasn't been adopted mainstream), (and also a bit about how the proof assistants might actually check the proofs)}
+\todo{The structure of this section:}
+\begin{itemize}
+\item \todo{how the first proof assistants worked}
+\item \todo{subsubsection on LCF approach, and how that lets you prove things}
+\item \todo{paragraph on descendents of LCF, dependently typed and not; foreshadow how proof checking as typechecking works with a single sentence or so}
+\item \todo{very brief paragraph on other proof assistants, also mention survey papers}
+\item \todo{paragraph on successes of proof assistants}
+\end{itemize}
 
 \section{Basic Design Choices}\label{sec:intro:proof-assistant-design-choices}
 Although the design-space of proof assistants is quite large, as we've touched on in \autoref{sec:intro:history}, there are only two main design decisions which we want to assume for the investigations of this thesis.

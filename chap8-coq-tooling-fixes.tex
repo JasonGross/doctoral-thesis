@@ -77,6 +77,7 @@ Fixed in Coq 8.6, these bugs, too, got in the way of seamless proof development.
 \begin{flushright}
   --- Charles Leiserson (heavily paraphrased, reconstructed from memory of 6.172)
 \end{flushright}
+\todo{Ask Charles about a better/accurate/refined quote}
 
 In old versions of Coq, there was no good way to profile tactic execution.
 Users could wrap some invocations in \mintinline{coq}{time} to see how long a given tactic took, or could regularly print some output to see where execution hung.
@@ -84,6 +85,7 @@ Both of these are very low-tech methods of performance deubugging, and work well
 For debugging hundreds or thousands of lines of \Ltac\space code, though, these methods are insufficient.
 
 A genuine profiler for \Ltac\space was developed in 2015 and integrated into Coq itself in version 8.6.~\cite{coqpl-15-ltac-profiler}
+\todo{mention the story of how it was created and mention my part in it}
 
 For those interested in amusing quirks of implementation details, the profiler itself was relatively easy to implement.
 Since \Ltac\space already records backtraces for error reporting, it was a relatively simple matter to hook into the stack-trace-recorder and track how much time was spent in each call-stack.

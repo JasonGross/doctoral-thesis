@@ -1,24 +1,23 @@
 \begin{quote}
-  The most common mistake in performance engineering is to blindly optimize without profiling; you most often spend your time optimizing parts that aren't actually bottlenecks.
-\end{quote}
-\begin{flushright}
-  --- Charles Leiserson (heavily paraphrased, reconstructed from memory of 6.172)
-\end{flushright}
-
-\begin{quote}
-  premature optimization is the root of all evil
-\end{quote}
-\begin{flushright}
-  --- Donald Knuth~\cite[p.~671]{KnuthPrematureOptimization}
-\end{flushright}
-
-\begin{quote}
   Testing shows the presence, not the absence of bugs
 \end{quote}
 \begin{flushright}
   --- Edsger Wybe Dijkstra, 1969~\cite{naur1969software}
 \end{flushright}
 
+\begin{quote}
+  If you blindly optimize without profiling, you will likely waste your time on the 99\% of code that isn't actually a performance bottleneck and miss the 1\% that is.
+\end{quote}
+\begin{flushright}
+  --- Charles E.~Leiserson~\cite{Profiling2020Leiserson}
+\end{flushright}
+
+\begin{quote}
+  premature optimization is the root of all evil
+\end{quote}
+\begin{flushright}
+  --- Donald E.~Knuth~\cite[p.~671]{KnuthPrematureOptimization}
+\end{flushright}
 
 \chapter{Introduction}\label{ch:intro}
 
@@ -87,7 +86,11 @@ While we propose some design principles for avoiding these performance issues in
 Before diving into the details of performance bottlenecks and solutions, we review the history of formal verification and proof assistants to bring the reader up to speed on the context of our work and investigation.
 
 Formal verification can be traced back to the early 1950's.~\cite{Brief2019Darbari}
-The first formally verified proof, achieved in 1954, was of the theorem that the sum of two even numbers is even.~\cite{davis2001early}
+The first formally verified proof, in some sense, achieved in 1954, was of the theorem that the sum of two even numbers is even.~\cite{davis2001early}
+The ``proof'' was an implementation in a vacuum-tube computer of the algorithm of \textcite{Uber1929Presburger}, which could decide, for any first order formula of natural number arithmetic, whether the formula represented a true theorem or a false one;
+by implementing this algorithm and verifying that it returns ``true'' on a formula such as $\forall a\ b\ x\ y,\ \exists z,\ a = x + x \to b = y + y \to a + b = z + z$, the machine can be said to prove that this formula is true.
+
+
 
 \todo{\textcite{luckham1979stanford}}
 \todo{talk about LCF approach~\cite{harrison2001lcf}}

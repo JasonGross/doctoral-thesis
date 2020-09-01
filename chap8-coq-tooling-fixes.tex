@@ -72,12 +72,22 @@ Fixed in Coq 8.6, these bugs, too, got in the way of seamless proof development.
 
 \subsection{The \Ltac\space Profiler}\label{sec:ltac-prof}
 \begin{quote}
-  The most common mistake in performance engineering is to blindly optimize without profiling; you most often spend your time optimizing parts that aren't actually bottlenecks.
+  If you blindly optimize without profiling, you will likely waste your time on the 99\% of code that isn't actually a performance bottleneck and miss the 1\% that is.
 \end{quote}
 \begin{flushright}
-  --- Charles Leiserson (heavily paraphrased, reconstructed from memory of 6.172)
+  --- Charles E.~Leiserson\footnote{%
+Although this quote comes from the class I took at MIT, 6.172 --- Performance Engineering of Software Systems, the inspiration for the quote is an extended version of Donald Knuth's ``premature optimization is the root of all evil'' quote:
+\begin{quote}
+  Programmers waste enormous amounts of time thinking about, or worrying about, the speed of noncritical parts of their programs, and these attempts at efficiency actually have a strong negative impact when debugging and maintenance are considered.
+  We \emph{should} forget about small efficiencies, say about 97\% of the time: premature optimization is the root of all evil.
+  Yet we should not pass up our opportunities in that critical 3\%.
+\end{quote}
+\begin{flushright}
+  --- Donald E.~Knuth~\cite[p.~268]{KnuthPrematureOptimizationExtended}
+\end{flushright}%
+}%
+~\cite{Profiling2020Leiserson}
 \end{flushright}
-\todo{Ask Charles about a better/accurate/refined quote}
 
 In old versions of Coq, there was no good way to profile tactic execution.
 Users could wrap some invocations in \mintinline{coq}{time} to see how long a given tactic took, or could regularly print some output to see where execution hung.
@@ -85,10 +95,11 @@ Both of these are very low-tech methods of performance deubugging, and work well
 For debugging hundreds or thousands of lines of \Ltac\space code, though, these methods are insufficient.
 
 A genuine profiler for \Ltac\space was developed in 2015 and integrated into Coq itself in version 8.6.~\cite{coqpl-15-ltac-profiler}
-\todo{mention the story of how it was created and mention my part in it}
 
 For those interested in amusing quirks of implementation details, the profiler itself was relatively easy to implement.
+If I recall correctly, Tobias Tebbi, after hearing of my \Ltac\space performance woes, mentioned to me the profiler he implemented over the course of a couple of days.
 Since \Ltac\space already records backtraces for error reporting, it was a relatively simple matter to hook into the stack-trace-recorder and track how much time was spent in each call-stack.
+With some help from the Coq development team, I was able to adapt the patch to the new tactic engine of Coq $\ge$ 8.5, and shepherded it into Coq's codebase.
 
 \todo{should I include more text here, extracting from the abstract submitted to CoqPL?}
 

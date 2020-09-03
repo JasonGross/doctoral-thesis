@@ -9,8 +9,6 @@
 \usepackage{xargs}
 \usepackage[maxbibnames=99,backend=biber]{biblatex}
 \usepackage{ifthen}
-\usepackage{xifthen}
-\usepackage{ifthenx}
 \usepackage{pdfpages}
 \usepackage{pgf}
 \newcommand*{\getlengthpt}[2]{%
@@ -128,7 +126,7 @@
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \ifthenelse{\boolean{skipauthor}}{%
 }{%
-\ifthenelse{\boolean{includesigned} \AND \fileexists{\authorsignedpdf.pdf}}{%
+\ifthenelse{\boolean{includesigned}}{%
     \includepdf{\authorsignedpdf}%
 }{%
 \begin{center}
@@ -173,7 +171,7 @@
 }%
 \ifthenelse{\boolean{skipsupervisor}}{%
 }{%
-\ifthenelse{\boolean{includesigned} \AND \fileexists{\supervisorsignedpdf.pdf}}{%
+\ifthenelse{\boolean{includesigned}}{%
     \includepdf{\supervisorsignedpdf}%
 }{%
 \begin{flushright}
@@ -247,7 +245,7 @@ Comments: \\
 }%
 \ifthenelse{\boolean{skipreaderone}}{%
 }{%
-\ifthenelse{\boolean{includesigned} \AND \fileexists{\readeronesignedpdf.pdf}}{%
+\ifthenelse{\boolean{includesigned}}{%
     \includepdf{\readeronesignedpdf}%
 }{%
 \begin{flushright}
@@ -315,7 +313,7 @@ Comments: \\
 }%
 \ifthenelse{\boolean{skipreadertwo}}{%
 }{%
-\ifthenelse{\boolean{includesigned} \AND \fileexists{\readertwosignedpdf.pdf}}{%
+\ifthenelse{\boolean{includesigned}}{%
     \includepdf{\readertwosignedpdf}%
 }{%
 \begin{flushright}

@@ -146,6 +146,7 @@ Before we proceed to reification, we will introduce one more complexity.
 If we want to support our initial example with \letindots\space efficiently, we must also have \mintinline{coq}{let}-expressions.
 Our current procedure that inlines \mintinline{coq}{let}-expressions takes 19 seconds, for example, on \mintinline{coq}{let x0 := 10 * 10 in let x1 := x0 * x0 in … let x24 := x23 * x23 in x24}.
 The choices of representation of binders, which are essential to encoding \mintinline{coq}{let}-expressions, include higher-order abstract syntax (HOAS)~\cite{HOAS}, parametric higher-order abstract syntax (PHOAS)~\cite{PhoasICFP08} also known as weak HOAS~\cite{weak2013Ciaffaglione}, de Bruijn indices~\cite{debruijn1972}, nominal representations~\cite{Nominal2003Pitts}, locally nameless representations~\cite{Locally2012Chargueraud,locally2007Leroy}, named representations, and nested abstract syntax~\cite{Nested2012Hirschowitz,deBruijn1999Bird}.
+\todo{compare citations with those of \cite[p.~122]{ringer2020qed}}
 A survey of a number of options for binding can be found in \autocite{Engineering2008Aydemir}.
 \todoask{is this a place to cite POPLMark?  What should be said about it?  Should I mention more sorts of representations?}
 

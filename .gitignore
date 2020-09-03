@@ -328,3 +328,8 @@ nra.cache
 *_Medium.v
 *_Slow.v
 *_VerySlow.v
+
+# deps
+/acrotex.zip
+/acrotex/
+/eforms.sty

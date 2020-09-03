@@ -19,10 +19,14 @@ PDFS = $(PROPOSAL_PDFS) $(THESIS_PDFS)
 
 export TEXMFCNF=.:
 
+.PHONY: ubuntu-deps
+ubuntu-deps: eforms.sty
+
 OBERDIEK = accsupp aliascnt alphalph askinclude atbegshi atenddvi attachfile2 atveryend auxhook bigintcalc bitset bmpsize bookmark catchfile centernot chemarr classlist colonequals dvipscol embedfile engord enparen eolgrab epstopdf etexcmds fibnum flags gettitlestring grfext grffile hobsub hologo holtxdoc hopatch hycolor hypbmsec hypcap hypdestopt hypdoc hypgotoe hyphsubst ifdraft iflang ifluatex ifpdf ifvtex infwarerr inputenx intcalc kvdefinekeys kvoptions kvsetkeys letltxmacro listingsutf8 ltxcmds luacolor luatex magicnum makerobust mleftright pagegrid pagesel pdfcol pdfcolfoot pdfcolmk pdfcolparallel pdfcolparcolumns pdfcrypt pdfescape pdflscape pdfrender pdftexcmds picture pmboxdraw protecteddef refcount rerunfilecheck resizegather rotchiffre scrindex selinput setouterhbox settobox soulutf8 stackrel stampinclude stringenc tabularht tabularkv telprint thepdfnumber transparent twoopt uniquecounter zref
 MATH = amsbsy  amscd  amsgen  amsmath  amsopn  amstext  amsxtra
 TOOLS = afterpage array bm calc dcolumn delarray enumerate fileerr fontsmpl ftnright hhline indentfirst layout longtable multicol rawfonts showkeys somedefs tabularx theorem trace varioref verbatim xr xspace
 TOOLS_IN = afterpage.dtx afterpage.ins array.dtx bm.dtx bm.ins calc.dtx dcolumn.dtx delarray.dtx enumerate.dtx fileerr.dtx fontsmpl.dtx ftnright.dtx hhline.dtx indentfirst.dtx layout.dtx longtable.dtx longtable.ins multicol.dtx multicol.ins rawfonts.dtx showkeys.dtx somedefs.dtx tabularx.dtx tabularx.ins theorem.dtx tools.ins trace.dtx varioref.dtx varioref.ins verbatim.dtx xr.dtx xspace.dtx
+ACROTEX_INS_STY := acrotex.sty dljslib.sty eforms.sty exerquiz.sty stydljs.sty taborder.sty web.sty
 
 V = 0
 
@@ -65,7 +69,7 @@ update-proposal::
 
 download-packages: mathtools.sty mhsetup.sty etoolbox.sty biblatex.sty logreq.sty
 
-biblatex.zip mathtools.zip xcolor.zip oberdiek.zip cmap.zip hyperref.zip float.zip listings.zip microtype.zip::
+biblatex.zip mathtools.zip xcolor.zip oberdiek.zip cmap.zip hyperref.zip float.zip listings.zip microtype.zip acrotex.zip::
 	$(call WGET,$@,"http://mirrors.ctan.org/macros/latex/contrib/$@")
 
 graphics.zip tools.zip::
@@ -118,6 +122,17 @@ tools/%: tools.zip
 
 microtype/%: microtype.zip
 	$(UNZIP) $<
+
+acrotex/%: acrotex
+
+acrotex: acrotex.zip
+	$(UNZIP) $<
+
+$(addprefix acrotex/,$(ACROTEX_INS_STY)) : acrotex/%.sty: acrotex/%.ins acrotex/%.dtx
+	cd acrotex && latex $*.ins
+
+$(ACROTEX_INS_STY) : % : acrotex/%
+	cp -f $< $@
 
 amsfonts/source/amssymb.def: amsfonts.zip
 	$(UNZIP) $<
@@ -199,6 +214,8 @@ $(addsuffix .dtx,$(MATH)) $(addsuffix .ins,$(MATH)) : % : math/%
 graphics.sty: color.dtx drivers.dtx epsfig.dtx graphics-drivers.ins graphics.dtx graphics.ins graphicx.dtx keyval.dtx lscape.dtx trig.dtx
 	$(VECHO) LATEX graphics.ins
 	latex graphics.ins
+
+
 
 color.sty epsfig.sty graphics-drivers.ins graphicx.sty keyval.sty lscape.sty trig.sty: graphics.sty
 

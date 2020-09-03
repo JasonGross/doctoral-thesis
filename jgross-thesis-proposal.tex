@@ -163,9 +163,11 @@
 
 \abstract
 }%
+\ifthenelse{\NOT\boolean{skipcontents}}{%
                  %%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \cleardoublepage %%% Supervision Agreement %%%
                  %%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+}{}%
 }%
 \ifthenelse{\boolean{skipsupervisor}}{%
 }{%
@@ -236,9 +238,11 @@ Comments: \\
 \end{tabular}
 }%
 }%
+\ifthenelse{\NOT\boolean{skipcontents}}{%
                  %%%%%%%%%%%%%%%%%%%%%%%%%%
 \cleardoublepage %%% Reader I Agreement %%%
                  %%%%%%%%%%%%%%%%%%%%%%%%%%
+}{}%
 }%
 \ifthenelse{\boolean{skipreaderone}}{%
 }{%
@@ -302,9 +306,11 @@ Comments: \\
 }%
 }%
 
+\ifthenelse{\NOT\boolean{skipcontents}}{%
                   %%%%%%%%%%%%%%%%%%%%%%%%%%%
 \cleardoublepage  %%% Reader II Agreement %%%
                   %%%%%%%%%%%%%%%%%%%%%%%%%%%
+}{}%
 }%
 \ifthenelse{\boolean{skipreadertwo}}{%
 }{%
@@ -367,7 +373,9 @@ Comments: \\
 \end{tabular}
 }%
 }%
+\ifthenelse{\NOT\boolean{skipcontents}}{%
 \cleardoublepage
+}{}%
 }%
 \ifthenelse{\boolean{skipcontents}}{%
 }{%

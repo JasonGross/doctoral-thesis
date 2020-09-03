@@ -17,6 +17,41 @@
 \newcommand*{\getlengthroundpt}[2]{\getlengthpt{#1}{int(round(#2))}}
 \newcommand*{\getlengthfloorpt}[2]{\getlengthpt{#1}{int(floor(#2))}}
 
+% \CMD{title}{as width of}
+\newcommandx{\tabSigFieldAsWidthOf}[4][1=0,2=7ex]{%
+  %\hspace*{-\tabcolsep}
+  %\clap{\raisebox{-#1*\real{0.4}}[0pt][0pt]{\rule{\widthof{#3}+2\tabcolsep}{#1}}}%
+  \clap{\raisebox{-#2*\real{#1}}[0pt][0pt]{\sigField{#3}{\widthof{#4}+2\tabcolsep}{#2}}}%
+  %\rlap{\hspace*{-\tabcolsep}\widthof{#2}+2\tabcolsep}{2\baselineskip}}%
+}
+\everyTextField{\Ff{\FfDoNotScroll}}
+\newcommandx{\tabTextFieldAsWidthOf}[4][1=0,2=24pt]{%
+  \clap{\raisebox{-#2*\real{#1}}[0pt][0pt]{\textField[\textSize{18}]{#3}{\widthof{#4}+2\tabcolsep}{#2}}}%
+}
+% \CMD{title}{linecount}{contents}
+\newlength{\wrapWithMultiLineTextFieldPreHeight}
+\newlength{\wrapWithMultiLineTextFieldHeight}
+\newlength{\wrapWithMultiLineTextFieldFontSizeLen}
+%\def\wrapWithMultiLineTextFieldFontSize{20}% empirical
+\newsavebox{\wrapWithMultiLineTextFieldBox}
+\newcommand{\wrapWithMultiLineTextField}[3]{%
+  \sbox{\wrapWithMultiLineTextFieldBox}{#3}%
+  \setlength{\wrapWithMultiLineTextFieldPreHeight}{\heightof{\usebox{\wrapWithMultiLineTextFieldBox}}+\depthof{\usebox{\wrapWithMultiLineTextFieldBox}}}%
+  \setlength{\wrapWithMultiLineTextFieldHeight}{\wrapWithMultiLineTextFieldPreHeight+\baselineskip}%
+  % 1.2 from https://tex.stackexchange.com/a/48277/2066
+  \setlength{\wrapWithMultiLineTextFieldFontSizeLen}{\dimexpr ((\wrapWithMultiLineTextFieldPreHeight - \baselineskip) * 10) / (#2 * 12) \relax}
+  \getlengthfloorpt{\wrapWithMultiLineTextFieldFontSize}{\the\wrapWithMultiLineTextFieldFontSizeLen}%
+  %\showthe\wrapWithMultiLineTextFieldFontSizeLen
+  %\show\wrapWithMultiLineTextFieldFontSize
+  %0.4 is emiprical
+  \rlap{\raisebox{-0.4\baselineskip}[0pt][0pt]{\textField[%
+        \Ff{\FfMultiline}%
+        \textSize{\wrapWithMultiLineTextFieldFontSize}%
+      ]{#1}{\widthof{\usebox{\wrapWithMultiLineTextFieldBox}}}{\wrapWithMultiLineTextFieldHeight}}}%
+  \usebox{\wrapWithMultiLineTextFieldBox}%
+}
+
+
 \provideboolean{includesigned}
 \bibliography{jgross-thesis.bib}
 \input{new-date-proposal}
@@ -85,40 +120,6 @@
 \end{center}
 
 \vspace{.5in}
-
-% \CMD{title}{as width of}
-\newcommandx{\tabSigFieldAsWidthOf}[4][1=0,2=7ex]{%
-  %\hspace*{-\tabcolsep}
-  %\clap{\raisebox{-#1*\real{0.4}}[0pt][0pt]{\rule{\widthof{#3}+2\tabcolsep}{#1}}}%
-  \clap{\raisebox{-#2*\real{#1}}[0pt][0pt]{\sigField{#3}{\widthof{#4}+2\tabcolsep}{#2}}}%
-  %\rlap{\hspace*{-\tabcolsep}\widthof{#2}+2\tabcolsep}{2\baselineskip}}%
-}
-\everyTextField{\Ff{\FfDoNotScroll}}
-\newcommandx{\tabTextFieldAsWidthOf}[4][1=0,2=24pt]{%
-  \clap{\raisebox{-#2*\real{#1}}[0pt][0pt]{\textField[\textSize{18}]{#3}{\widthof{#4}+2\tabcolsep}{#2}}}%
-}
-% \CMD{title}{linecount}{contents}
-\newlength{\wrapWithMultiLineTextFieldPreHeight}
-\newlength{\wrapWithMultiLineTextFieldHeight}
-\newlength{\wrapWithMultiLineTextFieldFontSizeLen}
-%\def\wrapWithMultiLineTextFieldFontSize{20}% empirical
-\newsavebox{\wrapWithMultiLineTextFieldBox}
-\newcommand{\wrapWithMultiLineTextField}[3]{%
-  \sbox{\wrapWithMultiLineTextFieldBox}{#3}%
-  \setlength{\wrapWithMultiLineTextFieldPreHeight}{\heightof{\usebox{\wrapWithMultiLineTextFieldBox}}+\depthof{\usebox{\wrapWithMultiLineTextFieldBox}}}%
-  \setlength{\wrapWithMultiLineTextFieldHeight}{\wrapWithMultiLineTextFieldPreHeight+\baselineskip}%
-  % 1.2 from https://tex.stackexchange.com/a/48277/2066
-  \setlength{\wrapWithMultiLineTextFieldFontSizeLen}{\dimexpr ((\wrapWithMultiLineTextFieldPreHeight - \baselineskip) * 10) / (#2 * 12) \relax}
-  \getlengthfloorpt{\wrapWithMultiLineTextFieldFontSize}{\the\wrapWithMultiLineTextFieldFontSizeLen}%
-  %\showthe\wrapWithMultiLineTextFieldFontSizeLen
-  %\show\wrapWithMultiLineTextFieldFontSize
-  %0.4 is emiprical
-  \rlap{\raisebox{-0.4\baselineskip}[0pt][0pt]{\textField[%
-        \Ff{\FfMultiline}%
-        \textSize{\wrapWithMultiLineTextFieldFontSize}%
-      ]{#1}{\widthof{\usebox{\wrapWithMultiLineTextFieldBox}}}{\wrapWithMultiLineTextFieldHeight}}}%
-  \usebox{\wrapWithMultiLineTextFieldBox}%
-}
 
 \def\sigText{Signature of Author}
 \def\sig{{\small \sc (\sigText)}}

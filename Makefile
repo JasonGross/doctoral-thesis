@@ -265,7 +265,7 @@ $(THESIS_PDFS): $(THESIS_TEXS)
 $(PROPOSAL_PDFS): $(PROPOSAL_TEXS)
 
 jgross-thesis-proposal-signed.pdf: jgross-thesis-proposal.tex $(READER_AGREEMENT_SIGNED_PDFS)
-$(READER_AGREEMENT_PDFS): jgross-thesis-proposal.pdf
+$(READER_AGREEMENT_PDFS): jgross-thesis-proposal.tex # jgross-thesis-proposal.pdf
 
 include rewriting/PerfData.mk
 REWRITING_PERF_DATA_MD5 := $(addsuffix .md5,$(REWRITING_PERF_DATA))

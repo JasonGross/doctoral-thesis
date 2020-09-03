@@ -53,6 +53,25 @@
 
 
 \provideboolean{includesigned}
+\provideboolean{onlyauthorform}
+\provideboolean{onlysupervisorform}
+\provideboolean{onlyreaderoneform}
+\provideboolean{onlyreadertwoform}
+
+\newboolean{skipauthor}
+\newboolean{skipsupervisor}
+\newboolean{skipreaderone}
+\newboolean{skipreadertwo}
+\newboolean{skipcontents}
+
+\newcommand{\setbooleanto}[2]{\ifthenelse{#2}{\setboolean{#1}{true}}{\setboolean{#1}{false}}}
+
+\setbooleanto{skipcontents}{\boolean{onlyauthorform} \OR \boolean{onlysupervisorform} \OR \boolean{onlyreaderoneform} \OR \boolean{onlyreadertwoform}}
+\setbooleanto{skipauthor}{\boolean{skipcontents} \AND \NOT \boolean{onlyauthorform}}
+\setbooleanto{skipsupervisor}{\boolean{skipcontents} \AND \NOT \boolean{onlysupervisorform}}
+\setbooleanto{skipreaderone}{\boolean{skipcontents} \AND \NOT \boolean{onlyreaderoneform}}
+\setbooleanto{skipreadertwo}{\boolean{skipcontents} \AND \NOT \boolean{onlyreadertwoform}}
+
 \bibliography{jgross-thesis.bib}
 \input{new-date-proposal}
 
@@ -105,6 +124,8 @@
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%% Cover Page - Author signs %%%
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\ifthenelse{\boolean{skipauthor}}{%
+}{%
 \ifthenelse{\boolean{includesigned}}{%
     \includepdf{\authorsignedpdf}%
 }{%
@@ -145,6 +166,9 @@
                  %%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \cleardoublepage %%% Supervision Agreement %%%
                  %%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+}%
+\ifthenelse{\boolean{skipsupervisor}}{%
+}{%
 %\ifthenelse{\boolean{includesigned}}{%
 %    \includepdf{\supervisorsignedpdf}%
 %}
@@ -215,6 +239,9 @@ Comments: \\
                  %%%%%%%%%%%%%%%%%%%%%%%%%%
 \cleardoublepage %%% Reader I Agreement %%%
                  %%%%%%%%%%%%%%%%%%%%%%%%%%
+}%
+\ifthenelse{\boolean{skipreaderone}}{%
+}{%
 \ifthenelse{\boolean{includesigned}}{%
     \includepdf{\readeronesignedpdf}%
 }{%
@@ -278,7 +305,9 @@ Comments: \\
                   %%%%%%%%%%%%%%%%%%%%%%%%%%%
 \cleardoublepage  %%% Reader II Agreement %%%
                   %%%%%%%%%%%%%%%%%%%%%%%%%%%
-
+}%
+\ifthenelse{\boolean{skipreadertwo}}{%
+}{%
 \ifthenelse{\boolean{includesigned}}{%
     \includepdf{\readertwosignedpdf}%
 }{%
@@ -339,7 +368,9 @@ Comments: \\
 }%
 }%
 \cleardoublepage
-
+}%
+\ifthenelse{\boolean{skipcontents}}{%
+}{%
 \section{Background}
 
 Proof assistants are tools which aid the user in formulating machine-checked proofs.
@@ -519,5 +550,5 @@ However, the framework is still only a \emph{prototype}, in the sense that the p
 %\bibliographystyle{plain}
 %\nocite{*}
 \printbibliography[title=References]
-
+}%
 \end{document}

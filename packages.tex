@@ -3,7 +3,10 @@
 \usepackage{amssymb}
 \usepackage{amsthm}
 \usepackage{hyperref}
+\usepackage{eforms}
+\usepackage{xargs}
 \usepackage{tikz}
+\usepackage{pgf}
 \usepackage{pgfplots}
 \usepackage{gnuplottex}[2016/08/21]%must be before listings package; min date is for compat with tikzexternalize
 \usepackage{pgfkeys}
@@ -764,5 +767,22 @@
 \newcommand{\pullbackarrow}[1][dr]{\ar@{}[#1]|<<\pullbacksymbol}
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
+
+%%%%%%%%%%%%%%%%%%%% forms %%%%%%%%%%%%%%%%%%%%
+
+%\def\signature#1#2{\par\noindent#1\dotfill\null\\*
+%  {\raggedleft #2\par}}
+\makeatletter
+\renewcommand{\signature}[2]{\par\noindent#1%
+  {\def\\{}%
+   \xdef\sigature@descr{#2}%
+  }%
+  \rlap{\raisebox{0pt}[0pt][0pt]{\sigField{\sigature@descr}{\textwidth-\widthof{#1}}{3\baselineskip}}}%
+  \dotfill\null\\*
+  {\raggedleft #2\par}%
+}
+\makeatother
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 \input{todo}

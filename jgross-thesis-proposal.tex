@@ -9,6 +9,8 @@
 \usepackage{xargs}
 \usepackage[maxbibnames=99,backend=biber]{biblatex}
 \usepackage{ifthen}
+\usepackage{xifthen}
+\usepackage{ifthenx}
 \usepackage{pdfpages}
 \usepackage{pgf}
 \newcommand*{\getlengthpt}[2]{%
@@ -126,7 +128,7 @@
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \ifthenelse{\boolean{skipauthor}}{%
 }{%
-\ifthenelse{\boolean{includesigned}}{%
+\ifthenelse{\boolean{includesigned} \AND \fileexists{\authorsignedpdf.pdf}}{%
     \includepdf{\authorsignedpdf}%
 }{%
 \begin{center}
@@ -171,9 +173,9 @@
 }%
 \ifthenelse{\boolean{skipsupervisor}}{%
 }{%
-%\ifthenelse{\boolean{includesigned}}{%
-%    \includepdf{\supervisorsignedpdf}%
-%}
+\ifthenelse{\boolean{includesigned} \AND \fileexists{\supervisorsignedpdf.pdf}}{%
+    \includepdf{\supervisorsignedpdf}%
+}
 {%
 \begin{flushright}
    Massachusetts Institute of Technology
@@ -238,6 +240,7 @@ Comments: \\
 \end{tabular}
 }%
 }%
+}%
 \ifthenelse{\NOT\boolean{skipcontents}}{%
                  %%%%%%%%%%%%%%%%%%%%%%%%%%
 \cleardoublepage %%% Reader I Agreement %%%
@@ -246,7 +249,7 @@ Comments: \\
 }%
 \ifthenelse{\boolean{skipreaderone}}{%
 }{%
-\ifthenelse{\boolean{includesigned}}{%
+\ifthenelse{\boolean{includesigned} \AND \fileexists{\readeronesignedpdf.pdf}}{%
     \includepdf{\readeronesignedpdf}%
 }{%
 \begin{flushright}
@@ -314,7 +317,7 @@ Comments: \\
 }%
 \ifthenelse{\boolean{skipreadertwo}}{%
 }{%
-\ifthenelse{\boolean{includesigned}}{%
+\ifthenelse{\boolean{includesigned} \AND \fileexists{\readertwosignedpdf.pdf}}{%
     \includepdf{\readertwosignedpdf}%
 }{%
 \begin{flushright}

@@ -175,8 +175,7 @@
 }{%
 \ifthenelse{\boolean{includesigned} \AND \fileexists{\supervisorsignedpdf.pdf}}{%
     \includepdf{\supervisorsignedpdf}%
-}
-{%
+}{%
 \begin{flushright}
    Massachusetts Institute of Technology
 \\ Department of \deptname
@@ -238,7 +237,6 @@ Comments: \\
 %  \mbox{} \\ \cline{1-1} \mbox{} \\
 %  \mbox{} \\ \cline{1-1} \mbox{} \\
 \end{tabular}
-}%
 }%
 }%
 \ifthenelse{\NOT\boolean{skipcontents}}{%

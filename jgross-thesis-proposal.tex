@@ -3,9 +3,20 @@
 
 \documentclass[twoside]{article}
 \usepackage{hyperref}
+\usepackage{eforms}
+\usepackage{calc}
+\usepackage{mathtools}
+\usepackage{xargs}
 \usepackage[maxbibnames=99,backend=biber]{biblatex}
 \usepackage{ifthen}
 \usepackage{pdfpages}
+\usepackage{pgf}
+\newcommand*{\getlengthpt}[2]{%
+   \pgfmathsetmacro#1{#2}%
+}
+\newcommand*{\getlengthroundpt}[2]{\getlengthpt{#1}{int(round(#2))}}
+\newcommand*{\getlengthfloorpt}[2]{\getlengthpt{#1}{int(floor(#2))}}
+
 \provideboolean{includesigned}
 \bibliography{jgross-thesis.bib}
 \input{new-date-proposal}
@@ -75,14 +86,49 @@
 
 \vspace{.5in}
 
-\def\sig{{\small \sc (Signature of Author)}}
+% \CMD{title}{as width of}
+\newcommandx{\tabSigFieldAsWidthOf}[4][1=0,2=7ex]{%
+  %\hspace*{-\tabcolsep}
+  %\clap{\raisebox{-#1*\real{0.4}}[0pt][0pt]{\rule{\widthof{#3}+2\tabcolsep}{#1}}}%
+  \clap{\raisebox{-#2*\real{#1}}[0pt][0pt]{\sigField{#3}{\widthof{#4}+2\tabcolsep}{#2}}}%
+  %\rlap{\hspace*{-\tabcolsep}\widthof{#2}+2\tabcolsep}{2\baselineskip}}%
+}
+\everyTextField{\Ff{\FfDoNotScroll}}
+\newcommandx{\tabTextFieldAsWidthOf}[4][1=0,2=24pt]{%
+  \clap{\raisebox{-#2*\real{#1}}[0pt][0pt]{\textField[\textSize{18}]{#3}{\widthof{#4}+2\tabcolsep}{#2}}}%
+}
+% \CMD{title}{linecount}{contents}
+\newlength{\wrapWithMultiLineTextFieldPreHeight}
+\newlength{\wrapWithMultiLineTextFieldHeight}
+\newlength{\wrapWithMultiLineTextFieldFontSizeLen}
+%\def\wrapWithMultiLineTextFieldFontSize{20}% empirical
+\newsavebox{\wrapWithMultiLineTextFieldBox}
+\newcommand{\wrapWithMultiLineTextField}[3]{%
+  \sbox{\wrapWithMultiLineTextFieldBox}{#3}%
+  \setlength{\wrapWithMultiLineTextFieldPreHeight}{\heightof{\usebox{\wrapWithMultiLineTextFieldBox}}+\depthof{\usebox{\wrapWithMultiLineTextFieldBox}}}%
+  \setlength{\wrapWithMultiLineTextFieldHeight}{\wrapWithMultiLineTextFieldPreHeight+\baselineskip}%
+  % 1.2 from https://tex.stackexchange.com/a/48277/2066
+  \setlength{\wrapWithMultiLineTextFieldFontSizeLen}{\dimexpr ((\wrapWithMultiLineTextFieldPreHeight - \baselineskip) * 10) / (#2 * 12) \relax}
+  \getlengthfloorpt{\wrapWithMultiLineTextFieldFontSize}{\the\wrapWithMultiLineTextFieldFontSizeLen}%
+  %\showthe\wrapWithMultiLineTextFieldFontSizeLen
+  %\show\wrapWithMultiLineTextFieldFontSize
+  %0.4 is emiprical
+  \rlap{\raisebox{-0.4\baselineskip}[0pt][0pt]{\textField[%
+        \Ff{\FfMultiline}%
+        \textSize{\wrapWithMultiLineTextFieldFontSize}%
+      ]{#1}{\widthof{\usebox{\wrapWithMultiLineTextFieldBox}}}{\wrapWithMultiLineTextFieldHeight}}}%
+  \usebox{\wrapWithMultiLineTextFieldBox}%
+}
+
+\def\sigText{Signature of Author}
+\def\sig{{\small \sc (\sigText)}}
 
 \begin{tabular}{rlc}
    {\small \sc Title:}                       & \multicolumn{2}{l}{\title}
 \\ {\small \sc Submitted by:}
                             & \author  & \\
                             & \addrone & \\
-                            & \addrtwo & \\ \cline{3-3}
+                            & \addrtwo & \tabSigFieldAsWidthOf[0.2]{\sigText}{\makebox[2in][c]{\sig}} \\ \cline{3-3}
 			    &	       & \makebox[2in][c]{\sig}
 \\ {\small \sc Date of Submission:}          & \multicolumn{2}{l}{\submissiondate}
 \\ {\small \sc Expected Date of Completion:} & \multicolumn{2}{l}{\completiondate}
@@ -143,16 +189,17 @@ I am willing to supervise the thesis and evaluate the thesis report.
 
 \vspace{.25in}
 \begin{tabular}{crc}
-  \hspace{2in} & {\sc Signed:} & \\ \cline{3-3}
+  \hspace{2in} & {\sc Signed:} & \tabSigFieldAsWidthOf{Signature of \supervisor}{{\small \sc \supertitleone}} \\ \cline{3-3}
                &               & {\small \sc \supertitleone} \\
                &               & {\small \sc \supertitletwo} \\
                &               &                             \\
-               & {\sc Date:}   & \\ \cline{3-3}
+               & {\sc Date:}   & \tabTextFieldAsWidthOf{Date for \supervisor}{{\small \sc \supertitleone}} \\ \cline{3-3}
 \end{tabular}
 
 \vspace{0in plus 1fill}
 
 Comments: \\
+\wrapWithMultiLineTextField{\supervisor\space Comments}{3}{%
 \begin{tabular}{c}
   \hspace{6.25in} \\
   \mbox{} \\ \cline{1-1} \mbox{} \\
@@ -162,6 +209,7 @@ Comments: \\
 %  \mbox{} \\ \cline{1-1} \mbox{} \\
 %  \mbox{} \\ \cline{1-1} \mbox{} \\
 \end{tabular}
+}%
 }%
                  %%%%%%%%%%%%%%%%%%%%%%%%%%
 \cleardoublepage %%% Reader I Agreement %%%
@@ -203,16 +251,17 @@ and in evaluating the thesis report as a reader.
 
 \vspace{.25in}
 \begin{tabular}{crc}
-  \hspace{2in} & {\sc Signed:} & \\ \cline{3-3}
+  \hspace{2in} & {\sc Signed:} & \tabSigFieldAsWidthOf{Signature of \readerone}{{\small \sc \readeronetitleone}} \\ \cline{3-3}
                &               & {\small \sc \readeronetitleone} \\
                &               & {\small \sc \readeronetitletwo} \\
                &               &                                 \\
-               & {\sc Date:}   & \\ \cline{3-3}
+               & {\sc Date:}   & \tabTextFieldAsWidthOf{Date for \readerone}{{\small \sc \readeronetitleone}} \\ \cline{3-3}
 \end{tabular}
 
 \vspace{0in plus 1fill}
 
 Comments: \\
+\wrapWithMultiLineTextField{\readerone\space Comments}{6}{%
 \begin{tabular}{c}
   \hspace{6.25in} \\
   \mbox{} \\ \cline{1-1} \mbox{} \\
@@ -222,6 +271,7 @@ Comments: \\
   \mbox{} \\ \cline{1-1} \mbox{} \\
   \mbox{} \\ \cline{1-1} \mbox{} \\
 \end{tabular}
+}%
 }%
 
                   %%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -265,16 +315,17 @@ and in evaluating the thesis report as a reader.
 
 \vspace{.25in}
 \begin{tabular}{crc}
-  \hspace{2in} & {\sc Signed:} & \\ \cline{3-3}
+  \hspace{2in} & {\sc Signed:} & \tabSigFieldAsWidthOf{Signature of \readertwo}{{\small \sc \readertwotitleone}} \\ \cline{3-3}
                &               & {\small \sc \readertwotitleone} \\
                &               & {\small \sc \readertwotitletwo} \\
                &               &                                 \\
-               & {\sc Date:}   & \\ \cline{3-3}
+               & {\sc Date:}   & \tabTextFieldAsWidthOf{Date for \readertwo}{{\small \sc \readertwotitleone}} \\ \cline{3-3}
 \end{tabular}
 
 \vspace{0in plus 1fill}
 
 Comments: \\
+\wrapWithMultiLineTextField{\readertwo\space Comments}{6}{%
 \begin{tabular}{c}
   \hspace{6.25in} \\
   \mbox{} \\ \cline{1-1} \mbox{} \\
@@ -284,6 +335,7 @@ Comments: \\
   \mbox{} \\ \cline{1-1} \mbox{} \\
   \mbox{} \\ \cline{1-1} \mbox{} \\
 \end{tabular}
+}%
 }%
 \cleardoublepage
 

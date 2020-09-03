@@ -14,6 +14,7 @@ addons:
     - texlive-science
     - texlive-luatex
     - texlive-lang-greek
+    - texlive-acrotex
     - lmodern
     - biber
     - gnuplot-nox

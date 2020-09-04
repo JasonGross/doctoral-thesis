@@ -28,6 +28,7 @@ TOOLS = afterpage array bm calc dcolumn delarray enumerate fileerr fontsmpl ftnr
 TOOLS_IN = afterpage.dtx afterpage.ins array.dtx bm.dtx bm.ins calc.dtx dcolumn.dtx delarray.dtx enumerate.dtx fileerr.dtx fontsmpl.dtx ftnright.dtx hhline.dtx indentfirst.dtx layout.dtx longtable.dtx longtable.ins multicol.dtx multicol.ins rawfonts.dtx showkeys.dtx somedefs.dtx tabularx.dtx tabularx.ins theorem.dtx tools.ins trace.dtx varioref.dtx varioref.ins verbatim.dtx xr.dtx xspace.dtx
 ACROTEX_INS_STY := acrotex.sty dljslib.sty eforms.sty exerquiz.sty insdljs.sty stydljs.sty taborder.sty web.sty
 ACROTEX_CP := altadbfncs.def dljscc.def edvipdfm.def epdfmark.def epdftex.def pdfdochex.def setcorder.def uieforms.def web.cfg
+ACROTEX_FILES := $(addprefix acrotex/,acrotex.ins aeb-comment.sty aeb.js contsolns.dtx dljslib.dtx dljslib.ins doc eforms.dtx eforms.ins examples exerquiz.dtx exerquiz.ins insdljs.dtx insdljs.ins README.md taborder.dtx taborder.ins web.cfg web.dtx web.ins)
 
 V = 0
 
@@ -124,7 +125,7 @@ tools/%: tools.zip
 microtype/%: microtype.zip
 	$(UNZIP) $<
 
-acrotex/%: acrotex
+$(ACROTEX_FILES): acrotex
 
 acrotex: acrotex.zip
 	$(UNZIP) $<

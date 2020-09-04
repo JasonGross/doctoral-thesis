@@ -90,11 +90,30 @@ The first formally verified proof, in some sense, achieved in 1954, was of the t
 The ``proof'' was an implementation in a vacuum-tube computer of the algorithm of \textcite{Uber1929Presburger}, which could decide, for any first order formula of natural number arithmetic, whether the formula represented a true theorem or a false one;
 by implementing this algorithm and verifying that it returns ``true'' on a formula such as $\forall a\ b\ x\ y,\ \exists z,\ a = x + x \to b = y + y \to a + b = z + z$, the machine can be said to prove that this formula is true.
 
+\todo{Did Automath precede Nqthm?  Curry-Howard}
+
+\todo{This paragraph: The next innovention in automated theorem provers was the ability to write down logical formulae in source code, represented as some sort of datatype.  The automated theorem provers such as EXAMPLES would then apply complete or incomplete decision or search procedures to attempt to find a justification (proof) of the given formulae.}
+\todo{Talk about Robinson resolution principle for decision procedure}
+\todo{talk about Nqthm and induction}
+\todo{Talk about Nqthm used for proving correctness of assembling and executing code, cf \url{https://www.cs.utexas.edu/~moore/best-ideas/piton/index.html}}
+\todo{Talk about Computational Logic Inc.~which used Nqthm, \url{http://www.computationallogic.com/}}
 Shortly thereafter, automated theorem proving graduated to proving \todo{FIXME talk about logic proving, talk about induction in Nqthm~\cite{Automation2013Moore}}
 
-\todo{Read from page 128 of \textcite{ringer2020qed}}
+\todo{Talk about other early theorem provers: Mizar}
 
-\todoask{Has anything interesting been done with the Stanford Pascal Verifier~\cite{luckham1979stanford}?  Should I say anything about it?}
+\todo{Next paragraph is LCF, the de Bruijn criterion, talk about the LCF approach, and the ability to not store entire proofs.  Maybe talk about Automath before LCF???}
+
+\todo{Paragraph on Nuprl.  Innovation: type theory and proof checking is type checking (but type checking is undecidable).  Poke around Nuprl project website for 10 minutes to see what they highlight.  Talk about Curry-Howard, Check Martin-Lof.  Maybe email Bob Constable for historical context of Nuprl}
+
+\todo{Next paragraph is on Isabelle/HOL, HOL Light, HOL4}
+
+\todo{Next paragraph talks about LEGO (which comes before Coq, makes same foundational decisions, email Randy Pollack(sp?) creator of LEGO, to get historical context), Coq, (+Agda, etc), (innovation: Martin Lof, proof checking is type checking)}
+
+\todo{Talk about remaining misc theorem provers and survey papers}
+
+
+\todo{Read from page 128 of \textcite{ringer2020qed}}
+\todoask{Has anything interesting been done with the Stanford Pascal Verifier~\cite{luckham1979stanford}?  Should I say anything about it?  Adam says maybe not?}
 \todo{talk about LCF approach~\cite{harrison2001lcf}}
 \todo{wide look at various proof assistants (historical overview of how the field got to where it is today, maybe with weight according to importance) and successes (applications of proof assistants like compcert~\cite{Compcert}, sel4 (kernel)~\cite{seL4SOSP09}, cakeml~\cite{CakeML}, nqthm~\cite{Nqthm,wiki:Nqthm,Automation2013Moore}, ACL2~\cite{ACL2,ACL2Applications}, crypto???, flyspeck~\cite{flyspeck,flyspeck2014Hales}, 4-color-theorem~\cite{gonthier2008formal}, odd-order-theorem~\cite{gonthier2013machine})}
 \todo{LCF~\cite{LCF2000Gordon,gordon1979edinburgh,gordon1978metalanguage}, Isabelle/HOL~\cite{LCF2019Paulson,Isabelle/Isar2002Wenzel,Isabelle,paulson1994isabelle}, HOL4~\cite{slind2008brief}, HOL Light~\cite{harrison1996hol}, LF~\cite{pfenning1991logic,harper93}, Twelf~\cite{pfenning1999system}, Matita~\cite{asperti2007user,Matita2011Asperti}, PVS~\cite{owre1996pvs,PVS1992Owre}, Mizar~\cite{harrison-mizar}, Automath~\cite{wiki:AutoMath,mathematical1970Bruijn,Survey1994deBruijn}}

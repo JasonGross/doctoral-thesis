@@ -33,12 +33,18 @@ deploy:
   on:
     branch: master
 
-jobs:
-  include:
-    - env: EXCLUDE_REWRITING=1
-      script: make ubuntu-deps && sed s'/\\def\\excludefiles{}/\\def\\excludefiles{rewriting}/g' -i jgross-thesis.tex && make OTHERFLAGS="-interaction=nonstopmode" && make full-todo && make todo.svg full-todo.svg # this is the fast job, which exlcudes all the plots in rewriting
-    - env: EXCLUDE_REWRITING=""
-      script: make ubunut-deps && sed s'/\\def\\excludefiles{rewriting}/\\def\\excludefiles{}/g' -i jgross-thesis.tex && make OTHERFLAGS="-interaction=nonstopmode" && make full-todo && make todo.svg full-todo.svg
+env:
+  - EXCLUDE_REWRITING=1  SED_REP='s/\\def\\excludefiles{}/\\def\\excludefiles{rewriting}/g'
+  - EXCLUDE_REWRITING="" SED_REP='s/\\def\\excludefiles{rewriting}/\\def\\excludefiles{}/g'
+
+before_script:
+  - make ubuntu-deps
+  - sed "${SED_REP}" -i jgross-thesis.tex
+
+script:
+  - make OTHERFLAGS="-interaction=nonstopmode"
+  - make full-todo
+  - make todo.svg full-todo.svg
 
 after_success:
   - make deploy

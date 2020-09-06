@@ -84,20 +84,61 @@ While we propose some design principles for avoiding these performance issues in
 
 \subsection{What are proof assistants?}\label{sec:intro:history}
 Before diving into the details of performance bottlenecks and solutions, we review the history of formal verification and proof assistants to bring the reader up to speed on the context of our work and investigation.
+\todo{Maybe say something about the purpose of this section: simultaneously let people know that there's been a lot of thought and effort, let people know about success stories (because it possibly hasn't touched them, and hasn't been adopted mainstream), (and also a bit about how the proof assistants might actually check the proofs)}
+While we intend to cover a wide swath of the history and development in this subsection, far more detailed descriptions can be found in the literature~\cite{ringer2020qed,Brief2019Darbari,davis2001early,Matuszewski05mizar:the,Automath2002Kamareddine,Milestones2019Moore,Automation2013Moore,LCF2000Gordon,LCF2019Paulson}.
 
 Formal verification can be traced back to the early 1950's.~\cite{Brief2019Darbari}
 The first formally verified proof, in some sense, achieved in 1954, was of the theorem that the sum of two even numbers is even.~\cite{davis2001early}
 The ``proof'' was an implementation in a vacuum-tube computer of the algorithm of \textcite{Uber1929Presburger}, which could decide, for any first order formula of natural number arithmetic, whether the formula represented a true theorem or a false one;
 by implementing this algorithm and verifying that it returns ``true'' on a formula such as $\forall a\ b\ x\ y,\ \exists z,\ a = x + x \to b = y + y \to a + b = z + z$, the machine can be said to prove that this formula is true.
 
-\todo{Did Automath precede Nqthm?  Curry-Howard}
+While complete decision procedures exist for arithmetic, propositional logic (the fragment of logic without quantifiers, i.e., consisting only of $\to$, $\wedge$, $\vee$, $\neg$, and $\iff$), and elementary geometry, there is no complete decision procedure for first-order logic, which allows predicates, as well as universal and existential quantification over objects~\cite{davis2001early}.
+In fact, first-order logic is sufficiently expressive to encode systems that reason about themselves, such as Peano arithmetic, and G\"odel's incompleteness theorem proves that there must be some statements which are neither provably true nor provably false.
+In fact, we cannot even decide which statements are undecidable~\cite{Are2011Makholm}!
 
-\todo{This paragraph: The next innovention in automated theorem provers was the ability to write down logical formulae in source code, represented as some sort of datatype.  The automated theorem provers such as EXAMPLES would then apply complete or incomplete decision or search procedures to attempt to find a justification (proof) of the given formulae.}
-\todo{Talk about Robinson resolution principle for decision procedure}
-\todo{talk about Nqthm and induction}
-\todo{Talk about Nqthm used for proving correctness of assembling and executing code, cf \url{https://www.cs.utexas.edu/~moore/best-ideas/piton/index.html}}
-\todo{Talk about Computational Logic Inc.~which used Nqthm, \url{http://www.computationallogic.com/}}
-Shortly thereafter, automated theorem proving graduated to proving \todo{FIXME talk about logic proving, talk about induction in Nqthm~\cite{Automation2013Moore}}
+This incompleteness, however, does not sink the project of automated proof search.
+Consider, for example, the very simple program that merely lists out all possible proofs in a given logical system, halting only when it has found either a proof or a disproof of a given statement.
+While this procedure will run forever on statements which are neither provably true nor provably false, it will in fact be able to output proofs for all provable statements.
+This procedure, however, is uselessly slow.
+
+More efficient procedures for proof search exist, however.
+\todo{Should I cite \textcite{Computing1960Davis}, which was an earlier form of the resolution rule that proved infeasible?}
+Early systems such as the Stanford Pascal Verifier~\cite{luckham1979stanford} and Stanford Resolution Prover were based on what is now known as Robinson's resolution rule~\cite{Machine1965Robinson}, which, when coupled with syntactic unification, resulted in tolerable performance on sufficiently simple problems~\cite{davis2001early,Brief2019Darbari}.
+A particularly clear description of the resolution method can be found in \textcite[pp.~17--18]{Metamathematics1994Shankar}.
+In the 1960's, all 400-or-so theorems of Whitehead and Russell's \emph{Principia Mathematica} were automatically proven by the same program~\cite[p.~9]{davis2001early}.
+However, as the author himself notes, this was only feasible because all of the theorems could be expressed in a way where all universal qunatifiers came first, followed by all existential quantifiers, followed by a formula without any quantifiers.
+
+In the early 1970's, Boyer and Moore began work on theorem provers which could work with higher-order principles such as mathematical induction~\cite[p.~6]{Automation2013Moore}.
+This work resulted in a family of theorem provers, collectively known as the Boyer--Moore theorem provers, which includes the first seriously successfull automated theorem provers~\cites[p.~8]{Automation2013Moore}{Brief2019Darbari}.
+They developed the Edinburgh Pure LISP Theorem Prover, Thm, and later Nqthm~\cite[p.~8]{Automation2013Moore}, the last of which came to be known as \emph{the} Boyer--Moore theorem prover.
+Nqthm has been used to formalize and verify G\"odel's first incompleteness theorem in 1986~\cites{Metamathematics1994Shankar}[p.~29]{Milestones2019Moore}, to verify the implementation of an assembler and linker~\cite{moore2007piton} as well as a number of FORTRAN programs, and to formally prove the invertibility of RSA encryption, the undecidability of the halting problem, Gauss' law of quadratic reciprocity~\cite[pp.~28--29]{Milestones2019Moore}.
+Nqthm later evolved into ACL2~\cite{Milestones2019Moore,ACL2Applications,ACL2}, which has been used, among other things, to verify a Motorola digital signal processor, the floating-point arithmetic unit in AMD chips, and some x86 machine code programs~\cite[p.~2]{Milestones2019Moore}.
+\todo{Do I need to cite \url{https://www.cs.utexas.edu/~moore/best-ideas/piton/index.html}?}
+\todo{Do I need to talk about Computational Logic Inc.~which used Nqthm, \url{http://www.computationallogic.com/}}
+
+In 1967, at around the same time that Robinson published his resolution principle, N.~G.~de Bruijn developed the Automath system~\cite{Automath2002Kamareddine,Survey1994deBruijn,mathematical1970Bruijn}.
+Unlike the Boyer--Moore theorem provers, Automath checked the validity of sequences of human-generated proof steps, and hence was more of a proof checker or proof assistant than an automated theorem prover~\cite{ringer2020qed}.
+Automath is notable for being the first system to represent both theorems and proofs in the same formal system, reducing the problem of proof checking to that of type checking~\cite{ringer2020qed} by exploiting what came to be known as the Curry-Howard correspondence~\cite{Automath2002Kamareddine}; we will discuss this more in \autoref{sec:why-how-dependent-types}.
+The legacy of Automath also includes de Bruijn indices, a method for encoding function arguments which we describe in \autoref{sec:binders:de-bruijn}, dependent types, which we explain in \autoref{sec:why-how-dependent-types}, and the \emph{de Bruijn principle}---stating that proof checkers should be as small and as simple as possible---which we discuss in \autoref{sec:debruijn-criterion}~\cite{ringer2020qed,Automath2002Kamareddine}.
+We are deferring the explanation of these important concepts for the time being because, unlike the methods of theorem proving described above, these methods are at the heart of Coq, the primary theorem prover used in this thesis, as well as proof assistants like it.
+One notable accomplishment in the Automath system was the translation and checking of the entirety of Edmund Landau's \emph{Foundations of Analysis} in the early 1970s~\cite{Automath2002Kamareddine}.
+
+Almost at the same time as Boyer and Moore were working on their theorem provers in Edinburgh, Scotland, Sir Robin Milner developed the LCF theorem prover at Stanford in 1972~\cite[p.~1]{LCF2000Gordon}.
+Written as an interactive proof checker based on Dana Scott's 1969 logic for computable functions (which LCF abbreviates), LCF was designed to allow users to interactively reason about functional programs~\cite[p.~1]{LCF2000Gordon}.
+In 1973, Milner moved to Edinburgh and designed Edinburgh LCF, the successor to Stanford LCF.
+This new version of LCF was designed to work around two deficiencies of its predecessor: theorem proving was limited by available memory for storing proof objects, and the fixed set of functions for building proofs could not be easily extended.
+The first of these was solved by what is now called ``the LCF approach'': by representing proofs with an abstract \texttt{thm} type, whose API only permitted valid rules of inference, proofs did not have to be carried around in memory~\cite[pp.~1--2]{LCF2000Gordon}.
+In order to support abstract data types, Milner et al.~invented the language ML (short for ``Meta Language'')\cite[p.~2]{LCF2000Gordon}, the precursor to Caml and later OCaml.
+The second issue---ease of extensibility---was also addressed by the design of ML\cite[p.~2]{LCF2000Gordon}.
+\todo{Do I need to say more about LCF?}
+
+
+Inspired by Automath, the Mizar~\cite{Rudnicki92anoverview,Matuszewski05mizar:the}
+
+Nuprl, LCF/HOL, LF, TWELF, LEGO, COQ
+
+Around the same time as
+``Computer-verified proofs of versions of the first incompleteness theorem were announced by Natarajan Shankar in 1986 using Nqthm (Shankar 1994), by Russell O'Connor in 2003 using Coq (O'Connor 2005) and by John Harrison in 2009 using HOL Light (Harrison 2009). A computer-verified proof of both incompleteness theorems was announced by Lawrence Paulson in 2013 using Isabelle (Paulson 2014). `` \url{https://en.wikipedia.org/wiki/Gödel's_incompleteness_theorems}
 
 \todo{Talk about other early theorem provers: Mizar}
 
@@ -121,9 +162,6 @@ Shortly thereafter, automated theorem proving graduated to proving \todo{FIXME t
 \todo{look at OSDI submission (papers/lightbulb/) and mine related work}
 \todo{read and cite Talia's paper \textcite{ringer2020qed}?}
 
-\todo{Mention that more details are available in \textcite{Brief2019Darbari,Automation2013Moore}}
-
-\todo{goals: simultaneously let people know that there's been a lot of thought and effort, let people know about success stories (because it possibly hasn't touched them, and hasn't been adopted mainstream), (and also a bit about how the proof assistants might actually check the proofs)}
 \todo{The structure of this section:}
 \begin{itemize}
 \item \todo{how the first proof assistants worked}

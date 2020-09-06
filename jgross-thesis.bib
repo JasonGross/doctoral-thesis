@@ -1469,7 +1469,7 @@ of strong reduction in Coq.},
   author      = {Asperti, Andrea and Giovannetti, Cecilia and Naletto, Andrea},
   date        = {1995-03},
   institution = {University of Bologna},
-  title       = {The Bologna Optimal Higher-order Machine},
+  title       = {The {B}ologna Optimal Higher-order Machine},
   doi         = {10.1017/s0956796800001994},
   url         = {https://pdfs.semanticscholar.org/3517/03af066fd2e65ad64c63108672d960b9d8fb.pdf},
   year        = {1995},
@@ -1845,7 +1845,7 @@ Programming with nested types is only a little more difficult than programming w
   author       = {Gilbert, Ga\"{e}tan and Cockx, Jesper and Sozeau, Matthieu and Tabareau, Nicolas},
   date         = {2019-01},
   journaltitle = {Proceedings of the ACM on Programming Languages},
-  title        = {Definitional Proof-Irrelevance without K},
+  title        = {Definitional Proof-Irrelevance without {K}},
   doi          = {10.1145/3290316},
   number       = {POPL},
   url          = {https://dl.acm.org/doi/10.1145/3290316},
@@ -2533,14 +2533,14 @@ raised.},
 }
 
 @Online{ACL2Applications,
-  title = {ACL2 User's Manual — Interesting-applications},
+  title = {{ACL}2 User's Manual — Interesting-applications},
   url   = {https://www.cs.utexas.edu/users/moore/acl2/v8-3/combined-manual/index.html?topic=ACL2____INTERESTING-APPLICATIONS},
 }
 
 @Online{ACL2,
   author = {Matt Kaufmann and J. Strother Moore},
   date   = {2020-04-14},
-  title  = {ACL2 Version 8.3},
+  title  = {{ACL}2 Version 8.3},
   url    = {https://www.cs.utexas.edu/users/moore/acl2/},
 }
 
@@ -2849,6 +2849,126 @@ This chapter presents a short survey about the work that has been done on the Au
   abstract     = {We review the history of the automation of mathematical induction},
   file         = {:http\://arxiv.org/pdf/1309.6226v5:PDF},
   keywords     = {cs.AI},
+}
+
+@Article{Machine1965Robinson,
+  author       = {Robinson, J. A.},
+  date         = {1965-01},
+  journaltitle = {Journal of the ACM},
+  title        = {A Machine-Oriented Logic Based on the Resolution Principle},
+  doi          = {10.1145/321250.321253},
+  issn         = {0004-5411},
+  number       = {1},
+  pages        = {23–41},
+  volume       = {12},
+  issue_date   = {Jan. 1965},
+  location     = {New York, NY, USA},
+  numpages     = {19},
+  publisher    = {Association for Computing Machinery},
+}
+
+@Online{Are2011Makholm,
+  author       = {Henning Makholm},
+  date         = {2011-09-17},
+  title        = {Are there statements that are undecidable but not provably undecidable},
+  url          = {https://math.stackexchange.com/q/65302},
+  urldate      = {2020-06-12},
+  abstract     = {First assume that ZFC is indeed consistent. If every statement were either provably true or provably false or provably independent, then there would be a decision procedure that sorted all statements into these three groups -- just enumerate all valid proofs until one whose conclusion is one of the three forms were found.
+
+We could use this to decide the halting problem. For any $n$ consider the statement ``Turing machine $T_n$ halts''. There are then three cases.
+
+\begin{enumerate}
+\item
+$ ZFC \vdash Con(ZFC) \Rightarrow T_n\text{ halts}$
+\\
+   In this case, it must be true that $T_n$ halts.
+\item
+ $ ZFC \vdash Con(ZFC) \Rightarrow \neg(T_n\text{ halts})$
+\\
+   In this case it must be false that $T_n$ halts.
+\item
+ $ ZFC \vdash Con(ZFC) \Rightarrow{}$ ``$T_n$ halts'' is independent of ZFC.
+\\
+   In this case there must be a model of ZFC in which $T_n$ does not halt and so has an infinitely long computation. However, in every model of ZFC, the model's $\omega$ must contain a surjective image of the meta-$\omega$. (And similarly for whatever objects we use to represent Turing tapes). Therefore the infinite computation \emph{in the model} corresponds to an infinite computation \emph{at the meta-level}. Therefore $T_n$ really does not halt.
+\end{enumerate}
+
+In conclusion, if ZFC is consistent, then your hypothesis leads to a solution to the halting problem, which we know is impossible. Thus by contradiction your hypothesis must be false if ZFC is consistent. On the other hand if ZFC is \emph{not} consistent, then your hypothesis is still false, because then there are no unprovable statements at all.},
+  eprint       = {https://math.stackexchange.com/q/65302},
+  howpublished = {Mathematics Stack Exchange},
+}
+
+@Article{Computing1960Davis,
+  author       = {Davis, Martin and Putnam, Hilary},
+  date         = {1960-07},
+  journaltitle = {Journal of the ACM},
+  title        = {A Computing Procedure for Quantification Theory},
+  doi          = {10.1145/321033.321034},
+  issn         = {0004-5411},
+  number       = {3},
+  pages        = {201–215},
+  volume       = {7},
+  abstract     = {The hope that mathematical methods employed in the investigation of formal logic would lead to purely computational methods for obtaining mathematical theorems goes back to Leibniz and has been revived by Peano around the turn of the century and by Hilbert's school in the 1920's. Hilbert, noting that all of classical mathematics could be formalized within quantification theory, declared that the problem of finding an algorithm for determining whether or not a given formula of quantification theory is valid was the central problem of mathematical logic. And indeed, at one time it seemed as if investigations of this ``decision'' problem were on the verge of success. However, it was shown by Church and by Turing that such an algorithm can not exist. This result led to considerable pessimism regarding the possibility of using modern digital computers in deciding significant mathematical questions. However, recently there has been a revival of interest in the whole question. Specifically, it has been realized that while no decision procedure exists for quantification theory there are many proof procedures available—that is, uniform procedures which will ultimately locate a proof for any formula of quantification theory which is valid but which will usually involve seeking ``forever'' in the case of a formula which is not valid—and that some of these proof procedures could well turn out to be feasible for use with modern computing machinery.Hao Wang [9] and P. C. Gilmore [3] have each produced working programs which employ proof procedures in quantification theory. Gilmore's program employs a form of a basic theorem of mathematical logic due to Herbrand, and Wang's makes use of a formulation of quantification theory related to those studied by Gentzen. However, both programs encounter decisive difficulties with any but the simplest formulas of quantification theory, in connection with methods of doing propositional calculus. Wang's program, because of its use of Gentzen-like methods, involves exponentiation on the total number of truth-functional connectives, whereas Gilmore's program, using normal forms, involves exponentiation on the number of clauses present. Both methods are superior in many cases to truth table methods which involve exponentiation on the total number of variables present, and represent important initial contributions, but both run into difficulty with some fairly simple examples.In the present paper, a uniform proof procedure for quantification theory is given which is feasible for use with some rather complicated formulas and which does not ordinarily lead to exponentiation. The superiority of the present procedure over those previously available is indicated in part by the fact that a formula on which Gilmore's routine for the IBM 704 causes the machine to computer for 21 minutes without obtaining a result was worked successfully by hand computation using the present method in 30 minutes. Cf. §6, below.It should be mentioned that, before it can be hoped to employ proof procedures for quantification theory in obtaining proofs of theorems belonging to ``genuine'' mathematics, finite axiomatizations, which are ``short,'' must be obtained for various branches of mathematics. This last question will not be pursued further here; cf., however, Davis and Putnam [2], where one solution to this problem is given for ele},
+  issue_date   = {July 1960},
+  location     = {New York, NY, USA},
+  numpages     = {15},
+  publisher    = {Association for Computing Machinery},
+}
+
+@Book{Metamathematics1994Shankar,
+  author     = {Shankar, N.},
+  date       = {1994},
+  title      = {Metamathematics, Machines and {G}ödel's Proof},
+  doi        = {10.1017/CBO9780511569883},
+  isbn       = {9780511569883},
+  publisher  = {Cambridge University Press},
+  series     = {Cambridge Tracts in Theoretical Computer Science},
+  collection = {Cambridge Tracts in Theoretical Computer Science},
+  place      = {Cambridge},
+}
+
+@Book{moore2007piton,
+  author    = {Moore, J. S.},
+  date      = {2007},
+  title     = {Piton: A Mechanically Verified Assembly-Level Language},
+  isbn      = {9780585336541},
+  publisher = {Springer Netherlands},
+  series    = {Automated Reasoning Series},
+  url       = {https://books.google.com/books?id=Y09c047gV10C},
+}
+
+@Article{Milestones2019Moore,
+  author       = {Moore, J. Strother},
+  date         = {2019},
+  journaltitle = {Formal Aspects of Computing},
+  title        = {Milestones from The {P}ure {L}isp Theorem Prover to {ACL}2},
+  doi          = {10.1007/s00165-019-00490-3},
+  issn         = {1433-299X},
+  number       = {6},
+  pages        = {699--732},
+  volume       = {31},
+  abstract     = {We discuss the evolutionary path from the Edinburgh Pure Lisp Theorem Prover of the early 1970s to its modern counterpart, AComputational Logic for Applicative Common Lisp, aka ACL2, which is in regular industrial use. Among the milestones in this evolution are the adoption of a first-order subset of a programming language as a logic; the analysis of recursive definitions to guess appropriate mathematical induction schemes; the use of simplification in inductive proofs; the incorporation of rewrite rules derived from user-suggested lemmas; the generalization of that idea to allow the user to affect other proof techniques soundly; the recognition that evaluation efficiency is paramount so that formal models can serve as prototypes and the logic can be used to reprogram the system; use of the system to prove extensions correct; the incorporation of decision procedures; the provision of hierarchically structured libraries of previously certified results to configure the prover; the provision of system programming features to allow verification tools to be built and verified within the system; the release of many verified collections of lemmas supporting floating point, programming languages, and hardware platforms; a verified “bit-bashing” tool exploiting verified BDD and checked external SAT procedures; and the provisionof certain higher-order features within the first-order setting. As will become apparent, some of these milestones were suggested or even prototyped by users. Some additional non-technical aspects of the project are also critical. Among these are a devotion to soundness, good documentation, freely available source code, production of a system usable by industry, responsiveness to user needs, and a dedicated, passionate, and brilliant user community.},
+  refid        = {Moore2019},
+}
+
+@Online{Automath2002Kamareddine,
+  author   = {Fairouz Kamareddine},
+  date     = {2002-04},
+  title    = {Thirty Five years of {A}utomath},
+  url      = {http://www.cedar-forest.org/forest/events/automath2002/},
+  abstract = {Automath started in 1967 by N.G. de Bruijn. Automath (automating mathematics) was the first system to use computer technology to check the correctness of whole books of mathematics. During his work on Automath, de Bruijn discovered many concepts that still remain of great relevance to the theory and practice of computation. For example, de Bruijn indices still play an important role in the implementation of programming languages and theorem provers, de Bruijn's new type systems were influential in the discovery of new powerful type systems, and de Bruijn re-invented the Curry-Howard isomorphism (which should be referred to as the Curry-Howard-de Bruijn isomorphism). The Landau book on the foundations of analysis remains the only fully encoded and checked mathematical book in any theorem prover. The Landau book was encoded by Bert van Benthem-Jutting in Automath in the early seventies.
+
+Automath was written in Algol 60 and implemented on the primitive PCs of the sixties. Thirty five years on, both technology and theory have evolved very much and this led to impressive new directions in theorem proving and in using the computers for manipulating and checking mathematics. This workshop is to celebrate the 35th year of Automath and some of the impressive directions in using computers for mathematics. This area is so huge now, that it cannot be covered in one workshop. Hence, this workshop makes no claim that it covers all the important directions in the field.},
+  location = {Heriot-Watt University, Edinburgh},
+}
+
+@Article{Matuszewski05mizar:the,
+  author       = {Roman Matuszewski and Piotr Rudnicki},
+  date         = {2005-03},
+  journaltitle = {Mechanized Mathematics and Its Applications},
+  title        = {M\textsc{izar}: the first 30 years},
+  number       = {1},
+  url          = {http://mizar.org/people/romat/MatRud2005.pdf},
+  volume       = {4},
 }
 
 @Comment{jabref-meta: databaseType:biblatex;}

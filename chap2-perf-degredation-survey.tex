@@ -611,7 +611,7 @@ Note that it is by no means obvious that the typechecker can meaningfully do any
 Breath-first search is significantly more complicated than depth-first, is harder to write good heuristics for, can incur enormous space overheads, and can be massively slower in cases where there are many options and the standard heuristics for depth-first unfolding in conversion-checking are sufficient.
 Furthermore, the more heuristics there are to tune conversion-checking, the more ``magic'' the algorithm seems, and the harder it is to debug when the performance is inadequate.
 
-As described in \todo{reference above example about fiat-crypto}, in fiat-crypto, we got exponential slowdown due to this issue, with an estimated overhead of over four millenia of extra typechecking time in the worst examples we were trying to handle.
+As described in \todo{reference above example about fiat-crypto}, in fiat-crypto, we got exponential slowdown due to this issue, with an estimated overhead of over four thousand millenia of extra typechecking time in the worst examples we were trying to handle.
 
 \todo{maybe forward reference to the number of abstraction barriers}
 \todo{maybe include more about real-world fiat-crypto example here?}

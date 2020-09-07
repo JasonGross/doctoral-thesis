@@ -85,7 +85,7 @@ While we propose some design principles for avoiding these performance issues in
 \subsection{What are proof assistants?}\label{sec:intro:history}
 Before diving into the details of performance bottlenecks and solutions, we review the history of formal verification and proof assistants to bring the reader up to speed on the context of our work and investigation.
 \todo{Maybe say something about the purpose of this section: simultaneously let people know that there's been a lot of thought and effort, let people know about success stories (because it possibly hasn't touched them, and hasn't been adopted mainstream), (and also a bit about how the proof assistants might actually check the proofs)}
-While we intend to cover a wide swath of the history and development in this subsection, far more detailed descriptions can be found in the literature~\cites{ringer2020qed,Proof2009Geuvers,History2014Harrison,Brief2019Darbari,davis2001early,Matuszewski05mizar:the,Automath2002Kamareddine,Milestones2019Moore,Automation2013Moore,LCF2000Gordon,LCF2019Paulson}[Related Work]{nuprl}.
+While we intend to cover a wide swath of the history and development in this subsection, far more detailed descriptions can be found in the literature~\cites{ringer2020qed,Proof2009Geuvers,History2014Harrison,CoqArtForward2013Huet,Brief2019Darbari,davis2001early,Matuszewski05mizar:the,Automath2002Kamareddine,Milestones2019Moore,Automation2013Moore,LCF2000Gordon,LCF2019Paulson}[Related Work]{nuprl}.
 \textcite[ch.~4]{ringer2020qed} has a particularly clear presentation which was invaluable in assembling this section.
 
 Formal verification can be traced back to the early 1950's.~\cite{Brief2019Darbari}
@@ -137,6 +137,8 @@ The second issue---ease of extensibility---was also addressed by the design of M
 \todo{talk about tactics}
 
 \todo{\textcite{Proof2009Geuvers,History2014Harrison}}
+
+\todo{We refer readers to \textcite{CoqArtForward2013Huet} for a comprehensive history of the development of Coq.}
 
 Inspired by Automath, the Mizar~\cite{Rudnicki92anoverview,Matuszewski05mizar:the}
 
@@ -298,10 +300,28 @@ For example, we might have a function that returns
 \begin{flushright}
   --- Henk Barendregt~\cite{challenge2005Barendregt}
 \end{flushright}
-\todo{explain the de Bruijn criterion}
-\todo{explain why it's worth following this, and what goes wrong if you don't}
-\todo{look into \textcite{Sealing2020Selsam} Sealing Pointer-Based Optimizations Behind Pure Functions}
-\todo{example: Ltac vs Gallina, kind-of}
+
+As described in the beginning of this chapter, the purpose of proving our software correct is that we want to be able to trust that it has no bugs.
+Having a proof checker reduces the problem of software correctness to the problem of the correctness of the specification, together with the correctness of the proof checker.
+If the proof checker is complicated and impenetrable, it might be quite unreasonable to trust it.
+
+\todo{is there a clearer way to express this?}
+Proof assistants satisfying the de Bruijn criterion are, in general, more easily trustable than those which violate it.
+The ability to check proofs with a small program, divorced from any heuristic programs and search procedures which generate the proof, allows trust in the proof to be reduced to trust in that small program.
+Sufficiently small and well-written programs can more easily be inspected and verified.
+
+%\todo{explain why it's worth following this, and what goes wrong if you don't}
+
+The proof assistant Coq, which is the primary proof assistant we consider in this thesis, is a decent example of satisfying the de Bruijn criterion.
+There is a large untrusted codebase which includes the proof scripting language \Ltac, used for generating proofs and doing type inference.
+There's a much smaller kernel which checks the proofs, and Coq is even shipped with a separate checker program, \texttt{coqchk}, for checking proof objects saved to disk.
+Moreover, in the past year, a checker for Coq's proof objects has been implemented in Coq itself and formally verified with respect to the type theory underlying Coq~\cite{Coq2019Sozeau}.
+
+Note that the LCF approach to theorem proving, where proofs have an abstract type and type-safety of the tactics guarantees validity of the proof object, forms a sort-of complementary approach to trust.
+\todo{what should I say about LCF here?}
+\todo{should I mention formal verification of Nuprl in Coq?}
+
+\todo{is there anything else to say in this subsection?}
 
 \section{Look ahead: Layout and contributions of the thesis}\label{sec:intro:layout}
 In the remainder of \autoref{part:introduction}, we will finish laying out the landscape of performance bottlenecks in dependetly-typed proof assistants;
@@ -371,6 +391,8 @@ I'd be very interested in your findings about proof assistant performance. This 
 Konrad Slind wrote:
 \todo{read \textcite{Programming2000Barras}}
 \todo{\textcite{Efficiency1994Boulton}}
+
+\todo{look into \textcite{Sealing2020Selsam} Sealing Pointer-Based Optimizations Behind Pure Functions}
 
 \begin{comment}
 \section{Transcript bits from talking with Adam}

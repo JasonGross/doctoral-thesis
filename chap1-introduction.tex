@@ -85,7 +85,8 @@ While we propose some design principles for avoiding these performance issues in
 \subsection{What are proof assistants?}\label{sec:intro:history}
 Before diving into the details of performance bottlenecks and solutions, we review the history of formal verification and proof assistants to bring the reader up to speed on the context of our work and investigation.
 \todo{Maybe say something about the purpose of this section: simultaneously let people know that there's been a lot of thought and effort, let people know about success stories (because it possibly hasn't touched them, and hasn't been adopted mainstream), (and also a bit about how the proof assistants might actually check the proofs)}
-While we intend to cover a wide swath of the history and development in this subsection, far more detailed descriptions can be found in the literature~\cite{ringer2020qed,Brief2019Darbari,davis2001early,Matuszewski05mizar:the,Automath2002Kamareddine,Milestones2019Moore,Automation2013Moore,LCF2000Gordon,LCF2019Paulson}.
+While we intend to cover a wide swath of the history and development in this subsection, far more detailed descriptions can be found in the literature~\cites{ringer2020qed,Proof2009Geuvers,History2014Harrison,Brief2019Darbari,davis2001early,Matuszewski05mizar:the,Automath2002Kamareddine,Milestones2019Moore,Automation2013Moore,LCF2000Gordon,LCF2019Paulson}[Related Work]{nuprl}.
+\textcite[ch.~4]{ringer2020qed} has a particularly clear presentation which was invaluable in assembling this section.
 
 Formal verification can be traced back to the early 1950's.~\cite{Brief2019Darbari}
 The first formally verified proof, in some sense, achieved in 1954, was of the theorem that the sum of two even numbers is even.~\cite{davis2001early}
@@ -130,8 +131,12 @@ This new version of LCF was designed to work around two deficiencies of its pred
 The first of these was solved by what is now called ``the LCF approach'': by representing proofs with an abstract \texttt{thm} type, whose API only permitted valid rules of inference, proofs did not have to be carried around in memory~\cite[pp.~1--2]{LCF2000Gordon}.
 In order to support abstract data types, Milner et al.~invented the language ML (short for ``Meta Language'')\cite[p.~2]{LCF2000Gordon}, the precursor to Caml and later OCaml.
 The second issue---ease of extensibility---was also addressed by the design of ML\cite[p.~2]{LCF2000Gordon}.
+\todo{HERE}
+\todo{finish this section}
 \todo{Do I need to say more about LCF?}
+\todo{talk about tactics}
 
+\todo{\textcite{Proof2009Geuvers,History2014Harrison}}
 
 Inspired by Automath, the Mizar~\cite{Rudnicki92anoverview,Matuszewski05mizar:the}
 
@@ -173,9 +178,10 @@ Around the same time as
 
 \section{Basic Design Choices}\label{sec:intro:proof-assistant-design-choices}
 Although the design-space of proof assistants is quite large, as we've touched on in \autoref{sec:intro:history}, there are only two main design decisions which we want to assume for the investigations of this thesis.
-The first is the use of dependent type theory as a basis for formal proofs, as is done in Coq~\cite{coq}, Agda~\cite{Dependently2009Norell}, Idris~\cite{Idris2013Brady}, Lean~\cite{Lean2015Moura}, Nuprl~\cite{nuprl}, Matita~\cite{Matita2011Asperti}, and others, rather than on some other logic, as is done in
-The second is the \emph{de Bruijn criterion}, mandating independent checking of proofs by a small trusted kernel.~\cite{challenge2005Barendregt}
+The first is the use of dependent type theory as a basis for formal proofs, as is done in Automath~\cite{wiki:AutoMath,mathematical1970Bruijn,Survey1994deBruijn}, Coq~\cite{coq}, Agda~\cite{Dependently2009Norell}, Idris~\cite{Idris2013Brady}, Lean~\cite{Lean2015Moura}, Nuprl~\cite{nuprl}, Matita~\cite{Matita2011Asperti}, and others, rather than on some other logic, as is done in LCF~\cite{LCF2000Gordon,gordon1979edinburgh,gordon1978metalanguage}, Isabelle/HOL~\cite{LCF2019Paulson,Isabelle/Isar2002Wenzel,Isabelle,paulson1994isabelle}, HOL4~\cite{slind2008brief}, HOL Light~\cite{harrison1996hol}, LF~\cite{pfenning1991logic,harper93}, and Twelf~\cite{pfenning1999system}, among others.
+The second is the \emph{de Bruijn criterion}, mandating independent checking of proofs by a small trusted kernel~\cite{challenge2005Barendregt}.
 We have found that many of the performance bottlenecks are fundamentally a result of one or the other of these two design decisions.
+Readers are advised to consult \textcite[ch.~4]{ringer2020qed} for a more thorough mapping of the design axes.
 
 In this section, we will explain these two design choices in detail;
 by the end of this section, the reader should understand what each design choice entails, and, we hope, why these are reasonable choices to make.
@@ -183,6 +189,97 @@ by the end of this section, the reader should understand what each design choice
 \todo{do I need to say any more before the subsections?}
 
 \subsection{Dependent Types: What? Why? How?}\label{sec:why-how-dependent-types}
+\todo{subsubsection structure of this section}
+There are, broadly, three schools of thought on what is a \emph{proof}.
+\textcite{Proof2009Geuvers} describe two roles that a proof plays:
+\begin{quote}
+\begin{enumerate}[(i)]
+\item A proof \emph{convinces} the reader that the statement is correct.
+\item A proof \emph{explains} why the statement is correct.
+\end{enumerate}
+\end{quote}
+A third conception of proof is that a proof is itself a mathematical object or construction which corresponds to the content of a particular theorem~\cite{Rigour2013Bauer}.
+This third conception dates back to the school of intuitionism of Brouwer in the early 1900s and of constructive mathematics of Bishop in the 1960s; see \textcite[Related Works]{nuprl} for a tracing of the history from Brouwer to Martin-L\"of, whose type theory is at the heart of Coq and similar proof assistants.
+
+This third conception of proof admits formal frameworks where proof and computation are unified as the same activity.
+As we'll see shortly, this allows for drastically smaller proofs.
+
+The foundation of unifying computation and proving is, in some sense, the \emph{Curry--Howard--de Bruijn correspondence}, more commonly known as the Curry--Howard correspondence or the Curry--Howard isomorphism.
+This correspondence establishes the relationship between types and propositions, between proofs and computational objects.
+
+The reader may be familiar with types from programming languages such as C/C++, Java, and Python, all of which have types for strings, integers, and lists, among others.
+A \emph{type} denotes a particular collection of objects, called its \emph{members}, \emph{inhabitants}, or \emph{terms}.
+For example, \texttt{0} is a term of type \texttt{int}, \verb|"abc"| is a term of type \texttt{string}, and \texttt{true} and \texttt{false} are terms of type \texttt{bool}.
+Types define how terms can be built and how they can be used.
+New natural numbers, for example, can be built only as zero or as the successor of another natural number; these two ways of building natural numbers are called the type's \emph{constructors}.
+Similarly, the only ways to get a new boolean are by giving either \texttt{true} or \texttt{false}; these are the two constructors of the type \texttt{bool}.
+Note that there are other ways to get a boolean, such as by calling a function that returns booleans, or by having been given a boolean as a function argument.
+The constructors define the only booleans that exist at the end of the day, after all computation has been run.
+This uniqueness is formally encoded by the \emph{eliminator} of a type, which describes how to use it.
+The eliminator on \texttt{bool} is the \texttt{if}-statement; to use a boolean, one must say what to do if it is \texttt{true}, and what to do if it is \texttt{false}.
+Some eliminators encode recursion: to use a natural number, one must say what to do if it is zero, and also, one must say what to do if it is a successor.
+In the where the given number is the successor of $n$, however, one is allowed to call the function recursively on $n$.
+For example, we might define the factorial function as
+\begin{minted}{haskell}
+fact m =
+  case m of
+    zero   -> succ zero
+    succ n -> m * fact n
+\end{minted}
+
+Eliminators in programming correspond to \emph{induction} and case analysis in mathematics.
+To prove a property of all natural numbers, one must prove it of zero, and also prove that if it holds for any number $n$, then it holds for the successor of $n$.
+Here we see the first glimmer of the the Curry--Howard isomorphism, which identifies types with the set of terms of that type, identifiers propositions with the set of proofs of that proposition, and thereby identifies terms with proofs.
+
+\begin{table}[t]
+\centering
+\begin{tabular}{c|c|c}
+computation & set theory & logic \\ \hline
+type & set of objects/terms/proofs & proposition \\
+term / program & element of a set & proof \\
+eliminator / recursion & & case analysis / induction \\
+type of pairs & cartesian product ($\times$) & conjunction ($\wedge$) \\
+sum type ($+$) & disjoint union ($\sqcup$) & disjunction ($\vee$) \\
+function type & set of functions & implication ($\to$) \\
+unit type & singleton set & trivial truth \\
+empty type & empty set ($\emptyset$) & falsehood \\
+dependent function type ($\Pi$) & & universal quantification ($\forall$) \\
+dependent pair type ($\Sigma$) & & existential quantification ($\exists$)
+\end{tabular}
+\caption{The Curry--Howard Correspondence}
+\label{tab:curry-howard}
+\end{table}
+
+\autoref{tab:curry-howard} shows the correspondence between programs and proofs.
+We have already seen how recursion lines up with induction in the case of natural numbers; let us look now at how some of the other proof rules correspond.
+%Readers familiar with the Curry--Howard correspondence may safely skip the next few paragraphs.
+
+To prove a conjunction $A \wedge B$, one must prove $A$ and also prove $B$; if one has a proof of the conjunction $A \wedge B$, one may assume both $A$ and $B$ have been proven.
+This lines up exactly with the type of pairs: to inhabit the type of pairs $A \times B$, one must give an object of type $A$ paired with an object of type $B$; given an object of the pair type $A \times B$, one can \emph{project} out the components of types $A$ and $B$.
+
+To prove the implication $A \to B$, one must prove $B$ under the assumption that $A$ holds, i.e., that a proof of $A$ has been given.
+The rule of \emph{modus ponens} describes how to use a proof of $A \to B$: if also a proof of $A$ is given, then $B$ may be concluded.
+These correspond exactly to the construction and application of functions in programming languages:
+to define a function of type $A \to B$, the programmer gets an argument of type $A$ and must return a value of type $B$.
+To use a function of type $A \to B$, the programmer must \emph{apply} the function to an argument of type $A$; this is also known as \emph{calling} the function.
+
+Here we begin to see how type-checking and proof-checking can be seen as the same task.
+The process of \emph{type-checking} a program consists of ensuring that every variable is given a type, that every expression assigned to a variable has the type of that variable, that every argument to a function has the correct type, etc.
+If we write the boolean negation function which sends \texttt{true} to \texttt{false} and \texttt{false} to \texttt{true} by case analysis (i.e., by an \texttt{if}-statement), the type-checker will reject our program if we try to apply it to, say, an argument of type \texttt{string} such as \verb|"foo"|.
+Similarly, if we try to use \emph{modus ponens} to combine a proof that $x = 1 \to 2x = 2$ with a proof that $x = 2$ to obtain a proof that $2x = 2$, the proof checker should complain that $x = 1$ and $x = 2$ are not the same type.
+
+While the correspondence of the unit type to tautologies is relatively trivial, the correspondence of the empty type to\todo{here}
+
+The last two rows of \autoref{tab:curry-howard} are especially interesting cases which we will now cover.
+
+Some programming languages allow functions to return values whose type depends on the \emph{value} of the function's arguments.
+Such languages are said to support dependent types.
+For example, we might have a function that returns
+
+dependent function type ($\Pi$) & & universal quantification ($\forall$) \\
+
+
+
 %\subsection{Dependent Type Theory}
 \todo{note: target audience: Saman (or POPL/PLDI)}
 \todo{explain what dependent types are at all}

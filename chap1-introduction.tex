@@ -85,6 +85,7 @@ While we propose some design principles for avoiding these performance issues in
 \subsection{What are proof assistants?}\label{sec:intro:history}
 Before diving into the details of performance bottlenecks and solutions, we review the history of formal verification and proof assistants to bring the reader up to speed on the context of our work and investigation.
 \todo{Maybe say something about the purpose of this section: simultaneously let people know that there's been a lot of thought and effort, let people know about success stories (because it possibly hasn't touched them, and hasn't been adopted mainstream), (and also a bit about how the proof assistants might actually check the proofs)}
+\todo{cite the following in chronological order, maybe}
 While we intend to cover a wide swath of the history and development in this subsection, far more detailed descriptions can be found in the literature~\cites{ringer2020qed,Proof2009Geuvers,History2014Harrison,CoqArtForward2013Huet,Brief2019Darbari,davis2001early,Matuszewski05mizar:the,Automath2002Kamareddine,Milestones2019Moore,Automation2013Moore,LCF2000Gordon,LCF2019Paulson,Logical2002Pfenning}[Related Work]{nuprl}.
 \textcite[ch.~4]{ringer2020qed} has a particularly clear presentation which was invaluable in assembling this section.
 
@@ -110,12 +111,12 @@ In the 1960's, all 400-or-so theorems of Whitehead and Russell's \emph{Principia
 However, as the author himself notes, this was only feasible because all of the theorems could be expressed in a way where all universal qunatifiers came first, followed by all existential quantifiers, followed by a formula without any quantifiers.
 
 In the early 1970's, Boyer and Moore began work on theorem provers which could work with higher-order principles such as mathematical induction~\cite[p.~6]{Automation2013Moore}.
-This work resulted in a family of theorem provers, collectively known as the Boyer--Moore theorem provers, which includes the first seriously successfull automated theorem provers~\cites[p.~8]{Automation2013Moore}{Brief2019Darbari}.
+This work resulted in a family of theorem provers, collectively known as the Boyer--Moore theorem provers, which includes the first seriously successful automated theorem provers~\cites[p.~8]{Automation2013Moore}{Brief2019Darbari}.
 They developed the Edinburgh Pure LISP Theorem Prover, Thm, and later Nqthm~\cite[p.~8]{Automation2013Moore}, the last of which came to be known as \emph{the} Boyer--Moore theorem prover.
 Nqthm has been used to formalize and verify G\"odel's first incompleteness theorem in 1986~\cites{Metamathematics1994Shankar}[p.~29]{Milestones2019Moore}, to verify the implementation of an assembler and linker~\cite{moore2007piton} as well as a number of FORTRAN programs, and to formally prove the invertibility of RSA encryption, the undecidability of the halting problem, Gauss' law of quadratic reciprocity~\cite[pp.~28--29]{Milestones2019Moore}.
 Nqthm later evolved into ACL2~\cite{Milestones2019Moore,ACL2Applications,ACL2}, which has been used, among other things, to verify a Motorola digital signal processor, the floating-point arithmetic unit in AMD chips, and some x86 machine code programs~\cite[p.~2]{Milestones2019Moore}.
-\todo{Do I need to cite \url{https://www.cs.utexas.edu/~moore/best-ideas/piton/index.html}?}
-\todo{Do I need to talk about Computational Logic Inc.~which used Nqthm, \url{http://www.computationallogic.com/}}
+% More details on the assembler and linker (Piton) at \url{https://www.cs.utexas.edu/~moore/best-ideas/piton/index.html}
+% Also Computational Logic Inc.~which used Nqthm, \url{http://www.computationallogic.com/}
 
 In 1967, at around the same time that Robinson published his resolution principle, N.~G.~de Bruijn developed the Automath system~\cite{Automath2002Kamareddine,Survey1994deBruijn,mathematical1970Bruijn}.
 Unlike the Boyer--Moore theorem provers, Automath checked the validity of sequences of human-generated proof steps, and hence was more of a proof checker or proof assistant than an automated theorem prover~\cite{ringer2020qed}.
@@ -124,17 +125,27 @@ The legacy of Automath also includes de Bruijn indices, a method for encoding fu
 We are deferring the explanation of these important concepts for the time being because, unlike the methods of theorem proving described above, these methods are at the heart of Coq, the primary theorem prover used in this thesis, as well as proof assistants like it.
 One notable accomplishment in the Automath system was the translation and checking of the entirety of Edmund Landau's \emph{Foundations of Analysis} in the early 1970s~\cite{Automath2002Kamareddine}.
 
-Almost at the same time as Boyer and Moore were working on their theorem provers in Edinburgh, Scotland, Sir Robin Milner developed the LCF theorem prover at Stanford in 1972~\cite[p.~1]{LCF2000Gordon}.
+Almost at the same time as Boyer and Moore were working on their theorem provers in Edinburgh, Scotland, Milner developed the LCF theorem prover at Stanford in 1972~\cite[p.~1]{LCF2000Gordon}.
 Written as an interactive proof checker based on Dana Scott's 1969 logic for computable functions (which LCF abbreviates), LCF was designed to allow users to interactively reason about functional programs~\cite[p.~1]{LCF2000Gordon}.
 In 1973, Milner moved to Edinburgh and designed Edinburgh LCF, the successor to Stanford LCF.
 This new version of LCF was designed to work around two deficiencies of its predecessor: theorem proving was limited by available memory for storing proof objects, and the fixed set of functions for building proofs could not be easily extended.
 The first of these was solved by what is now called ``the LCF approach'': by representing proofs with an abstract \texttt{thm} type, whose API only permitted valid rules of inference, proofs did not have to be carried around in memory~\cite[pp.~1--2]{LCF2000Gordon}.
-In order to support abstract data types, Milner et al.~invented the language ML (short for ``Meta Language'')\cite[p.~2]{LCF2000Gordon}, the precursor to Caml and later OCaml.
-The second issue---ease of extensibility---was also addressed by the design of ML\cite[p.~2]{LCF2000Gordon}.
+In order to support abstract data types, Milner et al.~invented the language ML (short for ``Meta Language'')~\cite[p.~2]{LCF2000Gordon}, the precursor to Caml and later OCaml.
+The second issue---ease of extensibility---was also addressed by the design of ML~\cite[p.~2]{LCF2000Gordon}.
 \todo{HERE}
 \todo{finish this section}
 \todo{Do I need to say more about LCF?}
 \todo{talk about tactics}
+
+
+\todo{a couple sentences about tactics}
+\todo{a paragraph or two summarized from Coq'Art on Martin-Lof and Coq, and LEGO from email to Pollack}
+\todo{a pargaraph mentioning other significant proof checkers, perhaps a sentence each, and also mentioning achievements in those provers}
+
+
+
+
+
 
 \todo{\textcite{Proof2009Geuvers,History2014Harrison}}
 

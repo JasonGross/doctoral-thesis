@@ -379,7 +379,7 @@ spellcheck:
 
 .PHONY: regenerate-dict
 regenerate-dict: $(CUSTOM_DICT)
-	$(SPELLCHECK) > etc/dicts/aspell-custom-dict.txt
+	$(SPELLCHECK) > etc/dicts/aspell-custom-dict.spl
 
 .PHONY: sort-dicts
 sort-dicts:

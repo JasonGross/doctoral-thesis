@@ -23,6 +23,8 @@ addons:
     - grep
     - python
     - python-pygments
+    - aspell
+    - aspell-en
 
 deploy:
   provider: pages

@@ -132,13 +132,12 @@ This new version of LCF was designed to work around two deficiencies of its pred
 The first of these was solved by what is now called ``the LCF approach'': by representing proofs with an abstract \texttt{thm} type, whose API only permitted valid rules of inference, proofs did not have to be carried around in memory~\cite[pp.~1--2]{LCF2000Gordon}.
 In order to support abstract data types, Milner et al.~invented the language ML (short for ``Meta Language'')~\cite[p.~2]{LCF2000Gordon}, the precursor to Caml and later OCaml.
 The second issue---ease of extensibility---was also addressed by the design of ML~\cite[p.~2]{LCF2000Gordon}.
-\todo{HERE}
-\todo{finish this section}
+By combining an abstract, opaque, trusted API for building terms with a functional programming language, users were granted the ability to combine the basic proof steps into ``tactics''.
+Tactics were functions that took in a goal, that is, a formula to be proven, and returned a list of remeaining subgoals, together with a function that would take in proofs of those subgoals and turn them into a proof of the overall theorem.
+An example: a tactic for proving conjunctions might, upon being asked to prove $A \wedge B$, return the two-element list of subgoals $[A, B]$ together with a function that, when given a proof of $A$ and a proof of $B$ (i.e., when given two \texttt{thm} objects, the first of which proves $A$ and the second of which proves $B$), combines them with a primitive conjunction rule to produce a proof object justifying $A \wedge B$.
 \todo{Do I need to say more about LCF?}
-\todo{talk about tactics}
+\todo{Do I need to say more about tactics?}
 
-
-\todo{a couple sentences about tactics}
 \todo{a paragraph or two summarized from Coq'Art on Martin-Lof and Coq, and LEGO from email to Pollack}
 \todo{a pargaraph mentioning other significant proof checkers, perhaps a sentence each, and also mentioning achievements in those provers}
 
@@ -281,17 +280,53 @@ The process of \emph{type-checking} a program consists of ensuring that every va
 If we write the boolean negation function which sends \texttt{true} to \texttt{false} and \texttt{false} to \texttt{true} by case analysis (i.e., by an \texttt{if}-statement), the type-checker will reject our program if we try to apply it to, say, an argument of type \texttt{string} such as \verb|"foo"|.
 Similarly, if we try to use \emph{modus ponens} to combine a proof that $x = 1 \to 2x = 2$ with a proof that $x = 2$ to obtain a proof that $2x = 2$, the proof checker should complain that $x = 1$ and $x = 2$ are not the same type.
 
-While the correspondence of the unit type to tautologies is relatively trivial, the correspondence of the empty type to\todo{here}
+While the correspondence of the unit type to tautologies is relatively trivial, the correspondence of the empty type to falsehood encodes non-trivial principles.
+By encoding falsehood as the empty type, the principle of explosion---that from a contradiction, everything follows---can be encoded as case analysis on the empty type.
+\todo{do I need to explain this bit more?}
 
 The last two rows of \autoref{tab:curry-howard} are especially interesting cases which we will now cover.
 
 Some programming languages allow functions to return values whose type depends on the \emph{value} of the function's arguments.
+In these languages, the types of arguments are generally also allowed to depend on the values of previous arguments.
 Such languages are said to support dependent types.
-For example, we might have a function that returns
-\todo{HERE}
-%dependent function type ($\Pi$) & & universal quantification ($\forall$) \\
+For example, we might have a function that takes in a boolean, and returns a string if the boolean is \texttt{true}, but an integer if the boolean is \texttt{false}.
+More interestingly, we might have a function that takes in two booleans, and additionally takes in a third argument which is of type \texttt{unit} whenever the two booleans are either both \texttt{true} or both \texttt{false}, but is of type \texttt{empty} when they are not equal.
+This third argument serves as a kind of proof that the first two arguments are equal.
+By checking that the third argument is well-typed, that is, that the single inhabitant of the \texttt{unit} type is passed only when in fact the first two arguments are equal, the type-checker is in fact doing proof checking.
+While compilers of languages like C++, which supports dependent types via templates, can be made to do rudimentary proof-checking in this way, proof assistants such as Coq are built around such dependently-typed proof checking.
 
+The last two lines of \autoref{tab:curry-howard} can now be understood.
 
+A dependent function type is just one whose return value depends on its arguments.
+For example, we may write the non-dependently-typed function type
+\[
+\texttt{bool} \to \texttt{bool} \to \texttt{unit} \to \texttt{unit}
+\]
+which takes in three arguments of types \texttt{bool}, \texttt{bool}, and \texttt{unit}, and returns a value of type \texttt{unit}.
+Note that we write this function in curried style, with $\to$ associating to the right (i.e., $A \to B \to C$ is $A \to (B \to C)$), where functions take in one argument at a time, and return a function awaiting the next argument.
+This function is not very interesting, since it can only return the single element of type \texttt{unit}.
+
+However, if we define $E(b_1, b_2)$ to be the type \mintinline{coq}{if b₁ then (if b₂ then unit else empty) else (if b₂ then empty else unit)}, i.e., the type which is \texttt{unit} when both are \texttt{true} or both are \texttt{false}, and is \texttt{empty} otherwise, then we may write the dependent type
+\[
+(b_1 : \texttt{bool}) \to (b_2 : \texttt{bool}) \to E(b_1, b_2) \to E(b_2, b_1)
+\]
+Alternate notations include
+\[
+\Pi_{b_1 : \texttt{bool}} \Pi_{b_2 : \texttt{bool}} E(b_1, b_2) \to E(b_2, b_1)
+\]
+and
+\[
+\forall (b_1 : \texttt{bool}) (b_2 : \texttt{bool}), E(b_1, b_2) \to E(b_2, b_1).
+\]
+A function of this type witnesses a proof that equality of booleans is symmetric.
+\todo{should I say more?  How to organize this paragraph?}
+
+Similarly, dependent pair types witness existentially quantified proofs.
+Suppose we have a type $T(n)$ which encodes the statement ``$n$ is prime and even''.
+To prove $\exists n, T(n)$, we must provide an explicit $n$ together with a proof that it satisfies $T$.
+This is exactly what a dependent pair is: $\Sigma_n T(n)$ is the type of pairs of numbers $n$ paired with proofs that that particular $n$ satisfies $T$.
+
+\todo{shubsection split here?}
 
 %\subsection{Dependent Type Theory}
 \todo{note: target audience: Saman (or POPL/PLDI)}
@@ -302,7 +337,7 @@ For example, we might have a function that returns
 \todo{maybe mention lego as early implementation of dependent types}
 \todo{explain dependent type theory, motivate using it}
 \todo{read and cite \textcite{Should1999Lamport} and \textcite{Formalising2018Paulson} h/t Karl Palmskog @palmskog on gitter \url{https://gitter.im/coq/coq?at=5e5ec0ae4eefc06dcf31943f}}
-\todo{``Another variation of the basic architecture that is part of the Coq proof assistant is the inclusion of aconversion rulein its logical core.  Arguments that are based solely on computation of functions definedin the logic, such as the fact that 1+1=2, are ubiquitous throughout formal proofs.  If we record allthe steps required to show that such arguments are valid as part of the proof objects,  their size soonbecomes prohibitively large.  It has been argued that such arguments should not be recorded in formalproofs but rather should be automatically decided through computation – a principle that has been called the Poincaré principle'' \cite[p.~1167]{barendregt2001proof} \cite{stampoulis2013veriml}}
+\todo{``Another variation of the basic architecture that is part of the Coq proof assistant is the inclusion of a conversion rulein its logical core.  Arguments that are based solely on computation of functions definedin the logic, such as the fact that 1+1=2, are ubiquitous throughout formal proofs.  If we record all the steps required to show that such arguments are valid as part of the proof objects,  their size soonbecomes prohibitively large.  It has been argued that such arguments should not be recorded in formalproofs but rather should be automatically decided through computation – a principle that has been called the Poincaré principle'' \cite[p.~1167]{barendregt2001proof} \cite{stampoulis2013veriml}}
 
 \subsection{The de Bruijn Criterion}\label{sec:debruijn-criterion}
 \begin{quote}

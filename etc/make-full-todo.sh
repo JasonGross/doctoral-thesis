@@ -10,9 +10,15 @@ TEXT="$(cat jgross-thesis.log |
         sed 's/^LaTeX Warning:/Warning:/g; s/^Warning: TODO/TODO/g; s/^Warning: QUESTION/QUESTION/g')$(echo; (cat jgross-thesis-biber.log |
 	grep '^WARN')))"
 
+UNKNOWN_WORDS="$(make --no-print-directory spellcheck | tr '\n' ',' | sed 's/,$//g; s/,/, /g')"
+if [ ! -z "${UNKNOWN_WORDS}" ]; then
+    TEXT="$TEXT$(echo; echo -n 'Unknown Words'): ${UNKNOWN_WORDS}"
+fi
+
 PREFIX=""
 for i in '^TODO' \
              '^QUESTION FOR ADAM' \
+             '^Unknown [wW]ords' \
              '^Warning: Label .* multiply defined' \
              '^Warning: Reference .* undefined' \
              '^Warning: Citation .* undefined' \

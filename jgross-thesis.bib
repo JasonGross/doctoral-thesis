@@ -3075,4 +3075,38 @@ So the best answer to the question ``is rigor just a ritual'' is to study rigor 
   abstract  = {A logical framework is a meta-language for the formalization of deductive systems. We provide a brief introduction to logical frameworks and their methodology, concentrating on LF. We use first-order logic as the running example to illustrate the representations of syntax, natural deductions, and proof transformations.},
 }
 
+@Article{Formalizing2009Wiedijk,
+  author       = {Wiedijk, Freek},
+  date         = {2009},
+  journaltitle = {Sādhanā},
+  title        = {Formalizing {A}rrow’s theorem},
+  doi          = {10.1007/s12046-009-0005-1},
+  issn         = {0973-7677},
+  number       = {1},
+  pages        = {193--220},
+  url          = {http://www.cs.ru.nl/~freek/pubs/arrow.pdf},
+  volume       = {34},
+  abstract     = {A small project in which I encoded a proof of Arrow’s theorem--probably the most famous results in the economics field of social choice theory--in the computer using the Mizar system is presented here. The details of this specific project, as well as the process of formalization (encoding proofs in the computer) in general are discussed.},
+  refid        = {Wiedijk2009},
+}
+
+@PhdThesis{LEGO1994Pollack,
+  author      = {Robert Pollack},
+  date        = {1994},
+  institution = {University of Edinburgh},
+  title       = {The Theory of {LEGO}},
+  subtitle    = {A Proof Checker for the Extended Calculus of Constructions},
+}
+
+@Article{Coq,
+  author       = {{C}oq Development Team, The},
+  date         = {2020-01},
+  title        = {The {C}oq Proof Assistant},
+  doi          = {10.5281/zenodo.3744225},
+  url          = {https://coq.inria.fr/},
+  version      = {{8.11.0}},
+  abstractnote = {Coq is a formal proof management system. It provides a formal language to write mathematical definitions, executable algorithms and theorems together with an environment for semi-interactive development of machine-checked proofs. Typical applications include the certification of properties of programming languages (e.g. the CompCert compiler certification project, or the Bedrock verified low-level programming library), the formalization of mathematics (e.g. the full formalization of the Feit-Thompson theorem or homotopy type theory) and teaching. The main changes brought by Coq version 8.11 are: Ltac2, a new tactic language for writing more robust larger scale tactics, with built-in support for datatypes and the multi-goal tactic monad. Primitive floats are integrated in terms and follow the binary64 format of the IEEE 754 standard, as specified in the Coq.Float.Floats library. Cleanups of the section mechanism, delayed proofs and further restrictions of template polymorphism to fix soundness issues related to universes. New unsafe flags to disable locally guard, positivity and universe checking. Reliance on these flags is always printed by Print Assumptions. Fixed bugs of Export and Import that can have a significant impact on user developments (common source of incompatibility!). New interactive development method based on vos interface files, allowing to work on a file without recompiling the proof parts of their dependencies. New Arguments annotation for bidirectional type inference configuration for reference (e.g. constants, inductive) applications. New refine attribute for Instance can be used instead of the removed Refine Instance Mode. Generalization of the under and over tactics of SSReflect to arbitrary relations. Revision of the Coq.Reals library, its axiomatisation and instances of the constructive and classical real numbers. Additionally, while the omega tactic is not yet deprecated in this version of Coq, it should soon be the case and we already recommend users to switch to lia in new proof scripts (see also the warning message in the corresponding chapter). The dev/doc/critical-bugs file documents the known critical bugs of Coq and affected releases. See the Changes in 8.11+beta1 section and following sections for the detailed list of changes, including potentially breaking changes marked with Changed. Coq's documentation is available at https://coq.github.io/doc/v8.11/api (documentation of the ML API), https://coq.github.io/doc/v8.11/refman (reference manual), and https://coq.github.io/doc/v8.11/stdlib (documentation of the standard library). Maxime D{\'{e}}n{\`{e}}s, Emilio Jes{\'{u}}s Gallego Arias, Ga{\"{e}}tan Gilbert, Michael Soegtrop and Th{\'{e}}o Zimmermann worked on maintaining and improving the continuous integration system and package building infrastructure. The OPAM repository for Coq packages has been maintained by Guillaume Claret, Karl Palmskog, Matthieu Sozeau and Enrico Tassi with contributions from many users. A list of packages is available at https://coq.inria.fr/opam/www/. The 61 contributors to this version are Michael D. Adams, Guillaume Allais, Helge Bahmann, Langston Barrett, Guillaume Bertholon, Fr{\'{e}}d{\'{e}}ric Besson, Simon Boulier, Michele Caci, Tej Chajed, Arthur Chargu{\'{e}}raud, Cyril Cohen, Fr{\'{e}}d{\'{e}}ric Dabrowski, Arthur Azevedo de Amorim, Maxime D{\'{e}}n{\`{e}}s, Nikita Eshkeev, Jim Fehrle, Emilio Jes{\'{u}}s Gallego Arias, Paolo G. Giarrusso, Ga{\"{e}}tan Gilbert, Georges Gonthier, Jason Gross, Samuel Gruetter, Arma{\"{e}}l Gu{\'{e}}neau, Hugo Herbelin, Florent Hivert, Jasper Hugunin, Shachar Itzhaky, Jan-Oliver Kaiser, Robbert Krebbers, Vincent Laporte, Olivier Laurent, Samuel Leli{\`{e}}vre, Nicholas Lewycky, Yishuai Li, Jose Fernando Lopez Fernandez, Andreas Lynge, Kenji Maillard, Erik Martin-Dorel, Guillaume Melquiond, Alexandre Moine, Oliver Nash, Wojciech Nawrocki, Antonio Nikishaev, Pierre-Marie P{\'{e}}drot, Cl{\'{e}}ment Pit-Claudel, Lars Rasmusson, Robert Rand, Talia Ringer, JP Rodi, Pierre Roux, Kazuhiko Sakaguchi, Vincent Semeria, Michael Soegtrop, Matthieu Sozeau, spanjel, Claude Stolze, Enrico Tassi, Laurent Th{\'{e}}ry, James R. Wilcox, Xia Li-yao, Th{\'{e}}o Zimmermann Many power users helped to improve the design of the new features via the issue and pull request system, the Coq development mailing list, the coq-club@inria.fr mailing list or the Discourse forum. It would be impossible to mention exhaustively the names of everybody who to some extent influenced the development. Version 8.11 is the sixth release of Coq developed on a time-based development cycle. Its development spanned 3 months from the release of Coq 8.10. Pierre-Marie P{\'{e}}drot is the release manager and maintainer of this release, assisted by Matthieu Sozeau. This release is the result of 2000+ commits and 300+ PRs merged, closing 75+ issues.},
+  publisher    = {Zenodo},
+}
+
 @Comment{jabref-meta: databaseType:biblatex;}

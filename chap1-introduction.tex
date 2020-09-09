@@ -83,6 +83,16 @@ Drawing experience from case studies in category theory~\cite{category-coq-exper
 While we propose some design principles for avoiding these performance issues in \autoref{part:design} and present a research prototype of a tool and methodology for achieving acceptable performance at scale in \autoref{part:rewriting}---and we claim both of these are original contributions of this PhD\todo{how to write PhD in text?  with periods? not?}---the story this thesis aims to tell is that in order for proof assistants to scale to industrial uses, \emph{we must get the basics of asymptotic performance right}.
 
 \subsection{What are proof assistants?}\label{sec:intro:history}
+\todo{is it Nuprl or NuPRL? make sure to be consistent}
+%{The structure of this section:}
+%\begin{itemize}
+%\item {how the first proof assistants worked}
+%\item {subsubsection on LCF approach, and how that lets you prove things}
+%\item {paragraph on descendents of LCF, dependently typed and not; foreshadow how proof checking as typechecking works with a single sentence or so}
+%\item {very brief paragraph on other proof assistants, also mention survey papers}
+%\item {paragraph on successes of proof assistants}
+%\end{itemize}
+%
 Before diving into the details of performance bottlenecks and solutions, we review the history of formal verification and proof assistants to bring the reader up to speed on the context of our work and investigation.
 \todo{Maybe say something about the purpose of this section: simultaneously let people know that there's been a lot of thought and effort, let people know about success stories (because it possibly hasn't touched them, and hasn't been adopted mainstream), (and also a bit about how the proof assistants might actually check the proofs)}
 \todo{cite the following in chronological order, maybe}
@@ -112,13 +122,13 @@ However, as the author himself notes, this was only feasible because all of the 
 
 In the early 1970's, Boyer and Moore began work on theorem provers which could work with higher-order principles such as mathematical induction~\cite[p.~6]{Automation2013Moore}.
 This work resulted in a family of theorem provers, collectively known as the Boyer--Moore theorem provers, which includes the first seriously successful automated theorem provers~\cites[p.~8]{Automation2013Moore}{Brief2019Darbari}.
-They developed the Edinburgh Pure LISP Theorem Prover, Thm, and later Nqthm~\cite[p.~8]{Automation2013Moore}, the last of which came to be known as \emph{the} Boyer--Moore theorem prover.
+They developed the Edinburgh Pure LISP Theorem Prover, Thm, and later Nqthm~\cites[p.~8]{Automation2013Moore}{Nqthm,wiki:Nqthm}, the last of which came to be known as \emph{the} Boyer--Moore theorem prover.
 Nqthm has been used to formalize and verify G\"odel's first incompleteness theorem in 1986~\cites{Metamathematics1994Shankar}[p.~29]{Milestones2019Moore}, to verify the implementation of an assembler and linker~\cite{moore2007piton} as well as a number of FORTRAN programs, and to formally prove the invertibility of RSA encryption, the undecidability of the halting problem, Gauss' law of quadratic reciprocity~\cite[pp.~28--29]{Milestones2019Moore}.
 Nqthm later evolved into ACL2~\cite{Milestones2019Moore,ACL2Applications,ACL2}, which has been used, among other things, to verify a Motorola digital signal processor, the floating-point arithmetic unit in AMD chips, and some x86 machine code programs~\cite[p.~2]{Milestones2019Moore}.
 % More details on the assembler and linker (Piton) at \url{https://www.cs.utexas.edu/~moore/best-ideas/piton/index.html}
 % Also Computational Logic Inc.~which used Nqthm, \url{http://www.computationallogic.com/}
 
-In 1967, at around the same time that Robinson published his resolution principle, N.~G.~de Bruijn developed the Automath system~\cite{Automath2002Kamareddine,Survey1994deBruijn,mathematical1970Bruijn}.
+In 1967, at around the same time that Robinson published his resolution principle, N.~G.~de Bruijn developed the Automath system~\cite{Automath2002Kamareddine,Survey1994deBruijn,mathematical1970Bruijn,wiki:AutoMath}.
 Unlike the Boyer--Moore theorem provers, Automath checked the validity of sequences of human-generated proof steps, and hence was more of a proof checker or proof assistant than an automated theorem prover~\cite{ringer2020qed}.
 Automath is notable for being the first system to represent both theorems and proofs in the same formal system, reducing the problem of proof checking to that of type checking~\cite{ringer2020qed} by exploiting what came to be known as the Curry--Howard correspondence~\cite{Automath2002Kamareddine}; we will discuss this more in \autoref{sec:why-how-dependent-types}.
 The legacy of Automath also includes de Bruijn indices, a method for encoding function arguments which we describe in \autoref{sec:binders:de-bruijn}, dependent types, which we explain in \autoref{sec:why-how-dependent-types}, and the \emph{de Bruijn principle}---stating that proof checkers should be as small and as simple as possible---which we discuss in \autoref{sec:debruijn-criterion}~\cite{ringer2020qed,Automath2002Kamareddine}.
@@ -129,7 +139,7 @@ Almost at the same time as Boyer and Moore were working on their theorem provers
 Written as an interactive proof checker based on Dana Scott's 1969 logic for computable functions (which LCF abbreviates), LCF was designed to allow users to interactively reason about functional programs~\cite[p.~1]{LCF2000Gordon}.
 In 1973, Milner moved to Edinburgh and designed Edinburgh LCF, the successor to Stanford LCF.
 This new version of LCF was designed to work around two deficiencies of its predecessor: theorem proving was limited by available memory for storing proof objects, and the fixed set of functions for building proofs could not be easily extended.
-The first of these was solved by what is now called ``the LCF approach'': by representing proofs with an abstract \texttt{thm} type, whose API only permitted valid rules of inference, proofs did not have to be carried around in memory~\cite[pp.~1--2]{LCF2000Gordon}.
+The first of these was solved by what is now called ``the LCF approach'': by representing proofs with an abstract \texttt{thm} type, whose API only permitted valid rules of inference, proofs did not have to be carried around in memory~\cites[pp.~1--2]{LCF2000Gordon}{harrison2001lcf}.
 In order to support abstract data types, Milner et al.~invented the language ML (short for ``Meta Language'')~\cite[p.~2]{LCF2000Gordon}, the precursor to Caml and later OCaml.
 The second issue---ease of extensibility---was also addressed by the design of ML~\cite[p.~2]{LCF2000Gordon}.
 By combining an abstract, opaque, trusted API for building terms with a functional programming language, users were granted the ability to combine the basic proof steps into ``tactics''.
@@ -243,8 +253,7 @@ He proposed to renew the approach based on Floyd--Hoare--Dijkstra assertions on 
 The relevance of \emph{Coq}'s two-level architecture was confirmed by the certification of the CoC verifier that could be extracted from a \emph{Coq} formalization of the meta-theory of the Calculus of Constructions, which was contributed by Bruno Barras--a technical \emph{tour de force} but also quite a leap forward for the safety of formal methods.
 Taking his inspiration from Objective Caml's module system, Judicaël Courant outlined the foundations of a modular language for developing mathematics, paving the way for the reuse of libraries and the development of large-scale certified software.
 
-
-The creation of the company Thusted Logic, specialized in the certification of smart-card-based system using technologies adapted from the Caml and Coq teams, confirmed the relevance of their research.
+The creation of the company Trusted Logic, specialized in the certification of smart-card-based system using technologies adapted from the Caml and Coq teams, confirmed the relevance of their research.
 A variety of applicative projects were started.
 
 The \emph{Coq} system was then completely redesigned, resulting in version 7 based on a functional kernel, the main architects being Jean-Christophe Filliâtre, Hugo Herbelin, and Bruno Barras.
@@ -273,56 +282,36 @@ The domain of classical mathematics required restrictions to the logical languag
 \end{flushright}
 
 
-
 \todo{a paragraph or two summarized from Coq'Art on Martin-Löf and Coq, and LEGO from email to Pollack}
-\todo{a pargaraph mentioning other significant proof checkers, perhaps a sentence each, and also mentioning achievements in those provers}
 
+Major accomplishments of verification in Coq~\cite{Coq} include the fully verified optimizing C compiler CompCert~\cite{Compcert}, the proof of the Four Color Theorem~\cite{gonthier2008formal}, and the complete formalization of the Odd Order Theorem, also known as the Feit--Thompson Theorem~\cite{gonthier2013machine}.
+This last development was the of about six years of work formalizing a proof that every finite group of odd order is solvable; the original proof, published in the early 1960s, is about 225 pages long.
+\todo{Should I mention the following? ``Computer-verified proofs of versions of the first incompleteness theorem were announced [...] by Russell O'Connor in 2003 using Coq (O'Connor 2005)'' \url{https://en.wikipedia.org/wiki/Gödel's_incompleteness_theorems}}
+\todo{Should I say this? We refer readers to \textcite{CoqArtForward2013Huet} for a comprehensive history of the development of Coq.}
 
+\todo{Do I need to include anything more from \textcite{Proof2009Geuvers,History2014Harrison}?}
 
+We now briefly mention a number of other proof assistants, calling out some particularly significant accomplishments of verification.
+Undoubtedly we will miss some proof assistants and accomplishments, for which we refer the reader to the rich existing literature, some of which is cited in the first paragraph of this subsection, as well as scattered among other papers which describe a variety of proof assistants~\cite{Formalizing2009Wiedijk}.
 
+Inspired by Automath, the Mizar~\cite{harrison-mizar,Rudnicki92anoverview,Matuszewski05mizar:the} proof checker was designed to assist mathematicians in preparing mathematical papers~\cite{Rudnicki92anoverview}.
+The Mizar Mathematical Library had already 55 thousand formally verified lemmas in 2009 and was at the time (and might still be \todoask{is this accurate?}) the largest library of formal mathematics~\cite{Formalizing2009Wiedijk}.
+LCF~\cite{LCF2000Gordon,gordon1979edinburgh,gordon1978metalanguage} spawned a number of other closely related proof assistants, such as HOL~\cite{Programming2000Barras,LCF2000Gordon}, Isabelle/HOL~\cite{LCF2019Paulson,Isabelle/Isar2002Wenzel,Isabelle,paulson1994isabelle}, HOL4~\cite{slind2008brief}, HOL Light~\cite{harrison1996hol}.
+Among other accomplishments, a complete OS microkernel, seL4, was fully verified in Isabelle/HOL by 2009~\cite{seL4SOSP09}.
+In 2014, a complete proof of the Kepler conjecture on optimal packing of spheres was formalized in a combination of Isabelle and HOL Light~\cite{flyspeck,flyspeck2014Hales}.
+\todo{should I say anything about the Kepler conjecture? ``In 1998 Thomas Hales, following an approach suggested by Fejes Tóth (1953), announced that he had a proof of the Kepler conjecture. Hales' proof is a proof by exhaustion involving the checking of many individual cases using complex computer calculations. Referees said that they were ``99\% certain'' of the correctness of Hales' proof, and the Kepler conjecture was accepted as a theorem.'' \url{https://en.wikipedia.org/wiki/Kepler_conjecture}}
+The functional programming language CakeML includes a self-bootstrapping optimizing compiler which is fully verified in HOL~\cite{CakeML}.
+\todo{should I say something about the year?}
+\todo{should I mention the following? ``Computer-verified proofs of versions of the first incompleteness theorem were announced [...] by John Harrison in 2009 using HOL Light (Harrison 2009). A computer-verified proof of both incompleteness theorems was announced by Lawrence Paulson in 2013 using Isabelle (Paulson 2014). `` \url{https://en.wikipedia.org/wiki/Gödel's_incompleteness_theorems}}
+The Nqthm Boyer--Moore theorem prover eventually evolved into ACL2~\cite{ACL2,ACL2Applications}.
+Other proof assistants include LF~\cite{pfenning1991logic,harper93,Logical2002Pfenning}, Twelf~\cite{pfenning1999system}, Matita~\cite{asperti2007user,Matita2011Asperti}, PVS~\cite{owre1996pvs,PVS1992Owre}, LEGO~\cite{LEGO1994Pollack}, and NuPRL~\cite{nuprl}.
+\todo{What should I say abound NuPRL?}
+\todoask{Which, if any, of the projects on http://www.nuprl.org/html/Projects.html are worth mentioning?  What about http://www.nuprl.org/Publications/?}
+%\todo{Paragraph on Nuprl.  Innovation: type theory and proof checking is type checking (but type checking is undecidable).  Poke around Nuprl project website for 10 minutes to see what they highlight.  Talk about Curry--Howard, Check Martin-Löf.  Maybe email Bob Constable for historical context of Nuprl}
+\todo{should I mention Agda? Idris? Lean?}
+\todo{Do I need to email Randy Pollack(sp?) creator of LEGO, to get historical context?}
 
-
-\todo{\textcite{Proof2009Geuvers,History2014Harrison}}
-
-\todo{We refer readers to \textcite{CoqArtForward2013Huet} for a comprehensive history of the development of Coq.}
-
-Inspired by Automath, the Mizar~\cite{Rudnicki92anoverview,Matuszewski05mizar:the}
-
-Nuprl, LCF/HOL, LF, TWELF, LEGO, COQ
-
-Around the same time as
-``Computer-verified proofs of versions of the first incompleteness theorem were announced by Natarajan Shankar in 1986 using Nqthm (Shankar 1994), by Russell O'Connor in 2003 using Coq (O'Connor 2005) and by John Harrison in 2009 using HOL Light (Harrison 2009). A computer-verified proof of both incompleteness theorems was announced by Lawrence Paulson in 2013 using Isabelle (Paulson 2014). `` \url{https://en.wikipedia.org/wiki/Gödel's_incompleteness_theorems}
-
-\todo{Talk about other early theorem provers: Mizar}
-
-\todo{Next paragraph is LCF, the de Bruijn criterion, talk about the LCF approach, and the ability to not store entire proofs.  Maybe talk about Automath before LCF???}
-
-\todo{Paragraph on Nuprl.  Innovation: type theory and proof checking is type checking (but type checking is undecidable).  Poke around Nuprl project website for 10 minutes to see what they highlight.  Talk about Curry--Howard, Check Martin-Löf.  Maybe email Bob Constable for historical context of Nuprl}
-
-\todo{Next paragraph is on Isabelle/HOL, HOL Light, HOL4}
-
-\todo{Next paragraph talks about LEGO (which comes before Coq, makes same foundational decisions, email Randy Pollack(sp?) creator of LEGO, to get historical context), Coq, (+Agda, etc), (innovation: Martin Löf, proof checking is type checking)}
-
-\todo{Talk about remaining misc theorem provers and survey papers}
-
-
-\todo{Read from page 128 of \textcite{ringer2020qed}}
-\todoask{Has anything interesting been done with the Stanford Pascal Verifier~\cite{luckham1979stanford}?  Should I say anything about it?  Adam says maybe not?}
-\todo{talk about LCF approach~\cite{harrison2001lcf}}
-\todo{wide look at various proof assistants (historical overview of how the field got to where it is today, maybe with weight according to importance) and successes (applications of proof assistants like compcert~\cite{Compcert}, sel4 (kernel)~\cite{seL4SOSP09}, cakeml~\cite{CakeML}, nqthm~\cite{Nqthm,wiki:Nqthm,Automation2013Moore}, ACL2~\cite{ACL2,ACL2Applications}, crypto???, flyspeck~\cite{flyspeck,flyspeck2014Hales}, 4-color-theorem~\cite{gonthier2008formal}, odd-order-theorem~\cite{gonthier2013machine})}
-\todo{LCF~\cite{LCF2000Gordon,gordon1979edinburgh,gordon1978metalanguage}, Isabelle/HOL~\cite{LCF2019Paulson,Isabelle/Isar2002Wenzel,Isabelle,paulson1994isabelle}, HOL4~\cite{slind2008brief}, HOL Light~\cite{harrison1996hol}, LF~\cite{pfenning1991logic,harper93,Logical2002Pfenning}, Twelf~\cite{pfenning1999system}, Matita~\cite{asperti2007user,Matita2011Asperti}, PVS~\cite{owre1996pvs,PVS1992Owre}, Mizar~\cite{harrison-mizar}, Automath~\cite{wiki:AutoMath,mathematical1970Bruijn,Survey1994deBruijn}}
-\todo{https://www.eeweb.com/profile/adarbari/articles/a-brief-history-of-formal-verification}
-\todo{look at OSDI submission (papers/lightbulb/) and mine related work}
-\todo{read and cite Talia's paper \textcite{ringer2020qed}?}
-
-\todo{The structure of this section:}
-\begin{itemize}
-\item \todo{how the first proof assistants worked}
-\item \todo{subsubsection on LCF approach, and how that lets you prove things}
-\item \todo{paragraph on descendents of LCF, dependently typed and not; foreshadow how proof checking as typechecking works with a single sentence or so}
-\item \todo{very brief paragraph on other proof assistants, also mention survey papers}
-\item \todo{paragraph on successes of proof assistants}
-\end{itemize}
+\todo{How should I conclude this section?}
 
 \section{Basic Design Choices}\label{sec:intro:proof-assistant-design-choices}
 Although the design-space of proof assistants is quite large, as we've touched on in \autoref{sec:intro:history}, there are only two main design decisions which we want to assume for the investigations of this thesis.

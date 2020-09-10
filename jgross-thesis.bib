@@ -3109,4 +3109,119 @@ So the best answer to the question ``is rigor just a ritual'' is to study rigor 
   publisher    = {Zenodo},
 }
 
+@Article{Ben-AmramG92,
+  author       = {Amir M. Ben-Amram and Zvi Galil},
+  date         = {1992-07},
+  journaltitle = {Journal of the ACM},
+  title        = {On Pointers versus Addresses},
+  doi          = {10.1145/146637.146666},
+  number       = {3},
+  pages        = {617--648},
+  url          = {https://www2.mta.ac.il/~amirben/downloadable/jacm.ps.gz},
+  volume       = {39},
+  area         = {Theory of Computation},
+}
+
+@Unpublished{Ben-amram96noteson,
+  author   = {Amir M. Ben-Amram},
+  date     = {1996},
+  title    = {Notes on {P}ippenger's Comparison of Pure and Impure {LISP}},
+  location = {DIKU, University of Copenhagen, Denmark},
+  url      = {http://citeseerx.ist.psu.edu/viewdoc/summary?doi=10.1.1.55.3024},
+}
+
+@Article{More1997Bird,
+  author       = {Bird, Richard and Jones, Geraint and De Moor, Oege},
+  date         = {1997-09},
+  journaltitle = {Journal of Functional Programming},
+  title        = {More Haste, Less Speed: Lazy versus Eager Evaluation},
+  doi          = {10.1017/S0956796897002827},
+  issn         = {0956-7968},
+  number       = {5},
+  pages        = {541--547},
+  volume       = {7},
+  abstract     = {Nicholas Pippenger has recently given a problem that, under two simple restrictions, can be solved in linear time by an impure Lisp program, but requires Ω(n log n) steps to be solved by any eager pure Lisp program. By showing how to solve the problem in linear time with a lazy functional program, we demonstrate that – for some problems at least – lazy evaluators are strictly more powerful than eager ones.},
+  issue_date   = {September 1997},
+  location     = {USA},
+  numpages     = {7},
+  publisher    = {Cambridge University Press},
+}
+
+@PhdThesis{okasaki1996purely,
+  author      = {Okasaki, Chris},
+  date        = {1996-09},
+  institution = {Carnegie Mellon University},
+  title       = {Purely Functional Data Structures},
+  url         = {https://www.cs.cmu.edu/~rwh/theses/okasaki.pdf},
+}
+
+@Book{okasaki1998purely,
+  author    = {Okasaki, Chris},
+  date      = {1998},
+  title     = {Purely Functional Data Structures},
+  doi       = {10.1017/cbo9780511530104},
+  isbn      = {9781139811019},
+  publisher = {Cambridge University Press},
+  url       = {https://books.google.com/books?id=IV8hAwAAQBAJ},
+}
+
+@Article{Pure1997Pippenger,
+  author       = {Pippenger, Nicholas},
+  date         = {1997-03},
+  journaltitle = {ACM Transactions on Programming Languages and Systems},
+  title        = {Pure versus Impure {L}isp},
+  doi          = {10.1145/244795.244798},
+  issn         = {0164-0925},
+  number       = {2},
+  pages        = {223--238},
+  volume       = {19},
+  issue_date   = {March 1997},
+  keywords     = {online computation, schematology},
+  location     = {New York, NY, USA},
+  numpages     = {16},
+  publisher    = {Association for Computing Machinery},
+}
+
+@Online{Efficiency2010Campbell,
+  author       = {Brian Campbell},
+  date         = {2010-05-23},
+  title        = {Efficiency of purely functional programming},
+  url          = {https://stackoverflow.com/a/1990580},
+  abstract     = {According to Pippenger [1996], when comparing a Lisp system that is purely functional (and has strict evaluation semantics, not lazy) to one that can mutate data, an algorithm written for the impure Lisp that runs in O(n) can be translated to an algorithm in the pure Lisp that runs in O(n log n) time (based on work by Ben-Amram and Galil [1992] about simulating random access memory using only pointers). Pippenger also establishes that there are algorithms for which that is the best you can do; there are problems which are O(n) in the impure system which are Ω(n log n) in the pure system.
+
+There are a few caveats to be made about this paper. The most significant is that it does not address lazy functional languages, such as Haskell. Bird, Jones and De Moor [1997] demonstrate that the problem constructed by Pippenger can be solved in a lazy functional language in O(n) time, but they do not establish (and as far as I know, no one has) whether or not a lazy functional language can solve all problems in the same asymptotic running time as a language with mutation.
+
+The problem constructed by Pippenger requires Ω(n log n) is specifically constructed to achieve this result, and is not necessarily representative of practical, real-world problems. There are a few restrictions on the problem that are a bit unexpected, but necessary for the proof to work; in particular, the problem requires that results are computed on-line, without being able to access future input, and that the input consists of a sequence of atoms from an unbounded set of possible atoms, rather than a fixed size set. And the paper only establishes (lower bound) results for an impure algorithm of linear running time; for problems that require a greater running time, it is possible that the extra O(log n) factor seen in the linear problem may be able to be "absorbed" in the process of extra operations necessary for algorithms with greater running times. These clarifications and open questions are explored briefly by Ben-Amram [1996].
+
+In practice, many algorithms can be implemented in a pure functional language at the same efficiency as in a language with mutable data structures. For a good reference on techniques to use for implementing purely functional data structures efficiently, see Chris Okasaki's "Purely Functional Data Structures" [Okasaki 1998] (which is an expanded version of his thesis [Okasaki 1996]).
+
+Anyone who needs to implement algorithms on purely-functional data structures should read Okasaki. You can always get at worst an O(log n) slowdown per operation by simulating mutable memory with a balanced binary tree, but in many cases you can do considerably better than that, and Okasaki describes many useful techniques, from amortized techniques to real-time ones that do the amortized work incrementally. Purely functional data structures can be a bit difficult to work with and analyze, but they provide many benefits like referential transparency that are helpful in compiler optimization, in parallel and distributed computing, and in implementation of features like versioning, undo, and rollback.
+
+Note also that all of this discusses only asymptotic running times. Many techniques for implementing purely functional data structures give you a certain amount of constant factor slowdown, due to extra bookkeeping necessary for them to work, and implementation details of the language in question. The benefits of purely functional data structures may outweigh these constant factor slowdowns, so you will generally need to make trade-offs based on the problem in question.
+References
+\begin{itemize}
+\item    Ben-Amram, Amir and Galil, Zvi 1992. "On Pointers versus Addresses" Journal of the ACM, 39(3), pp. 617-648, July 1992
+\item    Ben-Amram, Amir 1996. "Notes on Pippenger's Comparison of Pure and Impure Lisp" Unpublished manuscript, DIKU, University of Copenhagen, Denmark
+\item    Bird, Richard, Jones, Geraint, and De Moor, Oege 1997. "More haste, less speed: lazy versus eager evaluation" Journal of Functional Programming 7, 5 pp. 541–547, September 1997
+\item    Okasaki, Chris 1996. "Purely Functional Data Structures" PhD Thesis, Carnegie Mellon University
+\item    Okasaki, Chris 1998. "Purely Functional Data Structures" Cambridge University Press, Cambridge, UK
+\item    Pippenger, Nicholas 1996. "Pure Versus Impure Lisp" ACM Symposium on Principles of Programming Languages, pages 104–109, January 1996
+\end{itemize}},
+  author_url   = {https://stackoverflow.com/users/69755/brian-campbell},
+  eprint       = {https://stackoverflow.com/a/1990580},
+  howpublished = {Stack Overflow},
+}
+
+@Article{Logical2016Garrabrant,
+  author      = {Scott Garrabrant and Tsvi Benson-Tilsen and Andrew Critch and Nate Soares and Jessica Taylor},
+  date        = {2016-09-12},
+  title       = {Logical Induction},
+  eprint      = {1609.03543},
+  eprintclass = {cs.AI},
+  eprinttype  = {arXiv},
+  abstract    = {We present a computable algorithm that assigns probabilities to every logical statement in a given formal language, and refines those probabilities over time. For instance, if the language is Peano arithmetic, it assigns probabilities to all arithmetical statements, including claims about the twin prime conjecture, the outputs of long-running computations, and its own probabilities. We show that our algorithm, an instance of what we call a logical inductor, satisfies a number of intuitive desiderata, including: (1) it learns to predict patterns of truth and falsehood in logical statements, often long before having the resources to evaluate the statements, so long as the patterns can be written down in polynomial time; (2) it learns to use appropriate statistical summaries to predict sequences of statements whose truth values appear pseudorandom; and (3) it learns to have accurate beliefs about its own current beliefs, in a manner that avoids the standard paradoxes of self-reference. For example, if a given computer program only ever produces outputs in a certain range, a logical inductor learns this fact in a timely manner; and if late digits in the decimal expansion of $\pi$ are difficult to predict, then a logical inductor learns to assign $\approx 10\%$ probability to "the $n$th digit of $\pi$ is a 7" for large $n$. Logical inductors also learn to trust their future beliefs more than their current beliefs, and their beliefs are coherent in the limit (whenever $\phi \implies \psi$, $\mathbb{P}_\infty(\phi) \le \mathbb{P}_\infty(\psi)$, and so on); and logical inductors strictly dominate the universal semimeasure in the limit. These properties and many others all follow from a single logical induction criterion, which is motivated by a series of stock trading analogies. Roughly speaking, each logical sentence $\phi$ is associated with a stock that is worth \$1 per share if [...]},
+  file        = {:http\://arxiv.org/pdf/1609.03543v4:PDF},
+  keywords    = {cs.AI, cs.LO, math.LO, math.PR},
+}
+
 @Comment{jabref-meta: databaseType:biblatex;}

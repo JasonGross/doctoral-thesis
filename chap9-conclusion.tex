@@ -1,5 +1,71 @@
 \chapter{Concluding Remarks}\label{ch:conclusion}
+We come, at last, to the closing remarks of this thesis.
 
+We spent \autoref{part:introduction} mapping out the landscape of the problem of performance in dependently-typed proof assistants.
+In \autoref{part:design} and \autoref{part:rewriting}, we laid out more-or-less systematic principles and tools for avoiding performance bottlenecks.
+In the last chapter, \autoref{ch:retrospective}, we looked back on the concrete performance improvements in Coq over time.
+
+We look now to the future.
+
+The clever reader might have noticed something that we swept under the rug in \Autoref{part:design,part:rewriting}.
+In \autoref{sec:intro:proof-assistant-design-choices} we laid out two basic design choices---dependent types and the de Bruijn criterion---which are responsible for much of the power and much of the trust we can have in a proof assistant like Coq.
+We then spent the next chapters of this thesis investigating the performance bottlenecks that can perhaps be said to result from these choices, and how to ameliorate these performance issues.
+
+If the strategies we laid out in \Autoref{part:design,part:rewriting} for how to use dependent types and untrusted tactics in a performant way are to be summed up in one word, that word is: ``don't!''
+To avoid the performance issues incurred by unpredictable computation at the type-level, the source of much of the power of dependent type theory, we broadly suggest in \autoref{part:design} to \emph{avoid using the computation at all} (except in the rare cases where the entire proof can be moved into computation at the type level, such as proof by duality (\autoref{sec:duality-conversion}) and proof by reflection (\autoref{ch:reflection}).
+To avoid the performance issues resulting from tactics being untrusted, the source of much of the trust in proof assistants like Coq, we suggest in \autoref{part:rewriting} that users effectively \emph{throw away the entire tactic engine} and instead code tactics reflectively.
+
+This is a sorry state of affairs:
+we are effectively advising users to basically avoid using most of the power and infrastructure of the proof assistant.
+
+We admit that we are not sure what an effective resolution to the performance issue of computation at the type level would look like.
+While \autoref{ch:design} lays out in \fullref{sec:when-how-dependent-types} principles for how and when to use dependent types that allow us to recover much of the power of dependent types without running into issues of slow conversion, even at scale, this is notwhere near a complete roadmap for actually using partial computation at the type level.
+
+On the question of using tactics, however, we do know what a resolution would look like, and hence we conclude this thesis with such a call for future research.
+
+As far as we can tell, no one has yet laid out a theory of what are the necessary basic building blocks of a usable tactic engine for proofs.
+Such a theory should include:
+\begin{itemize}
+\item
+  a list of basic operations
+\item
+  with necessary asymptotic performance,
+\item
+  justification that these building blocks are sufficient for constructing all the proof automation users might want to construct, and
+\item
+  justification that the asymptotic performance does not incur needless overhead above and beyond the underlying algorithm of proof construction.
+\end{itemize}
+
+What is \emph{needless} overhead, though?
+How can we say what is the performance is of the ``underlying algorithm''?
+
+A first stab might be thus: we want a proof engine which, for any algorithm $A$ that can determine whether a given theorem statement is true in time $\mathcal O(f(n))$, where $n$ is some parameter controling the size of the problem, we can construct a proof script which generates proofs of these theorem statements in time not worse than $\mathcal O(f(n))$, or perhaps in time that is not much worse than $\mathcal O(f(n))$.
+
+This criterion, however, is both useless and impossible to meet.
+
+Useless:
+In a dependently-typed proof assistant, if we can prove that $A$ is sound, i.e., that when it says ``yes'' the theorem is in fact true, then we can simply use reflection to create a proof by appeal to computation.
+This is not useful when what we are trying to do is describe how to identify a proof engine which gives adequate building blocks \emph{aside} from appeal to computation.
+
+Impossible to meet:
+Morever, even if we could modify this criterion into a useful one, perhaps by requiring that it be possible to construct such a proof script without any appeal to computation, meeting the criterion would still be impossible.
+Taking inspiration from \textcite[pp.~24--25]{Logical2016Garrabrant}, we ask the reader to consider a program $\texttt{prg}(x)$ which searches for proofs of aburdity (i.e., \mintinline{coq}{False}) in Coq which have length less than $2^x$ characters and which can be checked by Coq's kernel in less than $2^x$ CPU cycles.
+If such a proof of absurdity is found, the program outputs \texttt{true}.
+If no such proof is found under the given computational limits, the program outputs \texttt{false}.
+Assuming that Coq is, in fact, consistent, then we can recognize true theorems of the form $\texttt{prg}(x) = \texttt{false}$ for all $x$ in time $\mathcal O(\log x)$.
+(The running time is logarithmic, rather than linear or constant, because representing the number $x$ in any place-value system, such as decimal or binary, requires $\log n$ space.)
+At the same time, by G\"odel's incompleteness theorem, there is no hope of proving $\forall x, \texttt{prg}(x) = \texttt{false}$, and hence we cannot prove this simple $\mathcal O(\log x)$-time theorem recognizer correct.
+We almost certainly will be stuck running the program, which will take time at least $\Omega(2^x)$, which is certainly not an acceptable overhead over $\mathcal O(\log x)$.
+
+\todo{should I be using ``we'', still, or should I switch to ``I''?}
+We do not believe that all hope is lost, though!
+G\"odelian incompleteness did not prove to be a fatal obstacle to verification and automation of proofs, as we saw in \autoref{sec:intro:intro}, and we hope that it proves to be surmountable here as well.
+Finally, we wonder whether or not there will be any similarities between this problem and the extant research on the overhead of using a functional language over an imperative one~\cite{Efficiency2010Campbell,Ben-AmramG92,Ben-amram96noteson,More1997Bird,okasaki1996purely,okasaki1998purely,Pure1997Pippenger}.
+
+\todo{is there a better concluding sentence?}
+We hope the reader leaves this thesis with an improved understanding of the performance landscape of engineering of proof-based software systems, and perhaps goes on to contribute new insight to this perhaps-nascent field themselves.
+
+\begin{comment}
 \begin{subappendices}
 
     \section{transcript bits from Adam}
@@ -109,3 +175,4 @@ But like it would be nice if you don't have to do that. To get things to scale.
 And yeah, that's that's the sort of next step. Right. Now, that's not like a nicer conclusion. Next step is all these very inspiring.
 
 \end{subappendices}
+\end{comment}

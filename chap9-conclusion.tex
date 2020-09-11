@@ -39,10 +39,11 @@ Such a theory should include:
 What is \emph{needless} overhead, though?
 How can we say what is the performance is of the ``underlying algorithm''?
 
-A first stab might be thus: we want a proof engine which, for any algorithm $A$ that can determine whether a given theorem statement is true in time $\mathcal O(f(n))$, where $n$ is some parameter controling the size of the problem, we can construct a proof script which generates proofs of these theorem statements in time not worse than $\mathcal O(f(n))$, or perhaps in time that is not much worse than $\mathcal O(f(n))$.
+A first stab might be thus: we want a proof engine which, for any heuristic algorithm $A$ that can sometimes determine the truth of a theorem statement (and will otherwise answer ``I don't know'') in time $\mathcal O(f(n))$, where $n$ is some parameter controling the size of the problem, we can construct a proof script which generates proofs of these theorem statements in time not worse than $\mathcal O(f(n))$, or perhaps in time that is not much worse than $\mathcal O(f(n))$.
 
 This criterion, however, is both useless and impossible to meet.
 
+\todo{Adam found this hard to follow, check with others like Andres}
 Useless:
 In a dependently-typed proof assistant, if we can prove that $A$ is sound, i.e., that when it says ``yes'' the theorem is in fact true, then we can simply use reflection to create a proof by appeal to computation.
 This is not useful when what we are trying to do is describe how to identify a proof engine which gives adequate building blocks \emph{aside} from appeal to computation.

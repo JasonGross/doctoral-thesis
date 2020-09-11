@@ -148,6 +148,7 @@ An example: a tactic for proving conjunctions might, upon being asked to prove $
 \todo{Do I need to say more about LCF?}
 \todo{Do I need to say more about tactics?}
 
+\begin{comment}
 \todo{How should I summarize this into relevant paragraphs???}
 \begin{quote}
 Gérard Huet started working on automatic theorem proving in 1970, using LISP to implement the SAM prover for first-order logic with equality.
@@ -280,9 +281,11 @@ The domain of classical mathematics required restrictions to the logical languag
 \begin{flushright}
   --- Gérard Huet and Christine Paulin-Mohring, November 2003~\cite{CoqArtForward2013Huet}
 \end{flushright}
+\end{comment}
 
-
-\todo{a paragraph or two summarized from Coq'Art on Martin-Löf and Coq, and LEGO from email to Pollack}
+In the mid 1980s, Coq~\cite{coq}, the proof assistant which we focus most on in this thesis, was born from an integration of features and ideas from a number of the proof assistants we've discussed in this subsection.
+Notably, it was based on the Calculus of Constructions (CoC), a synthesis of Martin-L\"of's type theory\todo{cite} with dependent types and polymorphism, which grew out of Dana Scott's logic of computable functions\todo{cite} together with de Bruijn's work on Automath\todo{cite}~\cite{CoqArtForward2013Huet}.
+In the late 1980s, some problems were found with the way datatypes were encoded using functions, which lead to the introduction of inductive types, and an extension of CoC called the Calculus of Inductive Constructions (CIC)~\cite{CoqArtForward2013Huet}.
 
 Major accomplishments of verification in Coq~\cite{Coq} include the fully verified optimizing C compiler CompCert~\cite{Compcert}, the proof of the Four Color Theorem~\cite{gonthier2008formal}, and the complete formalization of the Odd Order Theorem, also known as the Feit--Thompson Theorem~\cite{gonthier2013machine}.
 This last development was the of about six years of work formalizing a proof that every finite group of odd order is solvable; the original proof, published in the early 1960s, is about 225 pages long.

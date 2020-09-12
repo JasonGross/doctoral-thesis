@@ -72,6 +72,7 @@ proposal: $(PROPOSAL_PDFS)
 thesis: $(THESIS_PDFS)
 
 umi-proquest-form-full: $(UMI_PDFS)
+umi-proquest-form-full.pdf: umi-proquest-form-adjusted.tex
 
 update-thesis::
 	echo '\\thesisdate{'"`date +'%B %-d, %Y'`}" > new-date.tex

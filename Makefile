@@ -14,12 +14,12 @@ READER_AGREEMENT_PDFS := \
 	jgross-reader-agreement-unsigned.pdf adamc-reader-agreement-unsigned.pdf nickolai-reader-agreement-unsigned.pdf saman-reader-agreement-unsigned.pdf
 MAIN_PROPOSAL_PDFS := jgross-thesis-proposal.pdf jgross-thesis-proposal-signed.pdf
 PROPOSAL_PDFS = $(MAIN_PROPOSAL_PDFS) $(READER_AGREEMENT_PDFS)
-UMI_PDFS = extra-title-abstract.pdf # umi-proquest-form-full.pdf
+UMI_PDFS = extra-title-abstract.pdf umi-proquest-form-adjusted.pdf umi-proquest-form-full.pdf
 THESIS_PDFS = jgross-thesis.pdf
 MAIN_TEXS = $(patsubst \include{%},%.tex,$(filter \include{%},$(shell cat appendix-files.tex main-files.tex jgross-thesis.tex)))
 THESIS_TEXS = packages.tex contents.tex mitthesis.cls abstract.tex cover.tex coverinfo.tex new-date.tex todo.tex main-files.tex appendix-files.tex $(MAIN_TEXS)
 PROPOSAL_TEXS = new-date-proposal.tex abstract-proposal.tex
-UMI_TEXS = umi-proquest-form-full.tex extra-title-abstract.tex
+UMI_TEXS = umi-proquest-form-full.tex umi-proquest-form-adjusted.tex extra-title-abstract.tex
 ALL_TEXS = $(THESIS_TEXS) $(PROPOSAL_TEXS) $(UMI_TEXS)
 TEXT_TEXS = $(filter-out packages.tex mitthesis.cls,$(ALL_TEXS))
 READER_AGREEMENT_SIGNED_PDFS := $(subst unsigned,signed,$(READER_AGREEMENT_PDFS))

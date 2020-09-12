@@ -116,6 +116,12 @@
 \input{abstract}
 \end{abstractpage}
 
+\makeatletter
+\newwrite\@abstractpagefile
+\immediate\openout\@abstractpagefile=abstract.endpage
+\immediate\write\@abstractpagefile{\detokenize{\def\abstractendpage}{\the\numexpr\value{truepage}-1\relax}}
+\makeatother
+
 % Additional copy: start a new page, and reset the page number.  This way,
 % the second copy of the abstract is not counted as separate pages.
 % Uncomment the next 6 lines if you need two copies of the abstract

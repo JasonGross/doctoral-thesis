@@ -283,7 +283,7 @@ The domain of classical mathematics required restrictions to the logical languag
 \end{flushright}
 \end{comment}
 
-In the mid 1980s, Coq~\cite{coq}, the proof assistant which we focus most on in this thesis, was born from an integration of features and ideas from a number of the proof assistants we've discussed in this subsection.
+In the mid 1980s, Coq~\cite{Coq}, the proof assistant which we focus most on in this thesis, was born from an integration of features and ideas from a number of the proof assistants we've discussed in this subsection.
 Notably, it was based on the Calculus of Constructions (CoC), a synthesis of Martin-L\"of's type theory\todo{cite} with dependent types and polymorphism, which grew out of Dana Scott's logic of computable functions\todo{cite} together with de Bruijn's work on Automath\todo{cite}~\cite{CoqArtForward2013Huet}.
 In the late 1980s, some problems were found with the way datatypes were encoded using functions, which lead to the introduction of inductive types, and an extension of CoC called the Calculus of Inductive Constructions (CIC)~\cite{CoqArtForward2013Huet}.
 
@@ -318,7 +318,7 @@ Other proof assistants include LF~\cite{pfenning1991logic,harper93,Logical2002Pf
 
 \section{Basic Design Choices}\label{sec:intro:proof-assistant-design-choices}
 Although the design-space of proof assistants is quite large, as we've touched on in \autoref{sec:intro:history}, there are only two main design decisions which we want to assume for the investigations of this thesis.
-The first is the use of dependent type theory as a basis for formal proofs, as is done in Automath~\cite{wiki:AutoMath,mathematical1970Bruijn,Survey1994deBruijn}, Coq~\cite{coq}, Agda~\cite{Dependently2009Norell}, Idris~\cite{Idris2013Brady}, Lean~\cite{Lean2015Moura}, Nuprl~\cite{nuprl}, Matita~\cite{Matita2011Asperti}, and others, rather than on some other logic, as is done in LCF~\cite{LCF2000Gordon,gordon1979edinburgh,gordon1978metalanguage}, Isabelle/HOL~\cite{LCF2019Paulson,Isabelle/Isar2002Wenzel,Isabelle,paulson1994isabelle}, HOL4~\cite{slind2008brief}, HOL Light~\cite{harrison1996hol}, LF~\cite{pfenning1991logic,harper93}, and Twelf~\cite{pfenning1999system}, among others.
+The first is the use of dependent type theory as a basis for formal proofs, as is done in Automath~\cite{wiki:AutoMath,mathematical1970Bruijn,Survey1994deBruijn}, Coq~\cite{Coq}, Agda~\cite{Dependently2009Norell}, Idris~\cite{Idris2013Brady}, Lean~\cite{Lean2015Moura}, Nuprl~\cite{nuprl}, Matita~\cite{Matita2011Asperti}, and others, rather than on some other logic, as is done in LCF~\cite{LCF2000Gordon,gordon1979edinburgh,gordon1978metalanguage}, Isabelle/HOL~\cite{LCF2019Paulson,Isabelle/Isar2002Wenzel,Isabelle,paulson1994isabelle}, HOL4~\cite{slind2008brief}, HOL Light~\cite{harrison1996hol}, LF~\cite{pfenning1991logic,harper93}, and Twelf~\cite{pfenning1999system}, among others.
 The second is the \emph{de Bruijn criterion}, mandating independent checking of proofs by a small trusted kernel~\cite{challenge2005Barendregt}.
 We have found that many of the performance bottlenecks are fundamentally a result of one or the other of these two design decisions.
 Readers are advised to consult \textcite[ch.~4]{ringer2020qed} for a more thorough mapping of the design axes.

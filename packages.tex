@@ -42,6 +42,7 @@
 \usepackage{textcomp}
 \usepackage{attachfile2}
 \usepackage{etoolbox}
+\usepackage{everypage}
 \usepackage{xpatch}
 \usepackage[
   maxbibnames=999,
@@ -254,6 +255,10 @@
 \usepgfplotslibrary{external}
 \tikzexternalize
 \tikzsetfigurename{\tikzexternalrealjob-\currfilebase-figure}
+
+\newcounter{truepage}
+\setcounter{truepage}{1}
+\AddEverypageHook{\stepcounter{truepage}}
 
 \hypersetup{raiselinks=false,colorlinks=false,linkcolor=black} % undo coqdoc stuff
 

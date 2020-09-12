@@ -1,5 +1,5 @@
-.PHONY: all proposal thesis update-thesis update-proposal print-main-contents download-packages todo
-all: proposal thesis
+.PHONY: all proposal thesis umi-proquest-form-full update-thesis update-proposal print-main-contents download-packages todo
+all: proposal thesis umi-proquest-form-full
 
 LATEXFLAGS?=--synctex=1 --shell-escape
 PDFLATEX?=lualatex
@@ -14,14 +14,16 @@ READER_AGREEMENT_PDFS := \
 	jgross-reader-agreement-unsigned.pdf adamc-reader-agreement-unsigned.pdf nickolai-reader-agreement-unsigned.pdf saman-reader-agreement-unsigned.pdf
 MAIN_PROPOSAL_PDFS := jgross-thesis-proposal.pdf jgross-thesis-proposal-signed.pdf
 PROPOSAL_PDFS = $(MAIN_PROPOSAL_PDFS) $(READER_AGREEMENT_PDFS)
+UMI_PDFS = extra-title-abstract.pdf # umi-proquest-form-full.pdf
 THESIS_PDFS = jgross-thesis.pdf
 MAIN_TEXS = $(patsubst \include{%},%.tex,$(filter \include{%},$(shell cat appendix-files.tex main-files.tex jgross-thesis.tex)))
 THESIS_TEXS = packages.tex contents.tex mitthesis.cls abstract.tex cover.tex new-date.tex todo.tex main-files.tex appendix-files.tex $(MAIN_TEXS)
 PROPOSAL_TEXS = new-date-proposal.tex abstract-proposal.tex
-ALL_TEXS = $(THESIS_TEXS) $(PROPOSAL_TEXS)
+UMI_TEXS = umi-proquest-form-full.tex extra-title-abstract.tex
+ALL_TEXS = $(THESIS_TEXS) $(PROPOSAL_TEXS) $(UMI_TEXS)
 TEXT_TEXS = $(filter-out packages.tex mitthesis.cls,$(ALL_TEXS))
 READER_AGREEMENT_SIGNED_PDFS := $(subst unsigned,signed,$(READER_AGREEMENT_PDFS))
-PDFS = $(PROPOSAL_PDFS) $(THESIS_PDFS)
+PDFS = $(PROPOSAL_PDFS) $(THESIS_PDFS) $(UMI_PDFS)
 DICTS = $(addprefix etc/dicts/,abbreviations.txt jargon.txt names.txt words.txt not-words.txt bibkeys.spl labels.spl)
 CUSTOM_DICT := etc/dicts/custom.spl
 
@@ -68,6 +70,8 @@ print-main-contents::
 proposal: $(PROPOSAL_PDFS)
 
 thesis: $(THESIS_PDFS)
+
+umi-proquest-form-full: $(UMI_PDFS)
 
 update-thesis::
 	echo '\\thesisdate{'"`date +'%B %-d, %Y'`}" > new-date.tex
@@ -286,6 +290,7 @@ include performance-experiments-8-9/Makefile.variables.kinds
 EXPERIMENTS_PERF_DATA_MD5 += $(addprefix performance-experiments-8-9/,$(addsuffix .txt.md5,$(subst _,-,$(ALL_KINDS))))
 
 $(THESIS_PDFS): $(REWRITING_PERF_DATA) $(REWRITING_PERF_DATA_MD5) $(EXPERIMENTS_PERF_DATA_MD5) rewriting/trust?.pdf
+$(UMI_PDFS): umi-proquest-form-filled.pdf jgross-thesis.pdf
 
 .PHONY: remake-rewriting-PerfData.mk
 remake-rewriting-PerfData.mk:
@@ -322,9 +327,9 @@ $(MAIN_PROPOSAL_PDFS) $(THESIS_PDFS) : %.pdf : %.tex
 	$(SHOW)"PDFLATEX (run 3)"
 	$(HIDE)$(PDFLATEX) $(LATEXFLAGS) $(OTHERFLAGS) $< || $(MAKE) print-errors
 
-$(READER_AGREEMENT_PDFS) : %.pdf : %.tex
+$(READER_AGREEMENT_PDFS) $(UMI_PDFS) : %.pdf : %.tex
 	$(SHOW)"PDFLATEX"
-	$(HIDE)$(PDFLATEX) $(LATEXFLAGS) $(OTHERFLAGS) $< || $(MAKE) print-errors
+	$(HIDE)$(PDFLATEX) $(LATEXFLAGS) $(OTHERFLAGS) $<
 
 .PHONY: rubber
 rubber:
@@ -358,7 +363,7 @@ clean:
 .PHONY: cleanall
 cleanall::
 	rm -f $(PDFS)
-	rm -rf *~ *\# .\#* *.atfi *.swp *.aux *.lof ./*.log *.lot *.fls *.out *.toc *.fmt *.fot *.cb *.cb2 .*.lb *.dvi *.xdv *-converted-to.* .pdf *.bbl *.bcf *.blg *-blx.aux *-blx.bib *.run.xml *.fdb_latexmk *.synctex *.synctex'(busy)' *.synctex.gz *.synctex.gz'(busy)' *.pdfsync *.alg *.loa acs-*.bib *.thm *.nav *.pre *.snm *.vrb *.soc *.cpt *.spl *.ent *.lox *.mf *.mp *.t[1-9] *.t[1-9][0-9] *.tfm *.end *.?end *.[1-9] *.[1-9][0-9] *.[1-9][0-9][0-9] *.[1-9]R *.[1-9][0-9]R *.[1-9][0-9][0-9]R *.eledsec[1-9] *.eledsec[1-9]R *.eledsec[1-9][0-9] *.eledsec[1-9][0-9]R *.eledsec[1-9][0-9][0-9] *.eledsec[1-9][0-9][0-9]R *.acn *.acr *.glg *.glo *.gls *.glsdefs *-gnuplottex-* *.gaux *.gtex *.4ct *.4tc *.idv *.lg *.trc *.xref *.brf *-concordance.tex *.tikz *-tikzDictionary *.lol *.idx *.ilg *.ind *.ist *.maf *.mlf *.mlt *.mtc[0-9]* *.slf[0-9]* *.slt[0-9]* *.stc[0-9]* _minted* *.pyg *.mw *.nlg *.nlo *.nls *.pax *.pdfpc *.sagetex.sage *.sagetex.py *.sagetex.scmd *.wrt *.sout *.sympy sympy-plots-for-*.tex/ *.upa *.upb *.pytxcode pythontex-files-*/ *.loe *.dpth *.md5 *.auxlock *.tdo *.lod *.xmpi *.xdy *.xyc *.ttt *.fff TSWLatexianTemp* *.bak *.sav .texpadtmp *.backup *~[0-9]* ./auto/* *.el *-tags.tex *.sta *.spl *.drv *.dtx *.ins *.bbx *.cbx *.lbx *.def *.cfg *.bst mathtools.sty mhsetup.sty mathtools.zip ./mathtools/ biblatex.sty biblatex.zip ./biblatex/ etoolbox.sty etoolbox.tex logreq.sty *.md5 ./todo.svg jgross-thesis*-figure*.dep *.pgf-plot.gnuplot *.pgf-plot.table *-parameters.dat [._]*.s[a-v][a-z] [._]*.sw[a-p] [._]s[a-v][a-z] [._]sw[a-p] *~ \#*\# ./.emacs.desktop ./.emacs.desktop.lock *.elc auto-save-list tramp .\#* *.pyc *.aux *.d *.glob *.vio *.vo *.vos *.vok CoqMakefile.conf Makefile.bak Makefile.coq Makefile.coq.conf Makefile.coq.bak Makefile-old.conf csdp.cache lia.cache nlia.cache nia.cache nra.cache .csdp.cache .lia.cache .nlia.cache .nia.cache .nra.cache *_SuperFast.v *_Fast.v *_Medium.v *_Slow.v *_VerySlow.v
+	rm -rf abstract.endpage *~ *\# .\#* *.atfi *.swp *.aux *.lof ./*.log *.lot *.fls *.out *.toc *.fmt *.fot *.cb *.cb2 .*.lb *.dvi *.xdv *-converted-to.* .pdf *.bbl *.bcf *.blg *-blx.aux *-blx.bib *.run.xml *.fdb_latexmk *.synctex *.synctex'(busy)' *.synctex.gz *.synctex.gz'(busy)' *.pdfsync *.alg *.loa acs-*.bib *.thm *.nav *.pre *.snm *.vrb *.soc *.cpt *.spl *.ent *.lox *.mf *.mp *.t[1-9] *.t[1-9][0-9] *.tfm *.end *.?end *.[1-9] *.[1-9][0-9] *.[1-9][0-9][0-9] *.[1-9]R *.[1-9][0-9]R *.[1-9][0-9][0-9]R *.eledsec[1-9] *.eledsec[1-9]R *.eledsec[1-9][0-9] *.eledsec[1-9][0-9]R *.eledsec[1-9][0-9][0-9] *.eledsec[1-9][0-9][0-9]R *.acn *.acr *.glg *.glo *.gls *.glsdefs *-gnuplottex-* *.gaux *.gtex *.4ct *.4tc *.idv *.lg *.trc *.xref *.brf *-concordance.tex *.tikz *-tikzDictionary *.lol *.idx *.ilg *.ind *.ist *.maf *.mlf *.mlt *.mtc[0-9]* *.slf[0-9]* *.slt[0-9]* *.stc[0-9]* _minted* *.pyg *.mw *.nlg *.nlo *.nls *.pax *.pdfpc *.sagetex.sage *.sagetex.py *.sagetex.scmd *.wrt *.sout *.sympy sympy-plots-for-*.tex/ *.upa *.upb *.pytxcode pythontex-files-*/ *.loe *.dpth *.md5 *.auxlock *.tdo *.lod *.xmpi *.xdy *.xyc *.ttt *.fff TSWLatexianTemp* *.bak *.sav .texpadtmp *.backup *~[0-9]* ./auto/* *.el *-tags.tex *.sta *.spl *.drv *.dtx *.ins *.bbx *.cbx *.lbx *.def *.cfg *.bst mathtools.sty mhsetup.sty mathtools.zip ./mathtools/ biblatex.sty biblatex.zip ./biblatex/ etoolbox.sty etoolbox.tex logreq.sty *.md5 ./todo.svg jgross-thesis*-figure*.dep *.pgf-plot.gnuplot *.pgf-plot.table *-parameters.dat [._]*.s[a-v][a-z] [._]*.sw[a-p] [._]s[a-v][a-z] [._]sw[a-p] *~ \#*\# ./.emacs.desktop ./.emacs.desktop.lock *.elc auto-save-list tramp .\#* *.pyc *.aux *.d *.glob *.vio *.vo *.vos *.vok CoqMakefile.conf Makefile.bak Makefile.coq Makefile.coq.conf Makefile.coq.bak Makefile-old.conf csdp.cache lia.cache nlia.cache nia.cache nra.cache .csdp.cache .lia.cache .nlia.cache .nia.cache .nra.cache *_SuperFast.v *_Fast.v *_Medium.v *_Slow.v *_VerySlow.v
 
 PROCESS_REFS:=sed 's,[/:+}'"'"'\."\$$= ],-,g' | tr '-' '\n' | grep -v '[0-9]' | grep -v '^$$' | sort | uniq
 etc/dicts/labels.spl: $(TEXT_TEXS) Makefile

@@ -1,0 +1,9 @@
+\RequirePackage{luatex85}
+\documentclass[twoside]{article}
+\usepackage{pdfpages}
+\input{abstract.endpage}
+\pagestyle{empty}
+\begin{document}
+\includepdf[pages={1-\abstractendpage}]{jgross-thesis}
+\cleardoublepage
+\end{document}

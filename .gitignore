@@ -277,6 +277,7 @@ jgross-thesis*-figure*.dep
 *.pgf-plot.gnuplot
 *.pgf-plot.table
 *-parameters.dat
+/abstract.endpage
 
 # vim
 [._]*.s[a-v][a-z]

@@ -3092,12 +3092,12 @@ So the best answer to the question ``is rigor just a ritual'' is to study rigor 
 @Electronic{Coq,
   author       = {{C}oq Development Team, The},
   date         = {2020-01},
-  organization = {{INRIA}},
   title        = {The {C}oq Proof Assistant},
-  doi          = {10.5281/zenodo.3744225},
   url          = {https://coq.inria.fr/},
+  organization = {{INRIA}},
   version      = {{8.11.0}},
   abstractnote = {Coq is a formal proof management system. It provides a formal language to write mathematical definitions, executable algorithms and theorems together with an environment for semi-interactive development of machine-checked proofs. Typical applications include the certification of properties of programming languages (e.g. the CompCert compiler certification project, or the Bedrock verified low-level programming library), the formalization of mathematics (e.g. the full formalization of the Feit-Thompson theorem or homotopy type theory) and teaching. The main changes brought by Coq version 8.11 are: Ltac2, a new tactic language for writing more robust larger scale tactics, with built-in support for datatypes and the multi-goal tactic monad. Primitive floats are integrated in terms and follow the binary64 format of the IEEE 754 standard, as specified in the Coq.Float.Floats library. Cleanups of the section mechanism, delayed proofs and further restrictions of template polymorphism to fix soundness issues related to universes. New unsafe flags to disable locally guard, positivity and universe checking. Reliance on these flags is always printed by Print Assumptions. Fixed bugs of Export and Import that can have a significant impact on user developments (common source of incompatibility!). New interactive development method based on vos interface files, allowing to work on a file without recompiling the proof parts of their dependencies. New Arguments annotation for bidirectional type inference configuration for reference (e.g. constants, inductive) applications. New refine attribute for Instance can be used instead of the removed Refine Instance Mode. Generalization of the under and over tactics of SSReflect to arbitrary relations. Revision of the Coq.Reals library, its axiomatisation and instances of the constructive and classical real numbers. Additionally, while the omega tactic is not yet deprecated in this version of Coq, it should soon be the case and we already recommend users to switch to lia in new proof scripts (see also the warning message in the corresponding chapter). The dev/doc/critical-bugs file documents the known critical bugs of Coq and affected releases. See the Changes in 8.11+beta1 section and following sections for the detailed list of changes, including potentially breaking changes marked with Changed. Coq's documentation is available at https://coq.github.io/doc/v8.11/api (documentation of the ML API), https://coq.github.io/doc/v8.11/refman (reference manual), and https://coq.github.io/doc/v8.11/stdlib (documentation of the standard library). Maxime D{\'{e}}n{\`{e}}s, Emilio Jes{\'{u}}s Gallego Arias, Ga{\"{e}}tan Gilbert, Michael Soegtrop and Th{\'{e}}o Zimmermann worked on maintaining and improving the continuous integration system and package building infrastructure. The OPAM repository for Coq packages has been maintained by Guillaume Claret, Karl Palmskog, Matthieu Sozeau and Enrico Tassi with contributions from many users. A list of packages is available at https://coq.inria.fr/opam/www/. The 61 contributors to this version are Michael D. Adams, Guillaume Allais, Helge Bahmann, Langston Barrett, Guillaume Bertholon, Fr{\'{e}}d{\'{e}}ric Besson, Simon Boulier, Michele Caci, Tej Chajed, Arthur Chargu{\'{e}}raud, Cyril Cohen, Fr{\'{e}}d{\'{e}}ric Dabrowski, Arthur Azevedo de Amorim, Maxime D{\'{e}}n{\`{e}}s, Nikita Eshkeev, Jim Fehrle, Emilio Jes{\'{u}}s Gallego Arias, Paolo G. Giarrusso, Ga{\"{e}}tan Gilbert, Georges Gonthier, Jason Gross, Samuel Gruetter, Arma{\"{e}}l Gu{\'{e}}neau, Hugo Herbelin, Florent Hivert, Jasper Hugunin, Shachar Itzhaky, Jan-Oliver Kaiser, Robbert Krebbers, Vincent Laporte, Olivier Laurent, Samuel Leli{\`{e}}vre, Nicholas Lewycky, Yishuai Li, Jose Fernando Lopez Fernandez, Andreas Lynge, Kenji Maillard, Erik Martin-Dorel, Guillaume Melquiond, Alexandre Moine, Oliver Nash, Wojciech Nawrocki, Antonio Nikishaev, Pierre-Marie P{\'{e}}drot, Cl{\'{e}}ment Pit-Claudel, Lars Rasmusson, Robert Rand, Talia Ringer, JP Rodi, Pierre Roux, Kazuhiko Sakaguchi, Vincent Semeria, Michael Soegtrop, Matthieu Sozeau, spanjel, Claude Stolze, Enrico Tassi, Laurent Th{\'{e}}ry, James R. Wilcox, Xia Li-yao, Th{\'{e}}o Zimmermann Many power users helped to improve the design of the new features via the issue and pull request system, the Coq development mailing list, the coq-club@inria.fr mailing list or the Discourse forum. It would be impossible to mention exhaustively the names of everybody who to some extent influenced the development. Version 8.11 is the sixth release of Coq developed on a time-based development cycle. Its development spanned 3 months from the release of Coq 8.10. Pierre-Marie P{\'{e}}drot is the release manager and maintainer of this release, assisted by Matthieu Sozeau. This release is the result of 2000+ commits and 300+ PRs merged, closing 75+ issues.},
+  doi          = {10.5281/zenodo.3744225},
   publisher    = {Zenodo},
 }
 
@@ -3214,6 +3214,55 @@ References
   abstract    = {We present a computable algorithm that assigns probabilities to every logical statement in a given formal language, and refines those probabilities over time. For instance, if the language is Peano arithmetic, it assigns probabilities to all arithmetical statements, including claims about the twin prime conjecture, the outputs of long-running computations, and its own probabilities. We show that our algorithm, an instance of what we call a logical inductor, satisfies a number of intuitive desiderata, including: (1) it learns to predict patterns of truth and falsehood in logical statements, often long before having the resources to evaluate the statements, so long as the patterns can be written down in polynomial time; (2) it learns to use appropriate statistical summaries to predict sequences of statements whose truth values appear pseudorandom; and (3) it learns to have accurate beliefs about its own current beliefs, in a manner that avoids the standard paradoxes of self-reference. For example, if a given computer program only ever produces outputs in a certain range, a logical inductor learns this fact in a timely manner; and if late digits in the decimal expansion of $\pi$ are difficult to predict, then a logical inductor learns to assign $\approx 10\%$ probability to "the $n$th digit of $\pi$ is a 7" for large $n$. Logical inductors also learn to trust their future beliefs more than their current beliefs, and their beliefs are coherent in the limit (whenever $\phi \implies \psi$, $\mathbb{P}_\infty(\phi) \le \mathbb{P}_\infty(\psi)$, and so on); and logical inductors strictly dominate the universal semimeasure in the limit. These properties and many others all follow from a single logical induction criterion, which is motivated by a series of stock trading analogies. Roughly speaking, each logical sentence $\phi$ is associated with a stock that is worth \$1 per share if [...]},
   file        = {:http\://arxiv.org/pdf/1609.03543v4:PDF},
   keywords    = {cs.AI, cs.LO, math.LO, math.PR},
+}
+
+@InCollection{Constructive1982MartinLoef,
+  author    = {Per Martin-Löf},
+  booktitle = {Logic, Methodology and Philosophy of Science VI},
+  date      = {1982},
+  title     = {Constructive Mathematics and Computer Programming},
+  doi       = {10.1016/S0049-237X(09)70189-2},
+  editor    = {L. Jonathan Cohen and Jerzy Łoś and Helmut Pfeiffer and Klaus-Peter Podewski},
+  pages     = {153--175},
+  publisher = {Elsevier},
+  series    = {Studies in Logic and the Foundations of Mathematics},
+  url       = {http://www.sciencedirect.com/science/article/pii/S0049237X09701892},
+  volume    = {104},
+  abstract  = {Publisher Summary
+This chapter discusses that relating constructive mathematics to computer programming seems to be beneficial. Among the benefits to be derived by constructive mathematics from its association with computer programming, one is that you see immediately why you cannot rely upon the law of excluded middle: its uninhibited use would lead to programs that one did not know how to execute. By choosing to program in a formal language for constructive mathematics, like the theory of types, one gets access to the conceptual apparatus of pure mathematics, neglecting those parts that depend critically on the law of excluded middle, whereas even the best high level programming languages so far designed are wholly inadequate as mathematical languages. The virtue of a machine code is that a program written in it can be directly read and executed by the machine. The distinction between low and high level programming languages is of course relative to the available hardware. It may well be possible to turn what is now regarded as a high level programming language into machine code by the invention of new hardware.},
+  issn      = {0049-237X},
+}
+
+@InCollection{Intuitionistic1975MartinLoef,
+  author    = {Per Martin-Löf},
+  booktitle = {Logic Colloquium '73},
+  date      = {1975},
+  title     = {An Intuitionistic Theory of Types: Predicative Part},
+  doi       = {10.1016/S0049-237X(08)71945-1},
+  editor    = {H.E. Rose and J.C. Shepherdson},
+  pages     = {73--118},
+  publisher = {Elsevier},
+  series    = {Studies in Logic and the Foundations of Mathematics},
+  url       = {http://www.sciencedirect.com/science/article/pii/S0049237X08719451},
+  volume    = {80},
+  abstract  = {Publisher Summary
+The theory of types is intended to be a full-scale system for formalizing intuitionistic mathematics as developed. The language of the theory is richer than the languages of traditional intuitionistic systems in permitting proofs to appear as parts of propositions so that the propositions of the theory can express properties of proofs. There are axioms for universes that link the generation of objects and types and play somewhat the same role for the present theory as does the replacement axiom for Zermelo–Fraenkel set theory. The present theory is based on a strongly impredicative axiom that there is a type of all types in symbols. This axiom has to be abandoned, however, after it has been shown to lead to a contraction. This chapter discusses Normalization theorem, which can be strengthened in two ways: it can be made to cover open terms and it can be proved that every reduction sequence starting from an arbitrary term leads to a unique normal term after a finite number of steps. The definition of the notion of convertibility and the proof that an arbitrary term is convertible can no longer be separated because the type symbols and the terms are generated simultaneously.},
+  issn      = {0049-237X},
+}
+
+@Article{Type1993Scott,
+  author       = {Dana S. Scott},
+  date         = {1993},
+  journaltitle = {Theoretical Computer Science},
+  title        = {A Type-Theoretical Alternative to {ISWIM}, {CUCH}, {OWHY}},
+  doi          = {10.1016/0304-3975(93)90095-B},
+  number       = {1{\&}2},
+  pages        = {411--440},
+  url          = {https://www.cs.cmu.edu/~kw/scans/scott93tcs.pdf},
+  volume       = {121},
+  bibsource    = {dblp computer science bibliography, https://dblp.org},
+  biburl       = {https://dblp.org/rec/journals/tcs/Scott93.bib},
+  timestamp    = {Wed, 14 Nov 2018 10:33:30 +0100},
 }
 
 @Comment{jabref-meta: databaseType:biblatex;}

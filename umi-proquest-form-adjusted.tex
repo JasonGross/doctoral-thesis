@@ -1,0 +1,639 @@
+\documentclass[9pt,twoside]{article}
+\usepackage{hyperref}
+\usepackage{eforms}
+\usepackage{ifthen}
+\usepackage[margin=1in,bottom=0.25in]{geometry}
+\usepackage{amsmath}
+\usepackage[shortlabels]{enumitem}
+\usepackage{multicol}
+\usepackage{fancyhdr}
+\pagestyle{fancy}
+\setlength{\parindent}{0in}
+\usepackage[normalem]{ulem}
+\newcommand{\categoryheading}[1]{{\fontsize{8}{11}\selectfont \textbf{\uline{#1}}}}
+\newcommand{\fieldheading}[1]{{\large \textbf{#1}}}
+
+\usepackage{pdfpages}
+\input{abstract.endpage}
+
+\provideboolean{includetitleabstract}
+
+\def\firstname{Jason}
+\def\middlename{S.}
+\def\lastname{Gross}
+\def\birthyear{1991}
+\def\presentaddressone{258 Prospect Street}
+\def\presentaddresstwo{Apt 1L}
+\def\presentaddressthree{Cambridge, MA, 02139}
+\def\futureaddressone{}
+\def\futureaddresstwo{}
+\def\futureaddressthree{}
+\def\futureaddresseffectivedate{}
+\def\homephone{}
+\def\businessphone{}
+\newboolean{phd}
+\setboolean{phd}{true}
+\newboolean{scd}
+\setboolean{scd}{false}
+\def\degreeyear{}
+\def\codeone{0984}
+\def\categoryone{Computer science}
+\def\codetwo{}
+\def\categorytwo{}
+\def\codethree{}
+\def\categorythree{}
+\def\keyworda{}
+\def\keywordb{}
+\def\keywordc{}
+\def\keywordd{}
+\def\keyworde{}
+
+\begin{document}
+\lhead{UNIVERSITY MICROFILMS INC. \\}
+\rhead{\bf {\huge D} \\ PAO}
+\cfoot{}
+\renewcommand{\headrulewidth}{0pt}
+\centerline{MIT Doctoral Dissertation}
+\centerline{PUBLISH ABSTRACT ONLY}
+\centerline{INFORMATION}
+\hfill $\overline{\phantom{Abstr}\text{Abstract No.}}$ \\
+\\
+\begin{minipage}{3in}
+\begin{center}
+\textbf{\emph{DO NOT WRITE IN THIS SPACE}}
+\end{center}
+Vol/Issue \hrulefill \\
+School Code \hrulefill \\
+Advisor \hrulefill \\
+\end{minipage}
+\begin{center}
+\textbf{\emph{PLEASE TYPE OR PRINT}}
+\end{center}
+\vspace*{0.5\baselineskip} \hrule \vspace*{\baselineskip}
+PERSONAL DATA \\
+\everyTextField{\BC{}}
+\newlength{\remaining}
+\newlength{\interwidth}
+\begin{enumerate}
+  \setlength{\remaining}{\dimexpr\linewidth-\itemindent\relax}%
+\item
+  \setlength{\interwidth}{\widthof{(last)(first)(middle)}}%
+  \setlength{\interwidth}{0.5\dimexpr\remaining - \interwidth - 1in\relax}%
+  Full name (as it appears on dissertation title page) \\
+  \parbox{\remaining}{%
+    \hspace*{0.5in}%
+    \textField[\V{\lastname}]{last name}{\widthof{(last)}+0.5\interwidth}{\baselineskip}
+    \textField[\V{\firstname}\Q{1}]{first name}{\widthof{(first)}+\interwidth}{\baselineskip}
+    \textField[\V{\middlename}\Q{1}]{middle name}{\widthof{(middle)}+0.5\interwidth+0.5in}{\baselineskip}
+    %\hspace*{0.5in}%
+    \setlength{\baselineskip}{0pt} \\
+    \hrule
+    \hspace*{0.5in}(last)\hfill (first) \hfill (middle)\hspace*{0.5in}
+  }
+\item
+  Year of birth (optional) \uline{\textField[\V{\birthyear}]{birth year}{0.8in}{\baselineskip}}
+\item
+  \setlength{\interwidth}{\widthof{Present mailing address }}%
+  Present mailing address \uline{\textField[\V{\presentaddressone}]{address line 1}{\remaining - \widthof{Present mailing address }}{\baselineskip}} \\
+  \uline{\hspace*{\interwidth}\textField[\V{\presentaddresstwo}]{address line 2}{\remaining - \widthof{Present mailing address }}{\baselineskip}} \\
+  \uline{\hspace*{\interwidth}\textField[\V{\presentaddressthree}]{address line 3}{\remaining - \widthof{Present mailing address }}{\baselineskip}} \\
+  \setlength{\interwidth}{\widthof{Future mailing address }}%
+  Future mailing address \uline{\textField[\V{\futureaddressone}]{future address line 1}{\remaining - \widthof{Future mailing address }}{\baselineskip}} \\
+  \uline{\hspace*{\interwidth}\textField[\V{\futureaddresstwo}]{future address line 2}{\remaining - \widthof{Future mailing address }}{\baselineskip}} \\
+  \uline{\hspace*{\interwidth}\textField[\V{\futureaddressthree}]{future address line 3}{\remaining - \widthof{Future mailing address }}{\baselineskip}} \\
+  Effective date of future mailing address \uline{\textField[\V{\futureaddresseffectivedate}]{future address date}{1in}{\baselineskip}} \\
+  Home telephone \uline{\textField[\V{\homephone}]{home phone}{1.5in}{\baselineskip}} \hspace*{0.5in}
+  Business telephone \uline{\textField[\V{\businessphone}]{business phone}{1.5in}{\baselineskip}}
+\end{enumerate}
+\vspace*{0.5\baselineskip} \hrule \vspace*{\baselineskip}
+DOCTORAL DEGREE DATA
+\begin{enumerate}[resume]
+\item
+  Full name of university conferring degree \hspace*{.25in} \underline{Massachusetts lnstitute of Technology}
+\item
+  \def\phdV{}%
+  \def\scdV{}%
+  \ifthenelse{\boolean{phd}}{\def\phdV{\V{Yes}}}{}%
+  \ifthenelse{\boolean{scd}}{\def\scdV{\V{Yes}}}{}%
+  Degree awarded (check one)
+  ~~\expandafter\checkBox\expandafter[\phdV]{degree phd}{\baselineskip}{\baselineskip}{Yes} Ph.D.
+  ~~\expandafter\checkBox\expandafter[\scdV]{degree scd}{\baselineskip}{\baselineskip}{Yes} Sc.D.
+\item
+  Year degree awarded \uline{\textField[\V{\degreeyear}]{degree year}{1in}{\baselineskip}}
+\end{enumerate}
+\vspace*{0.5\baselineskip} \hrule \vspace*{0.5\baselineskip}
+\def\keyworda{}
+\def\keywordb{}
+\def\keywordc{}
+\def\keywordd{}
+\def\keyworde{}
+\begin{enumerate}[resume]
+\item
+  IMPORTANT: Attach a copy of your dissertation title page and abstract to thls form. Please be certain that the
+  name of your dissertation supervisor is included on both.
+\item
+  Subject categories for your dissertation. Enter 4-digit code from 'Subject Categories' list found on the opposite side of
+  this form, and write in the category selected. You may enter two additional codes and categories on the lines provided. \\
+  Code \uline{\hspace*{0.125in}\textField[\V{\codeone}]{code 1}{.75in}{\baselineskip}\hspace*{0.125in}} \qquad
+  Category \uline{\hspace*{0.125in}\textField[\V{\categoryone}]{category 1}{2.375in}{\baselineskip}} \\
+  Code \uline{\hspace*{0.125in}\textField[\V{\codetwo}]{code 2}{.75in}{\baselineskip}\hspace*{0.125in}} \qquad
+  Category \uline{\hspace*{0.125in}\textField[\V{\categorytwo}]{category 2}{2.375in}{\baselineskip}} \\
+  Code \uline{\hspace*{0.125in}\textField[\V{\codethree}]{code 3}{.75in}{\baselineskip}\hspace*{0.125in}} \qquad
+  Category \uline{\hspace*{0.125in}\textField[\V{\categorythree}]{category 3}{2.375in}{\baselineskip}} \\ \\
+  (Optional) List up to five additional words from your dissertation not already found in \textbf{\emph{either}} your title \textbf{\emph{or}} abstract
+  which would be useful for database access. \\
+  \\
+  \begin{tabular}{lll}
+    a. \uline{\textField[\V{\keyworda}]{keyword 1}{1.7in}{\baselineskip}} &
+    b. \uline{\textField[\V{\keywordb}]{keyword 2}{1.7in}{\baselineskip}} &
+    c. \uline{\textField[\V{\keywordc}]{keyword 3}{1.7in}{\baselineskip}} \\ \\
+    d. \uline{\textField[\V{\keywordd}]{keyword 4}{1.7in}{\baselineskip}} &
+    e. \uline{\textField[\V{\keyworde}]{keyword 5}{1.7in}{\baselineskip}} &
+  \end{tabular}
+\end{enumerate}
+\ifthenelse{\boolean{includetitleabstract}}{%
+  \fancyhf{}
+  \cleardoublepage
+  \includepdf[pages={1-\abstractendpage}]{jgross-thesis}
+}{%
+\clearpage
+\newgeometry{margin=0.5in,bottom=.8in}
+\raggedcolumns
+\setlength{\parskip}{\baselineskip}
+\fancyhf{}
+\rfoot{\the\numexpr\thepage-1\relax}
+{\large\textbf{UMI-ProQuest Subject Categories}} \\
+The ProQuest Dissertations and Theses (PQDT) database and the ProQuest/UMI citation indices are arranged by subject categories. Please select
+the one category below that best describes your field of research or creative work. You may add one or two additional categories on your UMI-ProQuest
+form that will also be associated with your work as secondary subjects.
+
+\fieldheading{Arts, Business, Education, Humanities, and Social Sciences}
+
+\fontsize{8}{10}\selectfont
+\setlength\columnsep{.7in}
+\begin{multicols}{3}
+\categoryheading{AREA, ETHNIC, AND GENDER \\
+STUDIES} \\
+African American studies \hfill 0296 \\
+African studies \hfill 0293 \\
+American studies \hfill 0323 \\
+Asian American studies \hfill 0343 \\
+Asian studies \hfill 0342 \\
+Baltic studies \hfill 0361 \\
+Black studies \hfill 0325 \\
+Canadian studies \hfill 0385 \\
+Caribbean studies \hfill 0432 \\
+Classical studies \hfill 0434 \\
+East European studies \hfill 0437 \\
+Ethnic studies \hfill 0631 \\
+European studies \hfill 0440 \\
+French Canadian culture \hfill 0482 \\
+Gender studies \hfill 0733 \\
+GLBT studies \hfill 0492 \\
+Hispanic American studies \hfill 0737 \\
+Holocaust studies \hfill 0507 \\
+Islamic culture \hfill 0512 \\
+Judaic studies \hfill 0751 \\
+Latin American studies \hfill 0550 \\
+Middle Eastern studies \hfill 0555 \\
+Native American studies \hfill 0740 \\
+Near Eastern studies \hfill 0559 \\
+North African studies \hfill 0560 \\
+Pacific Rim studies \hfill 0561 \\
+Regional studies \hfill 0604 \\
+Scandinavian studies \hfill 0613 \\
+Slavic studies \hfill 0614 \\
+South African studies \hfill 0654 \\
+South Asian studies \hfill 0638 \\
+Sub Saharan Africa studies \hfill 0639 \\
+Women's studies \hfill 0453 \\
+Accounting \hfill 0272 \\
+\columnbreak \\
+\categoryheading{BUSINESS} \\
+Arts management \hfill 0424 \\
+Banking \hfill 0770 \\
+Business \hfill 0310 \\
+Entrepreneurship \hfill 0429 \\
+Finance \hfill 0508 \\
+Management \hfill 0454 \\
+Marketing \hfill 0338 \\
+Sports management \hfill 0430 \\
+Communication \hfill 0459
+
+\categoryheading{COMMUNICATIONS AND \\
+INFORMATION SCIENCES} \\
+Information science \hfill 0723 \\
+Journalism \hfill 0391 \\
+Library science \hfill 0399 \\
+Mass communication \hfill 0708 \\
+Technical communication \hfill 0643 \\
+Web studies \hfill 0646 \\
+Art criticism \hfill 0365
+
+\categoryheading{FINE AND PERFORMING ARTS} \\
+Art history \hfill 0377 \\
+Cinematography \hfill 0435 \\
+Dance \hfill 0378 \\
+Design \hfill 0389 \\
+Film studies \hfill 0900 \\
+Fine arts \hfill 0357 \\
+Music \hfill 0413 \\
+Performing arts \hfill 0641 \\
+Theater \hfill 0465 \\
+Theater history \hfill 0644 \\
+Adult education \hfill 0516 \\
+\columnbreak \\
+\categoryheading{EDUCATION} \\
+Art education \hfill 0273 \\
+Bilingual education \hfill 0282 \\
+Business education \hfill 0688 \\
+Community college education \hfill 0275 \\
+Continuing education \hfill 0651 \\
+Curriculum development \hfill 0727 \\
+Early childhood education \hfill 0518 \\
+Education \hfill 0515 \\
+Education finance \hfill 0277 \\
+Education policy \hfill 0458 \\
+Educational administration \hfill 0514 \\
+Educational evaluation \hfill 0443 \\
+Educational leadership \hfill 0449 \\
+Educational psychology \hfill 0525 \\
+Educational technology \hfill 0710 \\
+Educational tests \& measurements \hfill 0288 \\
+Elementary education \hfill 0524 \\
+English as a second language \hfill 0441 \\
+Foreign language instruction \hfill 0444 \\
+Gifted education \hfill 0445 \\
+Health education \hfill 0680 \\
+Higher education \hfill 0745 \\
+Higher education administration \hfill 0446 \\
+History of education \hfill 0520 \\
+Home economics education \hfill 0278 \\
+Industrial arts education \hfill 0521 \\
+Instructional design \hfill 0447 \\
+Language arts \hfill 0279 \\
+Mathematics education \hfill 0280 \\
+Middle school education \hfill 0450 \\
+Multicultural education \hfill 0455 \\
+Music education \hfill 0522 \\
+Pedagogy \hfill 0456 \\
+Performing arts education \hfill 0457 \\
+Philosophy of education \hfill 0998 \\
+Physical education \hfill 0523 \\
+Reading instruction \hfill 0535 \\
+Religious education \hfill 0527 \\
+School counseling \hfill 0519 \\
+Science education \hfill 0714 \\
+Secondary education \hfill 0533 \\
+Social sciences education \hfill 0534 \\
+Sociology of education \hfill 0340 \\
+Special education \hfill 0529 \\
+Teacher education \hfill 0530 \\
+Vocational education \hfill 0747
+\clearpage
+
+\textbf{HUMANITIES} \\
+\\
+\categoryheading{HISTORY} \\
+African history \hfill 0331 \\
+American history \hfill 0337 \\
+Ancient history \hfill 0579 \\
+Asian history \hfill 0332 \\
+Black history \hfill 0328 \\
+Canadian history \hfill 0334 \\
+European history \hfill 0335 \\
+History \hfill 0578 \\
+History of Oceania \hfill 0504 \\
+History of science \hfill 0585 \\
+Latin American history \hfill 0336 \\
+Medieval history \hfill 0581 \\
+Middle Eastern history \hfill 0333 \\
+Military history \hfill 0772 \\
+Modern history \hfill 0582 \\
+Russian history \hfill 0724 \\
+World history \hfill 0506 \\
+African literature \hfill 0316
+
+\categoryheading{LANGUAGE \& LITERATURE} \\
+American literature \hfill 0591 \\
+Ancient languages \hfill 0289 \\
+Asian literature \hfill 0305 \\
+British and Irish literature \hfill 0593 \\
+Canadian literature \hfill 0352 \\
+Caribbean literature \hfill 0360 \\
+Classical literature \hfill 0294 \\
+Comparative literature \hfill 0295 \\
+English literature \hfill 0593 \\
+French Canadian literature \hfill 0355 \\
+Germanic literature \hfill 0311 \\
+Icelandic \& Scandinavian literature \hfill 0362 \\
+Language \hfill 0679 \\
+Latin American literature \hfill 0312 \\
+Linguistics \hfill 0290 \\
+Literature \hfill 0401 \\
+Literature of Oceania \hfill 0356 \\
+Medieval literature \hfill 0297 \\
+Middle Eastern literature \hfill 0315 \\
+Modern language \hfill 0291 \\
+Modern literature \hfill 0298 \\
+Rhetoric \hfill 0681 \\
+Romance literature \hfill 0313 \\
+Slavic literature \hfill 0314 \\
+Aesthetics \hfill 0650
+
+\categoryheading{PHILOSOPHY AND RELIGION} \\
+Biblical studies \hfill 0321 \\
+Canon law \hfill 0375 \\
+Clerical studies \hfill 0319 \\
+Comparative religion \hfill 0618 \\
+Divinity \hfill 0376 \\
+Epistemology \hfill 0393 \\
+Ethics \hfill 0394 \\
+Logic \hfill 0395 \\
+Metaphysics \hfill 0396 \\
+Pastoral counseling \hfill 0397 \\
+Philosophy \hfill 0422 \\
+Philosophy of Religion \hfill 0322 \\
+Philosophy of science \hfill 0402 \\
+Religion \hfill 0318 \\
+Religious history \hfill 0320 \\
+Spirituality \hfill 0647 \\
+Theology \hfill 0469 \\
+Alternative dispute resolution \hfill 0649 \\
+\columnbreak \\
+\categoryheading{LAW AND LEGAL STUDIES} \\
+Intellectual property \hfill 0513 \\
+International law \hfill 0616 \\
+Law \hfill 0398 \\
+Patent law \hfill 0562 \\
+Archaeology \hfill 0324
+
+\categoryheading{SOCIAL SCIENCES} \\
+Area planning and development \hfill 0341 \\
+Criminology \hfill 0627 \\
+Cultural anthropology \hfill 0326 \\
+Demography \hfill 0938 \\
+Economic history \hfill 0509 \\
+Economic theory \hfill 0511 \\
+Economics \hfill 0501 \\
+Economics, Commerce-Business \hfill 0505 \\
+Economics, Labor \hfill 0510 \\
+Folklore \hfill 0358 \\
+Forensic anthropology \hfill 0339 \\
+Geography \hfill 0366 \\
+Individual \& family studies \hfill 0628 \\
+International relations \hfill 0601 \\
+Labor relations \hfill 0629 \\
+Military studies \hfill 0750 \\
+Organization theory \hfill 0635 \\
+Organizational behavior \hfill 0703 \\
+Peace studies \hfill 0563 \\
+Physical anthropology \hfill 0327 \\
+Political Science \hfill 0615 \\
+Public administration \hfill 0617 \\
+Public policy \hfill 0630 \\
+Recreation and tourism \hfill 0814 \\
+Social research \hfill 0344 \\
+Social structure \hfill 0700 \\
+Social work \hfill 0452 \\
+Sociolinguistics \hfill 0636 \\
+Sociology \hfill 0626 \\
+Transportation planning \hfill 0709 \\
+Urban planning \hfill 0999 \\
+Alternative energy \hfill 0363 \\
+\columnbreak \\
+\categoryheading{INTERDISCIPLINARY} \\
+Biographies \hfill 0304 \\
+Climate change \hfill 0404 \\
+Cultural resources management \hfill 0436 \\
+Energy \hfill 0791 \\
+Food science \hfill 0359 \\
+Home economics \hfill 0386 \\
+Information technology \hfill 0489 \\
+Multimedia \hfill 0558 \\
+Museum studies \hfill 0730 \\
+Sustainability \hfill 0640 \\
+Textile research \hfill 0994 \\
+Wood sciences \hfill 0746 \\
+\end{multicols}
+\clearpage
+\fieldheading{Behavioral, Natural, and Physical Sciences}
+\begin{multicols}{3}
+\categoryheading{AGRICULTURE} \\
+Agriculture \hfill 0473 \\
+Agronomy \hfill 0285 \\
+Animal diseases \hfill 0476 \\
+Animal sciences \hfill 0475 \\
+Fisheries and aquatic sciences \hfill 0792 \\
+Forestry \hfill 0478 \\
+Horticulture \hfill 0471 \\
+Plant pathology \hfill 0480 \\
+Plant sciences \hfill 0479 \\
+Range management \hfill 0777 \\
+Soil sciences \hfill 0481 \\
+Urban forestry \hfill 0281 \\
+Wildlife management \hfill 0286 \\
+Architecture \hfill 0729
+
+\categoryheading{ARCHITECTURE} \\
+Architectural engineering \hfill 0462 \\
+Landscape architecture \hfill 0390 \\
+Animal behavior \hfill 0602
+
+\categoryheading{BEHAVIORAL SCIENCES} \\
+Behavioral sciences \hfill 0384 \\
+Clinical psychology \hfill 0622 \\
+Cognitive psychology \hfill 0633 \\
+Counseling psychology \hfill 0603 \\
+Developmental psychology \hfill 0620 \\
+Experimental psychology \hfill 0623 \\
+Occupational psychology \hfill 0624 \\
+Personality psychology \hfill 0625 \\
+Physiological psychology \hfill 0989 \\
+Psychobiology \hfill 0349 \\
+Psychology \hfill 0621 \\
+Quantitative psychology and \\
+psychometrics \hfill 0632 \\
+Social psychology \hfill 0451 \\
+Biochemistry \hfill 0487
+
+\categoryheading{BIOLOGICAL SCIENCES} \\
+Bioinformatics \hfill 0715 \\
+Biology \hfill 0306 \\
+Biomechanics \hfill 0648 \\
+Biophysics \hfill 0786 \\
+Biostatistics \hfill 0308 \\
+Cellular biology \hfill 0379 \\
+Developmental biology \hfill 0758 \\
+Endocrinology \hfill 0409 \\
+Entomology \hfill 0353 \\
+Evolution \& development \hfill 0412 \\
+Genetics \hfill 0369 \\
+Histology \hfill 0414 \\
+Limnology \hfill 0793 \\
+Microbiology \hfill 0410 \\
+Molecular biology \hfill 0307 \\
+Morphology \hfill 0287 \\
+Neurosciences \hfill 0317 \\
+Parasitology \hfill 0718 \\
+Physiology \hfill 0719 \\
+Plant biology \hfill 0309 \\
+Systematic biology \hfill 0423 \\
+Virology \hfill 0720 \\
+Zoology \hfill 0472 \\
+Ecology \hfill 0329 \\
+\columnbreak \\
+\categoryheading{ECOSYSTEM SCIENCES} \\
+Macroecology \hfill 0420 \\
+Paleoecology \hfill 0426 \\
+Aerospace engineering \hfill 0538
+
+\categoryheading{ENGINEERING} \\
+Artificial intelligence \hfill 0800 \\
+Automotive engineering \hfill 0540 \\
+Biomedical engineering \hfill 0541 \\
+Chemical engineering \hfill 0542 \\
+Civil engineering \hfill 0543 \\
+Computer engineering \hfill 0464 \\
+Computer science \hfill 0984 \\
+Electrical engineering \hfill 0544 \\
+Engineering \hfill 0537 \\
+Geological engineering \hfill 0466 \\
+Geophysical engineering \hfill 0467 \\
+Geotechnology \hfill 0428 \\
+Industrial engineering \hfill 0546 \\
+Mechanical engineering \hfill 0548 \\
+Mining engineering \hfill 0551 \\
+Naval engineering \hfill 0468 \\
+Nanotechnology \hfill 0652 \\
+Nuclear engineering \hfill 0552 \\
+Ocean engineering \hfill 0547 \\
+Operations research \hfill 0796 \\
+Packaging \hfill 0549 \\
+Petroleum engineering \hfill 0765 \\
+Plastics \hfill 0795 \\
+Robotics \hfill 0771 \\
+System science \hfill 0790 \\
+Conservation biology \hfill 0408
+
+\categoryheading{ENVIRONMENTAL SCIENCES} \\
+Environmental economics \hfill 0438 \\
+Environmental education \hfill 0442 \\
+Environmental engineering \hfill 0775 \\
+Environmental geology \hfill 0407 \\
+Environmental health \hfill 0470 \\
+Environmental justice \hfill 0619 \\
+Environmental law \hfill 0439 \\
+Environmental management \hfill 0474 \\
+Environmental philosophy \hfill 0392 \\
+Environmental science \hfill 0768 \\
+Environmental studies \hfill 0477 \\
+Land use planning \hfill 0536 \\
+Natural resource management \hfill 0528 \\
+Water resources management \hfill 0595 \\
+Wildlife conservation \hfill 0284 \\
+Aeronomy \hfill 0367 \\
+\columnbreak \\
+\categoryheading{GEOSCIENCES} \\
+Atmospheric chemistry \hfill 0371 \\
+Atmospheric sciences \hfill 0725 \\
+Biogeochemistry \hfill 0425 \\
+Biological oceanography \hfill 0416 \\
+Chemical oceanography \hfill 0403 \\
+Continental dynamics \hfill 0406 \\
+Geobiology \hfill 0483 \\
+Geochemistry \hfill 0996 \\
+Geographic information science
+and geodesy \hfill 0370 \\
+Geology \hfill 0372 \\
+Geomorphology \hfill 0484 \\
+Geophysics \hfill 0373 \\
+Hydrologic sciences \hfill 0388 \\
+Marine geology \hfill 0556 \\
+Meteorology \hfill 0557 \\
+Mineralogy \hfill 0411 \\
+Paleoclimate science \hfill 0653 \\
+Paleontology \hfill 0418 \\
+Petroleum geology \hfill 0583 \\
+Petrology \hfill 0584 \\
+Physical geography \hfill 0368 \\
+Physical oceanography \hfill 0415 \\
+Planetology \hfill 0590 \\
+Plate tectonics \hfill 0592 \\
+Remote sensing \hfill 0799 \\
+Sedimentary geology \hfill 0594 \\
+Aging \hfill 0493
+
+\categoryheading{HEALTH AND MEDICAL \\
+SCIENCES} \\
+Alternative medicine \hfill 0496 \\
+Audiology \hfill 0300 \\
+Dentistry \hfill 0567 \\
+Epidemiology \hfill 0766 \\
+Gerontology \hfill 0351 \\
+Health care management \hfill 0769 \\
+Health sciences \hfill 0566 \\
+Immunology \hfill 0982 \\
+Kinesiology \hfill 0575 \\
+Medical ethics \hfill 0497 \\
+Medical imaging and radiology \hfill 0574 \\
+Medicine \hfill 0564 \\
+Mental health \hfill 0347 \\
+Nursing \hfill 0569 \\
+Nutrition \hfill 0570 \\
+Obstetrics and gynecology \hfill 0380 \\
+Occupational health \hfill 0354 \\
+Occupational therapy \hfill 0498 \\
+Oncology \hfill 0992 \\
+Ophthalmology \hfill 0381 \\
+Osteopathic medicine \hfill 0499 \\
+Pathology \hfill 0571 \\
+Pharmaceutical sciences \hfill 0572 \\
+Pharmacology \hfill 0419 \\
+Physical therapy \hfill 0382 \\
+Public health \hfill 0573 \\
+Public health occupations
+education \hfill 0500 \\
+Speech therapy \hfill 0460 \\
+Surgery \hfill 0576 \\
+Toxicology \hfill 0383 \\
+Veterinary medicine \hfill 0778 \\
+\clearpage
+\categoryheading{MATHEMATICAL AND \\
+PHYSICAL SCIENCES} \\
+Acoustics \hfill 0986 \\
+Analytical chemistry \hfill 0486 \\
+Applied mathematics \hfill 0364 \\
+Astronomy \hfill 0606 \\
+Astrophysics \hfill 0596 \\
+Atomic physics \hfill 0748 \\
+Chemistry \hfill 0485 \\
+Condensed matter physics \hfill 0611 \\
+Electromagnetics \hfill 0607 \\
+High temperature physics \hfill 0597 \\
+Inorganic chemistry \hfill 0488 \\
+Low temperature physics \hfill 0598 \\
+Materials science \hfill 0794 \\
+Mathematics \hfill 0405 \\
+Mechanics \hfill 0346 \\
+Molecular chemistry \hfill 0431 \\
+Molecular physics \hfill 0609 \\
+Nanoscience \hfill 0565 \\
+Nuclear chemistry \hfill 0738 \\
+Nuclear physics \hfill 0756 \\
+Optics \hfill 0752 \\
+Organic chemistry \hfill 0490 \\
+Particle physics \hfill 0798 \\
+Physical chemistry \hfill 0494 \\
+Physics \hfill 0605 \\
+Plasma physics \hfill 0759 \\
+Polymer chemistry \hfill 0495 \\
+Quantum physics \hfill 0599 \\
+Statistics \hfill 0463 \\
+Theoretical mathematics \hfill 0642 \\
+Theoretical physics \hfill 0753 \\
+\columnbreak \\
+\columnbreak \\
+\end{multicols}
+}
+\end{document}

@@ -2,7 +2,7 @@
 \usepackage{amsmath}
 \usepackage{amssymb}
 \usepackage{amsthm}
-\usepackage[pdfusetitle]{hyperref}
+\usepackage{hyperref}
 \usepackage{eforms}
 \usepackage{xargs}
 \usepackage{tikz}
@@ -18,10 +18,11 @@
 \usepackage{appendix}
 \usepackage{minted}
 \usepackage{currfile}
-\usepackage[color]{coqdoc}
 \usepackage{xparse}
 \usepackage{xcolor}
 \usepackage{xstring}
+\usepackage[color]{coqdoc}
+\hypersetup{raiselinks=false,colorlinks=false,linkcolor=black,pdfusetitle=true} % undo coqdoc stuff
 \usepackage{bussproofs}
 \usepackage{graphicx}
 \usepackage{listings}
@@ -259,8 +260,6 @@
 \newcounter{truepage}
 \setcounter{truepage}{1}
 \AddEverypageHook{\stepcounter{truepage}}
-
-\hypersetup{raiselinks=false,colorlinks=false,linkcolor=black} % undo coqdoc stuff
 
 % Minted red box around greek characters - https://tex.stackexchange.com/a/343506/2066
 \usemintedstyle{bw}
@@ -794,5 +793,26 @@
 \makeatother
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+% According to https://libraries.mit.edu/distinctive-collections/thesis-specs/,
+% Abstracts should be no longer than 350 words, longer abstracts will be edited by ProQuest
+
+\def\maxabstractwordcount{350}
+
+\begingroup
+\lccode`\~=`\ %
+\lowercase{%
+  \gdef\wordcounting{\setcounter{word}{0}%
+    \catcode`~=\active
+    \def~{\space\stepcounter{word}}}}%
+\endgroup
+\newcounter{word}
+\appto{\abstract}{\bgroup\wordcounting}
+\preto{\endabstract}{\stepcounter{word}%
+  \xdef\abstractwordcount{\arabic{word}}\egroup%
+  \ifthenelse{\abstractwordcount>\maxabstractwordcount}{%
+    \etodo{Shorten the abstract; currently using about \abstractwordcount\space words of \maxabstractwordcount}%
+  }{}%
+}
 
 \input{todo}

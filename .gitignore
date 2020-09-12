@@ -337,3 +337,7 @@ nra.cache
 /insdljs.sty
 /taborder.sty
 /epdftex.def
+
+# non-generated pdfs
+!/umi-proquest-form.pdf
+!/umi-proquest-form-filled.pdf

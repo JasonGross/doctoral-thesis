@@ -1,4 +1,4 @@
-<svg xmlns="http://www.w3.org/2000/svg" width="41em" height="2057em"><text x="0" y="0">
+<svg xmlns="http://www.w3.org/2000/svg" width="41em" height="2062em"><text x="0" y="0">
 <tspan x="0" dy="1.2em">TODO: Is the ``department committee chairman&apos;&apos; still Leslie A. Kolodziejski? </tspan>
 <tspan x="0" dy="1.2em">&#160;&#160;in file coverinfo.tex on input line 36.</tspan>
 <tspan x="0" dy="1.2em">TODO: make sure author and title show up in pdf info in file coverinfo.tex on </tspan>
@@ -134,7 +134,7 @@
 <tspan x="0" dy="1.2em">&#160;&#160;line 148.</tspan>
 <tspan x="0" dy="1.2em">TODO: Do I need to say more about tactics? in file chap1-introduction.tex on </tspan>
 <tspan x="0" dy="1.2em">&#160;&#160;input line 149.</tspan>
-<tspan x="0" dy="1.2em">TODO: cite in file chap1-introduction.tex on input line 287.</tspan>
+<tspan x="0" dy="1.2em">TODO: Type1993Scott in file chap1-introduction.tex on input line 287.</tspan>
 <tspan x="0" dy="1.2em">TODO: Should I mention the following? ``Computer-verified proofs of versions </tspan>
 <tspan x="0" dy="1.2em">&#160;&#160;of the first incompleteness theorem were announced [...] by Russell O&apos;Connor in </tspan>
 <tspan x="0" dy="1.2em">&#160;&#160;2003 using Coq (O&apos;Connor 2005)&apos;&apos; \url </tspan>
@@ -1615,6 +1615,11 @@
 <tspan x="0" dy="1.2em">&#160;&#160;eprint: []$\remove@tlig https : / / math . stackexchange .</tspan>
 <tspan x="0" dy="1.2em"> []</tspan>
 <tspan x="0" dy="1.2em">[240]</tspan>
+<tspan x="0" dy="1.2em">Overfull \hbox (9.00769pt too wide) in paragraph at lines 9--9</tspan>
+<tspan x="0" dy="1.2em">\TU/lmr/m/n/12 L. Jonathan Co-hen, Jerzy M-EM-^AoM-EM-^[, Hel-mut Pfeif-fer, and </tspan>
+<tspan x="0" dy="1.2em">&#160;&#160;Klaus-Peter Podewski.</tspan>
+<tspan x="0" dy="1.2em"> []</tspan>
+<tspan x="0" dy="1.2em">[241]</tspan>
 <tspan x="0" dy="1.2em">Overfull \hbox (1.93922pt too wide) in paragraph at lines 9--9</tspan>
 <tspan x="0" dy="1.2em">\TU/lmr/m/it/12 Cal-culi and Ap-pli-ca-tions\TU/lmr/m/n/12 . Vol. 2044. </tspan>
 <tspan x="0" dy="1.2em">&#160;&#160;TLCAM-bM-^@M-^Y01. Springer. KrakM-CM-3w, Poland:</tspan>
@@ -1623,7 +1628,6 @@
 <tspan x="0" dy="1.2em">\TU/lmr/m/n/12 Au-to-mated Rea-son-ing Se-ries. Springer Nether-lands, 2007. </tspan>
 <tspan x="0" dy="1.2em">&#160;&#160;\TU/lmr/m/sc/12 isbn\TU/lmr/m/n/12 : 9780585336541.</tspan>
 <tspan x="0" dy="1.2em"> []</tspan>
-<tspan x="0" dy="1.2em">[241]</tspan>
 <tspan x="0" dy="1.2em">Overfull \hbox (2.48773pt too wide) in paragraph at lines 9--9</tspan>
 <tspan x="0" dy="1.2em">[]\TU/lmr/m/n/12 Per Martin-LM-CM-6f and Gio-vanni Sam-bin. \TU/lmr/m/it/12 </tspan>
 <tspan x="0" dy="1.2em">&#160;&#160;In-tu-ition-is-tic Type The-ory\TU/lmr/m/n/12 . Vol. 17.</tspan>
@@ -1650,28 +1654,28 @@
 <tspan x="0" dy="1.2em">[]$\remove@tlig http : / / users . ece . utexas . edu / ~gligoric / papers / </tspan>
 <tspan x="0" dy="1.2em">&#160;&#160;PalmskogETAL18piCoq .</tspan>
 <tspan x="0" dy="1.2em"> []</tspan>
+<tspan x="0" dy="1.2em">[243]</tspan>
 <tspan x="0" dy="1.2em">Overfull \hbox (45.07158pt too wide) in paragraph at lines 9--9</tspan>
 <tspan x="0" dy="1.2em">\remove@tlig github . com / coq / coq / commit / </tspan>
 <tspan x="0" dy="1.2em">&#160;&#160;87f9a317b020554abef358aec614dad1fdc0bd98$[]\TU/lmr/m/n/12 . </tspan>
 <tspan x="0" dy="1.2em"> []</tspan>
-<tspan x="0" dy="1.2em">[243</tspan>
-<tspan x="0" dy="1.2em">]</tspan>
 <tspan x="0" dy="1.2em">Overfull \hbox (3.89804pt too wide) in paragraph at lines 9--9</tspan>
 <tspan x="0" dy="1.2em">\TU/lmr/m/it/12 ump-kin/-cat-e-gories\TU/lmr/m/n/12 . \TU/lmr/m/sc/12 </tspan>
 <tspan x="0" dy="1.2em">&#160;&#160;url\TU/lmr/m/n/12 : []$\remove@tlig https : / / github . com / copumpkin / </tspan>
 <tspan x="0" dy="1.2em">&#160;&#160;categories$[]\TU/lmr/m/n/12 . </tspan>
 <tspan x="0" dy="1.2em"> []</tspan>
+<tspan x="0" dy="1.2em">[244</tspan>
+<tspan x="0" dy="1.2em">]</tspan>
 <tspan x="0" dy="1.2em">Overfull \hbox (6.33395pt too wide) in paragraph at lines 9--9</tspan>
 <tspan x="0" dy="1.2em">[]$\remove@tlig 10 . 1016 / S0890 - 5401(03 ) 00138 - X$[]\TU/lmr/m/n/12 . </tspan>
 <tspan x="0" dy="1.2em">&#160;&#160;\TU/lmr/m/sc/12 url\TU/lmr/m/n/12 : []$\remove@tlig https : / / www . </tspan>
 <tspan x="0" dy="1.2em">&#160;&#160;sciencedirect .</tspan>
 <tspan x="0" dy="1.2em"> []</tspan>
-<tspan x="0" dy="1.2em">[244]</tspan>
 <tspan x="0" dy="1.2em">Overfull \hbox (14.2076pt too wide) in paragraph at lines 9--9</tspan>
 <tspan x="0" dy="1.2em">\remove@tlig stanford . edu / archives / fall2020 / entries / goedel - </tspan>
 <tspan x="0" dy="1.2em">&#160;&#160;incompleteness/$[]\TU/lmr/m/n/12 . </tspan>
 <tspan x="0" dy="1.2em"> []</tspan>
-<tspan x="0" dy="1.2em">[245]</tspan>
+<tspan x="0" dy="1.2em">[245] [246]</tspan>
 <tspan x="0" dy="1.2em">Overfull \hbox (16.31593pt too wide) in paragraph at lines 9--9</tspan>
 <tspan x="0" dy="1.2em">\TU/lmr/m/n/12 Ar-naud Spi-wack, Clau-dio Sac-er-doti Coen, Chris-tine Paulin, </tspan>
 <tspan x="0" dy="1.2em">&#160;&#160;Olivier Desmet-</tspan>
@@ -1684,7 +1688,6 @@
 <tspan x="0" dy="1.2em">\TU/lmr/m/n/12 LoM-CM-/c Pot-tier, Rus-sel OM-bM-^@M-^YCon-nor, As-sia Mah-boubi, </tspan>
 <tspan x="0" dy="1.2em">&#160;&#160;Ben-jamin Werner, xclerc,</tspan>
 <tspan x="0" dy="1.2em"> []</tspan>
-<tspan x="0" dy="1.2em">[246]</tspan>
 <tspan x="0" dy="1.2em">Overfull \hbox (45.05959pt too wide) in paragraph at lines 9--9</tspan>
 <tspan x="0" dy="1.2em">\remove@tlig github . com / coq / coq / commit / </tspan>
 <tspan x="0" dy="1.2em">&#160;&#160;a4043608f704f026de7eb5167a109ca48e00c221$[]\TU/lmr/m/n/12 . </tspan>
@@ -1693,6 +1696,7 @@
 <tspan x="0" dy="1.2em">[]$\remove@tlig https : / / github . com / coq / coq / commit / </tspan>
 <tspan x="0" dy="1.2em">&#160;&#160;2dbe106c09b60690b87e31e58d505b1f4e05b57f$[]\TU/lmr/m/n/12 . </tspan>
 <tspan x="0" dy="1.2em"> []</tspan>
+<tspan x="0" dy="1.2em">[247]</tspan>
 <tspan x="0" dy="1.2em">Overfull \hbox (26.35843pt too wide) in paragraph at lines 9--9</tspan>
 <tspan x="0" dy="1.2em">[]\TU/lmr/m/n/12 An-to-nios Michael Stam-poulis. ``Ver-iML: A </tspan>
 <tspan x="0" dy="1.2em">&#160;&#160;dependently-typed, user-extensible</tspan>
@@ -1705,12 +1709,12 @@
 <tspan x="0" dy="1.2em">[]\TU/lmr/m/n/12 Daniel Sel-sam, Se-bas-tian Ull-rich, and Leonardo de Moura. </tspan>
 <tspan x="0" dy="1.2em">&#160;&#160;``Tabled Type-</tspan>
 <tspan x="0" dy="1.2em"> []</tspan>
-<tspan x="0" dy="1.2em">[247] [248]</tspan>
+<tspan x="0" dy="1.2em">[248]</tspan>
 <tspan x="0" dy="1.2em">Overfull \hbox (10.89561pt too wide) in paragraph at lines 9--9</tspan>
 <tspan x="0" dy="1.2em">[]$\remove@tlig http : / / www . diva - portal . org / smash / get / diva2 : </tspan>
 <tspan x="0" dy="1.2em">&#160;&#160;399799 / FULLTEXT01 .</tspan>
 <tspan x="0" dy="1.2em"> []</tspan>
-<tspan x="0" dy="1.2em">) [249]</tspan>
-<tspan x="0" dy="1.2em">) [250</tspan>
+<tspan x="0" dy="1.2em">[249]) [250]</tspan>
+<tspan x="0" dy="1.2em">) [251</tspan>
 <tspan x="0" dy="1.2em">]</tspan>
 </text></svg>

@@ -383,7 +383,7 @@ SPELLCHECK:=cat $(TEXT_TEXS) | aspell --lang=en --mode=tex --extra-dicts=./$(CUS
 spellcheck: $(CUSTOM_DICT)
 	@$(SPELLCHECK)
 
-SPELLCHECK_TARGETS:=$(addprefix do-spellcheck-,$(TEXT_TEXS))
+SPELLCHECK_TARGETS:=$(addprefix do-spellcheck-,$(sort $(TEXT_TEXS)))
 
 .PHONY: do-spellcheck
 do-spellcheck: $(SPELLCHECK_TARGETS)

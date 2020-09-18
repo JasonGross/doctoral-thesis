@@ -1581,7 +1581,7 @@ The expression language $e$ corresponds to the inductive \texttt{expr} type defi
 
 \subsubsection{Code from \autocommanameref{sec:pattern-matching-compilation-and-evaluation}}
 
-The pattern -atching compilation step is done by the tactic \texttt{CompileRewrites} in \texttt{rewriter/src/Rewriter/Rewriter/Rewriter.v}, which just invokes the Gallina definition named \texttt{compile\_rewrites} with ever-increasing amounts of fuel until it succeeds.
+The pattern-matching compilation step is done by the tactic \texttt{CompileRewrites} in \texttt{rewriter/src/Rewriter/Rewriter/Rewriter.v}, which just invokes the Gallina definition named \texttt{compile\_rewrites} with ever-increasing amounts of fuel until it succeeds.
 (It should never fail for reasons other than insufficient fuel, unless there is a bug in the code.)
 The workhorse function of this code is \texttt{compile\_rewrites\_step}.
 

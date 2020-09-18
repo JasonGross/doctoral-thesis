@@ -115,7 +115,7 @@ The ``proof'' was an implementation in a vacuum-tube computer of the algorithm o
 by implementing this algorithm and verifying that it returns ``true'' on a formula such as $\forall a\ b\ x\ y,\ \exists z,\ a = x + x \to b = y + y \to a + b = z + z$, the machine can be said to prove that this formula is true.
 
 While complete decision procedures exist for arithmetic, propositional logic (the fragment of logic without quantifiers, i.e., consisting only of $\to$, $\wedge$, $\vee$, $\neg$, and $\iff$), and elementary geometry, there is no complete decision procedure for first-order logic, which allows predicates, as well as universal and existential quantification over objects~\cite{davis2001early}.
-In fact, first-order logic is sufficiently expressive to encode systems that reason about themselves, such as Peano arithmetic, and G\"odel's incompleteness theorem proves that there must be some statements which are neither provably true nor provably false.
+In fact, first-order logic is sufficiently expressive to encode systems that reason about themselves, such as Peano arithmetic, and Gödel's incompleteness theorem proves that there must be some statements which are neither provably true nor provably false.
 In fact, we cannot even decide which statements are undecidable~\cite{Are2011Makholm}!
 
 This incompleteness, however, does not sink the project of automated proof search.
@@ -133,7 +133,7 @@ However, as the author himself notes, this was only feasible because all of the 
 In the early 1970's, Boyer and Moore began work on theorem provers which could work with higher-order principles such as mathematical induction~\cite[p.~6]{Automation2013Moore}.
 This work resulted in a family of theorem provers, collectively known as the Boyer--Moore theorem provers, which includes the first seriously successful automated theorem provers~\cites[p.~8]{Automation2013Moore}{Brief2019Darbari}.
 They developed the Edinburgh Pure LISP Theorem Prover, Thm, and later Nqthm~\cites[p.~8]{Automation2013Moore}{Nqthm,wiki:Nqthm}, the last of which came to be known as \emph{the} Boyer--Moore theorem prover.
-Nqthm has been used to formalize and verify G\"odel's first incompleteness theorem in 1986~\cites{Metamathematics1994Shankar}[p.~29]{Milestones2019Moore}, to verify the implementation of an assembler and linker~\cite{moore2007piton} as well as a number of FORTRAN programs, and to formally prove the invertibility of RSA encryption, the undecidability of the halting problem, Gauss' law of quadratic reciprocity~\cite[pp.~28--29]{Milestones2019Moore}.
+Nqthm has been used to formalize and verify Gödel's first incompleteness theorem in 1986~\cites{Metamathematics1994Shankar}[p.~29]{Milestones2019Moore}, to verify the implementation of an assembler and linker~\cite{moore2007piton} as well as a number of FORTRAN programs, and to formally prove the invertibility of RSA encryption, the undecidability of the halting problem, Gauss' law of quadratic reciprocity~\cite[pp.~28--29]{Milestones2019Moore}.
 Nqthm later evolved into ACL2~\cite{Milestones2019Moore,ACL2Applications,ACL2}, which has been used, among other things, to verify a Motorola digital signal processor, the floating-point arithmetic unit in AMD chips, and some x86 machine code programs~\cite[p.~2]{Milestones2019Moore}.
 % More details on the assembler and linker (Piton) at \url{https://www.cs.utexas.edu/~moore/best-ideas/piton/index.html}
 % Also Computational Logic Inc.~which used Nqthm, \url{http://www.computationallogic.com/}
@@ -272,7 +272,7 @@ A new language for tactics was designed by David Delahaye, thus providing a high
 Micaela Mayero addressed the axiomatization of real numbers, with the goal of supporting the certification of numerical algorithms.
 Meanwhile, Yves Bertot recast the ideas of CtCoq in a sophisticated graphical interface PCoq, developed in Java.
 
-In 2002, four years after Judicaël Courant's thesis, Jacek Chr\,zaszcz managed to integrate a module and functor system analogous to that of Caml.
+In 2002, four years after Judicaël Courant's thesis, Jacek Chrząszcz managed to integrate a module and functor system analogous to that of Caml.
 
 With its smooth integration in the theory development environment, this extension considerably improved the genericity of libraries.
 Pierre Letouzey proposed a new algorithm for the extraction of programs from proofs that took into account the whole \emph{Coq} language, modules included.
@@ -294,7 +294,7 @@ The domain of classical mathematics required restrictions to the logical languag
 \end{comment}
 
 In the mid 1980s, Coq~\cite{Coq}, the proof assistant which we focus most on in this thesis, was born from an integration of features and ideas from a number of the proof assistants we've discussed in this subsection.
-Notably, it was based on the Calculus of Constructions (CoC), a synthesis of Martin-L\"of's type theory~\cite{Intuitionistic1975MartinLoef,Constructive1982MartinLoef} with dependent types and polymorphism, which grew out of Dana Scott's logic of computable functions\todo{Type1993Scott} together with de Bruijn's work on Automath~\cite{CoqArtForward2013Huet}.
+Notably, it was based on the Calculus of Constructions (CoC), a synthesis of Martin-Löf's type theory~\cite{Intuitionistic1975MartinLoef,Constructive1982MartinLoef} with dependent types and polymorphism, which grew out of Dana Scott's logic of computable functions\todo{Type1993Scott} together with de Bruijn's work on Automath~\cite{CoqArtForward2013Huet}.
 In the late 1980s, some problems were found with the way datatypes were encoded using functions, which lead to the introduction of inductive types, and an extension of CoC called the Calculus of Inductive Constructions (CIC)~\cite{CoqArtForward2013Huet}.
 
 Major accomplishments of verification in Coq~\cite{Coq} include the fully verified optimizing C compiler CompCert~\cite{Compcert}, the proof of the Four Color Theorem~\cite{gonthier2008formal}, and the complete formalization of the Odd Order Theorem, also known as the Feit--Thompson Theorem~\cite{gonthier2013machine}.

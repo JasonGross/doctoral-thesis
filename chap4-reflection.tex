@@ -349,7 +349,7 @@ Inductive expr : context -> type -> Type :=
 Note that this generalizes nicely to codes for dependent types if the proof assistant supports induction-induction.
 
 Although this representation enjoys both decidable equality of binders (like de Bruijn indices), as well as being well-typed-by-construction (like PHOAS), it's unfortunately unfit for coding algorithms that need to scale without massive assistance from the proof assistant.
-In particular, the na\"ive encoding of this inductive datatype incurs a quadratic overhead in representing terms involving binders, because each node stores the entire context.
+In particular, the naïve encoding of this inductive datatype incurs a quadratic overhead in representing terms involving binders, because each node stores the entire context.
 It is possible in theory to avoid this blowup by dropping the indices of the inductive type from the runtime representation.~\cite{Inductive2003Brady}
 One way to simulate this in Coq would be to put \mintinline{coq}{context} in \mintinline{coq}{Prop} and then extract the code to OCaml, which erases the \mintinline{coq}{Prop}s.
 Alternatively, if Coq is extended with support for dropping irrelevant subterms~\cite{sprop} from the term representation, then this speedup could be accomplished even inside Coq.
@@ -364,7 +364,7 @@ We mention the locally nameless representation~\cite{Locally2012Chargueraud,loca
 This representation uses de Bruijn indices for closed terms, and names for variables which are not bound in the current term.
 
 Much like nominal representations, locally nameless representations also incur the overhead of generating and storing names.
-Na\"ive algorithms for generating fresh names, such as the algorithm used in Coq, can easily incur overhead that's linear in the size of the context.
+Naïve algorithms for generating fresh names, such as the algorithm used in Coq, can easily incur overhead that's linear in the size of the context.
 Generating $n$ fresh names then incurs $\mathcal \Theta(n^2)$ overhead.
 \todo{explain what evar substitutions are somewhere?  reference it here?}
 Additionally, using a locally nameless representation requires that evar substitutions be named.

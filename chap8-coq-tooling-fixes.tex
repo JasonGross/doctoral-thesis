@@ -52,7 +52,7 @@ This brought speedups of over 10\% to some developments, and improved asymptotic
 \subsection{Delaying the Externalization of Application Arguments}\label{sec:delayed-externalization}
 Coq has many representations of terms.
 There is \texttt{constr\_expr}, the AST produced by Coq's parser.
-Interalization turns \texttt{constr\_expr} into the untyped \texttt{glob\_constr} representation of terms by performing name resolution, bound variable checks, notation desugaring, and implicit argument insertion.~\cite{Constrintern}
+Internalization turns \texttt{constr\_expr} into the untyped \texttt{glob\_constr} representation of terms by performing name resolution, bound variable checks, notation desugaring, and implicit argument insertion.~\cite{Constrintern}
 Type inference fills in the holes in untyped \texttt{glob\_constr}s to turn them into typed \texttt{constr}s, possibly with remaining existential variables.~\cite{Pretyping}
 In order to display proof goals, this process must be reversed.
 The internal representation of \texttt{constr} must be ``detyped'' into \texttt{glob\_constr}s, which involves primarily just turning de Bruijn indices into names.~\cite{Detyping}
@@ -240,7 +240,7 @@ One particularly prominent example formalizes the structure of a collection of c
 
 The morphisms in such a category are \emph{functors},\label{sec:define-functor} maps between categories consisting of a function on objects, a function on hom-types, and proofs that these functions respect composition and identity~\cite{mac1998categories,awodey2010category,HoTTBook}.
 
-The na\"ive concept of a ``category of all categories'',\label{sec:category-of-categories} which includes even itself, leads into mathematical inconsistencies which manifest as universe inconsistency errors in Coq, much as with the set of all sets discussed above.
+The naïve concept of a ``category of all categories'',\label{sec:category-of-categories} which includes even itself, leads into mathematical inconsistencies which manifest as universe inconsistency errors in Coq, much as with the set of all sets discussed above.
 
 The standard resolution, as with sets, is to introduce a hierarchy of categories, where, for instance, most intuitive constructions are considered \emph{small} categories, and then we also have \emph{large} categories, one of which is the category of small categories.
 Both definitions wind up with literally the same text in Coq, giving:

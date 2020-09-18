@@ -538,7 +538,7 @@ By contrast, if we just record what information we've already revealed as we're 
 Consider, for example, rewriting with two rules whose left-hand-sides are $x + (y + 1)$ and $(a + b) + (c * 2)$.
 When revealing structure for the first rewrite rule, the engine will first decompose the (unknown) expression into the application of the $+$ identifier to two arguments, and then decompose the second argument into the application of the $+$ identifier to two arguments, and then finally decompose the second inner argument into a literal identifier to check if it is the literal $1$.
 If the decomposition succeeds, but the literal is not $1$ (or if the second inner argument is not a literal at all), then rewiting will fall back to the second rewrite rule.
-If we are doing structure decomposition in the na\"ive way, we will then decompose the outer first argument (bound to $x$ in the first rewrite rule) into the application of the identifier $+$ to two arguments.
+If we are doing structure decomposition in the naïve way, we will then decompose the outer first argument (bound to $x$ in the first rewrite rule) into the application of the identifier $+$ to two arguments.
 We will then attempt to decompose the secound outer argument into the application of the identifier $*$ to two arguments.
 Since there is no way an identifier can be both $+$ and $*$, this decomposition will fail.
 However, we could have avoided doing the work of decomposing $x$ into $a + b$ by realizing that the second rewrite rule is incompatible with the first; this is exatly what pattern-matching compilation and decision-tree evaluation does.
@@ -586,7 +586,7 @@ Our current code in fact performs a poor approximation of this strategy in some 
 This unneeded indexing causes an enormous amount of pain, and is yet another example of how poorly designed abstraction barriers incur outsized overhead.
 Rewrite rule replacements are expressed as dependently-typed towers indexed first over the type variables of a pattern, and then again over the term variables.
 This design is a historical artifact, from when we expected to be writing rewrite rule ASTs by hand rather than reifying them from Gallina, and found the curried towers more convenient to write.
-\todo{should Ie laborate more on the pain?}
+\todo{should I elaborate more on the pain?}
 %``\ldots\space both conceptually simple but in practice complicated by dependent types.
 %We must unify a pattern with an expression, gathering binding data for the replacement rule as we go; and we must apply the replacement rule to the binding data (which is non-trivial because the rewrite rules are expressed as curried dependently-typed towers indexed over the rewrite rule pattern).
 %In order to state the correctness conditions for gathering binding data, we must first talk about applying replacement rules to binding data.''

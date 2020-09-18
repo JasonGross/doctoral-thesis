@@ -44,7 +44,7 @@ Certainly the popular perception of category theory is quite far from pragmatic 
 Our implementation of category theory has run squarely into issues of design and efficient implementation of type theories, proof assistants, and developments within them.
 
 One might presume that it is a routine exercise to transliterate categorical concepts from the whiteboard to Coq.
-Most category theorists would probably be surprised to learn that standard constructions ``run too slowly,'' but in our experience that is exactly the result of experimenting with na\"ive first Coq implementations of categorical constructs.
+Most category theorists would probably be surprised to learn that standard constructions ``run too slowly,'' but in our experience that is exactly the result of experimenting with naïve first Coq implementations of categorical constructs.
 It is important to tune the library design to minimize the cost of manipulating terms and proving interesting theorems.
 
 Category theory, said to be ``notoriously hard to formalize''~\cite{harrison1996formalized}, provides a good stress test of any proof assistant, highlighting problems in usability and efficiency.
@@ -285,7 +285,7 @@ A few other pervasive strategies made non-trivial differences for proof performa
   Defining the record type, though, still incurs a quadratic factor due to hash consing the projections; see \coqbug{12270}.
 
   \todo{remove use of ``you''}
-  If your proof assistant does not support records out-of-the-box, or you want to avoid using them for whatever reason\footnote{Note that the UniMath library \todo{cite unimath} does this. \todo{explain reasoning}}, you can instead define intermediate abstraction barriers by hand.
+  If your proof assistant does not support records out-of-the-box, or you want to avoid using them for whatever reason\footnote{Note that the UniMath library \todo{cite UniMath} does this. \todo{explain reasoning}}, you can instead define intermediate abstraction barriers by hand.
   Here is what code that almost works looks like for four fields:
 \begin{minted}{coq}
 Local Set Implicit Arguments.

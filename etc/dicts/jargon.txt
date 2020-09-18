@@ -34,4 +34,12 @@ Fixpoint
 gcc
 macrobenchmark
 matcher
+modus
 OOM
+performant
+ponens
+pretyping
+redex
+redexes
+repo
+unswap

@@ -736,70 +736,7 @@ Note that the non-monotonic timing is \emph{reproducible}, and we have asked the
 
 \begin{comment}
 \begin{subappendices}
-    \section{transcript bits from Adam}
-    The API design and issues that come up when you have so much power with conversion independent types. Okay, and this this will be the main section that draws from the category theory of paper.
-
-
-    \section{transcript bits from Rajee}
-The next section is one of the two big sections on like components of the system that is important for performance and this section is geared at users of proof assistance mainly.
-This is about how to design your APIs.
-
-How to design the interface of functions that you're writing.
-
-Many languages have a type system; this is used to deal with things like, if you have a function that takes a string and you pass it an integer you want to know that you made a mistake.
-
-And Coq has this on steroids, because not only can you say ``this function takes an integer and this function takes a string'' you can also say things ``like this function takes if this Turing machine halts then an element of the one element set, and if this Turing machine does not halt then an element of the empty set.''  You can't quite say that but you can say ``if it halts within $n$ steps'' so you can say ``this takes a number $n$ and the Turing machine $T$ and if $T$ halts within $n$ steps then it takes an element of the one element set and if $T$ does not halt within $n$ steps then it takes an element of the empty set.''
-
-What is the utility? This lets you pass around proofs.  Like just by virtue of being able to call the function you have a proof that some fact is true.  It's a source of power. It lets you write functions about that take in proofs and lets you write functions that prove things correct.  It lets you do things like ``this is a function that takes a proof that this list is not empty and spits out of proof that if you append that list to itself the resulting list is not empty.''
-
-This is useful why because you want to prove things. Okay, for example. Maybe you want to say. This function takes in a C program. It takes in. A function that's describes the behavior of the C program and it takes an approved that the C program matches the behavior of the function.
-
-And what it spits out is some assembly code and a proof that the assembly code matches the behavior of the function. I see.
-
-And like this is how you get verified programs, but it doesn't matter the thing where you said that well. I still understand the part of like why using it as a function is useful or something. Like making a function out of it what's the alternative if you didn't have it like as a function calling it like what are you saving when you have a function that does this oh so it's sort of a question of how you found your mathematics on or like how you how you're doing mathematics, so like one way of doing proofs is that ah programs improve through the same thing.
-
-So you can reuse all the machinery for writing programs to also write proofs and you can reuse all the machinery for like making sure that a program is well typed to making sure that a proof is valid. Okay, it's kind of neat a different way you could do it as you could found your math on set theory and you could be like, I'm just applying axioms.
-
-This is how proof assistant called Isabel. Hall works almost for higher order logic.
-
-What is the higher order logic h o l.
-
-So like there is a sort of design choice of like what? Like how you're building your prefix system tonight out have much to say about. Preface systems that are not based on type theory, okay? Oh. Other questions no okay so. Great so you can put arbitrary amounts of computation into this like thing that in other languages is used for checking that you don't try to pass an integer as a string.
-
-Um, and that's kind of neat it's kind of cool it also turns out to be. Useful because the part that does the checking is decently optimized in particular when you're like running fully running a program that's pretty optimized and so if you can stick all of the proof like all of the hard work into this question of how I passing an element of the empty set or of the one element set.
-
-Then you're like, you'll happy. Um, Also if you restrict yourself. To only asking questions like do I have a string or like asking questions like please make sure I have a string not an integer. You're also pretty happy like things are fast you need to do your proof separately but things still work nicely.
-
-The problem is that with all this power. That usually works it's like very tempting to use a and so you're like, okay, give me a list give me the length of the list also give me a proof that the the list has that length. And like this is fine and it works fine until you try to scale it and then it doesn't okay, ah because you're like okay, well if I like.
-
-Append to lists. I spit out a proof that like the so I spit out that the length should be like the sum of the two lengths I spit out of the proof that like the depending of the lists has length equal to the sum of the two lens. And then you're like okay and if I reverse a list it keeps the same length, and maybe now you want to like match like in one part of the code you were like I reversed my lists and then I appended them in reverse order.
-
-And another part you were like I I like first depended the lists and then I reversed the whole thing and like these are the same and I should be able to know that they're the same.
-
-But now here you're like length one plus length two and here you're like length two plus one. And so now your numbers are in the same and you're proofs are different. Ah, and maybe you manage to like make call accidentally try to figure out exactly what the proof is.
-
-Rather than trying to just like verify that your numbers line up or something. And now suddenly it's spending a lot of time trying to figure out exactly what your complicated proof is. And this is why you when you like make your example a little bit bigger and careful on this place it like takes the other path and now instead of being like, oh oops.
-
-I guess this path doesn't work after one second now, it's like. I'm gonna keep trying for a month hmm. And then you're real sad.
-
-So the the lesson today out of this is like either put all of the work into the ah into the types. We're all turnatively like either but all of the work into the computational power at the types, or make sure that you're not using the computational power of the types at all.
-
-What you mean not using the computational power of the types at all, you're not computing anything when you're asking like is string the same thing as string or string the same thing as integer, oh what would you do instead oh I mean there there's like nothing to compute you just compare them, okay?
-
-Right and then you're like, um, but like what about the identity function applied to string and you're like yeah yeah that's fine and so you can do a little bit of computation but if you're not careful then you're then you end up in this land where you're trying to compute with proofs and if you're not being careful, then you explode what's the extra stuff that you get from using the identity function versus comparing two strings, ah, Like what does it become more efficient or like what's the utility so like?
-
-Generally how it works is that you get to do more abstraction. Like. Like if you've ever dealt with monads in Haskell.
-
-There are fancy abstraction things that you can do with it, okay and like most of them don't require much computation at the type level the require a little bit of computation at the site level. Um, that's fine. And it's also fine to do all your computation at the type level but it's not fine is when you.
-
-When you're sort of like well do as much computation as you need. And if you're not being careful about how much computation is done at the site level, which you're usually not like it's something that's hard to track. Then and it's like the computer doesn't help you because you are going to like it it keeps working on small examples, but then you're real sad when you.
-
-When you end up with a little bit too much.
-
-Okay so that's that's this first section those the second section right oh like the first one it's the first of the like two big chunks of like things you want to do right this this thing so this part of cop that's like checking if two types do the same this is called conversion, okay, so the sections and conversions oh it's on like performance bottlenecks and conversion, okay?
-
-
-\todo{this chapter}
+ \todo{this chapter}
 
 \section{Abstraction barriers}
 e.g., f (fst x) (snd x) where fst x := let (a, b) := x in a; vs let (a, b) := x in f a b.

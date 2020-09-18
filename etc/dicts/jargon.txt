@@ -1,6 +1,10 @@
 autorewrite
 backsolve
 backtraces
+biogeochemistry
+bioinformatics
+biomechanics
+biostatistics
 bogosort
 Bogosort
 bool
@@ -25,3 +29,9 @@ coqchk
 coqdevs
 COQPATH
 CoqPL
+fixpoint
+Fixpoint
+gcc
+macrobenchmark
+matcher
+OOM

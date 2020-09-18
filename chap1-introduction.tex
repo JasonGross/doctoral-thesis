@@ -27,12 +27,12 @@
 As our world comes to rely more and more on large and complex software, the impact of bugs in our code grows ever more severe.
 Bugs are ways in which the actual behavior of software diverges from the intended behavior.
 While small bugs can cost hours or days of developer time, other bugs have more severe costs in money or even lives.
-Bugs in the software of the Therac-25, a radiation-therapy machine, killed three people and injured at least three more between 1985 and 1987 by delivering potentially leathal doses of radiation.~\wantclear[\textcolor]{\cite{Therac}}
+Bugs in the software of the Therac-25, a radiation-therapy machine, killed three people and injured at least three more between 1985 and 1987 by delivering potentially lethal doses of radiation.~\wantclear[\textcolor]{\cite{Therac}}
 \todo{Yes: Include more text from the following (at least three examples in this paragraph)}
-\todo{do I need a better citation than wikipedia? Answer: Yes, find a primary source, especially as the citation is so early}
+\todo{do I need a better citation than Wikipedia? Answer: Yes, find a primary source, especially as the citation is so early}
 \todo{should I mention the pricing bug on amazon? https://www.usatoday.com/story/tech/2019/07/19/amazon-prime-day-error-sold-13-000-camera-equipment-94-report/1775314001/, https://www.theguardian.com/money/2014/dec/14/amazon-glitch-prices-penny-repricerexpress, http://www.michaeleisen.org/blog/?p=358}
-More recently, unforseen edge-cases in DAO smart-contracts nearly cost investors over 40 million USD.~\cite{DAO2018Guecluetuerk}
-\todo{should I mention anything else? the pentium bug costing Intel \$475 million? http://top-100s.blogspot.com/2009/05/10-most-expensive-software-blunders.html, \$500 million Ariane Rocket disaster? , https://www.olenick.com/blog/articles/infamous-software-bugs-fdiv-bug}
+More recently, unforeseen edge-cases in DAO smart-contracts nearly cost investors over 40 million USD.~\cite{DAO2018Guecluetuerk}
+\todo{should I mention anything else? the Pentium bug costing Intel \$475 million? http://top-100s.blogspot.com/2009/05/10-most-expensive-software-blunders.html, \$500 million Ariane Rocket disaster? , https://www.olenick.com/blog/articles/infamous-software-bugs-fdiv-bug}
 \todo{should I pull from https://xavierleroy.org/talks/Milner-award-lecture.pdf? ``Fiat-Chrysler recalled 1.5 M vehicles for software update.''}
 \todo{\textcite{zhivich2009real}}
 
@@ -55,11 +55,11 @@ Ideally, the specification will be relatively simple, and much easier to trust, 
 
 While proofs of algorithms tend to be done with pen-and-paper (consider the ubiquitous proofs that various sorting algorithms are correct in introductory algorithms classes), proofs of actual code are much harder.
 Code in the real-world tends to be much more complicated than code in an algorithms textbook; this may be due to reasons of performance, historical accident, or interfacing with real users, among others.
-Proofs of code-correctness thus tend to be filled with tedious case-analysis with only sparse mathematical insights, and attempts to create and check these proofs by hand are subject to the same issues of human falibility as writing the programs in the first place.
+Proofs of code-correctness thus tend to be filled with tedious case-analysis with only sparse mathematical insights, and attempts to create and check these proofs by hand are subject to the same issues of human fallibility as writing the programs in the first place.
 
 %\todo{transition to foundational tools}
 %\todo{explain how foundational tools like Coq are already useful}
-Enter machine-checked proofs, the solution to the problem of human falibility.
+Enter machine-checked proofs, the solution to the problem of human fallibility.
 Foundational tools allow users to write down theorems and proofs to be checked by machine.
 These tools free the proof author from error-prone case analysis, as the computer will check that no cases were missed.
 
@@ -73,7 +73,7 @@ Said another way, we no longer need to write tests for every piece of software s
 %\paragraph{Paragraph 3: performance of tools is important and non-trivial, and what we're doing here is explaining / demonstrating how and why it's non-trivial, and how to fix nontrivial performance issues}
 We come now to the main thrust of this thesis.
 Tools for machine-checked proofs have already had many successes, in both software verification and traditional mathematics proof formalization, from compilers~\cite{Compcert} to microkernels~\cite{seL4SOSP09} to webservers~\cite{Network2015Chlipala} to cryptography code~\cite{FiatCryptoSP19}, from the Four-Color Theorem~\cite{gonthier2008formal} to the Odd-Order Theorem~\cite{gonthier2013machine} to Homotopy Type Theory~\cite{HoTTBook}.
-While compiler performance---both the time it takes to compile code and the time it takes to run the generated code---has long been an active field of study~\cite{CC++Performance2017,georges2007statistically,mytkowicz-wrong-data}\todo{find more citiations here}, to our knowledge there is no extant body of work systematically investigating the performance of proof assistants, nor even any work primarily focused on the problem of proof assistant performance.
+While compiler performance---both the time it takes to compile code and the time it takes to run the generated code---has long been an active field of study~\cite{CC++Performance2017,georges2007statistically,mytkowicz-wrong-data}\todo{find more citations here}, to our knowledge there is no extant body of work systematically investigating the performance of proof assistants, nor even any work primarily focused on the problem of proof assistant performance.
 \todo{integrate stuff from \textcite{Efficiency1994Boulton} such as ``For example, much of the research in the field of automated reasoning is concerned with producing proofs more efficiently''}
 \todo{Related to this is work on sound interfaces to external tools, also an enduring topic: \textcite{TrustedSlind}}
 
@@ -84,8 +84,8 @@ While many papers mention performance, obliquely or otherwise, and some are even
 % ``While we tackled this project mainly to explore the capabilities of a modern formal proof system—at first, to benchmark speed—'' - gonthier2008formal
 % ``We present a new implementation of a reflexive tactic whichsolves equalities in a ring structure inside the Coq system.The efficiencyis improved to a point that we can now prove equalities that were previ-ously beyond reach.'' - Proving2005Benjamin
 
-Unlike many other performance domains, in our experience, the time it takes to check proofs as we scale the size of the input is almost always super-linear---quadratic at best, commonly cubic or exponential, ocassionally even worse.
-Empirially, this might look like a proof script that checks in tens of seconds on the smallest of toy examples; takes about a minute on the smallest real-world example, which might be twice the size of the toy example; takes twenty hours to generate and check the proof of an example only twice that size; and, on a (perhaps not-quite-realistic) example twice the size of the twenty-hour example, the script might not finish within a year, or even a thousand years---see \autoref{sec:fiat-crypto-codegen-numbers} for more details.
+Unlike many other performance domains, in our experience, the time it takes to check proofs as we scale the size of the input is almost always super-linear---quadratic at best, commonly cubic or exponential, occasionally even worse.
+Empirically, this might look like a proof script that checks in tens of seconds on the smallest of toy examples; takes about a minute on the smallest real-world example, which might be twice the size of the toy example; takes twenty hours to generate and check the proof of an example only twice that size; and, on a (perhaps not-quite-realistic) example twice the size of the twenty-hour example, the script might not finish within a year, or even a thousand years---see \autoref{sec:fiat-crypto-codegen-numbers} for more details.
 In just three doublings of input size, we might go from tens of seconds to thousands of years.
 Moreover, this is not an isolated experience in proof assistants; this sort of performance behavior is \emph{typical}.
 
@@ -128,7 +128,7 @@ More efficient procedures for proof search exist, however.
 Early systems such as the Stanford Pascal Verifier~\cite{luckham1979stanford} and Stanford Resolution Prover were based on what is now known as Robinson's resolution rule~\cite{Machine1965Robinson}, which, when coupled with syntactic unification, resulted in tolerable performance on sufficiently simple problems~\cite{davis2001early,Brief2019Darbari}.
 A particularly clear description of the resolution method can be found in \textcite[pp.~17--18]{Metamathematics1994Shankar}.
 In the 1960's, all 400-or-so theorems of Whitehead and Russell's \emph{Principia Mathematica} were automatically proven by the same program~\cite[p.~9]{davis2001early}.
-However, as the author himself notes, this was only feasible because all of the theorems could be expressed in a way where all universal qunatifiers came first, followed by all existential quantifiers, followed by a formula without any quantifiers.
+However, as the author himself notes, this was only feasible because all of the theorems could be expressed in a way where all universal quantifiers came first, followed by all existential quantifiers, followed by a formula without any quantifiers.
 
 In the early 1970's, Boyer and Moore began work on theorem provers which could work with higher-order principles such as mathematical induction~\cite[p.~6]{Automation2013Moore}.
 This work resulted in a family of theorem provers, collectively known as the Boyer--Moore theorem provers, which includes the first seriously successful automated theorem provers~\cites[p.~8]{Automation2013Moore}{Brief2019Darbari}.
@@ -153,7 +153,7 @@ The first of these was solved by what is now called ``the LCF approach'': by rep
 In order to support abstract data types, Milner et al.~invented the language ML (short for ``Meta Language'')~\cite[p.~2]{LCF2000Gordon}, the precursor to Caml and later OCaml.
 The second issue---ease of extensibility---was also addressed by the design of ML~\cite[p.~2]{LCF2000Gordon}.
 By combining an abstract, opaque, trusted API for building terms with a functional programming language, users were granted the ability to combine the basic proof steps into ``tactics''.
-Tactics were functions that took in a goal, that is, a formula to be proven, and returned a list of remeaining subgoals, together with a function that would take in proofs of those subgoals and turn them into a proof of the overall theorem.
+Tactics were functions that took in a goal, that is, a formula to be proven, and returned a list of remaining subgoals, together with a function that would take in proofs of those subgoals and turn them into a proof of the overall theorem.
 An example: a tactic for proving conjunctions might, upon being asked to prove $A \wedge B$, return the two-element list of subgoals $[A, B]$ together with a function that, when given a proof of $A$ and a proof of $B$ (i.e., when given two \texttt{thm} objects, the first of which proves $A$ and the second of which proves $B$), combines them with a primitive conjunction rule to produce a proof object justifying $A \wedge B$.
 \todo{Do I need to say more about LCF?}
 \todo{Do I need to say more about tactics?}
@@ -466,17 +466,17 @@ Suppose we have a type $T(n)$ which encodes the statement ``$n$ is prime and eve
 To prove $\exists n, T(n)$, we must provide an explicit $n$ together with a proof that it satisfies $T$.
 This is exactly what a dependent pair is: $\Sigma_n T(n)$ is the type of pairs of numbers $n$ paired with proofs that that particular $n$ satisfies $T$.
 
-\todo{shubsection split here?}
+\todo{subsection split here?}
 
 As we mentioned above, one feature of basing a proof assistant on dependent type theory is that computation can be done at the type-level, without leaving a trace in the proof term.
 Many proofs require intermediate arguments based solely on the computation of functions.
 For example, a proof in number theory or cryptography might depend on the fact that a particularly large number, raised to some large power, is congruent to 1 modulo some prime.
 As argued by \textcite{stampoulis2013veriml}, if we are required to record all intermediate computation steps in the proof term, they can become prohibitively large.
-Thie \emph{Poincaré principle} asserts that such arguments should not need to be recorded in formal proofs, but should instead be automatically verified by appeal to computation~\cite[p.~1167]{barendregt2001proof}.
+The \emph{Poincaré principle} asserts that such arguments should not need to be recorded in formal proofs, but should instead be automatically verified by appeal to computation~\cite[p.~1167]{barendregt2001proof}.
 The ability to appeal to computation without blowing up the size of the proof term is quite important for so-called reflective (or reflexive) methods of proof, described in great detail in \autoref{ch:reflection}.
 
 \todo{I think the original phrasing of \textcite{stampoulis2013veriml} is much clearer:
-``Another variation of the basic architecture that is part of the Coq proof assistant is the inclusion of a conversion rulein its logical core.
+``Another variation of the basic architecture that is part of the Coq proof assistant is the inclusion of a conversion rule in its logical core.
 Arguments that are based solely on computation of functions defined in the logic, such as the fact that $1+1=2$, are ubiquitous throughout formal proofs.
 If we record all the steps required to show that such arguments are valid as part of the proof objects,  their size soon becomes prohibitively large.
 It has been argued that such arguments should not be recorded in formal proofs but rather should be automatically decided through computation – a principle that has been called the Poincaré principle'' \cite[p.~1167]{barendregt2001proof}
@@ -526,7 +526,7 @@ Note that the LCF approach to theorem proving, where proofs have an abstract typ
 \todo{is there anything else to say in this subsection?}
 
 \section{Look ahead: Layout and contributions of the thesis}\label{sec:intro:layout}
-In the remainder of \autoref{part:introduction}, we will finish laying out the landscape of performance bottlenecks in dependetly-typed proof assistants;
+In the remainder of \autoref{part:introduction}, we will finish laying out the landscape of performance bottlenecks in dependently-typed proof assistants;
 \fullref{ch:perf-failures} gives a more in-depth investigation into what makes performance optimization in dependent type theory hard, different, and unique, followed by describing major axes of super-linear performance bottlenecks in \fullref{sec:perf-axes}.
 
 \fullref{part:design} is devoted, by and large, to the performance bottlenecks that arise from the use of dependent types as the basis of a proof assistant as introduced in \autoref{sec:why-how-dependent-types};

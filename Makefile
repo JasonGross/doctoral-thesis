@@ -366,7 +366,7 @@ cleanall::
 	rm -f $(PDFS)
 	rm -rf abstract.endpage *~ *\# .\#* *.atfi *.swp *.aux *.lof ./*.log *.lot *.fls *.out *.toc *.fmt *.fot *.cb *.cb2 .*.lb *.dvi *.xdv *-converted-to.* .pdf *.bbl *.bcf *.blg *-blx.aux *-blx.bib *.run.xml *.fdb_latexmk *.synctex *.synctex'(busy)' *.synctex.gz *.synctex.gz'(busy)' *.pdfsync *.alg *.loa acs-*.bib *.thm *.nav *.pre *.snm *.vrb *.soc *.cpt *.spl *.ent *.lox *.mf *.mp *.t[1-9] *.t[1-9][0-9] *.tfm *.end *.?end *.[1-9] *.[1-9][0-9] *.[1-9][0-9][0-9] *.[1-9]R *.[1-9][0-9]R *.[1-9][0-9][0-9]R *.eledsec[1-9] *.eledsec[1-9]R *.eledsec[1-9][0-9] *.eledsec[1-9][0-9]R *.eledsec[1-9][0-9][0-9] *.eledsec[1-9][0-9][0-9]R *.acn *.acr *.glg *.glo *.gls *.glsdefs *-gnuplottex-* *.gaux *.gtex *.4ct *.4tc *.idv *.lg *.trc *.xref *.brf *-concordance.tex *.tikz *-tikzDictionary *.lol *.idx *.ilg *.ind *.ist *.maf *.mlf *.mlt *.mtc[0-9]* *.slf[0-9]* *.slt[0-9]* *.stc[0-9]* _minted* *.pyg *.mw *.nlg *.nlo *.nls *.pax *.pdfpc *.sagetex.sage *.sagetex.py *.sagetex.scmd *.wrt *.sout *.sympy sympy-plots-for-*.tex/ *.upa *.upb *.pytxcode pythontex-files-*/ *.loe *.dpth *.md5 *.auxlock *.tdo *.lod *.xmpi *.xdy *.xyc *.ttt *.fff TSWLatexianTemp* *.bak *.sav .texpadtmp *.backup *~[0-9]* ./auto/* *.el *-tags.tex *.sta *.spl *.drv *.dtx *.ins *.bbx *.cbx *.lbx *.def *.cfg *.bst mathtools.sty mhsetup.sty mathtools.zip ./mathtools/ biblatex.sty biblatex.zip ./biblatex/ etoolbox.sty etoolbox.tex logreq.sty *.md5 ./todo.svg jgross-thesis*-figure*.dep *.pgf-plot.gnuplot *.pgf-plot.table *-parameters.dat [._]*.s[a-v][a-z] [._]*.sw[a-p] [._]s[a-v][a-z] [._]sw[a-p] *~ \#*\# ./.emacs.desktop ./.emacs.desktop.lock *.elc auto-save-list tramp .\#* *.pyc *.aux *.d *.glob *.vio *.vo *.vos *.vok CoqMakefile.conf Makefile.bak Makefile.coq Makefile.coq.conf Makefile.coq.bak Makefile-old.conf csdp.cache lia.cache nlia.cache nia.cache nra.cache .csdp.cache .lia.cache .nlia.cache .nia.cache .nra.cache *_SuperFast.v *_Fast.v *_Medium.v *_Slow.v *_VerySlow.v
 
-PROCESS_REFS:=sed 's,[/:+}'"'"'\."\$$= ],-,g' | tr '-' '\n' | grep -v '[0-9]' | grep -v '^$$' | sort | uniq
+PROCESS_REFS:=sed 's,[/:+}'"'"'\."\$$= \#0-9],-,g' | tr '-' '\n' | grep -v '^$$' | sort | uniq
 etc/dicts/labels.spl: $(TEXT_TEXS) Makefile
 	cat $(TEXT_TEXS) | grep -o '\\label{[^}]*}' | sed 's/^\\label{//g' | $(PROCESS_REFS) > $@
 
@@ -377,11 +377,21 @@ DICT_HEADER:=personal_ws-1.1 en 0 utf-8
 $(CUSTOM_DICT): $(DICTS) Makefile
 	(echo "$(DICT_HEADER)"; (cat $(DICTS) | sort | uniq)) > $@
 
-SPELLCHECK:=cat $(TEXT_TEXS) | aspell --lang=en --mode=tex --extra-dicts=./$(CUSTOM_DICT) list --ignore 2 | sort | uniq
+SPELLCHECK:=cat $(TEXT_TEXS) | aspell --lang=en --mode=tex --extra-dicts=./$(CUSTOM_DICT) list --ignore 2 | LC_COLLATE=C sort | uniq
 
 .PHONY: spellcheck
-spellcheck:
+spellcheck: $(CUSTOM_DICT)
 	@$(SPELLCHECK)
+
+SPELLCHECK_TARGETS:=$(addprefix do-spellcheck-,$(TEXT_TEXS))
+
+.PHONY: do-spellcheck
+do-spellcheck: $(SPELLCHECK_TARGETS)
+
+.PHONY: $(SPELLCHECK_TARGETS)
+$(SPELLCHECK_TARGETS) : do-spellcheck-% : % $(CUSTOM_DICT)
+	aspell --lang=en --mode=tex --extra-dicts=./$(CUSTOM_DICT) --ignore 2 -c $*
+
 
 .PHONY: regenerate-dict
 regenerate-dict: $(CUSTOM_DICT)
@@ -389,4 +399,4 @@ regenerate-dict: $(CUSTOM_DICT)
 
 .PHONY: sort-dicts
 sort-dicts:
-	for i in $(DICTS); do cat "$$i" | grep -v "$(DICT_HEADER)" | sort | uniq > "$$i.sorted"; mv "$$i.sorted" "$$i"; done
+	for i in $(DICTS); do cat "$$i" | grep -v "$(DICT_HEADER)" | tr ' ' '\n' | grep -v '^$$' | sort | uniq > "$$i.sorted"; mv "$$i.sorted" "$$i"; done

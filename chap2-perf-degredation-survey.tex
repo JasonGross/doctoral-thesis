@@ -22,7 +22,7 @@ Furthermore, in dependently typed proof assistants, the worst-case behavior is e
 \todo{cite https://github.com/coq/coq/issues/12200}
 
 In fact, this issue already arises for compilers of mainstream programming languages.
-\todo{literature search on perf of compiletime in mainstream compilers?}
+\todo{literature search on perf of compile time in mainstream compilers?}
 The C++ language, for example, has \texttt{constexpr} constructions that allow running arbitrary computation at compile-time, and it's well-known that C++ templates can incur a large compile-time performance overhead.\todo{cite?}
 However, I claim that, in most languages, even as you scale your program, these performance issues are the exception rather than the rule.
 Most code written in C or C++ does not hit unbounded compile-time performance bottlenecks.
@@ -41,7 +41,7 @@ To put numbers on this, a project I was working on\todo{cite fiat-crypto} involv
 The code generation was parameterized on the number of machine words needed to represent a single big integer.
 Our smallest toy example used two machine words; our largest---slightly unrealistic---example used 17.
 The smallest toy example---two machine words---took about 14 seconds.
-Based on the the compile-time performance of about a hundred examples, we expect the largest example---17 machine words---would have taken over four thousand \emph{millenia}!
+Based on the the compile-time performance of about a hundred examples, we expect the largest example---17 machine words---would have taken over four thousand \emph{millennia}!
 See \autoref{fig:timing-montgomery-fesub-before-user} and \autoref{fig:timing-montgomery-fesub-before-user-log}.
 (Our primary non-toy test example used four machine words and took just under a minute; the biggest realistic example we were targeting was twice that size, at eight machine words, and took about 20 hours.)
 \begin{figure*}
@@ -204,11 +204,11 @@ It's rarely the case that disparate parts of the codebase must be simultaneously
 However, in proof assistants satisfying the de Bruijn criterion, there are many seemingly reasonable implementation choices that can be made for the kernel which make performance-optimizing the proof engine next to impossible.
 Worse, if performance optimization is done incrementally, to avoid needless premature optimization, then it can be the case that performance-optimizing the kernel has effectively no visible impact; the most efficient proof engine design for the slower kernel might be inefficient in ways that prevent optimizations in the kernel from showing up in actual use cases, because simple proof engine implementations tend to avoid the performance bottlenecks of the kernel while simultaneously shadowing them with bottlenecks with similar performance characteristics.
 
-\todo{incorparate Andres' suggestions}
+\todo{incorporate Andres' suggestions}
 I like the last two sentences.
 I would instead lead with something along the lines of ``in many domains, the performance challenges have been studied and understood, resulting in useful decompositions of the problem into subtasks that can be optimized independently.''
 ``in proof assistants, it doesn't look like anyone has even tried'' :P.
-but e g signal processing was a huge mess too before the fast fourier transform.
+but e g signal processing was a huge mess too before the fast Fourier transform.
 coq abstractions are mostly accidents of history.
 no other system has a clear performance-conscious story for how these interfaces should be designed either.
 
@@ -552,15 +552,15 @@ either we can change the typechecking rules (which work just fine for small-to-m
 \todo{some sort of section division marker here?}
 
 The proof assistant can also try to heuristically share subterms for us.
-Many proof assistants do some version of this, called \emph{hashconsing}.
-\todo{explain and cite hashconsing?}
+Many proof assistants do some version of this, called \emph{hash consing}.
+\todo{explain and cite hash consing?}
 
-However, hashconsing looses a lot of its benefit if terms are not maximally shared (and they almost never are), and can lead to very unpredictable performance when transformations unexpectedly cause a loss of sharing.
-\todo{cite hashconsing needing to be full to get perf benefit}
-Furthermore, it's an open problem how to efficiently persist full hashconsing to disk in a way that allows for diamond dependencies.
-\todo{explain this more, find citation for hashconsing being hard with disk}
-\todo{flesh out hashconsing section more}
-\todo{maybe cite https://github.com/coq/coq/issues/9028\#issuecomment-600013284 about hashconsing being slow}
+However, hash consing looses a lot of its benefit if terms are not maximally shared (and they almost never are), and can lead to very unpredictable performance when transformations unexpectedly cause a loss of sharing.
+\todo{cite hash consing needing to be full to get perf benefit}
+Furthermore, it's an open problem how to efficiently persist full hash consing to disk in a way that allows for diamond dependencies.
+\todo{explain this more, find citation for hash consing being hard with disk}
+\todo{flesh out hash consing section more}
+\todo{maybe cite https://github.com/coq/coq/issues/9028\#issuecomment-600013284 about hash consing being slow}
 
 \subsection{The Size of the Term}
 
@@ -611,7 +611,7 @@ Note that it is by no means obvious that the typechecker can meaningfully do any
 Breath-first search is significantly more complicated than depth-first, is harder to write good heuristics for, can incur enormous space overheads, and can be massively slower in cases where there are many options and the standard heuristics for depth-first unfolding in conversion-checking are sufficient.
 Furthermore, the more heuristics there are to tune conversion-checking, the more ``magic'' the algorithm seems, and the harder it is to debug when the performance is inadequate.
 
-As described in \todo{reference above example about fiat-crypto}, in fiat-crypto, we got exponential slowdown due to this issue, with an estimated overhead of over four thousand millenia of extra typechecking time in the worst examples we were trying to handle.
+As described in \todo{reference above example about fiat-crypto}, in fiat-crypto, we got exponential slowdown due to this issue, with an estimated overhead of over four thousand millennia of extra typechecking time in the worst examples we were trying to handle.
 
 \todo{maybe forward reference to the number of abstraction barriers}
 \todo{maybe include more about real-world fiat-crypto example here?}
@@ -1068,13 +1068,13 @@ When developing a category theory library~\cite{category-coq-experience}, we spe
 \begin{subappendices}
 \begin{comment}
 \section{Comments from Andres}
-in chapter 2 you start by comparing coq by non-dependently-typed languages. perhaps the more appropriate comparision would be between coq and *compilers* of other languages? Ah, you do this later.
+in chapter 2 you start by comparing coq by non-dependently-typed languages. perhaps the more appropriate comparison would be between coq and *compilers* of other languages? Ah, you do this later.
 "integers or colors or names" -- some hardcore optimization nerds may object. did you know that for all of these it is possible to sort in less than nlogn time using specialized techniques? :P (not a serious objection)
-"3. Being able to run the proof assistant in your head" -- obligatory claim about this finding bugs that the developers didn't see? Also, please emphasize that this is beyond the *spec* of conversion, but about the actual *algorithm*. the gcc example kinda does that, map it back explicitly.
+"3. Being able to run the proof assistant in your head" -- obligatory claim about this finding bugs that the developers didn't see? Also, please emphasize that this is beyond the *spec* of conversion, but about the actual *algorithm*. the GCC example kinda does that, map it back explicitly.
 typechecking of applications definitely was quadratic, but may no longer be
 "maximally" sharing terms is almost always heuristic, and I would call it heuristic sharing to highlight that (or something other that does not claim maximality)
-hashconsing itself is also slow
-I would like to be explicitly credited for my contributions to this list. Somehwere in the thesis, sometime, at least when you get to claiming how many of these are you are taking credit for.
+hash consing itself is also slow
+I would like to be explicitly credited for my contributions to this list. Somewhere in the thesis, sometime, at least when you get to claiming how many of these are you are taking credit for.
 "There are three primary ways that nested abstraction barriers can lead to performance bottlenecks: one involving conversion missteps and the other involving exponential blow-up in the size of types."
 "The reason users don’t set up hints like this is that usually it’s not necessary." -- and that is hard to see where the time is spent when it is necessary
 Thu 7:22pm
@@ -1090,7 +1090,7 @@ in particular, the biggest impact I could see from this is making people conside
 Thu 7:39pm
 you have overwhelming evidence that proof projects need the results of this
 Thu 7:40pm
-probably it would help to describe how it is intellectually interesting, releated to profound questions, and just cool to hack on
+probably it would help to describe how it is intellectually interesting, related to profound questions, and just cool to hack on
 Thu 7:40pm
 the more you can hit those points, the more likely I think people will care
 Thu 7:41pm

@@ -41,6 +41,7 @@ env:
 
 before_script:
   - make ubuntu-deps
+  - git submodule update --init --recursive
   - sed "${SED_REP}" -i jgross-thesis.tex
 
 script:

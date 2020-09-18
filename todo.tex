@@ -41,14 +41,14 @@
 \newcommand{\editedtext}[2][0]{\colorifzero{#1}{blue}{#2}}%
 \newcommand{\newtext}[2][0]{\colorifzero{#1}{blue}{#2}}%
 
-\newcommand{\wantsomething}[3]{%
-  \finalwarning{TODO: #1: \detokenize{#3} in file \currfilename}%
-  \ctext{#2}{#3}%
+\newcommand{\wantsomething}[4][\ctext]{%
+  \finalwarning{TODO: #2: \detokenize{#4} in file \currfilename}%
+  #1{#3}{#4}%
 }
 
-\newcommand{\wantinfo}[1]{\wantsomething{Double Click, Want Info}{yellow}{#1}}
-\newcommand{\wantflair}[1]{\wantsomething{Flair}{blue}{#1}}
-\newcommand{\wantclear}[1]{\wantsomething{Unclear/Grammar}{green}{#1}}
+\newcommand{\wantinfo}[2][\ctext]{\wantsomething[#1]{Double Click, Want Info}{yellow}{#2}}
+\newcommand{\wantflair}[2][\ctext]{\wantsomething[#1]{Flair}{blue}{#2}}
+\newcommand{\wantclear}[2][\ctext]{\wantsomething[#1]{Unclear/Grammar}{green}{#2}}
 
 \iffinal
 \else

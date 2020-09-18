@@ -1,5 +1,5 @@
-.PHONY: all proposal thesis umi-proquest-form-full update-thesis update-proposal print-main-contents download-packages todo
-all: proposal thesis umi-proquest-form-full
+.PHONY: all proposal thesis umi-proquest-form-full completion-full update-thesis update-thesis-submission update-proposal print-main-contents download-packages todo resume
+all: proposal thesis umi-proquest-form-full completion-full
 
 LATEXFLAGS?=--synctex=1 --shell-escape
 PDFLATEX?=lualatex
@@ -20,10 +20,12 @@ MAIN_TEXS = $(patsubst \include{%},%.tex,$(filter \include{%},$(shell cat append
 THESIS_TEXS = packages.tex contents.tex mitthesis.cls abstract.tex cover.tex coverinfo.tex new-date.tex todo.tex main-files.tex appendix-files.tex $(MAIN_TEXS)
 PROPOSAL_TEXS = new-date-proposal.tex abstract-proposal.tex
 UMI_TEXS = umi-proquest-form-full.tex umi-proquest-form-adjusted.tex extra-title-abstract.tex
-ALL_TEXS = $(THESIS_TEXS) $(PROPOSAL_TEXS) $(UMI_TEXS)
+COMPLETION_TEXS = new-date-submission.tex PhD_CompletionForm-adjusted.tex PhD_CompletionForm-full.tex
+COMPLETION_PDFS = PhD_CompletionForm-adjusted.pdf PhD_CompletionForm-full.pdf
+ALL_TEXS = $(THESIS_TEXS) $(PROPOSAL_TEXS) $(UMI_TEXS) $(COMPLETION_TEXS)
 TEXT_TEXS = $(filter-out packages.tex mitthesis.cls,$(ALL_TEXS))
 READER_AGREEMENT_SIGNED_PDFS := $(subst unsigned,signed,$(READER_AGREEMENT_PDFS))
-PDFS = $(PROPOSAL_PDFS) $(THESIS_PDFS) $(UMI_PDFS)
+PDFS = $(PROPOSAL_PDFS) $(THESIS_PDFS) $(UMI_PDFS) $(COMPLETION_PDFS)
 DICTS = $(addprefix etc/dicts/,abbreviations.txt jargon.txt names.txt words.txt not-words.txt bibkeys.spl labels.spl)
 CUSTOM_DICT := etc/dicts/custom.spl
 
@@ -74,8 +76,19 @@ thesis: $(THESIS_PDFS)
 umi-proquest-form-full: $(UMI_PDFS)
 umi-proquest-form-full.pdf: umi-proquest-form-adjusted.tex
 
-update-thesis::
-	echo '\\thesisdate{'"`date +'%B %-d, %Y'`}" > new-date.tex
+completion-full: $(COMPLETION_PDFS)
+PhD_CompletionForm-full.pdf: PhD_CompletionForm-adjusted.tex resume/Resume-curriculum-vitae.pdf
+
+.PHONY: update-resume
+update-resume:
+	cd resume && git checkout master && git pull --ff-only && git submodule update --init --recursive
+
+update-thesis-submission::
+	printf '\\newcommand{\\thesissubmissiondate}{%s}\n' "`date +'%B %-d, %Y'`" > new-date-submission.tex
+	$(MAKE) completion-full
+
+update-thesis:: update-thesis-submission
+	printf '\\thesisdate{%s}\n' "`date +'%B %-d, %Y'`" > new-date.tex
 	$(MAKE) thesis
 
 update-proposal::
@@ -278,6 +291,12 @@ $(THESIS_PDFS): $(THESIS_TEXS)
 
 $(PROPOSAL_PDFS): $(PROPOSAL_TEXS)
 
+resume:
+	cd resume; $(MAKE)
+
+resume/Resume-curriculum-vitae.pdf: resume/Resume.tex resume/res.cls resume/publications/jason-gross.bib
+	$(MAKE) resume
+
 jgross-thesis-proposal-signed.pdf: jgross-thesis-proposal.tex $(READER_AGREEMENT_SIGNED_PDFS)
 $(READER_AGREEMENT_PDFS): jgross-thesis-proposal.tex # jgross-thesis-proposal.pdf
 
@@ -328,7 +347,7 @@ $(MAIN_PROPOSAL_PDFS) $(THESIS_PDFS) : %.pdf : %.tex
 	$(SHOW)"PDFLATEX (run 3)"
 	$(HIDE)$(PDFLATEX) $(LATEXFLAGS) $(OTHERFLAGS) $< || $(MAKE) print-errors
 
-$(READER_AGREEMENT_PDFS) $(UMI_PDFS) : %.pdf : %.tex
+$(READER_AGREEMENT_PDFS) $(UMI_PDFS) $(COMPLETION_PDFS) : %.pdf : %.tex
 	$(SHOW)"PDFLATEX"
 	$(HIDE)$(PDFLATEX) $(LATEXFLAGS) $(OTHERFLAGS) $<
 

@@ -341,3 +341,11 @@ nra.cache
 # non-generated pdfs
 !/umi-proquest-form.pdf
 !/umi-proquest-form-filled.pdf
+!/PhD_CompletionForm2019_2020.pdf
+!/PhD_CompletionForm2019_2020-cs.pdf
+!/adamc-reader-agreement-signed.pdf
+!/jgross-reader-agreement-signed.pdf
+!/nickolai-reader-agreement-signed.pdf
+!/saman-reader-agreement-signed.pdf
+
+!/rewriting/trust*.pdf

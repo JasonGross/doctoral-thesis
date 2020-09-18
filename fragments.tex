@@ -14,7 +14,7 @@ Broadly, there are five sorts of things that result in slowness in Coq, all of w
 \item
   Sometimes there's an algorithmic inefficiency in the Ltac or Gallina code being computed (e.g., using unary \texttt{nat}s rather than binary \texttt{N}s for comparing large natural numbers (such as 256))
 \item
-  Sometimes there's an inefficiency in the Coq codebase itself (e.g., many of the bugs fixed by Pierre-Marie P\'edrot tagged with ``performance'')
+  Sometimes there's an inefficiency in the Coq codebase itself (e.g., many of the bugs fixed by Pierre-Marie Pédrot tagged with ``performance'')
 \end{itemize}
 
 Most of the bottlenecks fall into type checking, term building, unification, or normalization, but there are a couple of other notable categories.

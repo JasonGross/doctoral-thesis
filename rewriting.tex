@@ -116,7 +116,7 @@ Make rewriter := Rewriter For (zero_plus, plus_zero,
 Most inputs to \mintinline{coq}{Rewriter For} list quantified equalities to use for left-to-right rewriting.
 However, we also use options \mintinline{coq}{do_again}, to request that some rules trigger an extra bottom-up pass after being used for rewriting; \mintinline{coq}{eval_rect}, to queue up eager evaluation of a call to a primitive-recursion combinator on a known recursive argument; \mintinline{coq}{with delta}, to request evaluation of all monomorphic operations on concrete inputs; and \mintinline{coq}{with extra idents}, to inform the engine of further permitted identifiers that do not appear directly in any of the rewrite rules.
 
-Our plugin also provides new tactics like \mintinline{coq}{Rewrite_rhs_for}, which applies a rewriter to the righthand side of an equality goal.
+Our plugin also provides new tactics like \mintinline{coq}{Rewrite_rhs_for}, which applies a rewriter to the right-hand side of an equality goal.
 That last tactic is just what we need to synthesize a specialized \mintinline{coq}{prefixSums} for list length four, along with a proof of its equivalence to the original function.
 \begin{minted}[fontsize=\small]{coq}
 Definition prefixSums4 :
@@ -205,7 +205,7 @@ Our implementation is included as an anonymous supplement.
 
 \section{Trust, Reduction, and Rewriting} \label{sec:trust}
 
-Since much of the narrative behind our design process depends on tradeoffs between performance and trustworthiness, we start by reviewing the general situation in proof assistants.
+Since much of the narrative behind our design process depends on trade-offs between performance and trustworthiness, we start by reviewing the general situation in proof assistants.
 
 Across a variety of proof assistants, simplification of functional programs is a workhorse operation.
 Proof assistants like Coq that are based on type theory typically build in \emph{definitional equality} relations, identifying terms up to reductions like $\beta$-reduction and unfolding of named identifiers.
@@ -337,7 +337,7 @@ Instead, we adopted the approach of \textcite{maranget2008compiling}, who descri
 We have not yet implemented any of the optimizations described therein for finding \emph{minimal} decision trees.
 
 There are three steps to turn a set of rewrite rules into a functional program that takes in an expression and reduces according to the rules.
-The first step is pattern-matching compilation: we must compile the lefthand sides of the rewrite rules to a decision tree that describes how and in what order to decompose the expression, as well as describing which rewrite rules to try at which steps of decomposition.
+The first step is pattern-matching compilation: we must compile the left-hand sides of the rewrite rules to a decision tree that describes how and in what order to decompose the expression, as well as describing which rewrite rules to try at which steps of decomposition.
 Because the decision tree is merely a decomposition hint, we require no proofs about it to ensure soundness of our rewriter.
 The second step is decision-tree evaluation, during which we decompose the expression as per the decision tree, selecting which rewrite rules to attempt.
 The only correctness lemma needed for this stage is that any result it returns is equivalent to picking some rewrite rule and rewriting with it.
@@ -1186,7 +1186,7 @@ Our framework can handle terms of this size but stack-overflows on only slightly
 \subsubsection{Takeaway}
 
 From this example, we conclude that \texttt{rewrite\_strat} is unsuitable for computations involving large terms with many binders, especially in cases where reduction and rewriting need to be interwoven, and that the many bugs in \texttt{rewrite\_strat} result in confusing gymnastics required for success.
-The prior state of the art---writing code in CPS---suitably tweaked by using module pacity to allow \texttt{vm\_compute}, remains the best performer here, though the cost of rewriting everything is CPS may be prohibitive.
+The prior state of the art---writing code in CPS---suitably tweaked by using module opacity to allow \texttt{vm\_compute}, remains the best performer here, though the cost of rewriting everything is CPS may be prohibitive.
 Our method soundly beats \texttt{rewrite\_strat}.
 We are additionally bottlenecked on \texttt{cbv}, which is used to unfold the goal post-rewriting and costs about a minute on the largest of terms; see Coq bug \coqbug{11151} for a discussion on what is wrong with Coq's reduction here.
 

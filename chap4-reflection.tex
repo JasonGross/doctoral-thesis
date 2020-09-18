@@ -397,7 +397,7 @@ Fixpoint is_related {var1 var2 : Type} (Γ : list (var1 * var2))
   end.
 \end{minted}
 This unfortunately isn't quite linear in the size of the syntax tree, though it is significantly smaller.
-One way to achieve truely linear%
+One way to achieve truly linear%
 \footnote{%
 Actually, the size of the proof term will still have an extra logarithmic factor in the size of the syntax tree, due to the way we represent list membership proofs.%
 }

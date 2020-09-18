@@ -91,7 +91,7 @@ Although this quote comes from the class I took at MIT, 6.172 --- Performance En
 
 In old versions of Coq, there was no good way to profile tactic execution.
 Users could wrap some invocations in \mintinline{coq}{time} to see how long a given tactic took, or could regularly print some output to see where execution hung.
-Both of these are very low-tech methods of performance deubugging, and work well enough for small tactics.
+Both of these are very low-tech methods of performance debugging, and work well enough for small tactics.
 For debugging hundreds or thousands of lines of \Ltac\space code, though, these methods are insufficient.
 
 A genuine profiler for \Ltac\space was developed in 2015 and integrated into Coq itself in version 8.6.~\cite{coqpl-15-ltac-profiler}
@@ -202,14 +202,14 @@ The resolution to this paradox is to forbid sets from containing themselves.
 The collection of all sets is too big to be a set, so let's call it (and collections of its size) a proper class.
 We can nest this construction, as type theory does:
 We have \mintinline{coq}{Type₀}, the \mintinline{coq}{Type₁} of all small types, and we have \mintinline{coq}{Type₁}, the \mintinline{coq}{Type₂} of all \mintinline{coq}{Type₁}s, etc.
-These subscripts are called \emph{universe levels}, and the subscriped \mintinline{coq}{Type}s are sometimes called \emph{universes}.
+These subscripts are called \emph{universe levels}, and the subscripted \mintinline{coq}{Type}s are sometimes called \emph{universes}.
 
 Most constructions in Coq work just fine if we simply place them in a single, high-enough, universe.
 In fact, the entire standard library in Coq effectively uses only three universes.
 Most of the standard library in fact only needs one universe.
 We need a second universe for the few constructions that talk about equality between types, and a third for the encoding of a variant of Russell's paradox in Coq.
 
-However, one universe is not sufficent for category theory, even if we don't need to talk about equality of types nor prove that \mintinline{coq}{Type : Type} is inconsistent.
+However, one universe is not sufficient for category theory, even if we don't need to talk about equality of types nor prove that \mintinline{coq}{Type : Type} is inconsistent.
 
 The reason is that category theory, much like set theory, talks about itself.
 \todo{check if category has been defined before}
@@ -255,7 +255,7 @@ Definition SmallCat : LargeCategory :=
 It seems a shame to copy-and-paste this definition (and those of \mintinline{coq}{Category}, \mintinline{coq}{Functor}, etc.) $n$ times to define an $n$-level hierarchy.
 
 \emph{Universe polymorphism}\label{sec:universe-polymorphism-def} is a feature that allows definitions to be quantified over their universes.
-While Coq 8.4 supports a restricted flavor of universe polymorhism that allows the universe of a definition to vary as a function of the universes of its arguments, Coq 8.5 and later~\cite{coq-commit-polyproj} support an established kind of more general universe polymorphism~\cite{Harper1991107}, previously implemented only in NuPRL~\cite{nuprl}.
+While Coq 8.4 supports a restricted flavor of universe polymorphism that allows the universe of a definition to vary as a function of the universes of its arguments, Coq 8.5 and later~\cite{coq-commit-polyproj} support an established kind of more general universe polymorphism~\cite{Harper1991107}, previously implemented only in NuPRL~\cite{nuprl}.
 In these versions of Coq, any definitions declared polymorphic are parametric over their universes.
 
 While judicious use of universe polymorphism can reduce code duplication, careless use can lead to tens of thousands of universe variables which then become a performance bottleneck in their own right.%
@@ -356,9 +356,9 @@ When considering higher inductive types, the question ``when are two types equiv
 The standard answer in the past has been ``when they are syntactically equal''.
 The result of this is that two inductive types that are defined in the same way, but with different names, will not be equal.
 Voevodsky's univalence principle gives a different answer: two types are equal when they are isomorphic.
-This principle, encoded formally as the \emph{univalence axiom}, allows reasoning about ismorphic types as easily as if they were equal.
+This principle, encoded formally as the \emph{univalence axiom}, allows reasoning about isomorphic types as easily as if they were equal.
 
-\Citeauthor*{Equivalences2018Tabareau} built a framework on top of the insights of univalence, combined with parametricity~\cite{reynolds1983types,wadler1989theorems}, for automatically porting definitions and theorems to equiavlent types.~\cite{Equivalences2018Tabareau,Tabareau2019TheMO}
+\Citeauthor*{Equivalences2018Tabareau} built a framework on top of the insights of univalence, combined with parametricity~\cite{reynolds1983types,wadler1989theorems}, for automatically porting definitions and theorems to equivalent types.~\cite{Equivalences2018Tabareau,Tabareau2019TheMO}
 
 What is the application to performance?
 As we saw, for example, in \fullref{sec:rewriting-more:AST:choices}, the choice of representation of a datatype can have drastic consequences on how easy it is to encode algorithms and write correctness proofs.
@@ -389,7 +389,7 @@ This is unsatisfactory, however, on two counts:
 \end{enumerate}
 
 Cubical type theory is the solution to both of these problems, for both higher inductive types and univalence.~\cite{Cubical2016Cohen}
-Unlike most other type theories, computation in cubical type theory is implemented by appealing to the category thoretic model, and the insights that allow such computation are slowly making their way into more mainstream dependently-typed proof assistants.~\cite{Cubical2019Vezzosi}
+Unlike most other type theories, computation in cubical type theory is implemented by appealing to the category theoretic model, and the insights that allow such computation are slowly making their way into more mainstream dependently-typed proof assistants.~\cite{Cubical2019Vezzosi}
 
 \begin{comment}
 \begin{subappendices}

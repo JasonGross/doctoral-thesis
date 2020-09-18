@@ -115,6 +115,7 @@ monadic
 monoid
 monomorphic
 morphism
+naïve
 nanoscience
 neurosciences
 nitty
@@ -175,6 +176,7 @@ subexpressions
 subgoals
 submodule
 suboptimal
+subscripted
 subsubsection
 subtactics
 subtasks

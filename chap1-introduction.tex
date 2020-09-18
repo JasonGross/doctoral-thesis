@@ -25,7 +25,9 @@
 
 %\paragraph{Paragraph 1: Orient the reader to very broad things} Software w/o bugs via formal methods
 As our world comes to rely more and more on large and complex software, the impact of bugs in our code grows ever more severe.
-Bugs in the software of the Therac-25, a radiation-therapy machine, killed three people and injured at least three more between 1985 and 1987 by delivering potentially leathal doses of radiation.~\cite{Therac}
+Bugs are ways in which the actual behavior of software diverges from the intended behavior.
+While small bugs can cost hours or days of developer time, other bugs have more severe costs in money or even lives.
+Bugs in the software of the Therac-25, a radiation-therapy machine, killed three people and injured at least three more between 1985 and 1987 by delivering potentially leathal doses of radiation.~\wantclear{\cite{Therac}}
 \todo{Yes: Include more text from the following (at least three examples in this paragraph)}
 \todo{do I need a better citation than wikipedia? Answer: Yes, find a primary source, especially as the citation is so early}
 \todo{should I mention the pricing bug on amazon? https://www.usatoday.com/story/tech/2019/07/19/amazon-prime-day-error-sold-13-000-camera-equipment-94-report/1775314001/, https://www.theguardian.com/money/2014/dec/14/amazon-glitch-prices-penny-repricerexpress, http://www.michaeleisen.org/blog/?p=358}
@@ -35,35 +37,43 @@ More recently, unforseen edge-cases in DAO smart-contracts nearly cost investors
 \todo{\textcite{zhivich2009real}}
 
 While testing of various kinds is widely used to catch bugs, it's quite costly \todoask{should I email Xavier Leroy and ask if he has references on how much the airline industry spends on testing?} and does not guarantee a lack of bugs.
-In some adversarial contexts, random testing cannot hope to eliminate all bugs.
+In adversarial contexts, fixing even 99\% of bugs is not sufficient; there is a strong incentive for the remaining 1\% of bugs to be found and exploited.
+In some such contexts, random testing cannot hope to eliminate all bugs.
 For example, some bugs in cryptographic code only occur in as few as 19 out of $2^{255}$ cases.~\cite{curve25519-donna-commit-correct-bounds}
+Let us envision what numbers this big actually mean.
 Suppose you wanted to catch this bug in a ``modest'' twenty years of continuous random testing.
 You'd need to have over a thousand times as many computers as there are atoms in the solar system!
 % https://www.wolframalpha.com/input/?i=%282%5E255%2F19+*+529812+%2F+%285+ghz%29+%2F+%2820+years%29+%2F+%28atoms+in+the+solar+system%29%29+*+1+atom = 533260
 % (2^255/19 * 529812 / (5 ghz) / (20 years) / (atoms in the solar system)) * 1 atom
+\todo{Is this comment from Rajee still relevant? ``Reword paragraph to clearly show that the problem of bugs is currently being dealt with through extensive testing and making faster and bigger computers. Do dramatic entry of how this is not good enough.''}
 
 %\paragraph{Paragraph 2: Success of foundational tools}
 One appealing solution to this problem is to \emph{prove} critical software correct.
-The idea is that if we can write down in formal mathematical language what we'd like our software to do, then we can try to prove that the code that actually runs behaves in the same way that the math specifies.
+We do this by specifying in formal mathematics the intended behavior of our software.
+We then show a correspondence between our math and our code.
 Ideally, the specification will be relatively simple, and much easier to trust, than the millions of lines of code making up the software we use every day.
 
 While proofs of algorithms tend to be done with pen-and-paper (consider the ubiquitous proofs that various sorting algorithms are correct in introductory algorithms classes), proofs of actual code are much harder.
-For reasons of performance, historical accident, interfacing with real users, or otherwise, code in the real-world tends to be much more complicated than code in an algorithms textbook.
+Code in the real-world tends to be much more complicated than code in an algorithms textbook; this may be due to reasons of performance, historical accident, or interfacing with real users, among others.
 Proofs of code-correctness thus tend to be filled with tedious case-analysis with only sparse mathematical insights, and attempts to create and check these proofs by hand are subject to the same issues of human falibility as writing the programs in the first place.
 
 %\todo{transition to foundational tools}
 %\todo{explain how foundational tools like Coq are already useful}
-Enter machine-checked proofs.
-Foundational tools which allow users to write down theorems and proofs to be checked by machine free the proof author from error-prone case analysis; the computer will check that no cases were missed.
-Although you can never gain complete confidence in your software---the layer underneath may be untrustworthy in ways you cannot see~\cite{Reflections1984Thompson}, you can never prove that the mathematical system you're working in is correct~\cite{sep-goedel-incompleteness}, and most proof-checkers are not yet themselves proven correct---machine-checked proofs allow a drastic reduction in how much code needs to be trusted.
+Enter machine-checked proofs, the solution to the problem of human falibility.
+Foundational tools allow users to write down theorems and proofs to be checked by machine.
+These tools free the proof author from error-prone case analysis, as the computer will check that no cases were missed.
+
+Even with machine-checked proofs, you can still never gain complete confidence in your software; the layer underneath may be untrustworthy in ways you cannot see~\cite{Reflections1984Thompson}, you can never prove that the mathematical system you're working in is correct~\cite{sep-goedel-incompleteness}, and most proof-checkers are not yet themselves proven correct.
+
+However, machine-checked proofs allow a drastic reduction in how much code needs to be trusted.
 Rather than trusting the millions of lines of code of the software being verified, you only need to trust the specifications of the software, and the likely-much-smaller codebase of the proof checker.
-Furthermore, it's very unlikely that bugs in the proof checker will overlap with bugs in the proof in just the right way to allow bugs only in one particular piece of software to slip through.
+Furthermore, it's very unlikely that bugs in the proof checker will overlap with bugs in the proof in just the right way to allow bugs to slip through only in one particular piece of software.
 Said another way, we no longer need to write tests for every piece of software separately; writing tests for the proof-checker helps eliminate bugs in \emph{all} software proven by that checker.
 
 %\paragraph{Paragraph 3: performance of tools is important and non-trivial, and what we're doing here is explaining / demonstrating how and why it's non-trivial, and how to fix nontrivial performance issues}
 We come now to the main thrust of this thesis.
 Tools for machine-checked proofs have already had many successes, in both software verification and traditional mathematics proof formalization, from compilers~\cite{Compcert} to microkernels~\cite{seL4SOSP09} to webservers~\cite{Network2015Chlipala} to cryptography code~\cite{FiatCryptoSP19}, from the Four-Color Theorem~\cite{gonthier2008formal} to the Odd-Order Theorem~\cite{gonthier2013machine} to Homotopy Type Theory~\cite{HoTTBook}.
-While compiler performance---both the time it takes to compile code and the time it takes to run the generated code---has long been an active field of study~\cite{CC++Performance2017,georges2007statistically,mytkowicz-wrong-data}\todo{find more citiations here}, to our knowledge there is no extant body of work systematically investigating the performance of proof assistants, nor even any work primarily focused on the problem of proof assistant performance writ large.
+While compiler performance---both the time it takes to compile code and the time it takes to run the generated code---has long been an active field of study~\cite{CC++Performance2017,georges2007statistically,mytkowicz-wrong-data}\todo{find more citiations here}, to our knowledge there is no extant body of work systematically investigating the performance of proof assistants, nor even any work primarily focused on the problem of proof assistant performance.
 \todo{integrate stuff from \textcite{Efficiency1994Boulton} such as ``For example, much of the research in the field of automated reasoning is concerned with producing proofs more efficiently''}
 \todo{Related to this is work on sound interfaces to external tools, also an enduring topic: \textcite{TrustedSlind}}
 

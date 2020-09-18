@@ -1,3 +1,14 @@
+\usepackage{soul}
+
+%%%%%%%%%%%%%%%%%%%%%%%
+% https://tex.stackexchange.com/a/312583/2066
+\newcommand{\ctext}[3][RGB]{%
+  \begingroup
+  \definecolor{hlcolor}{#1}{#2}\sethlcolor{hlcolor}%
+  \hl{#3}%
+  \endgroup
+}
+
 \makeatletter
 \iffinal
 \let\finalwarning=\errmessage
@@ -29,6 +40,16 @@
 \makeatother
 \newcommand{\editedtext}[2][0]{\colorifzero{#1}{blue}{#2}}%
 \newcommand{\newtext}[2][0]{\colorifzero{#1}{blue}{#2}}%
+
+\newcommand{\wantsomething}[3]{%
+  \finalwarning{TODO: #1: \detokenize{#3} in file \currfilename}%
+  \ctext{#2}{#3}%
+}
+
+\newcommand{\wantinfo}[1]{\wantsomething{Double Click, Want Info}{yellow}{#1}}
+\newcommand{\wantflair}[1]{\wantsomething{Flair}{blue}{#1}}
+\newcommand{\wantclear}[1]{\wantsomething{Unclear/Grammar}{green}{#1}}
+
 \iffinal
 \else
 \NowOrAtBeginDocument{%

@@ -828,7 +828,7 @@ Note that the \letin{} binding blocks further reduction of map\_dbl, which we it
 \autoref{fig:timing-LiftLetsMap} compares performance between our approach, \texttt{repeat setoid\_rewrite}, and two variants of \texttt{rewrite\_strat}.
 Additionally, we consider another option, which was adopted by Fiat Cryptography at a larger scale: rewrite our functions to improve reduction behavior.
 Specifically, both functions are rewritten in continuation-passing style, which makes them harder to read and reason about but allows standard VM-based reduction to achieve good performance.
-The figure shows that \texttt{rewrite\_strat} variants are essentially unusable for this example, with \texttt{setoid\_rewrite} performing only marginally better, while our approach applied to the original, more readable definitions loses ground steadily to VM-based reduction on CPSed code.
+The figure shows that \texttt{rewrite\_strat} variants are essentially unusable for this example, with \texttt{setoid\_rewrite} performing only marginally better, while our approach applied to the original, more readable definitions loses ground steadily to VM-based reduction on CPS'd code.
 On the largest terms ($n \cdot m > 20,000$), the gap is 6s vs.\ 0.1s of compilation time, which should often be acceptable in return for simplified coding and proofs, plus the ability to mix proved rewrite rules with built-in reductions.
 %traded for simplified coding and proofs, plus the ability to mix proved rewrite rules with built-in reductions.
 See \autoref{sec:LiftLetsMap-more} for more on this microbenchmark and \autoref{sec:Eratosthenes} for an even more extreme example of full reduction with a Sieve of Eratosthenes as in the experiments of \textcite{Aehlig} (ours 10s, VM 0.3s).

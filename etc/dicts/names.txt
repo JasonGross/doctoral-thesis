@@ -61,6 +61,7 @@ Dowek
 EAL
 École
 Edsger
+EECS
 Eindhoven
 emacs
 Erbsen

@@ -396,7 +396,9 @@ DICT_HEADER:=personal_ws-1.1 en 0 utf-8
 $(CUSTOM_DICT): $(DICTS) Makefile
 	(echo "$(DICT_HEADER)"; (cat $(DICTS) | sort | uniq)) > $@
 
-SPELLCHECK:=cat $(TEXT_TEXS) | aspell --lang=en --mode=tex --extra-dicts=./$(CUSTOM_DICT) list --ignore 2 | LC_COLLATE=C sort | uniq
+SPELLCHECK := (cat $(TEXT_TEXS) | aspell --lang=en --mode=tex --extra-dicts=./$(CUSTOM_DICT) list --ignore 2 | LC_COLLATE=C sort | uniq); \
+	(cat $(TEXT_TEXS) | grep -o '[0-9]\+'"'s"); \
+	true
 
 .PHONY: spellcheck
 spellcheck: $(CUSTOM_DICT)

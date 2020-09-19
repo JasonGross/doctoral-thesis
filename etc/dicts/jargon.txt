@@ -29,6 +29,7 @@ coqchk
 coqdevs
 COQPATH
 CoqPL
+CPS'd
 fixpoint
 Fixpoint
 gcc

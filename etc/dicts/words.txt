@@ -15,6 +15,7 @@ axiomatization
 axiomatize
 benchmarking
 bijections
+bioelectrical
 bitwidths
 blazingly
 coercions

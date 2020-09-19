@@ -21,6 +21,7 @@ cbe
 CompileRewrites
 ctx
 ctxe
+CVtrue
 dbbc
 dcf
 ddb
@@ -85,6 +86,7 @@ IdentifiersGenerateProofs
 idents
 idtac
 idx
+ifinclude
 III
 impl
 includetitleabstract

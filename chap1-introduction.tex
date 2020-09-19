@@ -109,7 +109,7 @@ Before diving into the details of performance bottlenecks and solutions, we revi
 While we intend to cover a wide swath of the history and development in this subsection, far more detailed descriptions can be found in the literature~\cites{ringer2020qed,Proof2009Geuvers,History2014Harrison,CoqArtForward2013Huet,Brief2019Darbari,davis2001early,Matuszewski05mizar:the,Automath2002Kamareddine,Milestones2019Moore,Automation2013Moore,LCF2000Gordon,LCF2019Paulson,Logical2002Pfenning}[Related Work]{nuprl}.
 \textcite[ch.~4]{ringer2020qed} has a particularly clear presentation which was invaluable in assembling this section.
 
-Formal verification can be traced back to the early 1950's.~\cite{Brief2019Darbari}
+Formal verification can be traced back to the early 1950s.~\cite{Brief2019Darbari}
 The first formally verified proof, in some sense, achieved in 1954, was of the theorem that the sum of two even numbers is even.~\cite{davis2001early}
 The ``proof'' was an implementation in a vacuum-tube computer of the algorithm of \textcite{Uber1929Presburger}, which could decide, for any first order formula of natural number arithmetic, whether the formula represented a true theorem or a false one;
 by implementing this algorithm and verifying that it returns ``true'' on a formula such as $\forall a\ b\ x\ y,\ \exists z,\ a = x + x \to b = y + y \to a + b = z + z$, the machine can be said to prove that this formula is true.
@@ -127,10 +127,10 @@ More efficient procedures for proof search exist, however.
 \todo{Should I cite \textcite{Computing1960Davis}, which was an earlier form of the resolution rule that proved infeasible?}
 Early systems such as the Stanford Pascal Verifier~\cite{luckham1979stanford} and Stanford Resolution Prover were based on what is now known as Robinson's resolution rule~\cite{Machine1965Robinson}, which, when coupled with syntactic unification, resulted in tolerable performance on sufficiently simple problems~\cite{davis2001early,Brief2019Darbari}.
 A particularly clear description of the resolution method can be found in \textcite[pp.~17--18]{Metamathematics1994Shankar}.
-In the 1960's, all 400-or-so theorems of Whitehead and Russell's \emph{Principia Mathematica} were automatically proven by the same program~\cite[p.~9]{davis2001early}.
+In the 1960s, all 400-or-so theorems of Whitehead and Russell's \emph{Principia Mathematica} were automatically proven by the same program~\cite[p.~9]{davis2001early}.
 However, as the author himself notes, this was only feasible because all of the theorems could be expressed in a way where all universal quantifiers came first, followed by all existential quantifiers, followed by a formula without any quantifiers.
 
-In the early 1970's, Boyer and Moore began work on theorem provers which could work with higher-order principles such as mathematical induction~\cite[p.~6]{Automation2013Moore}.
+In the early 1970s, Boyer and Moore began work on theorem provers which could work with higher-order principles such as mathematical induction~\cite[p.~6]{Automation2013Moore}.
 This work resulted in a family of theorem provers, collectively known as the Boyer--Moore theorem provers, which includes the first seriously successful automated theorem provers~\cites[p.~8]{Automation2013Moore}{Brief2019Darbari}.
 They developed the Edinburgh Pure LISP Theorem Prover, Thm, and later Nqthm~\cites[p.~8]{Automation2013Moore}{Nqthm,wiki:Nqthm}, the last of which came to be known as \emph{the} Boyer--Moore theorem prover.
 Nqthm has been used to formalize and verify Gödel's first incompleteness theorem in 1986~\cites{Metamathematics1994Shankar}[p.~29]{Milestones2019Moore}, to verify the implementation of an assembler and linker~\cite{moore2007piton} as well as a number of FORTRAN programs, and to formally prove the invertibility of RSA encryption, the undecidability of the halting problem, Gauss' law of quadratic reciprocity~\cite[pp.~28--29]{Milestones2019Moore}.

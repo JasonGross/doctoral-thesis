@@ -4,7 +4,7 @@
 
 \todo{reformat this for flow, right now it's from reification-by-parametricity}
 
-Proof by reflection~\cite{ReflectionTACS97} is an established method for employing verified proof procedures, within larger proofs.~\cite{MirrorShardITP14,malecha2013mirror-shard,Speeding2017Malecha,gonthier2016small}
+Proof by reflection~\cite{ReflectionTACS97} is an established method for employing verified proof procedures, within larger proofs~\cite{MirrorShardITP14,malecha2013mirror-shard,Speeding2017Malecha,gonthier2016small}.
 \todo{should we cite this many things here, or remove some of them?}
 There are a number of benefits to using verified functional programs written in the proof assistant's logic, instead of tactic scripts.
 We can often prove that procedures always terminate without attempting fallacious proof steps, and perhaps we can even prove that a procedure gives logically complete answers, for instance telling us definitively whether a proposition is true or false.
@@ -316,7 +316,7 @@ This causes further problems when dealing with an AST type which can represent t
 In that case, we might annotate each variable node with a type code, mandate decidable equality of type codes, and then during denotation, we'd check the type of the variable node with the type of the corresponding variable in the context.
 
 \subsubsection{Nested Abstract Syntax} \label{sec:binders:nested-abstract-syntax}
-If we want a variant of de Bruijn indices which guarantees well-typed syntax trees, we can use nested abstract syntax.~\cite{Nested2012Hirschowitz,deBruijn1999Bird}
+If we want a variant of de Bruijn indices which guarantees well-typed syntax trees, we can use nested abstract syntax~\cite{Nested2012Hirschowitz,deBruijn1999Bird}.
 On mono-typed ASTs, this looks like encoding the size of the context in the type of the expressions.
 For example, we could use \mintinline{coq}{option} types:~\cite{Nested2012Hirschowitz}
 \begin{minted}{coq}
@@ -329,7 +329,7 @@ Inductive expr : Type -> Type :=
 | LetIn {V} : expr V -> expr (^V) -> expr V.
 \end{minted}
 
-This may seem a bit strange to those accustomed to encodings of terms in proof assistants, but it generalizes to a quite familiar intrinsic encoding of dependent type theory using types, contexts, and terms.~\cite{Strongly2012Benton}
+This may seem a bit strange to those accustomed to encodings of terms in proof assistants, but it generalizes to a quite familiar intrinsic encoding of dependent type theory using types, contexts, and terms~\cite{Strongly2012Benton}.
 Namely, when the expressions are multi-typed, we end up with something like
 \begin{minted}{coq}
 Inductive context :=
@@ -350,7 +350,7 @@ Note that this generalizes nicely to codes for dependent types if the proof assi
 
 Although this representation enjoys both decidable equality of binders (like de Bruijn indices), as well as being well-typed-by-construction (like PHOAS), it's unfortunately unfit for coding algorithms that need to scale without massive assistance from the proof assistant.
 In particular, the naïve encoding of this inductive datatype incurs a quadratic overhead in representing terms involving binders, because each node stores the entire context.
-It is possible in theory to avoid this blowup by dropping the indices of the inductive type from the runtime representation.~\cite{Inductive2003Brady}
+It is possible in theory to avoid this blowup by dropping the indices of the inductive type from the runtime representation~\cite{Inductive2003Brady}.
 One way to simulate this in Coq would be to put \mintinline{coq}{context} in \mintinline{coq}{Prop} and then extract the code to OCaml, which erases the \mintinline{coq}{Prop}s.
 Alternatively, if Coq is extended with support for dropping irrelevant subterms~\cite{sprop} from the term representation, then this speedup could be accomplished even inside Coq.
 

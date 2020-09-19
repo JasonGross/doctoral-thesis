@@ -292,7 +292,7 @@ First, this sort of match expression must be generated \emph{automatically}.
 Since pattern-matching evaluation happens on \emph{lists} of expressions, we'd need to know exactly what each match reveals about the types of all other expressions in the list.
 Additionally, in order to allow reduction to happen where it should, we need to make sure to match the head identifier \emph{first}, without convoying it across matches on unknown variables.
 Note that in the code above, we did not follow this requirement, as it would complicate the \mintinline{coq}{return} clauses even more (presuming we wanted to propagate typing information as we'd have to in the general case rather than cutting corners).
-The convoy pattern, for those unfamiliar with it, is explained in detail in \href{http://adam.chlipala.net/cpdt/html/Cpdt.MoreDep.html#lab54}{Chapter 8 (``More Dependent Types'') of \emph{Certified Programming with Dependent Types}}.~\cite{cpdt}
+The convoy pattern, for those unfamiliar with it, is explained in detail in \href{http://adam.chlipala.net/cpdt/html/Cpdt.MoreDep.html#lab54}{Chapter 8 (``More Dependent Types'') of \emph{Certified Programming with Dependent Types}}~\cite{cpdt}.
 
 Second, trying to prove anything about functions written like this is an enormous pain.
 Because of the intricate dependencies in typing information involved in the convoy pattern, Coq's \mintinline{coq}{destruct} tactic is useless.

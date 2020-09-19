@@ -46,20 +46,20 @@ Needless to say, this was very expensive when the size of the goal was large.
 
 \todo{include performance graphs?}
 
-As of Coq 8.7, most tactics no longer perform useless evar normalization, and instead walk terms using a dedicated API which does on-the-fly normalization as necessary.~\cite{coq-pr-econstr}
+As of Coq 8.7, most tactics no longer perform useless evar normalization, and instead walk terms using a dedicated API which does on-the-fly normalization as necessary~\cite{coq-pr-econstr}.
 This brought speedups of over 10\% to some developments, and improved asymptotic performance of some tactic scripts and interactive proof development.
 
 \subsection{Delaying the Externalization of Application Arguments}\label{sec:delayed-externalization}
 Coq has many representations of terms.
 There is \texttt{constr\_expr}, the AST produced by Coq's parser.
-Internalization turns \texttt{constr\_expr} into the untyped \texttt{glob\_constr} representation of terms by performing name resolution, bound variable checks, notation desugaring, and implicit argument insertion.~\cite{Constrintern}
-Type inference fills in the holes in untyped \texttt{glob\_constr}s to turn them into typed \texttt{constr}s, possibly with remaining existential variables.~\cite{Pretyping}
+Internalization turns \texttt{constr\_expr} into the untyped \texttt{glob\_constr} representation of terms by performing name resolution, bound variable checks, notation desugaring, and implicit argument insertion~\cite{Constrintern}.
+Type inference fills in the holes in untyped \texttt{glob\_constr}s to turn them into typed \texttt{constr}s, possibly with remaining existential variables~\cite{Pretyping}.
 In order to display proof goals, this process must be reversed.
-The internal representation of \texttt{constr} must be ``detyped'' into \texttt{glob\_constr}s, which involves primarily just turning de Bruijn indices into names.~\cite{Detyping}
-Finally, implicit arguments must be erased and notations must be re-sugared when externalizing \texttt{glob\_constr}s into \texttt{constr\_expr}s, which can be printed relatively straightforwardly.~\cite{Constrextern,Ppconstr}
+The internal representation of \texttt{constr} must be ``detyped'' into \texttt{glob\_constr}s, which involves primarily just turning de Bruijn indices into names~\cite{Detyping}.
+Finally, implicit arguments must be erased and notations must be re-sugared when externalizing \texttt{glob\_constr}s into \texttt{constr\_expr}s, which can be printed relatively straightforwardly~\cite{Constrextern,Ppconstr}.
 
 In old versions, Coq would externalize the entire goal, including subterms that were never printed due to being hidden by notations and implicit arguments.
-Starting in version 8.5pl2, lazy externalization of function arguments was implemented.~\cite{coq-commit-delayed-externalization}
+Starting in version 8.5pl2, lazy externalization of function arguments was implemented~\cite{coq-commit-delayed-externalization}.
 This resulted in massive speed-ups to interactive development involving large goals whose biggest subterms were mostly hidden.
 
 Changes like this one can be a game-changer for interactive proof development.
@@ -94,7 +94,7 @@ Users could wrap some invocations in \mintinline{coq}{time} to see how long a gi
 Both of these are very low-tech methods of performance debugging, and work well enough for small tactics.
 For debugging hundreds or thousands of lines of \Ltac\space code, though, these methods are insufficient.
 
-A genuine profiler for \Ltac\space was developed in 2015 and integrated into Coq itself in version 8.6.~\cite{coqpl-15-ltac-profiler}
+A genuine profiler for \Ltac\space was developed in 2015 and integrated into Coq itself in version 8.6~\cite{coqpl-15-ltac-profiler}.
 
 For those interested in amusing quirks of implementation details, the profiler itself was relatively easy to implement.
 If I recall correctly, Tobias Tebbi, after hearing of my \Ltac\space performance woes, mentioned to me the profiler he implemented over the course of a couple of days.
@@ -104,7 +104,7 @@ With some help from the Coq development team, I was able to adapt the patch to t
 \todo{should I include more text here, extracting from the abstract submitted to CoqPL?}
 
 \subsection{Compilation to Native Code}\label{sec:native-compiler}
-Starting in version 8.5, Coq allows users to compile their functional Gallina programs to native code and fully reduce them to determine their output.~\cite{nativecompute,coq-commit-native-compiler}
+Starting in version 8.5, Coq allows users to compile their functional Gallina programs to native code and fully reduce them to determine their output~\cite{nativecompute,coq-commit-native-compiler}.
 In some cases, the native compiler is almost $10\times$ faster%
 \footnote{\url{https://github.com/coq/coq/pull/12405\#issuecomment-633612308}}
 than the optimized call-by-value evaluation bytecode-based virtual machine described in \textcite{Gregoire-Leroy-02}.
@@ -142,26 +142,26 @@ Furthermore, when the output is large, both the VM and the native compiler suffe
 \todo{Should I add more to this section?  What should I say?}
 
 \subsection{Primitive Integers and Arrays}\label{sec:prim-ints-arrays}
-Primitive 31-bit integer arithmetic operations were added to Coq in 2007.~\cite{coq-commit-int31,Extending2010Armand}
+Primitive 31-bit integer arithmetic operations were added to Coq in 2007~\cite{coq-commit-int31,Extending2010Armand}.
 Although most of Coq merely used an inductive representation of 31-bit integers, the VM included code for compiling these constants to native machine integers.%
 \footnote{%
   The integer arithmetic is 31-bit rather than 32-bit because OCaml reserves the lowest bit for tagging whether a value is a pointer address to a tagged value or an integer.%
 }
-After hitting memory limits in storing the inductive representations in proofs involving proof traces from SMT solvers, work was started to allow the use of primitive datatypes that would be stored efficiently in proof terms.~\cite{denes2013prim-ints-arrays}
+After hitting memory limits in storing the inductive representations in proofs involving proof traces from SMT solvers, work was started to allow the use of primitive datatypes that would be stored efficiently in proof terms~\cite{denes2013prim-ints-arrays}.
 
 Some of this work has since been merged into Coq, including IEEE 754-2008 binary64 floating point numbers merged in Coq 8.11~\cite{coq-pr-floats}, 63-bit integers merged in Coq 8.10~\cite{coq-pr-int63}, and persistent arrays~\cite{Persistent2007Conchon} merged into Coq 8.13~\cite{coq-pr-parray}.
 Work enabling primitive recursion over these native datatypes is still underway,~\cite{coq-pr-parray-prim-recursion} and the actual use of these primitive datatypes to reap the performance benefits is still to come as of the writing of this thesis.
 
 \subsection{Primitive Projections for Record Types}\label{sec:fixes:theory:primitive-projections}\label{sec:primitive-projections}
-Since version 8.5, Coq has had the ability to define record types with projections whose arguments are not stored in the term representation.~\cite{coq-commit-polyproj}
+Since version 8.5, Coq has had the ability to define record types with projections whose arguments are not stored in the term representation~\cite{coq-commit-polyproj}.
 This allows asymptotic speedups, as discussed in \fullref{sec:prim-record-proj}.
 \todo{what should be said in this section?}
 
-Note that this is a specific instance of a more general theory of implicit arguments~\cite{logical2001implicit,barras2008implicit}, and there has been other work on how to eliminate useless arguments from term representations.~\cite{Inductive2003Brady}
+Note that this is a specific instance of a more general theory of implicit arguments~\cite{logical2001implicit,barras2008implicit}, and there has been other work on how to eliminate useless arguments from term representations~\cite{Inductive2003Brady}.
 
 \subsection{Fast Typing of Application Nodes}
 In \fullref{sec:perf:quadratic-application}, we discussed how the typing rule for function application resulted in quadratic performance behavior when there was in fact only linear work that needed to be done.
-As of Coq 8.10, when typechecking applications in the kernel, substitution is delayed so as to achieve linear performance.~\cite{coq-pr-fast-application-typing}
+As of Coq 8.10, when typechecking applications in the kernel, substitution is delayed so as to achieve linear performance~\cite{coq-pr-fast-application-typing}.
 \todo{does this need more of a recap?}
 Unfortunately, the pretyping and type inference algorithm is still quadratic, due to the type theory rules used for type inference.
 
@@ -184,7 +184,7 @@ Without this feature, called \emph{universe polymorphism}, encoding some mathema
 Removing this duplication of code will halve the compile-time.
 
 \subsubsection{What are universes?}\label{sec:universes-def}
-Universes are type theory's answer to Russell's paradox.~\cite{sep-russell-paradox}
+Universes are type theory's answer to Russell's paradox~\cite{sep-russell-paradox}.
 Russell's paradox, a famous paradox discovered in 1901, proceeds as follows.
 A \emph{set} is an unordered collection of distinct objects.
 Since each \emph{set} is an object, we may consider the set of all sets.
@@ -268,7 +268,7 @@ While judicious use of universe polymorphism can reduce code duplication, carele
 }
 
 \subsection{Judgmental η for Record Types}\label{sec:fixes:theory:record-eta}\label{sec:record-eta}
-The same commit that introduced universe polymorphism in Coq 8.5 also introduced judgmental $\eta$ conversion for records with primitive projections.~\cite{coq-commit-polyproj}
+The same commit that introduced universe polymorphism in Coq 8.5 also introduced judgmental $\eta$ conversion for records with primitive projections~\cite{coq-commit-polyproj}.
 We have already discussed the advantages of primitive projections in \autoref{sec:primitive-projections}, and we have talked a bit about judgmental $\eta$ in \fullref{sec:no-judgmental-eta} and \fullref{sec:duality-conversion}.
 
 \todo{make sure we've talked about judgmental equality and conversion}
@@ -280,7 +280,7 @@ As discussed in \autoref{sec:duality-conversion}, having records with judgmental
 
 \subsection{SProp: The Definitionally Proof Irrelevant Universe}\label{sec:fixes:theory:sprop}\label{sec:sprop}
 We discussed in \fullref{sec:term-size} how irrelevant proof arguments tended to cause performance issues just by existing as part of the goal.
-While there is as-yet no way to erase these arguments, Coq versions 8.10 and later have the ability to define types as judgmentally irrelevant, paving the way for more aggressive erasure.~\cite{coq-pr-sprop,sprop}
+While there is as-yet no way to erase these arguments, Coq versions 8.10 and later have the ability to define types as judgmentally irrelevant, paving the way for more aggressive erasure~\cite{coq-pr-sprop,sprop}.
 \todo{should more be said here?}
 
 \section{Performance-Enhancing Advancements in Type Theory at Large}\label{sec:fixes:theory}
@@ -358,7 +358,7 @@ The result of this is that two inductive types that are defined in the same way,
 Voevodsky's univalence principle gives a different answer: two types are equal when they are isomorphic.
 This principle, encoded formally as the \emph{univalence axiom}, allows reasoning about isomorphic types as easily as if they were equal.
 
-\Citeauthor*{Equivalences2018Tabareau} built a framework on top of the insights of univalence, combined with parametricity~\cite{reynolds1983types,wadler1989theorems}, for automatically porting definitions and theorems to equivalent types.~\cite{Equivalences2018Tabareau,Tabareau2019TheMO}
+\Citeauthor*{Equivalences2018Tabareau} built a framework on top of the insights of univalence, combined with parametricity~\cite{reynolds1983types,wadler1989theorems}, for automatically porting definitions and theorems to equivalent types~\cite{Equivalences2018Tabareau,Tabareau2019TheMO}.
 
 What is the application to performance?
 As we saw, for example, in \fullref{sec:rewriting-more:AST:choices}, the choice of representation of a datatype can have drastic consequences on how easy it is to encode algorithms and write correctness proofs.
@@ -378,7 +378,7 @@ The proof of function extensionality, for example, relies on the elimination rul
 }
 
 \todo{define point vs path constructors}
-Higher inductive types whose eliminators compute on the point constructors can be hacked into dependently-typed proof assistants by adding inconsistent axioms and then hiding them behind opaque APIs so that inconsistency cannot be proven.~\cite{Running2011Licata,Bertot2013}
+Higher inductive types whose eliminators compute on the point constructors can be hacked into dependently-typed proof assistants by adding inconsistent axioms and then hiding them behind opaque APIs so that inconsistency cannot be proven~\cite{Running2011Licata,Bertot2013}.
 This is unsatisfactory, however, on two counts:
 \begin{enumerate}
 \item
@@ -388,8 +388,8 @@ This is unsatisfactory, however, on two counts:
   Adding these axioms compromises the trust story.
 \end{enumerate}
 
-Cubical type theory is the solution to both of these problems, for both higher inductive types and univalence.~\cite{Cubical2016Cohen}
-Unlike most other type theories, computation in cubical type theory is implemented by appealing to the category theoretic model, and the insights that allow such computation are slowly making their way into more mainstream dependently-typed proof assistants.~\cite{Cubical2019Vezzosi}
+Cubical type theory is the solution to both of these problems, for both higher inductive types and univalence~\cite{Cubical2016Cohen}.
+Unlike most other type theories, computation in cubical type theory is implemented by appealing to the category theoretic model, and the insights that allow such computation are slowly making their way into more mainstream dependently-typed proof assistants~\cite{Cubical2019Vezzosi}.
 
 \begin{comment}
 \begin{subappendices}

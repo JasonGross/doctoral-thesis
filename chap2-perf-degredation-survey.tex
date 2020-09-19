@@ -724,7 +724,7 @@ There are a number of ways to represent substitution, and the choices are entang
 Note that most substitutions are either identity or lifting substitutions.
 \todo{define identity and lifting substitutions}
 
-One popular representation is the locally nameless representation.~\cite{locally-nameless}
+One popular representation is the locally nameless representation~\cite{locally-nameless}.
 \todo{Justify it?  Discuss other representations? Say why and how it's convenient?}
 However, if we use a locally nameless term representation, then finding a compact representation for identity and lifting substitutions is quite tricky.
 If the substitution representation takes $\mathcal O(n)$ time to create in a context of size $n$, then having a $\lambda$ with $n$ arguments whose types are not known takes $\mathcal O(n^2)$ time, because we end up creating identity substitutions for $n$ holes, with linear-sized contexts.

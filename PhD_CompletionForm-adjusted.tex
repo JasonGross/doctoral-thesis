@@ -34,10 +34,25 @@
 
 \input{new-date-submission}
 
+\bgroup
+
+\def\title{\gdef\thesistitle}
+\def\author{\gdef\authorname}
+\def\department{\gdef\department}
+\def\degree{\gdef\degree}
+\def\degreemonth{\gdef\degreemonth}
+\def\degreeyear{\gdef\degreeyear}
+\def\thesisdate{\gdef\thesisdate}
+\def\chairman#1#2{\gdef\chairman{{#1}{#2}}}
+
+\input{coverinfo}
+
+\egroup
+
 \def\citizenship{United States}
 \def\area{EE}
 \def\supervisor{Adam Chlipala}
-\def\degreelistdate{May 2021}
+\def\degreelistdate{\degreemonth\space \degreeyear}
 \def\newinstitution{}
 \def\newtitle{}
 \def\newlocation{}
@@ -79,7 +94,7 @@ This form is to be completed by EECS graduate students upon submission of a doct
 department. \textbf{Please attach a CV or resume\ldots{}thank you.}
 
 \fbox{\begin{minipage}{\textwidth}
-{\Large STUDENT NAME:} \\
+{\Large STUDENT NAME:\ \textField[\V{\authorname}]{name}{\textwidth-\widthof{STUDENT NAME:\ }}{\baselineskip}} \\
 \\
 \newlength{\realbaselineskip}%
 \setlength{\realbaselineskip}{\baselineskip}%

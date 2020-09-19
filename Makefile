@@ -78,6 +78,7 @@ umi-proquest-form-full.pdf: umi-proquest-form-adjusted.tex
 
 completion-full: $(COMPLETION_PDFS)
 PhD_CompletionForm-full.pdf: PhD_CompletionForm-adjusted.tex resume/Resume-curriculum-vitae.pdf
+$(COMPLETION_PDFS): new-date-submission.tex coverinfo.tex
 
 .PHONY: update-resume
 update-resume:

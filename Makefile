@@ -388,14 +388,14 @@ cleanall::
 
 PROCESS_REFS:=sed 's,[/:+}'"'"'\."\$$= \#0-9],-,g' | tr '-' '\n' | grep -v '^$$' | sort | uniq
 etc/dicts/labels.spl: $(TEXT_TEXS) Makefile
-	cat $(TEXT_TEXS) | grep -o '\\label{[^}]*}' | sed 's/^\\label{//g' | $(PROCESS_REFS) > $@
+	$(HIDE)cat $(TEXT_TEXS) | grep -o '\\label{[^}]*}' | sed 's/^\\label{//g' | $(PROCESS_REFS) > $@
 
 etc/dicts/bibkeys.spl: jgross-thesis.bib Makefile
-	cat $< | grep -o '^@[^{]*{[^,]*' | grep --ignore-case -v '^@\s*comment\s*{' | sed 's/^@[^{]*{//g' | $(PROCESS_REFS) > $@
+	$(HIDE)cat $< | grep -o '^@[^{]*{[^,]*' | grep --ignore-case -v '^@\s*comment\s*{' | sed 's/^@[^{]*{//g' | $(PROCESS_REFS) > $@
 
 DICT_HEADER:=personal_ws-1.1 en 0 utf-8
 $(CUSTOM_DICT): $(DICTS) Makefile
-	(echo "$(DICT_HEADER)"; (cat $(DICTS) | sort | uniq)) > $@
+	$(HIDE)(echo "$(DICT_HEADER)"; (cat $(DICTS) | sort | uniq)) > $@
 
 SPELLCHECK := (cat $(TEXT_TEXS) | aspell --lang=en --mode=tex --extra-dicts=./$(CUSTOM_DICT) list --ignore 2 | LC_COLLATE=C sort | uniq); \
 	(cat $(TEXT_TEXS) | grep -o '[0-9]\+'"'s"); \

@@ -5,7 +5,7 @@ The purpose of this chapter is to convince the reader that the issue of performa
 I intend to do this by first sketching out what I see as the main difference between performance issues in dependently-typed proof assistants vs performance issues in other languages, and then supporting this claim with a palette of real performance issues that have arisen in Coq.
 
 The widespread commonsense in performance engineering\cite{commonsense-perf-engineering-order-of-operations} is that good performance optimization happens in a particular order:
-there is no use micro-optimizing code if you are implementing an algorithm with unacceptable performance characteristics; imagine trying to optimize the pseudorandom number generator used in bogosort~\cite{bogosort}, for example.\footnote{Bogosort, whose name is a portmanteau of the words bogus and sort~\cite{bogosort-name}, sorts a list by randomly permuting the list over and over until it is sorted.}
+there is no use micro-optimizing code if you are implementing an algorithm with unacceptable performance characteristics; imagine trying to optimize the pseudorandom number generator used in bogosort~\cite{Sorting2007Gruber}, for example.\footnote{Bogosort, whose name is a portmanteau of the words bogus and sort~\cite{bogosort-name}, sorts a list by randomly permuting the list over and over until it is sorted.}
 Similarly, there is no use trying to find or create a better algorithm if the problem you're solving is more complicated than it needs to be; consider, for example, the difference between ray tracers and physics simulators.
 Ray tracers determine what objects can be seen from a given point essentially by drawing lines from the viewpoint to the object and seeing if it passes through any other object ``in front of'' it.
 Alternatively, one could provide a source of light waves and simulate the physical interaction of light with the various objects, to determine what images remain when the light arrives at a particular point.
@@ -323,7 +323,7 @@ There are two obvious solutions for this problem:
 \end{enumerate}
 
 \subsubsection{Dropping Type Parameters: Nominal vs.~Structural Typing} \label{sec:nominal-vs-structural} \label{sec:dropping-constructor-parameters}
-The first option requires that the proof assistant implement structural typing~\cite{structural-typing} rather than nominal typing~\cite{nominal-typing}.
+The first option requires that the proof assistant implement structural typing rather than nominal typing~\cite[19.3 Nominal and Structural Type Systems]{tapl}.
 \todo{Find a place for this note:} Note that it doesn't actually require structural; we can do it with nominal typing if we enforce everywhere that we can only compare terms who are known to be the same type, because not having structural typing results in having a single kernel term with multiple non-unifiable types.
 \todo{maybe look into TAPL}
 \todo{explain structural and nominal typing more}
@@ -724,7 +724,7 @@ There are a number of ways to represent substitution, and the choices are entang
 Note that most substitutions are either identity or lifting substitutions.
 \todo{define identity and lifting substitutions}
 
-One popular representation is the locally nameless representation~\cite{locally-nameless}.
+One popular representation is the locally nameless representation~\cite{Locally2012Chargueraud,locally2007Leroy}, which we discuss more in \autoref{sec:binders:locally-nameless}.
 \todo{Justify it?  Discuss other representations? Say why and how it's convenient?}
 However, if we use a locally nameless term representation, then finding a compact representation for identity and lifting substitutions is quite tricky.
 If the substitution representation takes $\mathcal O(n)$ time to create in a context of size $n$, then having a $\lambda$ with $n$ arguments whose types are not known takes $\mathcal O(n^2)$ time, because we end up creating identity substitutions for $n$ holes, with linear-sized contexts.

@@ -82,7 +82,7 @@ While compiler performance---both the time it takes to compile code and the time
 \todo{work on this paragraph}
 Why is this problem worthy of study?
 This thesis argues that the problem of \emph{compile-time performance} or \emph{proof-checking performance} is both significantly different from the problem of performance of more typical programs in industry and that it is nontrivial.
-While many papers mention performance, obliquely or otherwise, and some are even driven by performance concerns of a particular algorithm or part of the system,~\cites[p.~1382]{gonthier2008formal}{Efficiency1994Boulton}{Proving2005Benjamin}{Idris2Faster2020Brady}{Recognizing1989Benanav}{mechanical1990Pierce}{CelikETAL17iCoq}{PalmskogETAL18piCoq}{Gregoire-Leroy-02}{thesis-nogin}{Idris2Faster2020Brady}, we have not found any that investigate the performance problems that arise \emph{asymptotically}, when proof assistants are used to verify programs at large scale.
+While many papers mention performance, obliquely or otherwise, and some are even driven by performance concerns of a particular algorithm or part of the system,~\cites[p.~1382]{gonthier2008formal}{Efficiency1994Boulton}{Proving2005Benjamin}{Idris2Faster2020Brady}{Recognizing1989Benanav}{mechanical1990Pierce}{CelikETAL17iCoq}{PalmskogETAL18piCoq}{vmcompute}{thesis-nogin}{Idris2Faster2020Brady}, we have not found any that investigate the performance problems that arise \emph{asymptotically}, when proof assistants are used to verify programs at large scale.
 % ``While we tackled this project mainly to explore the capabilities of a modern formal proof system—at first, to benchmark speed—'' - gonthier2008formal
 % ``We present a new implementation of a reflexive tactic whichsolves equalities in a ring structure inside the Coq system.The efficiencyis improved to a point that we can now prove equalities that were previ-ously beyond reach.'' - Proving2005Benjamin
 
@@ -562,7 +562,7 @@ Finally, while the present chapter which we are now concluding has looked back o
 ``It's not directly related to proof assistants, but the techniques described can be applicable to proof assistants and the experience \emph{may} be applicable to some extent.''
 \todo{read \textcite{Inductive2003Brady}}
 \todo{read \textcite{thesis-nogin}}
-\todo{read Grégoire and Leroy's paper from ICFP 2002 \textcite{Gregoire-Leroy-02}}
+\todo{read Grégoire and Leroy's paper from ICFP 2002 \textcite{vmcompute}}
 \todo{read Dirk Kleeblatt's PhD thesis \textcite{Strongly2011Kleeblatt}.}
 ``Both of these are about using compiled code in dependent type checkers instead of interpreters.''
 \todo{read András Kovács has smalltt at \textcite{smallttKovacs}}``, which I don't think has been written up anywhere but has nonetheless been influential, both on Idris 2 and on Olle Fredriksson's reimplementation of Sixten at \url{https://github.com/ollef/sixty}''

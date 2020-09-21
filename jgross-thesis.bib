@@ -1353,7 +1353,7 @@ This thesis also demonstrates how these wide ranging practical and theoretical r
 After implementing these ideas in the MetaPRL logical framework, we use that system to improve a formalization of NuPRL intuitionistic type theory. In particular, we show how to modularize an axiomatization of a quotient type thus creating a formalization capable of expressing important concepts that were impossible to express in the original monolithic axiomatization. We also show how to add a limited form of classical reasoning to an intuitionistic type theory in a way that preserves many constructive aspects of the theory. Several theorems in this thesis were formally proven in the MetaPRL system.},
 }
 
-@InProceedings{Gregoire-Leroy-02,
+@InProceedings{vmcompute,
   author       = {Benjamin Gr{\'e}goire and Xavier Leroy},
   booktitle    = {ICFP 2002: International Conference on Functional Programming},
   date         = {2002},
@@ -3263,6 +3263,45 @@ The theory of types is intended to be a full-scale system for formalizing intuit
   bibsource    = {dblp computer science bibliography, https://dblp.org},
   biburl       = {https://dblp.org/rec/journals/tcs/Scott93.bib},
   timestamp    = {Wed, 14 Nov 2018 10:33:30 +0100},
+}
+
+@InProceedings{Sorting2007Gruber,
+  author    = {Gruber, Hermann and Holzer, Markus and Ruepp, Oliver},
+  booktitle = {Fun with Algorithms},
+  date      = {2007},
+  title     = {Sorting the Slow Way: An Analysis of Perversely Awful Randomized Sorting Algorithms},
+  doi       = {10.1007/978-3-540-72914-3_17},
+  editor    = {Crescenzi, Pierluigi and Prencipe, Giuseppe and Pucci, Geppino},
+  isbn      = {978-3-540-72914-3},
+  location  = {Berlin, Heidelberg},
+  pages     = {183--197},
+  publisher = {Springer Berlin Heidelberg},
+  url       = {http://www.hermann-gruber.com/pdf/fun07-final.pdf},
+  abstract  = {This paper is devoted to the ``Discovery of Slowness.'' The archetypical perversely awful algorithm bogo-sort, which is sometimes referred to as Monkey-sort, is analyzed with elementary methods. Moreover, practical experiments are performed.},
+}
+
+@InCollection{bogosort-name,
+  booktitle = {The Jargon File 4.4.7},
+  date      = {2003-12-29},
+  title     = {bogo-sort},
+  editor    = {Eric Raymond},
+  url       = {http://www.catb.org/jargon/html/B/bogo-sort.html},
+}
+
+@Book{tapl,
+  author    = {Benjamin C. Pierce},
+  date      = {2002},
+  title     = {Types and Programming Languages},
+  isbn      = {9780262162098},
+  publisher = {MIT Press},
+  series    = {The MIT Press},
+  url       = {https://www.cis.upenn.edu/~bcpierce/tapl/},
+  abstract  = {A type system is a syntactic method for enforcing levels of abstraction in programs. The study of type systems--and of programming languages from a type-theoretic perspective--has important applications in software engineering, language design, high-performance compilers, and security.
+
+This text provides a comprehensive introduction both to type systems in computer science and to the basic theory of programming languages. The approach is pragmatic and operational; each new concept is motivated by programming examples and the more theoretical sections are driven by the needs of implementations. Each chapter is accompanied by numerous exercises and solutions, as well as a running implementation. Dependencies between chapters are explicitly identified, allowing readers to choose a variety of paths through the material.
+
+The core topics include the untyped lambda-calculus, simple type systems, type reconstruction, universal and existential polymorphism, subtyping, bounded quantification, recursive types, kinds, and type operators. Extended case studies develop a variety of approaches to modeling the features of object-oriented languages.},
+  lccn      = {2001044428},
 }
 
 @Comment{jabref-meta: databaseType:biblatex;}

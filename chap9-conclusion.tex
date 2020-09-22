@@ -12,7 +12,7 @@ In \autoref{sec:intro:proof-assistant-design-choices} we laid out two basic desi
 We then spent the next chapters of this thesis investigating the performance bottlenecks that can perhaps be said to result from these choices, and how to ameliorate these performance issues.
 
 If the strategies we laid out in \Autoref{part:design,part:rewriting} for how to use dependent types and untrusted tactics in a performant way are to be summed up in one word, that word is: ``don't!''
-To avoid the performance issues incurred by unpredictable computation at the type-level, the source of much of the power of dependent type theory, we broadly suggest in \autoref{part:design} to \emph{avoid using the computation at all} (except in the rare cases where the entire proof can be moved into computation at the type level, such as proof by duality (\autoref{sec:duality-conversion}) and proof by reflection (\autoref{ch:reflection}).
+To avoid the performance issues incurred by unpredictable computation at the type-level, the source of much of the power of dependent type theory, we broadly suggest in \autoref{part:design} to \emph{avoid using the computation at all} (except in the rare cases where the entire proof can be moved into computation at the type level, such as proof by duality (\autoref{sec:duality-conversion}) and proof by reflection (\autoref{ch:reflection})).
 To avoid the performance issues resulting from tactics being untrusted, the source of much of the trust in proof assistants like Coq, we suggest in \autoref{part:rewriting} that users effectively \emph{throw away the entire tactic engine} and instead code tactics reflectively.
 
 This is a sorry state of affairs:

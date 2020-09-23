@@ -826,6 +826,6 @@
     \StrLeft{#2}{#1}%
   }%
 }
-\newcommandx{\githubref}[5][1=,2=,3=7]{\href{https://github.com/#4/commit/#5}{#1\maybeshortsha{#3}{#5}#2}}
+\newcommandx{\githubref}[5][1=,2=,3=7]{\href{https://github.com/#4/commit/#5}{#1{\maybeshortsha{#3}{#5}}#2}}
 
 \input{todo}

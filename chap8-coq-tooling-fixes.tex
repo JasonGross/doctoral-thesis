@@ -260,7 +260,7 @@ In these versions of Coq, any definitions declared polymorphic are parametric ov
 
 While judicious use of universe polymorphism can reduce code duplication, careless use can lead to tens of thousands of universe variables which then become a performance bottleneck in their own right.%
 \footnote{%
-  See, for example, the commit message of \githubhref[][ in the HoTT/HoTT library on GitHub]{HoTT/HoTT}{a445bc38c172a8f2787afe7d9d193596a0f6e1bd}, where moving from Coq 8.5$\beta$2 to 8.5$\beta$3 incurred a 4$\times$ slowdown in the file \texttt{hit/V.v}, entirely due to performance regressions in universe handling, which were later fixed.
+  See, for example, the commit message of \githubref[][ in the HoTT/HoTT library on GitHub]{HoTT/HoTT}{a445bc38c172a8f2787afe7d9d193596a0f6e1bd}, where moving from Coq 8.5$\beta$2 to 8.5$\beta$3 incurred a 4$\times$ slowdown in the file \texttt{hit/V.v}, entirely due to performance regressions in universe handling, which were later fixed.
   This slowdown is likely the one of \coqbug{4537}.
 
   See also \githubref[commit ][ in the HoTT/HoTT library on GitHub]{HoTT/HoTT}{d499ef667f1cf90c0886c906dd1780eae93a3046}, where reducing the number of polymorphic universes in some constants used by \texttt{rewrite} resulted in an overall $2\times$ speedup, with speedups reaching $10\times$ in some \texttt{rewrite}-heavy files.

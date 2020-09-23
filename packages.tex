@@ -16,6 +16,7 @@
 \usepackage{unicode-math}
 \usepackage{calc}
 \usepackage{ifthen}
+\usepackage{xifthen}
 \usepackage{appendix}
 \usepackage{minted}
 \usepackage{currfile}
@@ -816,5 +817,15 @@
   }{}%
 }
 
+
+% [before-text][after-text][# characters in commit to use (negative for all)]{user/repo}{commit sha}
+\newcommand{\maybeshortsha}[2]{%
+  \ifthenelse{#1 < 0}{%
+    #2%
+  }{%
+    \StrLeft{#2}{#1}%
+  }%
+}
+\newcommand{\githubref}[5][][][7]{\href{https://github.com/#4/commit/#5}{#1\maybeshortsha{#3}{#5}#2}}
 
 \input{todo}

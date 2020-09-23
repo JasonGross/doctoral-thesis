@@ -260,10 +260,12 @@ In these versions of Coq, any definitions declared polymorphic are parametric ov
 
 While judicious use of universe polymorphism can reduce code duplication, careless use can lead to tens of thousands of universe variables which then become a performance bottleneck in their own right.%
 \footnote{%
-  See, for example, the commit message of \href{https://github.com/HoTT/HoTT/commit/a445bc38c172a8f2787afe7d9d193596a0f6e1bd}{a445bc38c172a8f2787afe7d9d193596a0f6e1bd in the HoTT/HoTT library on GitHub}, where moving from Coq 8.5$\beta$2 to 8.5$\beta$3 incurred a 4$\times$ slowdown in the file \texttt{hit/V.v}, entirely due to performance regressions in universe handling, which were later fixed.
+  See, for example, the commit message of \githubhref[][ in the HoTT/HoTT library on GitHub]{HoTT/HoTT}{a445bc38c172a8f2787afe7d9d193596a0f6e1bd}, where moving from Coq 8.5$\beta$2 to 8.5$\beta$3 incurred a 4$\times$ slowdown in the file \texttt{hit/V.v}, entirely due to performance regressions in universe handling, which were later fixed.
   This slowdown is likely the one of \coqbug{4537}.
 
-  Coq actually had an implementation of full universe polymorphism between versions 8.3 and 8.4, implemented in \href{https://github.com/coq/coq/commit/d98dfbcae463f8d699765e2d7004becd7714d6cf}{commit d98dfbcae463f8d699765e2d7004becd7714d6cf} and reverted mere minutes later in \href{https://github.com/coq/coq/commit/60bc3cbe72083f4fa1aa759914936e4fa3d6b42e}{commit 60bc3cbe72083f4fa1aa759914936e4fa3d6b42e}.
+  See also \githubref[commit ][ in the HoTT/HoTT library on GitHub]{HoTT/HoTT}{d499ef667f1cf90c0886c906dd1780eae93a3046}, where reducing the number of polymorphic universes in some constants used by \texttt{rewrite} resulted in an overall $2\times$ speedup, with speedups reaching $10\times$ in some \texttt{rewrite}-heavy files.
+
+  Coq actually had an implementation of full universe polymorphism between versions 8.3 and 8.4, implemented in \githubref[commit ]{coq/coq}{d98dfbcae463f8d699765e2d7004becd7714d6cf} and reverted mere minutes later in \githubref[commit ]{coq/coq}{60bc3cbe72083f4fa1aa759914936e4fa3d6b42e}.
   In-person discussion, either with Matthieu himself or with Bob Harper, revealed that Matthieu abandoned this initial attempt after finding that universe polymorphism was too slow, and it was only by implementing the algorithm of \textcite{Harper1991107} that universe polymorphism with typical ambiguity~\cite{Universe2012Shulman,Typical1966Specker,Harper1991107}, where users need not write universe variables explicitly, was able to be implemented in a way that was sufficiently performant.%
 }
 

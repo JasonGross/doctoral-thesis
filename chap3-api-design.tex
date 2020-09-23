@@ -53,8 +53,12 @@ Formalizing the connection between universal morphisms and adjunctions provides 
 A \emph{universal morphism} is a construct in category theory generalizing extrema from calculus.
 An \emph{adjunction} is a weakened notion of equivalence.
 In the process of rewriting our library to be compatible with homotopy type theory, we discovered that cleaning up this construction conceptually resulted in a significant slow-down, because our first attempted rewrite resulted in a leaky abstraction barrier and, most importantly, large goals (\autoref{sec:term-size}).
-Plugging the holes there reduced goal sizes by two orders of magnitude\footnote{The word count of the larger of the two relevant goals went from 7,312 to 191.}, which led to a factor of ten speedup in that file (from 39s to 3s), but incurred a factor of three slow-down in the file where we defined the abstraction barriers (from 7s to 21s).
-Working around slow projections of $\Sigma$ types (\autoref{sec:nested-sigma-types}) and being more careful about code reuse each gave us back half of that lost time.
+Plugging the holes there reduced goal sizes by two orders of magnitude\footnote{The word count of the larger of the two relevant goals went from 7,312 to 191.}, which led to a factor of ten speedup in that file (from 39s to 3s), but incurred a factor of three slow-down in the file where we defined the abstraction barriers (from 7s to 21s).\footnote{%
+  See \githubref[commit ][ in HoTT/HoTT on GitHub]{HoTT/HoTT}{eb0099005171e642d467047933660980ddc66280} for more details.%
+}
+Working around slow projections of $\Sigma$ types (\autoref{sec:nested-sigma-types}) and being more careful about code reuse each gave us back half of that lost time.\footnote{%
+  See commits \githubref[][]{HoTT/HoTT}{c1e7ae32e86d51563da7a73b726c5cdd3246794a} and \githubref[][]{HoTT/HoTT}{93a1258becb49a76315663fa7626058a4e1a1959} in HoTT/HoTT on GitHub for more details.%
+}
 
 Although pre-existing formalizations of category theory in proof assistants abound~\cite{Ahrens2013,megacz-coq-categories,o2004towards,copumpkin/categories,ConCaT%
 %fullbib:,CatsInZFC%
@@ -230,7 +234,7 @@ A few other pervasive strategies made non-trivial differences for proof performa
     With a little more abstraction, we were able to reuse the same decomposition to prove the equivalence between universal morphisms and adjoint functors, with minimal effort.
 
     Perhaps less typical of programming experience, we found that picking the right abstraction barriers could drastically reduce compile time by keeping details out of sight in large goal formulas.
-    In the instance discussed in the introduction, we got a factor of ten speed-up by plugging holes in a leaky abstraction barrier!\footnote{See \url{https://github.com/HoTT/HoTT/commit/eb0099005171} for the exact change.}
+    In the instance discussed in the introduction, we got a factor of ten speed-up by plugging holes in a leaky abstraction barrier!\footnote{See \githubref[commit ][ in HoTT/HoTT on GitHub]{HoTT/HoTT}{eb0099005171e642d467047933660980ddc66280} for the exact change.}
 
 \subsection{Nested Σ Types} \label{sec:nested-sigma-types}
   In Coq, there are two ways to represent a data structure with one constructor and many fields:

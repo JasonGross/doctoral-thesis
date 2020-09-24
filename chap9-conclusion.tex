@@ -61,10 +61,20 @@ We almost certainly will be stuck running the program, which will take time at l
 \todo{should I be using ``we'', still, or should I switch to ``I''?}
 We do not believe that all hope is lost, though!
 Gödelian incompleteness did not prove to be a fatal obstacle to verification and automation of proofs, as we saw in \autoref{sec:intro:intro}, and we hope that it proves to be surmountable here as well.
-Finally, we wonder whether or not there will be any similarities between this problem and the extant research on the overhead of using a functional language over an imperative one~\cite{Efficiency2010Campbell,Ben-AmramG92,Ben-amram96noteson,More1997Bird,okasaki1996purely,okasaki1998purely,Pure1997Pippenger}.
-\todo{should I summarize the research at all?  That we can always get $\mathcal O(\log n)$ overhead, and often get no overhead, and it's unclear if we ever need $\mathcal O(\log n)$ when the functional language is lazy rather than strict.}
 
-\todo{add another paragraph for a slower let-down}
+We can take a second stab at specifying what it might mean to avoid needless overhead:
+Suppose we are given some algorithm $A$ which can sometimes determine the truth of a theorem statement (and will otherwise answer ``I don't know'') in time $\mathcal O(f(n))$, and suppose we are given a proof that $A$ is sound, i.e., a proof that whenever $A$ claims a theorem statement is true, that statement is in fact true.
+Then we would like a proof engine which permits the construction of proofs, without any appeal to computation, of theorems that $A$ claims are true in time $\mathcal O(f(n))$, or perhaps time that is not much worse than $\mathcal O(f(n))$.
+Said another way, we want a proof engine for which reflective proof scripts can be turned into non-reflective proof scripts without incurring overhead, or at least without incurring too much overhead.
+
+Is such a proof engine possible?
+Is such a proof engine sufficient?
+Is this criterion necessary?
+Or is there perhaps a better criterion?
+We leave all of these questions for future work in this field, noting that there may be some inspiration to be drawn from the extant research on the overhead of using a functional language over an imperative one~\cite{Efficiency2010Campbell,Ben-AmramG92,Ben-amram96noteson,More1997Bird,okasaki1996purely,okasaki1998purely,Pure1997Pippenger}.
+This body of work shows that we can always turn an imperative program into a strict functional program with at most $\mathcal O(\log n)$ overhead, and often we get no overhead at all.\footnote{%
+  Note that if we are targeting a lazy functional language rather than a strict one, it may in fact be possible to always achieve a transformation without any overhead.%
+}
 
 \todo{is there a better concluding sentence?}
 We hope the reader leaves this thesis with an improved understanding of the performance landscape of engineering of proof-based software systems, and perhaps goes on to contribute new insight to this perhaps-nascent field themselves.

@@ -37,7 +37,7 @@ Scaling the input just a tiny bit more, though, will result in the compiler not 
 This is what working in an exponential performance domain is like.
 
 \label{sec:fiat-crypto-codegen-numbers}%
-To put numbers on this, a project I was working on\todo{cite fiat-crypto} involved generating C code to do arithmetic on very large numbers.
+To put numbers on this, a project I was working on~\cite{FiatCryptoSP19} involved generating C code to do arithmetic on very large numbers.
 The code generation was parameterized on the number of machine words needed to represent a single big integer.
 Our smallest toy example used two machine words; our largest---slightly unrealistic---example used 17.
 The smallest toy example---two machine words---took about 14 seconds.
@@ -115,7 +115,7 @@ However, tracking down this solution was quite involved, requiring the following
   \item
     Understanding the details of how Coq works under-the-hood.
     Conversion, the ability to check if two types or terms are the same, is one of the core components of any dependently-typed proof assistant.
-    Understanding the details of how conversion works is generally not something users of a proof assistant want to worry about; it's like asking C programmers to keep in mind the size of \texttt{gcc}'s maximum nesting level for \texttt{\#include}'d files\footnote{It's 200, for those who are curious.\todo{cite \url{https://gcc.gnu.org/onlinedocs/gcc-7.5.0/cpp/Implementation-limits.html}}} when writing basic programs.
+    Understanding the details of how conversion works is generally not something users of a proof assistant want to worry about; it's like asking C programmers to keep in mind the size of \texttt{gcc}'s maximum nesting level for \texttt{\#include}'d files\footnote{It's 200, for those who are curious~\cite{C2017FSF}.} when writing basic programs.
     It's certainly something that advanced users need to be aware of, but it's not something that comes up frequently.
   \item
     Being able to run the proof assistant in your head.
@@ -454,6 +454,16 @@ Recall that the typing rules for $\lambda$ and \texttt{let} are as follows:\todo
 \todoask{What's the suggested way of pretty-printing typing rules?}
 \todoask{Which way do substitution brackets go?}
 \todoask{What convention should we use for typing rules with regard to things being types?  Maybe just copy the HoTT book?}
+\begin{prooftree}
+  \AxiomC{$Γ, x:A ⊢ f : B$}
+  \UnaryInfC{$Γ ⊢ (λ (x:A), f) : ∀ x:A, B$}
+\end{prooftree}
+\begin{prooftree}
+  \AxiomC{$Γ ⊢ f : ∀ x:A, B$}
+  \AxiomC{$Γ ⊢ a:A$}
+  \BinaryInfC{$Γ ⊢ f(a) : B[a/x]$}
+\end{prooftree}
+\begin{comment}
 \begin{verbatim}
 Γ ⊢ A type      Γ, x:A ⊢ B type
 Γ, x:A ⊢ f:B
@@ -467,7 +477,15 @@ Recall that the typing rules for $\lambda$ and \texttt{let} are as follows:\todo
 -------------------------------
 Γ ⊢ f y : B[x/y]
 \end{verbatim}
+\end{comment}
 
+\begin{prooftree}
+  \AxiomC{$Γ ⊢ a:A$}
+  \AxiomC{$Γ, x : A ≔ a ⊢ f : B$}
+  \BinaryInfC{$Γ ⊢ (\letin[{x : A ≔ a}{f}]) : B[a/x]$}
+\end{prooftree}
+
+\begin{comment}
 \begin{verbatim}
 Γ ⊢ A type
 Γ ⊢ y : A
@@ -476,6 +494,7 @@ Recall that the typing rules for $\lambda$ and \texttt{let} are as follows:\todo
 -------------------------------
 Γ ⊢ (let x : A := y in f) : B[x/y]
 \end{verbatim}
+\end{comment}
 
 Let us consider the inferred types for the intermediate terms when typechecking the \mintinline{coq}{let} expression:
 \begin{itemize}

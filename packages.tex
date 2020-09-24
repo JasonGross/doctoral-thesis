@@ -26,6 +26,7 @@
 \usepackage[color]{coqdoc}
 \hypersetup{raiselinks=false,colorlinks=false,linkcolor=black} % undo coqdoc stuff
 \usepackage{bussproofs}
+%\usepackage{ebproof}
 \usepackage{graphicx}
 \usepackage{listings}
 \usepackage{marvosym}
@@ -253,6 +254,7 @@
 \newunicodecharpdftex{…}{\ldots}
 \newunicodecharpdftex{⋯}{\cdots}
 \newunicodecharpdftex{⋮}{\vdots}
+\newunicodecharpdftex{≔}{\coloneq}
 
 \usepgfplotslibrary{units}
 \usepgfplotslibrary{external}
@@ -331,9 +333,9 @@
 \newcommand{\solidfill}[1]{\leaders\hrule\hfill}
 \makeatother
 
-\newcommand{\coqbug}[1]{\href{https://github.com/coq/coq/issues/#1}{\##1}}
-\newcommand{\coqpr}[1]{\href{https://github.com/coq/coq/issues/#1}{\##1}}
-\newcommand{\ocamlbug}[1]{\href{https://github.com/ocaml/ocmal/issues/#1}{\##1}}
+\newcommand{\coqbug}[2][]{\href{https://github.com/coq/coq/issues/#2}{#1\##2}}
+\newcommand{\coqpr}[2][]{\href{https://github.com/coq/coq/issues/#2}{#1\##2}}
+\newcommand{\ocamlbug}[2][]{\href{https://github.com/ocaml/ocmal/issues/#2}{#1\##2}}
 \newcommand{\kw}[1]{{\fontfamily{pcr}\selectfont\textbf{#1}}}
 \newcommand{\tactic}[1]{\texttt{#1}}
 \newcommand{\finishingtactic}[1]{\tactic{#1}}

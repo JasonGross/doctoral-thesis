@@ -1,6 +1,4 @@
-<svg xmlns="http://www.w3.org/2000/svg" width="41em" height="1707em"><text x="0" y="0">
-<tspan x="0" dy="1.2em">TODO: Make sure to exclude no files (not rewriting) in file jgross-thesis.tex </tspan>
-<tspan x="0" dy="1.2em">&#160;&#160;on input line 55.</tspan>
+<svg xmlns="http://www.w3.org/2000/svg" width="41em" height="2008em"><text x="0" y="0">
 <tspan x="0" dy="1.2em">TODO: Run `make update-thesis&apos; before submission to update the date on the </tspan>
 <tspan x="0" dy="1.2em">&#160;&#160;cover page in file jgross-thesis.tex on input line 94.</tspan>
 <tspan x="0" dy="1.2em">TODO: change \string \finalfalse to \string \finaltrue  in file </tspan>
@@ -447,6 +445,8 @@
 <tspan x="0" dy="1.2em">TODO: what&apos;s a good way to end this chapter? in file chap4-reflection.tex on </tspan>
 <tspan x="0" dy="1.2em">&#160;&#160;input line 495.</tspan>
 <tspan x="0" dy="1.2em">TODO: fix input of this file in file chap4-reflection.tex on input line 524.</tspan>
+<tspan x="0" dy="1.2em">TODO: update this chapter with camera-ready file before editing in file </tspan>
+<tspan x="0" dy="1.2em">&#160;&#160;rewriting.tex on input line 2.</tspan>
 <tspan x="0" dy="1.2em">TODO: Better chapter title? in file chap6-rewriting.tex on input line 11.</tspan>
 <tspan x="0" dy="1.2em">TODO: consider replacing ``pain&apos;&apos; with more formal words like ``overhead&apos;&apos;, </tspan>
 <tspan x="0" dy="1.2em">&#160;&#160;``bottleneck&apos;&apos;, etc (Adam says it&apos;s possibly too informal) in file </tspan>
@@ -574,9 +574,6 @@
 <tspan x="0" dy="1.2em">Warning: Label `fig:ltac-reify-nobinders@cref&apos; multiply defined.</tspan>
 <tspan x="0" dy="1.2em">Warning: Label `sec:category-of-categories&apos; multiply defined.</tspan>
 <tspan x="0" dy="1.2em">Warning: Label `sec:category-of-categories@cref&apos; multiply defined.</tspan>
-<tspan x="0" dy="1.2em">Warning: Reference `ch:rewriting&apos; on page 7 undefined on input line 127.</tspan>
-<tspan x="0" dy="1.2em">Warning: Reference `ch:rewriting&apos; on page 30 undefined on input line 553.</tspan>
-<tspan x="0" dy="1.2em">Warning: Reference `ch:rewriting&apos; on page 30 undefined on input line 554.</tspan>
 <tspan x="0" dy="1.2em">Warning: Reference `sec:categories&apos; on page 71 undefined on input line 83.</tspan>
 <tspan x="0" dy="1.2em">Warning: Reference `sec:other&apos; on page 72 undefined on input line 89.</tspan>
 <tspan x="0" dy="1.2em">Warning: Reference `sec:arguments-vs-fields&apos; on page 76 undefined on input </tspan>
@@ -587,41 +584,13 @@
 <tspan x="0" dy="1.2em">&#160;&#160;input line 288.</tspan>
 <tspan x="0" dy="1.2em">Warning: Reference `fig:timing-make-destruct-record-definition-abstraction&apos; on </tspan>
 <tspan x="0" dy="1.2em">&#160;&#160;page 81 undefined on input line 393.</tspan>
-<tspan x="0" dy="1.2em">Warning: Reference `ch:rewriting&apos; on page 95 undefined on input line 153.</tspan>
 <tspan x="0" dy="1.2em">Warning: Reference `sec:setoid-rewrite-bottlenecks&apos; on page 100 undefined on </tspan>
 <tspan x="0" dy="1.2em">&#160;&#160;input line 372.</tspan>
-<tspan x="0" dy="1.2em">Warning: Reference `ch:rewriting&apos; on page 105 undefined on input line 14.</tspan>
-<tspan x="0" dy="1.2em">Warning: Reference `sec:pattern-matching-compilation-and-evaluation&apos; on page </tspan>
-<tspan x="0" dy="1.2em">&#160;&#160;106 undefined on input line 43.</tspan>
-<tspan x="0" dy="1.2em">Warning: Reference `fig:nbe&apos; on page 106 undefined on input line 61.</tspan>
-<tspan x="0" dy="1.2em">Warning: Reference `sec:thunk-eval-subst-term&apos; on page 106 undefined on input </tspan>
-<tspan x="0" dy="1.2em">&#160;&#160;line 61.</tspan>
-<tspan x="0" dy="1.2em">Warning: Reference `sec:under-lets&apos; on page 107 undefined on input line 71.</tspan>
-<tspan x="0" dy="1.2em">Warning: Reference `sec:our-solution&apos; on page 112 undefined on input line 332.</tspan>
-<tspan x="0" dy="1.2em">Warning: Reference `sec:thunk-eval-subst-term&apos; on page 112 undefined on input </tspan>
-<tspan x="0" dy="1.2em">&#160;&#160;line 332.</tspan>
-<tspan x="0" dy="1.2em">Warning: Reference `sec:pattern-matching-compilation-and-evaluation&apos; on page </tspan>
-<tspan x="0" dy="1.2em">&#160;&#160;113 undefined on input line 358.</tspan>
-<tspan x="0" dy="1.2em">Warning: Reference `sec:pattern-matching-compilation-and-evaluation&apos; on page </tspan>
-<tspan x="0" dy="1.2em">&#160;&#160;113 undefined on input line 360.</tspan>
-<tspan x="0" dy="1.2em">Warning: Reference `sec:thunk-eval-subst-term&apos; on page 117 undefined on input </tspan>
-<tspan x="0" dy="1.2em">&#160;&#160;line 469.</tspan>
-<tspan x="0" dy="1.2em">Warning: Reference `sec:nine-steps&apos; on page 118 undefined on input line 497.</tspan>
-<tspan x="0" dy="1.2em">Warning: Reference `sec:under-lets&apos; on page 123 undefined on input line 708.</tspan>
-<tspan x="0" dy="1.2em">Warning: Reference `fig:nbe&apos; on page 127 undefined on input line 807.</tspan>
-<tspan x="0" dy="1.2em">Warning: Reference `sec:thunk-eval-subst-term&apos; on page 127 undefined on input </tspan>
-<tspan x="0" dy="1.2em">&#160;&#160;line 807.</tspan>
-<tspan x="0" dy="1.2em">Warning: Reference `sec:thunk-eval-subst-term&apos; on page 129 undefined on input </tspan>
-<tspan x="0" dy="1.2em">&#160;&#160;line 900.</tspan>
 <tspan x="0" dy="1.2em">Warning: Citation &apos;commonsense-perf-engineering-order-of-operations&apos; on page </tspan>
 <tspan x="0" dy="1.2em">&#160;&#160;35 undefined on input line 7.</tspan>
 <tspan x="0" dy="1.2em">Warning: Citation &apos;https://github.com/coq/coq/issues/5293&apos; on page 47 </tspan>
 <tspan x="0" dy="1.2em">&#160;&#160;undefined on input line 336.</tspan>
-<tspan x="0" dy="1.2em">Warning: Hyper reference `ch:rewriting&apos; on page 30 undefined on input line 553.</tspan>
-<tspan x="0" dy="1.2em">Warning: Hyper reference `sec:under-lets&apos; on page 107 undefined on input line </tspan>
-<tspan x="0" dy="1.2em">&#160;&#160;71.</tspan>
-<tspan x="0" dy="1.2em">Warning: Hyper reference `sec:nine-steps&apos; on page 118 undefined on input line </tspan>
-<tspan x="0" dy="1.2em">&#160;&#160;497.</tspan>
+<tspan x="0" dy="1.2em">Warning: Float too large for page by 16.14775pt on input line 243.</tspan>
 <tspan x="0" dy="1.2em">Warning: There were undefined references.</tspan>
 <tspan x="0" dy="1.2em">Warning: There were multiply-defined labels.</tspan>
 <tspan x="0" dy="1.2em">Package gnuplottex Warning: Shell escape not enabled. You&apos;ll need to convert </tspan>
@@ -685,6 +654,22 @@
 <tspan x="0" dy="1.2em">&#160;&#160;to size 14.39977pt on input line 239.</tspan>
 <tspan x="0" dy="1.2em">LaTeX Font Info:    Font shape `TU/lmtt/bx/n&apos; in size &lt;10&gt; not available Font </tspan>
 <tspan x="0" dy="1.2em">&#160;&#160;shape `TU/lmtt/b/n&apos; tried instead on input line 2.</tspan>
+<tspan x="0" dy="1.2em">LaTeX Font Info:    Font shape `TU/lmtt/bx/n&apos; in size &lt;10.95&gt; not available </tspan>
+<tspan x="0" dy="1.2em">&#160;&#160;Font shape `TU/lmtt/b/n&apos; tried instead on input line 2.</tspan>
+<tspan x="0" dy="1.2em">LaTeX Font Info:    Font shape `TU/latinmodern-math.otf(2)/m/n&apos; will be scaled </tspan>
+<tspan x="0" dy="1.2em">&#160;&#160;to size 10.95015pt on input line 4.</tspan>
+<tspan x="0" dy="1.2em">LaTeX Font Info:    Font shape `TU/latinmodern-math.otf(2)/m/n&apos; will be scaled </tspan>
+<tspan x="0" dy="1.2em">&#160;&#160;to size 8.00012pt on input line 4.</tspan>
+<tspan x="0" dy="1.2em">LaTeX Font Info:    Font shape `TU/latinmodern-math.otf(2)/m/n&apos; will be scaled </tspan>
+<tspan x="0" dy="1.2em">&#160;&#160;to size 6.00009pt on input line 4.</tspan>
+<tspan x="0" dy="1.2em">LaTeX Font Info:    Font shape `TU/latinmodern-math.otf(3)/m/n&apos; will be scaled </tspan>
+<tspan x="0" dy="1.2em">&#160;&#160;to size 10.94983pt on input line 4.</tspan>
+<tspan x="0" dy="1.2em">LaTeX Font Info:    Font shape `TU/latinmodern-math.otf(3)/m/n&apos; will be scaled </tspan>
+<tspan x="0" dy="1.2em">&#160;&#160;to size 7.99988pt on input line 4.</tspan>
+<tspan x="0" dy="1.2em">LaTeX Font Info:    Font shape `TU/latinmodern-math.otf(3)/m/n&apos; will be scaled </tspan>
+<tspan x="0" dy="1.2em">&#160;&#160;to size 5.99991pt on input line 4.</tspan>
+<tspan x="0" dy="1.2em">LaTeX Font Info:    Font shape `TU/lmtt/bx/n&apos; in size &lt;17.28&gt; not available </tspan>
+<tspan x="0" dy="1.2em">&#160;&#160;Font shape `TU/lmtt/b/n&apos; tried instead on input line 1364.</tspan>
 <tspan x="0" dy="1.2em">LaTeX Font Info:    Font shape `TU/latinmodern-math.otf(2)/m/n&apos; will be scaled </tspan>
 <tspan x="0" dy="1.2em">&#160;&#160;to size 24.88037pt on input line 1.</tspan>
 <tspan x="0" dy="1.2em">LaTeX Font Info:    Font shape `TU/latinmodern-math.otf(2)/m/n&apos; will be scaled </tspan>
@@ -713,18 +698,17 @@
 <tspan x="0" dy="1.2em">luaotfload | aux : font no 40 (nil) does not define feature smcp for script </tspan>
 <tspan x="0" dy="1.2em">&#160;&#160;math with language dflt</tspan>
 <tspan x="0" dy="1.2em">luaotfload | aux : no font with id 40</tspan>
-<tspan x="0" dy="1.2em">No file rewriting.aux.</tspan>
 <tspan x="0" dy="1.2em">Package pgfplots notification &apos;compat/show suggested version=true&apos;: document </tspan>
 <tspan x="0" dy="1.2em">&#160;&#160;has been generated with the most recent feature set (\pgfplotsset{compat=1.15}).</tspan>
 <tspan x="0" dy="1.2em">[1</tspan>
 <tspan x="0" dy="1.2em">] [2</tspan>
-<tspan x="0" dy="1.2em">) [1</tspan>
-<tspan x="0" dy="1.2em">Non-PDF special ignored!]</tspan>
-<tspan x="0" dy="1.2em">[3] [4</tspan>
-<tspan x="0" dy="1.2em">) [5</tspan>
-<tspan x="0" dy="1.2em">] [6]</tspan>
-<tspan x="0" dy="1.2em">[7</tspan>
-<tspan x="0" dy="1.2em">]) [8]</tspan>
+<tspan x="0" dy="1.2em">[1</tspan>
+<tspan x="0" dy="1.2em">Non-PDF special ignored!</tspan>
+<tspan x="0" dy="1.2em">] [2</tspan>
+<tspan x="0" dy="1.2em">) [3</tspan>
+<tspan x="0" dy="1.2em">] [4]</tspan>
+<tspan x="0" dy="1.2em">[5</tspan>
+<tspan x="0" dy="1.2em">]) [6]</tspan>
 <tspan x="0" dy="1.2em">Overfull \hbox (41.52351pt too wide) in paragraph at lines 108--1</tspan>
 <tspan x="0" dy="1.2em">\TU/lmtt/m/n/12 </tspan>
 <tspan x="0" dy="1.2em">&#160;&#160;//libraries.mit.edu/wp-[]content/uploads/2019/08/umi-[]proquest-[]form.pdf$[]\TU</tspan>
@@ -739,17 +723,17 @@
 <tspan x="0" dy="1.2em">&#160;&#160;https://www.eecs.mit.edu/academics-[]admissions/graduate-[]program/graduate-[]of</tspan>
 <tspan x="0" dy="1.2em">&#160;&#160;fice-[]materials/</tspan>
 <tspan x="0" dy="1.2em"> []</tspan>
-<tspan x="0" dy="1.2em">[9</tspan>
+<tspan x="0" dy="1.2em">[7</tspan>
 <tspan x="0" dy="1.2em">]</tspan>
-<tspan x="0" dy="1.2em">) [13]</tspan>
-<tspan x="0" dy="1.2em">[14</tspan>
-<tspan x="0" dy="1.2em">] [15</tspan>
+<tspan x="0" dy="1.2em">) [12]</tspan>
+<tspan x="0" dy="1.2em">[13</tspan>
+<tspan x="0" dy="1.2em">] [14</tspan>
 <tspan x="0" dy="1.2em">]</tspan>
+<tspan x="0" dy="1.2em">] [16</tspan>
 <tspan x="0" dy="1.2em">]</tspan>
 <tspan x="0" dy="1.2em">Chapter 1.</tspan>
 <tspan x="0" dy="1.2em">Underfull \vbox (badness 10000) has occurred while \output is active []</tspan>
-<tspan x="0" dy="1.2em"> [17</tspan>
-<tspan x="0" dy="1.2em">]</tspan>
+<tspan x="0" dy="1.2em"> [17]</tspan>
 <tspan x="0" dy="1.2em">Overfull \hbox (0.90422pt too wide) in paragraph at lines 68--69</tspan>
 <tspan x="0" dy="1.2em">\TU/lmr/m/n/12 you can never prove that the math-e-mat-i-cal sys-tem youM-bM-^@M-^Yre </tspan>
 <tspan x="0" dy="1.2em">&#160;&#160;work-ing in is cor-rect [[]Raa20[]],</tspan>
@@ -947,6 +931,277 @@
 <tspan x="0" dy="1.2em">[103]</tspan>
 <tspan x="0" dy="1.2em">) [104]</tspan>
 <tspan x="0" dy="1.2em">Chapter 5.</tspan>
+<tspan x="0" dy="1.2em">[105</tspan>
+<tspan x="0" dy="1.2em">]</tspan>
+<tspan x="0" dy="1.2em">Underfull \vbox (badness 10000) has occurred while \output is active []</tspan>
+<tspan x="0" dy="1.2em"> [106]</tspan>
+<tspan x="0" dy="1.2em">Overfull \hbox (3.08109pt too wide) in paragraph at lines 210--216</tspan>
+<tspan x="0" dy="1.2em">[]\TU/lmr/m/n/12 Across a va-ri-ety of proof as-sis-tants, sim-pli-fi-ca-tion </tspan>
+<tspan x="0" dy="1.2em">&#160;&#160;of func-tional pro-grams is a workhorse</tspan>
+<tspan x="0" dy="1.2em"> []</tspan>
+<tspan x="0" dy="1.2em">[111]</tspan>
+<tspan x="0" dy="1.2em">Underfull \vbox (badness 10000) has occurred while \output is active []</tspan>
+<tspan x="0" dy="1.2em"> [112] </tspan>
+<tspan x="0" dy="1.2em">&#160;&#160;[113&lt;./rewriting/trust1.pdf&gt;&lt;./rewriting/trust2.pdf&gt;&lt;./rewriting/trust3.pdf&gt;&lt;./r</tspan>
+<tspan x="0" dy="1.2em">&#160;&#160;ewriting/trust4.pdf&gt;]</tspan>
+<tspan x="0" dy="1.2em">Overfull \hbox (3.11697pt too wide) in paragraph at lines 289--292</tspan>
+<tspan x="0" dy="1.2em">[]\TU/lmr/m/n/12 The state-ments of rewrite rules are rei-fied, and we prove </tspan>
+<tspan x="0" dy="1.2em">&#160;&#160;sound-ness and syntactic-</tspan>
+<tspan x="0" dy="1.2em"> []</tspan>
+<tspan x="0" dy="1.2em">[114]</tspan>
+<tspan x="0" dy="1.2em">Overfull \hbox (0.87762pt too wide) in paragraph at lines 303--306</tspan>
+<tspan x="0" dy="1.2em">\TU/lmr/m/n/12 plied to the same rei-fied term. We use CoqM-bM-^@M-^Ys built-in full </tspan>
+<tspan x="0" dy="1.2em">&#160;&#160;re-duc-tion (\remove@tlig vm[]compute\TU/lmr/m/n/12 )</tspan>
+<tspan x="0" dy="1.2em"> []</tspan>
+<tspan x="0" dy="1.2em">Overfull \hbox (6.68578pt too wide) in paragraph at lines 313--314</tspan>
+<tspan x="0" dy="1.2em">\TU/lmr/m/n/12 We now si-mul-ta-ne-ously re-view the ap-proach of Aehlig, </tspan>
+<tspan x="0" dy="1.2em">&#160;&#160;Haft-mann, and Nip-kow [[]AHN08[]]</tspan>
+<tspan x="0" dy="1.2em"> []</tspan>
+<tspan x="0" dy="1.2em">[115]</tspan>
+<tspan x="0" dy="1.2em">Overfull \hbox (2.68085pt too wide) in paragraph at lines 354--356</tspan>
+<tspan x="0" dy="1.2em">[]\remove@tlig Switch icases app[]case default\TU/lmr/m/n/12 : With the first </tspan>
+<tspan x="0" dy="1.2em">&#160;&#160;el-e-ment of the vec-tor, match</tspan>
+<tspan x="0" dy="1.2em"> []</tspan>
+<tspan x="0" dy="1.2em">Overfull \hbox (12.05663pt too wide) in paragraph at lines 356--357</tspan>
+<tspan x="0" dy="1.2em">[]\remove@tlig Swap i cont\TU/lmr/m/n/12 : Swap the first el-e-ment of the </tspan>
+<tspan x="0" dy="1.2em">&#160;&#160;vec-tor with the $\TU/latinmodern-math.otf(1)/m/n/12 M-pM-^]M-^QM-^V[]$ \TU/lmr/m/n/12 </tspan>
+<tspan x="0" dy="1.2em">&#160;&#160;el-e-ment (0-indexed)</tspan>
+<tspan x="0" dy="1.2em"> []</tspan>
+<tspan x="0" dy="1.2em">[116] &lt;xymatrix 6x3 441&gt;</tspan>
+<tspan x="0" dy="1.2em">Underfull \vbox (badness 10000) has occurred while \output is active []</tspan>
+<tspan x="0" dy="1.2em"> [118]</tspan>
+<tspan x="0" dy="1.2em">Underfull \vbox (badness 10000) has occurred while \output is active []</tspan>
+<tspan x="0" dy="1.2em"> [119]</tspan>
+<tspan x="0" dy="1.2em">Underfull \vbox (badness 1997) has occurred while \output is active []</tspan>
+<tspan x="0" dy="1.2em"> [122]</tspan>
+<tspan x="0" dy="1.2em">Underfull \vbox (badness 1590) has occurred while \output is active []</tspan>
+<tspan x="0" dy="1.2em"> [125] (./rewriting/perf-UnderLetsPlus0-cbv;rewrite-strat(bottomup).txt) </tspan>
+<tspan x="0" dy="1.2em">&#160;&#160;(./rewriting/perf-UnderLetsPlus0-cbv;rewrite-strat(topdown).txt) </tspan>
+<tspan x="0" dy="1.2em">&#160;&#160;(./rewriting/perf-UnderLetsPlus0-cbv;setoid-rewrite.txt) </tspan>
+<tspan x="0" dy="1.2em">&#160;&#160;(./rewriting/perf-UnderLetsPlus0-Rewrite-for.txt) </tspan>
+<tspan x="0" dy="1.2em">&#160;&#160;(./rewriting/perf-UnderLetsPlus0-rewriting.txt)</tspan>
+<tspan x="0" dy="1.2em">Underfull \hbox (badness 10000) in paragraph at lines 766--771</tspan>
+<tspan x="0" dy="1.2em">[][] [][]</tspan>
+<tspan x="0" dy="1.2em"> []</tspan>
+<tspan x="0" dy="1.2em">Underfull \vbox (badness 2443) has occurred while \output is active []</tspan>
+<tspan x="0" dy="1.2em"> [130] [131]</tspan>
+<tspan x="0" dy="1.2em">])</tspan>
+<tspan x="0" dy="1.2em">Underfull \hbox (badness 10000) in paragraph at lines 1027--1030</tspan>
+<tspan x="0" dy="1.2em">[][] [][]</tspan>
+<tspan x="0" dy="1.2em"> []</tspan>
+<tspan x="0" dy="1.2em">Underfull \hbox (badness 10000) in paragraph at lines 1061--1065</tspan>
+<tspan x="0" dy="1.2em">[][] [][]</tspan>
+<tspan x="0" dy="1.2em"> []</tspan>
+<tspan x="0" dy="1.2em">Overfull \hbox (66.77979pt too wide) in paragraph at lines 1158--1162</tspan>
+<tspan x="0" dy="1.2em">\remove@tlig (cbn [list[]rect]; (rewrite[]strat (try repeat bottomup hints </tspan>
+<tspan x="0" dy="1.2em">&#160;&#160;db1)); (rewrite[]strat</tspan>
+<tspan x="0" dy="1.2em"> []</tspan>
+<tspan x="0" dy="1.2em">Overfull \hbox (3.3011pt too wide) in paragraph at lines 1158--1162</tspan>
+<tspan x="0" dy="1.2em">\remove@tlig (try repeat bottomup hints db2)))\TU/lmr/m/n/12 . Note that the </tspan>
+<tspan x="0" dy="1.2em">&#160;&#160;rewrit-ing with \remove@tlig lift_let_cons</tspan>
+<tspan x="0" dy="1.2em"> []</tspan>
+<tspan x="0" dy="1.2em">[138] (./rewriting/perf-SieveOfEratosthenes-simpl.txt) </tspan>
+<tspan x="0" dy="1.2em">&#160;&#160;(./rewriting/perf-SieveOfEratosthenes-cbn.txt) </tspan>
+<tspan x="0" dy="1.2em">&#160;&#160;(./rewriting/perf-SieveOfEratosthenes-lazy.txt) </tspan>
+<tspan x="0" dy="1.2em">&#160;&#160;(./rewriting/perf-SieveOfEratosthenes-Rewrite-for.txt) </tspan>
+<tspan x="0" dy="1.2em">&#160;&#160;(./rewriting/perf-SieveOfEratosthenes-rewriting.txt) </tspan>
+<tspan x="0" dy="1.2em">&#160;&#160;(./rewriting/perf-SieveOfEratosthenes-cbv.txt) </tspan>
+<tspan x="0" dy="1.2em">&#160;&#160;(./rewriting/perf-SieveOfEratosthenes-vm-compute.txt) </tspan>
+<tspan x="0" dy="1.2em">&#160;&#160;(./rewriting/perf-SieveOfEratosthenes-native(2)(real).txt)</tspan>
+<tspan x="0" dy="1.2em">Underfull \hbox (badness 1484) in paragraph at lines 1353--1353</tspan>
+<tspan x="0" dy="1.2em">\TU/cmr/m/n/10 mod-u-lus grows (only word-by-word Mont-</tspan>
+<tspan x="0" dy="1.2em"> []</tspan>
+<tspan x="0" dy="1.2em">Underfull \hbox (badness 1484) in paragraph at lines 1354--1354</tspan>
+<tspan x="0" dy="1.2em">\TU/cmr/m/n/10 mod-u-lus grows (only word-by-word Mont-</tspan>
+<tspan x="0" dy="1.2em"> []</tspan>
+<tspan x="0" dy="1.2em">Underfull \vbox (badness 1082) has occurred while \output is active []</tspan>
+<tspan x="0" dy="1.2em"> [142] </tspan>
+<tspan x="0" dy="1.2em">&#160;&#160;[143&lt;./jgross-thesis-rewriting-figure19.pdf&gt;&lt;./jgross-thesis-rewriting-figure20.</tspan>
+<tspan x="0" dy="1.2em">&#160;&#160;pdf&gt;&lt;./jgross-thesis-rewriting-figure21.pdf&gt;&lt;./jgross-thesis-rewriting-figure22.</tspan>
+<tspan x="0" dy="1.2em">&#160;&#160;pdf&gt;]</tspan>
+<tspan x="0" dy="1.2em">Overfull \hbox (59.4558pt too wide) in paragraph at lines 1372--1374</tspan>
+<tspan x="0" dy="1.2em">[]\TU/lmr/m/n/12 We have at-tached this ex-per-i-ment us-ing []\remove@tlig </tspan>
+<tspan x="0" dy="1.2em">&#160;&#160;rewrite_strat \TU/lmr/m/n/12 as []\remove@tlig </tspan>
+<tspan x="0" dy="1.2em">&#160;&#160;fiat_crypto_via_rewrite_strat.v\TU/lmr/m/n/12 ,</tspan>
+<tspan x="0" dy="1.2em"> []</tspan>
+<tspan x="0" dy="1.2em">Overfull \hbox (7.33438pt too wide) in paragraph at lines 1378--1382</tspan>
+<tspan x="0" dy="1.2em">\TU/lmr/m/n/12 ra-phy code as a sup-ple-ment as well. We used Lean ver-sion </tspan>
+<tspan x="0" dy="1.2em">&#160;&#160;3.4.2, com-mit cbd2b6686ddb,</tspan>
+<tspan x="0" dy="1.2em"> []</tspan>
+<tspan x="0" dy="1.2em">Underfull \vbox (badness 5036) has occurred while \output is active []</tspan>
+<tspan x="0" dy="1.2em"> [144]</tspan>
+<tspan x="0" dy="1.2em">Overfull \hbox (26.96805pt too wide) in paragraph at lines 1396--1399</tspan>
+<tspan x="0" dy="1.2em">[]\TU/lmr/m/n/12 The per-for-mance data for the mi-crobench-marks can be </tspan>
+<tspan x="0" dy="1.2em">&#160;&#160;re-built us-ing \remove@tlig make perf-SuperFast</tspan>
+<tspan x="0" dy="1.2em"> []</tspan>
+<tspan x="0" dy="1.2em">Overfull \hbox (6.50948pt too wide) in paragraph at lines 1400--1405</tspan>
+<tspan x="0" dy="1.2em"> []</tspan>
+<tspan x="0" dy="1.2em">Overfull \hbox (14.91994pt too wide) in paragraph at lines 1408--1412</tspan>
+<tspan x="0" dy="1.2em">[]\TU/lmr/m/n/12 The rewrite rules used in Fiat Cryp-tog-ra-phy are de-fined </tspan>
+<tspan x="0" dy="1.2em">&#160;&#160;in \remove@tlig fiat-crypto/src/Rewriter/</tspan>
+<tspan x="0" dy="1.2em"> []</tspan>
+<tspan x="0" dy="1.2em">Overfull \hbox (35.70116pt too wide) in paragraph at lines 1461--1465</tspan>
+<tspan x="0" dy="1.2em">\TU/lmr/m/n/12 file \remove@tlig </tspan>
+<tspan x="0" dy="1.2em">&#160;&#160;perf[]word[]by[]word[]montgomery.v\TU/lmr/m/n/12 , and in the source files </tspan>
+<tspan x="0" dy="1.2em">&#160;&#160;\remove@tlig saturated[]solinas.v\TU/lmr/m/n/12 ,</tspan>
+<tspan x="0" dy="1.2em"> []</tspan>
+<tspan x="0" dy="1.2em">Overfull \hbox (224.22025pt too wide) in paragraph at lines 1467--1470</tspan>
+<tspan x="0" dy="1.2em">\remove@tlig </tspan>
+<tspan x="0" dy="1.2em">&#160;&#160;fiat-crypto/src/Rewriter/PerfTesting/Specific/generated/p2384m2128m296p232m1[][]</tspan>
+<tspan x="0" dy="1.2em">&#160;&#160;*[][]word[]by[]word[]montgomery[]*\TU/lmr/m/n/12 .</tspan>
+<tspan x="0" dy="1.2em"> []</tspan>
+<tspan x="0" dy="1.2em">Overfull \hbox (2.49203pt too wide) in paragraph at lines 1475--1477</tspan>
+<tspan x="0" dy="1.2em">\TU/lmr/m/n/12 These tac-tics bot-tom out in tac-tics de-fined at the bot-tom </tspan>
+<tspan x="0" dy="1.2em">&#160;&#160;of \remove@tlig rewriter/src/Rewriter/</tspan>
+<tspan x="0" dy="1.2em"> []</tspan>
+<tspan x="0" dy="1.2em">Overfull \hbox (56.50882pt too wide) in paragraph at lines 1486--1490</tspan>
+<tspan x="0" dy="1.2em">\remove@tlig src/Rewriter/Util/plugins/rewriter[]build.ml \TU/lmr/m/n/12 </tspan>
+<tspan x="0" dy="1.2em">&#160;&#160;in-vok-ing tac-tics, like \remove@tlig make[]base[]elim</tspan>
+<tspan x="0" dy="1.2em"> []</tspan>
+<tspan x="0" dy="1.2em">Overfull \hbox (7.72444pt too wide) in paragraph at lines 1486--1490</tspan>
+<tspan x="0" dy="1.2em">\TU/lmr/m/n/12 in \remove@tlig </tspan>
+<tspan x="0" dy="1.2em">&#160;&#160;rewriter/src/Rewriter/Language/IdentifiersBasicGenerate.v\TU/lmr/m/n/12 , on </tspan>
+<tspan x="0" dy="1.2em">&#160;&#160;goals</tspan>
+<tspan x="0" dy="1.2em"> []</tspan>
+<tspan x="0" dy="1.2em">Overfull \hbox (76.41965pt too wide) in paragraph at lines 1486--1490</tspan>
+<tspan x="0" dy="1.2em">\TU/lmr/m/n/12 headed by con-stants from \remove@tlig </tspan>
+<tspan x="0" dy="1.2em">&#160;&#160;rewriter/src/Rewriter/Language/IdentifiersBasicLibrary.v\TU/lmr/m/n/12 ,</tspan>
+<tspan x="0" dy="1.2em"> []</tspan>
+<tspan x="0" dy="1.2em">[147]</tspan>
+<tspan x="0" dy="1.2em">Overfull \hbox (41.48393pt too wide) in paragraph at lines 1490--1494</tspan>
+<tspan x="0" dy="1.2em">\remove@tlig src/Rewriter/Util/plugins/rewriter[]build.ml \TU/lmr/m/n/12 which </tspan>
+<tspan x="0" dy="1.2em">&#160;&#160;in-vokes \remove@tlig make[]rewriter[]all</tspan>
+<tspan x="0" dy="1.2em"> []</tspan>
+<tspan x="0" dy="1.2em">Overfull \hbox (10.06763pt too wide) in paragraph at lines 1490--1494</tspan>
+<tspan x="0" dy="1.2em">\TU/lmr/m/n/12 file \remove@tlig </tspan>
+<tspan x="0" dy="1.2em">&#160;&#160;rewriter/src/Rewriter/Language/IdentifiersBasicGenerate.v \TU/lmr/m/n/12 and </tspan>
+<tspan x="0" dy="1.2em">&#160;&#160;also</tspan>
+<tspan x="0" dy="1.2em"> []</tspan>
+<tspan x="0" dy="1.2em">Overfull \hbox (68.90768pt too wide) in paragraph at lines 1490--1494</tspan>
+<tspan x="0" dy="1.2em">\TU/lmr/m/n/12 in the Coq source file found in \remove@tlig </tspan>
+<tspan x="0" dy="1.2em">&#160;&#160;rewriter/src/Rewriter/Language/IdentifiersGenerate.v</tspan>
+<tspan x="0" dy="1.2em"> []</tspan>
+<tspan x="0" dy="1.2em">Overfull \hbox (3.11697pt too wide) in paragraph at lines 1494--1498</tspan>
+<tspan x="0" dy="1.2em">[]\TU/lmr/m/n/12 The state-ments of rewrite rules are rei-fied, and we prove </tspan>
+<tspan x="0" dy="1.2em">&#160;&#160;sound-ness and syntactic-</tspan>
+<tspan x="0" dy="1.2em"> []</tspan>
+<tspan x="0" dy="1.2em">Overfull \hbox (13.24908pt too wide) in paragraph at lines 1494--1498</tspan>
+<tspan x="0" dy="1.2em">\remove@tlig Build[]Rewriter \TU/lmr/m/n/12 from \remove@tlig </tspan>
+<tspan x="0" dy="1.2em">&#160;&#160;rewriter/src/Rewriter/Rewriter/AllTactics.v\TU/lmr/m/n/12 . Reifi-</tspan>
+<tspan x="0" dy="1.2em"> []</tspan>
+<tspan x="0" dy="1.2em">Overfull \hbox (144.32993pt too wide) in paragraph at lines 1498--1500</tspan>
+<tspan x="0" dy="1.2em">\TU/lmr/m/n/12 passed by name to the rewrit-ing tac-tic. This step is also </tspan>
+<tspan x="0" dy="1.2em">&#160;&#160;per-formed by \remove@tlig make[]rewriter[]of[]scraped[]and[]ind</tspan>
+<tspan x="0" dy="1.2em"> []</tspan>
+<tspan x="0" dy="1.2em">Overfull \hbox (4.5518pt too wide) in paragraph at lines 1498--1500</tspan>
+<tspan x="0" dy="1.2em">\TU/lmr/m/n/12 in the source file \remove@tlig </tspan>
+<tspan x="0" dy="1.2em">&#160;&#160;rewriter/src/Rewriter/Util/plugins/rewriter[]build.ml\TU/lmr/m/n/12 . </tspan>
+<tspan x="0" dy="1.2em"> []</tspan>
+<tspan x="0" dy="1.2em">[148]</tspan>
+<tspan x="0" dy="1.2em">Overfull \hbox (0.87762pt too wide) in paragraph at lines 1512--1516</tspan>
+<tspan x="0" dy="1.2em">\TU/lmr/m/n/12 plied to the same rei-fied term. We use CoqM-bM-^@M-^Ys built-in full </tspan>
+<tspan x="0" dy="1.2em">&#160;&#160;re-duc-tion (\remove@tlig vm[]compute\TU/lmr/m/n/12 )</tspan>
+<tspan x="0" dy="1.2em"> []</tspan>
+<tspan x="0" dy="1.2em">Overfull \hbox (17.04411pt too wide) in paragraph at lines 1519--1520</tspan>
+<tspan x="0" dy="1.2em">\TU/lmr/m/n/12 These steps are put to-gether in the tac-tic \remove@tlig </tspan>
+<tspan x="0" dy="1.2em">&#160;&#160;Rewrite[]for[]gen \TU/lmr/m/n/12 in \remove@tlig rewriter/src/Rewriter/</tspan>
+<tspan x="0" dy="1.2em"> []</tspan>
+<tspan x="0" dy="1.2em">[149]</tspan>
+<tspan x="0" dy="1.2em">Overfull \hbox (1.652pt too wide) in paragraph at lines 1555--1558</tspan>
+<tspan x="0" dy="1.2em">\remove@tlig open[]constr:([]) in replace &lt;some term&gt; with v \TU/lmr/m/n/12 </tspan>
+<tspan x="0" dy="1.2em">&#160;&#160;and then rewrit-ing in the</tspan>
+<tspan x="0" dy="1.2em"> []</tspan>
+<tspan x="0" dy="1.2em">[150]</tspan>
+<tspan x="0" dy="1.2em">Overfull \hbox (20.94002pt too wide) in paragraph at lines 1588--1592</tspan>
+<tspan x="0" dy="1.2em">\remove@tlig InterpProofs.v \TU/lmr/m/n/12 and the the-o-rem \remove@tlig </tspan>
+<tspan x="0" dy="1.2em">&#160;&#160;wf[]eval[]rewrite[]rules \TU/lmr/m/n/12 in \remove@tlig rewriter/src/Rewriter/</tspan>
+<tspan x="0" dy="1.2em"> []</tspan>
+<tspan x="0" dy="1.2em">Overfull \hbox (42.54831pt too wide) in paragraph at lines 1593--1596</tspan>
+<tspan x="0" dy="1.2em">[]\TU/lmr/m/n/12 The third step of rewrit-ing with a given rule is per-formed </tspan>
+<tspan x="0" dy="1.2em">&#160;&#160;by the def-i-ni-tion \remove@tlig rewrite[]with[]rule</tspan>
+<tspan x="0" dy="1.2em"> []</tspan>
+<tspan x="0" dy="1.2em">Overfull \hbox (109.94533pt too wide) in paragraph at lines 1593--1596</tspan>
+<tspan x="0" dy="1.2em">\TU/lmr/m/n/12 in \remove@tlig </tspan>
+<tspan x="0" dy="1.2em">&#160;&#160;rewriter/src/Rewriter/Rewriter/Rewriter.v\TU/lmr/m/n/12 . The cor-rect-ness </tspan>
+<tspan x="0" dy="1.2em">&#160;&#160;proof is \remove@tlig interp[]rewrite[]with[]rule</tspan>
+<tspan x="0" dy="1.2em"> []</tspan>
+<tspan x="0" dy="1.2em">Overfull \hbox (19.42511pt too wide) in paragraph at lines 1593--1596</tspan>
+<tspan x="0" dy="1.2em">\TU/lmr/m/n/12 in \remove@tlig </tspan>
+<tspan x="0" dy="1.2em">&#160;&#160;rewriter/src/Rewriter/Rewriter/InterpProofs.v\TU/lmr/m/n/12 . Note that the </tspan>
+<tspan x="0" dy="1.2em">&#160;&#160;well-formedness-</tspan>
+<tspan x="0" dy="1.2em"> []</tspan>
+<tspan x="0" dy="1.2em">Overfull \hbox (0.18405pt too wide) in paragraph at lines 1593--1596</tspan>
+<tspan x="0" dy="1.2em">\TU/lmr/m/n/12 preservation proof for this def-i-ni-tion in in-lined into the </tspan>
+<tspan x="0" dy="1.2em">&#160;&#160;proof []\remove@tlig wf_eval_rewrite_rules</tspan>
+<tspan x="0" dy="1.2em"> []</tspan>
+<tspan x="0" dy="1.2em">[151]</tspan>
+<tspan x="0" dy="1.2em">Overfull \hbox (21.50388pt too wide) in paragraph at lines 1597--1598</tspan>
+<tspan x="0" dy="1.2em">[]\TU/lmr/m/n/12 The in-duc-tive de-scrip-tion of de-ci-sion trees is </tspan>
+<tspan x="0" dy="1.2em">&#160;&#160;[]\remove@tlig decision_tree \TU/lmr/m/n/12 in \remove@tlig </tspan>
+<tspan x="0" dy="1.2em">&#160;&#160;rewriter/src/Rewriter/</tspan>
+<tspan x="0" dy="1.2em"> []</tspan>
+<tspan x="0" dy="1.2em">Overfull \hbox (2.9199pt too wide) in paragraph at lines 1599--1604</tspan>
+<tspan x="0" dy="1.2em">[]\TU/lmr/m/n/12 The pat-tern lan-guage is de-fined as the in-duc-tive </tspan>
+<tspan x="0" dy="1.2em">&#160;&#160;[]\remove@tlig pattern \TU/lmr/m/n/12 in \remove@tlig rewriter/src/Rewriter/</tspan>
+<tspan x="0" dy="1.2em"> []</tspan>
+<tspan x="0" dy="1.2em">Overfull \hbox (0.90775pt too wide) in paragraph at lines 1611--1613</tspan>
+<tspan x="0" dy="1.2em">[]\TU/lmr/m/n/12 The func-tions []\remove@tlig reify \TU/lmr/m/n/12 and </tspan>
+<tspan x="0" dy="1.2em">&#160;&#160;[]\remove@tlig reflect \TU/lmr/m/n/12 are de-fined in \remove@tlig </tspan>
+<tspan x="0" dy="1.2em">&#160;&#160;rewriter/src/Rewriter/Rewriter/</tspan>
+<tspan x="0" dy="1.2em"> []</tspan>
+<tspan x="0" dy="1.2em">Overfull \hbox (16.51253pt too wide) in paragraph at lines 1618--1621</tspan>
+<tspan x="0" dy="1.2em">\remove@tlig Rewriter/Language/Language.v\TU/lmr/m/n/12 . The def-i-ni-tion </tspan>
+<tspan x="0" dy="1.2em">&#160;&#160;[]\remove@tlig denoteE \TU/lmr/m/n/12 is []\remove@tlig </tspan>
+<tspan x="0" dy="1.2em">&#160;&#160;expr.interp\TU/lmr/m/n/12 , and []\remove@tlig DenoteE</tspan>
+<tspan x="0" dy="1.2em"> []</tspan>
+<tspan x="0" dy="1.2em">Overfull \hbox (0.69978pt too wide) in paragraph at lines 1622--1629</tspan>
+<tspan x="0" dy="1.2em">\TU/lmr/m/n/12 are de-fined in \remove@tlig </tspan>
+<tspan x="0" dy="1.2em">&#160;&#160;rewriter/src/Rewriter/Rewriter/Rewriter.v \TU/lmr/m/n/12 and share names with</tspan>
+<tspan x="0" dy="1.2em"> []</tspan>
+<tspan x="0" dy="1.2em">[152]</tspan>
+<tspan x="0" dy="1.2em">Overfull \hbox (2.32777pt too wide) in paragraph at lines 1630--1631</tspan>
+<tspan x="0" dy="1.2em">[]\TU/lmr/m/n/12 The cor-rect-ness the-o-rems are []\remove@tlig InterpRewrite </tspan>
+<tspan x="0" dy="1.2em">&#160;&#160;\TU/lmr/m/n/12 in \remove@tlig rewriter/src/Rewriter/Rewriter/</tspan>
+<tspan x="0" dy="1.2em"> []</tspan>
+<tspan x="0" dy="1.2em">Overfull \hbox (58.08812pt too wide) in paragraph at lines 1632--1635</tspan>
+<tspan x="0" dy="1.2em">[]\TU/lmr/m/n/12 Pack-ages con-tain-ing rewrit-ers and their cor-rect-ness </tspan>
+<tspan x="0" dy="1.2em">&#160;&#160;the-o-rems are in the record []\remove@tlig VerifiedRewriter</tspan>
+<tspan x="0" dy="1.2em"> []</tspan>
+<tspan x="0" dy="1.2em">Overfull \hbox (4.51576pt too wide) in paragraph at lines 1632--1635</tspan>
+<tspan x="0" dy="1.2em">\TU/lmr/m/n/12 then passed to the tac-tic []\remove@tlig Rewrite_for_gen </tspan>
+<tspan x="0" dy="1.2em">&#160;&#160;\TU/lmr/m/n/12 from \remove@tlig rewriter/src/Rewriter/Rewriter/</tspan>
+<tspan x="0" dy="1.2em"> []</tspan>
+<tspan x="0" dy="1.2em">Overfull \hbox (13.80391pt too wide) in paragraph at lines 1690--1693</tspan>
+<tspan x="0" dy="1.2em">\TU/lmr/m/n/12 port for the reifi-ca-tion of []\remove@tlig ident.literal </tspan>
+<tspan x="0" dy="1.2em">&#160;&#160;\TU/lmr/m/n/12 (de-fined in the mod-ule []\remove@tlig RewriteRuleNotations</tspan>
+<tspan x="0" dy="1.2em"> []</tspan>
+<tspan x="0" dy="1.2em">Overfull \hbox (3.8532pt too wide) in paragraph at lines 1690--1693</tspan>
+<tspan x="0" dy="1.2em">\TU/lmr/m/n/12 in \remove@tlig </tspan>
+<tspan x="0" dy="1.2em">&#160;&#160;rewriter/src/Rewriter/Language/Pre.v\TU/lmr/m/n/12 ) threaded through-out the </tspan>
+<tspan x="0" dy="1.2em">&#160;&#160;rewriter. The</tspan>
+<tspan x="0" dy="1.2em"> []</tspan>
+<tspan x="0" dy="1.2em">Overfull \hbox (35.80785pt too wide) in paragraph at lines 1696--1697</tspan>
+<tspan x="0" dy="1.2em">\TU/lmr/m/n/12 The abstract-interpretation pass is de-fined in \remove@tlig </tspan>
+<tspan x="0" dy="1.2em">&#160;&#160;fiat-crypto/src/AbstractInterpretation/</tspan>
+<tspan x="0" dy="1.2em"> []</tspan>
+<tspan x="0" dy="1.2em">Overfull \hbox (75.21162pt too wide) in paragraph at lines 1696--1697</tspan>
+<tspan x="0" dy="1.2em">\TU/lmr/m/n/12 tions []\remove@tlig </tspan>
+<tspan x="0" dy="1.2em">&#160;&#160;arith_with_casts_rewrite_rulesT\TU/lmr/m/n/12 , in ad-di-tion to []\remove@tlig </tspan>
+<tspan x="0" dy="1.2em">&#160;&#160;strip_literal_casts_rewrite_rulesT\TU/lmr/m/n/12 ,</tspan>
+<tspan x="0" dy="1.2em"> []</tspan>
+<tspan x="0" dy="1.2em">Overfull \hbox (112.25975pt too wide) in paragraph at lines 1696--1697</tspan>
+<tspan x="0" dy="1.2em">\TU/lmr/m/n/12 in ad-di-tion to []\remove@tlig </tspan>
+<tspan x="0" dy="1.2em">&#160;&#160;fancy_with_casts_rewrite_rulesT\TU/lmr/m/n/12 , and fi-nally in ad-di-tion to </tspan>
+<tspan x="0" dy="1.2em">&#160;&#160;[]\remove@tlig mul_split_rewrite_rulesT\TU/lmr/m/n/12 ,</tspan>
+<tspan x="0" dy="1.2em"> []</tspan>
+<tspan x="0" dy="1.2em">[154]</tspan>
+<tspan x="0" dy="1.2em">Overfull \hbox (33.09628pt too wide) in paragraph at lines 1710--20</tspan>
+<tspan x="0" dy="1.2em">\remove@tlig IdentifiersBasicGENERATED.v\TU/lmr/m/n/12 , \remove@tlig </tspan>
+<tspan x="0" dy="1.2em">&#160;&#160;fiat-crypto/src/Language/IdentifiersGENERATED.v\TU/lmr/m/n/12 ,</tspan>
+<tspan x="0" dy="1.2em"> []</tspan>
+<tspan x="0" dy="1.2em">[155]</tspan>
+<tspan x="0" dy="1.2em">]</tspan>
+<tspan x="0" dy="1.2em">Chapter 6.</tspan>
 <tspan x="0" dy="1.2em">Overfull \hbox (267.79004pt too wide) in paragraph at lines 26--26</tspan>
 <tspan x="0" dy="1.2em">[][][]\TU/cmr/m/n/10 See []\TU/lmtt/m/n/10 </tspan>
 <tspan x="0" dy="1.2em">&#160;&#160;https://github.com/JasonGross/fiat-crypto/blob/3b3e926e4186caa1a4003c81c65dad0a1</tspan>
@@ -956,15 +1211,13 @@
 <tspan x="0" dy="1.2em">\TU/cmr/m/n/10 for the file \TU/lmtt/m/n/10 </tspan>
 <tspan x="0" dy="1.2em">&#160;&#160;src/Experiments/RewriteRulesSimpleNat.v \TU/cmr/m/n/10 from []the branch</tspan>
 <tspan x="0" dy="1.2em"> []</tspan>
-<tspan x="0" dy="1.2em">[105</tspan>
-<tspan x="0" dy="1.2em">]</tspan>
-<tspan x="0" dy="1.2em">[106]</tspan>
+<tspan x="0" dy="1.2em">[157]</tspan>
 <tspan x="0" dy="1.2em">Overfull \hbox (11.81384pt too wide) in paragraph at lines 141--145</tspan>
 <tspan x="0" dy="1.2em">\TU/lmr/m/n/12 The pattern-matching com-pi-la-tion al-go-rithm of Aehlig, </tspan>
 <tspan x="0" dy="1.2em">&#160;&#160;Haft-mann, and Nip-kow [[]AHN08[]]</tspan>
 <tspan x="0" dy="1.2em"> []</tspan>
-<tspan x="0" dy="1.2em">[108]</tspan>
-<tspan x="0" dy="1.2em">[112]</tspan>
+<tspan x="0" dy="1.2em">[160]</tspan>
+<tspan x="0" dy="1.2em">[164]</tspan>
 <tspan x="0" dy="1.2em">Overfull \hbox (2.68085pt too wide) in paragraph at lines 364--366</tspan>
 <tspan x="0" dy="1.2em">[]\remove@tlig Switch icases app[]case default\TU/lmr/m/n/12 : With the first </tspan>
 <tspan x="0" dy="1.2em">&#160;&#160;el-e-ment of the vec-tor, match</tspan>
@@ -974,27 +1227,26 @@
 <tspan x="0" dy="1.2em">&#160;&#160;vec-tor with the $\TU/latinmodern-math.otf(1)/m/n/12 M-pM-^]M-^QM-^V[]$ \TU/lmr/m/n/12 </tspan>
 <tspan x="0" dy="1.2em">&#160;&#160;el-e-ment (0-indexed)</tspan>
 <tspan x="0" dy="1.2em"> []</tspan>
-<tspan x="0" dy="1.2em">[113]</tspan>
+<tspan x="0" dy="1.2em">[165]</tspan>
 <tspan x="0" dy="1.2em">Overfull \hbox (11.81952pt too wide) in paragraph at lines 370--371</tspan>
 <tspan x="0" dy="1.2em">\remove@tlig (d : decision_tree) (ts : \TU/lmtt/b/n/12 list \remove@tlig type) </tspan>
 <tspan x="0" dy="1.2em">&#160;&#160;(es : exprlist ts) (K : exprlist ts</tspan>
 <tspan x="0" dy="1.2em"> []</tspan>
-<tspan x="0" dy="1.2em">[115]</tspan>
-<tspan x="0" dy="1.2em">[116]</tspan>
+<tspan x="0" dy="1.2em">Underfull \vbox (badness 10000) has occurred while \output is active []</tspan>
+<tspan x="0" dy="1.2em"> [167]</tspan>
+<tspan x="0" dy="1.2em">[168]</tspan>
 <tspan x="0" dy="1.2em">Overfull \hbox (13.53455pt too wide) in paragraph at lines 495--495</tspan>
 <tspan x="0" dy="1.2em">[]\TU/lmr/bx/n/17.28 Pat-terns with Type Vari-ables -- The Three Kinds</tspan>
 <tspan x="0" dy="1.2em"> []</tspan>
 <tspan x="0" dy="1.2em">Underfull \vbox (badness 1448) has occurred while \output is active []</tspan>
-<tspan x="0" dy="1.2em"> [119]</tspan>
-<tspan x="0" dy="1.2em">[120]</tspan>
+<tspan x="0" dy="1.2em"> [171]</tspan>
+<tspan x="0" dy="1.2em">[172]</tspan>
 <tspan x="0" dy="1.2em">Underfull \vbox (badness 10000) has occurred while \output is active []</tspan>
-<tspan x="0" dy="1.2em"> [121]</tspan>
+<tspan x="0" dy="1.2em"> [173]</tspan>
 <tspan x="0" dy="1.2em">Overfull \hbox (16.9515pt too wide) in paragraph at lines 627--638</tspan>
 <tspan x="0" dy="1.2em">\remove@tlig List.map f xs \TU/lmr/m/n/12 and \remove@tlig @List.map (option </tspan>
 <tspan x="0" dy="1.2em">&#160;&#160;A) (option B) (option_map f) (List.map</tspan>
 <tspan x="0" dy="1.2em"> []</tspan>
-<tspan x="0" dy="1.2em">Underfull \vbox (badness 1163) has occurred while \output is active []</tspan>
-<tspan x="0" dy="1.2em"> [123]</tspan>
 <tspan x="0" dy="1.2em">Overfull \hbox (1.70361pt too wide) in paragraph at lines 714--718</tspan>
 <tspan x="0" dy="1.2em">\TU/lmtt/b/n/12 list \remove@tlig rawexpr) (d : decision_tree) (K : </tspan>
 <tspan x="0" dy="1.2em">&#160;&#160;|$\TU/latinmodern-math.otf(1)/m/n/12 M-bM-^DM-^U$ |$M-bM-^FM-^R$ \TU/lmtt/b/n/12 list </tspan>
@@ -1005,42 +1257,42 @@
 <tspan x="0" dy="1.2em">[]\TU/lmr/m/n/12 The func-tion that rewrites with a par-tic-u-lar rule re-lies </tspan>
 <tspan x="0" dy="1.2em">&#160;&#160;on the in-vari-ant that \remove@tlig eval_decision_tree</tspan>
 <tspan x="0" dy="1.2em"> []</tspan>
-<tspan x="0" dy="1.2em">[125]</tspan>
-<tspan x="0" dy="1.2em">Underfull \vbox (badness 10000) has occurred while \output is active []</tspan>
-<tspan x="0" dy="1.2em"> [126]</tspan>
+<tspan x="0" dy="1.2em">[178]</tspan>
 <tspan x="0" dy="1.2em">Overfull \hbox (18.97015pt too wide) in paragraph at lines 818--827</tspan>
 <tspan x="0" dy="1.2em">\TU/lmr/m/n/12 sound-ness the-o-rem. In []Sec-tion 4.1.3[][], we called this </tspan>
 <tspan x="0" dy="1.2em">&#160;&#160;the-o-rem \remove@tlig check_is_even_expr_sound\TU/lmr/m/n/12 .</tspan>
 <tspan x="0" dy="1.2em"> []</tspan>
-<tspan x="0" dy="1.2em">[127]</tspan>
+<tspan x="0" dy="1.2em">[179]</tspan>
 <tspan x="0" dy="1.2em">Overfull \hbox (16.44891pt too wide) in paragraph at lines 866--874</tspan>
-<tspan x="0" dy="1.2em">[]\TU/lmtt/b/n/12 wf_rawexpr[] \TU/lmr/m/n/12 In []Sec-tion 5.5[][], we </tspan>
+<tspan x="0" dy="1.2em">[]\TU/lmtt/b/n/12 wf_rawexpr[] \TU/lmr/m/n/12 In []Sec-tion 6.5[][], we </tspan>
 <tspan x="0" dy="1.2em">&#160;&#160;in-tro-duced with-out def-i-ni-tion the four-place \remove@tlig wf_rawexpr</tspan>
 <tspan x="0" dy="1.2em"> []</tspan>
-<tspan x="0" dy="1.2em">[128]</tspan>
-<tspan x="0" dy="1.2em">[130]) [131]</tspan>
+<tspan x="0" dy="1.2em">[180]</tspan>
+<tspan x="0" dy="1.2em">Underfull \vbox (badness 3525) has occurred while \output is active []</tspan>
+<tspan x="0" dy="1.2em"> [181]</tspan>
+<tspan x="0" dy="1.2em">[182]) [183]</tspan>
 <tspan x="0" dy="1.2em">]</tspan>
-<tspan x="0" dy="1.2em">Chapter 6.</tspan>
+<tspan x="0" dy="1.2em">Chapter 7.</tspan>
 <tspan x="0" dy="1.2em">Overfull \hbox (21.18825pt too wide) in paragraph at lines 2--3</tspan>
 <tspan x="0" dy="1.2em">[]\TU/lmr/m/n/12 [\TU/lmr/bx/n/12 TODO: \TU/lmr/m/n/12 in-clude the trick from </tspan>
 <tspan x="0" dy="1.2em">&#160;&#160;https://github.com/-co-q/-co-q/is-sues/5996#issuecomment-</tspan>
 <tspan x="0" dy="1.2em"> []</tspan>
 <tspan x="0" dy="1.2em">Underfull \vbox (badness 1975) has occurred while \output is active []</tspan>
-<tspan x="0" dy="1.2em"> [133] [134]</tspan>
+<tspan x="0" dy="1.2em"> [185] [186]</tspan>
 <tspan x="0" dy="1.2em">Overfull \hbox (12.23604pt too wide) in paragraph at lines 77--77</tspan>
 <tspan x="0" dy="1.2em">[]       \remove@tlig =&gt; check_is_even n[] </tspan>
 <tspan x="0" dy="1.2em"> []</tspan>
 <tspan x="0" dy="1.2em">Underfull \hbox (badness 10000) in paragraph at lines 81--81</tspan>
-<tspan x="0" dy="1.2em">[]\TU/lmr/m/n/12 Fig-ure 6-1: |Even-ness</tspan>
+<tspan x="0" dy="1.2em">[]\TU/lmr/m/n/12 Fig-ure 7-1: |Even-ness</tspan>
 <tspan x="0" dy="1.2em"> []</tspan>
-<tspan x="0" dy="1.2em">[135]</tspan>
+<tspan x="0" dy="1.2em">[187]</tspan>
 <tspan x="0" dy="1.2em">Overfull \hbox (6.05605pt too wide) in paragraph at lines 113--113</tspan>
 <tspan x="0" dy="1.2em">[]\remove@tlig | NatS (x : expr) : expr[] </tspan>
 <tspan x="0" dy="1.2em"> []</tspan>
 <tspan x="0" dy="1.2em">Overfull \hbox (36.95601pt too wide) in paragraph at lines 114--114</tspan>
 <tspan x="0" dy="1.2em">[]\remove@tlig | NatMul (x y : expr) : expr.[] </tspan>
 <tspan x="0" dy="1.2em"> []</tspan>
-<tspan x="0" dy="1.2em">[136]</tspan>
+<tspan x="0" dy="1.2em">[188]</tspan>
 <tspan x="0" dy="1.2em">Overfull \hbox (33.8728pt too wide) in paragraph at lines 152--154</tspan>
 <tspan x="0" dy="1.2em">[]\TU/lmr/m/n/12 Given a tac-tic \remove@tlig Reify \TU/lmr/m/n/12 to pro-duce </tspan>
 <tspan x="0" dy="1.2em">&#160;&#160;a rei-fied term from a []\remove@tlig nat\TU/lmr/m/n/12 , we can time </tspan>
@@ -1051,7 +1303,7 @@
 <tspan x="0" dy="1.2em">&#160;&#160;re-quire prov-ing well-formedness</tspan>
 <tspan x="0" dy="1.2em"> []</tspan>
 <tspan x="0" dy="1.2em">Underfull \vbox (badness 10000) has occurred while \output is active []</tspan>
-<tspan x="0" dy="1.2em"> [137]</tspan>
+<tspan x="0" dy="1.2em"> [189]</tspan>
 <tspan x="0" dy="1.2em">Overfull \hbox (2.08107pt too wide) in paragraph at lines 207--210</tspan>
 <tspan x="0" dy="1.2em">\TU/lmr/m/n/12 canon-i-cal struc-tures [[]GMT16[]], and reification-specific </tspan>
 <tspan x="0" dy="1.2em">&#160;&#160;OCaml plu-g-ins (quote [[]Coq17b[]],</tspan>
@@ -1072,22 +1324,22 @@
 <tspan x="0" dy="1.2em">[]             \remove@tlig constr:(@NatMul v X Y)[] </tspan>
 <tspan x="0" dy="1.2em"> []</tspan>
 <tspan x="0" dy="1.2em">Underfull \hbox (badness 1331) in paragraph at lines 225--225</tspan>
-<tspan x="0" dy="1.2em">[]\TU/lmr/m/n/12 Fig-ure 6-3: |Reifi-ca-tion With-out</tspan>
+<tspan x="0" dy="1.2em">[]\TU/lmr/m/n/12 Fig-ure 7-3: |Reifi-ca-tion With-out</tspan>
 <tspan x="0" dy="1.2em"> []</tspan>
 <tspan x="0" dy="1.2em">Underfull \hbox (badness 1406) in paragraph at lines 228--232</tspan>
 <tspan x="0" dy="1.2em">[][]\TU/lmr/m/n/12 We have made de-tailed walk-throughs and</tspan>
 <tspan x="0" dy="1.2em"> []</tspan>
 <tspan x="0" dy="1.2em">Underfull \vbox (badness 7740) has occurred while \output is active []</tspan>
-<tspan x="0" dy="1.2em"> [138] &lt;xymatrix 3x3 278&gt;</tspan>
+<tspan x="0" dy="1.2em"> [190] &lt;xymatrix 3x3 278&gt;</tspan>
 <tspan x="0" dy="1.2em">Overfull \hbox (6.35478pt too wide) detected at line 255</tspan>
 <tspan x="0" dy="1.2em">[]</tspan>
 <tspan x="0" dy="1.2em"> []</tspan>
 <tspan x="0" dy="1.2em">Overfull \hbox (17.13881pt too wide) detected at line 384</tspan>
 <tspan x="0" dy="1.2em">[]</tspan>
 <tspan x="0" dy="1.2em"> []</tspan>
-<tspan x="0" dy="1.2em">[141] &lt;xymatrix 4x6 538&gt;</tspan>
+<tspan x="0" dy="1.2em">[193] &lt;xymatrix 4x6 538&gt;</tspan>
 <tspan x="0" dy="1.2em">Underfull \vbox (badness 10000) has occurred while \output is active []</tspan>
-<tspan x="0" dy="1.2em"> [142]</tspan>
+<tspan x="0" dy="1.2em"> [194]</tspan>
 <tspan x="0" dy="1.2em">Overfull \hbox (1.34116pt too wide) detected at line 458</tspan>
 <tspan x="0" dy="1.2em"> []$[][] \TU/latinmodern-math.otf(1)/m/n/12 (M-bM-^DM-^U M-bM-^FM-^R M-bM-^DM-^U) (M-pM-^]M-^\M-^FM-pM-^]M-^QM-%. M-pM-^]M-^QM-%) </tspan>
 <tspan x="0" dy="1.2em">&#160;&#160;(M-pM-^]M-^\M-^FM-pM-^]M-^QM-^[[]. M-pM-^]M-^\M-^F[][]. M-pM-^]M-^\M-^FM-pM-^]M-^QM-%. []M-pM-^]M-^QM-%[] M-bM-^HM-6= M-pM-^]M-^QM-% M-CM-^W M-pM-^]M-^QM-%[][][] M-pM-^]M-^QM-%[])[] 1 </tspan>
@@ -1104,54 +1356,54 @@
 <tspan x="0" dy="1.2em">\TU/lmr/m/n/12 The syntax-tree datatype used in this ex-am-ple can be found in </tspan>
 <tspan x="0" dy="1.2em">&#160;&#160;\remove@tlig ExampleMoreParametricity.v\TU/lmr/m/n/12 . </tspan>
 <tspan x="0" dy="1.2em"> []</tspan>
-<tspan x="0" dy="1.2em">[145]</tspan>
+<tspan x="0" dy="1.2em">[197]</tspan>
 <tspan x="0" dy="1.2em">Overfull \hbox (21.93007pt too wide) detected at line 651</tspan>
 <tspan x="0" dy="1.2em">[]</tspan>
 <tspan x="0" dy="1.2em"> []</tspan>
 <tspan x="0" dy="1.2em">Underfull \hbox (badness 1189) in paragraph at lines 655--661</tspan>
 <tspan x="0" dy="1.2em">\TU/lmr/m/n/12 the as-so-ci-ated di-a-gram, from []Fig-</tspan>
 <tspan x="0" dy="1.2em"> []</tspan>
-<tspan x="0" dy="1.2em">[147]</tspan>
+<tspan x="0" dy="1.2em">[199]</tspan>
 <tspan x="0" dy="1.2em">Underfull \vbox (badness 10000) has occurred while \output is active []</tspan>
 <tspan x="0" dy="1.2em">]</tspan>
-<tspan x="0" dy="1.2em">Chapter 7.</tspan>
+<tspan x="0" dy="1.2em">Chapter 8.</tspan>
 <tspan x="0" dy="1.2em">Underfull \vbox (badness 10000) has occurred while \output is active []</tspan>
-<tspan x="0" dy="1.2em"> [151</tspan>
+<tspan x="0" dy="1.2em"> [203</tspan>
 <tspan x="0" dy="1.2em">]</tspan>
-<tspan x="0" dy="1.2em">[152]</tspan>
+<tspan x="0" dy="1.2em">[204]</tspan>
 <tspan x="0" dy="1.2em">Underfull \vbox (badness 10000) has occurred while \output is active []</tspan>
-<tspan x="0" dy="1.2em"> [153]</tspan>
-<tspan x="0" dy="1.2em">[154]</tspan>
+<tspan x="0" dy="1.2em"> [205]</tspan>
+<tspan x="0" dy="1.2em">[206]</tspan>
 <tspan x="0" dy="1.2em">Overfull \hbox (13.87231pt too wide) in paragraph at lines 160--161</tspan>
 <tspan x="0" dy="1.2em">[]\TU/lmr/m/n/12 Note that this is a spe-cific in-stance of a more gen-eral </tspan>
 <tspan x="0" dy="1.2em">&#160;&#160;the-ory of im-plicit ar-gu-ments [[]Miq01[];</tspan>
 <tspan x="0" dy="1.2em"> []</tspan>
-<tspan x="0" dy="1.2em">[155]</tspan>
+<tspan x="0" dy="1.2em">[207]</tspan>
 <tspan x="0" dy="1.2em">Overfull \hbox (6.86827pt too wide) in paragraph at lines 168--170</tspan>
 <tspan x="0" dy="1.2em">\TU/lmr/m/n/12 named con-texts?][] [][\TU/lmr/bx/n/12 TODO: \TU/lmr/m/n/12 </tspan>
 <tspan x="0" dy="1.2em">&#160;&#160;should I talk about https://github.com/-co-q/-co-q/pull/6506</tspan>
 <tspan x="0" dy="1.2em"> []</tspan>
 <tspan x="0" dy="1.2em">Underfull \vbox (badness 2005) has occurred while \output is active []</tspan>
-<tspan x="0" dy="1.2em"> [156]</tspan>
-<tspan x="0" dy="1.2em">[157]</tspan>
+<tspan x="0" dy="1.2em"> [208]</tspan>
+<tspan x="0" dy="1.2em">[209]</tspan>
 <tspan x="0" dy="1.2em">]</tspan>
 <tspan x="0" dy="1.2em">Overfull \hbox (6.4152pt too wide) in paragraph at lines 288--288</tspan>
 <tspan x="0" dy="1.2em">[]\TU/lmr/bx/n/17.28 Performance-Enhancing Ad-vance-ments in Type</tspan>
 <tspan x="0" dy="1.2em"> []</tspan>
 <tspan x="0" dy="1.2em">Underfull \vbox (badness 10000) has occurred while \output is active []</tspan>
-<tspan x="0" dy="1.2em"> [159]</tspan>
-<tspan x="0" dy="1.2em">[160]</tspan>
+<tspan x="0" dy="1.2em"> [211]</tspan>
+<tspan x="0" dy="1.2em">[212]</tspan>
 <tspan x="0" dy="1.2em">Underfull \vbox (badness 1062) has occurred while \output is active []</tspan>
-<tspan x="0" dy="1.2em"> [162]</tspan>
+<tspan x="0" dy="1.2em"> [214]</tspan>
 <tspan x="0" dy="1.2em">]</tspan>
-<tspan x="0" dy="1.2em">Chapter 8.</tspan>
+<tspan x="0" dy="1.2em">Chapter 9.</tspan>
 <tspan x="0" dy="1.2em">Overfull \hbox (17.72023pt too wide) in paragraph at lines 4--7</tspan>
 <tspan x="0" dy="1.2em">[]\TU/lmr/m/n/12 We spent []Part I[][] map-ping out the land-scape of the </tspan>
 <tspan x="0" dy="1.2em">&#160;&#160;prob-lem of per-for-mance in dependently-</tspan>
 <tspan x="0" dy="1.2em"> []</tspan>
 <tspan x="0" dy="1.2em">Underfull \vbox (badness 10000) has occurred while \output is active []</tspan>
-<tspan x="0" dy="1.2em"> [165]</tspan>
-<tspan x="0" dy="1.2em">) [167])</tspan>
+<tspan x="0" dy="1.2em"> [217]</tspan>
+<tspan x="0" dy="1.2em">) [219])</tspan>
 <tspan x="0" dy="1.2em">]</tspan>
 <tspan x="0" dy="1.2em">Overfull \hbox (6.64615pt too wide) in paragraph at lines 9--9</tspan>
 <tspan x="0" dy="1.2em">\TU/lmr/m/sc/12 url\TU/lmr/m/n/12 : []$\remove@tlig http : / / mathoverflow . </tspan>
@@ -1161,7 +1413,7 @@
 <tspan x="0" dy="1.2em">[]\TU/lmr/m/it/12 Ad-joint func-tors: For-mal def-i-ni-tions: Def-i-ni-tion </tspan>
 <tspan x="0" dy="1.2em">&#160;&#160;via uni-ver-sal mor-phisms\TU/lmr/m/n/12 .</tspan>
 <tspan x="0" dy="1.2em"> []</tspan>
-<tspan x="0" dy="1.2em">[169]</tspan>
+<tspan x="0" dy="1.2em">[221]</tspan>
 <tspan x="0" dy="1.2em">Overfull \hbox (54.12831pt too wide) in paragraph at lines 9--9</tspan>
 <tspan x="0" dy="1.2em">\TU/lmr/m/n/12 1995. \TU/lmr/m/sc/12 doi\TU/lmr/m/n/12 : []$\remove@tlig 10 . </tspan>
 <tspan x="0" dy="1.2em">&#160;&#160;1017 / s0956796800001994$[]\TU/lmr/m/n/12 . \TU/lmr/m/sc/12 url\TU/lmr/m/n/12 : </tspan>
@@ -1172,7 +1424,7 @@
 <tspan x="0" dy="1.2em">&#160;&#160;. \TU/lmr/m/sc/12 url\TU/lmr/m/n/12 : []$\remove@tlig https : / / github . com </tspan>
 <tspan x="0" dy="1.2em">&#160;&#160;/ benediktahrens /</tspan>
 <tspan x="0" dy="1.2em"> []</tspan>
-<tspan x="0" dy="1.2em">[170]</tspan>
+<tspan x="0" dy="1.2em">[222]</tspan>
 <tspan x="0" dy="1.2em">Overfull \hbox (9.42088pt too wide) in paragraph at lines 9--9</tspan>
 <tspan x="0" dy="1.2em">\TU/lmr/m/n/12 Stokkermans. Berlin, Hei-del-berg: Springer Berlin </tspan>
 <tspan x="0" dy="1.2em">&#160;&#160;Hei-del-berg, 2011, pp. 64M-bM-^@M-^S</tspan>
@@ -1181,13 +1433,13 @@
 <tspan x="0" dy="1.2em">[]\TU/lmr/m/n/12 Steve Awodey. \TU/lmr/m/it/12 Cat-e-gory </tspan>
 <tspan x="0" dy="1.2em">&#160;&#160;the-ory\TU/lmr/m/n/12 . Sec-ond Edi-tion. Ox-ford Uni-ver-sity Press.</tspan>
 <tspan x="0" dy="1.2em"> []</tspan>
-<tspan x="0" dy="1.2em">[171]</tspan>
+<tspan x="0" dy="1.2em">[223]</tspan>
 <tspan x="0" dy="1.2em">Overfull \hbox (12.51395pt too wide) in paragraph at lines 9--9</tspan>
 <tspan x="0" dy="1.2em">\remove@tlig 1007 / s10817 - 011 - 9219 - 0$[]\TU/lmr/m/n/12 . \TU/lmr/m/sc/12 </tspan>
 <tspan x="0" dy="1.2em">&#160;&#160;url\TU/lmr/m/n/12 : []$\remove@tlig https : / / sf . snu . ac . kr / </tspan>
 <tspan x="0" dy="1.2em">&#160;&#160;publications /</tspan>
 <tspan x="0" dy="1.2em"> []</tspan>
-<tspan x="0" dy="1.2em">[172]</tspan>
+<tspan x="0" dy="1.2em">[224]</tspan>
 <tspan x="0" dy="1.2em">Overfull \hbox (24.82596pt too wide) in paragraph at lines 9--9</tspan>
 <tspan x="0" dy="1.2em">\remove@tlig 146637 . 146666$[]\TU/lmr/m/n/12 . \TU/lmr/m/sc/12 </tspan>
 <tspan x="0" dy="1.2em">&#160;&#160;url\TU/lmr/m/n/12 : []$\remove@tlig https : / / www2 . mta . ac . il / ~amirben </tspan>
@@ -1199,19 +1451,19 @@
 <tspan x="0" dy="1.2em">\TU/lmr/m/n/12 puter Lab-o-ra-tory Cam-bridge: Tech-ni-cal re-port. </tspan>
 <tspan x="0" dy="1.2em">&#160;&#160;Uni-ver-sity of Cam-bridge,</tspan>
 <tspan x="0" dy="1.2em"> []</tspan>
-<tspan x="0" dy="1.2em">[173]</tspan>
+<tspan x="0" dy="1.2em">[225]</tspan>
 <tspan x="0" dy="1.2em">Overfull \hbox (15.7768pt too wide) in paragraph at lines 9--9</tspan>
 <tspan x="0" dy="1.2em">\TU/lmr/m/it/12 Pro-gram-ming \TU/lmr/m/n/12 23.5 (2013), pp. 552M-bM-^@M-^S593. </tspan>
 <tspan x="0" dy="1.2em">&#160;&#160;\TU/lmr/m/sc/12 doi\TU/lmr/m/n/12 : []$\remove@tlig 10 . 1017 / </tspan>
 <tspan x="0" dy="1.2em">&#160;&#160;S095679681300018X$[]\TU/lmr/m/n/12 .</tspan>
 <tspan x="0" dy="1.2em"> []</tspan>
-<tspan x="0" dy="1.2em">[174]</tspan>
+<tspan x="0" dy="1.2em">[226]</tspan>
 <tspan x="0" dy="1.2em">Overfull \hbox (19.994pt too wide) in paragraph at lines 9--9</tspan>
 <tspan x="0" dy="1.2em">[]\TU/lmr/m/n/12 James Chap-man. \TU/lmr/m/it/12 </tspan>
 <tspan x="0" dy="1.2em">&#160;&#160;jmchapman/restriction-categories\TU/lmr/m/n/12 . \TU/lmr/m/sc/12 </tspan>
 <tspan x="0" dy="1.2em">&#160;&#160;url\TU/lmr/m/n/12 : []$\remove@tlig https : / / github .</tspan>
 <tspan x="0" dy="1.2em"> []</tspan>
-<tspan x="0" dy="1.2em">[175]</tspan>
+<tspan x="0" dy="1.2em">[227]</tspan>
 <tspan x="0" dy="1.2em">Overfull \hbox (5.87846pt too wide) in paragraph at lines 9--9</tspan>
 <tspan x="0" dy="1.2em">\TU/lmr/m/n/12 Se-lec-tion for Large-Scale Ver-i-fi-ca-tion Projects&apos;&apos;. In: </tspan>
 <tspan x="0" dy="1.2em">&#160;&#160;\TU/lmr/m/it/12 2017 32nd IEEE/ACM</tspan>
@@ -1220,7 +1472,7 @@
 <tspan x="0" dy="1.2em">[]$\remove@tlig https : / / users . ece . utexas . edu / ~gligoric / papers / </tspan>
 <tspan x="0" dy="1.2em">&#160;&#160;CelikETAL17iCoq .</tspan>
 <tspan x="0" dy="1.2em"> []</tspan>
-<tspan x="0" dy="1.2em">[176</tspan>
+<tspan x="0" dy="1.2em">[228</tspan>
 <tspan x="0" dy="1.2em">]</tspan>
 <tspan x="0" dy="1.2em">Overfull \hbox (6.71979pt too wide) in paragraph at lines 9--9</tspan>
 <tspan x="0" dy="1.2em">\TU/lmr/m/it/12 mal-iza-tion by eval-u-a-tion to na-tive OCaml code </tspan>
@@ -1236,7 +1488,7 @@
 <tspan x="0" dy="1.2em">\TU/lmr/m/n/12 Chli-pala. ``Sim-ple High-Level Code For Cryp-to-graphic </tspan>
 <tspan x="0" dy="1.2em">&#160;&#160;Arith-metic -- With</tspan>
 <tspan x="0" dy="1.2em"> []</tspan>
-<tspan x="0" dy="1.2em">[177] [178]</tspan>
+<tspan x="0" dy="1.2em">[229] [230]</tspan>
 <tspan x="0" dy="1.2em">Overfull \hbox (3.71689pt too wide) in paragraph at lines 9--9</tspan>
 <tspan x="0" dy="1.2em">\TU/lmr/m/it/12 on Pro-gram-ming Lan-guages \TU/lmr/m/n/12 3.POPL (Jan. 2019). </tspan>
 <tspan x="0" dy="1.2em">&#160;&#160;\TU/lmr/m/sc/12 doi\TU/lmr/m/n/12 : []$\remove@tlig 10 . 1145 / </tspan>
@@ -1247,12 +1499,12 @@
 <tspan x="0" dy="1.2em">&#160;&#160;url\TU/lmr/m/n/12 : []$\remove@tlig http : / / www . mpi - sws . org / ~beta / </tspan>
 <tspan x="0" dy="1.2em">&#160;&#160;lessadhoc /</tspan>
 <tspan x="0" dy="1.2em"> []</tspan>
-<tspan x="0" dy="1.2em">[179]</tspan>
+<tspan x="0" dy="1.2em">[231]</tspan>
 <tspan x="0" dy="1.2em">Overfull \hbox (0.30074pt too wide) in paragraph at lines 9--9</tspan>
 <tspan x="0" dy="1.2em">\TU/lmr/m/n/12 Work-shop on Coq for PL (Co-qPLM-bM-^@M-^Y15)[]. Jan. 2015. </tspan>
 <tspan x="0" dy="1.2em">&#160;&#160;\TU/lmr/m/sc/12 url\TU/lmr/m/n/12 : []$\remove@tlig https : / / people .</tspan>
 <tspan x="0" dy="1.2em"> []</tspan>
-<tspan x="0" dy="1.2em">[180]</tspan>
+<tspan x="0" dy="1.2em">[232]</tspan>
 <tspan x="0" dy="1.2em">Overfull \hbox (18.5725pt too wide) in paragraph at lines 9--9</tspan>
 <tspan x="0" dy="1.2em">\TU/lmr/m/sc/12 doi\TU/lmr/m/n/12 : []$\remove@tlig 10 . 1016 / 0304 - 3975(90 </tspan>
 <tspan x="0" dy="1.2em">&#160;&#160;) 90108 - T$[]\TU/lmr/m/n/12 . \TU/lmr/m/sc/12 url\TU/lmr/m/n/12 : </tspan>
@@ -1262,7 +1514,7 @@
 <tspan x="0" dy="1.2em">\remove@tlig mitarbeiter / martin - hofmann / pdfs / </tspan>
 <tspan x="0" dy="1.2em">&#160;&#160;agroupoidinterpretationoftypetheroy .</tspan>
 <tspan x="0" dy="1.2em"> []</tspan>
-<tspan x="0" dy="1.2em">[181]</tspan>
+<tspan x="0" dy="1.2em">[233]</tspan>
 <tspan x="0" dy="1.2em">Overfull \hbox (66.56352pt too wide) in paragraph at lines 9--9</tspan>
 <tspan x="0" dy="1.2em">[]$\remove@tlig https : / / code . google . com / archive / p / flyspeck / </tspan>
 <tspan x="0" dy="1.2em">&#160;&#160;wikis / AnnouncingCompletion .</tspan>
@@ -1271,7 +1523,7 @@
 <tspan x="0" dy="1.2em">[]$\remove@tlig https : / / plato . stanford . edu / archives / win2016 / </tspan>
 <tspan x="0" dy="1.2em">&#160;&#160;entries / russell -</tspan>
 <tspan x="0" dy="1.2em"> []</tspan>
-<tspan x="0" dy="1.2em">[182]</tspan>
+<tspan x="0" dy="1.2em">[234]</tspan>
 <tspan x="0" dy="1.2em">Overfull \hbox (0.20384pt too wide) in paragraph at lines 9--9</tspan>
 <tspan x="0" dy="1.2em">\TU/lmr/m/n/12 Cock, Philip Der-rin, Dham-mika Elka-duwe, Kai En-gel-hardt, </tspan>
 <tspan x="0" dy="1.2em">&#160;&#160;Rafal Kolan-</tspan>
@@ -1293,7 +1545,7 @@
 <tspan x="0" dy="1.2em">[]\TU/lmr/m/n/12 Rob-bert Kreb-bers, Bas Spit-ters, and Eelis van der Wee-gen. </tspan>
 <tspan x="0" dy="1.2em">&#160;&#160;\TU/lmr/m/it/12 Math Classes\TU/lmr/m/n/12 . </tspan>
 <tspan x="0" dy="1.2em"> []</tspan>
-<tspan x="0" dy="1.2em">[183]</tspan>
+<tspan x="0" dy="1.2em">[235]</tspan>
 <tspan x="0" dy="1.2em">Overfull \hbox (34.54813pt too wide) in paragraph at lines 9--9</tspan>
 <tspan x="0" dy="1.2em">[]\TU/lmr/m/n/12 Adam Lan-g-ley. \TU/lmr/m/it/12 Cor-rect bounds in 32-bit </tspan>
 <tspan x="0" dy="1.2em">&#160;&#160;code. $\TU/latinmodern-math.otf(1)/m/n/12 M-bM-^KM-^E$ \TU/lmr/m/it/12 </tspan>
@@ -1308,7 +1560,7 @@
 <tspan x="0" dy="1.2em">&#160;&#160;\TU/lmr/m/sc/12 url\TU/lmr/m/n/12 : []$\remove@tlig https : / / </tspan>
 <tspan x="0" dy="1.2em">&#160;&#160;homotopytypetheory .</tspan>
 <tspan x="0" dy="1.2em"> []</tspan>
-<tspan x="0" dy="1.2em">[184]</tspan>
+<tspan x="0" dy="1.2em">[236]</tspan>
 <tspan x="0" dy="1.2em">Overfull \hbox (1.2993pt too wide) in paragraph at lines 9--9</tspan>
 <tspan x="0" dy="1.2em">\TU/lmr/m/n/12 25 Ac-ci-dents&apos;&apos;. In: \TU/lmr/m/it/12 Com-puter \TU/lmr/m/n/12 </tspan>
 <tspan x="0" dy="1.2em">&#160;&#160;26.7 (July 1993), pp. 18M-bM-^@M-^S41. \TU/lmr/m/sc/12 issn\TU/lmr/m/n/12 : 1558-0814.</tspan>
@@ -1317,7 +1569,7 @@
 <tspan x="0" dy="1.2em">\TU/lmr/m/it/12 prov-ably un-de-cid-able\TU/lmr/m/n/12 . Sept. 17, 2011. </tspan>
 <tspan x="0" dy="1.2em">&#160;&#160;eprint: []$\remove@tlig https : / / math . stackexchange .</tspan>
 <tspan x="0" dy="1.2em"> []</tspan>
-<tspan x="0" dy="1.2em">[185]</tspan>
+<tspan x="0" dy="1.2em">[237]</tspan>
 <tspan x="0" dy="1.2em">Overfull \hbox (9.00769pt too wide) in paragraph at lines 9--9</tspan>
 <tspan x="0" dy="1.2em">\TU/lmr/m/n/12 L. Jonathan Co-hen, Jerzy M-EM-^AoM-EM-^[, Hel-mut Pfeif-fer, and </tspan>
 <tspan x="0" dy="1.2em">&#160;&#160;Klaus-Peter Podewski.</tspan>
@@ -1326,7 +1578,7 @@
 <tspan x="0" dy="1.2em">\TU/lmr/m/it/12 Cal-culi and Ap-pli-ca-tions\TU/lmr/m/n/12 . Vol. 2044. </tspan>
 <tspan x="0" dy="1.2em">&#160;&#160;TLCAM-bM-^@M-^Y01. Springer. KrakM-CM-3w, Poland:</tspan>
 <tspan x="0" dy="1.2em"> []</tspan>
-<tspan x="0" dy="1.2em">[186]</tspan>
+<tspan x="0" dy="1.2em">[238]</tspan>
 <tspan x="0" dy="1.2em">Overfull \hbox (36.16226pt too wide) in paragraph at lines 9--9</tspan>
 <tspan x="0" dy="1.2em">\TU/lmr/m/n/12 Au-to-mated Rea-son-ing Se-ries. Springer Nether-lands, 2007. </tspan>
 <tspan x="0" dy="1.2em">&#160;&#160;\TU/lmr/m/sc/12 isbn\TU/lmr/m/n/12 : 9780585336541.</tspan>
@@ -1339,7 +1591,7 @@
 <tspan x="0" dy="1.2em">[]\TU/lmr/m/n/12 Todd Mytkow-icz, Amer Di-wan, Matthias Hauswirth, and Pe-ter </tspan>
 <tspan x="0" dy="1.2em">&#160;&#160;F. Sweeney.</tspan>
 <tspan x="0" dy="1.2em"> []</tspan>
-<tspan x="0" dy="1.2em">[187]</tspan>
+<tspan x="0" dy="1.2em">[239]</tspan>
 <tspan x="0" dy="1.2em">Overfull \hbox (6.55959pt too wide) in paragraph at lines 9--9</tspan>
 <tspan x="0" dy="1.2em">[]\TU/lmr/m/n/12 Chris Okasaki. ``Purely Func-tional Data Struc-tures&apos;&apos;. PhD </tspan>
 <tspan x="0" dy="1.2em">&#160;&#160;the-sis. Carnegie</tspan>
@@ -1357,7 +1609,7 @@
 <tspan x="0" dy="1.2em">[]$\remove@tlig http : / / users . ece . utexas . edu / ~gligoric / papers / </tspan>
 <tspan x="0" dy="1.2em">&#160;&#160;PalmskogETAL18piCoq .</tspan>
 <tspan x="0" dy="1.2em"> []</tspan>
-<tspan x="0" dy="1.2em">[188]</tspan>
+<tspan x="0" dy="1.2em">[240]</tspan>
 <tspan x="0" dy="1.2em">Overfull \hbox (45.07158pt too wide) in paragraph at lines 9--9</tspan>
 <tspan x="0" dy="1.2em">\remove@tlig github . com / coq / coq / commit / </tspan>
 <tspan x="0" dy="1.2em">&#160;&#160;87f9a317b020554abef358aec614dad1fdc0bd98$[]\TU/lmr/m/n/12 . </tspan>
@@ -1367,7 +1619,7 @@
 <tspan x="0" dy="1.2em">&#160;&#160;url\TU/lmr/m/n/12 : []$\remove@tlig https : / / github . com / copumpkin / </tspan>
 <tspan x="0" dy="1.2em">&#160;&#160;categories$[]\TU/lmr/m/n/12 . </tspan>
 <tspan x="0" dy="1.2em"> []</tspan>
-<tspan x="0" dy="1.2em">[189</tspan>
+<tspan x="0" dy="1.2em">[241</tspan>
 <tspan x="0" dy="1.2em">]</tspan>
 <tspan x="0" dy="1.2em">Overfull \hbox (6.33395pt too wide) in paragraph at lines 9--9</tspan>
 <tspan x="0" dy="1.2em">[]$\remove@tlig 10 . 1016 / S0890 - 5401(03 ) 00138 - X$[]\TU/lmr/m/n/12 . </tspan>
@@ -1378,7 +1630,7 @@
 <tspan x="0" dy="1.2em">\remove@tlig stanford . edu / archives / fall2020 / entries / goedel - </tspan>
 <tspan x="0" dy="1.2em">&#160;&#160;incompleteness/$[]\TU/lmr/m/n/12 . </tspan>
 <tspan x="0" dy="1.2em"> []</tspan>
-<tspan x="0" dy="1.2em">[190] [191]</tspan>
+<tspan x="0" dy="1.2em">[242] [243]</tspan>
 <tspan x="0" dy="1.2em">Overfull \hbox (16.31593pt too wide) in paragraph at lines 9--9</tspan>
 <tspan x="0" dy="1.2em">\TU/lmr/m/n/12 Ar-naud Spi-wack, Clau-dio Sac-er-doti Coen, Chris-tine Paulin, </tspan>
 <tspan x="0" dy="1.2em">&#160;&#160;Olivier Desmet-</tspan>
@@ -1395,7 +1647,7 @@
 <tspan x="0" dy="1.2em">\remove@tlig github . com / coq / coq / commit / </tspan>
 <tspan x="0" dy="1.2em">&#160;&#160;a4043608f704f026de7eb5167a109ca48e00c221$[]\TU/lmr/m/n/12 . </tspan>
 <tspan x="0" dy="1.2em"> []</tspan>
-<tspan x="0" dy="1.2em">[192]</tspan>
+<tspan x="0" dy="1.2em">[244]</tspan>
 <tspan x="0" dy="1.2em">Overfull \hbox (94.48753pt too wide) in paragraph at lines 9--9</tspan>
 <tspan x="0" dy="1.2em">[]$\remove@tlig https : / / github . com / coq / coq / commit / </tspan>
 <tspan x="0" dy="1.2em">&#160;&#160;2dbe106c09b60690b87e31e58d505b1f4e05b57f$[]\TU/lmr/m/n/12 . </tspan>
@@ -1412,13 +1664,12 @@
 <tspan x="0" dy="1.2em">[]\TU/lmr/m/n/12 Daniel Sel-sam, Se-bas-tian Ull-rich, and Leonardo de Moura. </tspan>
 <tspan x="0" dy="1.2em">&#160;&#160;``Tabled Type-</tspan>
 <tspan x="0" dy="1.2em"> []</tspan>
-<tspan x="0" dy="1.2em">[193]</tspan>
+<tspan x="0" dy="1.2em">[245]</tspan>
 <tspan x="0" dy="1.2em">Overfull \hbox (10.89561pt too wide) in paragraph at lines 9--9</tspan>
 <tspan x="0" dy="1.2em">[]$\remove@tlig http : / / www . diva - portal . org / smash / get / diva2 : </tspan>
 <tspan x="0" dy="1.2em">&#160;&#160;399799 / FULLTEXT01 .</tspan>
 <tspan x="0" dy="1.2em"> []</tspan>
-<tspan x="0" dy="1.2em">[194]) [195]</tspan>
-<tspan x="0" dy="1.2em">) [196</tspan>
+<tspan x="0" dy="1.2em">[246]) [247]</tspan>
+<tspan x="0" dy="1.2em">) [248</tspan>
 <tspan x="0" dy="1.2em">]</tspan>
-<tspan x="0" dy="1.2em">No file rewriting.aux.</tspan>
 </text></svg>

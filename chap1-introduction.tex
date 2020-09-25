@@ -24,17 +24,16 @@
 \section{Introduction}\label{sec:intro:intro}
 
 %\paragraph{Paragraph 1: Orient the reader to very broad things} Software w/o bugs via formal methods
-As we come to increasingly rely on large and complex software systems, bugs in these systems have an ever more severe and detrimental impact on our world. 
-While small bugs can cost hours or days of developer time, other bugs have more severe costs in money or even lives.
-Intel lost about \$475 million when it recalled chips impacted by a minor bug in the lookup table implementing floating-point division~\todo{cite}.
-NASA lost hardware costing over \$500 million due to bugs in rocket software that created unrecoverable errors~\todo{cite three rocket issues}.
-\todo{should I mention the pricing bug on amazon? https://www.usatoday.com/story/tech/2019/07/19/amazon-prime-day-error-sold-13-000-camera-equipment-94-report/1775314001/, https://www.theguardian.com/money/2014/dec/14/amazon-glitch-prices-penny-repricerexpress, http://www.michaeleisen.org/blog/?p=358}
-\todo{should I mention anything else? the Pentium bug costing Intel \$475 million? http://top-100s.blogspot.com/2009/05/10-most-expensive-software-blunders.html, \$500 million Ariane Rocket disaster? , https://www.olenick.com/blog/articles/infamous-software-bugs-fdiv-bug}
-\todo{should I pull from https://xavierleroy.org/talks/Milner-award-lecture.pdf? ``Fiat-Chrysler recalled 1.5 M vehicles for software update.''}
-\todo{\textcite{zhivich2009real}}
-More recently, unforeseen edge-cases in DAO smart-contracts nearly cost investors over 40 million USD~\cite{DAO2018Guecluetuerk}.
-Finally, the Therac-25 radiation therapy machine killed three people and injured more by delivering dangerous doses of radiation~\wantclear[\textcolor]{\cite{Therac}}.
-\todo{do I need a better citation than Wikipedia? Answer: Yes, find a primary source, especially as the citation is so early}
+As we come to increasingly rely on large and complex software systems, bugs in these systems have an ever more severe and detrimental impact on our world.
+While small bugs can cost hours or days of developer time, other bugs have more severe costs in money or even lives~\cite{zhivich2009real}.
+Intel lost about \$475 million when it recalled chips impacted by a minor bug in the lookup table implementing floating-point division~\cite{Infamous2014Gawron,Truth1995Halfhill,Pentium2011Nicely}.
+NASA and other space agencies lost hardware costing billions of US dollars due to bugs in rocket software that created unrecoverable errors~\cite{Metric1999Lloyd,Design1997Jazequel,Ariane1997Dowson,Space1996Leech}.
+%\todo{should I mention the pricing bug on amazon? https://www.usatoday.com/story/tech/2019/07/19/amazon-prime-day-error-sold-13-000-camera-equipment-94-report/1775314001/, https://www.theguardian.com/money/2014/dec/14/amazon-glitch-prices-penny-repricerexpress, http://www.michaeleisen.org/blog/?p=358}
+%\todo{should I mention anything else? the Pentium bug costing Intel \$475 million? http://top-100s.blogspot.com/2009/05/10-most-expensive-software-blunders.html, \$500 million Ariane Rocket disaster? , https://www.olenick.com/blog/articles/infamous-software-bugs-fdiv-bug}
+%\todo{should I pull from https://xavierleroy.org/talks/Milner-award-lecture.pdf? ``Fiat-Chrysler recalled 1.5 M vehicles for software update.''}
+%\todo{\textcite{zhivich2009real}}
+%More recently, unforeseen edge-cases in DAO smart-contracts nearly cost investors over 40 million USD~\cite{DAO2018Guecluetuerk}.
+Finally, the Therac-25 radiation therapy machine killed three people and injured more by delivering dangerous doses of radiation~\cites[p.~434]{Gift2018Baase}{Investigation1993Leveson}.
 
 While testing of various kinds is the de facto standard for finding bugs, it is both quite costly and does not guarantee a lack of bugs.
 \todo{email Xavier Leroy and ask if he has references on how much the airline industry spends on testing}
@@ -80,7 +79,7 @@ Examples abound, from compilers~\cite{Compcert} to microkernels~\cite{seL4SOSP09
 While compiler performance---both the time it takes to compile code and the time it takes to run the generated code---has long been an active field of study~\cite{CC++Performance2017,georges2007statistically,mytkowicz-wrong-data}\todo{find more citations here}, to our knowledge there is no existing body of work systematically investigating the performance of proof assistants, nor even any work primarily focused on the problem of proof assistant performance.
 We distinguish the question of interactive proof assistant performance from that of performance of fully automated reasoning tools such as SAT and SMT solvers, on which there has been a great deal of research~\cite{Efficiency1994Boulton}.
 As we discuss in \autoref{sec:intro:history}, interactive proof assistants utilize human creativity to handle a greater breadth and depth of problems than fully automated tools, which succeed only on more restricted domains.
-%while there is a great deal of research on the topic of efficiently producing proofs in a fully automated way~ these tools, at least at present, cannot hope to solve the challenges 
+%while there is a great deal of research on the topic of efficiently producing proofs in a fully automated way~ these tools, at least at present, cannot hope to solve the challenges
 %\todo{integrate stuff from \textcite{Efficiency1994Boulton} such as ``For example, much of the research in the field of automated reasoning is concerned with producing proofs more efficiently''}
 %\todo{Related to this is work on sound interfaces to external tools, also an enduring topic: \textcite{TrustedSlind}}
 

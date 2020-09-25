@@ -26,14 +26,15 @@
 %\paragraph{Paragraph 1: Orient the reader to very broad things} Software w/o bugs via formal methods
 As we come to increasingly rely on large and complex software systems, bugs in these systems have an ever more severe and detrimental impact on our world. 
 While small bugs can cost hours or days of developer time, other bugs have more severe costs in money or even lives.
-For instance, Bugs in the software of the Therac-25, a radiation-therapy machine, killed three people and injured at least three more between 1985 and 1987 by delivering potentially lethal doses of radiation.~\wantclear[\textcolor]{\cite{Therac}}
-\todo{Yes: Include more text from the following (at least three examples in this paragraph)}
-\todo{do I need a better citation than Wikipedia? Answer: Yes, find a primary source, especially as the citation is so early}
+Intel lost about \$475 million when it recalled chips impacted by a minor bug in the lookup table implementing floating-point division~\todo{cite}.
+NASA lost hardware costing over \$500 million due to bugs in rocket software that created unrecoverable errors~\todo{cite three rocket issues}.
 \todo{should I mention the pricing bug on amazon? https://www.usatoday.com/story/tech/2019/07/19/amazon-prime-day-error-sold-13-000-camera-equipment-94-report/1775314001/, https://www.theguardian.com/money/2014/dec/14/amazon-glitch-prices-penny-repricerexpress, http://www.michaeleisen.org/blog/?p=358}
-More recently, unforeseen edge-cases in DAO smart-contracts nearly cost investors over 40 million USD~\cite{DAO2018Guecluetuerk}.
 \todo{should I mention anything else? the Pentium bug costing Intel \$475 million? http://top-100s.blogspot.com/2009/05/10-most-expensive-software-blunders.html, \$500 million Ariane Rocket disaster? , https://www.olenick.com/blog/articles/infamous-software-bugs-fdiv-bug}
 \todo{should I pull from https://xavierleroy.org/talks/Milner-award-lecture.pdf? ``Fiat-Chrysler recalled 1.5 M vehicles for software update.''}
 \todo{\textcite{zhivich2009real}}
+More recently, unforeseen edge-cases in DAO smart-contracts nearly cost investors over 40 million USD~\cite{DAO2018Guecluetuerk}.
+Finally, the Therac-25 radiation therapy machine killed three people and injured more by delivering dangerous doses of radiation~\wantclear[\textcolor]{\cite{Therac}}.
+\todo{do I need a better citation than Wikipedia? Answer: Yes, find a primary source, especially as the citation is so early}
 
 While testing of various kinds is the de facto standard for finding bugs, it is both quite costly and does not guarantee a lack of bugs.
 \todo{email Xavier Leroy and ask if he has references on how much the airline industry spends on testing}
@@ -74,10 +75,14 @@ Said another way, we no longer need to write tests for every piece of software s
 
 %\paragraph{Paragraph 3: performance of tools is important and non-trivial, and what we're doing here is explaining / demonstrating how and why it's non-trivial, and how to fix nontrivial performance issues}
 We come now to the main thrust of this thesis.
-Tools for machine-checked proofs have already had many successes, in both software verification and traditional mathematics proof formalization, from compilers~\cite{Compcert} to microkernels~\cite{seL4SOSP09} to web-servers~\cite{Network2015Chlipala} to cryptography code~\cite{FiatCryptoSP19}, from the Four-Color Theorem~\cite{gonthier2008formal} to the Odd-Order Theorem~\cite{gonthier2013machine} to Homotopy Type Theory~\cite{HoTTBook}.
+Tools for machine-checked proofs have already had many successes, in both software verification and traditional mathematics proof formalization.
+Examples abound, from compilers~\cite{Compcert} to microkernels~\cite{seL4SOSP09} to web-servers~\cite{Network2015Chlipala} to cryptography code~\cite{FiatCryptoSP19}, from the Four-Color Theorem~\cite{gonthier2008formal} to the Odd-Order Theorem~\cite{gonthier2013machine} to Homotopy Type Theory~\cite{HoTTBook}.
 While compiler performance---both the time it takes to compile code and the time it takes to run the generated code---has long been an active field of study~\cite{CC++Performance2017,georges2007statistically,mytkowicz-wrong-data}\todo{find more citations here}, to our knowledge there is no existing body of work systematically investigating the performance of proof assistants, nor even any work primarily focused on the problem of proof assistant performance.
-\todo{integrate stuff from \textcite{Efficiency1994Boulton} such as ``For example, much of the research in the field of automated reasoning is concerned with producing proofs more efficiently''}
-\todo{Related to this is work on sound interfaces to external tools, also an enduring topic: \textcite{TrustedSlind}}
+Note that we distinguish the question of interactive proof assistant performance from the question of performance of fully automated reasoning tools such as SAT and SMT solvers, on which there has been a great deal of research~\cite{Efficiency1994Boulton}.
+\todo{Should I justify why I'm considering them separately?}
+%while there is a great deal of research on the topic of efficiently producing proofs in a fully automated way~ these tools, at least at present, cannot hope to solve the challenges 
+%\todo{integrate stuff from \textcite{Efficiency1994Boulton} such as ``For example, much of the research in the field of automated reasoning is concerned with producing proofs more efficiently''}
+%\todo{Related to this is work on sound interfaces to external tools, also an enduring topic: \textcite{TrustedSlind}}
 
 \todo{work on this paragraph}
 Why is this problem worthy of study?
@@ -356,6 +361,11 @@ There are, broadly, three schools of thought on what is a \emph{proof}.
 A third conception of proof is that a proof is itself a mathematical object or construction which corresponds to the content of a particular theorem~\cite{Rigour2013Bauer}.
 This third conception dates back to the school of intuitionism of Brouwer in the early 1900s and of constructive mathematics of Bishop in the 1960s; see \textcite[Related Works]{nuprl} for a tracing of the history from Brouwer to Martin-L\"of, whose type theory is at the heart of Coq and similar proof assistants.
 \todo{should I rehash how proofs are done in other proof assistants?}
+
+\todo{Work in justification of dependent types ``Randy Pollack, On extensibility of proof checkers, Types for Proofs
+and Programs (LNCS 996) (Baastad, Sweden), June 1994, WWW:
+\url{http://homepages.inf.ed.ac.uk/rpollack/export/extensibility.ps.gz}'' from ``However, Pollack [21] offers reasons why a dependently-typed
+programming language may be preferable'' from \textcite{TrustedSlind}}
 
 This third conception of proof admits formal frameworks where proof and computation are unified as the same activity.
 As we'll see shortly, this allows for drastically smaller proofs.

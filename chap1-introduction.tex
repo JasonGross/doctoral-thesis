@@ -78,15 +78,15 @@ We come now to the main thrust of this thesis.
 Tools for machine-checked proofs have already had many successes, in both software verification and traditional mathematics proof formalization.
 Examples abound, from compilers~\cite{Compcert} to microkernels~\cite{seL4SOSP09} to web-servers~\cite{Network2015Chlipala} to cryptography code~\cite{FiatCryptoSP19}, from the Four-Color Theorem~\cite{gonthier2008formal} to the Odd-Order Theorem~\cite{gonthier2013machine} to Homotopy Type Theory~\cite{HoTTBook}.
 While compiler performance---both the time it takes to compile code and the time it takes to run the generated code---has long been an active field of study~\cite{CC++Performance2017,georges2007statistically,mytkowicz-wrong-data}\todo{find more citations here}, to our knowledge there is no existing body of work systematically investigating the performance of proof assistants, nor even any work primarily focused on the problem of proof assistant performance.
-Note that we distinguish the question of interactive proof assistant performance from the question of performance of fully automated reasoning tools such as SAT and SMT solvers, on which there has been a great deal of research~\cite{Efficiency1994Boulton}.
-\todo{Should I justify why I'm considering them separately?}
+We distinguish the question of interactive proof assistant performance from that of performance of fully automated reasoning tools such as SAT and SMT solvers, on which there has been a great deal of research~\cite{Efficiency1994Boulton}.
+As we discuss in \autoref{sec:intro:history}, interactive proof assistants utilize human creativity to handle a greater breadth and depth of problems than fully automated tools, which succeed only on more restricted domains.
 %while there is a great deal of research on the topic of efficiently producing proofs in a fully automated way~ these tools, at least at present, cannot hope to solve the challenges 
 %\todo{integrate stuff from \textcite{Efficiency1994Boulton} such as ``For example, much of the research in the field of automated reasoning is concerned with producing proofs more efficiently''}
 %\todo{Related to this is work on sound interfaces to external tools, also an enduring topic: \textcite{TrustedSlind}}
 
 \todo{work on this paragraph}
 Why is this problem worthy of study?
-This thesis argues that the problem of \emph{compile-time performance} or \emph{proof-checking performance} is both significantly different from the problem of performance of more typical programs in industry and that it is nontrivial.
+This thesis argues that the problem of \emph{compile-time performance} or \emph{proof-checking performance} is both significantly different from the problem of performance of typical programs and that it is nontrivial.
 While many papers mention performance, obliquely or otherwise, and some are even driven by performance concerns of a particular algorithm or part of the system,~\cites[p.~1382]{gonthier2008formal}{Efficiency1994Boulton}{Proving2005Benjamin}{Idris2Faster2020Brady}{Recognizing1989Benanav}{mechanical1990Pierce}{CelikETAL17iCoq}{PalmskogETAL18piCoq}{vmcompute}{thesis-nogin}{Idris2Faster2020Brady}, we have not found any that investigate the performance problems that arise \emph{asymptotically}, when proof assistants are used to verify programs at large scale.
 % ``While we tackled this project mainly to explore the capabilities of a modern formal proof system—at first, to benchmark speed—'' - gonthier2008formal
 % ``We present a new implementation of a reflexive tactic whichsolves equalities in a ring structure inside the Coq system.The efficiencyis improved to a point that we can now prove equalities that were previ-ously beyond reach.'' - Proving2005Benjamin
@@ -113,9 +113,9 @@ While we propose some design principles for avoiding these performance issues in
 %\end{itemize}
 %
 Before diving into the details of performance bottlenecks and solutions, we review the history of formal verification and proof assistants to bring the reader up to speed on the context of our work and investigation.
-\todo{Maybe say something about the purpose of this section: simultaneously let people know that there's been a lot of thought and effort, let people know about success stories (because it possibly hasn't touched them, and hasn't been adopted mainstream), (and also a bit about how the proof assistants might actually check the proofs)}
+%\todo{Maybe say something about the purpose of this section: simultaneously let people know that there's been a lot of thought and effort, let people know about success stories (because it possibly hasn't touched them, and hasn't been adopted mainstream), (and also a bit about how the proof assistants might actually check the proofs)}
 \todo{cite the following in chronological order, maybe}
-While we intend to cover a wide swath of the history and development in this subsection, far more detailed descriptions can be found in the literature~\cites{ringer2020qed,Proof2009Geuvers,History2014Harrison,CoqArtForward2013Huet,Brief2019Darbari,davis2001early,Matuszewski05mizar:the,Automath2002Kamareddine,Milestones2019Moore,Automation2013Moore,LCF2000Gordon,LCF2019Paulson,Logical2002Pfenning}[Related Work]{nuprl}.
+While we intend to cover a wide swath of the history and development in this subsection, more detailed descriptions can be found in the literature~\cites{ringer2020qed,Proof2009Geuvers,History2014Harrison,CoqArtForward2013Huet,Brief2019Darbari,davis2001early,Matuszewski05mizar:the,Automath2002Kamareddine,Milestones2019Moore,Automation2013Moore,LCF2000Gordon,LCF2019Paulson,Logical2002Pfenning}[Related Work]{nuprl}.
 \textcite[ch.~4]{ringer2020qed} has a particularly clear presentation which was invaluable in assembling this section.
 
 Formal verification can be traced back to the early 1950s~\cite{Brief2019Darbari}.

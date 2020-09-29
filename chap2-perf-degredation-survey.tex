@@ -1046,8 +1046,130 @@ If such API mismatches are nested, or if this code size blowup interacts with co
 
 \todo{maybe be more concrete here?}
 
-\todo{write text and code with vector example}
-\todo{write text and code about rewrite being slow with large opaque proof terms under abstraction barriers (maybe functor exponential laws)}
+\todo{transition?}
+
+Let us consider things a bit more generally.
+
+\citetitle{Structure1996Sussman} defines abstraction as naming and manipulating compound elements as units~\cite[p.~6]{Structure1996Sussman}.
+An \emph{abstraction barrier} is a collection of definitions and theorems about those definitions that together provide an interface such a compound element.
+For example, we might define an interface for sorting a list, together with a proof that sorting any list results in a sorted list.
+Or we miht define an interface for key-value maps (perhaps implemented as association lists, or hash-maps, or binary search trees, or in some other way).
+
+\emph{Piercing} an abstraction barrier is the act of manipulating the compound element by its components, rather than through the interface.
+For example, suppose we have implemented key-value maps as association lists, representing the map as a list of key-value pairs, and provided some interface.
+Any function which, for example, asks for the first element of the association list has pierced the abstraction barrier of our interface.
+
+We might say that an abstraction barrier is \emph{leaky} if we ever need to pierce it, or perhaps if our program does in fact pierce the abstraction barrier, even if the piercing is needless.
+(Which definition we choose is not of great significance for this thesis.)
+
+In proof assistants like Coq, using \mintinline{coq}{unfold}, \mintinline{coq}{simpl}, or \mintinline{coq}{cbn} can often indicate a leaky abstraction barrier, where in order to prove a property we unfold the interface we are given to see how it is implemented.
+This is all well and good when we are in the process of defining the abstraction barrier---unfolding the definition of sorting a list, for example, to prove that sorting the list gives back a list with all the same elements---but can be problematic when used more pervasively.
+
+Let us look at an example from a category theory library we implemented in Coq~\cite{category-coq-experience}, which we introduce in \autoref{sec:category-theory-library}.
+\todo{more text to introduce category theory}
+
+\todo{should I format or subset this code better?}
+\todo{update makefile to ensure this keeps compiling}
+
+\inputminted{coq}{fragments/CategoryExponentialLaws.v}
+
+\todo{write this text better}
+
+We note a couple of important points:
+\begin{itemize}
+\item
+  Definiting the interesting components---that is, the components that are not proofs of equality---of the isomorphism $(C₁ × C₂ → D) ≅ (C₁ → (C₂ → D))$ takes nearly two seconds.
+  This is unusually large, given that there are only seven of them, and their definition is rather short.
+  We attribute this to the large types generated and the non-trivial conversion problems which require unfolding various definitions, i.e., piercing various abstraction barriers.
+\item
+  The proofy parts of the isomorphism---that the composition of functors in each direction is the identity---is somewhat long.
+  The goal that going from $(C₁ × C₂ → D)$ to $(C₁ → (C₂ → D))$ and back again is the identity is only about 24 lines after $\beta$ reduction (when \mintinline{coq}{Set Printing All} is on, there are about 3\,300 words).
+  However, if we pierce the abstraction barrier of functor composition, the goal blows up to about 254 lines (about 18\,000 words with \mintinline{coq}{Set Printing All})!
+  This blow-up is due to the fact that the opaque proofs that functor composition is functorial take the entirety of the functors being composed as arguments.
+  Hence unfolding the composition of two functors duplicates those functors many times over.
+  If we must compose more than two functors, we get even more blow-up.
+\end{itemize}
+
+\todo{what should I say here?}
+
+\todo{should I write text and code with vector example?  we'd probably need to index lists over vectors of types to get really hairy things...}
+\begin{comment}
+\begin{minted}{coq}
+Require Import Coq.Arith.Arith.
+Require Import Coq.Program.Basics.
+Require Import Coq.micromega.Lia.
+Require Import Coq.Lists.List.
+Require Import Coq.Logic.Eqdep_dec.
+Import ListNotations.
+Local Open Scope list_scope.
+Declare Scope vector_scope.
+Delimit Scope vector_scope with vector.
+Local Open Scope vector_scope.
+Local Set Primitive Projections.
+Set Implicit Arguments.
+Import EqNotations.
+
+Module Vector.
+  Record t A n := of_list { to_list : list A ; length_to_list : List.length to_list = n }.
+  Bind Scope vector_scope with t.
+  Definition nil {A} : t A 0 := of_list nil eq_refl.
+  Definition cons {A n} (x : A) (xs : t A n) : t A (S n)
+    := of_list (cons x (to_list xs)) (f_equal S (length_to_list xs)).
+  Infix "::" := cons : vector_scope.
+  Notation "[ ]" := nil : vector_scope.
+  Notation "[ x ]" := (cons x nil) : vector_scope.
+  Notation "[ x ; y ; .. ; z ]" :=  (cons x (cons y .. (cons z nil) ..)) : vector_scope.
+  Lemma eq_iff {A n} {x y : t A n}
+    : x = y <-> to_list x = to_list y.
+  Proof.
+    split; intro H; [ subst; reflexivity | destruct x, y; cbn in H; subst ].
+    apply f_equal, UIP_dec; decide equality.
+  Qed.
+  Hint Rewrite length_to_list app_length (@eq_iff) : rewrite_db.
+  Hint Unfold to_list : unfold_db.
+  Ltac inner_tac := intros; repeat (autounfold with unfold_db; autorewrite with rewrite_db); try lia.
+  Local Obligation Tactic := first [ abstract now inner_tac | inner_tac ].
+  Program Definition app {A n m} (xs : t A n) (ys : t A m) : t A (n + m)
+    := of_list (to_list xs ++ to_list ys) _.
+  Infix "++" := app : vector_scope.
+  Hint Unfold app : unfold_db.
+  Lemma to_list_rew {A n m} {pf : n = m} {xs}
+    : to_list (rew [t A] pf in xs) = to_list xs.
+  Proof. subst; reflexivity. Qed.
+  Lemma to_list_rew_rev {A n m} {pf : n = m} {xs}
+    : to_list (rew <- [t A] pf in xs) = to_list xs.
+  Proof. subst; reflexivity. Qed.
+  Hint Rewrite (@to_list_rew) (@to_list_rew_rev) app_assoc : rewrite_db.
+  Program Definition app_assoc {A x y z} (xs : t A x) (ys : t A y) (zs : t A z)
+    : (rew [t A] Nat.add_assoc _ _ _ in (xs ++ (ys ++ zs)))
+      = (xs ++ ys) ++ zs := _.
+  Program Definition app_assoc' {A x y z} (xs : t A x) (ys : t A y) (zs : t A z)
+    : xs ++ (ys ++ zs) = rew <- [t A] Nat.add_assoc _ _ _ in ((xs ++ ys) ++ zs)
+    := _.
+  Hint Rewrite rev_length : rewrite_db.
+  Program Definition rev {A n} (xs : t A n) : t A n
+    := of_list (rev (to_list xs)) _.
+  Hint Unfold rev : unfold_db.
+  Hint Rewrite rev_involutive : rewrite_db.
+  Program Definition rev_involutive {A n} (xs : t A n)
+    : rev (rev xs) = xs := _.
+  Hint Rewrite rev_app_distr : rewrite_db.
+  Program Definition rev_app_distr {A n m} (xs : t A n) (ys : t A m)
+    : (rew [t A] Nat.add_comm _ _ in (rev (xs ++ ys))) = rev ys ++ rev xs
+    := _.
+  Program Definition rev_app_distr' {A n m} (xs : t A n) (ys : t A m)
+    : rev (xs ++ ys) = rew <- [t A] Nat.add_comm _ _ in (rev ys ++ rev xs)
+    := _.
+End Vector.
+
+Module HList.
+
+
+
+
+Definition vector (n : nat) := {
+\end{minted}
+\end{comment}
 
 \subsubsection{Type Size Blowup: Packed vs.~Unpacked Records} \label{sec:abstraction-barriers:packed-records}
 When designing APIs, especially of mathematical objects, one of the biggest choices is whether to pack the records, or whether to pass arguments in as fields.

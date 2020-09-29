@@ -22,6 +22,7 @@ PROPOSAL_TEXS = new-date-proposal.tex abstract-proposal.tex
 UMI_TEXS = umi-proquest-form-full.tex umi-proquest-form-adjusted.tex extra-title-abstract.tex
 COMPLETION_TEXS = new-date-submission.tex PhD_CompletionForm-adjusted.tex PhD_CompletionForm-full.tex
 COMPLETION_PDFS = PhD_CompletionForm-adjusted.pdf PhD_CompletionForm-full.pdf
+THESIS_VS := fragments/CategoryExponentialLaws.v
 ALL_TEXS = $(THESIS_TEXS) $(PROPOSAL_TEXS) $(UMI_TEXS) $(COMPLETION_TEXS)
 TEXT_TEXS = $(filter-out packages.tex mitthesis.cls,$(ALL_TEXS))
 READER_AGREEMENT_SIGNED_PDFS := $(subst unsigned,signed,$(READER_AGREEMENT_PDFS))
@@ -288,7 +289,7 @@ hyperref.sty : %.sty : backref.dtx bmhydoc.sty hylatex.ltx hyperref.dtx hyperref
 
 $(PDFS): jgross-thesis.bib
 
-$(THESIS_PDFS): $(THESIS_TEXS)
+$(THESIS_PDFS): $(THESIS_TEXS) $(THESIS_VS)
 
 $(PROPOSAL_PDFS): $(PROPOSAL_TEXS)
 

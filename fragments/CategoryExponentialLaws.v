@@ -178,6 +178,8 @@ Next Obligation. Admitted.
 Next Obligation. Admitted.
 Next Obligation. Admitted.
 
+Local Open Scope functor_scope.
+Local Open Scope natural_transformation_scope.
 Local Open Scope object_scope.
 Local Open Scope morphism_scope.
 Local Open Scope category_scope.
@@ -189,22 +191,99 @@ Arguments pair _ _ & .
 Canonical Structure default_eta {A B} (v : A * B) : A * B := (fst v, snd v).
 Canonical Structure pair' {A B} (a : A) (b : B) : A * B := pair a b.
 
+Declare Scope functor_object_scope.
+Declare Scope functor_morphism_scope.
+Declare Scope natural_transformation_components_scope.
+Arguments Build_Functor (C D)%category_scope & _%functor_object_scope _%functor_morphism_scope (_ _)%function_scope.
+Arguments Build_NaturalTransformation [C D]%category_scope (F G)%functor_scope & _%natural_transformation_components_scope _%function_scope.
+
+Notation "x : A ↦ₒ f" := (fun x : A%category => f) (at level 70) : functor_object_scope.
+Notation "x ↦ₒ f" := (fun x => f) (at level 70) : functor_object_scope.
+Notation "' x ↦ₒ f" := (fun '(x%category) => f) (x strict pattern, at level 70) : functor_object_scope.
+Notation "m @ s --> d ↦ₘ f" := (fun s d m => f) (at level 70) : functor_morphism_scope.
+Notation "' m @ s --> d ↦ₘ f" := (fun s d 'm => f) (at level 70, m strict pattern) : functor_morphism_scope.
+Notation "m : A ↦ₘ f" := (fun s d (m : A%category) => f) (at level 70) : functor_morphism_scope.
+Notation "m ↦ₘ f" := (fun s d m => f) (at level 70) : functor_morphism_scope.
+Notation "' m ↦ₘ f" := (fun s d '(m%category) => f) (m strict pattern, at level 70) : functor_morphism_scope.
+Notation "x : A ↦ₜ f" := (fun x : A%category => f) (at level 70) : natural_transformation_components_scope.
+Notation "' x ↦ₜ f" := (fun '(x%category) => f) (x strict pattern, at level 70) : natural_transformation_components_scope.
+Notation "x ↦ₜ f" := (fun x => f) (at level 70) : natural_transformation_components_scope.
+
+Notation "⟨ fo ; mo ⟩" := (@Build_Functor _ _ fo mo _ _) (only parsing) : functor_scope.
+Notation "⟨ f ⟩" := (@Build_NaturalTransformation _ _ _ _ f _) (only parsing) : natural_transformation_scope.
+
+
+Notation "'λ' ⟨ fo ; mo ⟩" := (@Build_Functor _ _ fo mo _ _) (only parsing) : functor_scope.
+Notation "'λ' ⟨ f ⟩" := (@Build_NaturalTransformation _ _ _ _ f _) (only parsing) : natural_transformation_scope.
+
+Notation "'λₒ' x1 .. xn , fo ; 'λₘ' m1 .. mn , mo" := (@Build_Functor _ _ (fun x1 => .. (fun xn => fo) .. ) (fun s d => (fun m1 => .. (fun mn => mo) .. )) _ _) (only parsing, x1 binder, xn binder, m1 binder, mn binder, at level 70) : functor_scope.
+Notation "'λₜ' x1 .. xn , f" := (@Build_NaturalTransformation _ _ _ _ (fun x1 => .. (fun xn => f) .. ) _) (only parsing, x1 binder, xn binder, at level 70) : natural_transformation_scope.
+
+(** We denote functors by pairs of maps on objects ([↦ₒ]) and
+    morphisms ([↦ₘ]), and natural transformations as a single map
+    ([↦ₜ]) *)
+Time Program Definition curry_iso1 (C₁ C₂ D : Category)
+  : (C₁ * C₂ -> D) ≅ (C₁ -> (C₂ -> D)) :>>> Cat
+  := {| fwd
+        := ⟨ F ↦ₒ ⟨ c₁ ↦ₒ ⟨ c₂ ↦ₒ F ₀  (c₁, c₂)
+                          ; m  ↦ₘ F ₁  (identity c₁, m) ⟩
+                  ; m₁ ↦ₘ ⟨ c₂ ↦ₜ F ₁  (m₁, identity c₂) ⟩ ⟩
+           ; T ↦ₘ ⟨ c₁ ↦ₜ ⟨ c₂ ↦ₜ T (c₁, c₂) ⟩ ⟩ ⟩;
+        bwd
+        := ⟨ F ↦ₒ ⟨ '(c₁, c₂) ↦ₒ (F ₀  c₁)₀ c₂
+                  ; '(m₁, m₂) ↦ₘ (F ₁  m₁) _ ∘ (F ₀  _)₁ m₂ ⟩
+           ; T ↦ₘ ⟨ '(c₁, c₂) ↦ₜ (T c₁) c₂ ⟩ ⟩ |}.
+
+(** We denote functors by pairs of maps ([λ]) on objects ([↦ₒ]) and
+    morphisms ([↦ₘ]), and natural transformations as a single map
+    ([λ ⟨ ... ↦ₜ ... ⟩]) *)
+Time Program Definition curry_iso2 (C₁ C₂ D : Category)
+  : (C₁ * C₂ -> D) ≅ (C₁ -> (C₂ -> D)) :>>> Cat
+  := {| fwd
+        := λ ⟨ F ↦ₒ λ ⟨ c₁ ↦ₒ λ ⟨ c₂ ↦ₒ F ₀  (c₁, c₂)
+                                ; m  ↦ₘ F ₁  (identity c₁, m) ⟩
+                      ; m₁ ↦ₘ λ ⟨ c₂ ↦ₜ F ₁  (m₁, identity c₂) ⟩ ⟩
+             ; T ↦ₘ λ ⟨ c₁ ↦ₜ λ ⟨ c₂ ↦ₜ T (c₁, c₂) ⟩ ⟩ ⟩;
+        bwd
+        := λ ⟨ F ↦ₒ λ ⟨ '(c₁, c₂) ↦ₒ (F ₀  c₁)₀ c₂
+                      ; '(m₁, m₂) ↦ₘ (F ₁  m₁) _ ∘ (F ₀  _)₁ m₂ ⟩
+             ; T ↦ₘ λ ⟨ '(c₁, c₂) ↦ₜ (T c₁) c₂ ⟩ ⟩ |}.
+
+(** We denote functors by pairs of maps on objects ([λₒ]) and
+    morphisms ([λₘ]), and natural transformations as a single map
+    ([λₜ]) *)
+Time Program Definition curry_iso3 (C₁ C₂ D : Category)
+  : (C₁ * C₂ -> D) ≅ (C₁ -> (C₂ -> D)) :>>> Cat
+  := {| fwd
+        := λₒ F, λₒ c₁, λₒ c₂, F ₀  (c₁, c₂)
+                      ; λₘ m , F ₁  (identity c₁, m)
+               ; λₘ m₁, λₜ c₂, F ₁  (m₁, identity c₂)
+         ; λₘ T, λₜ c₁, λₜ c₂, T (c₁, c₂);
+        bwd
+        := λₒ F, λₒ '(c₁, c₂), (F ₀  c₁)₀ c₂
+               ; λₘ '(m₁, m₂), (F ₁  m₁) _ ∘ (F ₀  _)₁ m₂
+         ; λₘ T, λₜ '(c₁, c₂), (T c₁) c₂ |}.
+
 (** [(C₁ × C₂ → D) ≅ (C₁ → (C₂ → D))] *)
+(** We provide the action of functors on objects ([object_of]) and on
+    morphisms ([morphism_of]), and we provide the action of natural
+    transformations on object ([components_of] *)
 Time Program Definition curry_iso (C₁ C₂ D : Category)
   : (C₁ * C₂ -> D) ≅ (C₁ -> (C₂ -> D)) :>>> Cat
   := {| fwd
         := {| object_of F
               := {| object_of c₁
-                    := {| object_of c₂ := F ₀ (c₁, c₂);
-                          morphism_of s d m := F ₁ (identity c₁, m) |};
-                    morphism_of s d m₁
-                    := {| components_of c₂ := F ₁ (m₁, identity c₂) |} |};
-              morphism_of s d T
+                    := {| object_of      c₂ := F ₀ (c₁, c₂);
+                          morphism_of _ _ m := F ₁ (identity c₁, m) |};
+                    morphism_of _ _ m₁
+                    := {| components_of  c₂ := F ₁ (m₁, identity c₂) |} |};
+              morphism_of _ _ T
               := {| components_of c₁
-                    := {| components_of c₂ := T (c₁, c₂) |} |} |};
+                    := {| components_of  c₂ := T (c₁, c₂) |} |} |};
         bwd
         := {| object_of F
-              := {| object_of '(c₁, c₂) := (F ₀ c₁)₀ c₂;
+              := {| object_of                       '(c₁, c₂)
+                    := (F ₀ c₁)₀ c₂;
                     morphism_of '(s₁, s₂) '(d₁, d₂) '(m₁, m₂)
                     := (F ₁ m₁) d₂ ∘ (F ₀ s₁)₁ m₂ |};
               morphism_of s d T
@@ -540,5 +619,212 @@ Next Obligation.
                    identity_of := curry_iso_obligation_13 (D:=D) |} |} = 1
    *)
   (** About 254 lines *)
+  cbn [object_of morphism_of components_of].
+  (**
+1 subgoal (ID 1443)
+
+  ============================
+  forall C₁ C₂ D : Category,
+  {|
+  object_of := fun x : (C₁ * C₂ -> D)%category =>
+               {|
+               object_of := fun pat : (C₁ * C₂)%category => x₀ (fst pat, snd pat);
+               morphism_of := fun (pat pat0 : (C₁ * C₂)%category)
+                                (pat1 : morphism (C₁ * C₂)
+                                          (fst pat, snd pat)
+                                          (fst pat0, snd pat0)) =>
+                              x₁ (fst pat1, 1) ∘ x₁ (1, snd pat1);
+               composition_of := curry_iso_obligation_7
+                                   {|
+                                   object_of := fun c₁ : C₁ =>
+                                                {|
+                                                object_of := fun c₂ : C₂ =>
+                                                     x₀ (c₁, c₂);
+                                                morphism_of := fun
+                                                     (s d : C₂)
+                                                     (m : morphism C₂ s d) =>
+                                                     x₁ (1, m);
+                                                composition_of := curry_iso_obligation_1
+                                                     x c₁;
+                                                identity_of := curry_iso_obligation_2
+                                                     x c₁ |};
+                                   morphism_of := fun
+                                                    (s d : C₁)
+                                                    (m₁ : morphism C₁ s d) =>
+                                                  {|
+                                                  components_of := fun c₂ : C₂ =>
+                                                     x₁ (m₁, 1);
+                                                  commutes := curry_iso_obligation_3
+                                                     x s d m₁ |};
+                                   composition_of := curry_iso_obligation_5 x;
+                                   identity_of := curry_iso_obligation_4 x |};
+               identity_of := curry_iso_obligation_8
+                                {|
+                                object_of := fun c₁ : C₁ =>
+                                             {|
+                                             object_of := fun c₂ : C₂ =>
+                                                     x₀ (c₁, c₂);
+                                             morphism_of := fun
+                                                     (s d : C₂)
+                                                     (m : morphism C₂ s d) =>
+                                                     x₁ (1, m);
+                                             composition_of := curry_iso_obligation_1
+                                                     x c₁;
+                                             identity_of := curry_iso_obligation_2
+                                                     x c₁ |};
+                                morphism_of := fun (s d : C₁)
+                                                 (m₁ : morphism C₁ s d) =>
+                                               {|
+                                               components_of := fun c₂ : C₂ =>
+                                                     x₁ (m₁, 1);
+                                               commutes := curry_iso_obligation_3
+                                                     x s d m₁ |};
+                                composition_of := curry_iso_obligation_5 x;
+                                identity_of := curry_iso_obligation_4 x |} |};
+  morphism_of := fun (s d : (C₁ * C₂ -> D)%category)
+                   (m : morphism (C₁ * C₂ -> D) s d) =>
+                 {|
+                 components_of := fun pat : (C₁ * C₂)%category =>
+                                  m (fst pat, snd pat);
+                 commutes := curry_iso_obligation_9
+                               {|
+                               components_of := fun c₁ : C₁ =>
+                                                {|
+                                                components_of := fun c₂ : C₂ =>
+                                                     m (c₁, c₂);
+                                                commutes := curry_iso_obligation_6
+                                                     m c₁ |};
+                               commutes := curry_iso_obligation_12 m |} |};
+  composition_of := Functor.compose_obligation_1
+                      {|
+                      object_of := fun F : (C₁ -> C₂ -> D)%category =>
+                                   {|
+                                   object_of := fun pat : (C₁ * C₂)%category =>
+                                                (F₀ (fst pat))₀
+                                                (snd pat);
+                                   morphism_of := fun
+                                                    (pat
+                                                     pat0 :
+                                                     (C₁ * C₂)%category)
+                                                    (pat1 :
+                                                     morphism
+                                                     (C₁ * C₂)
+                                                     (fst pat, snd pat)
+                                                     (fst pat0, snd pat0)) =>
+                                                  (F₁ (fst pat1)) (snd pat0)
+                                                  ∘ (F₀ (fst pat))₁
+                                                  (snd pat1);
+                                   composition_of := curry_iso_obligation_7 F;
+                                   identity_of := curry_iso_obligation_8 F |};
+                      morphism_of := fun (s d : (C₁ -> C₂ -> D)%category)
+                                       (T : morphism (C₁ -> C₂ -> D) s d) =>
+                                     {|
+                                     components_of := fun pat : (C₁ * C₂)%category
+                                                     =>
+                                                     T (fst pat) (snd pat);
+                                     commutes := curry_iso_obligation_9 T |};
+                      composition_of := curry_iso_obligation_11 (D:=D);
+                      identity_of := curry_iso_obligation_10 (D:=D) |}
+                      {|
+                      object_of := fun F : (C₁ * C₂ -> D)%category =>
+                                   {|
+                                   object_of := fun c₁ : C₁ =>
+                                                {|
+                                                object_of := fun c₂ : C₂ =>
+                                                     F₀ (c₁, c₂);
+                                                morphism_of := fun
+                                                     (s d : C₂)
+                                                     (m : morphism C₂ s d) =>
+                                                     F₁ (1, m);
+                                                composition_of := curry_iso_obligation_1
+                                                     F c₁;
+                                                identity_of := curry_iso_obligation_2
+                                                     F c₁ |};
+                                   morphism_of := fun
+                                                    (s d : C₁)
+                                                    (m₁ : morphism C₁ s d) =>
+                                                  {|
+                                                  components_of := fun c₂ : C₂ =>
+                                                     F₁ (m₁, 1);
+                                                  commutes := curry_iso_obligation_3
+                                                     F s d m₁ |};
+                                   composition_of := curry_iso_obligation_5 F;
+                                   identity_of := curry_iso_obligation_4 F |};
+                      morphism_of := fun (s d : (C₁ * C₂ -> D)%category)
+                                       (T : morphism (C₁ * C₂ -> D) s d) =>
+                                     {|
+                                     components_of := fun c₁ : C₁ =>
+                                                     {|
+                                                     components_of := fun c₂ : C₂
+                                                     => T (c₁, c₂);
+                                                     commutes := curry_iso_obligation_6
+                                                     T c₁ |};
+                                     commutes := curry_iso_obligation_12 T |};
+                      composition_of := curry_iso_obligation_14 (D:=D);
+                      identity_of := curry_iso_obligation_13 (D:=D) |};
+  identity_of := Functor.compose_obligation_2
+                   {|
+                   object_of := fun F : (C₁ -> C₂ -> D)%category =>
+                                {|
+                                object_of := fun pat : (C₁ * C₂)%category =>
+                                             (F₀ (fst pat))₀
+                                             (snd pat);
+                                morphism_of := fun (pat pat0 : (C₁ * C₂)%category)
+                                                 (pat1 :
+                                                  morphism
+                                                    (C₁ * C₂)
+                                                    (fst pat, snd pat)
+                                                    (fst pat0, snd pat0)) =>
+                                               (F₁ (fst pat1)) (snd pat0)
+                                               ∘ (F₀ (fst pat))₁
+                                               (snd pat1);
+                                composition_of := curry_iso_obligation_7 F;
+                                identity_of := curry_iso_obligation_8 F |};
+                   morphism_of := fun (s d : (C₁ -> C₂ -> D)%category)
+                                    (T : morphism (C₁ -> C₂ -> D) s d) =>
+                                  {|
+                                  components_of := fun pat : (C₁ * C₂)%category =>
+                                                   T (fst pat) (snd pat);
+                                  commutes := curry_iso_obligation_9 T |};
+                   composition_of := curry_iso_obligation_11 (D:=D);
+                   identity_of := curry_iso_obligation_10 (D:=D) |}
+                   {|
+                   object_of := fun F : (C₁ * C₂ -> D)%category =>
+                                {|
+                                object_of := fun c₁ : C₁ =>
+                                             {|
+                                             object_of := fun c₂ : C₂ =>
+                                                     F₀ (c₁, c₂);
+                                             morphism_of := fun
+                                                     (s d : C₂)
+                                                     (m : morphism C₂ s d) =>
+                                                     F₁ (1, m);
+                                             composition_of := curry_iso_obligation_1
+                                                     F c₁;
+                                             identity_of := curry_iso_obligation_2
+                                                     F c₁ |};
+                                morphism_of := fun (s d : C₁)
+                                                 (m₁ : morphism C₁ s d) =>
+                                               {|
+                                               components_of := fun c₂ : C₂ =>
+                                                     F₁ (m₁, 1);
+                                               commutes := curry_iso_obligation_3
+                                                     F s d m₁ |};
+                                composition_of := curry_iso_obligation_5 F;
+                                identity_of := curry_iso_obligation_4 F |};
+                   morphism_of := fun (s d : (C₁ * C₂ -> D)%category)
+                                    (T : morphism (C₁ * C₂ -> D) s d) =>
+                                  {|
+                                  components_of := fun c₁ : C₁ =>
+                                                   {|
+                                                   components_of := fun c₂ : C₂ =>
+                                                     T (c₁, c₂);
+                                                   commutes := curry_iso_obligation_6
+                                                     T c₁ |};
+                                  commutes := curry_iso_obligation_12 T |};
+                   composition_of := curry_iso_obligation_14 (D:=D);
+                   identity_of := curry_iso_obligation_13 (D:=D) |} |} = 1
+   *)
+  (** About 200 lines *)
 Admitted.
 Next Obligation. Admitted.

@@ -15,7 +15,7 @@ READER_AGREEMENT_PDFS := \
 MAIN_PROPOSAL_PDFS := jgross-thesis-proposal.pdf jgross-thesis-proposal-signed.pdf
 PROPOSAL_PDFS = $(MAIN_PROPOSAL_PDFS) $(READER_AGREEMENT_PDFS)
 UMI_PDFS = extra-title-abstract.pdf umi-proquest-form-adjusted.pdf umi-proquest-form-full.pdf
-THESIS_PDFS = jgross-thesis.pdf
+THESIS_PDFS = jgross-thesis.pdf jgross-thesis-extra-todos.pdf
 MAIN_TEXS = $(patsubst \include{%},%.tex,$(filter \include{%},$(shell cat appendix-files.tex main-files.tex jgross-thesis.tex)))
 THESIS_TEXS = packages.tex contents.tex mitthesis.cls abstract.tex cover.tex coverinfo.tex new-date.tex todo.tex main-files.tex appendix-files.tex $(MAIN_TEXS)
 PROPOSAL_TEXS = new-date-proposal.tex abstract-proposal.tex
@@ -288,6 +288,9 @@ hyperref.sty : %.sty : backref.dtx bmhydoc.sty hylatex.ltx hyperref.dtx hyperref
 #http://mirrors.ctan.org/macros/latex/contrib/mathtools.zip && unzip mathtools.zip && (cd mathtools && for i in *.dtx; do (mv $i ../ && cd .. && tex $i); done)
 
 $(PDFS): jgross-thesis.bib
+
+# note that jgross-thesis.pdf is an order-only dep of jgross-thesis-extra-todos.pdf because if we build them at the same time, then LaTeX will stomp over its own aux files and cause issues
+jgross-thesis-extra-todos.pdf: jgross-thesis.tex | jgross-thesis.pdf
 
 $(THESIS_PDFS): $(THESIS_TEXS) $(THESIS_VS)
 

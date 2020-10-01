@@ -17,7 +17,7 @@ In this chapter, we will focus primarily on the first of these ways; while it mi
 Mitigating the second source of performance bottlenecks, imperfectly opaque abstraction barriers, on the other hand, is actually just a question of meticulous tracking of how abstraction barriers are defined and used, and designing them so that they all unfolding is explicit.
 However, we will present an exception to the rule of opaque abstraction barriers in \autoref{sec:duality-conversion} in which deliberate breaking of all abstraction barriers in a careful way can result in performance gains of up to a factor of two:
 \autoref{sec:duality-conversion} presents one of our favorite design patterns for categorical constructions: a way of coaxing Coq's definitional equality into implementing \emph{proof by duality}, one of the most widely known ideas in category theory.
-\todo{adjust the tone of what comes after the colon in the previous sentence to fit with this paper}
+\minortodo{adjust the tone of what comes after the colon in the previous sentence to fit with this paper}
 Finally, the question of whether to use packed or unpacked records is actually a genuine trade-off in both design-space and performance, as far as I can tell;
 the non-performance design considerations have been discussed before in \todo{cite math classes, etc}, while the performance implications are relatively straightforward.
 As far as I'm aware, there's not really a good way to get the best of all worlds.

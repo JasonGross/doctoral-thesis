@@ -1,4 +1,8 @@
 \usepackage{soul}
+\usepackage{ifthen}
+\usepackage{comment}
+
+\provideboolean{showminortodos}
 
 %%%%%%%%%%%%%%%%%%%%%%%
 % https://tex.stackexchange.com/a/312583/2066
@@ -22,12 +26,28 @@
 \AtBeginDocument{\renewcommand{\NowOrAtBeginDocument}[1]{#1}}%
 \fi
 \newcommand{\todo}[1]{%
-\finalwarning{TODO: \detokenize{#1} in file \currfilename}%
-\NowOrAtBeginDocument{\textcolor{red}{[\textbf{TODO:} #1]}}}%
+  \finalwarning{TODO: \detokenize{#1} in file \currfilename}%
+  \NowOrAtBeginDocument{\textcolor{red}{[\textbf{TODO:} #1]}}}%
+\newcommand{\minortodo}[1]{%
+  \finalwarning{MINOR TODO: \detokenize{#1} in file \currfilename}%
+  \ifthenelse{\boolean{showminortodos}}{%
+    \NowOrAtBeginDocument{\textcolor{red}{[\textbf{MINOR TODO:} #1]}}%
+  }{}}%
 \newcommand{\etodo}[1]{\edef\@todotext{#1}\expandafter\todo\expandafter{\@todotext}}%
+\newcommand{\eminortodo}[1]{\edef\@todotext{#1}\expandafter\minortodo\expandafter{\@todotext}}%
 \newcommand{\todoask}[1]{%
-\finalwarning{QUESTION FOR ADAM: \detokenize{#1} in file \currfilename}%
-\NowOrAtBeginDocument{\textcolor{purple}{[\textbf{QUESTION FOR ADAM:} #1]}}}%
+  \finalwarning{QUESTION FOR ADAM: \detokenize{#1} in file \currfilename}%
+  \NowOrAtBeginDocument{\textcolor{purple}{[\textbf{QUESTION FOR ADAM:} #1]}}}%
+\newcommand{\minortodoask}[1]{%
+  \finalwarning{MINOR QUESTION FOR ADAM: \detokenize{#1} in file \currfilename}%
+  \ifthenelse{\boolean{showminortodos}}{%
+    \NowOrAtBeginDocument{\textcolor{purple}{[\textbf{QUESTION FOR ADAM:} #1]}}%
+  }{}}%
+\ifthenelse{\boolean{showminortodos}}{
+  \includecomment{minorcomment}
+}{
+  \excludecomment{minorcomment}
+}
 \newcommand{\colorifzero}[3]{%
 \ifnum#1=0\relax
 \expandafter\@firstoftwo

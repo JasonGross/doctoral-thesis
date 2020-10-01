@@ -36,7 +36,7 @@ NASA and other space agencies lost hardware costing billions of US dollars due t
 Finally, the Therac-25 radiation therapy machine killed three people and injured more by delivering dangerous doses of radiation~\cites[p.~434]{Gift2018Baase}{Investigation1993Leveson}.
 
 While testing of various kinds is the de facto standard for finding bugs, it is both quite costly and does not guarantee a lack of bugs.
-\todo{email Xavier Leroy and ask if he has references on how much the airline industry spends on testing}
+\minortodo{email Xavier Leroy and ask if he has references on how much the airline industry spends on testing}
 In adversarial contexts, fixing even 99\% of bugs is not sufficient; there is a strong incentive for the remaining 1\% of bugs to be found and exploited.
 In some such contexts, random testing cannot hope to eliminate all bugs.
 For example, some bugs in cryptographic code only occur in as few as 19 out of $2^{255}$ cases~\cite{curve25519-donna-commit-correct-bounds}.
@@ -76,14 +76,14 @@ Said another way, we no longer need to write tests for every piece of software s
 We come now to the main thrust of this thesis.
 Tools for machine-checked proofs have already had many successes, in both software verification and traditional mathematics proof formalization.
 Examples abound, from compilers~\cite{Compcert} to microkernels~\cite{seL4SOSP09} to web-servers~\cite{Network2015Chlipala} to cryptography code~\cite{FiatCryptoSP19}, from the Four-Color Theorem~\cite{gonthier2008formal} to the Odd-Order Theorem~\cite{gonthier2013machine} to Homotopy Type Theory~\cite{HoTTBook}.
-While compiler performance---both the time it takes to compile code and the time it takes to run the generated code---has long been an active field of study~\cite{CC++Performance2017,georges2007statistically,mytkowicz-wrong-data}\todo{find more citations here}, to our knowledge there is no existing body of work systematically investigating the performance of proof assistants, nor even any work primarily focused on the problem of proof assistant performance.
+While compiler performance---both the time it takes to compile code and the time it takes to run the generated code---has long been an active field of study~\cite{CC++Performance2017,georges2007statistically,mytkowicz-wrong-data}\minortodo{find more citations here}, to our knowledge there is no existing body of work systematically investigating the performance of proof assistants, nor even any work primarily focused on the problem of proof assistant performance.
 We distinguish the question of interactive proof assistant performance from that of performance of fully automated reasoning tools such as SAT and SMT solvers, on which there has been a great deal of research~\cite{Efficiency1994Boulton}.
 As we discuss in \autoref{sec:intro:history}, interactive proof assistants utilize human creativity to handle a greater breadth and depth of problems than fully automated tools, which succeed only on more restricted domains.
 %while there is a great deal of research on the topic of efficiently producing proofs in a fully automated way~ these tools, at least at present, cannot hope to solve the challenges
 %\todo{integrate stuff from \textcite{Efficiency1994Boulton} such as ``For example, much of the research in the field of automated reasoning is concerned with producing proofs more efficiently''}
 %\todo{Related to this is work on sound interfaces to external tools, also an enduring topic: \textcite{TrustedSlind}}
 
-\todo{work on this paragraph}
+\minortodo{work on this paragraph}
 Why is this problem worthy of study?
 This thesis argues that the problem of \emph{compile-time performance} or \emph{proof-checking performance} is both significantly different from the problem of performance of typical programs and that it is nontrivial.
 While many papers mention performance, obliquely or otherwise, and some are even driven by performance concerns of a particular algorithm or part of the system,~\cites[p.~1382]{gonthier2008formal}{Efficiency1994Boulton}{Proving2005Benjamin}{Idris2Faster2020Brady}{Recognizing1989Benanav}{mechanical1990Pierce}{CelikETAL17iCoq}{PalmskogETAL18piCoq}{vmcompute}{thesis-nogin}{Idris2Faster2020Brady}, we have not found any that investigate the performance problems that arise \emph{asymptotically}, when proof assistants are used to verify programs at large scale.
@@ -98,10 +98,10 @@ This sort of performance behavior is \emph{typical}.
 \todo{Ask readers for feedback on readability, design choices of this paragraph in particular}
 
 Drawing experience from case studies in category theory~\cite{category-coq-experience}, parsers~\cite{jgross-masters-thesis}, and generation of low-level cryptographic code~\cite{FiatCryptoSP19}, we investigate and seek to explicate a broad swath of performance issues and bottlenecks.
-While we propose some design principles for avoiding these performance issues in \autoref{part:design} and present a research prototype of a tool and methodology for achieving acceptable performance at scale in \autoref{part:rewriting}---and we claim both of these are original contributions of this PhD\todo{how to write PhD in text?  with periods? not?}---the story that this thesis aims to tell is that in order for proof assistants to scale to industrial uses, \emph{we must get the basics of asymptotic performance right}.
+While we propose some design principles for avoiding these performance issues in \autoref{part:design} and present a research prototype of a tool and methodology for achieving acceptable performance at scale in \autoref{part:rewriting}---and we claim both of these are original contributions of this PhD\minortodo{how to write PhD in text?  with periods? not?}---the story that this thesis aims to tell is that in order for proof assistants to scale to industrial uses, \emph{we must get the basics of asymptotic performance right}.
 
 \subsection{What are proof assistants?}\label{sec:intro:history}
-\todo{is it Nuprl or NuPRL? make sure to be consistent}
+\minortodo{is it Nuprl or NuPRL? make sure to be consistent}
 %{The structure of this section:}
 %\begin{itemize}
 %\item {how the first proof assistants worked}
@@ -113,7 +113,7 @@ While we propose some design principles for avoiding these performance issues in
 %
 Before diving into the details of performance bottlenecks and solutions, we review the history of formal verification and proof assistants to bring the reader up to speed on the context of our work and investigation.
 %\todo{Maybe say something about the purpose of this section: simultaneously let people know that there's been a lot of thought and effort, let people know about success stories (because it possibly hasn't touched them, and hasn't been adopted mainstream), (and also a bit about how the proof assistants might actually check the proofs)}
-\todo{cite the following in chronological order, maybe}
+\minortodo{cite the following in chronological order, maybe}
 While we intend to cover a wide swath of the history and development in this subsection, more detailed descriptions can be found in the literature~\cites{ringer2020qed,Proof2009Geuvers,History2014Harrison,CoqArtForward2013Huet,Brief2019Darbari,davis2001early,Matuszewski05mizar:the,Automath2002Kamareddine,Milestones2019Moore,Automation2013Moore,LCF2000Gordon,LCF2019Paulson,Logical2002Pfenning}[Related Work]{nuprl}.
 \textcite[ch.~4]{ringer2020qed} has a particularly clear presentation which was invaluable in assembling this section.
 
@@ -132,7 +132,7 @@ While this procedure will run forever on statements which are neither provably t
 This procedure, however, is uselessly slow.
 
 More efficient procedures for proof search exist, however.
-\todo{Should I cite \textcite{Computing1960Davis}, which was an earlier form of the resolution rule that proved infeasible?}
+\minortodo{Should I cite \textcite{Computing1960Davis}, which was an earlier form of the resolution rule that proved infeasible?}
 Early systems such as the Stanford Pascal Verifier~\cite{luckham1979stanford} and Stanford Resolution Prover were based on what is now known as Robinson's resolution rule~\cite{Machine1965Robinson}, which, when coupled with syntactic unification, resulted in tolerable performance on sufficiently simple problems~\cite{davis2001early,Brief2019Darbari}.
 A particularly clear description of the resolution method can be found in \textcite[pp.~17--18]{Metamathematics1994Shankar}.
 In the 1960s, all 400-or-so theorems of Whitehead and Russell's \emph{Principia Mathematica} were automatically proven by the same program~\cite[p.~9]{davis2001early}.
@@ -163,8 +163,8 @@ The second issue---ease of extensibility---was also addressed by the design of M
 By combining an abstract, opaque, trusted API for building terms with a functional programming language, users were granted the ability to combine the basic proof steps into ``tactics''.
 Tactics were functions that took in a goal, that is, a formula to be proven, and returned a list of remaining subgoals, together with a function that would take in proofs of those subgoals and turn them into a proof of the overall theorem.
 An example: a tactic for proving conjunctions might, upon being asked to prove $A \wedge B$, return the two-element list of subgoals $[A, B]$ together with a function that, when given a proof of $A$ and a proof of $B$ (i.e., when given two \texttt{thm} objects, the first of which proves $A$ and the second of which proves $B$), combines them with a primitive conjunction rule to produce a proof object justifying $A \wedge B$.
-\todo{Do I need to say more about LCF?}
-\todo{Do I need to say more about tactics?}
+\minortodo{Do I need to say more about LCF?}
+\minortodo{Do I need to say more about tactics?}
 
 \begin{comment}
 \todo{How should I summarize this into relevant paragraphs???}
@@ -302,37 +302,37 @@ The domain of classical mathematics required restrictions to the logical languag
 \end{comment}
 
 In the mid 1980s, Coq~\cite{Coq}, the proof assistant which we focus most on in this thesis, was born from an integration of features and ideas from a number of the proof assistants we've discussed in this subsection.
-Notably, it was based on the Calculus of Constructions (CoC), a synthesis of Martin-Löf's type theory~\cite{Intuitionistic1975MartinLoef,Constructive1982MartinLoef} with dependent types and polymorphism, which grew out of Dana Scott's logic of computable functions\todo{Type1993Scott} together with de Bruijn's work on Automath~\cite{CoqArtForward2013Huet}.
+Notably, it was based on the Calculus of Constructions (CoC), a synthesis of Martin-Löf's type theory~\cite{Intuitionistic1975MartinLoef,Constructive1982MartinLoef} with dependent types and polymorphism, which grew out of Dana Scott's logic of computable functions~\cite{Type1993Scott} together with de Bruijn's work on Automath~\cite{CoqArtForward2013Huet}.
 In the late 1980s, some problems were found with the way datatypes were encoded using functions, which lead to the introduction of inductive types, and an extension of CoC called the Calculus of Inductive Constructions (CIC)~\cite{CoqArtForward2013Huet}.
 
 Major accomplishments of verification in Coq~\cite{Coq} include the fully verified optimizing C compiler CompCert~\cite{Compcert}, the proof of the Four Color Theorem~\cite{gonthier2008formal}, and the complete formalization of the Odd Order Theorem, also known as the Feit--Thompson Theorem~\cite{gonthier2013machine}.
 This last development was the of about six years of work formalizing a proof that every finite group of odd order is solvable; the original proof, published in the early 1960s, is about 225 pages long.
-\todo{Should I mention the following? ``Computer-verified proofs of versions of the first incompleteness theorem were announced [...] by Russell O'Connor in 2003 using Coq (O'Connor 2005)'' \url{https://en.wikipedia.org/wiki/Gödel's_incompleteness_theorems}}
-\todo{Should I say this? We refer readers to \textcite{CoqArtForward2013Huet} for a comprehensive history of the development of Coq.}
+\minortodo{Should I mention the following? ``Computer-verified proofs of versions of the first incompleteness theorem were announced [...] by Russell O'Connor in 2003 using Coq (O'Connor 2005)'' \url{https://en.wikipedia.org/wiki/Gödel's_incompleteness_theorems}}
+\minortodo{Should I say this? We refer readers to \textcite{CoqArtForward2013Huet} for a comprehensive history of the development of Coq.}
 
-\todo{Do I need to include anything more from \textcite{Proof2009Geuvers,History2014Harrison}?}
+\minortodo{Do I need to include anything more from \textcite{Proof2009Geuvers,History2014Harrison}?}
 
 We now briefly mention a number of other proof assistants, calling out some particularly significant accomplishments of verification.
 Undoubtedly we will miss some proof assistants and accomplishments, for which we refer the reader to the rich existing literature, some of which is cited in the first paragraph of this subsection, as well as scattered among other papers which describe a variety of proof assistants~\cite{Formalizing2009Wiedijk}.
 
 Inspired by Automath, the Mizar~\cite{harrison-mizar,Rudnicki92anoverview,Matuszewski05mizar:the} proof checker was designed to assist mathematicians in preparing mathematical papers~\cite{Rudnicki92anoverview}.
-The Mizar Mathematical Library had already 55 thousand formally verified lemmas in 2009 and was at the time (and might still be \todoask{is this accurate?}) the largest library of formal mathematics~\cite{Formalizing2009Wiedijk}.
+The Mizar Mathematical Library had already 55 thousand formally verified lemmas in 2009 and was at the time (and might still be \minortodoask{is this accurate?}) the largest library of formal mathematics~\cite{Formalizing2009Wiedijk}.
 LCF~\cite{LCF2000Gordon,gordon1979edinburgh,gordon1978metalanguage} spawned a number of other closely related proof assistants, such as HOL~\cite{Programming2000Barras,LCF2000Gordon}, Isabelle/HOL~\cite{LCF2019Paulson,Isabelle/Isar2002Wenzel,Isabelle,paulson1994isabelle}, HOL4~\cite{slind2008brief}, HOL Light~\cite{harrison1996hol}.
 Among other accomplishments, a complete OS microkernel, seL4, was fully verified in Isabelle/HOL by 2009~\cite{seL4SOSP09}.
 In 2014, a complete proof of the Kepler conjecture on optimal packing of spheres was formalized in a combination of Isabelle and HOL Light~\cite{flyspeck,flyspeck2014Hales}.
-\todo{should I say anything about the Kepler conjecture? ``In 1998 Thomas Hales, following an approach suggested by Fejes Tóth (1953), announced that he had a proof of the Kepler conjecture. Hales' proof is a proof by exhaustion involving the checking of many individual cases using complex computer calculations. Referees said that they were ``99\% certain'' of the correctness of Hales' proof, and the Kepler conjecture was accepted as a theorem.'' \url{https://en.wikipedia.org/wiki/Kepler_conjecture}}
+\minortodo{should I say anything about the Kepler conjecture? ``In 1998 Thomas Hales, following an approach suggested by Fejes Tóth (1953), announced that he had a proof of the Kepler conjecture. Hales' proof is a proof by exhaustion involving the checking of many individual cases using complex computer calculations. Referees said that they were ``99\% certain'' of the correctness of Hales' proof, and the Kepler conjecture was accepted as a theorem.'' \url{https://en.wikipedia.org/wiki/Kepler_conjecture}}
 The functional programming language CakeML includes a self-bootstrapping optimizing compiler which is fully verified in HOL~\cite{CakeML}.
-\todo{should I say something about the year?}
-\todo{should I mention the following? ``Computer-verified proofs of versions of the first incompleteness theorem were announced [...] by John Harrison in 2009 using HOL Light (Harrison 2009). A computer-verified proof of both incompleteness theorems was announced by Lawrence Paulson in 2013 using Isabelle (Paulson 2014). `` \url{https://en.wikipedia.org/wiki/Gödel's_incompleteness_theorems}}
+\minortodo{should I say something about the year?}
+\minortodo{should I mention the following? ``Computer-verified proofs of versions of the first incompleteness theorem were announced [...] by John Harrison in 2009 using HOL Light (Harrison 2009). A computer-verified proof of both incompleteness theorems was announced by Lawrence Paulson in 2013 using Isabelle (Paulson 2014). `` \url{https://en.wikipedia.org/wiki/Gödel's_incompleteness_theorems}}
 The Nqthm Boyer--Moore theorem prover eventually evolved into ACL2~\cite{ACL2,ACL2Applications}.
 Other proof assistants include LF~\cite{pfenning1991logic,harper93,Logical2002Pfenning}, Twelf~\cite{pfenning1999system}, Matita~\cite{asperti2007user,Matita2011Asperti}, PVS~\cite{owre1996pvs,PVS1992Owre}, LEGO~\cite{LEGO1994Pollack}, and NuPRL~\cite{nuprl}.
-\todo{What should I say abound NuPRL?}
-\todoask{Which, if any, of the projects on http://www.nuprl.org/html/Projects.html are worth mentioning?  What about http://www.nuprl.org/Publications/?}
+\minortodo{What should I say abound NuPRL?}
+\minortodoask{Which, if any, of the projects on http://www.nuprl.org/html/Projects.html are worth mentioning?  What about http://www.nuprl.org/Publications/?}
 %\todo{Paragraph on Nuprl.  Innovation: type theory and proof checking is type checking (but type checking is undecidable).  Poke around Nuprl project website for 10 minutes to see what they highlight.  Talk about Curry--Howard, Check Martin-Löf.  Maybe email Bob Constable for historical context of Nuprl}
-\todo{should I mention Agda? Idris? Lean?}
-\todo{Do I need to email Randy Pollack(sp?) creator of LEGO, to get historical context?}
+\minortodo{should I mention Agda? Idris? Lean?}
+\minortodo{Do I need to email Randy Pollack(sp?) creator of LEGO, to get historical context?}
 
-\todo{How should I conclude this section?}
+\minortodo{How should I conclude this section?}
 
 \section{Basic Design Choices}\label{sec:intro:proof-assistant-design-choices}
 Although the design-space of proof assistants is quite large, as we've touched on in \autoref{sec:intro:history}, there are only two main design decisions which we want to assume for the investigations of this thesis.
@@ -344,11 +344,11 @@ Readers are advised to consult \textcite[ch.~4]{ringer2020qed} for a more thorou
 In this section, we will explain these two design choices in detail;
 by the end of this section, the reader should understand what each design choice entails, and, we hope, why these are reasonable choices to make.
 
-\todo{do I need to say any more before the subsections?}
+\minortodo{do I need to say any more before the subsections?}
 
 \subsection{Dependent Types: What? Why? How?}\label{sec:why-how-dependent-types}
 %Note: target audience: Saman (or POPL/PLDI)
-\todo{subsubsection structure of this section}
+\minortodo{subsubsection structure of this section}
 There are, broadly, three schools of thought on what is a \emph{proof}.
 \textcite{Proof2009Geuvers} describe two roles that a proof plays:
 \begin{quote}
@@ -359,9 +359,9 @@ There are, broadly, three schools of thought on what is a \emph{proof}.
 \end{quote}
 A third conception of proof is that a proof is itself a mathematical object or construction which corresponds to the content of a particular theorem~\cite{Rigour2013Bauer}.
 This third conception dates back to the school of intuitionism of Brouwer in the early 1900s and of constructive mathematics of Bishop in the 1960s; see \textcite[Related Works]{nuprl} for a tracing of the history from Brouwer to Martin-L\"of, whose type theory is at the heart of Coq and similar proof assistants.
-\todo{should I rehash how proofs are done in other proof assistants?}
+\minortodo{should I rehash how proofs are done in other proof assistants?}
 
-\todo{Work in justification of dependent types ``Randy Pollack, On extensibility of proof checkers, Types for Proofs
+\minortodo{Work in justification of dependent types ``Randy Pollack, On extensibility of proof checkers, Types for Proofs
 and Programs (LNCS 996) (Baastad, Sweden), June 1994, WWW:
 \url{http://homepages.inf.ed.ac.uk/rpollack/export/extensibility.ps.gz}'' from ``However, Pollack [21] offers reasons why a dependently-typed
 programming language may be preferable'' from \textcite{TrustedSlind}}
@@ -435,7 +435,7 @@ Similarly, if we try to use \emph{modus ponens} to combine a proof that $x = 1 \
 
 While the correspondence of the unit type to tautologies is relatively trivial, the correspondence of the empty type to falsehood encodes non-trivial principles.
 By encoding falsehood as the empty type, the principle of explosion---that from a contradiction, everything follows---can be encoded as case analysis on the empty type.
-\todo{do I need to explain this bit more?}
+\minortodo{do I need to explain this bit more?}
 
 The last two rows of \autoref{tab:curry-howard} are especially interesting cases which we will now cover.
 
@@ -472,14 +472,14 @@ and
 \forall (b_1 : \texttt{bool}) (b_2 : \texttt{bool}), E(b_1, b_2) \to E(b_2, b_1).
 \]
 A function of this type witnesses a proof that equality of booleans is symmetric.
-\todo{should I say more?  How to organize this paragraph?}
+\minortodo{should I say more?  How to organize this paragraph?}
 
 Similarly, dependent pair types witness existentially quantified proofs.
 Suppose we have a type $T(n)$ which encodes the statement ``$n$ is prime and even''.
 To prove $\exists n, T(n)$, we must provide an explicit $n$ together with a proof that it satisfies $T$.
 This is exactly what a dependent pair is: $\Sigma_n T(n)$ is the type of pairs of numbers $n$ paired with proofs that that particular $n$ satisfies $T$.
 
-\todo{subsection split here?}
+\minortodo{subsection split here?}
 
 As we mentioned above, one feature of basing a proof assistant on dependent type theory is that computation can be done at the type-level, without leaving a trace in the proof term.
 Many proofs require intermediate arguments based solely on the computation of functions.
@@ -488,22 +488,22 @@ As argued by \textcite{stampoulis2013veriml}, if we are required to record all i
 The \emph{Poincaré principle} asserts that such arguments should not need to be recorded in formal proofs, but should instead be automatically verified by appeal to computation~\cite[p.~1167]{barendregt2001proof}.
 The ability to appeal to computation without blowing up the size of the proof term is quite important for so-called reflective (or reflexive) methods of proof, described in great detail in \autoref{ch:reflection}.
 
-\todo{I think the original phrasing of \textcite{stampoulis2013veriml} is much clearer:
+\minortodo{I think the original phrasing of \textcite{stampoulis2013veriml} is much clearer:
 ``Another variation of the basic architecture that is part of the Coq proof assistant is the inclusion of a conversion rule in its logical core.
 Arguments that are based solely on computation of functions defined in the logic, such as the fact that $1+1=2$, are ubiquitous throughout formal proofs.
 If we record all the steps required to show that such arguments are valid as part of the proof objects,  their size soon becomes prohibitively large.
 It has been argued that such arguments should not be recorded in formal proofs but rather should be automatically decided through computation – a principle that has been called the Poincaré principle'' \cite[p.~1167]{barendregt2001proof}
 What should be done?}
 
-\todo{where should I mention that the LCF approach, in particular the ability to never manifest proof objects, is somewhat incompatible with dependent types, as there is no distinction between proofs and terms, and hence proofs must be manifested in general so that we can inspect them~\cite{NewCoqTactics2016Pedrot}.}
+\minortodo{where should I mention that the LCF approach, in particular the ability to never manifest proof objects, is somewhat incompatible with dependent types, as there is no distinction between proofs and terms, and hence proofs must be manifested in general so that we can inspect them~\cite{NewCoqTactics2016Pedrot}.}
 
-\todo{do I need to do more to explain the idea of reducing proof checking to typechecking (with examples)?}
+\minortodo{do I need to do more to explain the idea of reducing proof checking to typechecking (with examples)?}
 
-\todo{do I need to explain the idea of structuring programming so that some properties are true by construction?  where do I fit it?  what do I say?}
+\minortodo{do I need to explain the idea of structuring programming so that some properties are true by construction?  where do I fit it?  what do I say?}
 
-\todo{do I need to explain extensional vs intensional?}
+\minortodo{do I need to explain extensional vs intensional?}
 
-\todo{is there anything more to say in this section?}
+\minortodo{is there anything more to say in this section?}
 
 Readers interested in a more comprehensive explanation of dependent type theory are advised to consult Chapter 1 (Type theory) and Appendix A (Formal type theory) of \textcite{HoTTBook}.
 Readers interested in perspectives on how dependent types may be disadvantageous are invited to consult literature such as \textcite{Should1999Lamport} and \textcite{Formalising2018Paulson}.
@@ -520,7 +520,7 @@ As described in the beginning of this chapter, the purpose of proving our softwa
 Having a proof checker reduces the problem of software correctness to the problem of the correctness of the specification, together with the correctness of the proof checker.
 If the proof checker is complicated and impenetrable, it might be quite unreasonable to trust it.
 
-\todo{is there a clearer way to express this?}
+\minortodo{is there a clearer way to express this?}
 Proof assistants satisfying the de Bruijn criterion are, in general, more easily trustable than those which violate it.
 The ability to check proofs with a small program, divorced from any heuristic programs and search procedures which generate the proof, allows trust in the proof to be reduced to trust in that small program.
 Sufficiently small and well-written programs can more easily be inspected and verified.
@@ -533,10 +533,10 @@ There's a much smaller kernel which checks the proofs, and Coq is even shipped w
 Moreover, in the past year, a checker for Coq's proof objects has been implemented in Coq itself and formally verified with respect to the type theory underlying Coq~\cite{Coq2019Sozeau}.
 
 Note that the LCF approach to theorem proving, where proofs have an abstract type and type-safety of the tactics guarantees validity of the proof object, forms a sort-of complementary approach to trust.
-\todo{what should I say about LCF here?}
-\todo{should I mention formal verification of Nuprl in Coq?}
+\minortodo{what should I say about LCF here?}
+\minortodo{should I mention formal verification of Nuprl in Coq?}
 
-\todo{is there anything else to say in this subsection?}
+\minortodo{is there anything else to say in this subsection?}
 
 \section{Look ahead: Layout and contributions of the thesis}\label{sec:intro:layout}
 In the remainder of \autoref{part:introduction}, we will finish laying out the landscape of performance bottlenecks in dependently-typed proof assistants;
@@ -562,25 +562,28 @@ Finally, while the present chapter which we are now concluding has looked back o
 
 \begin{subappendices}
 
+\begin{minorcomment}
 \section{TODOs from \autoref{sec:intro:intro}}
+\end{minorcomment}
 %\todo{read / look into \textcite{georges2007statistically}}
 %\todo{maybe read \textcite{mytkowicz-wrong-data}}
 %\todo{Karl Palmskog: @Jason Gross I saw your post on performance optimization/measurements for proof assistants on Coq-Club. We summarize a lot of work on parallelization/selection for proof assistants in our regression proving papers (ASE 17 \& ISSTA 18): \textcite{CelikETAL17iCoq} \textcite{PalmskogETAL18piCoq}}
-\todo{read and cite \textcite{lean-tactic-language}}
-\todo{read \textcite{Implementing1998Shao}}
+\minortodo{read and cite \textcite{lean-tactic-language}}
+\minortodo{read \textcite{Implementing1998Shao}}
 ``It's not directly related to proof assistants, but the techniques described can be applicable to proof assistants and the experience \emph{may} be applicable to some extent.''
-\todo{read \textcite{Inductive2003Brady}}
-\todo{read \textcite{thesis-nogin}}
-\todo{read Grégoire and Leroy's paper from ICFP 2002 \textcite{vmcompute}}
-\todo{read Dirk Kleeblatt's PhD thesis \textcite{Strongly2011Kleeblatt}.}
+\minortodo{read \textcite{Inductive2003Brady}}
+\minortodo{read \textcite{thesis-nogin}}
+\minortodo{read Grégoire and Leroy's paper from ICFP 2002 \textcite{vmcompute}}
+\minortodo{read Dirk Kleeblatt's PhD thesis \textcite{Strongly2011Kleeblatt}.}
 ``Both of these are about using compiled code in dependent type checkers instead of interpreters.''
-\todo{read András Kovács has smalltt at \textcite{smallttKovacs}}``, which I don't think has been written up anywhere but has nonetheless been influential, both on Idris 2 and on Olle Fredriksson's reimplementation of Sixten at \url{https://github.com/ollef/sixty}''
-\todo{look at \url{https://github.com/AndrasKovacs/normalization-bench}}
-\todo{look at \url{https://github.com/AndrasKovacs/smalltt}}
-\todo{``I haven't yet updated the smalltt repo, but there's a simplified (\url{https://gist.github.com/AndrasKovacs/a0e0938113b193d6b9c1c0620d853784}) implementation of its evaluator, which seems to have roughly the same performance but which is much simpler to implement.''}
+\minortodo{read András Kovács has smalltt at \textcite{smallttKovacs}}``, which I don't think has been written up anywhere but has nonetheless been influential, both on Idris 2 and on Olle Fredriksson's reimplementation of Sixten at \url{https://github.com/ollef/sixty}''
+\minortodo{look at \url{https://github.com/AndrasKovacs/normalization-bench}}
+\minortodo{look at \url{https://github.com/AndrasKovacs/smalltt}}
+\minortodo{``I haven't yet updated the smalltt repo, but there's a simplified (\url{https://gist.github.com/AndrasKovacs/a0e0938113b193d6b9c1c0620d853784}) implementation of its evaluator, which seems to have roughly the same performance but which is much simpler to implement.''}
 %\todo{\cite{Idris2Faster2020Brady}}
-\todo{\cite{NewCoqTactics2016Pedrot} about why not LCF tactics in dependently typed setting}
+\minortodo{\cite{NewCoqTactics2016Pedrot} about why not LCF tactics in dependently typed setting}
 
+\begin{minorcomment}
 
 András Kovács wrote:
 \begin{quotation}
@@ -598,19 +601,23 @@ Injectivity analysis is another thing which I believe has large potential impact
 
 I'd be very interested in your findings about proof assistant performance. This has been a topic that I've been working on on-and-off for several years. I've recently started to implement a system which I intend to be eventually ``production strength'' and also as fast as possible, and naturally I want to incorporate existing performance know-how.
 \end{quotation}
-\todo{look into ``So technically, the lost sharing is the second-order sharing that is preserved
+\end{minorcomment}
+\minortodo{look into ``So technically, the lost sharing is the second-order sharing that is preserved
     in ``optimal reduction'' of lambda calculi [Levy-1980, Lamping-1990, Asperti-Laneve-1992],
     while hash consing normally is directly usable only for first-order sharing.''}
-\todo{look at \url{https://math.stackexchange.com/questions/3466976/online-reference-book-for-implementing-concepts-in-type-theory}}
-\todo{look at \url{https://github.com/AndrasKovacs/elaboration-zoo/blob/0c7f8a676c0964cc05c247879393e97729f59e5b/AIMprez/AIMprez.pdf} or \url{https://eutypes.cs.ru.nl/eutypes\_pmwiki/uploads/Meetings/Kovacs\_slides.pdf}}
+\minortodo{look at \url{https://math.stackexchange.com/questions/3466976/online-reference-book-for-implementing-concepts-in-type-theory}}
+\minortodo{look at \url{https://github.com/AndrasKovacs/elaboration-zoo/blob/0c7f8a676c0964cc05c247879393e97729f59e5b/AIMprez/AIMprez.pdf} or \url{https://eutypes.cs.ru.nl/eutypes\_pmwiki/uploads/Meetings/Kovacs\_slides.pdf}}
 Konrad Slind wrote:
-\todo{read \textcite{Programming2000Barras}}
-\todo{\textcite{Efficiency1994Boulton}}
+\minortodo{read \textcite{Programming2000Barras}}
+\minortodo{\textcite{Efficiency1994Boulton}}
 
-\todo{look into \textcite{Sealing2020Selsam} Sealing Pointer-Based Optimizations Behind Pure Functions}
+\minortodo{look into \textcite{Sealing2020Selsam} Sealing Pointer-Based Optimizations Behind Pure Functions}
 
+\begin{minorcomment}
 \section{Coq's design}
-\todo{where does this description of Coq's design go?}
+\end{minorcomment}
+\minortodo{where does this description of Coq's design go?}
+\begin{minorcomment}
 Coq is split into two parts.
 
 There's the part of the system that is called the kernel or the trusted code base.
@@ -620,9 +627,9 @@ You're like ``I have an arithmetic expression please prove that it's true'' and 
 If the part generating the arithmetic proof is wrong then the users come complaining to you that you have a bug.
 If the part checking the proofs is wrong, then you don't see the bug and now suddenly your users can prove anything they want.
 And the system is no longer trustworthy right and so for that bit of it you need to be very careful with any changes you make.
+\end{minorcomment}
 \end{subappendices}
 %\begin{itemize}
 %  \item Mention domains: math/CT and program transformation
 %  \item Case studies: parsers, fiat-crypto, CT library
 %\end{itemize}
-\todo{this chapter}

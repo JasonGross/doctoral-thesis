@@ -7,7 +7,7 @@ TEXT="$(cat jgross-thesis.log |
 	sed 's/\&//g; s/\(\(on input line[^\.]*\| multiply defined\|multiply-defined labels\|Xy-pic Warning: [^\.]*\)\.\|in paragraph at lines [0-9-]*\([^\[\]]*\[\]\)*\)/\1\&/g; s/\(Underfull\|Overfull\)/\&\1/g; s/(Font)\s*/; /g; s/(biblatex)\s*/ /g' |
 	tr '&' '\n' |
 	grep -o 'LaTeX Warning:.*\|Xy-pic Warning:.*\|Font shape [^ ]* in size [^ ]* not available.*\|Package biblatex Warning: The following entry could not be found in the database: [^ ]*\|\(Under\|Over\)full ..box ([^)]*) in paragraph at lines.*' |
-	grep -o 'TODO.*\|QUESTION.*\|Warning: Reference.*\|Warning: Citation.*\|Warning: Label.*\|Xy-pic Warning:.*\|Font shape [^ ]* in size [^ ]* not available.*\|Package [^ ]* Warning: .*\|\(Under\|Over\)full ..box ([^)]*) in paragraph at lines.*')$(echo; (cat jgross-thesis-biber.log |
+	grep -o 'MINOR.*\|TODO.*\|QUESTION.*\|Warning: Reference.*\|Warning: Citation.*\|Warning: Label.*\|Xy-pic Warning:.*\|Font shape [^ ]* in size [^ ]* not available.*\|Package [^ ]* Warning: .*\|\(Under\|Over\)full ..box ([^)]*) in paragraph at lines.*')$(echo; (cat jgross-thesis-biber.log |
 	grep '^WARN'))"
 
 ((echo "$TEXT" | grep TODO);

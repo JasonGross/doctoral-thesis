@@ -1,10 +1,10 @@
 \chapter{The Performance Landscape in Type-Theoretic Proof Assistants} \label{ch:perf-failures}
 \section{The Story}\label{sec:perf-failures:story}
-\todo{come up with a better name for this section}
+\minortodo{come up with a better name for this section}
 The purpose of this chapter is to convince the reader that the issue of performance in proof assistants is non-trivial in ways that differ from performance bottlenecks in non-dependently-typed languages.
 I intend to do this by first sketching out what I see as the main difference between performance issues in dependently-typed proof assistants vs performance issues in other languages, and then supporting this claim with a palette of real performance issues that have arisen in Coq.
 
-The widespread commonsense in performance engineering\cite{commonsense-perf-engineering-order-of-operations} is that good performance optimization happens in a particular order:
+The widespread commonsense in performance engineering~\cite{commonsense-perf-engineering-order-of-operations} is that good performance optimization happens in a particular order:
 there is no use micro-optimizing code if you are implementing an algorithm with unacceptable performance characteristics; imagine trying to optimize the pseudorandom number generator used in bogosort~\cite{Sorting2007Gruber}, for example.\footnote{Bogosort, whose name is a portmanteau of the words bogus and sort~\cite{bogosort-name}, sorts a list by randomly permuting the list over and over until it is sorted.}
 Similarly, there is no use trying to find or create a better algorithm if the problem you're solving is more complicated than it needs to be; consider, for example, the difference between ray tracers and physics simulators.
 Ray tracers determine what objects can be seen from a given point essentially by drawing lines from the viewpoint to the object and seeing if it passes through any other object ``in front of'' it.
@@ -19,11 +19,11 @@ We can say that sorting is always possible in $\mathcal O(n\log n)$ time, and th
 
 In proof assistants, the domain is much larger: in theory, we want to be able to check any proof anyone might write.
 Furthermore, in dependently typed proof assistants, the worst-case behavior is effectively unbounded, because any provably terminating computation can be run at typechecking time.
-\todo{cite https://github.com/coq/coq/issues/12200}
+\minortodo{cite https://github.com/coq/coq/issues/12200}
 
 In fact, this issue already arises for compilers of mainstream programming languages.
-\todo{literature search on perf of compile time in mainstream compilers?}
-The C++ language, for example, has \texttt{constexpr} constructions that allow running arbitrary computation at compile-time, and it's well-known that C++ templates can incur a large compile-time performance overhead.\todo{cite?}
+\minortodo{literature search on perf of compile time in mainstream compilers?}
+The C++ language, for example, has \texttt{constexpr} constructions that allow running arbitrary computation at compile-time, and it's well-known that C++ templates can incur a large compile-time performance overhead.\minortodo{cite?}
 However, I claim that, in most languages, even as you scale your program, these performance issues are the exception rather than the rule.
 Most code written in C or C++ does not hit unbounded compile-time performance bottlenecks.
 Generally if you write code that compiles in a reasonable amount of time, as you scale up your codebase, your compile time will slowly creep up as well.
@@ -215,7 +215,7 @@ no other system has a clear performance-conscious story for how these interfaces
 \section{The Four Axes}\label{sec:perf-axes}
 I now present four major axes of performance.
 These are not comprehensive, but after extensive experience with Coq, most performance bottlenecks scaled super-linearly as a function of at least one of these axes.
-\todo{introduce this section better}
+\minortodo{introduce this section better}
 
 \subsection{The Size of the Type} \label{sec:perf-axis:size-of-type}  \label{sec:quadratic-conj-certificate}
 
@@ -227,15 +227,17 @@ For such a simple theorem, we want the size of the proof, and the time- and memo
 Recall from \autoref{sec:debruijn-criterion} that we want a separation between the small trusted part of the proof assistant and the larger untrusted part.
 The untrusted part generates certificates, which in dependently typed proof assistants are called terms, which the trusted part, the kernel, checks.
 
-\todo{Mention possibility of not building proof terms at all somewhere}
+\minortodo{Mention possibility of not building proof terms at all somewhere}
+\begin{minorcomment}
 Andrew Appel said via private correspondence on May 7, 2020, 7:39 PM:
 \begin{quotation}
 There's some work on typechecking LF, in the Twelf system, where there can be performance bottlenecks if you're not careful.
 
 The most glaringly obvious performance bottleneck in Coq is that it builds proof terms, when one should really use the futuristic technique of using data abstraction, in the type system, to distinguish ``proposition'' from ``theorem''; as done in that state-of-the-art system, Edinburgh LCF.  And presumably HOL, HOL light, Isabelle/HOL, etc.
 \end{quotation}
-\todo{mention the issue that LCF approach does not fully satisfy de Bruijn criterion, does not protect against plugins and Obj.magic}
-\todo{share reasoning of ppedrot from \textcite{NewCoqTactics2016Pedrot}}
+\end{minorcomment}
+\minortodo{mention the issue that LCF approach does not fully satisfy de Bruijn criterion, does not protect against plugins and Obj.magic}
+\minortodo{share reasoning of ppedrot from \textcite{NewCoqTactics2016Pedrot}}
 
 The obvious certificate to prove a conjunction $A \wedge B$ is to hold a certificate $a$ proving $A$ and a certificate $b$ proving $B$.
 In Coq, this certificate is called \texttt{conj} and it takes four parameters: $A$, $B$, $a : A$, and $b : B$.
@@ -244,8 +246,8 @@ Perhaps you can already spot the problem.
 To prove a conjunction of $n$ things, we end up repeating the type $n$ times in the certificate, resulting in a term that is quadratic in the size of the type.
 We see in \autoref{fig:timing-conj-True-repeat-constructor} the time it takes to do this in Coq's tactic mode via \mintinline{coq}{repeat constructor}.
 If we are careful to construct the certificate manually without duplicating work, we see that it takes linear time for Coq to build the certificate and quadratic time for Coq to check the certificate; see \autoref{fig:timing-conj-True-ltac2}.
-\todo{improve data collection on perf test}
-\todo{make a note about more complicated types causing scaling factors to be worse, and not just impacting the leaves}
+\minortodo{improve data collection on perf test}
+\minortodo{make a note about more complicated types causing scaling factors to be worse, and not just impacting the leaves}
 
 \begin{figure*}
     \beginTikzpictureStamped{
@@ -325,8 +327,8 @@ There are two obvious solutions for this problem:
 \subsubsection{Dropping Type Parameters: Nominal vs.~Structural Typing} \label{sec:nominal-vs-structural} \label{sec:dropping-constructor-parameters}
 The first option requires that the proof assistant implement structural typing rather than nominal typing~\cite[19.3 Nominal and Structural Type Systems]{tapl}.
 \todo{Find a place for this note:} Note that it doesn't actually require structural; we can do it with nominal typing if we enforce everywhere that we can only compare terms who are known to be the same type, because not having structural typing results in having a single kernel term with multiple non-unifiable types.
-\todo{maybe look into TAPL}
-\todo{explain structural and nominal typing more}
+\minortodo{maybe look into TAPL}
+\minortodo{explain structural and nominal typing more}
 Morally, the reason for this is that if we have an inductive record type \todo{have we explained inductive types yet?} \todo{have we explained records yet?} whose fields do not constrain the parameters of the inductive type family \todo{have we explained parameters vs indices and inductive type families yet?}, then we need to consider different instantiations of the same inductive type family to be convertible.
 That is, if we have a phantom record such as\todo{mention where the name ``phantom'' comes from?}
 \begin{minted}{coq}
@@ -335,11 +337,12 @@ Record Phantom (A : Type) := phantom {}.
 and our implementation does not include \texttt{A} as an argument to \texttt{phantom}, then we must consider \texttt{phantom} to be both of type \texttt{Phantom nat} and \texttt{Phantom bool}, even though \texttt{nat} and \texttt{bool} are not the same.
 I have requested this feature in \cite{https://github.com/coq/coq/issues/5293}.
 Note, however, that sometimes it is important for such phantom types to be considered distinct when doing type-level programming.
-\todo{Come up with better justification for having nominal typing available?}
+\minortodo{Come up with better justification for having nominal typing available?}
 
 \subsubsection{Sharing} \label{sec:sharing}
 The alternative to eliminating the duplicative arguments is to ensure that the duplication is at-most constant sized.
-There are two ways to do this: either the user can explicitly share subterms so that the size of the term is in fact linear in the size of the goal, or the proof assistant can ensure maximal sharing of subterms \todo{explain this better}.
+There are two ways to do this: either the user can explicitly share subterms so that the size of the term is in fact linear in the size of the goal, or the proof assistant can ensure maximal sharing of subterms.
+\minortodo{explain this better}
 
 There are two ways for the user to share subterms: using let-binders, and using function abstraction.
 For example, rather than writing
@@ -369,7 +372,7 @@ Alternatively, the user can write
 
 Unfortunately, both of these incur quadratic typechecking cost, even though the size of the term is linear.
 See \autoref{fig:timing-conj-True-let-ltac2} and \autoref{fig:timing-conj-True-app-ltac2}.
-\todo{improve data collection on perf test}
+\minortodo{improve data collection on perf test}
 
 \begin{figure*}
     \beginTikzpictureStamped{
@@ -449,11 +452,11 @@ See \autoref{fig:timing-conj-True-let-ltac2} and \autoref{fig:timing-conj-True-a
 \caption{Timing of manually building and typechecking a certificate to prove a conjunction of $n$ \mintinline{coq}{True}s using abstraction and application using \LtacTwo} \label{fig:timing-conj-True-app-ltac2}
 \end{figure*}
 
-Recall that the typing rules for $\lambda$ and \texttt{let} are as follows:\todo{cite appendix with typing rules of Coq?}
-\todo{maybe look in https://github.com/achlipala/frap and/or TAPL by Benjamin C. Pierce for how to render typing rules}
-\todoask{What's the suggested way of pretty-printing typing rules?}
-\todoask{Which way do substitution brackets go?}
-\todoask{What convention should we use for typing rules with regard to things being types?  Maybe just copy the HoTT book?}
+Recall that the typing rules for $\lambda$ and \texttt{let} are as follows:\minortodo{cite appendix with typing rules of Coq?}
+%\todo{maybe look in https://github.com/achlipala/frap and/or TAPL by Benjamin C. Pierce for how to render typing rules}
+%\todoask{What's the suggested way of pretty-printing typing rules?}
+%\todoask{Which way do substitution brackets go?}
+%\todoask{What convention should we use for typing rules with regard to things being types?  Maybe just copy the HoTT book?}
 \begin{prooftree}
   \AxiomC{$Γ, x:A ⊢ f : B$}
   \UnaryInfC{$Γ ⊢ (λ (x:A), f) : ∀ x:A, B$}
@@ -557,29 +560,29 @@ let v2 : T2   := @conj True T1 I v0 in
 \end{itemize}
 Note that we have performed linearly many substitutions into linearly-sized types, so unless substitution is constant time in size of the term being substituted, we incur quadratic overhead here.
 The story for function abstraction is similar.
-\todo{cite https://github.com/coq/coq/issues/8232 maybe?}
+\minortodo{cite https://github.com/coq/coq/issues/8232 maybe?}
 
-\todo{Should we run though typechecking in more detail here?}
+\minortodo{Should we run though typechecking in more detail here?}
 
 We again have two choices to fix this:
 either we can change the typechecking rules (which work just fine for small-to-medium-sized terms), or we can adjust typechecking to deal with some sort of pending substitution data, so that we only do substitution once.
 
-\todo{maybe cite https://github.com/coq/coq/issues/11838?}
+\minortodo{maybe cite https://github.com/coq/coq/issues/11838?}
 
-\todo{reference quadratic cbv here, which had a similar issue?}
+\minortodo{reference quadratic cbv here, which had a similar issue?}
 
 \todo{some sort of section division marker here?}
 
 The proof assistant can also try to heuristically share subterms for us.
 Many proof assistants do some version of this, called \emph{hash consing}.
-\todo{explain and cite hash consing?}
+\minortodo{explain and cite hash consing?}
 
 However, hash consing looses a lot of its benefit if terms are not maximally shared (and they almost never are), and can lead to very unpredictable performance when transformations unexpectedly cause a loss of sharing.
-\todo{cite hash consing needing to be full to get perf benefit}
+\minortodo{cite hash consing needing to be full to get perf benefit}
 Furthermore, it's an open problem how to efficiently persist full hash consing to disk in a way that allows for diamond dependencies.
-\todo{explain this more, find citation for hash consing being hard with disk}
-\todo{flesh out hash consing section more}
-\todo{maybe cite https://github.com/coq/coq/issues/9028\#issuecomment-600013284 about hash consing being slow}
+\minortodo{explain this more, find citation for hash consing being hard with disk}
+\minortodo{flesh out hash consing section more}
+\minortodo{maybe cite https://github.com/coq/coq/issues/9028\#issuecomment-600013284 about hash consing being slow}
 
 \subsection{The Size of the Term}
 
@@ -593,14 +596,14 @@ We might reasonably hope that typechecking problems which require no interesting
 
 However, some seemingly reasonable decisions can result in typechecking taking quadratic time in the size of the term, as we saw in \autoref{sec:sharing}.
 
-\todo{maybe move some text form the sharing section to here?}
+\minortodo{maybe move some text form the sharing section to here?}
 
 Even worse, typechecking can easily be unboundedly large in the size of the term when the typechecker chooses the wrong constants to unfold, even when very little work ought to be done.
 
-\todo{discussion of conversion checking, and conversion modulo delta-beta}
+\minortodo{discussion of conversion checking, and conversion modulo delta-beta}
 
 Consider the problem of typechecking \mintinline{coq}{@eq_refl nat (fact 100) : @id nat (fact 100) = fact 100}, where \mintinline{coq}{fact} is the factorial function on natural numbers and \mintinline{coq}{id} is the polymorphic identity function.
-\todo{should we define polymorphic identity function somewhere?}
+\minortodo{should we define polymorphic identity function somewhere?}
 If the typechecker either decides to unfold \mintinline{coq}{id} before unfolding \mintinline{coq}{fact}, or if it performs a breath-first search, then we get speedy performance.
 However, if the typechecker instead unfolds \mintinline{coq}{id} \emph{last}, then we end up computing the normal form of $100!$, which takes a long time and a lot of memory.
 See \autoref{fig:timing-eq-refl-nat-factorial}.
@@ -630,10 +633,10 @@ Note that it is by no means obvious that the typechecker can meaningfully do any
 Breath-first search is significantly more complicated than depth-first, is harder to write good heuristics for, can incur enormous space overheads, and can be massively slower in cases where there are many options and the standard heuristics for depth-first unfolding in conversion-checking are sufficient.
 Furthermore, the more heuristics there are to tune conversion-checking, the more ``magic'' the algorithm seems, and the harder it is to debug when the performance is inadequate.
 
-As described in \todo{reference above example about fiat-crypto}, in fiat-crypto, we got exponential slowdown due to this issue, with an estimated overhead of over four thousand millennia of extra typechecking time in the worst examples we were trying to handle.
+As described in \autoref{sec:fiat-crypto-codegen-numbers}, in fiat-crypto, we got exponential slowdown due to this issue, with an estimated overhead of over four thousand millennia of extra typechecking time in the worst examples we were trying to handle.
 
-\todo{maybe forward reference to the number of abstraction barriers}
-\todo{maybe include more about real-world fiat-crypto example here?}
+\minortodo{maybe forward reference to the number of abstraction barriers}
+\minortodo{maybe include more about real-world fiat-crypto example here?}
 
 \subsection{The Number of Binders} \label{sec:perf:binder-count}
 
@@ -641,7 +644,7 @@ This is a particular subcase of the above sections that we call out explicitly.
 Often there will be some operation (for example, substitution, lifting, context-creation) that needs to happen every time there is a binder, and which, when done naively, is linear in the size of the term or the size of the context.
 As a result, naïve implementations will often incur quadratic---or worse---overhead in the number of binders.
 
-\todo{make sure we've explained proof engine and Ltac by here}
+\minortodo{make sure we've explained proof engine and Ltac by here}
 
 Similarly, if there is any operation that is even linear rather than constant in the number of binders in the context, then and user operation in proof mode which must be done, say, for each hypothesis, will incur an overall quadratic-or-worse performance penalty.
 
@@ -659,7 +662,7 @@ See \coqbug{9582} and \coqpr{9586}.
 See \autoref{fig:timing-name-resolution} for the timing of name resolution in Coq.
 See \autoref{fig:timing-nested-lambda-different-name} for the effect on internalizing a lambda with $n$ arguments.
 
-\todo{mention Coq version automatically, mention why we're using a different Coq version}
+\minortodo{mention Coq version automatically, mention why we're using a different Coq version}
 \begin{figure*}
     \beginTikzpictureStamped{
         \einput{performance-experiments-8-9/name-resolution.txt}
@@ -715,7 +718,7 @@ See \autoref{fig:timing-nested-lambda-different-name} for the effect on internal
 \caption{Timing of internalizing a function with $n$ differently-named arguments of type \mintinline{coq}{True}} \label{fig:timing-nested-lambda-different-name}
 \end{figure*}
 
-\todo{Is this called internalization or is it called elaboration}
+\minortodo{Is this called internalization or is it called elaboration}
 
 \subsubsection{Capture-Avoiding Substitution} \label{sec:perf:capture-avoiding-subst}
 If the user is presented with a proof engine interface where all context variables are named, then in general the proof engine must implement capture-avoiding substitution.
@@ -729,9 +732,9 @@ This might be the cause of the difference in \autoref{fig:timing-open-constr-n-l
 \todo{ADD PLOT: check if confounders come up}
 
 \subsubsection{Quadratic Creation of Substitutions for Existential Variables} \label{sec:perf:quadratic-evar-subst}
-Recall \todo{make sure that this is mentioned previously, and that we're not rehashing things too much} that when we separate the trusted kernel from the untrusted proof engine, we want to be able to represent not-yet-finished terms in the proof engine.
+Recall \minortodo{make sure that this is mentioned previously, and that we're not rehashing things too much} that when we separate the trusted kernel from the untrusted proof engine, we want to be able to represent not-yet-finished terms in the proof engine.
 The standard way to do this is to enrich the type of terms with an ``existential variable'' node, which stands for a term which will be filled later.
-\todo{cite original idea for evars? (what is it?)}
+\minortodo{cite original idea for evars? (what is it?)}
 Such existential variables, or evars, typically exist in a particular context.
 That is, you have access to some hypotheses but not others when filling an evar.
 
@@ -741,10 +744,10 @@ For example, if we want to $\beta$-reduce \mintinline{coq}{(λ x, ?e₁) (S y)},
 There are a number of ways to represent substitution, and the choices are entangled with the choices of term representation.
 
 Note that most substitutions are either identity or lifting substitutions.
-\todo{define identity and lifting substitutions}
+\minortodo{define identity and lifting substitutions}
 
 One popular representation is the locally nameless representation~\cite{Locally2012Chargueraud,locally2007Leroy}, which we discuss more in \autoref{sec:binders:locally-nameless}.
-\todo{Justify it?  Discuss other representations? Say why and how it's convenient?}
+\minortodo{Justify it?  Discuss other representations? Say why and how it's convenient?}
 However, if we use a locally nameless term representation, then finding a compact representation for identity and lifting substitutions is quite tricky.
 If the substitution representation takes $\mathcal O(n)$ time to create in a context of size $n$, then having a $\lambda$ with $n$ arguments whose types are not known takes $\mathcal O(n^2)$ time, because we end up creating identity substitutions for $n$ holes, with linear-sized contexts.
 
@@ -837,7 +840,7 @@ See also \autoref{fig:timing-do-n-open-constr-True} and \autoref{fig:timing-open
 
 \subsubsection{Quadratic Substitution in Function Application} \label{sec:perf:quadratic-application}
 Consider the case of typechecking a non-dependent function applied to $n$ arguments.
-If substitution is performed eagerly, following directly the rules of the type theory, \todo{cite the rules / reference an appendix}, then typechecking is quadratic.
+If substitution is performed eagerly, following directly the rules of the type theory, \minortodo{cite the rules / reference an appendix, }then typechecking is quadratic.
 This is because the type of the function is $\mathcal{O}(n)$, and doing substitution $n$ times on a term of size $\mathcal{O}(n)$ is quadratic.
 
 If the term representation contains $n$-ary application nodes, it's possible to resolve this performance bottleneck by delaying the substitutions.
@@ -877,13 +880,14 @@ See \autoref{fig:timing-app-n}.
 
 \subsubsection{Quadratic Normalization by Evaluation} \label{sec:perf:quadratic-NbE} \label{sec:perf:quadratic-cbv}
 Normalization by evaluation (NbE) is a nifty way to implement reduction where function abstraction in the object language is represented by function abstraction in the metalanguage.
-\todo{explain or forward-reference NbE}
+We discuss the details of how to implement NbE in \autoref{sec:thunk-eval-subst-term}.
+\minortodo{explain NbE?}
 \todo{Read stuff in \url{https://github.com/HoTT/book/issues/995\#issuecomment-418825844} for NbE stuff}
-\todo{Say more about it than that it's ``nifty''}
+\minortodo{Say more about it than that it's ``nifty''}
 Coq uses NbE to implement two of its reduction machines (\mintinline{coq}{lazy} and \mintinline{coq}{cbv}).
 
 The details of implementing NbE depend on the term representation used.
-If a fancy term encoding like PHOAS \todo{reference explanation of PHOAS} is used, then it's not hard to implement a good NbE algorithm.
+If a fancy term encoding like PHOAS, which we explain in \autoref{sec:binders:PHOAS}, is used\minortodo{don't split the ``PHOAS ... is used'' with text}, then it's not hard to implement a good NbE algorithm.
 However, such fancy term representations incur unpredictable and hard-to-deal-with performance costs.
 Most languages do not do any reduction on thunks until they are called with arguments, which means that forcing early reduction of a PHOAS-like term representation requires round-tripping though another term representation, which can be costly on large terms if there is not much to reduce.
 On the other hand, other term representations need to implement either capture-avoiding substitution (for named representations) or index lifting (for de Bruijn and locally nameless representations).
@@ -931,10 +935,10 @@ See also \autoref{fig:timing-quadratic-cbv-lazy-PHOAS}.
 
 \subsubsection{Quadratic Closure Compilation} \label{sec:perf:closure-compilation} \label{sec:perf:quadratic-vm-native}
 It's important to be able to perform reduction of terms in an optimized way.
-\todo{maybe give a better introductory justification to the vm and native compiler than ``it's important''?}
+\minortodo{maybe give a better introductory justification to the vm and native compiler than ``it's important''?}
 When doing optimized reduction in an imperative language, we need to represent closures---abstraction nodes---in some way.
-Often this involves associating to each closure both some information about or code implementing the body of the function, as well as the values of all of the free variables of that closure.
-\todo{cite \url{https://flint.cs.yale.edu/shao/papers/escc.html} or its references for closure compilation}
+Often this involves associating to each closure both some information about or code implementing the body of the function, as well as the values of all of the free variables of that closure~\cite{Efficient2000Shao}.
+%\minortodo{cite \url{https://flint.cs.yale.edu/shao/papers/escc.html} or its references for closure compilation}
 In order to have efficient lookup, we need to know the memory location storing the value of any given variable statically at closure-compilation time.
 The standard way of doing this \todo{cite something for flat closure compilation} is to allocate an array of values for each closure.
 If variables are represented with de Bruijn indices, for example, it's then a very easy array lookup to get the value of any variable.
@@ -947,7 +951,7 @@ However, it's quite essential when doing meta-programming involving large genera
 It's especially essential if we want to chain together reflective automation passes that operate on different input languages and therefore require denotation and reification between the passes.
 In such cases, unless our encoding language uses named or de Bruijn variable encoding, there's no way to avoid large numbers of nested binders at compilation time while preserving code sharing.
 Hence if we're trying to reuse the work of existing compilers to bootstrap good performance of reduction (as is the case for the native compiler in Coq), we have trouble with cases such as this one.
-\todo{reorganize this paragraph, improve it}
+\minortodo{reorganize this paragraph, improve it}
 
 See also \autoref{fig:timing-quadratic-vm-PHOAS} and \autoref{fig:timing-quadratic-native-PHOAS}.
 
@@ -1001,16 +1005,16 @@ See also \autoref{fig:timing-quadratic-vm-PHOAS} and \autoref{fig:timing-quadrat
 \caption{Timing of running \mintinline{coq}{native_compute} reduction on interpreting a PHOAS expression as a function of the number of binders} \label{fig:timing-quadratic-native-PHOAS}
 \end{figure*}
 
-\todo{maybe more examples here?}
+\minortodo{maybe more examples here?}
 
 \subsection{The Number of Nested Abstraction Barriers} \label{sec:axis-nested-abstraction-barriers}
 
-\todo{ADD PLOT: This section requires digging into the historical performance issues around this to find convincing stand-alone examples so we can have graphs here.}
+\minortodo{ADD PLOT: This section requires digging into the historical performance issues around this to find convincing stand-alone examples so we can have graphs here.}
 
 This axis is the most theoretical of the axes.
 An abstraction barrier is an interface for making use of code, definitions, and theorems.
 For example, you might define non-negative integers using a binary representation, and present the interface of zero, successor, and the standard induction principle, along with an equational theory for how induction behaves on zero and successor.
-\todo{should I spell this example out more?}
+\minortodo{should I spell this example out more?}
 You might use lists and non-negative integers to implement a hash-set datatype for storing sets of hashable values, and present the hash-set with methods for empty, add, remove, membership-testing, and some sort of fold.
 Each of these is an abstraction barrier.
 
@@ -1018,7 +1022,7 @@ There are three primary ways that nested abstraction barriers can lead to perfor
 
 \subsubsection{Conversion Troubles} \label{sec:abstraction-barriers:conversion-troubles}
 If abstraction barriers are not perfectly opaque---that is, if the typechecker ever has to unfold the definitions making up the API in order to typecheck a term---then every additional abstraction barrier provides another opportunity for the typechecker to pick the wrong constant to unfold first.
-\todo{add example?}
+\minortodo{add example?}
 In some typecheckers, such as Coq, it's possible to provide hints to the typechecker to inform it which constants to unfold when.
 In such a system, it's possible to carefully craft conversion hints so that abstraction barriers are always unfolded in the right order.
 Alternatively, it might be possible to carefully craft a system which picks the right order of unfolding by using a dependency analysis.
@@ -1044,9 +1048,9 @@ Furthermore, every theorem about the composition of these APIs needs to include 
 
 If such API mismatches are nested, or if this code size blowup interacts with conversion missteps, then the performance issues compound.
 
-\todo{maybe be more concrete here?}
+\minortodo{maybe be more concrete here?}
 
-\todo{transition?}
+\minortodo{transition?}
 
 Let us consider things a bit more generally.
 
@@ -1066,14 +1070,14 @@ In proof assistants like Coq, using \mintinline{coq}{unfold}, \mintinline{coq}{s
 This is all well and good when we are in the process of defining the abstraction barrier---unfolding the definition of sorting a list, for example, to prove that sorting the list gives back a list with all the same elements---but can be problematic when used more pervasively.
 
 Let us look at an example from a category theory library we implemented in Coq~\cite{category-coq-experience}, which we introduce in \autoref{sec:category-theory-library}.
-\todo{more text to introduce category theory}
+\minortodo{more text to introduce category theory}
 
-\todo{should I format or subset this code better?}
-\todo{update makefile to ensure this keeps compiling}
+\minortodo{should I format or subset this code better?}
+\minortodo{update makefile to ensure this keeps compiling}
 
 \inputminted{coq}{fragments/CategoryExponentialLaws.v}
 
-\todo{write this text better}
+\todo{write this text and code better}
 
 We note a couple of important points:
 \begin{itemize}
@@ -1090,9 +1094,10 @@ We note a couple of important points:
   If we must compose more than two functors, we get even more blow-up.
 \end{itemize}
 
-\todo{what should I say here?}
+\minortodo{what should I say here?}
 
-\todo{should I write text and code with vector example?  we'd probably need to index lists over vectors of types to get really hairy things...}
+\minortodo{should I write text and code with vector example?  we'd probably need to index lists over vectors of types to get really hairy things...}
+
 \begin{comment}
 \begin{minted}{coq}
 Require Import Coq.Arith.Arith.
@@ -1188,7 +1193,7 @@ That is, when defining a monoid, for example, there are five ways to go about sp
     \item
     (fully unpacked) A monoid on a carrier type $A$ under the binary operation $\cdot : A \to A \to A$ with identity element $e$ using a proof $p$ that $e$ is a left- and right-identity and a proof of $q$ of associativity consists of an element of the one-element unit type.
 \end{enumerate}
-\todo{cite math-classes and HoTT for past design work here}
+\todo{cite math-classes~\cite{Type2011Spitters,MathClasses} and HoTT for past design work here, and find a good citation for packing vs unpacking}
 
 If we go with anything but the fully packed design, then we incur exponential overhead as we go up abstraction layers, as follows.
 A \emph{monoid homomorphism} from a monoid $A$ to a monoid $B$ consists of a function between the carrier types, and proofs that this function respects composition and identity.
@@ -1202,8 +1207,8 @@ When developing a category theory library~\cite{category-coq-experience}, we spe
   See \githubref[commit ][ of JasonGross/catdb on GitHub]{JasonGross/catdb}{209231ae3e94d5dbbc678c94930dcf585d53d555} for details.%
 }
 
-\todo{maybe figure out some examples and include perf data?}
-\todo{does this need more exposition?}
+\minortodo{maybe figure out some examples and include perf data?}
+\minortodo{does this need more exposition?}
 
 \section{Conclusion of this Chapter}
 \todo{How should this chapter be concluded?}

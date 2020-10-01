@@ -1,4 +1,5 @@
 autorewrite
+autounfold
 backsolve
 backtraces
 biogeochemistry
@@ -32,7 +33,10 @@ CoqPL
 CPS'd
 fixpoint
 Fixpoint
+functorial
 gcc
+iff
+lia
 macrobenchmark
 matcher
 modus
@@ -40,6 +44,7 @@ OOM
 performant
 ponens
 pretyping
+proofy
 redex
 redexes
 repo

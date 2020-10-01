@@ -1057,7 +1057,7 @@ Let us consider things a bit more generally.
 \citetitle{Structure1996Sussman} defines abstraction as naming and manipulating compound elements as units~\cite[p.~6]{Structure1996Sussman}.
 An \emph{abstraction barrier} is a collection of definitions and theorems about those definitions that together provide an interface such a compound element.
 For example, we might define an interface for sorting a list, together with a proof that sorting any list results in a sorted list.
-Or we miht define an interface for key-value maps (perhaps implemented as association lists, or hash-maps, or binary search trees, or in some other way).
+Or we might define an interface for key-value maps (perhaps implemented as association lists, or hash-maps, or binary search trees, or in some other way).
 
 \emph{Piercing} an abstraction barrier is the act of manipulating the compound element by its components, rather than through the interface.
 For example, suppose we have implemented key-value maps as association lists, representing the map as a list of key-value pairs, and provided some interface.
@@ -1073,7 +1073,7 @@ Let us look at an example from a category theory library we implemented in Coq~\
 \minortodo{more text to introduce category theory}
 
 \minortodo{should I format or subset this code better?}
-\minortodo{update makefile to ensure this keeps compiling}
+\minortodo{update Makefile to ensure this keeps compiling}
 
 \inputminted{coq}{fragments/CategoryExponentialLaws.v}
 
@@ -1082,7 +1082,7 @@ Let us look at an example from a category theory library we implemented in Coq~\
 We note a couple of important points:
 \begin{itemize}
 \item
-  Definiting the interesting components---that is, the components that are not proofs of equality---of the isomorphism $(C₁ × C₂ → D) ≅ (C₁ → (C₂ → D))$ takes nearly two seconds.
+  Defining the interesting components---that is, the components that are not proofs of equality---of the isomorphism $(C₁ × C₂ → D) ≅ (C₁ → (C₂ → D))$ takes nearly two seconds.
   This is unusually large, given that there are only seven of them, and their definition is rather short.
   We attribute this to the large types generated and the non-trivial conversion problems which require unfolding various definitions, i.e., piercing various abstraction barriers.
 \item

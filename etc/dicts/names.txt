@@ -12,6 +12,7 @@ Ariane
 Asperti
 Automath
 Aydemir
+Baastad
 Barendregt
 Barras
 Bas
@@ -102,6 +103,7 @@ Laneve
 Lannion
 Letouzey
 LICS
+LNCS
 Löf
 Löf's
 luatex

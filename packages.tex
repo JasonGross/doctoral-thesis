@@ -269,10 +269,11 @@
 \usemintedstyle{bw}
 \setmintedinline{breaklines}
 \makeatletter
-\AtBeginEnvironment{minted}{\dontdofcolorbox}
 \def\dontdofcolorbox{\renewcommand\fcolorbox[4][]{##4}}
-\xpatchcmd{\inputminted}{\minted@fvset}{\minted@fvset\dontdofcolorbox}{}{}
-\xpatchcmd{\mintinline}{\minted@fvset}{\minted@fvset\dontdofcolorbox}{}{}
+\newcommand{\@mintedextraoptions}{\dontdofcolorbox\setboolean{fullwidthscripts}{true}}
+\AtBeginEnvironment{minted}{\@mintedextraoptions}
+\xpatchcmd{\inputminted}{\minted@fvset}{\minted@fvset\@mintedextraoptions}{}{}
+\xpatchcmd{\mintinline}{\minted@fvset}{\minted@fvset\@mintedextraoptions}{}{}
 % Work around bug(https://github.com/gpoore/minted/issues/273)
 \newcommand{\textmintinline}[2]{\text{\mintinline{#1}{#2}}}
 \makeatother
@@ -772,7 +773,8 @@
 \newcommand{\checkmarkdashed}{\asheightof{\usebox{\checkmarkdashed@box}}{\checkmark}}
 \makeatother
 % \cat{C} is the style for a category C
-\newcommand{\cat}[1]{\ensuremath{\mathcal{#1}}}
+\newcommand{\maybemathcal}[1]{\ifx\mathcal#1\relax\expandafter\mathcal\else\mathcal{#1}\fi}
+\newcommand{\cat}[1]{\ensuremath{\maybemathcal #1}}
 \newcommand{\maybesub}[1][]{\ifthenelse{\equal{#1}{}}{}{\ensuremath{_{#1}}}}
 \newcommand{\maybecat}[1][]{\ifthenelse{\equal{#1}{}}{}{\ensuremath{_{\cat{#1}}}}}
 \newcommand{\Ob}[1][]{\ensuretext{Ob}\maybecat[#1]}

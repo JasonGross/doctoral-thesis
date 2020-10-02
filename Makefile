@@ -22,7 +22,7 @@ PROPOSAL_TEXS = new-date-proposal.tex abstract-proposal.tex
 UMI_TEXS = umi-proquest-form-full.tex umi-proquest-form-adjusted.tex extra-title-abstract.tex
 COMPLETION_TEXS = new-date-submission.tex PhD_CompletionForm-adjusted.tex PhD_CompletionForm-full.tex
 COMPLETION_PDFS = PhD_CompletionForm-adjusted.pdf PhD_CompletionForm-full.pdf
-THESIS_VS := fragments/CategoryExponentialLaws.v
+THESIS_VS := fragments/CategoryExponentialLaws.v fragments/CategoryExponentialLawsSet.v
 ALL_TEXS = $(THESIS_TEXS) $(PROPOSAL_TEXS) $(UMI_TEXS) $(COMPLETION_TEXS)
 TEXT_TEXS = $(filter-out packages.tex mitthesis.cls,$(ALL_TEXS))
 READER_AGREEMENT_SIGNED_PDFS := $(subst unsigned,signed,$(READER_AGREEMENT_PDFS))
@@ -390,7 +390,7 @@ cleanall::
 	rm -f $(PDFS)
 	rm -rf abstract.endpage *~ *\# .\#* *.atfi *.swp *.aux *.lof ./*.log *.lot *.fls *.out *.toc *.fmt *.fot *.cb *.cb2 .*.lb *.dvi *.xdv *-converted-to.* .pdf *.bbl *.bcf *.blg *-blx.aux *-blx.bib *.run.xml *.fdb_latexmk *.synctex *.synctex'(busy)' *.synctex.gz *.synctex.gz'(busy)' *.pdfsync *.alg *.loa acs-*.bib *.thm *.nav *.pre *.snm *.vrb *.soc *.cpt *.spl *.ent *.lox *.mf *.mp *.t[1-9] *.t[1-9][0-9] *.tfm *.end *.?end *.[1-9] *.[1-9][0-9] *.[1-9][0-9][0-9] *.[1-9]R *.[1-9][0-9]R *.[1-9][0-9][0-9]R *.eledsec[1-9] *.eledsec[1-9]R *.eledsec[1-9][0-9] *.eledsec[1-9][0-9]R *.eledsec[1-9][0-9][0-9] *.eledsec[1-9][0-9][0-9]R *.acn *.acr *.glg *.glo *.gls *.glsdefs *-gnuplottex-* *.gaux *.gtex *.4ct *.4tc *.idv *.lg *.trc *.xref *.brf *-concordance.tex *.tikz *-tikzDictionary *.lol *.idx *.ilg *.ind *.ist *.maf *.mlf *.mlt *.mtc[0-9]* *.slf[0-9]* *.slt[0-9]* *.stc[0-9]* _minted* *.pyg *.mw *.nlg *.nlo *.nls *.pax *.pdfpc *.sagetex.sage *.sagetex.py *.sagetex.scmd *.wrt *.sout *.sympy sympy-plots-for-*.tex/ *.upa *.upb *.pytxcode pythontex-files-*/ *.loe *.dpth *.md5 *.auxlock *.tdo *.lod *.xmpi *.xdy *.xyc *.ttt *.fff TSWLatexianTemp* *.bak *.sav .texpadtmp *.backup *~[0-9]* ./auto/* *.el *-tags.tex *.sta *.spl *.drv *.dtx *.ins *.bbx *.cbx *.lbx *.def *.cfg *.bst mathtools.sty mhsetup.sty mathtools.zip ./mathtools/ biblatex.sty biblatex.zip ./biblatex/ etoolbox.sty etoolbox.tex logreq.sty *.md5 ./todo.svg jgross-thesis*-figure*.dep *.pgf-plot.gnuplot *.pgf-plot.table *-parameters.dat [._]*.s[a-v][a-z] [._]*.sw[a-p] [._]s[a-v][a-z] [._]sw[a-p] *~ \#*\# ./.emacs.desktop ./.emacs.desktop.lock *.elc auto-save-list tramp .\#* *.pyc *.aux *.d *.glob *.vio *.vo *.vos *.vok CoqMakefile.conf Makefile.bak Makefile.coq Makefile.coq.conf Makefile.coq.bak Makefile-old.conf csdp.cache lia.cache nlia.cache nia.cache nra.cache .csdp.cache .lia.cache .nlia.cache .nia.cache .nra.cache *_SuperFast.v *_Fast.v *_Medium.v *_Slow.v *_VerySlow.v
 
-PROCESS_REFS:=sed 's,[/:+}'"'"'\."\$$= \#0-9],-,g' | tr '-' '\n' | grep -v '^$$' | sort | uniq
+PROCESS_REFS:=sed 's,[_/:+}'"'"'\."\$$= \#0-9],-,g' | tr '-' '\n' | grep -v '^$$' | sort | uniq
 etc/dicts/labels.spl: $(TEXT_TEXS) Makefile
 	$(HIDE)cat $(TEXT_TEXS) | grep -o '\\label{[^}]*}' | sed 's/^\\label{//g' | $(PROCESS_REFS) > $@
 

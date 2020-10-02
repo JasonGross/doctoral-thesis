@@ -219,6 +219,7 @@ Notation "'λ' ⟨ f ⟩" := (@Build_NaturalTransformation _ _ _ _ f _) (only pa
 Notation "'λₒ' x1 .. xn , fo ; 'λₘ' m1 .. mn , mo" := (@Build_Functor _ _ (fun x1 => .. (fun xn => fo) .. ) (fun s d => (fun m1 => .. (fun mn => mo) .. )) _ _) (only parsing, x1 binder, xn binder, m1 binder, mn binder, at level 70) : functor_scope.
 Notation "'λₜ' x1 .. xn , f" := (@Build_NaturalTransformation _ _ _ _ (fun x1 => .. (fun xn => f) .. ) _) (only parsing, x1 binder, xn binder, at level 70) : natural_transformation_scope.
 
+(** [(C₁ × C₂ → D) ≅ (C₁ → (C₂ → D))] *)
 (** We denote functors by pairs of maps on objects ([↦ₒ]) and
     morphisms ([↦ₘ]), and natural transformations as a single map
     ([↦ₜ]) *)
@@ -234,6 +235,7 @@ Time Program Definition curry_iso1 (C₁ C₂ D : Category)
                   ; '(m₁, m₂) ↦ₘ (F ₁  m₁) _ ∘ (F ₀  _)₁ m₂ ⟩
            ; T ↦ₘ ⟨ '(c₁, c₂) ↦ₜ (T c₁) c₂ ⟩ ⟩ |}.
 
+(** [(C₁ × C₂ → D) ≅ (C₁ → (C₂ → D))] *)
 (** We denote functors by pairs of maps ([λ]) on objects ([↦ₒ]) and
     morphisms ([↦ₘ]), and natural transformations as a single map
     ([λ ⟨ ... ↦ₜ ... ⟩]) *)
@@ -249,6 +251,7 @@ Time Program Definition curry_iso2 (C₁ C₂ D : Category)
                       ; '(m₁, m₂) ↦ₘ (F ₁  m₁) _ ∘ (F ₀  _)₁ m₂ ⟩
              ; T ↦ₘ λ ⟨ '(c₁, c₂) ↦ₜ (T c₁) c₂ ⟩ ⟩ |}.
 
+(** [(C₁ × C₂ → D) ≅ (C₁ → (C₂ → D))] *)
 (** We denote functors by pairs of maps on objects ([λₒ]) and
     morphisms ([λₘ]), and natural transformations as a single map
     ([λₜ]) *)
@@ -826,5 +829,59 @@ Next Obligation.
                    identity_of := curry_iso_obligation_13 (D:=D) |} |} = 1
    *)
   (** About 200 lines *)
-Admitted.
-Next Obligation. Admitted.
+Abort.
+
+Import EqNotations.
+Axiom to_arrow1_eq
+  : forall C₁ C₂ D (F G : Functor C₁ (C₂ -> D))
+           (Hoo : forall c₁ c₂, F c₁ c₂ = G c₁ c₂)
+           (Hom : forall c₁ s d (m : morphism _ s d),
+               (rew [fun s => morphism D s _] (Hoo c₁ s) in rew [morphism D _] (Hoo c₁ d) in (F c₁)₁ m) = (G c₁)₁ m)
+           (Hm : forall s d (m : morphism _ s d) c₂,
+               (rew [fun s => morphism D s _] Hoo s c₂ in rew Hoo d c₂ in (F ₁ m) c₂)
+               = (G ₁ m) c₂),
+    F = G.
+Axiom to_arrow2_eq
+  : forall C₁ C₂ C₃ D (F G : Functor C₁ (C₂ -> (C₃ -> D)))
+           (Hooo : forall c₁ c₂ c₃, F c₁ c₂ c₃ = G c₁ c₂ c₃)
+           (Hoom : forall c₁ c₂ s d (m : morphism _ s d),
+               (rew [fun s => morphism D s _] (Hooo c₁ c₂ s) in rew [morphism D _] (Hooo c₁ c₂ d) in (F c₁ c₂)₁ m) = (G c₁ c₂)₁ m)
+           (Hom : forall c₁ s d (m : morphism _ s d) c₂,
+               (rew [fun s => morphism D s _] Hooo c₁ s c₂ in rew Hooo c₁ d c₂ in ((F c₁)₁ m) c₂)
+               = ((G c₁)₁ m) c₂)
+           (Hm : forall s d (m : morphism _ s d) c₂ c₃,
+               (rew [fun s => morphism D s _] Hooo s c₂ c₃ in rew Hooo d c₂ c₃ in (F ₁ m) c₂ c₃)
+               = ((G ₁ m) c₂ c₃)),
+    F = G.
+
+Local Ltac unfold_stuff
+  := intros;
+     cbv [compose Cat prod_category Functor.compose NaturalTransformation.compose];
+     cbn [object_of morphism_of components_of].
+
+Local Ltac fin_t
+  := repeat first [ progress intros
+                  | reflexivity
+                  | progress cbn
+                  | rewrite left_identity
+                  | rewrite right_identity
+                  | rewrite identity_of
+                  | rewrite <- composition_of ].
+
+Next Obligation.
+Proof.
+  Time solve [ intros; unshelve eapply to_arrow1_eq; unfold_stuff; fin_t ].
+  (* Finished transaction in 0.061 secs (0.061u,0.s) (successful) *)
+  Undo.
+  Time solve [ intros; unfold_stuff; unshelve eapply to_arrow1_eq; fin_t ].
+  (* Finished transaction in 0.176 secs (0.176u,0.s) (successful) *)
+Qed.
+
+Next Obligation.
+Proof.
+  Time solve [ intros; unshelve eapply to_arrow2_eq; unfold_stuff; fin_t ].
+  (* Finished transaction in 0.085 secs (0.085u,0.s) (successful) *)
+  Undo.
+  Time solve [ intros; unfold_stuff; unshelve eapply to_arrow2_eq; fin_t ].
+  (* Finished transaction in 0.485 secs (0.475u,0.007s) (successful) *)
+Qed.

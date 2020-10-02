@@ -1071,57 +1071,116 @@ In proof assistants like Coq, using \mintinline{coq}{unfold}, \mintinline{coq}{s
 This is all well and good when we are in the process of defining the abstraction barrier---unfolding the definition of sorting a list, for example, to prove that sorting the list gives back a list with all the same elements---but can be problematic when used more pervasively.
 
 Let us look at an example from a category theory library we implemented in Coq~\cite{category-coq-experience}, which we introduce in \autoref{sec:category-theory-library}.
-\minortodo{more text to introduce category theory}
-\minortodo{how much category theory should we introduce here? how much later?}
-
-We note a couple of important points before including the code for the example:
+Category theory generalizes functions and product types, and the example we present here is a category-theoretic version of the isomorphism between functions of type $C_1 \times C_2 \to D$ which take a pair of elements $c_1 \in C_1$ and $c_2 \in C_2$ and return an element of $D$, and functions of type $C_1 \to (C_2 \to D)$ which take a single argument $c_1 \in C_1$ and return a function from $C_2$ to $D$.
+We write this isomorphism as
+\[
+(C₁ × C₂ → D) ≅ (C₁ → (C₂ → D))
+\]
+In computer science, this is known as (un)currying.
+The abstractions used in formalizing this example are as follows
 \begin{itemize}
 \item
-  Defining the interesting components---that is, the components that are not proofs of equality---of the isomorphism $(C₁ × C₂ → D) ≅ (C₁ → (C₂ → D))$ takes nearly two seconds.
-  This is unusually large, given that there are only seven of them, and their definition is rather short.
-  We attribute this to the large types generated and the non-trivial conversion problems which require unfolding various definitions, i.e., piercing various abstraction barriers.
+  A \emph{category} $\mathcal C$ is a collection of objects and composable arrows (called \emph{morphisms}) between those objects, subject to some algebraic laws.
+  The class of objects is generally denoted $\Ob[\mathcal C]$ and the class of morphisms between $x, y\in \Ob[\mathcal C]$ is generally denoted $\Hom[\mathcal C](x, y)$.
+  Categories are a sort of generalization of sets or types.
 \item
-  The proofy parts of the isomorphism---that the composition of functors in each direction is the identity---is somewhat long.
-  The goal that going from $(C₁ × C₂ → D)$ to $(C₁ → (C₂ → D))$ and back again is the identity is only about 24 lines after $\beta$ reduction (when \mintinline{coq}{Set Printing All} is on, there are about 3\,300 words).
-  However, if we pierce the abstraction barrier of functor composition, the goal blows up to about 254 lines (about 18\,000 words with \mintinline{coq}{Set Printing All})!
-  This blow-up is due to the fact that the opaque proofs that functor composition is functorial take the entirety of the functors being composed as arguments.
-  Hence unfolding the composition of two functors duplicates those functors many times over.
-  If we must compose more than two functors, we get even more blow-up.
+  The \emph{product category} $\mathcal C \times \mathcal D$ generalizes the Cartesian product of sets.
+\item
+  An \emph{isomorphism} between objects $x$ and $y$ in a category $\mathcal C$, written $x \cong y$, is a pair of morphims from $x$ to $y$ and from $y$ to $x$ such that the composition in either direction is the identity morphism.
+\item
+  A \emph{functor} is an arrow between categories, mapping objects to objects and morphisms to morphisms, subject to some algebraic laws.
+  The action of a functor $F$ on an object $x$ is often denoted $F(x)$.
+  As the action of $F$ on a morphism $m$ is often also denoted $F(m)$, we will use $F_0$ to denote the action on objects and $F_1$ to denote the action on morphisms whwn it might otherwise be unclear.
+\item
+  A \emph{natural transformation} is an arrow between functors $F$ and $G$ consisting of a way of mapping from the on-object-action of $F$ to the on-object-action of $G$, satisfying some algebraic laws.
+\item
+  A category of functors $\mathcal C \to \mathcal D$ is the category whose objects are functors from $\mathcal C$ to $\mathcal D$ and whose morphisms are natural transformations.
+  This category generalizes the notion of function types or of sets of functions.
+\item
+  The category of categories, generally denoted \Cat, is a category whose objects are themselves categories and whose morphisms are functors.
+  Much like the set of all sets or the type of all types, the categories in \Cat\space are subject to size restrictions disussed further in \autoref{sec:category-of-categories}.
 \end{itemize}
+Although we eventually go into a bit more of the detail of these definitions throughout \autoref{sec:category-def} and again in \autoref{sec:category-def}, we advise the interested reader to consult the rich existing literature on category theory, including for example \textcite{awodey2010category} and \textcite{mac1998categories}.
 
+There are only seven components of the isomorphism $(\mathcal C₁ × \mathcal C₂ → \mathcal D) ≅ (\mathcal C₁ → (\mathcal C₂ → \mathcal D))$ which are not proofs of algebraic laws.
+Their definition, spelled out in \autoref{fig:exponential-laws:def:math} and given in Gallina Coq code (with suitable notations) in \autoref{fig:exponential-laws:def:coq}, is relatively trivial.
+
+Typechecking the code that defines these components, however, takes nearly two seconds!
+This is more than 200$\times$ slower than defining this data in the particular case of the category of sets.%
+\footnote{%
+  See \autoref{sec:abstraction-barriers:mismatch:example:exponential-laws:full-code:sets} for the code used to make this timing measurement.%
+}
+We attribute this to the large types generated and the non-trivial conversion problems which require unfolding various definitions, i.e., piercing various abstraction barriers.
+
+\begin{figure}
+  To define currying, going from $(\mathcal C₁ × \mathcal C₂ → \mathcal D)$ to $(\mathcal C₁ → (\mathcal C₂ → \mathcal D))$:
+  \begin{enumerate}
+  \item
+    Each functor $F : \mathcal C₁ × \mathcal C₂ → \mathcal D$ gets mapped to a functor which takes in an object $c_1 \in \Ob[\mathcal C₁]$ and returns a functor which takes in an object $c_2 \in \Ob[\mathcal C₂]$ and returns the object $F((c_1, c_2)) \in \Ob[\mathcal D]$.
+  \item
+    The action of the returned functor on morphisms in $\mathcal C₂$ is to first lift this morphism from $\mathcal C₂$ to $\mathcal C₁ × \mathcal C₂$ by pairing with the identity morphism on $c_1$, and then to return the image of this morphism under $F$.
+  \item
+    The action of the outer functor on morphims $m_1 \in \Hom[\mathcal C₁]$ is to return the natural transformation which, for each object $c_2\in \Ob[\mathcal C₂]$ first pairs the morphism $m_1$ with the identity on $c_2$ and then returns the image of this morphism in $\mathcal C₁ × \mathcal C₂$ under $F$.
+  \item
+    Each natural transformation $T \in \Hom[\mathcal C₁ × \mathcal C₂ → \mathcal D]$ gets mapped to the natural transformation in $\mathcal C₁ → (\mathcal C₂ → \mathcal D)$ which, after binding $c_1$ and $c_2$ returns the morphism in $\mathcal D$ given by the action of $T$ on $(c_1, c_2)$.
+  \end{enumerate}
+  To define uncurrying, going from $(\mathcal C₁ → (\mathcal C₂ → \mathcal D))$ to $(\mathcal C₁ × \mathcal C₂ → \mathcal D)$:
+  \begin{enumerate}[resume]
+  \item
+    Each functor $F : \mathcal C₁ → (\mathcal C₂ → \mathcal D)$ gets mapped to the functor which takes in an object $(c_1, c_2)\in \Ob[\mathcal C₁ × \mathcal C₂]$ and returns $(F(c_1))(c_2)$.
+  \item
+    The action of this functor on morphims $(m_1, m_2) \in \Hom[\mathcal C₁ × \mathcal C₂]$ is to compose $F(m_1)$ applied to a suitable object of $\mathcal C_2$ with $F$ applied to a suitable object of $c_1$ and then applied to $m_2$.
+  \item
+    Each natural transformation $T \in \Hom[\mathcal C₁ → (\mathcal C₂ → \mathcal D)]$ gets mapped to the natural transformation which maps each object $(c_1, c_2)\in \Ob[\mathcal C₁ × \mathcal C₂]$ to the morphism $(T(c_1))(c_2)$ in $\Hom[\mathcal D]$.
+  \end{enumerate}
+  While this is a mouthful, there is no insight in any of these definitions; for each component, there is exactly one choice that can be made which has the correct type.
+  \caption{%
+    \label{fig:fig:exponential-laws:def:math}%
+    The interesting components of $(\mathcal C₁ × \mathcal C₂ → \mathcal D) ≅ (\mathcal C₁ → (\mathcal C₂ → \mathcal D))$.%
+  }
+\end{figure}
+
+\begin{figure}
 \begin{minted}{coq}
 (** [(C₁ × C₂ → D) ≅ (C₁ → (C₂ → D))] *)
-(** We provide the action of functors on objects ([object_of]) and on
-    morphisms ([morphism_of]), and we provide the action of natural
-    transformations on object ([components_of] *)
+(** We denote functors by pairs of maps on objects ([λₒ]) and
+    morphisms ([λₘ]), and natural transformations as a single map
+    ([λₜ]) *)
 Time Program Definition curry_iso (C₁ C₂ D : Category)
   : (C₁ * C₂ -> D) ≅ (C₁ -> (C₂ -> D)) :>>> Cat
   := {| fwd
-        := {| object_of F
-              := {| object_of c₁
-                    := {| object_of      c₂ := F ₀ (c₁, c₂);
-                          morphism_of _ _ m := F ₁ (identity c₁, m) |};
-                    morphism_of _ _ m₁
-                    := {| components_of  c₂ := F ₁ (m₁, identity c₂) |} |};
-              morphism_of _ _ T
-              := {| components_of c₁
-                    := {| components_of  c₂ := T (c₁, c₂) |} |} |};
+        := λₒ F, λₒ c₁, λₒ c₂, F ₀  (c₁, c₂)
+                      ; λₘ m , F ₁  (identity c₁, m)
+               ; λₘ m₁, λₜ c₂, F ₁  (m₁, identity c₂)
+         ; λₘ T, λₜ c₁, λₜ c₂, T (c₁, c₂);
         bwd
-        := {| object_of F
-              := {| object_of                       '(c₁, c₂)
-                    := (F ₀ c₁)₀ c₂;
-                    morphism_of '(s₁, s₂) '(d₁, d₂) '(m₁, m₂)
-                    := (F ₁ m₁) d₂ ∘ (F ₀ s₁)₁ m₂ |};
-              morphism_of s d T
-              := {| components_of '(c₁, c₂) := (T c₁) c₂ |} |}; |}.
+        := λₒ F, λₒ '(c₁, c₂), (F ₀  c₁)₀ c₂
+               ; λₘ '(m₁, m₂), (F ₁  m₁) _ ∘ (F ₀  _)₁ m₂
+         ; λₘ T, λₜ '(c₁, c₂), (T c₁) c₂ |}.
 (* Finished transaction in 1.958 secs (1.958u,0.s) (successful) *)
 \end{minted}
+  \caption{%
+    \label{fig:fig:exponential-laws:def:math}%
+    The interesting components of $(\mathcal C₁ × \mathcal C₂ → \mathcal D) ≅ (\mathcal C₁ → (\mathcal C₂ → \mathcal D))$, in Coq.
+    The surrounding definitions and notations required for this example to typecheck are given in \autoref{sec:abstraction-barriers:mismatch:example:exponential-laws:full-code}.%
+  }
+\end{figure}
+
+While two seconds is long, there is an even more serious issue that arises when attempting to prove the algebraic laws.
+The types here are already a bit long:
+The goal that going from $(C₁ × C₂ → D)$ to $(C₁ → (C₂ → D))$ and back again is the identity is only about 24 lines after $\beta$ reduction (when \mintinline{coq}{Set Printing All} is on, there are about 3\,300 words).
+
+However, if we pierce the abstraction barrier of functor composition, the goal blows up to about 254 lines (about 18\,000 words with \mintinline{coq}{Set Printing All})!
+This blow-up is due to the fact that the opaque proofs that functor composition is functorial take the entirety of the functors being composed as arguments.
+Hence unfolding the composition of two functors duplicates those functors many times over.
+If we must compose more than two functors, we get even more blow-up.
+
+Piercing this barrier also shows up in proof-checking time.
+If we first decompose the goal into the separate equalities we wish to prove and only then unfold the abstraction barrier (thereby side-stepping the issue of passing large arguments to opaque proofs), it takes less than a tenth of a second to prove each of the two algebraic laws of the isomorphism.
+However, if we instead unfold the definitions first and then decompose the goal into separate goals, it takes about 5$\times$ longer to check the proof.
 
 Readers interested in the full compiling code for this example can refer to \autoref{sec:abstraction-barriers:mismatch:example:exponential-laws:full-code}.
 
-\minortodo{write this text and code better}
-
-\minortodo{what should I say here?}
 
 \minortodo{should I write text and code with vector example?  we'd probably need to index lists over vectors of types to get really hairy things...}
 

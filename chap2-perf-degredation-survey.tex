@@ -1086,11 +1086,11 @@ The abstractions used in formalizing this example are as follows
 \item
   The \emph{product category} $\mathcal C \times \mathcal D$ generalizes the Cartesian product of sets.
 \item
-  An \emph{isomorphism} between objects $x$ and $y$ in a category $\mathcal C$, written $x \cong y$, is a pair of morphims from $x$ to $y$ and from $y$ to $x$ such that the composition in either direction is the identity morphism.
+  An \emph{isomorphism} between objects $x$ and $y$ in a category $\mathcal C$, written $x \cong y$, is a pair of morphisms from $x$ to $y$ and from $y$ to $x$ such that the composition in either direction is the identity morphism.
 \item
   A \emph{functor} is an arrow between categories, mapping objects to objects and morphisms to morphisms, subject to some algebraic laws.
   The action of a functor $F$ on an object $x$ is often denoted $F(x)$.
-  As the action of $F$ on a morphism $m$ is often also denoted $F(m)$, we will use $F_0$ to denote the action on objects and $F_1$ to denote the action on morphisms whwn it might otherwise be unclear.
+  As the action of $F$ on a morphism $m$ is often also denoted $F(m)$, we will use $F_0$ to denote the action on objects and $F_1$ to denote the action on morphisms when it might otherwise be unclear.
 \item
   A \emph{natural transformation} is an arrow between functors $F$ and $G$ consisting of a way of mapping from the on-object-action of $F$ to the on-object-action of $G$, satisfying some algebraic laws.
 \item
@@ -1098,7 +1098,7 @@ The abstractions used in formalizing this example are as follows
   This category generalizes the notion of function types or of sets of functions.
 \item
   The category of categories, generally denoted \Cat, is a category whose objects are themselves categories and whose morphisms are functors.
-  Much like the set of all sets or the type of all types, the categories in \Cat\space are subject to size restrictions disussed further in \autoref{sec:category-of-categories}.
+  Much like the set of all sets or the type of all types, the categories in \Cat\space are subject to size restrictions discussed further in \autoref{sec:category-of-categories}.
 \end{itemize}
 Although we eventually go into a bit more of the detail of these definitions throughout \autoref{sec:category-def} and again in \autoref{sec:category-def}, we advise the interested reader to consult the rich existing literature on category theory, including for example \textcite{awodey2010category} and \textcite{mac1998categories}.
 
@@ -1120,7 +1120,7 @@ We attribute this to the large types generated and the non-trivial conversion pr
   \item
     The action of the returned functor on morphisms in $\mathcal C₂$ is to first lift this morphism from $\mathcal C₂$ to $\mathcal C₁ × \mathcal C₂$ by pairing with the identity morphism on $c_1$, and then to return the image of this morphism under $F$.
   \item
-    The action of the outer functor on morphims $m_1 \in \Hom[\mathcal C₁]$ is to return the natural transformation which, for each object $c_2\in \Ob[\mathcal C₂]$ first pairs the morphism $m_1$ with the identity on $c_2$ and then returns the image of this morphism in $\mathcal C₁ × \mathcal C₂$ under $F$.
+    The action of the outer functor on morphisms $m_1 \in \Hom[\mathcal C₁]$ is to return the natural transformation which, for each object $c_2\in \Ob[\mathcal C₂]$ first pairs the morphism $m_1$ with the identity on $c_2$ and then returns the image of this morphism in $\mathcal C₁ × \mathcal C₂$ under $F$.
   \item
     Each natural transformation $T \in \Hom[\mathcal C₁ × \mathcal C₂ → \mathcal D]$ gets mapped to the natural transformation in $\mathcal C₁ → (\mathcal C₂ → \mathcal D)$ which, after binding $c_1$ and $c_2$ returns the morphism in $\mathcal D$ given by the action of $T$ on $(c_1, c_2)$.
   \end{enumerate}
@@ -1129,7 +1129,7 @@ We attribute this to the large types generated and the non-trivial conversion pr
   \item
     Each functor $F : \mathcal C₁ → (\mathcal C₂ → \mathcal D)$ gets mapped to the functor which takes in an object $(c_1, c_2)\in \Ob[\mathcal C₁ × \mathcal C₂]$ and returns $(F(c_1))(c_2)$.
   \item
-    The action of this functor on morphims $(m_1, m_2) \in \Hom[\mathcal C₁ × \mathcal C₂]$ is to compose $F(m_1)$ applied to a suitable object of $\mathcal C_2$ with $F$ applied to a suitable object of $c_1$ and then applied to $m_2$.
+    The action of this functor on morphisms $(m_1, m_2) \in \Hom[\mathcal C₁ × \mathcal C₂]$ is to compose $F(m_1)$ applied to a suitable object of $\mathcal C_2$ with $F$ applied to a suitable object of $c_1$ and then applied to $m_2$.
   \item
     Each natural transformation $T \in \Hom[\mathcal C₁ → (\mathcal C₂ → \mathcal D)]$ gets mapped to the natural transformation which maps each object $(c_1, c_2)\in \Ob[\mathcal C₁ × \mathcal C₂]$ to the morphism $(T(c_1))(c_2)$ in $\Hom[\mathcal D]$.
   \end{enumerate}

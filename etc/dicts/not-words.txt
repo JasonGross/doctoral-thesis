@@ -16,13 +16,16 @@ becd
 beq
 bibintoc
 brel
+bwd
 CanonicalStructures
 catdb
 CategoryExponentialLaws
+CategoryExponentialLawsSet
 cbd
 cbe
 cdd
 CompileRewrites
+coqdoc
 ctx
 ctxe
 CVtrue
@@ -105,6 +108,7 @@ interp
 Interp
 InterpProofs
 InterpRewrite
+iso
 issuecomment
 iter
 JMeq

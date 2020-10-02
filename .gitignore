@@ -19,6 +19,7 @@
 *.cb
 *.cb2
 .*.lb
+comment.cut
 
 ## Intermediate documents:
 *.dvi

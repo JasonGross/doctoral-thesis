@@ -1052,6 +1052,7 @@ If such API mismatches are nested, or if this code size blowup interacts with co
 
 \minortodo{transition?}
 
+\label{sec:abstraction-barriers:mismatch:example:exponential-laws:main-text}
 Let us consider things a bit more generally.
 
 \citetitle{Structure1996Sussman} defines abstraction as naming and manipulating compound elements as units~\cite[p.~6]{Structure1996Sussman}.
@@ -1071,15 +1072,9 @@ This is all well and good when we are in the process of defining the abstraction
 
 Let us look at an example from a category theory library we implemented in Coq~\cite{category-coq-experience}, which we introduce in \autoref{sec:category-theory-library}.
 \minortodo{more text to introduce category theory}
+\minortodo{how much category theory should we introduce here? how much later?}
 
-\minortodo{should I format or subset this code better?}
-\minortodo{update Makefile to ensure this keeps compiling}
-
-\inputminted{coq}{fragments/CategoryExponentialLaws.v}
-
-\todo{write this text and code better}
-
-We note a couple of important points:
+We note a couple of important points before including the code for the example:
 \begin{itemize}
 \item
   Defining the interesting components---that is, the components that are not proofs of equality---of the isomorphism $(C₁ × C₂ → D) ≅ (C₁ → (C₂ → D))$ takes nearly two seconds.
@@ -1093,6 +1088,38 @@ We note a couple of important points:
   Hence unfolding the composition of two functors duplicates those functors many times over.
   If we must compose more than two functors, we get even more blow-up.
 \end{itemize}
+
+\begin{minted}{coq}
+(** [(C₁ × C₂ → D) ≅ (C₁ → (C₂ → D))] *)
+(** We provide the action of functors on objects ([object_of]) and on
+    morphisms ([morphism_of]), and we provide the action of natural
+    transformations on object ([components_of] *)
+Time Program Definition curry_iso (C₁ C₂ D : Category)
+  : (C₁ * C₂ -> D) ≅ (C₁ -> (C₂ -> D)) :>>> Cat
+  := {| fwd
+        := {| object_of F
+              := {| object_of c₁
+                    := {| object_of      c₂ := F ₀ (c₁, c₂);
+                          morphism_of _ _ m := F ₁ (identity c₁, m) |};
+                    morphism_of _ _ m₁
+                    := {| components_of  c₂ := F ₁ (m₁, identity c₂) |} |};
+              morphism_of _ _ T
+              := {| components_of c₁
+                    := {| components_of  c₂ := T (c₁, c₂) |} |} |};
+        bwd
+        := {| object_of F
+              := {| object_of                       '(c₁, c₂)
+                    := (F ₀ c₁)₀ c₂;
+                    morphism_of '(s₁, s₂) '(d₁, d₂) '(m₁, m₂)
+                    := (F ₁ m₁) d₂ ∘ (F ₀ s₁)₁ m₂ |};
+              morphism_of s d T
+              := {| components_of '(c₁, c₂) := (T c₁) c₂ |} |}; |}.
+(* Finished transaction in 1.958 secs (1.958u,0.s) (successful) *)
+\end{minted}
+
+Readers interested in the full compiling code for this example can refer to \autoref{sec:abstraction-barriers:mismatch:example:exponential-laws:full-code}.
+
+\minortodo{write this text and code better}
 
 \minortodo{what should I say here?}
 

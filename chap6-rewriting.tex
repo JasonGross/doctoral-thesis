@@ -8,8 +8,8 @@
   --- Donald Knuth
 \end{flushright}
 
-\todo{Better chapter title?}
-\todo{consider replacing ``pain'' with more formal words like ``overhead'', ``bottleneck'', etc (Adam says it's possibly too informal)}
+\minortodo{Better chapter title?}
+\minortodo{consider replacing ``pain'' with more formal words like ``overhead'', ``bottleneck'', etc (Adam says it's possibly too informal)}
 %\section{Introduction}\label{sec:rewriting-more:intro}
 \autoref{ch:rewriting} discussed in detail our framework for building verified partial evaluators, going into the context, motivation, and the techniques used to put the framework together.
 However, there was a great deal of engineering effort that went into building this tool which we glossed over.
@@ -67,7 +67,7 @@ Due to the pervasive use of Gallina \mintinline{coq}{match} statements on terms 
 This causes a moderate amount of pain, distributed over the entire rewriter.
 %We will come back to this in \autoref{sec:rewriting-more:pre-reduction-again:cps}, after we have introduced the constructions necessary to understand the code.
 
-\todo{find a better transition}
+\minortodo{find a better transition}
 The way that CPS permits reduction under blocked \mintinline{coq}{match} statements is essentially the same as the way it permits reduction of functions in the presence of unreduced \mintinline{coq}{let} binders in \fullref{sec:under-lets}.
 Consider the expression
 \begin{center}
@@ -328,7 +328,7 @@ Note that tracking this sort of information is non-trivial, as there's no help f
 We'll come back to this in \autoref{sec:rewriting-more:pre-reduction-again:tracking-unfolding}.
 
 \section{NbE vs.~Pattern Matching Compilation: Mismatched Expression APIs and Leaky Abstraction Barriers}\label{sec:rewriting-more:AST:choices}
-\todo{should I be consistent about naming syntax that's well-typed by construction?  I call it ``intrinsically-typed syntax'', ``syntax that is well-typed by construction'', ``intrinsically-well-typed syntax'', and ``type-indexed syntax''\ldots}
+\minortodo{should I be consistent about naming syntax that's well-typed by construction?  I call it ``intrinsically-typed syntax'', ``syntax that is well-typed by construction'', ``intrinsically-well-typed syntax'', and ``type-indexed syntax''\ldots}
 We introduced normalization by evaluation (NbE)~\cite{NbE} in \autoref{sec:our-solution} and expanded on it in \autoref{sec:thunk-eval-subst-term} as a way to support higher-order reduction of $\lambda$-terms.
 The termination argument for NbE proceeds by recursion on the type of the term we're reducing.
 In particular, the most natural way to define these functions in a proof assistant is to proceed by structural recursion on the type of the term being reduced.
@@ -373,7 +373,7 @@ Note that the type of \mintinline{coq}{eval_decision_tree} would be something li
 We cover the \mintinline{coq}{Swap} case first, because it is simpler.
 To perform a \mintinline{coq}{Swap}, we must exchange two elements of the type-indexed list.
 Hence we need both two swap the elements of the list of types, and then to have a separate, dependently-typed swap function for the vector of expressions.
-Moreover, since we need to undo the swapping inside the continuation \todo{does this need more explanation or code?}, we must have an \emph{separate} unswap function on expression vectors which goes from a swapped type list to the original one.
+Moreover, since we need to undo the swapping inside the continuation\minortodo{does this need more explanation or code?}, we must have an \emph{separate} unswap function on expression vectors which goes from a swapped type list to the original one.
 We could instead elide the swap node, but then we could no longer use matching, \mintinline{coq}{hd}, and \mintinline{coq}{tl} to operate on the expressions, and would instead need special operations to do surgery in the middle of the list, in a way that preserves type-indexing.
 
 To perform a \mintinline{coq}{Switch}, we must break apart the first element of our type-indexed list, determining whether it is an application, and identifier, or other.
@@ -385,7 +385,7 @@ It may alternatively be to much dependent typing, and the developer might be wel
 
 After breaking apart the first element, we must convoy the continuation across the \mintinline{coq}{match} statement so that we can pass an expression vector of the correct type to the continuation \mintinline{coq}{K}.
 In code, this branch might look something like
-\todo{Note that Adam found this code hard to understand; should more prose be added to clarify it?}
+\minortodo{Note that Adam found this code hard to understand; should more prose be added to clarify it?}
 \begin{minted}{coq}
 …
 | Switch icases app_case default
@@ -419,7 +419,7 @@ This may not look too bad, but it gets worse.
 Since the \mintinline{coq}{match} on \mintinline{coq}{e} will not be known until we are actually doing the rewriting on a concrete expression, and the continuation is convoyed across this \mintinline{coq}{match}, there is no way to evaluate the continuation during compilation of rewrite rules.
 If we don't want to evaluate the continuation early, we'd have to be very careful not to duplicate it across all of the decision tree evaluation cases, as we might otherwise incur a super-linear runtime factor in the number of rewrite rules.
 As noted in \autoref{sec:rewriting-more:pre-reduction}, our early reduction nets us a $2\times$ speedup in runtime of rewriting, and is therefore relatively important to be able to do.
-\todo{redo performance experiments here, maybe insert a plot}
+\minortodo{redo performance experiments here, maybe insert a plot}
 
 Here we see something interesting, which does not appear to be as much of a concern in other programming languages:
 the representation of our data forces our hand about how much efficiency can be gained from precomputation, even when the representation choices are relatively minor.
@@ -429,7 +429,7 @@ There is no good way around the fact that NbE requires typing information to arg
 Since NbE will be called on subterms of the overall term, even if we use syntax that is not guaranteed to be type-correct, we must still store the type information in the nodes of the AST.
 
 Furthermore, as we say in \fullref{sec:binders:de-bruijn}, converting from untyped syntax to intrinsically-typed syntax, as well as writing a denotation function, requires either that all types be non-empty, or that we carry around a proof of well-typedness to use during recursion.
-\todoask{Is there a good reference for these sorts of issues?  Are they well-known?  Well-studied?}
+\minortodoask{Is there a good reference for these sorts of issues?  Are they well-known?  Well-studied?}
 As discussed in \autoref{ch:design} and specifically in \fullref{sec:when-how-dependent-types}, needing to mix proofs with programs is often a big warning flag, unless the mixing can be hidden behind a well-designed API.
 However, if we are going to be hiding the syntax behind an API of being well-typed, it seems like we might as well just use intrinsically well-typed syntax, which naturally inhabits that API.
 Furthermore, unlike in many cases where the API is best treated as opaque everywhere, here the API mixing proofs and programs needs to have adequate behavior under reduction, and ought to have good behavior even under partial reduction.
@@ -450,7 +450,7 @@ Hence we do not need to worry about carrying around proofs of well-typedness, an
 
 The biggest constraint driving our design decisions is that we need conversion between the two representations to be $\mathcal{O}(1)$; if we need to walk the entire syntax tree to convert between typed and untyped representations at every rewriting location, we'll incur quadratic overhead in the size of the term being rewritten.
 We can actually relax this constraint a little bit: by designing the untyped representation to be completely evaluated away during the compilation of rewrite rules, we can allow conversion from the untyped syntax to the typed syntax to walk any part of the term that already needed to be revealed for rewriting, giving us amortized constant time rather than truly constant time.
-\todo{is this last sentence understandable?}
+\minortodo{is this last sentence understandable?}
 As such, we need to be able to embed well-typed syntax directly into the non-type-indexed representation at cost $\mathcal{O}(1)$.
 
 As the entire purpose of the untyped syntax is to (a) allow us to perform matching on the AST to determine which rewrite rule to use, and furthermore (b) allow us to reuse the decomposition work so as to avoid needing to decompose the term multiple times, we need an inductive type which can embed PHOAS expressions, and has separate nodes for the structure that we need, namely application and identifiers:
@@ -542,8 +542,8 @@ If we are doing structure decomposition in the naïve way, we will then decompos
 We will then attempt to decompose the second outer argument into the application of the identifier $*$ to two arguments.
 Since there is no way an identifier can be both $+$ and $*$, this decomposition will fail.
 However, we could have avoided doing the work of decomposing $x$ into $a + b$ by realizing that the second rewrite rule is incompatible with the first; this is exactly what pattern-matching compilation and decision-tree evaluation does.
-\todo{Does this need more explanation?  Is it understandable?}
-\todo{be consistent about ``pattern matching compilation'' vs ``pattern-matching compilation''?}
+\minortodo{Does this need more explanation?  Is it understandable?}
+\minortodo{be consistent about ``pattern matching compilation'' vs ``pattern-matching compilation''?}
 
 \paragraph{Pattern Matching For Rewriting}
 We now arrive at the question of how to do pattern matching for rewriting with identifiers.
@@ -563,7 +563,7 @@ We need three different sorts of identifiers:
 \end{itemize}
 The first two are relatively self-explanatory.
 The third of these is required because pattern-matching compilation proceeds in an untyped way; there's no obvious place to keep the typing information associated to identifiers in the decision tree, which must be computed before we do any unification, type variables or otherwise.
-\todo{is this sufficiently understandable?}
+\minortodo{is this sufficiently understandable?}
 
 We could, in theory, use a single inductive type of type codes for all three of these.
 We could parameterize the inductive of type codes over the set of free type variables (or even just over a boolean declaring whether or not type variables are allowed), and conventionally use the type code for unit in all type-code arguments when building decision trees.
@@ -586,7 +586,7 @@ Our current code in fact performs a poor approximation of this strategy in some 
 This unneeded indexing causes an enormous amount of pain, and is yet another example of how poorly designed abstraction barriers incur outsized overhead.
 Rewrite rule replacements are expressed as dependently-typed towers indexed first over the type variables of a pattern, and then again over the term variables.
 This design is a historical artifact, from when we expected to be writing rewrite rule ASTs by hand rather than reifying them from Gallina, and found the curried towers more convenient to write.
-\todo{should I elaborate more on the pain?}
+\minortodo{should I elaborate more on the pain?}
 %``\ldots\space both conceptually simple but in practice complicated by dependent types.
 %We must unify a pattern with an expression, gathering binding data for the replacement rule as we go; and we must apply the replacement rule to the binding data (which is non-trivial because the rewrite rules are expressed as curried dependently-typed towers indexed over the rewrite rule pattern).
 %In order to state the correctness conditions for gathering binding data, we must first talk about applying replacement rules to binding data.''
@@ -684,7 +684,7 @@ Following the common practice of eager students looking to use dependent types, 
 While this mapping cannot be fully computed at rewrite-rule-compilation time---we may not know enough type structure in the \mintinline{coq}{rawexpr}---we can reduce effectively all of the lookups by turning them into matches on this which \emph{can} be reduced.
 This, unfortunately, complicates our proofs significantly while likely not providing any measurable speedup, serving only as yet another example of the pain induced by needless dependency at the type level.
 %\item \todo{talk about whether or not to eliminate PositiveMap.t?} % ``In a possibly-gratuitous use of dependent typing to ensure that''
-\todo{is this enough?  does it need more? should we keep it here at all?}
+\minortodo{is this enough?  does it need more? should we keep it here at all?}
 
 %\begin{itemize}
 %\item \todo{talk about ``Note that here we are jumping through some extra hoops to get the right reduction behavior at rewrite-rule-compilation time.'' for \texttt{eval\_decision\_tree}}
@@ -788,7 +788,7 @@ Hence the rewrite-rule replacement phase of rules marked for subsequent rewritin
 This can be done, roughly, by wrapping arguments passed in to the replacement rule in an extra layer of \mintinline{coq}{Var} nodes.
 
 However, this incurs severe cost in phrasing and proving the correctness condition of the rewriter.
-\todo{should I try to talk about more of this pain?}
+\minortodo{should I try to talk about more of this pain?}
 While most of the nitty-gritty details are beyond the scope even of this chapter, we will look at one particular implication of supporting this feature in \fullref{sec:rewriting-more:which-equivalence}.
 
 \section{Delayed Rewriting in Variable Nodes}\label{sec:rewriting-more:delayed-rewriting}
@@ -917,7 +917,7 @@ For example, in some places, we do not need that a \mintinline{coq}{rawexpr} is 
 Design Question: Is it better to minimize the number of relations and fold these ``self-matching'' or ``goodness'' properties into the definitions of relatedness, which are then used everywhere; or is it better to have separate definitions for goodness and relatedness, and have correctness conditions which more tightly pin down the behavior of the corresponding functions.
 (Non-Spoiler: We don't have an answer to this one.)
 
-\todo{should I talk about anything else here?}
+\minortodo{should I talk about anything else here?}
 %\todo{talk about \texttt{rawexpr\_equiv}, 4-place \texttt{wf\_rawexpr}, nuance of revealing structure in CPS'd \texttt{eval\_decision\_tree}, non-obvious \texttt{wf\_value} binding list, \texttt{interp\_related\_gen} unsuccessfully avoiding funext (and also needing to be instantiated with \texttt{value\_interp\_related} sometimes), \texttt{rawexpr\_interp\_related} and separating (or not) goodness from relatedness, \texttt{rawexpr\_types\_ok}?, \texttt{unification\_resultT'\_interp\_related}?, \texttt{interp\_unify\_pattern'}?, interpretation-correctness related to rewriting again}
 
 \section{What's the Ground Truth: Patterns Or Expressions?}\label{sec:rewriting-more:patterns-vs-expressions}

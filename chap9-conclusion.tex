@@ -58,7 +58,7 @@ Assuming that Coq is, in fact, consistent, then we can recognize true theorems o
 At the same time, by Gödel's incompleteness theorem, there is no hope of proving $\forall x, \texttt{prg}(x) = \texttt{false}$, and hence we cannot prove this simple $\mathcal O(\log x)$-time theorem recognizer correct.
 We almost certainly will be stuck running the program, which will take time at least $\Omega(2^x)$, which is certainly not an acceptable overhead over $\mathcal O(\log x)$.
 
-\todo{should I be using ``we'', still, or should I switch to ``I''?}
+\minortodo{should I be using ``we'', still, or should I switch to ``I''?}
 We do not believe that all hope is lost, though!
 Gödelian incompleteness did not prove to be a fatal obstacle to verification and automation of proofs, as we saw in \autoref{sec:intro:intro}, and we hope that it proves to be surmountable here as well.
 
@@ -76,5 +76,5 @@ This body of work shows that we can always turn an imperative program into a str
   Note that if we are targeting a lazy functional language rather than a strict one, it may in fact be possible to always achieve a transformation without any overhead.%
 }
 
-\todo{is there a better concluding sentence?}
+\minortodo{is there a better concluding sentence?}
 We hope the reader leaves this thesis with an improved understanding of the performance landscape of engineering of proof-based software systems, and perhaps goes on to contribute new insight to this perhaps-nascent field themselves.

@@ -19,7 +19,7 @@ This included tactics like ``add new hypothesis to the context of type \mintinli
 The reason for this was pervasive \emph{evar normalization}.
 
 Let us review some details of the way Coq handles proof scripts.
-\todo{if this is described earlier, refer back to it}
+\minortodo{if this is described earlier, refer back to it}
 Coq a partial proof term, where not-yet-given subterms are \emph{existential variables}, or evars, which may show up as goals.
 For example, when proving the goal \mintinline{coq}{True ∧ True}, after running \mintinline{coq}{split}, the proof term would be \mintinline{coq}{conj ?Goal1 ?Goal2}, where \mintinline{coq}{?Goal1} and \mintinline{coq}{?Goal2} are evars.
 There are two subtleties:
@@ -44,7 +44,7 @@ The fast-and-easy solution used in older versions of Coq was to simply evar-norm
 That is, every tactic that had to walk the goal for any reason whatsoever would create a copy of the type of the goal---and sometimes the proof context as well---replacing all instantiated evars with their instantiation.
 Needless to say, this was very expensive when the size of the goal was large.
 
-\todo{include performance graphs?}
+\minortodo{include performance graphs?}
 
 As of Coq 8.7, most tactics no longer perform useless evar normalization, and instead walk terms using a dedicated API which does on-the-fly normalization as necessary~\cite{coq-pr-econstr}.
 This brought speedups of over 10\% to some developments, and improved asymptotic performance of some tactic scripts and interactive proof development.
@@ -101,7 +101,7 @@ If I recall correctly, Tobias Tebbi, after hearing of my \Ltac\space performance
 Since \Ltac\space already records backtraces for error reporting, it was a relatively simple matter to hook into the stack-trace-recorder and track how much time was spent in each call-stack.
 With some help from the Coq development team, I was able to adapt the patch to the new tactic engine of Coq $\ge$ 8.5, and shepherded it into Coq's codebase.
 
-\todo{should I include more text here, extracting from the abstract submitted to CoqPL?}
+\minortodo{should I include more text here, extracting from the abstract submitted to CoqPL?}
 
 \subsection{Compilation to Native Code}\label{sec:native-compiler}
 Starting in version 8.5, Coq allows users to compile their functional Gallina programs to native code and fully reduce them to determine their output~\cite{nativecompute,coq-commit-native-compiler}.
@@ -111,11 +111,11 @@ than the optimized call-by-value evaluation bytecode-based virtual machine descr
 
 The native compiler shines most at optimizing algorithmic and computational bottlenecks.
 For example, computing the number of primes less than $n$ via the Sieve of Eratosthenes is about $2\times$ to $5\times$ faster in the native compiler than in the VM.
-\todo{should I include code and/or plots?}
+\minortodo{should I include code and/or plots?}
 By contrast, when the input term is very large compared to the amount of computation, the compilation time can dwarf the running time, eating up any gains that the native compiler has over the VM.
 This can be seen by comparing the times it takes to get the head of the explicit list of all unary-encoded natural numbers less than, say, 3000, on which the native compiler (1.7s) is about 5\% slower than the VM (1.6s) which itself is about $2\times$ slower than built-in call-by-value reduction machine (0.79s) which requires no translation.
 Furthermore, when the output is large, both the VM and the native compiler suffer from inefficiencies in the readback code.
-\todo{should I add an example or plots?}
+\minortodo{should I add an example or plots?}
 %Fixpoint walk {A} (ls : list A) : unit := match ls with nil => tt | cons _ xs => walk xs end.
 %Time Check ltac:(restart_timer;
 %                let v := (eval vm_compute in (walk (seq 0 (Z.to_nat 2000)))) in
@@ -139,7 +139,7 @@ Furthermore, when the output is large, both the VM and the native compiler suffe
 %                exact 0).
 
 
-\todo{Should I add more to this section?  What should I say?}
+\minortodo{Should I add more to this section?  What should I say?}
 
 \subsection{Primitive Integers and Arrays}\label{sec:prim-ints-arrays}
 Primitive 31-bit integer arithmetic operations were added to Coq in 2007~\cite{coq-commit-int31,Extending2010Armand}.
@@ -155,18 +155,18 @@ Work enabling primitive recursion over these native datatypes is still underway,
 \subsection{Primitive Projections for Record Types}\label{sec:fixes:theory:primitive-projections}\label{sec:primitive-projections}
 Since version 8.5, Coq has had the ability to define record types with projections whose arguments are not stored in the term representation~\cite{coq-commit-polyproj}.
 This allows asymptotic speedups, as discussed in \fullref{sec:prim-record-proj}.
-\todo{what should be said in this section?}
+\minortodo{what should be said in this section?}
 
 Note that this is a specific instance of a more general theory of implicit arguments~\cite{logical2001implicit,barras2008implicit}, and there has been other work on how to eliminate useless arguments from term representations~\cite{Inductive2003Brady}.
 
 \subsection{Fast Typing of Application Nodes}
 In \fullref{sec:perf:quadratic-application}, we discussed how the typing rule for function application resulted in quadratic performance behavior when there was in fact only linear work that needed to be done.
 As of Coq 8.10, when typechecking applications in the kernel, substitution is delayed so as to achieve linear performance~\cite{coq-pr-fast-application-typing}.
-\todo{does this need more of a recap?}
+\minortodo{does this need more of a recap?}
 Unfortunately, the pretyping and type inference algorithm is still quadratic, due to the type theory rules used for type inference.
 
-\todo{should I talk about https://github.com/coq/coq/pull/263 - Fast lookup in named contexts?}
-\todo{should I talk about https://github.com/coq/coq/pull/6506 - Fast rel lookup?}
+\minortodo{should I talk about https://github.com/coq/coq/pull/263 - Fast lookup in named contexts?}
+\minortodo{should I talk about https://github.com/coq/coq/pull/6506 - Fast rel lookup?}
 
 \section{Performance-Enhancing Advancements in the Type Theory of Coq}\label{sec:fixes:coq-theory}
 While some of the above performance enhancements touch the trusted kernel of Coq, they do not fundamentally change the type theory.
@@ -212,7 +212,7 @@ We need a second universe for the few constructions that talk about equality bet
 However, one universe is not sufficient for category theory, even if we don't need to talk about equality of types nor prove that \mintinline{coq}{Type : Type} is inconsistent.
 
 The reason is that category theory, much like set theory, talks about itself.
-\todo{check if category has been defined before}
+\minortodo{check if category has been defined before}
 
 \subsubsection{Complications from Categories of Categories}\label{sec:category-def}\label{sec:category-of-categories}
 
@@ -273,25 +273,25 @@ While judicious use of universe polymorphism can reduce code duplication, carele
 The same commit that introduced universe polymorphism in Coq 8.5 also introduced judgmental $\eta$ conversion for records with primitive projections~\cite{coq-commit-polyproj}.
 We have already discussed the advantages of primitive projections in \autoref{sec:primitive-projections}, and we have talked a bit about judgmental $\eta$ in \fullref{sec:no-judgmental-eta} and \fullref{sec:duality-conversion}.
 
-\todo{make sure we've talked about judgmental equality and conversion}
+\minortodo{make sure we've talked about judgmental equality and conversion}
 The $\eta$ conversion rule for records says that every term $x$ of record type $T$ is convertible with the constructor of $T$ applied to the projections of $T$ applied to $x$.
 For example, if \mintinline{coq}{x} has type \mintinline{coq}{A * B}, then the $\eta$ rule equates \mintinline{coq}{x} with \mintinline{coq}{(fst x, snd x)}.
 
 As discussed in \autoref{sec:duality-conversion}, having records with judgmental $\eta$ conversion allows de-duplicating code that would otherwise have to be duplicated.
-\todo{should more be said here?}
+\minortodo{should more be said here?}
 
 \subsection{SProp: The Definitionally Proof Irrelevant Universe}\label{sec:fixes:theory:sprop}\label{sec:sprop}
 We discussed in \fullref{sec:term-size} how irrelevant proof arguments tended to cause performance issues just by existing as part of the goal.
 While there is as-yet no way to erase these arguments, Coq versions 8.10 and later have the ability to define types as judgmentally irrelevant, paving the way for more aggressive erasure~\cite{coq-pr-sprop,sprop}.
-\todo{should more be said here?}
+\minortodo{should more be said here?}
 
 \section{Performance-Enhancing Advancements in Type Theory at Large}\label{sec:fixes:theory}
 We come now to discoveries and inventions of the past decade or so which have not yet made it into Coq but which show great promise for significant performance improvements.
 
 \subsection{Higher Inductive Types: Setoids for Free}\label{sec:fixes:theory:HITs}\label{sec:HITs}
-\todo{is this sentence redundant?}
-\todo{fix the intro to this subsection}
-\todo{fix flow}
+\minortodo{is this sentence redundant?}
+\minortodo{fix the intro to this subsection}
+\minortodo{fix flow}
 Recall again that the main case study of \autoref{ch:design} was our implementation of a category theory library.
 
 \subsubsection{Equality}\label{sec:equality}
@@ -313,7 +313,7 @@ Even worse, if we need an equivalence relation on the universe of ``types with e
 \paragraph{Propositional Equality}
 An alternative to setoids is propositional equality, which carries none of the overhead of setoids, but does not allow an easy formulation of quotient types, and requires assuming functional extensionality to construct the category of sets.
 
-\todo{check if we've defined propositional equality before}
+\minortodo{check if we've defined propositional equality before}
 Intensional type theories like Coq's have a built-in notion of equality, often called definitional equality or judgmental equality, and denoted as $x \equiv y$.
 This notion of equality, which is generally internal to an intensional type theory and therefore cannot be explicitly reasoned about inside of that type theory, is the equality that holds between $\beta\delta\iota\zeta\eta$-convertible terms.
 
@@ -368,8 +368,8 @@ These design choices can also be intricately entwined with both the compile-time
 One central message of both \autoref{ch:rewriting-more} and \autoref{ch:design} is that picking the right API really matters when writing code with dependent types.
 The promise of univalence, still in its infancy, is that we could pick the right API for each algorithmic chunk, prove the APIs isomorphic, and use some version of univalence to compose the APIs and reason about the algorithms as easily as if we had used the same interface everywhere.
 
-\todo{should I talk about the difference between isomorphism and equivalence?}
-\todo{what more should be said here?}
+\minortodo{should I talk about the difference between isomorphism and equivalence?}
+\minortodo{what more should be said here?}
 
 \subsection{Cubical Type Theory}\label{sec:fixes:theory:cubical}\label{sec:cubical}
 One important detail we elided in the previous subsections is the question of computation.
@@ -379,7 +379,7 @@ The proof of function extensionality, for example, relies on the elimination rul
   We leave it as a fun exercise for the advanced reader to figure out why the Church encoding of the interval, where \mintinline{coq}{Interval := ∀ P (zero : P) (one : P) (seg : zero = one), P}, does not yield a proof a functional extensionality.%
 }
 
-\todo{define point vs path constructors}
+\minortodo{define point vs path constructors}
 Higher inductive types whose eliminators compute on the point constructors can be hacked into dependently-typed proof assistants by adding inconsistent axioms and then hiding them behind opaque APIs so that inconsistency cannot be proven~\cite{Running2011Licata,Bertot2013}.
 This is unsatisfactory, however, on two counts:
 \begin{enumerate}

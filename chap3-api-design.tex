@@ -191,7 +191,7 @@ Notation "C ᵒᵖ" := ({| Ob := Ob C; Hom x y := Hom C y x; ... |}).
 We acknowledge that the concept of performance issues arising from choices of abstraction barriers may seem a bit counter-intuitive.
 After all, abstraction barriers generally live in the mind of the developer, in some sense, and it seems a bit insane to say that performance of the code depends on the mental state of the programmer.
 
-Therefore, we will describe a sampling of abstraction barriers and the design choices that went into them, drawn from real examples \todoask{how much should I talk about the category theory library itself in my thesis?}, as well as the performance issues that arose from these choices.
+Therefore, we will describe a sampling of abstraction barriers and the design choices that went into them, drawn from real examples\minortodoask{how much should I talk about the category theory library itself in my thesis?}, as well as the performance issues that arose from these choices.
 
 A few other pervasive strategies made non-trivial differences for proof performance or simplicity.
 
@@ -255,7 +255,7 @@ A few other pervasive strategies made non-trivial differences for proof performa
   \begin{center}
       \mintinline{coq}{{ _ : unit & { _ : unit & unit }}}
   \end{center}
-  If we want to project out the final field, we must write \mintinline{coq}{projT2 (projT2 x)} which, when implicit arguments are included, expands to \todo{figure out why spacing is strange above this code example}
+  If we want to project out the final field, we must write \mintinline{coq}{projT2 (projT2 x)} which, when implicit arguments are included, expands to \minortodo{figure out why spacing is strange above this code example}
   \begin{center}
       \mintinline{coq}{@projT2 unit (λ _ : unit, unit) (@projT2 unit (λ _ : unit, { _ : unit & unit }) x)}
   \end{center}
@@ -288,8 +288,8 @@ A few other pervasive strategies made non-trivial differences for proof performa
   As seen in \autoref{fig:timing-make-destruct-record}, using records partially avoids the overhead.
   Defining the record type, though, still incurs a quadratic factor due to hash consing the projections; see \coqbug{12270}.
 
-  \todo{remove use of ``you''}
-  If your proof assistant does not support records out-of-the-box, or you want to avoid using them for whatever reason\footnote{Note that the UniMath library \todo{cite UniMath} does this. \todo{explain reasoning}}, you can instead define intermediate abstraction barriers by hand.
+  \minortodo{remove use of ``you''}
+  If your proof assistant does not support records out-of-the-box, or you want to avoid using them for whatever reason\footnote{Note that the UniMath library~\cite{voevodsky_2015,UniMath,introduction2018Grayson} does this. \minortodo{explain reasoning}}, you can instead define intermediate abstraction barriers by hand.
   Here is what code that almost works looks like for four fields:
 \begin{minted}{coq}
 Local Set Implicit Arguments.
@@ -736,7 +736,7 @@ Note that the non-monotonic timing is \emph{reproducible}, and we have asked the
 \caption{timing-performance-experiments/make-nested-sig-abstraction.txt} \label{fig:timing-make-destruct-record-definition-abstraction-performance-experiments/make-nested-sig-abstraction.txt}
 \end{figure*}
 
-\todo{Find more examples to talk about here?}
+\minortodo{Find more examples to talk about here?}
 
 \begin{comment}
 \begin{subappendices}

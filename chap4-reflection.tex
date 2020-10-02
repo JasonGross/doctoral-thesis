@@ -2,10 +2,10 @@
 
 \section{Introduction} \label{sec:reification-by-parametricity:intro}
 
-\todo{reformat this for flow, right now it's from reification-by-parametricity}
+\minortodo{reformat this for flow, right now it's from reification-by-parametricity}
 
 Proof by reflection~\cite{ReflectionTACS97} is an established method for employing verified proof procedures, within larger proofs~\cite{MirrorShardITP14,malecha2013mirror-shard,Speeding2017Malecha,gonthier2016small}.
-\todo{should we cite this many things here, or remove some of them?}
+\minortodo{should we cite this many things here, or remove some of them?}
 There are a number of benefits to using verified functional programs written in the proof assistant's logic, instead of tactic scripts.
 We can often prove that procedures always terminate without attempting fallacious proof steps, and perhaps we can even prove that a procedure gives logically complete answers, for instance telling us definitively whether a proposition is true or false.
 In contrast, tactic-based procedures may encounter runtime errors or loop forever.
@@ -27,7 +27,7 @@ Experts on the subject might want to skip directly to \autoref{sec:reification-b
 We benchmark our approach against 18 competitors in \autoref{sec:perf}.
 
 \subsection{Proof-Script Primer}
-\todo{rename this subsection}
+\minortodo{rename this subsection}
 Basic Coq proofs are often written as lists of steps such as \mintinline{coq}{induction} on some structure, \mintinline{coq}{rewrite} using a known equivalence, or \mintinline{coq}{unfold} of a definition.
 Very quickly, proofs can become long and tedious, both to write and to read, and hence Coq provides \Ltac, a scripting language for proofs.
 As theorems and proofs grow in complexity, users frequently run into performance and maintainability issues with \Ltac.
@@ -43,7 +43,7 @@ Goal is_even (let x := 100 * 100 * 100 * 100 in
 Coq stack-overflows if we try to reduce this goal.
 As a workaround, we might write a lemma that talks about evenness of \letindots, plus one about evenness of multiplication, and we might then write a tactic that composes such lemmas.
 
-\todo{factor some of this with chapter 2}
+\minortodo{factor some of this with chapter 2}
 Even on smaller terms, though, proof size can quickly become an issue.
 If we give a naive proof that 7000 is even, the proof term will contain all of the even numbers between 0 and 7000, giving a proof-term-size blow-up at least quadratic in size (recalling that natural numbers are represented in unary; the challenges remain for more efficient base encodings).
 Clever readers will notice that Coq could share subterms in the proof tree, recovering a term that is linear in the size of the goal.
@@ -89,7 +89,7 @@ However, even this procedure takes a bit over three minutes to prove the goal \m
 To do better, we need a formal representation of terms or expressions.
 
 \subsection{Reflective-Syntax Primer}
-\todo{should the footnote be uncommented here?}
+\minortodo{should the footnote be uncommented here?}
 Sometimes, to achieve faster proofs, we must be able to tell, for example, whether we got a term by multiplication or by addition, and not merely whether its normal form is 0 or a successor.%
 %\footnote{%
 %  Sometimes this distinction is necessary for generating a proof at all, as is the case in \mintinline{coq}{nsatz} and \mintinline{coq}{romega}; there is no way to prove that addition is commutative if you cannot identify what things you were adding in the first place.%
@@ -146,9 +146,9 @@ Before we proceed to reification, we will introduce one more complexity.
 If we want to support our initial example with \letindots\space efficiently, we must also have \mintinline{coq}{let}-expressions.
 Our current procedure that inlines \mintinline{coq}{let}-expressions takes 19 seconds, for example, on \mintinline{coq}{let x0 := 10 * 10 in let x1 := x0 * x0 in … let x24 := x23 * x23 in x24}.
 The choices of representation of binders, which are essential to encoding \mintinline{coq}{let}-expressions, include higher-order abstract syntax (HOAS)~\cite{HOAS}, parametric higher-order abstract syntax (PHOAS)~\cite{PhoasICFP08} also known as weak HOAS~\cite{weak2013Ciaffaglione}, de Bruijn indices~\cite{debruijn1972}, nominal representations~\cite{Nominal2003Pitts}, locally nameless representations~\cite{Locally2012Chargueraud,locally2007Leroy}, named representations, and nested abstract syntax~\cite{Nested2012Hirschowitz,deBruijn1999Bird}.
-\todo{compare citations with those of \cite[p.~122]{ringer2020qed}}
+\minortodo{compare citations with those of \cite[p.~122]{ringer2020qed}}
 A survey of a number of options for binding can be found in \autocite{Engineering2008Aydemir}.
-\todoask{is this a place to cite POPLMark?  What should be said about it?  Should I mention more sorts of representations?}
+\minortodoask{is this a place to cite POPLMark?  What should be said about it?  Should I mention more sorts of representations?}
 
 Although we will eventually choose the PHOAS representation for the tools presented in \Autoref{ch:rewriting,ch:reification-by-parametricity}, we will also briefly survey some of the options for encoding binders, with an eye towards performance implications.
 
@@ -310,7 +310,7 @@ One unfortunate result is that the natural denotation function is no longer tota
 Here we have chosen to give a denotation function which returns a default element when a variable reference is too large, but we could instead choose to return an \mintinline{coq}{option nat}.
 In general, however, returning an optional result significantly complicates the denotation function when binders are involved, because the types \mintinline{coq}{A -> option B} and \mintinline{coq}{option (A -> B)} are not isomorphic.
 On the other hand, requiring a default denotation prevents syntax trees from being able to represent possibly empty types.
-\todoask{Is there a good reference for these sorts of issues?  Are they well-known?  Well-studied?}
+\minortodoask{Is there a good reference for these sorts of issues?  Are they well-known?  Well-studied?}
 
 This causes further problems when dealing with an AST type which can represent terms of multiple types.
 In that case, we might annotate each variable node with a type code, mandate decidable equality of type codes, and then during denotation, we'd check the type of the variable node with the type of the corresponding variable in the context.
@@ -366,9 +366,9 @@ This representation uses de Bruijn indices for closed terms, and names for varia
 Much like nominal representations, locally nameless representations also incur the overhead of generating and storing names.
 Naïve algorithms for generating fresh names, such as the algorithm used in Coq, can easily incur overhead that's linear in the size of the context.
 Generating $n$ fresh names then incurs $\mathcal \Theta(n^2)$ overhead.
-\todo{explain what evar substitutions are somewhere?  reference it here?}
+\minortodo{explain what evar substitutions are somewhere?  reference it here?}
 Additionally, using a locally nameless representation requires that evar substitutions be named.
-\todo{elaborate more on the performance bottlenecks of named evar substitutions}
+\minortodo{elaborate more on the performance bottlenecks of named evar substitutions}
 See also \autoref{sec:setoid-rewrite-bottlenecks}.
 
 \subsection{Performance of Proving Reflective Well-Formedness of PHOAS} \label{sec:wf:perf}
@@ -426,7 +426,7 @@ We can now prove that \mintinline{coq}{is_related_elim Γ e1 e2 → is_related �
 Note that making use of the fixpoint is significantly more inconvenient than making use of the inductive; the proof of \mintinline{coq}{check_is_even_expr_sound}, for example, proceeds most naturally by induction on the relatedness hypothesis.
 We could instead induct on one of the ASTs and destruct the other one, but this becomes quite hairy when the ASTs are indexed over their types.
 
-\todo{Should I benchmark this and insert graphs?}
+\minortodo{Should I benchmark this and insert graphs?}
 
 \subsubsection{Via de Bruijn} \label{sec:wf:perf:de-bruijn}
 
@@ -478,12 +478,12 @@ Ltac f v x := (* reify var term *)
 \end{wrapfigure}
 
 We have made detailed walkthroughs and source code of these implementations available\footnote{\url{https://github.com/mit-plv/reification-by-parametricity}} in hope that they will be useful for others considering implementing reification using one of these metaprogramming mechanisms, instructive as nontrivial examples of multiple metaprogramming facilities, or helpful as a case study in Coq performance engineering.
-\todo{Maybe include detailed walkthroughs in the appendix?}
+\minortodo{Maybe include detailed walkthroughs in the appendix?}
 However, we do \emph{not} recommend reading these out of general interest:
 most of the complexity in the described implementations strikes us as needless,
 with significant aspects of the design being driven by surprising behaviors, misfeatures, bugs, and performance bottlenecks of the underlying machinery as opposed to the task of reification.
 
-\todo{should this paragraph be here, or above the last one?}
+\minortodo{should this paragraph be here, or above the last one?}
 There are a couple of complications that arise when reifying binders, which broadly fall into two categories.
 One category is the metaprogramming language's treatment of binders.
 In \Ltac, for example, the body of a function is not a well-typed term, because the variable binder refers to a non-existent name; getting the name to actually refer to something, so that we can inspect the term, is responsible for a great deal of the complexity in reification code in \Ltac.
@@ -519,9 +519,10 @@ If the representations mismatch, then we need to do extra work to align the repr
 \end{comment}
 
 \begin{subappendices}
-
-\section{Reflective Evenness Checking in Coq} \label{sec:evenness-in-coq}
-\todo{fix input of this file}
+\begin{minorcomment}
+  \section{Reflective Evenness Checking in Coq} \label{sec:evenness-in-coq}
+\end{minorcomment}
+\minortodo{put reflective evenness checking in Coq somewhere, fix input of file}
 %\input{coq-fragments/evenness.raw.tex}
 
 \end{subappendices}

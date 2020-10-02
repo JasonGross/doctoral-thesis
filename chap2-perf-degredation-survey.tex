@@ -326,11 +326,11 @@ There are two obvious solutions for this problem:
 
 \subsubsection{Dropping Type Parameters: Nominal vs.~Structural Typing} \label{sec:nominal-vs-structural} \label{sec:dropping-constructor-parameters}
 The first option requires that the proof assistant implement structural typing rather than nominal typing~\cite[19.3 Nominal and Structural Type Systems]{tapl}.
-\todo{Find a place for this note:} Note that it doesn't actually require structural; we can do it with nominal typing if we enforce everywhere that we can only compare terms who are known to be the same type, because not having structural typing results in having a single kernel term with multiple non-unifiable types.
+\minortodo{Find a place for this note: }Note that it doesn't actually require structural; we can do it with nominal typing if we enforce everywhere that we can only compare terms who are known to be the same type, because not having structural typing results in having a single kernel term with multiple non-unifiable types.
 \minortodo{maybe look into TAPL}
 \minortodo{explain structural and nominal typing more}
-Morally, the reason for this is that if we have an inductive record type \todo{have we explained inductive types yet?} \todo{have we explained records yet?} whose fields do not constrain the parameters of the inductive type family \todo{have we explained parameters vs indices and inductive type families yet?}, then we need to consider different instantiations of the same inductive type family to be convertible.
-That is, if we have a phantom record such as\todo{mention where the name ``phantom'' comes from?}
+Morally, the reason for this is that if we have an inductive record type \minortodo{have we explained inductive types yet?} \minortodo{have we explained records yet?} whose fields do not constrain the parameters of the inductive type family \minortodo{have we explained parameters vs indices and inductive type families yet?}, then we need to consider different instantiations of the same inductive type family to be convertible.
+That is, if we have a phantom record such as\minortodo{mention where the name ``phantom'' comes from?}
 \begin{minted}{coq}
 Record Phantom (A : Type) := phantom {}.
 \end{minted}
@@ -410,7 +410,7 @@ See \autoref{fig:timing-conj-True-let-ltac2} and \autoref{fig:timing-conj-True-a
             \pgfmathprintnumber[print sign]{\buildb}$}
     \end{axis}
 \end{tikzpicture}
-\caption{Timing of manually building and typechecking a certificate to prove a conjunction of $n$ \mintinline{coq}{True}s using \mintinline{coq}{let}-binders using \LtacTwo \todo{find pdf of manual for styling}} \label{fig:timing-conj-True-let-ltac2}
+\caption{Timing of manually building and typechecking a certificate to prove a conjunction of $n$ \mintinline{coq}{True}s using \mintinline{coq}{let}-binders using \LtacTwo} \label{fig:timing-conj-True-let-ltac2}
 \end{figure*}
 
 \begin{figure*}
@@ -940,7 +940,7 @@ When doing optimized reduction in an imperative language, we need to represent c
 Often this involves associating to each closure both some information about or code implementing the body of the function, as well as the values of all of the free variables of that closure~\cite{Efficient2000Shao}.
 %\minortodo{cite \url{https://flint.cs.yale.edu/shao/papers/escc.html} or its references for closure compilation}
 In order to have efficient lookup, we need to know the memory location storing the value of any given variable statically at closure-compilation time.
-The standard way of doing this \todo{cite something for flat closure compilation} is to allocate an array of values for each closure.
+The standard way of doing this \minortodo{cite something for flat closure compilation} is to allocate an array of values for each closure.
 If variables are represented with de Bruijn indices, for example, it's then a very easy array lookup to get the value of any variable.
 Note that this allocation is linear in the number of free variables of a term.
 If we have many nested binders and use all of them underneath all the binders, then every abstraction node has as many free variables as there are total binders, and hence we get quadratic overhead.

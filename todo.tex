@@ -72,14 +72,17 @@
 
 \iffinal
 \else
-\NowOrAtBeginDocument{%
+\AtEndDocument{%
+\clearpage
 \pagenumbering{roman}
+\cleardoublepage
 
 \todo{Run `make update-thesis' before submission to update the date on the cover page}
 
 \todo{change \string\finalfalse to \string\finaltrue}
 
-\cleardoublepage
+\clearpage
 \pagenumbering{arabic}
+\cleardoublepage
 }%
 \fi

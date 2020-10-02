@@ -259,7 +259,8 @@
 \usepgfplotslibrary{units}
 \usepgfplotslibrary{external}
 \tikzexternalize
-\tikzsetfigurename{\tikzexternalrealjob-\currfilebase-figure}
+\def\basefigurename{jgross-thesis}%or \tikzexternalrealjob, which will result in more overhead
+\tikzsetfigurename{\basefigurename-\currfilebase-figure}
 
 \newcounter{truepage}
 \setcounter{truepage}{1}

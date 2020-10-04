@@ -339,6 +339,8 @@ nra.cache
 /taborder.sty
 /epdftex.def
 
+/spellcheck-results.tex
+
 # non-generated pdfs
 !/umi-proquest-form.pdf
 !/umi-proquest-form-filled.pdf

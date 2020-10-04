@@ -38,6 +38,9 @@
 \newcommand{\todoask}[1]{%
   \finalwarning{QUESTION FOR ADAM: \detokenize{#1} in file \currfilename}%
   \NowOrAtBeginDocument{\textcolor{purple}{[\textbf{QUESTION FOR ADAM:} #1]}}}%
+\newcommand{\todoaskreaders}[1]{%
+  \finalwarning{QUESTION FOR READERS: \detokenize{#1} in file \currfilename}%
+  \NowOrAtBeginDocument{\textcolor{magenta}{[\textbf{QUESTION FOR READERS:} #1]}}}%
 \newcommand{\minortodoask}[1]{%
   \finalwarning{MINOR QUESTION FOR ADAM: \detokenize{#1} in file \currfilename}%
   \ifthenelse{\boolean{showminortodos}}{%

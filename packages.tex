@@ -839,3 +839,11 @@
 \newcommandx{\githubref}[5][1=,2=,3=7]{\href{https://github.com/#4/commit/#5}{#1{\maybeshortsha{#3}{#5}}#2}}
 
 \input{todo}
+
+%%%% spellchecking
+\input{spellcheck-results}
+\edef\spellchecktodo{\noexpand\todo{Spellcheck the following words: \spellcheckresults}}
+\ifthenelse{\equal{\spellcheckresults}{}}{
+}{
+  \AtBeginDocument{\spellchecktodo}
+}

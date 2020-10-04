@@ -12,9 +12,10 @@ TEXT="$(cat jgross-thesis.log |
 
 ((echo "$TEXT" | grep TODO);
  (echo "$TEXT" | grep 'QUESTION FOR ADAM');
+ (echo "$TEXT" | grep 'QUESTION FOR READERS');
  (echo "$TEXT" | grep '^Warning:');
  (echo "$TEXT" | grep -v '^Warning:' | grep 'Warning:');
  (echo "$TEXT" | grep 'WARN');
  (echo "$TEXT" | grep 'Font shape');
- (echo "$TEXT" | grep -v 'TODO\|QUESTION FOR ADAM\|Warning:\|Font shape\|WARN')) |
-    grep --color=auto 'TODO:\|QUESTION FOR ADAM:\|Warning: Reference\|Warning: Citation\|Warning:\|WARN\|'
+ (echo "$TEXT" | grep -v 'TODO\|QUESTION FOR ADAM\|QUESTION FOR READERS\|Warning:\|Font shape\|WARN')) |
+    grep --color=auto 'TODO:\|QUESTION FOR ADAM:\|QUESTION FOR READERS:\|Warning: Reference\|Warning: Citation\|Warning:\|WARN\|'

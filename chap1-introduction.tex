@@ -95,7 +95,7 @@ Empirically, this might look like a proof script that checks in tens of seconds 
 In just three doublings of input size, we might go from tens of seconds to thousands of years.
 Moreover, in proof assistants, this is not an isolated experience.
 This sort of performance behavior is \emph{typical}.
-\todo{Ask readers for feedback on readability, design choices of this paragraph in particular}
+\todoaskreaders{Is this paragraph in particular readable?  Any comments on design choices here?}
 
 Drawing experience from case studies in category theory~\cite{category-coq-experience}, parsers~\cite{jgross-masters-thesis}, and generation of low-level cryptographic code~\cite{FiatCryptoSP19}, we investigate and seek to explicate a broad swath of performance issues and bottlenecks.
 While we propose some design principles for avoiding these performance issues in \autoref{part:design} and present a research prototype of a tool and methodology for achieving acceptable performance at scale in \autoref{part:rewriting}---and we claim both of these are original contributions of this PhD\minortodo{how to write PhD in text?  with periods? not?}---the story that this thesis aims to tell is that in order for proof assistants to scale to industrial uses, \emph{we must get the basics of asymptotic performance right}.
@@ -550,7 +550,8 @@ The category theory library formalized as part of this doctoral work, available 
 \fullref{part:rewriting} is devoted, in some sense, to performance bottlenecks that arise from the de Bruijn criterion of \autoref{sec:debruijn-criterion}.
 We investigate one particular method for avoiding these performance bottlenecks.
 We introduce this method, variously called \emph{proof by reflection} or \emph{reflective automation}, in \fullref{ch:reflection}, with a special emphasis on a particularly common use case---transformation of syntax trees.
-\fullref{ch:rewriting} describes our original contribution of a framework for leveraging reflection to perform rewriting and program transformation at scale, driven by our need to synthesize efficient, proven-correct, low-level cryptographic primitives~\cite{FiatCryptoSP19}.\todo{cite also the rewriter paper}
+\fullref{ch:rewriting} describes our original contribution of a framework for leveraging reflection to perform rewriting and program transformation at scale, driven by our need to synthesize efficient, proven-correct, low-level cryptographic primitives~\cite{FiatCryptoSP19}.
+\minortodo{cite also the rewriter paper }%
 Where \autoref{ch:rewriting} addresses the performance challenges of verified or proof-producing program transformation, \fullref{ch:rewriting-more} is a deep-dive into the performance challenges of engineering the tool itself, and serves as a sort-of microcosm of the performance bottlenecks previously discussed and the solutions we've proposed to them.
 Unlike the other chapters of this thesis, \autoref{ch:rewriting-more} at times assumes a great deal of familiarity with the details of the Coq proof assistant.
 Finally, \fullref{ch:reification-by-parametricity} presents a way to efficiently, elegantly, and easily perform \emph{reification}, the first step of proof by reflection, which is often a bottleneck in its own right.

@@ -17,14 +17,14 @@ PROPOSAL_PDFS = $(MAIN_PROPOSAL_PDFS) $(READER_AGREEMENT_PDFS)
 UMI_PDFS = extra-title-abstract.pdf umi-proquest-form-adjusted.pdf umi-proquest-form-full.pdf
 THESIS_PDFS = jgross-thesis.pdf jgross-thesis-extra-todos.pdf
 MAIN_TEXS = $(patsubst \include{%},%.tex,$(filter \include{%},$(shell cat appendix-files.tex main-files.tex jgross-thesis.tex)))
-THESIS_TEXS = packages.tex contents.tex mitthesis.cls abstract.tex cover.tex coverinfo.tex new-date.tex todo.tex main-files.tex appendix-files.tex $(MAIN_TEXS)
+THESIS_TEXS = packages.tex contents.tex mitthesis.cls abstract.tex cover.tex coverinfo.tex new-date.tex todo.tex main-files.tex appendix-files.tex spellcheck-results.tex $(MAIN_TEXS)
 PROPOSAL_TEXS = new-date-proposal.tex abstract-proposal.tex
 UMI_TEXS = umi-proquest-form-full.tex umi-proquest-form-adjusted.tex extra-title-abstract.tex
 COMPLETION_TEXS = new-date-submission.tex PhD_CompletionForm-adjusted.tex PhD_CompletionForm-full.tex
 COMPLETION_PDFS = PhD_CompletionForm-adjusted.pdf PhD_CompletionForm-full.pdf
 THESIS_VS := fragments/CategoryExponentialLaws.v fragments/CategoryExponentialLawsSet.v
 ALL_TEXS = $(THESIS_TEXS) $(PROPOSAL_TEXS) $(UMI_TEXS) $(COMPLETION_TEXS)
-TEXT_TEXS = $(filter-out packages.tex mitthesis.cls,$(ALL_TEXS))
+TEXT_TEXS = $(filter-out spellcheck-results.tex packages.tex mitthesis.cls,$(ALL_TEXS))
 READER_AGREEMENT_SIGNED_PDFS := $(subst unsigned,signed,$(READER_AGREEMENT_PDFS))
 PDFS = $(PROPOSAL_PDFS) $(THESIS_PDFS) $(UMI_PDFS) $(COMPLETION_PDFS)
 DICTS = $(addprefix etc/dicts/,abbreviations.txt jargon.txt names.txt words.txt not-words.txt bibkeys.spl labels.spl)
@@ -426,3 +426,13 @@ regenerate-dict: $(CUSTOM_DICT)
 .PHONY: sort-dicts
 sort-dicts:
 	for i in $(DICTS); do cat "$$i" | grep -v "$(DICT_HEADER)" | tr ' ' '\n' | grep -v '^$$' | sort | uniq > "$$i.sorted"; mv "$$i.sorted" "$$i"; done
+
+SPELLCHECK_RESULTS_TEX:=$(shell cat spellcheck-results.tex 2>&1)
+SPELLCHECK_RESULTS:=\def\spellcheckresults{$(subst $(SPACE),$(COMMA)$(SPACE),$(sort $(shell $(SPELLCHECK) 2>/dev/null)))}
+ifneq ($(SPELLCHECK_RESULTS_TEX),$(SPELLCHECK_RESULTS))
+.PHONY: spellcheck-results.tex
+else
+endif
+
+spellcheck-results.tex:
+	echo "$(SPELLCHECK_RESULTS)" > spellcheck-results.tex

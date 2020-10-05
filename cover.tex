@@ -103,6 +103,7 @@
 \pdfbookmark{Dedication}{dedication}
 \minortodo{How do I format the dedication?}
 \begin{center}
+  \Large
   \emph{%
     Dedicated to my mom, for her perpetual support and nurturing throughout my life.%
   }
@@ -150,7 +151,7 @@ We would like to thank read and cite Karl Palmskog for pointing us at \textcite{
 \minortodo{should we include acknowledgements from various papers?}
 Acknowledgements from the category theory paper:
 This work was supported in part by the MIT bigdata@CSAIL initiative, NSF grant CCF-1253229, ONR grant N000141310260, and AFOSR grant FA9550-14-1-0031.
-We also thank Benedikt Ahrens, Daniel R.~Grayson, Robert Harper, Bas Spitters, and Edward Z.~Yang for feedback on this paper.
+We also thank Benedikt Ahrens, Daniel R.~Grayson, Robert Harper, Bas Spitters, and Edward Z.~Yang for feedback on \textcite{category-coq-experience}, on which we based \autoref{ch:api-design}.
 
 Acknowledgements from the reification by parametricity paper:
 We would like to thank Hugo Herbelin for sharing the trick with \texttt{type of} to propagate universe constraints%
@@ -161,9 +162,14 @@ as well as useful conversations on Coq's bug tracker that allowed us to track do
 \footnote{%
     \url{https://github.com/coq/coq/issues/6252}%
 }
+We would like to thank Jonathan Leivent for sharing a trick which obsoletes the aforementioned \texttt{type of} trick%
+\footnote{%
+  \url{https://github.com/coq/coq/issues/5996\#issuecomment-670955273}
+}%
+.
 We would like to thank Pierre-Marie Pédrot for conversations on Coq's Gitter and his help in tracking down performance bottlenecks in earlier versions of our reification scripts and in Coq's tactics.
 We would like to thank Beta Ziliani for his help in using Mtac2, as well as his invaluable guidance in figuring out how to use canonical structures to reify to PHOAS.
-We also thank John Wiegley for feedback on the paper.
+We also thank John Wiegley for feedback on \textcite{reification-by-parametricity}, which is included in slightly-modified form distributed between \autoref{ch:reification-by-parametricity} and various sections of \autoref{ch:reflection}.
 % \todo{Figure out if anyone else needs mentioning}
 
 For those interested in history, our method of reification by parametricity was inspired by the \texttt{evm\_compute} tactic~\cite{MirrorShardITP14}.

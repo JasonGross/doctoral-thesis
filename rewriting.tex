@@ -106,7 +106,7 @@ Make rewriter := Rewriter For (zero_plus, plus_zero, times_zero, times_one, eval
 Most inputs to \mintinline{coq}{Rewriter For} list quantified equalities to use for left-to-right rewriting.
 However, we also use options \mintinline{coq}{do_again}, to request that some rules trigger an extra bottom-up pass after being used for rewriting; \mintinline{coq}{eval_rect}, to queue up eager evaluation of a call to a primitive-recursion combinator on a known recursive argument; \mintinline{coq}{with delta}, to request evaluation of all monomorphic operations on concrete inputs; and \mintinline{coq}{with extra idents}, to inform the engine of further permitted identifiers that do not appear directly in any of the rewrite rules.
 
-Our plugin also provides new tactics like \mintinline{coq}{Rewrite_rhs_for}, which applies a rewriter to the righthand side of an equality goal.
+Our plugin also provides new tactics like \mintinline{coq}{Rewrite_rhs_for}, which applies a rewriter to the right-hand side of an equality goal.
 That last tactic is just what we need to synthesize a specialized \mintinline{coq}{prefixSums} for list length four, along with a proof of its equivalence to the original function.
 \begin{minted}[fontsize=\small]{coq}
 Definition prefixSums4 :
@@ -195,7 +195,7 @@ Our implementation is included as an anonymous supplement.
 
 \section{Trust, Reduction, and Rewriting} \label{sec:trust}
 
-Since much of the narrative behind our design process depends on tradeoffs between performance and trustworthiness, we start by reviewing the general situation in proof assistants.
+Since much of the narrative behind our design process depends on trade-offs between performance and trustworthiness, we start by reviewing the general situation in proof assistants.
 
 Across a variety of proof assistants, simplification of functional programs is a workhorse operation.
 Proof assistants like Coq that are based on type theory typically build in \emph{definitional equality} relations, identifying terms up to reductions like $\beta$-reduction and unfolding of named identifiers.
@@ -213,7 +213,7 @@ It can be challenging to keep these proof terms small enough, as naive rewrite-b
 Overcoming these challenges while retaining decidability of proof checking is tricky, since we may use \texttt{autorewrite} with rule sets that do not always lead to terminating reduction.
 Coq includes more experimental alternatives like \texttt{rewrite\_strat}, which use bottom-up construction of multi-rewrite proofs, with sharing of common contexts.
 Still, as \autoref{sec:evaluation} will show, these methods that generate substantial proof terms are at significant performance disadvantages.
-We also experimented with the corresponding tactics in the Lean proof assistant, with similarly dissapointing results (\autoref{sec:lean}).
+We also experimented with the corresponding tactics in the Lean proof assistant, with similarly disappointing results (\autoref{sec:lean}).
 
 \begin{figure} \centering
   \subfloat[Reduction via the definitional equality]{%
@@ -334,7 +334,7 @@ Instead, we adopted the approach of \textcite{maranget2008compiling}, who descri
 We have not yet implemented any of the optimizations described therein for finding \emph{minimal} decision trees.
 
 There are three steps to turn a set of rewrite rules into a functional program that takes in an expression and reduces according to the rules.
-The first step is pattern-matching compilation: we must compile the lefthand sides of the rewrite rules to a decision tree that describes how and in what order to decompose the expression, as well as describing which rewrite rules to try at which steps of decomposition.
+The first step is pattern-matching compilation: we must compile the left-hand sides of the rewrite rules to a decision tree that describes how and in what order to decompose the expression, as well as describing which rewrite rules to try at which steps of decomposition.
 Because the decision tree is merely a decomposition hint, we require no proofs about it to ensure soundness of our rewriter.
 The second step is decision-tree evaluation, during which we decompose the expression as per the decision tree, selecting which rewrite rules to attempt.
 The only correctness lemma needed for this stage is that any result it returns is equivalent to picking some rewrite rule and rewriting with it.
@@ -912,7 +912,7 @@ Note that the \letin{} binding blocks further reduction of map\_dbl when we iter
 \autoref{fig:timing-LiftLetsMap} compares performance between our approach, \texttt{repeat setoid\_rewrite}, and two variants of \texttt{rewrite\_strat}.
 Additionally, we consider another option, which was adopted by Fiat Cryptography at a larger scale: rewrite our functions to improve reduction behavior.
 Specifically, both functions are rewritten in continuation-passing style, which makes them harder to read and reason about but allows standard VM-based reduction to achieve good performance.
-The figure shows that \texttt{rewrite\_strat} variants are essentially unusable for this example, with \texttt{setoid\_rewrite} performing only marginally better, while our approach applied to the original, more readable definitions loses ground steadily to VM-based reduction on CPSed code.
+The figure shows that \texttt{rewrite\_strat} variants are essentially unusable for this example, with \texttt{setoid\_rewrite} performing only marginally better, while our approach applied to the original, more readable definitions loses ground steadily to VM-based reduction on CPS'd code.
 On the largest terms ($n \cdot m > 20,000$), the gap is 6s vs.\ 0.1s of compilation time, which should often be acceptable in return for simplified coding and proofs, plus the ability to mix proved rewrite rules with built-in reductions.
 Note that about 99\% of the difference between the full time of our method and just the rewriting is spent in the final \texttt{cbv} at the end, used to denote our output term from reified syntax.
 We blame this performance on the unfortunate fact that reduction in Coq is quadratic in the number of nested binders present; see Coq bug \coqbug{11151}.
@@ -1026,7 +1026,7 @@ We found that even when there are no occurrences fully matching the rule, \minti
 Rewriting without any successful matches takes nearly as much time as \mintinline{coq}{setoid_rewrite} in this microbenchmark; by the time we are looking at goals with 400 binders, the difference is less than 5\%.
 
 We posit that this overhead comes from \mintinline{coq}{setoid_rewrite} looking for head-symbol matches and then creating evars (existential variables) to instantiate the arguments of the lemmas for each head-symbol-match location; hence even if there are no matches of the rule as a whole, there may still be head-symbol matches.
-Since Coq uses a locally nameless representation~\cite{LocallyNameless} for its terms, evar contexts are necessarily representated as \emph{named} contexts.
+Since Coq uses a locally nameless representation~\cite{LocallyNameless} for its terms, evar contexts are necessarily represented as \emph{named} contexts.
 Representing a substitution between named contexts takes linear space, even when the substitution is trivial, and hence each evar incurs overhead linear in the number of binders above it.
 Furthermore, fresh-name generation in Coq is quadratic in the size of the context, and since evar-context creation uses fresh-name generation, the additional multiplicative factor likely comes from fresh-name generation.
 (Note, though, that this pattern suggests that the true performance is quartic rather than merely cubic.  However, doing a linear regression on a $\log$-$\log$ of the data suggests that the performance is genuinely cubic rather than quartic.)

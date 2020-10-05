@@ -427,6 +427,13 @@ regenerate-dict: $(CUSTOM_DICT)
 sort-dicts:
 	for i in $(DICTS); do cat "$$i" | grep -v "$(DICT_HEADER)" | tr ' ' '\n' | grep -v '^$$' | sort | uniq > "$$i.sorted"; mv "$$i.sorted" "$$i"; done
 
+ifeq ($(wildcard $(CUSTOM_DICT)),)
+all: $(CUSTOM_DICT)
+ifeq ($(filter $(CUSTOM_DICT),$(MAKECMDGOALS)),)
+$(warning Making $(CUSTOM_DICT)... $(shell make $(CUSTOM_DICT)))
+endif
+endif
+
 SPELLCHECK_RESULTS_TEX:=$(shell cat spellcheck-results.tex 2>&1)
 SPELLCHECK_RESULTS:=\def\spellcheckresults{$(subst $(SPACE),$(COMMA)$(SPACE),$(sort $(shell $(SPELLCHECK) 2>/dev/null)))}
 ifneq ($(SPELLCHECK_RESULTS_TEX),$(SPELLCHECK_RESULTS))

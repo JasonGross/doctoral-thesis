@@ -114,17 +114,17 @@ Notation "C ᵒᵖ" := ({| Ob := Ob C; Hom x y := Hom C y x; ... |}).
 
   It is generally straightforward to see that there is an isomorphism between a theorem and its dual, and the technique of dualization is well-known to category theorists, among others.  We discovered that, by being careful about how we defined things, we could make theorems be judgmentally equal to their duals!  That is, when we prove a theorem
   \begin{align*}
-  \textmintinline{coq}{initial_ob_unique : ∀ C  } & \textmintinline{coq}{(x y : Ob C),} \\
-  & \textmintinline{coq}{is_initial_ob x → is_initial_ob y → x ≅ y},
+  \mintinline{coq}{initial_ob_unique : ∀ C  } & \mintinline{coq}{(x y : Ob C),} \\
+  & \mintinline{coq}{is_initial_ob x → is_initial_ob y → x ≅ y},
   \end{align*}
   we can define another theorem
   \begin{align*}
-  \textmintinline{coq}{terminal_ob_unique : ∀ C  }& \textmintinline{coq}{(x y : Ob C),} \\
-  & \textmintinline{coq}{is_terminal_ob x → is_terminal_ob y → x ≅ y}
+  \mintinline{coq}{terminal_ob_unique : ∀ C  }& \mintinline{coq}{(x y : Ob C),} \\
+  & \mintinline{coq}{is_terminal_ob x → is_terminal_ob y → x ≅ y}
   \end{align*}
   as
   \begin{center}
-  \textmintinline{coq}{terminal_ob_unique C x y H H' := initial_ob_unique Cᵒᵖ y x H' H}.
+  \mintinline{coq}{terminal_ob_unique C x y H H' := initial_ob_unique Cᵒᵖ y x H' H}.
   \end{center}
   % In homotopy type theory, we can convey our discovery by saying that not only are theorems homotopic to their duals, but they can be made to be judgmentally equal to their duals.
   Interestingly, we found that in proofs with sufficiently complicated types, it can take a few seconds or more for Coq to accept such a definition; we are not sure whether this is due to peculiarities of the reduction strategy of our version of Coq, or speed dependency on the size of the normal form of the type (rather than on the size of the unnormalized type), or something else entirely.

@@ -15,6 +15,7 @@
 \pgfplotsset{compat=1.15}
 \usepackage{unicode-math}
 \usepackage{calc}
+\usepackage{letltxmacro}
 \usepackage{ifthen}
 \usepackage{xifthen}
 \usepackage{appendix}
@@ -276,7 +277,10 @@
 \xpatchcmd{\inputminted}{\minted@fvset}{\minted@fvset\@mintedextraoptions}{}{}
 \xpatchcmd{\mintinline}{\minted@fvset}{\minted@fvset\@mintedextraoptions}{}{}
 % Work around bug(https://github.com/gpoore/minted/issues/273)
-\newcommand{\textmintinline}[2]{\text{\mintinline{#1}{#2}}}
+% Considered https://tex.stackexchange.com/questions/127010/how-can-i-make-lstinline-function-normally-inside-math-mode, but it doesn't work
+\let\oldmintinline=\mintinline
+\newcommand{\textmintinline}[3][]{\text{\oldmintinline[#1]{#2}{#3}}}
+\def\mintinline{\relax\ifmmode\expandafter\textmintinline\else\expandafter\oldmintinline\fi}
 \makeatother
 
 \renewcommand{\chapterautorefname}{Chapter}

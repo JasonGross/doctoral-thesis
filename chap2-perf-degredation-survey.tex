@@ -121,14 +121,20 @@ However, tracking down this solution was quite involved, requiring the following
     Being able to run the proof assistant in your head.
     When I looked at the conversion problem, I knew immediately what the most likely cause of the performance issue was.
     But this is because I've managed to internalize most of how Coq runs in my head.
+
     This might seem reasonable at a glance; one expects to have to understand the system being optimized in order to optimize it.
     But I've managed to learn the details of what Coq is doing---including performance characteristics---basically without having to read the source code at all!
     This is akin to, say, being able to learn how \texttt{gcc} represents various bits of C code, what transformations it does in what order, and what performance characteristics these transformations have, just from using \texttt{gcc} to compile C code and reading the error messages it gives you.
     These are details that should not need to be exposed to the user, but because dependent type theory is so complicated---complicated enough that it's generally assumed that users will get \emph{line-by-line interactive feedback from the compiler} while developing, the numerous design decisions and seemingly reasonable defaults and heuristics lead to subtle performance issues.
     Note, furthermore, that this performance issue is essentially about the algorithm used to implement conversion, and is not even sensible when only talking about only the spec of what it means for two terms to be convertible.
-    \todo{incorporate Andres' suggestions:}
-    you running the typechecker in your head is essentially the statement that if the entire implementation is part of the spec, it is possible to engineer better, and something close to this has been necessary in practice.
-    the research direction you are advocating is finding a simpler performance-aware spec (perhaps by moving around interfaces or etc; my thought is that maybe we just want to get rid of the kernel and trust the proof engine).
+
+    Furthermore, note that the requirement of being able to run the typechecker in one's head is essentially the statement that the entire implementation is part of the specification.\footnote{%
+      Thanks to Andres Erbsen for pointing this out to me.%
+    }
+
+    \minortodo{incorporate Andres' suggestions:
+      you running the typechecker in your head is essentially the statement that if the entire implementation is part of the spec, it is possible to engineer better, and something close to this has been necessary in practice.
+      the research direction you are advocating is finding a simpler performance-aware spec (perhaps by moving around interfaces or etc; my thought is that maybe we just want to get rid of the kernel and trust the proof engine).}
   \item
     Knowing how to tweak the built-in defaults for parts of the system which most users expect to be able to treat as black-boxes.
 \end{enumerate}
@@ -571,7 +577,7 @@ either we can change the typechecking rules (which work just fine for small-to-m
 
 \minortodo{reference quadratic cbv here, which had a similar issue?}
 
-\todo{some sort of section division marker here?}
+\minortodo{some sort of section division marker here?}
 
 The proof assistant can also try to heuristically share subterms for us.
 Many proof assistants do some version of this, called \emph{hash consing}.
@@ -728,8 +734,8 @@ See \coqbug{9582}, perhaps also \coqbug{8245} and \coqbug{8237} and \coqbug{8231
 
 This might be the cause of the difference in \autoref{fig:timing-open-constr-n-lambda-no-types} between having different names (which do not need to be renamed) and having either no name (requiring name generation) or having all binders with the same name (requiring renaming in evar substitutions).
 
-\todo{ADD PLOT: try to come up with a graph for renaming stuff}
-\todo{ADD PLOT: check if confounders come up}
+\minortodo{ADD PLOT: try to come up with a graph for renaming stuff}
+\minortodo{ADD PLOT: check if confounders come up}
 
 \subsubsection{Quadratic Creation of Substitutions for Existential Variables} \label{sec:perf:quadratic-evar-subst}
 Recall \minortodo{make sure that this is mentioned previously, and that we're not rehashing things too much} that when we separate the trusted kernel from the untrusted proof engine, we want to be able to represent not-yet-finished terms in the proof engine.
@@ -882,7 +888,7 @@ See \autoref{fig:timing-app-n}.
 Normalization by evaluation (NbE) is a nifty way to implement reduction where function abstraction in the object language is represented by function abstraction in the metalanguage.
 We discuss the details of how to implement NbE in \autoref{sec:thunk-eval-subst-term}.
 \minortodo{explain NbE?}
-\todo{Read stuff in \url{https://github.com/HoTT/book/issues/995\#issuecomment-418825844} for NbE stuff}
+\minortodo{Read stuff in \url{https://github.com/HoTT/book/issues/995\#issuecomment-418825844} for NbE stuff}
 \minortodo{Say more about it than that it's ``nifty''}
 Coq uses NbE to implement two of its reduction machines (\mintinline{coq}{lazy} and \mintinline{coq}{cbv}).
 
@@ -1276,10 +1282,11 @@ That is, when defining a monoid, for example, there are five ways to go about sp
     \item
     (mostly unpacked)
     A \emph{monoid on a carrier type $A$ under the binary operation $\cdot : A \to A \to A$ with identity element $e$} consists of a proof that $e$ is a left- and right-identity and a proof of associativity.
+    Note that MathClasses~\cite{MathClasses,Type2011Spitters} uses this strategy, as discussed in \textcite{Packaging2009Garillot}.
     \item
     (fully unpacked) A monoid on a carrier type $A$ under the binary operation $\cdot : A \to A \to A$ with identity element $e$ using a proof $p$ that $e$ is a left- and right-identity and a proof of $q$ of associativity consists of an element of the one-element unit type.
 \end{enumerate}
-\todo{cite math-classes~\cite{Type2011Spitters,MathClasses} and HoTT for past design work here, and find a good citation for packing vs unpacking}
+\minortodo{maybe cite HoTT for past design work here, and find a good citation for packing vs unpacking}
 
 If we go with anything but the fully packed design, then we incur exponential overhead as we go up abstraction layers, as follows.
 A \emph{monoid homomorphism} from a monoid $A$ to a monoid $B$ consists of a function between the carrier types, and proofs that this function respects composition and identity.

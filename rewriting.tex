@@ -1,9 +1,9 @@
 \chapter{A Framework for Building Verified Partial Evaluators} \label{ch:rewriting}
-\todo{update this chapter with camera-ready file before editing}
+
 \begin{abstract}
   \emph{Partial evaluation} is a classic technique for generating lean, customized code from libraries that start with more bells and whistles.
   It is also an attractive approach to creation of \emph{formally verified} systems, where theorems can be proved about libraries, yielding correctness of all specializations ``for free.''
-  However, it can be challenging to make library specialization both performant and trustworthy.
+  However, it can be challenging to make library specialization both performant (at compile time and runtime) and trustworthy.
   We present a new approach, prototyped in the Coq proof assistant, which supports specialization at the speed of native-code execution, without adding to the trusted code base.
   Our extensible engine, which combines the traditional concepts of tailored term reduction and automatic rewriting from hint databases, is also of interest to replace these ingredients in proof assistants' proof checkers and tactic engines, at the same time as it supports extraction to standalone compilers from library parameters to specialized code.
 \end{abstract}
@@ -30,7 +30,7 @@ It would seem like an abandonment of the spirit of proof assistants to bake in a
 Performance tuning matters when generated code is thousands of lines long.
 
 In this paper, we present an approach to verified partial evaluation in proof assistants, which requires no changes to proof checkers.
-To make the relevance concrete, we use the example of Fiat Cryptography~\cite{FiatCryptoSP19}, a Coq library that generates code for big-integer modular arithmetic at the heart of elliptic-curve cryptography algorithms.
+To make the relevance concrete, we use the example of Fiat Cryptography~\cite{FiatCryptoSP19}, a Coq library that generates code for big-integer modular arithmetic at the heart of elliptic-curve-cryptography algorithms.
 This domain-specific compiler has been adopted, for instance, in the Chrome Web browser, such that about half of all HTTPS connections from browsers are now initiated using code generated (with proof) by Fiat Cryptography.
 However, Fiat Cryptography was only used successfully to build C code for the two most widely used curves (P-256 and Curve25519).
 Their method of partial evaluation timed out trying to compile code for the third most widely used curve (P-384).
@@ -46,10 +46,8 @@ For instance, consider the following Coq code.
 Definition prefixSums (ls:list nat) : list nat :=
   let ls' := combine ls (seq 0 (length ls)) in
   let ls'' := map (λ p, fst p * snd p) ls' in
-  let '(_, ls''') := fold_left (λ acc_ls''' n,
-    let '(acc, ls''') := acc_ls''' in
-    let acc' := acc + n in
-    (acc', acc' :: ls''')) ls'' (0, []) in
+  let '(_, ls''') := fold_left (λ '(acc, ls''') n,
+    let acc' := acc + n in (acc', acc' :: ls''')) ls'' (0, []) in
   ls'''.
 \end{minted}
 %\todo{Do we want to mention dlet?  We only get the specified output if we use dlet rather than let...}
@@ -75,10 +73,8 @@ Also notice how we simplified the first two multiplications with $a \cdot 0 = 0$
 
 To set up our partial evaluator, we prove the algebraic laws that it should use for simplification, starting with basic arithmetic identities.
 \begin{minted}[fontsize=\small]{coq}
-Lemma zero_plus  : forall n, 0 + n = n.
-Lemma plus_zero  : forall n, n + 0 = n.
-Lemma times_zero : forall n, n * 0 = 0.
-Lemma times_one  : forall n, n * 1 = n.
+Lemma zero_plus : forall n, 0 + n = n.       Lemma times_zero : forall n, n * 0 = 0.
+Lemma plus_zero : forall n, n + 0 = n.       Lemma times_one  : forall n, n * 1 = n.
 \end{minted}
 
 Next, we prove a law for each list-related function, connecting it to the primitive-recursion combinator for some inductive type (natural numbers or lists, as appropriate).
@@ -88,16 +84,12 @@ We also use a further marker \mintinline{coq}{ident.eagerly} to ask the reducer 
 %\todo{Reply from Jason: This is actually quite tricky, and I want to claim that it is significantly beyond the scope of the rewriter.  If you have a constant which is already defined in terms of the eliminator, it's quite easy for me to write a tactic that makes the one-step unfolding lemma.  And it's also quite easy to throw \mintinline{coq}{ident.eagerly} in front.  However, if the constant is not already defined in terms of the eliminator constant, and is instead a fixpoint, then you need something that is basically as powerful as Lean's elaborator to figure out the right recursion principle.}
 \begin{minted}[fontsize=\small]{coq}
 Lemma eval_map A B (f : A -> B) l
-: map f l = ident.eagerly list_rect _ _ []
-    (λ x _ l', f x :: l') l.
+: map f l = ident.eagerly list_rect _ _ [] (λ x _ l', f x :: l') l.
 Lemma eval_fold_left A B (f : A -> B -> A) l a
-: fold_left f l a = ident.eagerly list_rect
-    _ _ (λ a, a)
-    (λ x _ r a, r (f a x)) l a.
+: fold_left f l a = ident.eagerly list_rect _ _ (λ a, a) (λ x _ r a, r (f a x)) l a.
 Lemma eval_combine A B (la : list A) (lb : list B)
-: combine la lb = list_rect _ (λ _, [])
-    (λ x _ r lb, list_case (λ _, _) []
-      (λ y ys, (x, y) :: r ys) lb) la lb.
+: combine la lb =
+list_rect _ (λ _, []) (λ x _ r lb, list_case (λ _, _) [] (λ y ys, (x,y)::r ys) lb) la lb.
 Lemma eval_length A (ls : list A)
 : length ls = list_rect _ 0 (λ _ _ n, S n) ls.
 \end{minted}
@@ -107,22 +99,19 @@ Lemma eval_length A (ls : list A)
 With all the lemmas available, we can package them up into a rewriter, which triggers generation of a specialized rewrite procedure and its soundness proof.
 Our Coq plugin introduces a new command \mintinline{coq}{Make} for building rewriters
 \begin{minted}[fontsize=\small]{coq}
-Make rewriter := Rewriter For (zero_plus, plus_zero,
-  times_zero, times_one, eval_map, eval_fold_left,
-  do_again eval_length, do_again eval_combine,
-  eval_rect nat, eval_rect list, eval_rect prod)
-  (with delta) (with extra idents (seq)).
+Make rewriter := Rewriter For (zero_plus, plus_zero, times_zero, times_one, eval_map,
+  eval_fold_left, do_again eval_length, do_again eval_combine,
+  eval_rect nat, eval_rect list, eval_rect prod) (with delta) (with extra idents (seq)).
 \end{minted}
 Most inputs to \mintinline{coq}{Rewriter For} list quantified equalities to use for left-to-right rewriting.
 However, we also use options \mintinline{coq}{do_again}, to request that some rules trigger an extra bottom-up pass after being used for rewriting; \mintinline{coq}{eval_rect}, to queue up eager evaluation of a call to a primitive-recursion combinator on a known recursive argument; \mintinline{coq}{with delta}, to request evaluation of all monomorphic operations on concrete inputs; and \mintinline{coq}{with extra idents}, to inform the engine of further permitted identifiers that do not appear directly in any of the rewrite rules.
 
-Our plugin also provides new tactics like \mintinline{coq}{Rewrite_rhs_for}, which applies a rewriter to the right-hand side of an equality goal.
+Our plugin also provides new tactics like \mintinline{coq}{Rewrite_rhs_for}, which applies a rewriter to the righthand side of an equality goal.
 That last tactic is just what we need to synthesize a specialized \mintinline{coq}{prefixSums} for list length four, along with a proof of its equivalence to the original function.
 \begin{minted}[fontsize=\small]{coq}
 Definition prefixSums4 :
- {f : nat -> nat -> nat -> nat -> list nat
- | forall a b c d, f a b c d = prefixSums [a;b;c;d]} :=
-  ltac:(eexists; Rewrite_rhs_for rewriter; reflexivity).
+ {f : nat → nat → nat → nat → list nat | ∀ a b c d, f a b c d = prefixSums [a;b;c;d]}
+  := ltac:(eexists; Rewrite_rhs_for rewriter; reflexivity).
 \end{minted}
 
 
@@ -130,16 +119,17 @@ Definition prefixSums4 :
 
 Crafting a reduction strategy is challenging enough in a standalone tool.
 A large part of the difficulty in a proof assistant is reducing in a way that leaves a proof trail that can be checked efficiently by a small kernel.
-Most proof assistants present user-friendly surface tactic languages that generate proof traces in terms of more elementary tactic steps.
+Most proof assistants present user-friendly surface tactic languages that generate proof traces in terms of more-elementary tactic steps.
 The trusted proof checker only needs to know about the elementary steps, and there is pressure to be sure that these steps are indeed elementary, not requiring excessive amounts of kernel code.
 However, hardcoding a new reduction strategy in the kernel can bring dramatic performance improvements.
 Generating thousands of lines of code with partial evaluation would be intractable if we were outputting sequences of primitive rewrite steps justifying every little term manipulation, so we must take advantage of the time-honored feature of type-theoretic proof assistants that reductions included in the definitional equality need not be requested explicitly.
+We discuss the performance issues in more detail in \autoref{sec:setoid-rewrite-bottlenecks}.
 
 Which kernel-level reductions \emph{does} Coq support today?
 Currently, the trusted code base knows about four different kinds of reduction: left-to-right conversion, right-to-left conversion, a virtual machine (VM) written in C based on the OCaml compiler, and a compiler to native code.
 Furthermore, the first two are parameterized on an arbitrary user-specified ordering of which constants to unfold when, in addition to internal heuristics about what to do when the user has not specified an unfolding order for given constants.
-Recently, native support for 63-bit integers has been added to the VM and native machines.
-A recent pull request proposes adding support for native IEEE 754-2008 binary64 floats~\cite{coq-pr-floats}, and support for native arrays is in the works~\cite{denes2013prim-ints-arrays}.
+Recently, native support for 63-bit integers~\cite{coq-pr-ints} and IEEE 754-2008 binary64 floats~\cite{coq-pr-floats} have been added to the VM and native machines.
+A recent pull request proposes adding support for native arrays~\cite{coq-pr-arrays}.
 
 % Not sure if we want to include the following. -Adam
 %% Some users of Coq are concerned by this increase in the TCB.
@@ -205,7 +195,7 @@ Our implementation is included as an anonymous supplement.
 
 \section{Trust, Reduction, and Rewriting} \label{sec:trust}
 
-Since much of the narrative behind our design process depends on trade-offs between performance and trustworthiness, we start by reviewing the general situation in proof assistants.
+Since much of the narrative behind our design process depends on tradeoffs between performance and trustworthiness, we start by reviewing the general situation in proof assistants.
 
 Across a variety of proof assistants, simplification of functional programs is a workhorse operation.
 Proof assistants like Coq that are based on type theory typically build in \emph{definitional equality} relations, identifying terms up to reductions like $\beta$-reduction and unfolding of named identifiers.
@@ -223,19 +213,20 @@ It can be challenging to keep these proof terms small enough, as naive rewrite-b
 Overcoming these challenges while retaining decidability of proof checking is tricky, since we may use \texttt{autorewrite} with rule sets that do not always lead to terminating reduction.
 Coq includes more experimental alternatives like \texttt{rewrite\_strat}, which use bottom-up construction of multi-rewrite proofs, with sharing of common contexts.
 Still, as \autoref{sec:evaluation} will show, these methods that generate substantial proof terms are at significant performance disadvantages.
+We also experimented with the corresponding tactics in the Lean proof assistant, with similarly dissapointing results (\autoref{sec:lean}).
 
 \begin{figure} \centering
   \subfloat[Reduction via the definitional equality]{%
-    \includegraphics[scale=.7]{rewriting/trust1}
-    \label{subfig:change}} \\
+    \includegraphics[width=0.48\textwidth]{rewriting/trust1}
+    \label{subfig:change}} \hfill %\\
   \subfloat[Rewriting via proved rules]{%
-    \includegraphics[scale=.7]{rewriting/trust2}
+    \includegraphics[width=0.48\textwidth]{rewriting/trust2}
     \label{subfig:autorewrite}} \\
   \subfloat[Approach of \textcite{Aehlig}]{%
-    \includegraphics[scale=.7]{rewriting/trust3}
-    \label{subfig:aehlig}} \\
+    \includegraphics[width=0.48\textwidth]{rewriting/trust3}
+    \label{subfig:aehlig}} \hfill %\\
   \subfloat[Our approach]{%
-    \includegraphics[scale=.7]{rewriting/trust4}
+    \includegraphics[width=0.48\textwidth]{rewriting/trust4}
     \label{subfig:perfect}}
 
   \caption{Different approaches to reduction and rewriting}
@@ -246,7 +237,7 @@ Now we summarize how \textcite{Aehlig} provide flexible and fast interleaving of
 \autoref{subfig:aehlig} demonstrates a workflow based on \emph{a deep embedding of a core ML-like language}.
 That is, within the logic of the proof assistant (Isabelle/HOL, in their case), a type of syntax trees for ML programs is defined, with an associated operational semantics.
 The basic strategy is, for a particular set of rewrite rules and a particular term to simplify, to \emph{generate a (deeply embedded) ML program that, if it terminates, produces a syntax tree for the simplified term}.
-Their tactic uses \emph{reification} to created ML versions of rule sets and terms.
+Their tactic uses \emph{reification} to create ML versions of rule sets and terms.
 They also wrote a reduction function in ML and proved it sound once and for all, against the ML operational semantics.
 Combining that proof with proofs generated by reification, we conclude that an application of the reduction function to the reified rules and term is indeed an ML term that generates correct answers.
 The tactic then ``throws the ML term over the wall,'' using a general code-generation framework for Isabelle/HOL~\cite{CodeGen}.
@@ -273,6 +264,11 @@ First, the \mintinline{coq}{Make} command creates a rewriter out of a list of re
 We perform partial evaluation on the specialized partial evaluator, using Coq's normal reduction mechanisms, under the theory that we can afford to pay performance costs at this stage because we only need to create new rewriters relatively infrequently.
 Then individual rewritings involve reifying terms, asking the kernel to execute the specialized evaluator on them, and simplifying an application of an interpretation function to the result (this last step must be done using Coq's normal reduction, and it is the bottleneck for outputs with enormous numbers of nested binders as discussed in section \ref{sec:micro}).
 
+We would like to emphasize that, while we prototyped our implementation in Coq in particular, the trade-off space that we navigate seems fundamental, so that it should be the case both that our approach can be adapted to other proof assistants and that this case study may inform proof-assistant design.
+The general game here is to stock the trusted proof-checking kernel with as few primitive rules as we can get away with, while still providing enough flexibility and performance.
+Every proof assistant we are aware of has a small functional language at its core, and we argue that is quite natural to include a primitive for efficient full reduction of programs.
+Our empirical result is that such a primitive can form the basis for bootstrapping other kinds of efficient reduction, perhaps suggesting that a future Coq version could fruitfully shrink its kernel by eliminating other built-in reduction strategies.
+
 \subsection{Our Approach in Nine Steps} \label{sec:nine-steps}
 
 Here is a bit more detail on the steps that go into applying our Coq plugin, many of which we expand on in the following sections.
@@ -286,7 +282,7 @@ In order to build a precomputed rewriter with the \mintinline{coq}{Make} command
   Tactics generate all of the necessary definitions and prove all of the necessary lemmas for dealing with this particular set of inductive codes.
   Definitions include operations like Boolean equality on type codes and lemmas like ``all representable primitive types have decidable equality.''
 \item
-  The statements of rewrite rules are reified, and we prove soundness and syntactic-well-formedness lemmas about each of them.
+  The statements of rewrite rules are reified and soundness and syntactic-well-formedness lemmas are proven about each of them.
   Each instance of the former involves wrapping the user-provided proof with the right adapter to apply to the reified version.
 \item
   The definitions needed to perform reification and rewriting and the lemmas needed to prove correctness are assembled into a single package that can be passed by name to the rewriting tactic.
@@ -316,8 +312,9 @@ First, let us describe the language of terms we support rewriting in.
 Note that, while we support rewriting in full-scale Coq proofs, where the metalanguage is dependently typed, the object language of our rewriter is nearly simply typed, with limited support for calling polymorphic functions.
 However, we still support identifiers whose definitions use dependent types, since our reducer does not need to look into definitions.
 \begin{align*}
-  e ::={}& \phantom{\mid} \texttt{App }e_1\texttt{ }e_2 \mid \texttt{Let }v \defeq e_1\texttt{ In }e_2 \\
-  & \mid \texttt{Abs }(\lambda v.\,e) \mid \texttt{Var }v \mid \texttt{Ident }i
+  e ::={}& \phantom{\mid} \texttt{App }e_1\texttt{ }e_2 \mid \texttt{Let }v \defeq e_1\texttt{ In }e_2 %\\
+  %&
+  \mid \texttt{Abs }(\lambda v.\,e) \mid \texttt{Var }v \mid \texttt{Ident }i
 \end{align*}
 The \texttt{Ident} case is for identifiers, which are described by an enumeration specific to a use of our library.
 For example, the identifiers might be codes for $+$, $\cdot$, and literal constants.
@@ -337,7 +334,7 @@ Instead, we adopted the approach of \textcite{maranget2008compiling}, who descri
 We have not yet implemented any of the optimizations described therein for finding \emph{minimal} decision trees.
 
 There are three steps to turn a set of rewrite rules into a functional program that takes in an expression and reduces according to the rules.
-The first step is pattern-matching compilation: we must compile the left-hand sides of the rewrite rules to a decision tree that describes how and in what order to decompose the expression, as well as describing which rewrite rules to try at which steps of decomposition.
+The first step is pattern-matching compilation: we must compile the lefthand sides of the rewrite rules to a decision tree that describes how and in what order to decompose the expression, as well as describing which rewrite rules to try at which steps of decomposition.
 Because the decision tree is merely a decomposition hint, we require no proofs about it to ensure soundness of our rewriter.
 The second step is decision-tree evaluation, during which we decompose the expression as per the decision tree, selecting which rewrite rules to attempt.
 The only correctness lemma needed for this stage is that any result it returns is equivalent to picking some rewrite rule and rewriting with it.
@@ -352,20 +349,20 @@ It is built from these constructors:
   \item \texttt{TryLeaf k onfailure}: Try the $k^\text{th}$ rewrite rule; if it fails, keep going with \texttt{onfailure}.
   \item \texttt{Failure}: Abort; nothing left to try.
   \item \texttt{Switch icases app\_case default}:
-    With the first element of the vector, match on its kind; if it is an identifier matching something in \texttt{icases}, remove the first element of the vector and run that decision tree; if it is an application and \texttt{app\_case} is not \texttt{None}, try the \texttt{app\_case} decision tree, replacing the first element of each vector with the two elements of the function and the argument it is applied to; otherwise, do not modify the vectors and use the \texttt{default} decision tree.
+    With the first element of the vector, match on its kind; if it is an identifier matching something in \texttt{icases}, which is a list of pairs of identifiers and decision trees, remove the first element of the vector and run that decision tree; if it is an application and \texttt{app\_case} is not \texttt{None}, try the \texttt{app\_case} decision tree, replacing the first element of each vector with the two elements of the function and the argument it is applied to; otherwise, do not modify the vectors and use the \texttt{default} decision tree.
   \item \texttt{Swap i cont}: Swap the first element of the vector with the $i^\texttt{th}$ element (0-indexed) and keep going with \texttt{cont}.
 \end{itemize}
 
 Consider the encoding of two simple example rewrite rules, where we follow Coq's \Ltac{} language in prefacing pattern variables with question marks.
 \begin{align*}
-  ?n + 0 & \to n \\
+  ?n + 0 & \to n %\\
+  &
   \texttt{fst}_{\mathbb{Z},\mathbb{Z}}(?x, ?y) & \to x
 \end{align*}
 We embed them in an AST type for patterns, which largely follows our ASTs for expressions.
 \begin{verbatim}
 0. App (App (Ident +) Wildcard) (Ident (Literal 0))
-1. App (Ident fst) (App (App (Ident pair) Wildcard)
-                   Wildcard)
+1. App (Ident fst) (App (App (Ident pair) Wildcard) Wildcard)
 \end{verbatim}
 The decision tree produced is \label{sec:compiled-pattern}
 \[\resizebox{230px}{!}{\xymatrix@R-1pc{
@@ -373,7 +370,7 @@ The decision tree produced is \label{sec:compiled-pattern}
   *++[o][F-]\txt{} \ar[r]^-{\txt{App}} \ar@/_1.5pc/[dr]_{\txt{\texttt{fst}}} & *++[o][F-]\txt{} \ar[r]^-{+} & *++[o][F-]\txt{Swap 0$\leftrightarrow$1} \ar[r] & *++[o][F-]\txt{} \ar[rr]^-{\txt{\texttt{Literal~0}}} && *++[o][F-]\txt{TryLeaf 0} \\
   & *++[o][F-]\txt{} \ar[r]_-{\txt{App}} & *++[o][F-]\txt{} \ar[r]_-{\txt{App}} & *++[o][F-]\txt{} \ar[rr]_-{\txt{\texttt{pair}}} && *++[o][F-]\txt{TryLeaf 1}
 }}\]
-\noindent where every non-swap node implicitly has a ``default'' case arrow to \texttt{Failure}.
+\noindent where every non-swap node implicitly has a ``default'' case arrow to \texttt{Failure} and circles represent \texttt{Switch} nodes.
 
 We implement, in Coq's logic, an evaluator for these trees against terms.
 Note that we use Coq's normal partial evaluation to turn our general decision-tree evaluator into a specialized matcher to get reasonable efficiency.
@@ -384,11 +381,9 @@ For our running example of two rules, specializing gives us this match expressio
 match e with
 | App f y => match f with
   | Ident fst => match y with
-    | App (App (Ident pair) x) y => x
-    | _ => e end
+    | App (App (Ident pair) x) y => x | _ => e end
   | App (Ident +) x => match y with
-    | Ident (Literal 0) => x | _ => e end
-  | _ => e end | _ => e end.
+    | Ident (Literal 0) => x | _ => e end | _ => e end | _ => e end.
 \end{minted}
 
 \subsection{Adding Higher-Order Features} \label{sec:thunk-eval-subst-term}
@@ -421,9 +416,9 @@ First, we choose a ``semantic'' representation for each syntactic type, which se
   \text{NbE}_t(b) & \defeq \texttt{expr}(b)
 \end{align*}
 Function types are handled as in a simple denotational semantics, while base types receive the perhaps-counterintuitive treatment that the result of ``executing'' one is a syntactic expression of the same type.
-We write $\texttt{expr}(b)$ for the metalanguage type of object-language syntax trees of type $b$, relying on a dependent type family $\texttt{expr}$.
+We write $\texttt{expr}(b)$ for the metalanguage type of object-language syntax trees of type $b$, relying on a type family $\texttt{expr}$.
 
-\begin{figure}
+\begin{figure}%[b]
 \begin{align*}
   \text{reify}_t & : \text{NbE}_t(t) \to \text{expr}(t) \\
   \text{reify}_{t_1 \to t_2}(f) & \defeq \lambda v.\,\text{reify}_{t_2}(f(\text{reflect}_{t_1}(v))) \\
@@ -495,19 +490,14 @@ Here is the actual inductive definition of term syntax for our object language, 
 The characteristic oddity is that the core syntax type \texttt{expr} is parameterized on a dependent type family for representing variables.
 However, the final representation type \texttt{Expr} uses first-class polymorphism over choices of variable type, bootstrapping on the metalanguage's parametricity to ensure that a syntax tree is agnostic to variable type.
 \begin{minted}[fontsize=\small]{coq}
-  Inductive type := arrow (s d : type)
-  | base (b : base_type).
-  Infix "->" := arrow.
-  Inductive expr (var : type -> Type)
-    : type -> Type :=
+  Inductive type := arrow (s d : type) | base (b : base_type).
+  Infix "→" := arrow.
+  Inductive expr (var : type -> Type) : type -> Type :=
   | Var {t} (v : var t) : expr var t
-  | Abs {s d} (f : var s -> expr var d)
-    : expr var (s -> d)
-  | App {s d} (f : expr var (s -> d))
-    (x : expr var s) : expr var d
+  | Abs {s d} (f : var s -> expr var d) : expr var (s → d)
+  | App {s d} (f : expr var (s → d)) (x : expr var s) : expr var d
   | Const {t} (c : const t) : expr var t
-  Definition Expr (t : type) : Type :=
-    forall var, expr var t.
+  Definition Expr (t : type) : Type := forall var, expr var t.
 \end{minted}
 
 A good example of encoding adequacy is assigning a simple denotational semantics.
@@ -522,7 +512,7 @@ Fixpoint denoteT (t : type) : Type
 
 Next we see the convenience of being able to \emph{use} an expression by choosing how it should represent variables.
 Specifically, it is natural to choose \emph{the type-denotation function itself} as the variable representation.
-Especially note how this choice makes rigorous the convention we followed in the prior section, where a recursive function enforces that values have always been substituted for variables early enough.
+Especially note how this choice makes rigorous the convention we followed in the prior section (e.g., in the suspicious function-abstraction clause of function reduce), where a recursive function enforces that values have always been substituted for variables early enough.
 \begin{minted}[fontsize=\small]{coq}
 Fixpoint denoteE {t} (e : expr denoteT t) : denoteT t
   := match e with
@@ -547,14 +537,12 @@ Fixpoint nbeT var (t : type) : Type
      end.
 Fixpoint reify {var t} : nbeT var t -> expr var t
   := match t with
-     | arrow s d => λ f,
-       Abs (λ x, reify (f (reflect (Var x))))
+     | arrow s d => λ f, Abs (λ x, reify (f (reflect (Var x))))
      | base b    => λ e, e
      end
 with reflect {var t} : expr var t -> nbeT var t
   := match t with
-     | arrow s d => λ e,
-       λ x, reflect (App e (reify x))
+     | arrow s d => λ e, λ x, reflect (App e (reify x))
      | base b    => rewrite_head
      end.
 Fixpoint reduce {var t}
@@ -571,19 +559,21 @@ Definition Rewrite {t} (E : Expr t) : Expr t
 
 One subtlety hidden above in implicit arguments is in the final clause of \texttt{reduce}, where the two applications of the \texttt{Ident} constructor use different variable representations.
 With all those details hashed out, we can prove a pleasingly simple correctness theorem, with a lemma for each main definition, with inductive structure mirroring recursive structure of the definition, also appealing to correctness of last section's pattern-compilation operations.
-$$\forall t, E : \textmintinline{coq}{Expr t}. \; \llbracket \textmintinline{coq}{Rewrite}(E) \rrbracket = \llbracket E \rrbracket$$
+$$\forall t, E : \mintinline{coq}{Expr t}. \; \llbracket \mintinline{coq}{Rewrite}(E) \rrbracket = \llbracket E \rrbracket$$
 
 Even before getting to the correctness theorem, we needed to convince Coq that the function terminates.
 While for \textcite{Aehlig}, a termination proof would have been a whole separate enterprise, it turns out that PHOAS and NbE line up so well that Coq accepts the above code with no additional termination proof.
 As a result, the Coq kernel is ready to run our \mintinline{coq}{Rewrite} procedure during checking.
 
-To understand how we now apply the soundness theorem in a tactic, it is important to note that the Coq kernel's built-in reduction strategies have, to an extent, been tuned to work well to show equivalence between a simple denotational-semantics application and the semantic value it produces, while it is rather difficult to code up one reduction strategy that works well for all partial-evaluation tasks.
+To understand how we now apply the soundness theorem in a tactic, it is important to note how the Coq kernel builds in reduction strategies.
+These strategies have, to an extent, been tuned to work well to show equivalence between a simple denotational-semantics application and the semantic value it produces.
+In contrast, it is rather difficult to code up one reduction strategy that works well for all partial-evaluation tasks.
 Therefore, we should restrict ourselves to (1) running full reduction in the style of functional-language interpreters and (2) running normal reduction on ``known-good'' goals like correctness of evaluation of a denotational semantics on a concrete input.
 
 Operationally, then, we apply our tactic in a goal containing a term $e$ that we want to partially evaluate.
 In standard proof-by-reflection style, we \emph{reify} $e$ into some $E$ where $\llbracket E \rrbracket = e$, replacing $e$ accordingly, asking Coq's kernel to validate the equivalence via standard reduction.
-Now we use the \mintinline{coq}{Rewrite} correctness theorem to replace $\llbracket E \rrbracket$ with $\llbracket \textmintinline{coq}{Rewrite}(E) \rrbracket$.
-Next we may ask the Coq kernel to simplify $\textmintinline{coq}{Rewrite}(E)$ by \emph{full reduction via compilation to native code}, since we carefully designed $\textmintinline{coq}{Rewrite}(E)$ and its dependencies to produce closed syntax trees.
+Now we use the \mintinline{coq}{Rewrite} correctness theorem to replace $\llbracket E \rrbracket$ with $\llbracket \mintinline{coq}{Rewrite}(E) \rrbracket$.
+Next we may ask the Coq kernel to simplify $\mintinline{coq}{Rewrite}(E)$ by \emph{full reduction via compilation to native code}, since we carefully designed $\mintinline{coq}{Rewrite}(E)$ and its dependencies to produce closed syntax trees, so that reduction will not get stuck pattern-matching on free variables.
 Finally, where $E'$ is the result of that reduction, we simplify $\llbracket E' \rrbracket$ with standard reduction, producing a normal-looking Coq term.
 
 %% The payoffs from fully satisfying Coq's type checker are:
@@ -616,9 +606,10 @@ For example, we can perform the rewriting
 \end{align*}
 using the rules
 \begin{align*}
-  \texttt{map}\ ?f\ [] & \to []
-  & ?n + 0 & \to n \\
-  \texttt{map}\ ?f\ (?x :: ?xs) & \to f\ x :: \texttt{map}\ f\ xs
+  \texttt{map}\ {?f}\ [] & \to []
+  &
+  \texttt{map}\ {?f}\ ({?x} :: {?xs}) & \to f\ x :: \texttt{map}\ f\ xs
+  & {?n} + 0 & \to n %\\
 \end{align*}
 
 Our approach is to define a telescope-style type family called \mintinline{coq}{UnderLets}:
@@ -637,9 +628,7 @@ We now parameterize that type interpretation by a Boolean declaring whether we w
 \begin{minted}[fontsize=\small]{coq}
 Fixpoint nbeT' {var} (with_lets : bool) (t : type)
   := match t with
-     | base t => if with_lets
-                   then @UnderLets var (@expr var t)
-                   else @expr var t
+     | base t => if with_lets then @UnderLets var (@expr var t) else @expr var t
      | arrow s d => nbeT' false s -> nbeT' true d
      end.
 Definition nbeT := nbeT' false.
@@ -652,7 +641,7 @@ Definition nbeT_with_lets := nbeT' true.
 %%    - `value (Z -> Z -> Z) := expr Z -> expr Z -> UnderLets (expr Z)`
 %%    - `value ((Z -> Z) -> Z) := (expr Z -> UnderLets (expr Z)) -> UnderLets (expr Z)`
 
-There are cases where naive preservation of \texttt{let} binders leads to suboptimal performance, so we include some heuristics.
+There are cases where naive preservation of \texttt{let} binders blocks later rewrites from triggering and leads to suboptimal performance, so we include some heuristics.
 For instance, when the expression being bound is a constant, we always inline.
 When the expression being bound is a series of list ``cons'' operations, we introduce a name for each individual list element, since such a list might be traversed multiple times in different ways.
 
@@ -662,7 +651,7 @@ Many useful algebraic simplifications require side conditions.
 One simple case is supporting \emph{nonlinear} patterns, where a pattern variable appears multiple times.
 We can encode nonlinearity on top of linear patterns via side conditions.
 \begin{align*}
-  ?n_1 + ?m - ?n_2 & \to m\text{ if }n_1 = n_2
+  {?n_1} + {?m} - {?n_2} & \to m\text{\ \ if\ \ }n_1 = n_2
 \end{align*}
 
 The trouble is how to support predictable solving of side conditions during partial evaluation, where we may be rewriting in open terms.
@@ -680,11 +669,11 @@ Therefore, matching of rules can safely run side conditions, knowing that Coq's 
 
 With our limitation that side conditions are decided by executable Boolean procedures, we cannot yet handle directly some of the rewrites needed for realistic partial evaluation.
 For instance, Fiat Cryptography reduces high-level functional to low-level code that only uses integer types available on the target hardware.
-The starting library code works with infinite-precision integers, while the generated low-level code should be careful to avoid unintended integer overflow.
-As a result, the setup may be too naive for our running example rule $?n + 0 \to n$.
+The starting library code works with arbitrary-precision integers, while the generated low-level code should be careful to avoid unintended integer overflow.
+As a result, the setup may be too naive for our running example rule ${?n} + 0 \to n$.
 When we get to reducing fixed-precision-integer terms, we must be legalistic:
 \begin{align*}
-  \texttt{add\_with\_carry}_{64}(?n, 0) & \to (0, n)\text{ if }0 \le n < 2^{64}
+  \texttt{add\_with\_carry}_{64}({?n}, 0) & \to (0, n)\text{\ \ if\ \ }0 \le n < 2^{64}
 \end{align*}
 
 We developed a design pattern to handle this kind of rule.
@@ -697,15 +686,73 @@ Therefore, at the end of this phase, we assume all variable occurrences have bee
 
 Second, we proceed with our example rule refactored:
 \begin{align*}
-  \texttt{add\_with\_carry}_{64}(\texttt{clip}_{'?l,'?u}(?n), 0) & \to (0, \texttt{clip}_{l,u}(n)) \\
-  \text{ if }u < 2^{64}
+  \texttt{add\_with\_carry}_{64}(\texttt{clip}_{'{?l},'{?u}}({?n}), 0) & \to (0, \texttt{clip}_{l,u}(n)) %\\
+  %&
+  \text{\ \ if\ \ }u < 2^{64}
 \end{align*}
 If the abstract interpreter did its job, then all lower and upper bounds are constants, and we can execute side conditions straightforwardly during pattern matching.
 
+\subsection{Limitations and Preprocessing} \label{sec:implementation-and-usage}
 
-\begin{figure*}
-  \newcommand{\NestedBindersSubfloat}{%
-    \adjustbox{valign=t}{\resizebox{150px}{!}{\beginTikzpictureStamped[only marks]{
+%\todo{It's not clear to Jason what in this section belongs here, and what isn't interesting (yet?) to readers}
+%\todo{I (Jason) have no idea what the story for this section should be}
+%\todo{Insofar as text is actually kept in this section, make sure any duplication between here and the out-of-paper appendix is deliberate}
+%\todo{If this section is moved or removed, be sure to restructure \autoref{sec:code-from-implementation-and-usage} accordingly}
+
+We now note some details of the rewriting framework that were previously glossed over, which are useful for using the code or implementing something similar, but which do not add fundamental capabilities to the approach.
+Although the rewriting framework does not support dependently typed constants, we can automatically preprocess uses of eliminators like \mintinline{coq}{nat_rect} and \mintinline{coq}{list_rect} into non-dependent versions.
+The tactic that does this preprocessing is extensible via \Ltac{}'s reassignment feature.
+Since pattern-matching compilation mixed with NbE requires knowing how many arguments a constant can be applied to, internally we must use a version of the recursion principle whose type arguments do not contain arrows; current preprocessing can handle recursion principles with either no arrows or one arrow in the motive.
+
+Recall from \autoref{sec:explain-eval-rect} that \mintinline{coq}{eval_rect} is a definition provided by our framework for eagerly evaluating recursion associated with certain types.
+It functions by triggering typeclass resolution for the lemmas reducing the recursion principle associated to the given type.
+We provide instances for \texttt{nat}, \texttt{prod}, \texttt{list}, \texttt{option}, and \texttt{bool}.
+Users may add more instances if they desire.
+
+Recall again from \autoref{sec:explain-ident.eagerly} that we use \mintinline{coq}{ident.eagerly} to ask the reducer to simplify a case of primitive recursion by complete traversal of the designated argument's constructor tree.
+Our current version only allows a limited, hard-coded set of eliminators with \mintinline{coq}{ident.eagerly} (\texttt{nat\_rect} on return types with either zero or one arrows, \texttt{list\_rect} on return types with either zero or one arrows, and \texttt{List.nth\_default}), but nothing in principle prevents automatic generation of the necessary code.
+
+Note that \mintinline{coq}{Let_In} is the constant we use for writing \letin{} expressions that do not reduce under $\zeta$ (Coq's reduction rule for \mintinline{coq}{let}-inlining).
+Throughout most of this paper, anywhere that \letin{} appears, we have actually used \mintinline{coq}{Let_In} in the code.
+It would alternatively be possible to extend the reification preprocessor to automatically convert \letin{} to \mintinline{coq}{Let_In}, but this strategy may cause problems when converting the interpretation of the reified term with the pre-reified term, as Coq's conversion does not allow fine-tuning of when to inline or unfold \mintinline{coq}{let}s.
+
+\section{Evaluation}\label{sec:evaluation}
+
+% TODO: Presumably ``attached to this submission as an anonymized supplement'' will change for the final submission
+Our implementation, attached to this submission as an anonymized supplement with a roadmap in \autoref{sec:CodeSupplement-more}, includes a mix of Coq code for the proved core of rewriting, tactic code for setting up proper use of that core, and OCaml plugin code for the manipulations beyond the current capabilities of the tactic language.
+We report here on experiments to isolate performance benefits for rewriting under binders and reducing higher-order structure.
+
+\subsection{Microbenchmarks} \label{sec:micro}
+
+\def\NoBindersSubfloatNval{3}%
+\def\NoBindersSubfloatXRow{\thisrowno{0}*(2^(\nval+1)-1)}%
+
+We start with microbenchmarks focusing attention on particular aspects of reduction and rewriting, with \autoref{sec:additionalMicro} going into more detail.
+
+\subsubsection{Rewriting Without Binders} \label{sec:micro:Plus0Tree}
+
+Consider the code defined by the expression $\text{tree}_{n,m}(v)$ in \autoref{fig:micro:Plus0Tree:code}.
+%\todo{make sure the figure spacing is okay}
+%RSolve[{t[0]==m, t[n]==2*t[n-1] + m},t[n],n]
+%t[n]=m(2^{n+1}-1)
+We want to remove all of the${}+0$s.
+There are $\Theta(m \cdot 2^n)$ such rewriting locations.
+We can start from this expression directly, in which case reification alone takes as much time as Coq's \texttt{rewrite}.
+\begin{wrapfigure}[7]{r}{0pt}
+{\small $\begin{aligned}
+\text{iter}_m(v) & = v + \underbrace{0 + 0 + \cdots + 0}_m \\
+\text{tree}_{0,m}(v) &= \text{iter}_m(v + v) \\
+\text{tree}_{n+1,m}(v) &= \text{iter}_m(\text{tree}_{n,m}(v) + \text{tree}_{n,m}(v))
+\end{aligned}$}%
+\caption{\label{fig:micro:Plus0Tree:code}Expressions computing initial code}
+\end{wrapfigure}
+As the reification method was not especially optimized, and there exist fast reification methods~\cite{ReificationITP18}, we instead start from a call to a recursive function that generates such an expression.
+
+
+\begin{figure*}[b]
+  \newsavebox{\NestedBindersSubfloat}%
+  \sbox{\NestedBindersSubfloat}{%
+    \adjustbox{valign=t}{\resizebox{0.4\textwidth}{!}{\beginTikzpictureStamped[only marks]{
       \einput{rewriting/perf-UnderLetsPlus0-cbv;rewrite-strat(bottomup).txt}
       \einput{rewriting/perf-UnderLetsPlus0-cbv;rewrite-strat(topdown).txt}
       \einput{rewriting/perf-UnderLetsPlus0-cbv;setoid-rewrite.txt}
@@ -724,8 +771,9 @@ If the abstract interpreter did its job, then all lower and upper bounds are con
         \legend{rewrite\_strat bottomup,rewrite\_strat topdown,setoid\_rewrite,{Our approach including reification, cbv, etc.},Our approach (only rewriting)}
       \end{axis}
     \end{tikzpicture}}}}%
-  \newcommand{\BindersAndRecursiveFunctionsSubfloat}{%
-    \adjustbox{valign=t}{\resizebox{150px}{!}{\beginTikzpictureStamped[only marks]{
+  \newsavebox{\BindersAndRecursiveFunctionsSubfloat}%
+  \sbox{\BindersAndRecursiveFunctionsSubfloat}{%
+    \adjustbox{valign=t}{\resizebox{0.4\textwidth}{!}{\beginTikzpictureStamped[only marks]{
         \einput{rewriting/perf-LiftLetsMap-rewrite-strat(bottomup,bottomup).txt}
         \einput{rewriting/perf-LiftLetsMap-rewrite-strat(topdown,bottomup).txt}
         \einput{rewriting/perf-LiftLetsMap-setoid-rewrite.txt}
@@ -746,8 +794,36 @@ If the abstract interpreter did its job, then all lower and upper bounds are con
         \legend{rewrite\_strat bottomup,rewrite\_strat topdown,repeat setoid\_rewrite,{Our approach including reification, cbv, etc.},Our approach (only rewriting),cps+vm\_compute}
       \end{axis}
     \end{tikzpicture}}}}%
-  \newcommand{\FiatCryptoSubfloat}{%
-    \adjustbox{valign=t}{\resizebox{150px}{!}{\beginTikzpictureStamped[only marks]{
+  \newsavebox{\NoBindersSubfloat}%
+  \sbox{\NoBindersSubfloat}{%
+    \edef\nval{\NoBindersSubfloatNval}%
+    \adjustbox{valign=t}{\resizebox{0.4\textwidth}{!}{\beginTikzpictureStamped[only marks]{
+        \einput{rewriting/perf-Plus0Tree-only-n-\nval-cbv;rewrite-strat(bottomup).txt}
+        \einput{rewriting/perf-Plus0Tree-only-n-\nval-cbv;setoid-rewrite.txt}
+        \einput{rewriting/perf-Plus0Tree-only-n-\nval-cbv;rewrite-strat(topdown).txt}
+        \einput{rewriting/perf-Plus0Tree-only-n-\nval-cbv;rewrite!.txt}
+        \einput{rewriting/perf-Plus0Tree-only-n-\nval-Rewrite-for.txt}
+        \einput{rewriting/perf-Plus0Tree-only-n-\nval-rewriting.txt}
+        \nval
+    }
+      \pgfplotsset{every axis legend/.append style={
+          at={(0.5,-0.2)},
+          anchor=north}}
+      % since n = 1, we have 2^n=twice as many rewrite locations as the value on the x axis, so we need to double things
+      %,xticklabel={\pgfkeys{/pgf/fpu}\pgfmathparse{2^\nval*\tick}$\mathsf{\pgfmathprintnumber{\pgfmathresult}}$}
+      \begin{axis}[xlabel=\# of rewrite locations,scaled x ticks=false,ylabel=time (s),ymax=7]% ymax=10]
+        \addplot[mark=square,color=red] table[x expr={\NoBindersSubfloatXRow}]{rewriting/perf-Plus0Tree-only-n-\nval-cbv;rewrite-strat(bottomup).txt};
+        \addplot[mark=*,color=red] table[x expr={\NoBindersSubfloatXRow}]{rewriting/perf-Plus0Tree-only-n-\nval-cbv;setoid-rewrite.txt};
+        \addplot[mark=triangle,color=red] table[x expr={\NoBindersSubfloatXRow}]{rewriting/perf-Plus0Tree-only-n-\nval-cbv;rewrite-strat(topdown).txt};
+        \addplot[mark=o,color=red] table[x expr={\NoBindersSubfloatXRow}]{rewriting/perf-Plus0Tree-only-n-\nval-cbv;rewrite!.txt};
+        \addplot[mark=+,color=blue] table[x expr={\NoBindersSubfloatXRow}]{rewriting/perf-Plus0Tree-only-n-\nval-Rewrite-for.txt};
+        \addplot[mark=x,color=ForestGreen] table[x expr={\NoBindersSubfloatXRow}]{rewriting/perf-Plus0Tree-only-n-\nval-rewriting.txt};
+        \legend{rewrite\_strat bottomup,setoid\_rewrite,rewrite\_strat topdown,rewrite!,{Our approach including reification, cbv, etc.},Our approach (only rewriting)}
+      \end{axis}
+    \end{tikzpicture}}}}%
+  \newsavebox{\FiatCryptoSubfloat}%
+  \sbox{\FiatCryptoSubfloat}{%
+    \adjustbox{valign=t}{\resizebox{0.4\textwidth}{!}{\beginTikzpictureStamped[only marks]{
       \einput{rewriting/perf-new-vm-over-old-vm.txt.md5}
       \einput{rewriting/perf-old-vm-over-old-vm.txt.md5}
       \einput{rewriting/perf-new-extraction-over-old-vm.txt.md5}
@@ -762,76 +838,120 @@ If the abstract interpreter did its job, then all lower and upper bounds are con
         \legend{Our approach w/ Coq's VM,Old approach (handwritten-CPS+VM),Our approach w/ extracted OCaml}
       \end{axis}
     \end{tikzpicture}}}}%
-  \newcommand{\vphantomSubfloat}{\vphantom{\NestedBindersSubfloat}\vphantom{\BindersAndRecursiveFunctionsSubfloat}\vphantom{\FiatCryptoSubfloat}}%
-  \subfloat[Nested binders]{\NestedBindersSubfloat\vphantomSubfloat\label{fig:timing-UnderLetsPlus0}}%
-  \qquad
-  \subfloat[Binders and recursive functions]{\BindersAndRecursiveFunctionsSubfloat\vphantomSubfloat\label{fig:timing-LiftLetsMap}}%
-  \qquad
-  \subfloat[Fiat Cryptography]{\FiatCryptoSubfloat\vphantomSubfloat\label{fig:scaling}}
+  \newcommand{\vphantomSubfloatOne}{\vphantom{\usebox{\NestedBindersSubfloat}}\vphantom{\usebox{\NoBindersSubfloat}}}%
+  \newcommand{\vphantomSubfloatTwo}{\vphantom{\usebox{\BindersAndRecursiveFunctionsSubfloat}}\vphantom{\usebox{\FiatCryptoSubfloat}}}%
+  \subfloat[No binders]{\usebox{\NoBindersSubfloat}\vphantomSubfloatOne\label{fig:timing-Plus0Tree}}%
+  \quad
+  \subfloat[Nested binders]{\usebox{\NestedBindersSubfloat}\vphantomSubfloatOne\label{fig:timing-UnderLetsPlus0}}%
+  \quad
+  \subfloat[Binders and recursive functions]{\usebox{\BindersAndRecursiveFunctionsSubfloat}\vphantomSubfloatTwo\label{fig:timing-LiftLetsMap}}%
+  \quad
+  \subfloat[Fiat Cryptography]{\usebox{\FiatCryptoSubfloat}\vphantomSubfloatTwo\label{fig:scaling}}
 
   \caption{Timing of different partial-evaluation implementations} \label{fig:multi-timing}
 \end{figure*}
 
-\section{Evaluation}\label{sec:evaluation}
+%RSolve[{t[0]==m, t[n]==2*t[n-1] + m},t[n],n]
+%t[n]=m(2^{n+1}-1)
+\autoref{fig:timing-Plus0Tree} shows the results for $n = \NoBindersSubfloatNval$ as we scale $m$.
+The comparison points are Coq's \texttt{rewrite!}, \texttt{setoid\_rewrite}, and \texttt{rewrite\_strat}.
+The first two perform one rewrite at a time, taking minimal advantage of commonalities across them and thus generating quite large, redundant proof terms.
+The third makes top-down or bottom-up passes with combined generation of proof terms.
+For our own approach, we list both the total time and the time taken for core execution of a verified rewrite engine, without counting reification (converting goals to ASTs) or its inverse (interpreting results back to normal-looking goals).
 
-% TODO: Presumably ``attached to this submission as an anonymized supplement'' will change for the final submission
-Our implementation, attached to this submission as an anonymized supplement with a roadmap in \autoref{sec:CodeSupplement-more}, includes a mix of Coq code for the proved core of rewriting, tactic code for setting up proper use of that core, and OCaml plugin code for the manipulations beyond the current capabilities of the tactic language.
-We report here on experiments to isolate performance benefits for rewriting under binders and reducing higher-order structure.
+The comparison here is very favorable for our approach so long as $m > 2$.
+The competing tactics spike upward toward timeouts at just around a thousand rewrite locations, while our engine is still under two seconds for examples with tens of thousands of rewrite locations.
+When $m < 2$, Coq's \texttt{rewrite!} tactic does a little bit better than our engine, corresponding roughly to the overhead incurred by our term representation (which, for example, stores the types at every application node) when most of the term is in fact unchanged by rewriting.
+See \autoref{sec:additionalPlots:Plus0Tree}\footnote{Like several forward references in this section, this one goes to an appendix included within the main submission page limit, to avoid interrupting the flow in presenting the most important results.} for more detailed plots.
 
-\subsection{Microbenchmarks} \label{sec:micro}
+\subsubsection{Rewriting Under Binders} \label{sec:micro:UnderLetsPlus0}
 
-We start with microbenchmarks focusing attention on particular aspects of reduction and rewriting, with \autoref{sec:additionalMicro} going into more detail.
-
-\subsubsection{Rewriting Under Binders} \label{sec:micro:UnderLetsPlus0} \label{sec:micro:Plus0Tree}
-
-Consider
-\vspace{-1.5em} {\small \begin{align*}
+\begin{wrapfigure}[7]{r}{0pt}
+{\small $\begin{aligned}
   & \letin[{v_1 := v_0 + v_0 + 0}{}] \\ \noalign{\vskip-7pt}
   & \vdots \\ \noalign{\vskip-3pt}
   & \letin[{v_n := v_{n-1} + v_{n-1} + 0}{}] \\
   & v_n + v_n + 0
-\end{align*}}%
+\end{aligned}$}%
 %  & \letin[{v_2 := v_1 + v_1 + 0}{}] \\
-We want to remove all of the${}+0$s.
-We can start from this expression directly, in which case reification alone takes as much time as \texttt{setoid\_rewrite}.
-As the reification method was not especially optimized, and there exist fast reification methods~\cite{reification-by-parametricity}, we instead start from a call to a recursive function that generates such a sequence of \mintinline{coq}{let} bindings.
+\caption{\label{fig:micro:UnderLetsPlus0:code}Initial code}
+\end{wrapfigure}
+
+Consider now the code in \autoref{fig:micro:UnderLetsPlus0:code}, which is a version of the code above where redundant expressions are shared via \mintinline{coq}{let} bindings.
 
 \autoref{fig:timing-UnderLetsPlus0} shows the results.
-The comparison points are Coq's \texttt{setoid\_rewrite} and \texttt{rewrite\_strat}.
-The former performs one rewrite at a time, taking minimal advantage of commonalities across them and thus generating quite large, redundant proof terms.
-The latter makes top-down or bottom-up passes with combined generation of proof terms.
-For our own approach, we list both the total time and the time taken for core execution of a verified rewrite engine, without counting reification (converting goals to ASTs) or its inverse (interpreting results back to normal-looking goals).
-
-The comparison here is very favorable for our approach.
+The comparison here is again very favorable for our approach.
 The competing tactics spike upward toward timeouts at just a few hundred generated binders, while our engine is only taking about 10 seconds for examples with 5,000 nested binders.
 
-As detailed in \autoref{sec:Plus0Tree-more}, we ran a variant of this experiment with inlining of \mintinline{coq}{let}s, forcing terms to grow quite large.
-Specifically, we generate $n$ nested \mintinline{coq}{let}s, each repeatedly adding a designated free variable into a sum, $m$ times.
-Holding $m$ fixed at a small value and letting $n$ scale, we continue dominating the methods described above, though Coq's \texttt{rewrite!} tactic (to rewrite with one lemma many times) does better for $m < 2$.
-Holding $n$ fixed and letting $m$ scale, all other approaches quickly spike upward to timeouts, while ours holds steady even for $m = 1000$.
+\subsubsection{Performance Bottlenecks of Proof-Producing Rewriting} \label{sec:micro:setoid-rewrite-bottlenecks-lite}
+
+Although we have made our comparison against the built-in tactics \mintinline{coq}{setoid_rewrite} and \mintinline{coq}{rewrite_strat}, by analyzing the performance in detail, we can argue that these performance bottlenecks are likely to hold for any proof assistant designed like Coq.
+Detailed debugging reveals five performance bottlenecks in the existing rewriting tactics, which we discuss in \autoref{sec:setoid-rewrite-bottlenecks}.\footnote{Also included within the submission page limit, though of interest mostly to proof-assistant-implementation experts.}
 
 \subsubsection{Binders and Recursive Functions} \label{sec:micro:LiftLetsMap}
 
-The next experiment uses the following example.
-{\small \allowdisplaybreaks \begin{align*}
+\begin{wrapfigure}[11]{r}{0pt}
+{\small %\allowdisplaybreaks
+$\begin{aligned}
   \text{map\_dbl}(\ell) & \defeq \begin{cases} [] & \text{if }\ell = [] \\
-      \letin[{y := h + h}{y :: \text{map\_dbl}(t)}] & \text{if }\ell = h::t
+      \letin[{y := h + h}{}] & \text{if }\ell = h::t \\
+      y :: \text{map\_dbl}(t) &
       \end{cases} \\
   \text{make}(n, m, v) & \defeq \begin{cases} [\underbrace{v, \ldots, v}_n] & \text{if }m = 0 \\
       \text{map\_dbl}(\text{make}(n, m-1, v)) & \text{if }m > 0
       \end{cases} \\
   \text{example}_{n, m} & \defeq \forall v,\ \text{make}(n, m, v) = []
-\end{align*}}%
+\end{aligned}$}%
+\caption{\label{fig:micro:LiftLetsMap:code}Initial code for binders and recursive functions}
+\end{wrapfigure}
+
+The next experiment uses the code in \autoref{fig:micro:LiftLetsMap:code}.
 %Note that the ${}=[]$ at the end is just a dummy placeholder to allow us to check reduction and rewriting of this term.
-Note that the \letin{} binding blocks further reduction of map\_dbl, which we iterate $m$ times, and so we need to take care to preserve sharing when reducing here.
+Note that the \letin{} binding blocks further reduction of map\_dbl when we iterate it $m$ times in make, and so we need to take care to preserve sharing when reducing here.
 
 \autoref{fig:timing-LiftLetsMap} compares performance between our approach, \texttt{repeat setoid\_rewrite}, and two variants of \texttt{rewrite\_strat}.
 Additionally, we consider another option, which was adopted by Fiat Cryptography at a larger scale: rewrite our functions to improve reduction behavior.
 Specifically, both functions are rewritten in continuation-passing style, which makes them harder to read and reason about but allows standard VM-based reduction to achieve good performance.
-The figure shows that \texttt{rewrite\_strat} variants are essentially unusable for this example, with \texttt{setoid\_rewrite} performing only marginally better, while our approach applied to the original, more readable definitions loses ground steadily to VM-based reduction on CPS'd code.
+The figure shows that \texttt{rewrite\_strat} variants are essentially unusable for this example, with \texttt{setoid\_rewrite} performing only marginally better, while our approach applied to the original, more readable definitions loses ground steadily to VM-based reduction on CPSed code.
 On the largest terms ($n \cdot m > 20,000$), the gap is 6s vs.\ 0.1s of compilation time, which should often be acceptable in return for simplified coding and proofs, plus the ability to mix proved rewrite rules with built-in reductions.
+Note that about 99\% of the difference between the full time of our method and just the rewriting is spent in the final \texttt{cbv} at the end, used to denote our output term from reified syntax.
+We blame this performance on the unfortunate fact that reduction in Coq is quadratic in the number of nested binders present; see Coq bug \coqbug{11151}.
 %traded for simplified coding and proofs, plus the ability to mix proved rewrite rules with built-in reductions.
-See \autoref{sec:LiftLetsMap-more} for more on this microbenchmark and \autoref{sec:Eratosthenes} for an even more extreme example of full reduction with a Sieve of Eratosthenes as in the experiments of \textcite{Aehlig} (ours 10s, VM 0.3s).
+See \autoref{sec:LiftLetsMap-more} for more on this microbenchmark.
+
+\subsubsection{Full Reduction} \label{sec:micro:Eratosthenes}
+
+\begin{wrapfigure}[18]{r}{0pt}
+  \resizebox{0.4\textwidth}{!}{\beginTikzpictureStamped[only marks]{
+      \einput{rewriting/perf-SieveOfEratosthenes-simpl.txt}
+      \einput{rewriting/perf-SieveOfEratosthenes-cbn.txt}
+      \einput{rewriting/perf-SieveOfEratosthenes-lazy.txt}
+      \einput{rewriting/perf-SieveOfEratosthenes-Rewrite-for.txt}
+      \einput{rewriting/perf-SieveOfEratosthenes-rewriting.txt}
+      \einput{rewriting/perf-SieveOfEratosthenes-cbv.txt}
+      \einput{rewriting/perf-SieveOfEratosthenes-vm-compute.txt}
+      \einput{rewriting/perf-SieveOfEratosthenes-native(2)(real).txt}
+  }
+    \pgfplotsset{every axis legend/.append style={
+        at={(0.5,-0.2)},
+        anchor=north}}
+    \begin{axis}[xlabel=upper bound,ylabel=time (s),ymax=65]
+      \addplot[mark=square,color=red] table{rewriting/perf-SieveOfEratosthenes-simpl.txt};
+      \addplot[mark=triangle,color=red] table{rewriting/perf-SieveOfEratosthenes-cbn.txt};
+      \addplot[mark=square*,color=red] table{rewriting/perf-SieveOfEratosthenes-lazy.txt};
+      \addplot[mark=+,color=blue] table{rewriting/perf-SieveOfEratosthenes-Rewrite-for.txt};
+      \addplot[mark=x,color=ForestGreen] table{rewriting/perf-SieveOfEratosthenes-rewriting.txt};
+      \addplot[mark=triangle*,color=orange] table{rewriting/perf-SieveOfEratosthenes-cbv.txt};
+      \addplot[mark=*,color=purple] table{rewriting/perf-SieveOfEratosthenes-vm-compute.txt};
+      \addplot[mark=-,color=red] table{rewriting/perf-SieveOfEratosthenes-native(2)(real).txt};
+      \legend{simpl,cbn,lazy,{Our approach including reification, cbv, etc.},Our approach (only rewriting),cbv,vm\_compute,native\_compute}
+    \end{axis}
+  \end{tikzpicture}}
+  \caption{\label{fig:timing-SieveOfEratosthenes}Full evaluation, Sieve of Eratosthenes}
+\end{wrapfigure}
+
+The final experiment involves full reduction in computing the Sieve of Eratosthenes, taking inspiration on benchmark choice from \textcite{Aehlig}.
+We find in \autoref{fig:timing-SieveOfEratosthenes} that we are slower than \texttt{vm\_compute}, \mintinline{coq}{native_compute}, and \texttt{cbv}, but faster than \mintinline{coq}{lazy}, and of course much faster than \texttt{simpl} and \texttt{cbn}, which are quite slow.
 
 \subsection{Macrobenchmark: Fiat Cryptography} \label{sec:macro}
 
@@ -882,125 +1002,63 @@ Typically LMS-Verify has been used with relatively shallow properties (though po
 \section{Future Work}
 
 There are a number of natural extensions to our engine.
-For instance, we do not yet allow pattern variables marked as ``constants only'' to apply to container datatypes; we limit the mixing of higher-order and polymorphic types, as well as limiting use of first-class polymorphism; we do not support proving equalities on functions; we only support decidable predicates as rule side conditions, and the predicates may only mention pattern variables restricted to matching constants; we have hardcoded support for a small set of container types and their eliminators; we support rewriting with equality and no other relations (e.g., subset inclusion); and we require decidable equality for all types mentioned in rules.
+For instance, we do not yet allow pattern variables marked as ``constants only'' to apply to container datatypes; we limit the mixing of higher-order and polymorphic types, as well as limiting use of first-class polymorphism; we do not support rewriting with equalities of non-fully-applied functions; we only support decidable predicates as rule side conditions, and the predicates may only mention pattern variables restricted to matching constants; we have hardcoded support for a small set of container types and their eliminators; we support rewriting with equality and no other relations (e.g., subset inclusion); and we require decidable equality for all types mentioned in rules.
 It may be helpful to design an engine that lifts some or all of these limitations, building on the basic structure that we present here.
 
+%%% Bibliography
+%\clearpage
 %\nocite{*}
-
+%\bibliography{rewriting}
 \clearpage
+
 \begin{subappendices}
-    %\appendix
-\section{Additional Information on Microbenchmarks} \label{sec:additionalMicro}
+%\appendix
 
-We performed all benchmarks on a 3.5 GHz Core i7 running Linux and Coq 8.10.0.
-We name the subsections here with the names that show up in the code supplement.
+\section{Performance Bottlenecks of Proof-Producing Rewriting} \label{sec:setoid-rewrite-bottlenecks}
 
-\subsection{UnderLetsPlus0} \label{sec:UnderLetsPlus0-more}
+Although we have made our performance comparison against the built-in Coq tactics \mintinline{coq}{setoid_rewrite} and \mintinline{coq}{rewrite_strat}, by analyzing the performance in detail, we can argue that these performance bottlenecks are likely to hold for any proof assistant designed like Coq.
+Detailed debugging reveals five performance bottlenecks in the existing rewriting tactics.
+%(This section goes into detail that readers not interested in proof-assistant minutiae may want to skip, turning ahead to \autoref{sec:micro:LiftLetsMap}.)
 
-We provide more detail on the ``nested binders'' microbenchmark of \autoref{sec:micro:UnderLetsPlus0} displayed in \autoref{fig:timing-UnderLetsPlus0}.
+\subsection{Bad performance scaling in sizes of existential-variable contexts}
 
-Recall that we are removing all of the${}+0$s from
-{\small \begin{align*}
-  & \letin[{v_1 := v_0 + v_0 + 0}{}] \\
-%  & \letin[{v_2 := v_1 + v_1 + 0}{}] \\
-  & \vdots \\
-  & \letin[{v_n := v_{n-1} + v_{n-1} + 0}{}] \\
-  & v_n + v_n + 0
-\end{align*}}%
+We found that even when there are no occurrences fully matching the rule, \mintinline{coq}{setoid_rewrite} can still be \emph{cubic} in the number of binders (or, more accurately, quadratic in the number of binders with an additional multiplicative linear factor of the number of head-symbol matches).
+Rewriting without any successful matches takes nearly as much time as \mintinline{coq}{setoid_rewrite} in this microbenchmark; by the time we are looking at goals with 400 binders, the difference is less than 5\%.
 
-The code used to define this microbenchmark is
-\begin{minted}[fontsize=\small]{coq}
-Definition make_lets_def (n:nat) (v acc : Z) :=
- @nat_rect
-   (fun _ => Z * Z -> Z)
-   (fun '(v, acc) => acc + acc + v)
-   (fun _ rec '(v, acc) =>
-     dlet acc := acc + acc + v in rec (v, acc))
-   n
-   (v, acc).
-\end{minted}
-We note some details of the rewriting framework that were glossed over in the main body of the paper, which are useful for using the code:
-Although the rewriting framework does not support dependently typed constants, we can automatically preprocess uses of eliminators like \mintinline{coq}{nat_rect} and \mintinline{coq}{list_rect} into non-dependent versions.
-The tactic that does this preprocessing is extensible via \Ltac{}'s reassignment feature.
-Since pattern-matching compilation mixed with NbE requires knowing how many arguments a constant can be applied to, we must internally use a version of the recursion principle whose type arguments do not contain arrows; current preprocessing can handle recursion principles with either no arrows or one arrow in the motive.
-Even though we will eventually plug in 0 for $v$, we jump through some extra hoops to ensure that our rewriter cannot cheat by rewriting away the ${}+0$ before reducing the recursion on $n$.
+We posit that this overhead comes from \mintinline{coq}{setoid_rewrite} looking for head-symbol matches and then creating evars (existential variables) to instantiate the arguments of the lemmas for each head-symbol-match location; hence even if there are no matches of the rule as a whole, there may still be head-symbol matches.
+Since Coq uses a locally nameless representation~\cite{LocallyNameless} for its terms, evar contexts are necessarily representated as \emph{named} contexts.
+Representing a substitution between named contexts takes linear space, even when the substitution is trivial, and hence each evar incurs overhead linear in the number of binders above it.
+Furthermore, fresh-name generation in Coq is quadratic in the size of the context, and since evar-context creation uses fresh-name generation, the additional multiplicative factor likely comes from fresh-name generation.
+(Note, though, that this pattern suggests that the true performance is quartic rather than merely cubic.  However, doing a linear regression on a $\log$-$\log$ of the data suggests that the performance is genuinely cubic rather than quartic.)
+%\todo{Can we cite an Coq issue that would de-anonymize us? 12524 (Andres says ``I would not cite, just claim coqdev acceptance if appropriate''}
 
-We can reduce this expression in three ways.
+Note that this overhead is inherent to the use of a locally nameless term representation.
+To fix it, Coq would likely have to represent identity evar contexts using a compact representation, which is only naturally available for de Bruijn representations.
+Any rewriting system that uses unification variables with a locally nameless (or named) context will incur at least quadratic overhead on this benchmark.
 
-\subsubsection{Our Rewriter}
-One lemma is required for rewriting with our rewriter:
-\begin{minted}[fontsize=\small]{coq}
-Lemma Z.add_0_r : forall z, z + 0 = z.
-\end{minted}
+Note that \mintinline{coq}{rewrite_strat} uses exactly the same rewriting engine as \mintinline{coq}{setoid_rewrite}, just with a different strategy.
+We found that \mintinline{coq}{setoid_rewrite} and \mintinline{coq}{rewrite_strat} have identical performance when there are no matches and generate identical proof terms when there are matches.
+Hence we can conclude that the difference in performance between \mintinline{coq}{rewrite_strat} and \mintinline{coq}{setoid_rewrite} is entirely due to an increased number of failed rewrite attempts.
 
-Creating the rewriter takes about 12 seconds on the machine we used for running the performance experiments:
-\begin{minted}[fontsize=\small]{coq}
-Make myrew := Rewriter For
- (Z.add_0_r, eval_rect nat, eval_rect prod).
-\end{minted}
-Recall from \autoref{sec:explain-eval-rect} that \mintinline{coq}{eval_rect} is a definition provided by our framework for eagerly evaluating recursion associated with certain types.
-It functions by triggering typeclass resolution for the lemmas reducing the recursion principle associated to the given type.
-We provide instances for \texttt{nat}, \texttt{prod}, \texttt{list}, \texttt{option}, and \texttt{bool}.
-Users may add more instances if they desire.
+\subsection{Proof-term size}
 
-\subsubsection{\texorpdfstring{\texttt{setoid\protect\_rewrite}}{setoid\_rewrite} and \texorpdfstring{\texttt{rewrite\protect\_strat}}{rewrite\_strat}}
-To give as many advantages as we can to the preexisting work on rewriting, we pre-reduce the recursion on \mintinline{coq}{nat}s using \texttt{cbv} before performing \texttt{setoid\_rewrite}.
-(Note that \texttt{setoid\_rewrite} cannot itself perform reduction without generating large proof terms, and \texttt{rewrite\_strat} is not currently capable of sequencing reduction with rewriting internally due to bugs such as \coqbug{10923}.)
-Rewriting itself is easy; we may use any of \texttt{repeat setoid\_rewrite Z.add\_0\_r}, \texttt{rewrite\_strat topdown Z.add\_0\_r}, or \texttt{rewrite\_strat bottomup Z.add\_0\_r}.
+Setting aside the performance bottleneck in constructing the matches in the first place, we can ask the question: how much cost is associated to the proof terms?
+One way to ask this question in Coq is to see how long it takes to run \mintinline{coq}{Qed}.
+While \mintinline{coq}{Qed}-time is asymptotically better, it is still quadratic in the number of binders.
+This outcome is unsurprising, because the proof-term size is quadratic in the number of binders.
+On this microbenchmark, we found that \mintinline{coq}{Qed}-time hits one second at about 250 binders, and using the best-fit quadratic line suggests that it would hit 10 seconds at about 800 binders and 100 seconds at about 2\,500 binders.
+While this may be reasonable for the microbenchmarks, which only contain as many rewrite occurrences as there are binders, it would become unwieldy to try to build and typecheck such a proof with a rule for every primitive reduction step, which would be required if we want to avoid manually CPS-converting the code in Fiat Cryptography.
 
-\subsection{Plus0Tree} \label{sec:Plus0Tree-more}
+The quadratic factor in the proof term comes because we repeat subterms of the goal linearly in the number of rewrites.
+For example, if we want to rewrite \mintinline{coq}{f (f x)} into \mintinline{coq}{g (g x)} by the equation \mintinline{coq}{∀ x, f x = g x}, then we will first rewrite \mintinline{coq}{f x} into \mintinline{coq}{g x}, and then rewrite \mintinline{coq}{f (g x)} into \mintinline{coq}{g (g x)}.
+Note that \mintinline{coq}{g x} occurs three times (and will continue to occur in every subsequent step).
 
-This is a version of \autoref{sec:UnderLetsPlus0-more} without any let binders, discussed in \autoref{sec:micro:Plus0Tree} but not displayed in \autoref{fig:multi-timing}.
-
-We use two definitions for this microbenchmark:
-\begin{minted}[fontsize=\small]{coq}
-Definition iter (m : nat) (acc v : Z) :=
-  @nat_rect
-    (fun _ => Z -> Z)
-    (fun acc => acc)
-    (fun _ rec acc => rec (acc + v))
-    m
-    acc.
-
-Definition make_tree (n m : nat) (v acc : Z) :=
- Eval cbv [iter] in
-  @nat_rect
-    (fun _ => Z * Z -> Z)
-    (fun '(v, acc) => iter m (acc + acc) v)
-    (fun _ rec '(v, acc) =>
-      iter m (rec (v, acc) + rec (v, acc)) v)
-    n
-    (v, acc).
-\end{minted}
-
-We can see from the graphs in \autoref{fig:timing-Plus0Tree-fixed-m} and \autoref{fig:timing-Plus0Tree-fixed-n} that
-(a) we incur constant overhead over most of the other methods which dominates on small examples;
-(b) when the term is quite large and there are few opportunities for rewriting relative to the term-size (i.e., $m \le 2$), we are worse than \mintinline{coq}{rewrite !Z.add_0_r}, but still better than the other methods; and
-(c) when there are many opportunities for rewriting relative to the term-size ($m > 2$), we thoroughly dominate the other methods.
-
-% \begin{figure}
-%   \begin{tikzpicture}[only marks]
-%   \pgfplotsset{every axis legend/.append style={
-%       at={(0.5,-0.2)},
-%       anchor=north}}
-%     \begin{axis}[xlabel=$\text{term size} = (m+1)\cdot 2^{n+1}-m$,ylabel=time (s)]
-%       \addplot[mark=+,color=blue] table{rewriting/perf-Plus0Tree-Rewrite-for.txt};
-%       \addplot[mark=x,color=ForestGreen] table{rewriting/perf-Plus0Tree-rewriting.txt};
-%       \addplot[mark=o,color=red] table{rewriting/perf-Plus0Tree-cbv;rewrite!.txt};
-%       \addplot[mark=*,color=red] table{rewriting/perf-Plus0Tree-cbv;setoid-rewrite.txt};
-%       \addplot[mark=square,color=red] table{rewriting/perf-Plus0Tree-cbv;rewrite-strat(bottomup).txt};
-%       \addplot[mark=triangle,color=red] table{rewriting/perf-Plus0Tree-cbv;rewrite-strat(topdown).txt};
-%       \legend{Our approach including reification,Our approach (only rewriting),rewrite!,setoid\_rewrite,rewrite\_strat bottomup,rewrite\_strat topdown}
-%     \end{axis}
-%   \end{tikzpicture}
-%   \caption{\label{fig:timing-Plus0Tree}Timing of different partial-evaluation implementations for Plus0Tree}
-% \end{figure}
-
+% We put this figure here so that the layout is better.
 \begin{figure*}
 \newcommand{\PlusZeroTreeMValSubfloat}[1]{%
   \def\mval{#1}%
-  \subfloat[Timing of Plus0Tree ($m=\mval$)]{%
-  \resizebox{150px}{!}{\beginTikzpictureStamped[only marks]{
+  \subfloat[No binders ($m=\mval$)]{%
+  \resizebox{0.4\textwidth}{!}{\beginTikzpictureStamped[only marks]{
     \einput{rewriting/perf-Plus0Tree-only-m-\mval-cbv;rewrite-strat(bottomup).txt}
     \einput{rewriting/perf-Plus0Tree-only-m-\mval-cbv;setoid-rewrite.txt}
     \einput{rewriting/perf-Plus0Tree-only-m-\mval-cbv;rewrite-strat(topdown).txt}
@@ -1027,14 +1085,34 @@ We can see from the graphs in \autoref{fig:timing-Plus0Tree-fixed-m} and \autore
 \PlusZeroTreeMValSubfloat{1}\qquad
 \PlusZeroTreeMValSubfloat{2}\qquad
 \PlusZeroTreeMValSubfloat{3}
-  \caption{Timing of different partial-evaluation implementations for Plus0Tree for fixed $m$.  Note that we have a logarithmic time scale, because term size is proportional to $2^n$.} \label{fig:timing-Plus0Tree-fixed-m}
+  \caption{Timing of different partial-evaluation implementations for code with no binders for fixed $m$.  Note that we have a logarithmic time scale, because term size is proportional to $2^n$.} \label{fig:timing-Plus0Tree-fixed-m}
 \end{figure*}
 
+\subsection{Poor subterm sharing}
+
+How easy is it to share subterms and create a linearly sized proof?
+While it is relatively straightforward to share subterms using \mintinline{coq}{let} binders when the rewrite locations are not under any binders, it is not at all obvious how to share subterms when the terms occur under different binders.
+Hence any rewriting algorithm that does not find a way to share subterms across different contexts will incur a quadratic factor in proof-building and proof-checking time, and we expect this factor will be significant enough to make applications to projects as large as Fiat Crypto infeasible.
+
+\subsection{Overhead from the \mintinline{coq}{let} typing rule}
+
+Suppose we had a proof-producing rewriting algorithm that shared subterms even under binders.
+Would it be enough?
+It turns out that even when the proof size is linear in the number of binders, the cost to typecheck it in Coq is still quadratic!
+The reason is that when checking that \texttt{f : T} in a context \mintinline{coq}{x := v}, to check that \mintinline{coq}{let x := v in f} has type \texttt{T} (assuming that \mintinline{coq}{x} does not occur in \texttt{T}), Coq will substitute \mintinline{coq}{v} for \mintinline{coq}{x} in \texttt{T}.
+So if a proof term has $n$ \mintinline{coq}{let} binders (e.g., used for sharing subterms), Coq will perform $n$ substitutions on the type of the proof term, even if none of the \mintinline{coq}{let}-binders are used.
+If the number of \mintinline{coq}{let}-binders is linear in the size of the type, there is quadratic overhead in proof-checking time, even when the proof-term size is linear.
+
+We performed a microbenchmark on a rewriting goal with no binders (because there is an obvious algorithm for sharing subterms in that case) and found that the proof-checking time reached about one second at about 2\,000 binders and reached 10 seconds at about 7\,000 binders.
+While these results might seem good enough for Fiat Cryptography, we expect that there are hundreds of thousands of primitive reduction/rewriting steps even when there are only a few hundred binders in the output term, and we would need \mintinline{coq}{let}-binders for each of them.
+Furthermore, we expect that getting such an algorithm correct would be quite tricky.
+
+% We put this figure here so that the layout is better.
 \begin{figure*}
 \newcommand{\PlusZeroTreeNValSubfloat}[1]{%
   \def\nval{#1}%
-  \subfloat[Timing of Plus0Tree ($n=\nval$)]{%
-  \resizebox{150px}{!}{\beginTikzpictureStamped[only marks]{
+  \subfloat[No binders ($n=\nval$)]{%
+  \resizebox{0.4\textwidth}{!}{\beginTikzpictureStamped[only marks]{
       \einput{rewriting/perf-Plus0Tree-only-n-\nval-cbv;rewrite-strat(bottomup).txt}
       \einput{rewriting/perf-Plus0Tree-only-n-\nval-cbv;setoid-rewrite.txt}
       \einput{rewriting/perf-Plus0Tree-only-n-\nval-cbv;rewrite-strat(topdown).txt}
@@ -1060,10 +1138,172 @@ We can see from the graphs in \autoref{fig:timing-Plus0Tree-fixed-m} and \autore
 }%
 \PlusZeroTreeNValSubfloat{1}\qquad
 \PlusZeroTreeNValSubfloat{2}\qquad
-%\PlusZeroTreeNValSubfloat{3}\qquad
+\PlusZeroTreeNValSubfloat{3}\qquad
+%\PlusZeroTreeNValSubfloat{4}\qquad
+%\PlusZeroTreeNValSubfloat{5}\qquad
+%\PlusZeroTreeNValSubfloat{6}\qquad
+%\PlusZeroTreeNValSubfloat{7}\qquad
+%\PlusZeroTreeNValSubfloat{8}\qquad
 \PlusZeroTreeNValSubfloat{9}
-  \caption{Timing of different partial-evaluation implementations for Plus0Tree for fixed $n$ (1, 2, and then we jump to 9)} \label{fig:timing-Plus0Tree-fixed-n}
+  \caption{Timing of different partial-evaluation implementations for code with no binders for fixed $n$ (1, 2, 3, and then we jump to 9)} \label{fig:timing-Plus0Tree-fixed-n}
 \end{figure*}
+
+% \begin{figure}
+%   \begin{tikzpicture}[only marks]
+%   \pgfplotsset{every axis legend/.append style={
+%       at={(0.5,-0.2)},
+%       anchor=north}}
+%     \begin{axis}[xlabel=$\text{term size} = (m+1)\cdot 2^{n+1}-m$,ylabel=time (s)]
+%       \addplot[mark=+,color=blue] table{rewriting/perf-Plus0Tree-Rewrite-for.txt};
+%       \addplot[mark=x,color=ForestGreen] table{rewriting/perf-Plus0Tree-rewriting.txt};
+%       \addplot[mark=o,color=red] table{rewriting/perf-Plus0Tree-cbv;rewrite!.txt};
+%       \addplot[mark=*,color=red] table{rewriting/perf-Plus0Tree-cbv;setoid-rewrite.txt};
+%       \addplot[mark=square,color=red] table{rewriting/perf-Plus0Tree-cbv;rewrite-strat(bottomup).txt};
+%       \addplot[mark=triangle,color=red] table{rewriting/perf-Plus0Tree-cbv;rewrite-strat(topdown).txt};
+%       \legend{Our approach including reification,Our approach (only rewriting),rewrite!,setoid\_rewrite,rewrite\_strat bottomup,rewrite\_strat topdown}
+%     \end{axis}
+%   \end{tikzpicture}
+%   \caption{\label{fig:timing-Plus0Tree}Timing of different partial-evaluation implementations for code with no binders}
+% \end{figure}
+
+Fixing this quadratic bottleneck would, as far as we can tell, require deep changes in how Coq is implemented; it would either require reworking all of Coq to operate on some efficient representation of delayed substitutions paired with unsubstituted terms, or else it would require changing the typing rules of the type theory itself to remove this substitution from the typing rule for \mintinline{coq}{let}.
+Note that there is a similar issue that crops up for function application and abstraction.
+
+\subsection{Inherent advantages of reflection}
+
+Finally, even if this quadratic bottleneck were fixed, \textcite{Aehlig} reported a $10\times$--$100\times$ speed-up over the \emph{simp} tactic in Isabelle, which performs all of the intermediate rewriting steps via the kernel API.
+Their results suggest that even if all of the super-linear bottlenecks were fixed---no small undertaking---rewriting and partial evaluation via reflection might still be orders of magnitude faster than any proof-term-generating tactic.
+
+
+\section{Additional Benchmarking Plots} \label{sec:additionalPlots}
+
+\subsection{Rewriting Without Binders} \label{sec:additionalPlots:Plus0Tree}
+
+The code in \autoref{fig:micro:Plus0Tree:code} in \autoref{sec:micro:Plus0Tree} is parameterized on both $n$, the height of the tree, and $m$, the number of rewriting occurrences per node.
+The plot in \autoref{fig:timing-Plus0Tree} displays only the case of $n=\NoBindersSubfloatNval$.
+The plots in \autoref{fig:timing-Plus0Tree-fixed-m} display how performance scales as a factor of $n$ for fixed $m$, and the plots in \autoref{fig:timing-Plus0Tree-fixed-n} display how performance scales as a factor of $m$ for fixed $n$.
+Note the logarithmic scaling on the time axis in the plots in \autoref{fig:timing-Plus0Tree-fixed-m}, as term size is proportional to $m\cdot 2^n$.
+
+We can see from these graphs and the ones in \autoref{fig:timing-Plus0Tree-fixed-n} that
+(a) we incur constant overhead over most of the other methods, which dominates on small examples;
+(b) when the term is quite large and there are few opportunities for rewriting relative to the term size (i.e., $m \le 2$), we are worse than \mintinline{coq}{rewrite !Z.add_0_r} but still better than the other methods; and
+(c) when there are many opportunities for rewriting relative to the term size ($m > 2$), we thoroughly dominate the other methods.
+
+\clearpage
+
+\subsection{Additional Information on the Fiat Cryptography Benchmark} \label{sec:additionalPlots:FiatCrypto} \label{sec:additionalMacro}
+
+\begin{figure*}[b]
+  \newcommand{\MacroSubfloat}[3]{%
+    \subfloat[Timing of different partial-evaluation implementations for Fiat Cryptography as prime modulus grows (only #2 #3)]{%
+  \resizebox{0.45\textwidth}{!}{\beginTikzpictureStamped[only marks]{
+      \einput{rewriting/perf-new-vm-times--only-#1-#3.txt}
+      \einput{rewriting/perf-old-vm-times--only-#1-#3.txt}
+      \einput{rewriting/perf-new-extraction-times--only-#1-#3.txt}
+  }
+    \pgfplotsset{every axis legend/.append style={
+        at={(0.5,-0.2)},
+        anchor=north}}
+    \begin{axis}[xlabel=prime,ylabel=time (s),xmode=log, ymode=log,log basis x={2}]
+      \addplot[mark=+] table{rewriting/perf-new-vm-times--only-#1-#3.txt};
+      \addplot[mark=o] table{rewriting/perf-old-vm-times--only-#1-#3.txt};
+      \addplot[mark=*] table{rewriting/perf-new-extraction-times--only-#1-#3.txt};
+      \legend{Our approach w/ Coq's VM,Old approach (handwritten-CPS+VM),Our approach w/ extracted OCaml}
+    \end{axis}
+  \end{tikzpicture}}%
+  \label{fig:timing--only-#1-#3}}%
+  }%
+  \MacroSubfloat{UnsaturatedSolinas}{unsaturated Solinas}{x32}\qquad
+  \MacroSubfloat{UnsaturatedSolinas}{unsaturated Solinas}{x64}\\
+  \MacroSubfloat{WordByWordMontgomery}{word-by-word Montgomery}{x32}\qquad
+  \MacroSubfloat{WordByWordMontgomery}{word-by-word Montgomery}{x64}%
+  \caption{\label{fig:timing-macro-various}Timing of different partial-evaluation implementations for Fiat Cryptography {vs.} prime modulus}
+\end{figure*}
+
+It may also be useful to see performance results with absolute times, rather than normalized execution ratios {vs.} the original Fiat Cryptography implementation.
+Furthermore, the benchmarks fit into four quite different groupings: elements of the cross product of two algorithms (unsaturated Solinas and word-by-word Montgomery) and bitwidths of target architectures (32-bit or 64-bit).
+Here we provide absolute-time graphs by grouping in \autoref{fig:timing-macro-various}.
+
+\clearpage
+%\supplement
+
+\section{Additional Information on Microbenchmarks} \label{sec:additionalMicro}
+
+We performed all benchmarks on a 3.5 GHz Intel Haswell running Linux and Coq 8.10.0.
+We name the subsections here with the names that show up in the code supplement.
+
+\subsection{UnderLetsPlus0} \label{sec:UnderLetsPlus0-more}
+
+We provide more detail on the ``nested binders'' microbenchmark of \autoref{sec:micro:UnderLetsPlus0} displayed in \autoref{fig:timing-UnderLetsPlus0}.
+
+Recall that we are removing all of the${}+0$s from
+{\small \begin{align*}
+  & \letin[{v_1 := v_0 + v_0 + 0}{}] \\
+%  & \letin[{v_2 := v_1 + v_1 + 0}{}] \\
+  & \vdots \\
+  & \letin[{v_n := v_{n-1} + v_{n-1} + 0}{}] \\
+  & v_n + v_n + 0
+\end{align*}}%
+
+The code used to define this microbenchmark is
+\begin{minted}[fontsize=\small]{coq}
+Definition make_lets_def (n:nat) (v acc : Z) :=
+ @nat_rect (fun _ => Z * Z -> Z)
+   (fun '(v, acc) => acc + acc + v)
+   (fun _ rec '(v, acc) =>
+     dlet acc := acc + acc + v in rec (v, acc))
+   n
+   (v, acc).
+\end{minted}
+We note some details of the rewriting framework that were glossed over in the main body of the paper, which are useful for using the code:
+Although the rewriting framework does not support dependently typed constants, we can automatically preprocess uses of eliminators like \mintinline{coq}{nat_rect} and \mintinline{coq}{list_rect} into non-dependent versions.
+The tactic that does this preprocessing is extensible via \Ltac{}'s reassignment feature.
+Since pattern-matching compilation mixed with NbE requires knowing how many arguments a constant can be applied to, we must internally use a version of the recursion principle whose type arguments do not contain arrows; current preprocessing can handle recursion principles with either no arrows or one arrow in the motive.
+Even though we will eventually plug in 0 for $v$, we jump through some extra hoops to ensure that our rewriter cannot cheat by rewriting away the ${}+0$ before reducing the recursion on $n$.
+
+We can reduce this expression in three ways.
+
+\subsubsection{Our Rewriter}
+One lemma is required for rewriting with our rewriter:
+\begin{minted}[fontsize=\small]{coq}
+Lemma Z.add_0_r : forall z, z + 0 = z.
+\end{minted}
+
+Creating the rewriter takes about 12 seconds on the machine we used for running the performance experiments:
+\begin{minted}[fontsize=\small]{coq}
+Make myrew := Rewriter For (Z.add_0_r, eval_rect nat, eval_rect prod).
+\end{minted}
+Recall from \autoref{sec:explain-eval-rect} that \mintinline{coq}{eval_rect} is a definition provided by our framework for eagerly evaluating recursion associated with certain types.
+It functions by triggering typeclass resolution for the lemmas reducing the recursion principle associated to the given type.
+We provide instances for \texttt{nat}, \texttt{prod}, \texttt{list}, \texttt{option}, and \texttt{bool}.
+Users may add more instances if they desire.
+
+\subsubsection{\texorpdfstring{\texttt{setoid\_rewrite}}{setoid\_rewrite} and \texorpdfstring{\texttt{rewrite\_strat}}{rewrite\_strat}}
+To give as many advantages as we can to the preexisting work on rewriting, we pre-reduce the recursion on \mintinline{coq}{nat}s using \texttt{cbv} before performing \texttt{setoid\_rewrite}.
+(Note that \texttt{setoid\_rewrite} cannot itself perform reduction without generating large proof terms, and \texttt{rewrite\_strat} is not currently capable of sequencing reduction with rewriting internally due to bugs such as \coqbug{10923}.)
+Rewriting itself is easy; we may use any of \texttt{repeat setoid\_rewrite Z.add\_0\_r}, \texttt{rewrite\_strat topdown Z.add\_0\_r}, or \texttt{rewrite\_strat bottomup Z.add\_0\_r}.
+
+\subsection{Plus0Tree} \label{sec:Plus0Tree-more}
+
+This is a version of \autoref{sec:UnderLetsPlus0-more} without any let binders, discussed in \autoref{sec:micro:Plus0Tree} but not displayed in \autoref{fig:multi-timing}.
+
+We use two definitions for this microbenchmark:
+\begin{minted}[fontsize=\small]{coq}
+Definition iter (m : nat) (acc v : Z) :=
+  @nat_rect (fun _ => Z -> Z)
+    (fun acc => acc)
+    (fun _ rec acc => rec (acc + v))
+    m
+    acc.
+Definition make_tree (n m : nat) (v acc : Z) :=
+ Eval cbv [iter] in
+  @nat_rect (fun _ => Z * Z -> Z)
+    (fun '(v, acc) => iter m (acc + acc) v)
+    (fun _ rec '(v, acc) =>
+      iter m (rec (v, acc) + rec (v, acc)) v)
+    n
+    (v, acc).
+\end{minted}
 
 \subsection{LiftLetsMap} \label{sec:LiftLetsMap-more}
 
@@ -1084,36 +1324,18 @@ The expression we want to get out at the end looks like:
 Recall that we make this example with the code
 \begin{minted}[fontsize=\small]{coq}
 Definition map_double (ls : list Z) :=
-  list_rect
-    _
-    []
-    (λ x xs rec, let y := x + x in y :: rec)
-    ls.
-
+  list_rect _ [] (λ x xs rec, let y := x + x in y :: rec) ls.
 Definition make (n : nat) (m : nat) (v : Z) :=
-  nat_rect
-    _
-    (List.repeat v n)
-    (λ _ rec, map_double rec)
-    m.
+  nat_rect _ (List.repeat v n) (λ _ rec, map_double rec) m.
 \end{minted}
 
 We can perform this rewriting in four ways; see \autoref{fig:timing-LiftLetsMap}.
 
-Note that \texttt{rewrite\_strat} grows quite quickly, hitting a minute when the total number of rewrites ($n \cdot m$) is in the mid-40s.
-Our method performs much better, but the fact that we have to perform \texttt{cbv} at the end costs us; about 99\% of the difference between the full time of our method and just the rewriting is spent in the final \texttt{cbv} at the end.
-This is due to the unfortunate fact that reduction in Coq is quadratic in the number of nested binders present; see Coq bug \coqbug{11151}.
-Finally, and unsurprisingly, \texttt{vm\_compute} outperforms us.
-
 \subsubsection{Our Rewriter}
 One lemma is required for rewriting with our rewriter:
 \begin{minted}[fontsize=\small]{coq}
-Lemma eval_repeat A x n :
-  @List.repeat A x ('n)
-  = ident.eagerly nat_rect _
-      []
-      (λ k repeat_k, x :: repeat_k)
-      ('n).
+Lemma eval_repeat A x n
+: @List.repeat A x ('n) = ident.eagerly nat_rect _ [] (λ k repeat_k, x :: repeat_k) ('n).
 \end{minted}
 Recall that the apostrophe marker (\verb|'|) is explained in \autoref{sec:explain-'}.
 Recall again from \autoref{sec:explain-ident.eagerly} that we use \mintinline{coq}{ident.eagerly} to ask the reducer to simplify a case of primitive recursion by complete traversal of the designated argument's constructor tree.
@@ -1128,8 +1350,7 @@ Our current version only allows a limited, hard-coded set of eliminators with \m
 
 We construct our rewriter with
 \begin{minted}[fontsize=\small]{coq}
-Make myrew := Rewriter For
-  (eval_repeat, eval_rect list, eval_rect nat)
+Make myrew := Rewriter For (eval_repeat, eval_rect list, eval_rect nat)
   (with extra idents (Z.add)).
 \end{minted}
 On the machine we used for running all our performance experiments, this command takes about 13 seconds to run.
@@ -1139,16 +1360,14 @@ Rewriting is relatively simple, now.
 Simply invoke the tactic \mintinline{coq}{Rewrite_for myrew}.
 We support rewriting on only the left-hand-side and on only the right-hand-side using either the tactic \mintinline{coq}{Rewrite_lhs_for myrew} or else the tactic \mintinline{coq}{Rewrite_rhs_for myrew}, respectively.
 
-\subsubsection{\texorpdfstring{\texttt{rewrite\protect\_strat}}{rewrite\_strat}}
+\subsubsection{\texorpdfstring{\texttt{rewrite\_strat}}{rewrite\_strat}}
 
 To reduce adequately using \texttt{rewrite\_strat}, we need the following two lemmas:
 \begin{minted}[fontsize=\small]{coq}
 Lemma lift_let_list_rect T A P N C (v : A) fls
-: @list_rect T P N C (Let_In v fls)
-  = Let_In v (fun v => @list_rect T P N C (fls v)).
+: @list_rect T P N C (Let_In v fls) = Let_In v (fun v => @list_rect T P N C (fls v)).
 Lemma lift_let_cons T A x (v : A) f
-: @cons T x (Let_In v f)
-  = Let_In v (fun v => @cons T x (f v)).
+: @cons T x (Let_In v f) = Let_In v (fun v => @cons T x (f v)).
 \end{minted}
 
 Note that \mintinline{coq}{Let_In} is the constant we use for writing \letin{} expressions that do not reduce under $\zeta$.
@@ -1190,41 +1409,7 @@ The prior state of the art---writing code in CPS---suitably tweaked by using mod
 Our method soundly beats \texttt{rewrite\_strat}.
 We are additionally bottlenecked on \texttt{cbv}, which is used to unfold the goal post-rewriting and costs about a minute on the largest of terms; see Coq bug \coqbug{11151} for a discussion on what is wrong with Coq's reduction here.
 
-
 \subsection{SieveOfEratosthenes} \label{sec:Eratosthenes}
-
-\begin{figure}
-  \beginTikzpictureStamped[only marks]{
-      \einput{rewriting/perf-SieveOfEratosthenes-simpl.txt}
-      \einput{rewriting/perf-SieveOfEratosthenes-cbn.txt}
-      \einput{rewriting/perf-SieveOfEratosthenes-lazy.txt}
-      \einput{rewriting/perf-SieveOfEratosthenes-Rewrite-for.txt}
-      \einput{rewriting/perf-SieveOfEratosthenes-rewriting.txt}
-      \einput{rewriting/perf-SieveOfEratosthenes-cbv.txt}
-      \einput{rewriting/perf-SieveOfEratosthenes-vm-compute.txt}
-      \einput{rewriting/perf-SieveOfEratosthenes-native(2)(real).txt}
-  }
-    \pgfplotsset{every axis legend/.append style={
-        at={(0.5,-0.2)},
-        anchor=north}}
-    \begin{axis}[xlabel=upper bound,ylabel=time (s),ymax=65]
-      \addplot[mark=square,color=red] table{rewriting/perf-SieveOfEratosthenes-simpl.txt};
-      \addplot[mark=triangle,color=red] table{rewriting/perf-SieveOfEratosthenes-cbn.txt};
-      \addplot[mark=square*,color=red] table{rewriting/perf-SieveOfEratosthenes-lazy.txt};
-      \addplot[mark=+,color=blue] table{rewriting/perf-SieveOfEratosthenes-Rewrite-for.txt};
-      \addplot[mark=x,color=ForestGreen] table{rewriting/perf-SieveOfEratosthenes-rewriting.txt};
-      \addplot[mark=triangle*,color=orange] table{rewriting/perf-SieveOfEratosthenes-cbv.txt};
-      \addplot[mark=*,color=purple] table{rewriting/perf-SieveOfEratosthenes-vm-compute.txt};
-      \addplot[mark=-,color=red] table{rewriting/perf-SieveOfEratosthenes-native(2)(real).txt};
-      \legend{simpl,cbn,lazy,{Our approach including reification, cbv, etc.},Our approach (only rewriting),cbv,vm\_compute,native\_compute}
-    \end{axis}
-  \end{tikzpicture}
-  \caption{\label{fig:timing-SieveOfEratosthenes}Timing of different full-evaluation implementations for SieveOfEratosthenes}
-\end{figure}
-
-
-To benchmark how much overhead we add when we are reducing fully, we compute the Sieve of Eratosthenes, taking inspiration on benchmark choice from \textcite{Aehlig}.
-We find in \autoref{fig:timing-SieveOfEratosthenes} that we are slower than \texttt{vm\_compute}, \mintinline{coq}{native_compute}, and \texttt{cbv}, but faster than \mintinline{coq}{lazy}, and of course much faster than \texttt{simpl} and \texttt{cbn}, which are quite slow.
 
 We define the sieve using \mintinline{coq}{PositiveMap.t} and \mintinline{coq}{list Z}:
 \begin{minted}[fontsize=\small]{coq}
@@ -1324,44 +1509,7 @@ Global Arguments Pos.to_nat !_ / .
 \end{minted}
 
 
-
-
-\section{Additional Information on Fiat Cryptography Benchmarks} \label{sec:additionalMacro}
-
-\begin{figure*}
-  \newcommand{\MacroSubfloat}[3]{%
-    \subfloat[Timing of different partial-evaluation implementations for Fiat Cryptography as prime modulus grows (only #2 #3)]{%
-  \resizebox{200px}{!}{\beginTikzpictureStamped[only marks]{
-      \einput{rewriting/perf-new-vm-times--only-#1-#3.txt}
-      \einput{rewriting/perf-old-vm-times--only-#1-#3.txt}
-      \einput{rewriting/perf-new-extraction-times--only-#1-#3.txt}
-  }
-    \pgfplotsset{every axis legend/.append style={
-        at={(0.5,-0.2)},
-        anchor=north}}
-    \begin{axis}[xlabel=prime,ylabel=time (s),xmode=log, ymode=log,log basis x={2}]
-      \addplot[mark=+] table{rewriting/perf-new-vm-times--only-#1-#3.txt};
-      \addplot[mark=o] table{rewriting/perf-old-vm-times--only-#1-#3.txt};
-      \addplot[mark=*] table{rewriting/perf-new-extraction-times--only-#1-#3.txt};
-      \legend{Our approach w/ Coq's VM,Old approach (handwritten-CPS+VM),Our approach w/ extracted OCaml}
-    \end{axis}
-  \end{tikzpicture}}%
-  \label{fig:timing--only-#1-#3}}%
-  }%
-  \MacroSubfloat{UnsaturatedSolinas}{unsaturated Solinas}{x32}\qquad
-  \MacroSubfloat{UnsaturatedSolinas}{unsaturated Solinas}{x64}\\
-  \MacroSubfloat{WordByWordMontgomery}{word-by-word Montgomery}{x32}\qquad
-  \MacroSubfloat{WordByWordMontgomery}{word-by-word Montgomery}{x64}%
-  \caption{\label{fig:timing-macro-various}Timing of different partial-evaluation implementations for Fiat Cryptography as prime modulus grows}
-\end{figure*}
-
-It may also be useful to see performance results with absolute times, rather than normalized execution ratios vs.\ the original Fiat Cryptography implementation.
-Furthermore, the benchmarks fit into four quite different groupings: elements of the cross product of two algorithms (unsaturated Solinas and word-by-word Montgomery) and bitwidths of target architectures (32-bit or 64-bit).
-Here we provide absolute-time graphs by grouping in \autoref{fig:timing-macro-various}.
-
-
-
-\section{Experience vs.\ Lean and \texorpdfstring{\texttt{setoid\protect\_rewrite}}{setoid\_rewrite}}
+\section{Experience vs.\ Lean and \texorpdfstring{\texttt{setoid\_rewrite}}{setoid\_rewrite}\label{sec:lean}}
 
 Although all of our toy examples work with \texttt{setoid\_rewrite} or \texttt{rewrite\_strat} (until the terms get too big), even the smallest of examples in Fiat Cryptography fell over using these tactics.
 When attempting to use \texttt{rewrite\_strat} for partial evaluation and rewriting on unsaturated Solinas with 1 limb on small primes (such as 29), we were able to get \texttt{rewrite\_strat} to finish after about 90 seconds.
@@ -1414,7 +1562,7 @@ We will now go through this paper and describe where to find each reference in t
 
 \newcommand{\autocommanameref}[1]{\autoref{#1}, \nameref{#1}}
 
-\subsection{Code from \autocommanameref{sec:rewriting:intro}}
+\subsection{Code from \autocommanameref{sec:intro}}
 
 \subsubsection{Code from \autocommanameref{sec:motivating-example}}
 
@@ -1429,9 +1577,11 @@ Global Instance: forall A B,
         (@fold_left A B).
 \end{minted}
 
-The \mintinline{coq}{Make} command is exposed in the file \texttt{rewriter/src/Rewriter/Util/plugins/RewriterBuild.v} and defined in the OCaml file \texttt{rewriter/src/Rewriter/Util/plugins/rewriter\_build\_plugin.mlg}.
+The \mintinline{coq}{Make} command is exposed in \texttt{rewriter/src/Rewriter/Util/plugins/RewriterBuild.v} and defined in \texttt{rewriter/src/Rewriter/Util/plugins/rewriter\_build\_plugin.mlg}.
 Note that one must run \texttt{make} to create this latter file; it is copied over from a version-specific file at the beginning of the build.
 
+\label{sec:code:eval-rect}%
+\label{sec:code:ident.eagerly}%
 The \verb|do_again|, \verb|eval_rect|, and \verb|ident.eagerly| constants are defined at the bottom of module \verb|RewriteRuleNotations| in \texttt{rewriter/src/Rewriter/Language/Pre.v}.
 
 \subsubsection{Code from \autocommanameref{sec:trusted-code-base-size}}
@@ -1459,14 +1609,14 @@ We briefly justify each criterion with a sentence or a pointer to code:
     We will come back to the infrastructure that supports this.
   \item
     We claimed \textbf{extraction of standalone partial evaluators}.
-    The extraction is performed in the Coq source file \texttt{perf\_unsaturated\_solinas.v}, in the source file \texttt{perf\_word\_by\_word\_montgomery.v}, and in the source files \texttt{saturated\_solinas.v}, \texttt{unsaturated\_solinas.v}, and \texttt{word\_by\_word\_montgomery.v}, all in the directory \texttt{fiat-crypto/src/ExtractionOCaml/}.
+    The extraction is performed in the files \texttt{perf\_unsaturated\_solinas.v} and \texttt{perf\_word\_by\_word\_montgomery.v}, and the files \texttt{saturated\_solinas.v}, \texttt{unsaturated\_solinas.v}, and \texttt{word\_by\_word\_montgomery.v}, all in the directory \texttt{fiat-crypto/src/ExtractionOCaml/}.
     The OCaml code can be extracted and built using the target \texttt{make standalone-ocaml} (or \texttt{make perf-standalone} for the \texttt{perf\_} binaries).
     There may be some issues with building these binaries on Windows as some versions of \texttt{ocamlopt} on Windows seem not to support outputting binaries without the \texttt{.exe} extension.
 \end{itemize}
 
 The P-384 curve is mentioned.
-This is the curve with prime modulus $2^{384} - 2^{128} - 2^{96} + 2^{32} - 1$, and the benchmarks for this curve can be found in the files matching the glob \texttt{fiat-crypto/src/Rewriter/PerfTesting/Specific/generated/p2384m2128m296p232m1\_\_*\_\_word\_by\_word\_montgomery\_*}.
-While the \texttt{.log} files are included in the tarball, the \texttt{.v} and \texttt{.sh} files are automatically generated in the course of running \texttt{make perf -k}.
+This is the curve with modulus $2^{384} - 2^{128} - 2^{96} + 2^{32} - 1$; its benchmarks can be found in files matching the glob \texttt{fiat-crypto/src/Rewriter/PerfTesting/Specific/generated/p2384m2128m296p232m1\_\_*\_\_word\_by\_word\_montgomery\_*}.
+The output \texttt{.log} files are included in the tarball; the \texttt{.v} and \texttt{.sh} files are automatically generated in the course of running \texttt{make perf -k}.
 
 We mention integration with abstract interpretation; the abstract-interpretation pass is implemented in \texttt{fiat-crypto/src/AbstractInterpretation/}.
 
@@ -1481,19 +1631,19 @@ We match the nine steps with functions from the source code:
 \begin{enumerate}
   \item
     The given lemma statements are scraped for which named functions and types the rewriter package will support.
-    This is performed by \texttt{rewriter\_scrape\_data} in the file \texttt{rewriter/src/Rewriter/Util/plugins/rewriter\_build.ml} which invokes the tactic named \texttt{make\_scrape\_data} in a submodule in \texttt{rewriter/src/Rewriter/Language/IdentifiersBasicGenerate.v} on a goal headed by the constant we provide under the name \texttt{Pre.ScrapedData.t\_with\_args} in \texttt{rewriter/src/Rewriter/Language/PreCommon.v}.
+    This is performed by \texttt{rewriter\_scrape\_data} in the file \texttt{rewriter/src/Rewriter/Util/plugins/rewriter\_build.ml} which invokes the \Ltac{} tactic named \texttt{make\_scrape\_data} in a submodule in the source file \texttt{rewriter/src/Rewriter/Language/IdentifiersBasicGenerate.v} on a goal headed by the constant we provide under the name \texttt{Pre.ScrapedData.t\_with\_args} in \texttt{rewriter/src/Rewriter/Language/PreCommon.v}.
   \item
     Inductive types enumerating all available primitive types and functions are emitted.
-    This step is performed by \texttt{rewriter\_emit\_inductives} in file \texttt{rewriter/src/Rewriter/Util/plugins/rewriter\_build.ml} invoking tactics, like \texttt{make\_base\_elim} in \texttt{rewriter/src/Rewriter/Language/IdentifiersBasicGenerate.v}, on goals headed by constants from \texttt{rewriter/src/Rewriter/Language/IdentifiersBasicLibrary.v}, including \texttt{base\_elim\_with\_args} for example, to turn scraped data into eliminators for the inductives.
+    This step is performed by \texttt{rewriter\_emit\_inductives} in file \texttt{rewriter/src/Rewriter/Util/plugins/rewriter\_build.ml} invoking tactics, like \texttt{make\_base\_elim} in \texttt{rewriter/src/Rewriter/Language/IdentifiersBasicGenerate.v}, on goals headed by constants from \texttt{rewriter/src/Rewriter/Language/IdentifiersBasicLibrary.v}, including the constant \texttt{base\_elim\_with\_args} for example, to turn scraped data into eliminators for the inductives.
     The actual emitting of inductives is performed by code in the file \texttt{rewriter/src/Rewriter/Util/plugins/inductive\_from\_elim.ml}.
   \item
     Tactics generate all of the necessary definitions and prove all of the necessary lemmas for dealing with this particular set of inductive codes.
-    This step is performed by \texttt{make\_rewriter\_of\_scraped\_and\_ind} in the source file \texttt{rewriter/src/Rewriter/Util/plugins/rewriter\_build.ml} which invokes \texttt{make\_rewriter\_all} defined in the file \texttt{rewriter/src/Rewriter/Rewriter/AllTactics.v} on a goal headed by the provided constant \texttt{VerifiedRewriter\_with\_ind\_args} defined in \texttt{rewriter/src/Rewriter/Rewriter/ProofsCommon.v}.
-    The definitions emitted can be found by looking at the tactic \texttt{Build\_Rewriter} in \texttt{rewriter/src/Rewriter/Rewriter/AllTactics.v}, the tactics \texttt{build\_package} in the source file \texttt{rewriter/src/Rewriter/Language/IdentifiersBasicGenerate.v} and also in the Coq source file found in \texttt{rewriter/src/Rewriter/Language/IdentifiersGenerate.v} (there is a different tactic named \texttt{build\_package} in each of these files), and the tactic \texttt{prove\_package\_proofs\_via} which can be found in the Coq source file \texttt{rewriter/src/Rewriter/Language/IdentifiersGenerateProofs.v}.
+    This step is performed by the tactic \texttt{make\_rewriter\_of\_scraped\_and\_ind} in the source file \texttt{rewriter/src/Rewriter/Util/plugins/rewriter\_build.ml} which invokes the tactic \texttt{make\_rewriter\_all} defined in the file \texttt{rewriter/src/Rewriter/Rewriter/AllTactics.v} on a goal headed by the provided constant \texttt{VerifiedRewriter\_with\_ind\_args} defined in \texttt{rewriter/src/Rewriter/Rewriter/ProofsCommon.v}.
+    The definitions emitted can be found by looking at the tactic \texttt{Build\_Rewriter} in \texttt{rewriter/src/Rewriter/Rewriter/AllTactics.v}, the \Ltac{} tactics \texttt{build\_package} in \texttt{rewriter/src/Rewriter/Language/IdentifiersBasicGenerate.v} and also in \texttt{rewriter/src/Rewriter/Language/IdentifiersGenerate.v} (there is a different tactic named \texttt{build\_package} in each of these files), and \texttt{prove\_package\_proofs\_via} which can be found in \texttt{rewriter/src/Rewriter/Language/IdentifiersGenerateProofs.v}.
   \item
-    The statements of rewrite rules are reified, and we prove soundness and syntactic-well-formedness lemmas about each of them.
-    This step is performed as part of the previous step, when the tactic \texttt{make\_rewriter\_all} transitively calls \texttt{Build\_Rewriter} from \texttt{rewriter/src/Rewriter/Rewriter/AllTactics.v}.
-    Reification is handled by the tactic \texttt{Build\_RewriterT} in \texttt{rewriter/src/Rewriter/Rewriter/Reify.v}, while soundness and syntactic-well-formedness are handled by the tactics \texttt{prove\_interp\_good} and \texttt{prove\_good} respectively, both in the source file \texttt{rewriter/src/Rewriter/Rewriter/ProofsCommonTactics.v}.
+    The statements of rewrite rules are reified and soundness and syntactic-well-formedness lemmas are proven about each of them.
+    This is done as part of the previous step, when the tactic \texttt{make\_rewriter\_all} transitively calls \texttt{Build\_Rewriter} from \texttt{rewriter/src/Rewriter/Rewriter/AllTactics.v}.
+    Reification is handled by the tactic \texttt{Build\_RewriterT} in \texttt{rewriter/src/Rewriter/Rewriter/Reify.v}, while soundness and the syntactic-well-formedness proofs are handled by the tactics \texttt{prove\_interp\_good} and \texttt{prove\_good} respectively, both in the source file \texttt{rewriter/src/Rewriter/Rewriter/ProofsCommonTactics.v}.
   \item
     The definitions needed to perform reification and rewriting and the lemmas needed to prove correctness are assembled into a single package that can be passed by name to the rewriting tactic.
     This step is also performed by \texttt{make\_rewriter\_of\_scraped\_and\_ind} in the source file \texttt{rewriter/src/Rewriter/Util/plugins/rewriter\_build.ml}.
@@ -1502,7 +1652,7 @@ We match the nine steps with functions from the source code:
 When we want to rewrite with a rewriter package in a goal, the following steps are performed, with code in the following places:
 \begin{enumerate}
   \item
-    We rearrange the goal into a single logical formula: all free-variable quantification in the proof context is replaced by changing the equality goal into an equality between two functions (taking the free variables as inputs).
+    We rearrange the goal into a closed logical formula: all free-variable quantification in the proof context is replaced by changing the equality goal into an equality between two functions (taking the free variables as inputs).
     Note that it is not actually an equality between two functions but rather an \texttt{equiv} between two functions, where \texttt{equiv} is a custom relation we define indexed over type codes that is equality up to function extensionality.
     This step is performed by the tactic \texttt{generalize\_hyps\_for\_rewriting} in \texttt{rewriter/src/Rewriter/Rewriter/AllTactics.v}.
   \item
@@ -1583,16 +1733,16 @@ The expression language $e$ corresponds to the inductive \texttt{expr} type defi
 
 The pattern-matching compilation step is done by the tactic \texttt{CompileRewrites} in \texttt{rewriter/src/Rewriter/Rewriter/Rewriter.v}, which just invokes the Gallina definition named \texttt{compile\_rewrites} with ever-increasing amounts of fuel until it succeeds.
 (It should never fail for reasons other than insufficient fuel, unless there is a bug in the code.)
-The workhorse function of this code is \texttt{compile\_rewrites\_step}.
+The workhorse function here is \texttt{compile\_rewrites\_step}.
 
 The decision-tree evaluation step is done by the definition \texttt{eval\_rewrite\_rules}, also in the file \texttt{rewriter/src/Rewriter/Rewriter/Rewriter.v}.
-The correctness lemmas are \texttt{eval\_rewrite\_rules\_correct} in the file \texttt{rewriter/src/Rewriter/Rewriter/InterpProofs.v} and the theorem \texttt{wf\_eval\_rewrite\_rules} in \texttt{rewriter/src/Rewriter/Rewriter/Wf.v}.
+The correctness lemmas are the theorem \texttt{eval\_rewrite\_rules\_correct} in the file \texttt{rewriter/src/Rewriter/Rewriter/InterpProofs.v} and the theorem \texttt{wf\_eval\_rewrite\_rules} in \texttt{rewriter/src/Rewriter/Rewriter/Wf.v}.
 Note that the second of these lemmas, not mentioned in the paper, is effectively saying that for two related syntax trees, \texttt{eval\_rewrite\_rules} picks the same rewrite rule for both.
 (We actually prove a slightly weaker lemma, which is a bit harder to state in English.)
 
 The third step of rewriting with a given rule is performed by the definition \texttt{rewrite\_with\_rule} in \texttt{rewriter/src/Rewriter/Rewriter/Rewriter.v}.
-The correctness proof is \texttt{interp\_rewrite\_with\_rule} in \texttt{rewriter/src/Rewriter/Rewriter/InterpProofs.v}.
-Note that the well-formedness-preservation proof for this definition in inlined into the proof \verb|wf_eval_rewrite_rules| mentioned above.
+The correctness proof goes by the name \texttt{interp\_rewrite\_with\_rule} in \texttt{rewriter/src/Rewriter/Rewriter/InterpProofs.v}.
+Note that the well-formedness-preservation proof for this definition in inlined into the proof of the lemma \verb|wf_eval_rewrite_rules| mentioned above.
 
 The inductive description of decision trees is \verb|decision_tree| in \texttt{rewriter/src/Rewriter/Rewriter/Rewriter.v}.
 
@@ -1602,7 +1752,7 @@ We found that trying to maintain typing constraints led to headaches with depend
 Therefore when doing the actual decision-tree evaluation, we wrap all of our expressions in the dynamically typed \verb|rawexpr| type and all of our patterns in the dynamically typed \verb|Raw.pattern| type.
 We also emit separate inductives of identifier codes for each of the \verb|expr|, \verb|pattern|, and \verb|Raw.pattern| type families.
 
-We partially evaluate the partial evaluator defined by \verb|eval_rewrite_rules| in the tactic \verb|make_rewrite_head| in \texttt{rewriter/src/Rewriter/Rewriter/Reify.v}.
+We partially evaluate the partial evaluator defined by \verb|eval_rewrite_rules| in the \Ltac{} tactic \verb|make_rewrite_head| in \texttt{rewriter/src/Rewriter/Rewriter/Reify.v}.
 
 \subsubsection{Code from \autocommanameref{sec:thunk-eval-subst-term}}
 
@@ -1627,7 +1777,7 @@ The function named \texttt{reduce} is what we call \verb|rewrite_bottomup| in th
 Note that we eventually instantiate the argument \verb|rewrite_head| of \verb|rewrite_bottomup| with a partially evaluated version of the definition named \verb|assemble_identifier_rewriters|.
 Note also that we use fuel to support \verb|do_again|, and this is used in the definition \verb|repeat_rewrite| that calls \verb|rewrite_bottomup|.
 
-The correctness theorems are \verb|InterpRewrite| in \texttt{rewriter/src/Rewriter/Rewriter/InterpProofs.v} and \verb|Wf_Rewrite| in \texttt{rewriter/src/Rewriter/Rewriter/Wf.v}.
+The correctness proofs are \verb|InterpRewrite| in the Coq source file \texttt{rewriter/src/Rewriter/Rewriter/InterpProofs.v} and \verb|Wf_Rewrite| in \texttt{rewriter/src/Rewriter/Rewriter/Wf.v}.
 
 Packages containing rewriters and their correctness theorems are in the record \verb|VerifiedRewriter| in \texttt{rewriter/src/Rewriter/Rewriter/ProofsCommon.v};
 a package of this type is then passed to the tactic \verb|Rewrite_for_gen| from \texttt{rewriter/src/Rewriter/Rewriter/AllTactics.v} to perform the actual rewriting.
@@ -1644,38 +1794,23 @@ Import WordByWordMontgomery.
 Import Core.RuntimeDefinitions.
 
 Definition p : params
-  := Eval compute in invert_Some
-       (of_string "2^256-2^224+2^192+2^96-1" 64).
+  := Eval compute in invert_Some (of_string "2^256-2^224+2^192+2^96-1" 64).
 
 Goal True.
   (* Successful run: *)
   Time let v := (eval cbv
     -[Let_In
       runtime_nth_default
-      runtime_add
-      runtime_sub
-      runtime_mul
-      runtime_opp
-      runtime_div
-      runtime_modulo
-      RT_Z.add_get_carry_full
-      RT_Z.add_with_get_carry_full
-      RT_Z.mul_split]
+      runtime_add runtime_sub runtime_mul runtime_opp runtime_div runtime_modulo
+      RT_Z.add_get_carry_full RT_Z.add_with_get_carry_full RT_Z.mul_split]
     in (GallinaDefOf p)) in
     idtac.
   (* Unsuccessful OOM run: *)
   Time let v := (eval cbv
     -[(*Let_In*)
       runtime_nth_default
-      runtime_add
-      runtime_sub
-      runtime_mul
-      runtime_opp
-      runtime_div
-      runtime_modulo
-      RT_Z.add_get_carry_full
-      RT_Z.add_with_get_carry_full
-      RT_Z.mul_split]
+      runtime_add runtime_sub runtime_mul runtime_opp runtime_div runtime_modulo
+      RT_Z.add_get_carry_full RT_Z.add_with_get_carry_full RT_Z.mul_split]
     in (GallinaDefOf p)) in
     idtac.
 Abort.
@@ -1693,9 +1828,23 @@ The support for side conditions is handled by permitting rewrite-rule-replacemen
 
 \subsubsection{Code from \autocommanameref{sec:abs-int}}
 
-The abstract-interpretation pass is defined in \texttt{fiat-crypto/src/AbstractInterpretation/}, and the rewrite rules handling abstract-interpretation results are the Gallina definitions \verb|arith_with_casts_rewrite_rulesT|, in addition to \verb|strip_literal_casts_rewrite_rulesT|, in addition to \verb|fancy_with_casts_rewrite_rulesT|, and finally in addition to \verb|mul_split_rewrite_rulesT|, all defined in \texttt{fiat-crypto/src/Rewriter/Rules.v}.
+The abstract-interpretation pass is defined in \texttt{fiat-crypto/src/AbstractInterpretation/}, and the rewrite rules handling abstract-interpretation results are the Gallina definitions \verb|arith_with_casts_rewrite_rulesT|, as well as \verb|strip_literal_casts_rewrite_rulesT|, as well as \verb|fancy_with_casts_rewrite_rulesT|, and finally as well as \verb|mul_split_rewrite_rulesT|, all defined in \texttt{fiat-crypto/src/Rewriter/Rules.v}.
 
 The \verb|clip| function is the definition \verb|ident.cast| in \texttt{fiat-crypto/src/Language/PreExtra.v}.
+
+\subsubsection{Code from \autocommanameref{sec:implementation-and-usage}} \label{sec:code-from-implementation-and-usage}
+
+The \Ltac{} hooks for extending the preprocessing of eliminators are \mintinline{coq}{reify_preprocess_extra} and \mintinline{coq}{reify_ident_preprocess_extra} in a submodule of \texttt{rewriter/src/Rewriter/Language/PreCommon.v}.
+These hooks are called by \mintinline{coq}{reify_preprocess} and \mintinline{coq}{reify_ident_preprocess} in a submodule of \texttt{rewriter/src/Rewriter/Language/Language.v}.
+Some recursion lemmas for use with these tactics are defined in the \verb|Thunked| module in \texttt{fiat-crypto/src/Language/PreExtra.v}.
+These tactics are overridden in the file \texttt{fiat-crypto/src/Language/IdentifierParameters.v}.
+
+The typeclass associated to \mintinline{coq}{eval_rect} ({c.f.} \autoref{sec:code:eval-rect}) is \mintinline{coq}{rules_proofs_for_eager_type} defined in \texttt{rewriter/src/Rewriter/Language/Pre.v}.
+The instances we provide by default are defined in a submodule of \texttt{src/Rewriter/Language/PreLemmas.v}.
+
+The hard-coding of the eliminators for use with \mintinline{coq}{ident.eagerly} ({c.f.} \autoref{sec:code:ident.eagerly}) is done in the tactics \mintinline{coq}{reify_ident_preprocess} and \mintinline{coq}{rewrite_interp_eager} in \texttt{rewriter/src/Rewriter/Language/Language.v}, in the inductive type \mintinline{coq}{restricted_ident} and the typeclass \mintinline{coq}{BuildEagerIdentT} in \texttt{rewriter/src/Rewriter/Language/Language.v}, and in the \Ltac{} tactic \mintinline{coq}{handle_reified_rewrite_rules_interp} defined in the file \texttt{rewriter/src/Rewriter/Rewriter/ProofsCommonTactics.v}.
+
+The \mintinline{coq}{Let_In} constant is defined in \texttt{rewriter/src/Rewriter/Util/LetIn.v}.
 
 \subsection{Code from \autocommanameref{sec:evaluation}}
 
@@ -1703,12 +1852,22 @@ The \verb|clip| function is the definition \verb|ident.cast| in \texttt{fiat-cry
 
 This code is found in the files in \texttt{rewriter/src/Rewriter/Rewriter/Examples/}.
 We ran the microbenchmarks using the code in \texttt{rewriter/src/Rewriter/Rewriter/Examples/PerfTesting/Harness.v} together with some \texttt{Makefile} cleverness.
-The file names correspond to the section titles in \autoref{sec:additionalMicro}.
+
+The code from \autocommanameref{sec:micro:Plus0Tree} can be found in \texttt{Plus0Tree.v}.
+
+The code from \autocommanameref{sec:micro:UnderLetsPlus0} can be found in \texttt{UnderLetsPlus0.v}.
+
+The code used for the performance investigation mentioned in \autocommanameref{sec:micro:setoid-rewrite-bottlenecks-lite} and detailed in \autoref{sec:setoid-rewrite-bottlenecks} is not part of the framework we are presenting, and thus not in the supplement.
+
+The code from \autocommanameref{sec:micro:LiftLetsMap} can be found in \texttt{LiftLetsMap.v}.
+
+The code from \autocommanameref{sec:micro:Eratosthenes} can be found in \texttt{SieveOfEratosthenes.v}.
 
 \subsubsection{Code from \autocommanameref{sec:macro}}
 
 The rewrite rules are defined in \texttt{fiat-crypto/src/Rewriter/Rules.v} and proven in the file \texttt{fiat-crypto/src/Rewriter/RulesProofs.v}.
 They are turned into rewriters in the various files in \texttt{fiat-crypto/src/Rewriter/Passes/}.
-The shared inductives and definitions are defined in the Coq source files \texttt{fiat-crypto/src/Language/IdentifiersBasicGENERATED.v}, \texttt{fiat-crypto/src/Language/IdentifiersGENERATED.v}, and \texttt{fiat-crypto/src/Language/IdentifiersGENERATEDProofs.v}.
+The shared inductives and definitions are defined in the Coq source file \texttt{fiat-crypto/src/Language/IdentifiersBasicGENERATED.v}, the Coq source file \texttt{fiat-crypto/src/Language/IdentifiersGENERATED.v}, and finally also the Coq source file \texttt{fiat-crypto/src/Language/IdentifiersGENERATEDProofs.v}.
 Note that we invoke the subtactics of the \mintinline{coq}{Make} command manually to increase parallelism in the build and to allow a shared language across multiple rewriter packages.
+
 \end{subappendices}

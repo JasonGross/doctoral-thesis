@@ -38,7 +38,11 @@ for i in '^TODO' \
              'luaotfload' \
              #
 do
-    PREFIX="${PREFIX}$(echo; (echo "$TEXT" | grep "$i" | uniq))"
+    FOUND_TEXT="$(echo "$TEXT" | grep "$i")"
+    if [ "$i" == "Missing character:" ]; then
+        FOUND_TEXT="$(echo "${FOUND_TEXT}" | sort)"
+    fi
+    PREFIX="${PREFIX}$(echo; (echo "${FOUND_TEXT}" | uniq))"
     TEXT="$(echo "$TEXT" | grep -v "$i")"
 done
 

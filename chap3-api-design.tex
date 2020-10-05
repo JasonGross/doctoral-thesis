@@ -19,7 +19,7 @@ However, we will present an exception to the rule of opaque abstraction barriers
 \autoref{sec:duality-conversion} presents one of our favorite design patterns for categorical constructions: a way of coaxing Coq's definitional equality into implementing \emph{proof by duality}, one of the most widely known ideas in category theory.
 \minortodo{adjust the tone of what comes after the colon in the previous sentence to fit with this paper}
 Finally, the question of whether to use packed or unpacked records is actually a genuine trade-off in both design-space and performance, as far as I can tell;
-the non-performance design considerations have been discussed before in \todo{cite math classes, etc}, while the performance implications are relatively straightforward.
+the non-performance design considerations have been discussed before in \textcite{Packaging2009Garillot}, while the performance implications are relatively straightforward.
 As far as I'm aware, there's not really a good way to get the best of all worlds.
 
 Much of this chapter will draw on examples and experience from a category theory library we implemented in Coq~\cite{category-coq-experience}, which we introduce in \autoref{sec:category-theory-library}.
@@ -27,13 +27,21 @@ Much of this chapter will draw on examples and experience from a category theory
 \section{When And How To Use Dependent Types Painlessly}\label{sec:when-how-dependent-types}
 The extremes are relatively easy:
 \begin{itemize}
-    \item Total separation between proofs and programs, so that programs are simply typed, works relatively well
-    \item Pre-existing mathematics, where objects are fully bundled with proofs and never need to be separated from them, also works relatively well
-    \item The rule of thumb in the middle: it is painful to recombine proofs and programs after you separate them; if you are doing it to define an opaque transformation that acts on proof-carrying code, that is okay, but if you cannot make that abstraction barrier, enormous pain results.
-    \item For example, if you have length-indexed lists and want to index into them with elements of a finite type, things are fine until you need to divorce the index from its proof of finiteness.  If you, for example, want to index into, say, the concatenation of two lists, with an index into the first of the lists, then you will likely run into trouble, because you are trying to consider the index separately from its proof of finitude, but you have to recombine them to do the indexing.
+\item
+  Total separation between proofs and programs, so that programs are simply typed, works relatively well
+\item
+  Pre-existing mathematics, where objects are fully bundled with proofs and never need to be separated from them, also works relatively well
+\item
+  The rule of thumb in the middle:
+  it is painful to recombine proofs and programs after you separate them;
+  if you are doing it to define an opaque transformation that acts on proof-carrying code, that is okay, but if you cannot make that abstraction barrier, enormous pain results.
+\item
+  For example, if you have length-indexed lists and want to index into them with elements of a finite type, things are fine until you need to divorce the index from its proof of finiteness.
+  If you, for example, want to index into, say, the concatenation of two lists, with an index into the first of the lists, then you will likely run into trouble, because you are trying to consider the index separately from its proof of finitude, but you have to recombine them to do the indexing.
 \end{itemize}
-\todo{flesh out this section}
-\todo{More examples from the rewriter?}
+\minortodo{flesh out this section}
+\minortodo{More examples from the rewriter?}
+\minortodo{forward-cite the rewriter?}
 
 \section{A Brief Introduction To Our Category Theory Library}\label{sec:category-theory-library}
 \subsection{Introduction}
@@ -71,8 +79,7 @@ Although pre-existing formalizations of category theory in proof assistants abou
 }, %\footnote{This list very incomplete; see also \url{http://mathoverflow.net/questions/152497}% is more comprehensive, but we decided to cap our bibliography at one page, given the page limit.
 %}
 we chose to implement our library~\cite{HoTT/HoTT-categories} from scratch.
-\todo{reword this paragraph a bit}
-Beginning from scratch allowed the first author to familiarize himself with both category theory and Coq, without simultaneously having to familiarize himself with a large pre-existing code base.
+Beginning from scratch allowed me to familiarize myself with both category theory and Coq, without simultaneously having to familiarize myself with a large pre-existing code base.
 %Additionally, starting from scratch forced us to confront all of the decisions involved in designing such a library, and gave us the confidence to change the definitions of basic concepts multiple times to try out various designs, including fully rewriting the library at least three times.
 %Although this paper is much more about the design of category theory libraries in general than our library in particular, we include a comparison of our library~\cite{HoTT/HoTT-categories} with selected extant category theory libraries in \autoref{sec:compare-libraries}.
 %At present, our library subsumes many of the constructions in most other such Coq libraries, and is not lacking any constructions in other libraries that are of a complexity requiring significant type checking time, other than monoidal categories.
@@ -87,7 +94,7 @@ The rule that we settled on was: \emph{inside} definitions for pieces that are u
 
 \autoref{sec:duality-conversion} presents one of our favorite design patterns for categorical constructions: a way of coaxing Coq's definitional equality into implementing \emph{proof by duality}, one of the most widely known ideas in category theory.
 In \autoref{sec:other}, we describe a few other design choices that had large impacts on usability and performance, often of a few orders of magnitude.
-\todo{this is duplicative with text above}
+\minortodo{this is duplicative with text above}
 
 
 \section{Internalizing Duality Arguments in Type Theory} \label{sec:duality-conversion}
@@ -186,7 +193,7 @@ Notation "C ᵒᵖ" := ({| Ob := Ob C; Hom x y := Hom C y x; ... |}).
     We are currently attempting to divine the appropriate computation rules for pattern matching constructs, in the hopes of making reasoning with proofs of equality more pleasant.\footnote{See \coqbug[Coq Issue ]{3179} and \coqbug[Coq Issue ]{3119}.}
 
 \section{A Sampling of Abstraction Barriers}
-\todo{maybe this section should come first?}
+\minortodo{maybe this section should come first?}
 
 We acknowledge that the concept of performance issues arising from choices of abstraction barriers may seem a bit counter-intuitive.
 After all, abstraction barriers generally live in the mind of the developer, in some sense, and it seems a bit insane to say that performance of the code depends on the mental state of the programmer.
@@ -384,16 +391,16 @@ Definition T_rect (P : T -> Type)
       Converting between two differently defined projections takes time linear in the number of under-the-hood projections, i.e., linear in the number of fields.
       Doing this once for each projection thus takes quadratic time.
       Using a reflective representation of nested $\Sigma$ types, and thus being able to prove the $\eta$ principle once and for all in constant time, would not help here, because it takes quadratic time to convert between the type of the $\eta$ principle in reflective-land and the type that we want.
-      One thing that might help would be to have a version of conversion checking that was both memoized and could perform in-place reduction; see \todo{cite https://github.com/coq/coq/issues/12269}.%
+      One thing that might help would be to have a version of conversion checking that was both memoized and could perform in-place reduction; see \coqbug{12269}.%
   }
   Worse, though, due to the issue with nested \mintinline{coq}{let}-binders described in \autoref{sec:sharing}, we would still incur a quadratic typechecking cost.
 
   We can, however, avoid this cost by turning on primitive projections via \texttt{Set Primitive Projections} at the top of this block of code:
   this enables judgmental $\eta$-conversion for primitive records, whence we can prove \mintinline{coq}{T_eta} with the proof term \mintinline{coq}{@eq_refl T x}.
-  See \autoref{fig:timing-make-destruct-record-definition-abstraction} for performance details.
+  See \Autoref{fig:timing-make-destruct-record-definition-abstraction-performance-experiments/make-nested-prim-prod-abstraction.txt,fig:timing-make-destruct-record-definition-abstraction-performance-experiments/make-nested-prim-sig-abstraction.txt,fig:timing-make-destruct-record-definition-abstraction-performance-experiments/make-nested-prod-abstraction.txt,fig:timing-make-destruct-record-definition-abstraction-performance-experiments/make-nested-sig-abstraction.txt} for performance details.
+  \minortodo{Select one of these graphs and use it and give it the label {fig:timing-make-destruct-record-definition-abstraction}}
 
-  \todo{make this timing graph}
-\todo{move figures up to be closer to references}
+  \minortodo{move figures up to be closer to references}
 
   \begin{figure*}
       \beginTikzpictureStamped{

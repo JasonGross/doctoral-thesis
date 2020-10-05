@@ -18,6 +18,7 @@ bijections
 bioelectrical
 bitwidths
 blazingly
+codomain
 coercions
 combinator
 combinatorial
@@ -25,6 +26,7 @@ composable
 computable
 confounders
 counterintuitive
+cryptographic
 customizable
 dataset
 datasets
@@ -48,6 +50,7 @@ duplicative
 electromagnetics
 Electromagnetics
 embeddings
+encodings
 equalities
 Equalities
 equational
@@ -92,9 +95,11 @@ intuitionism
 invariants
 invertibility
 involutive
+isomorphism
 isomorphisms
 kinesiology
 limnology
+logics
 lookups
 macroecology
 maximality
@@ -128,6 +133,7 @@ outsized
 paleoclimate
 paleoecology
 parasitology
+parsers
 planetology
 pointwise
 postprocessing
@@ -158,6 +164,7 @@ reified
 reifier
 reifies
 reifying
+reimplementation
 renamings
 representable
 repurpose
@@ -166,6 +173,7 @@ rewriter
 rewriters
 rewritings
 roadmap
+runtime
 scalability
 sequent
 setoid
@@ -195,6 +203,7 @@ typecheckers
 typechecking
 typeclass
 typedness
+unary
 unboundedly
 uncommented
 undecidability

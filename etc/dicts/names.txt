@@ -84,6 +84,7 @@ Grayson
 Grégoire
 Grothendieck
 Haslam
+Haswell
 Henk
 Herbelin
 Hoare

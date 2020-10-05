@@ -16,6 +16,7 @@ becd
 beq
 bibintoc
 brel
+BuildEagerIdentT
 bwd
 CanonicalStructures
 catdb
@@ -90,6 +91,7 @@ Hwf
 hyps
 icases
 idc
+IdentifierParameters
 IdentifiersBasicGenerate
 IdentifiersBasicGENERATED
 IdentifiersBasicLibrary
@@ -158,6 +160,7 @@ PreCommon
 PreExtra
 prefixSums
 PrefixSums
+PreLemmas
 prg
 printenv
 projs

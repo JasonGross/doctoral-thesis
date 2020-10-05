@@ -48,5 +48,6 @@ proofy
 redex
 redexes
 repo
+simp
 uncurrying
 unswap

@@ -3505,4 +3505,21 @@ The core topics include the untyped lambda-calculus, simple type systems, type r
   pdf         = {https://hal.inria.fr/inria-00368403v2/file/main.pdf},
 }
 
+@InProceedings{Efficient1998Necula,
+  author    = {George C. Necula and Peter Lee},
+  booktitle = {Proceedings of the 13th Annual IEEE Symposium on Logic in Computer Science},
+  date      = {1998-6},
+  title     = {Efficient Representation and Validation of Proofs},
+  doi       = {10.1109/lics.1998.705646},
+  isbn      = {0818685069},
+  location  = {USA},
+  pages     = {93},
+  publisher = {IEEE Computer Society},
+  series    = {LICS '98},
+  url       = {https://people.eecs.berkeley.edu/~necula/Papers/lfi_lics98.ps},
+  abstract  = {This paper presents a logical framework derived from the Edinburgh Logical Framework (LF) that can be used to obtain compact representations of proofs and efficient proof checkers. These are essential ingredients of any application that manipulates proofs as first-class objects, such as a Proof-Carrying Code system, in which proofs are used to allow the easy validation of properties of safety-critical or untrusted code.
+
+Our framework, which we call LF$_i$, inherits from LF the capability to encode various logics in a natural way. In addition, the LF$_i$ framework allows proof representations without the high degree of redundancy that is characteristic of LF representations. The missing parts of LF$_i$ proof representations can be reconstructed during proof checking by an efficient reconstruction algorithm. We also describe an algorithm that can be used to strip the unnecessary parts of an LF representation of a proof. The experimental data that we gathered in the context of a Proof-Carrying Code system shows that the savings obtained from using LF$_i$ instead of LF can make the difference between practically useless proofs of several megabytes and manageable proofs of tens of kilobytes.},
+}
+
 @Comment{jabref-meta: databaseType:biblatex;}

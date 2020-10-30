@@ -4,6 +4,8 @@ Require Import Ltac2.Control.
 Require Ltac2.Notations.
 Require Ltac2.Array.
 Require Ltac2.Int.
+Require PerformanceExperiments.Ltac2Compat.Array.
+Require Import PerformanceExperiments.Ltac2Compat.Constr.
 Require Import PerformanceExperiments.Harness.
 Require PerformanceExperiments.conj_True_uconstr.
 
@@ -13,37 +15,11 @@ Notation args_of_size := conj_True_uconstr.args_of_size.
 Module Import WithLtac2.
   Import Ltac2.Notations.
 
-  Module Array.
-    (** modified from https://github.com/coq/coq/blob/227520b14e978e19d58368de873521a283aecedd/user-contrib/Ltac2/Array.v#L161-L182 *)
-    Ltac2 rec of_list_aux (ls : 'a list) (dst : 'a array) (pos : int) :=
-      match ls with
-      | [] => ()
-      | hd::tl =>
-        Array.set dst pos hd;
-  of_list_aux tl dst (Int.add pos 1)
-    end.
-
-    Ltac2 of_list (ls : 'a list) :=
-      let rec list_length (ls : 'a list) :=
-          match ls with
-          | [] => 0
-          | _ :: tl => Int.add 1 (list_length tl)
-          end in
-      match ls with
-      | [] => Array.make 0 'I
-      | hd::tl =>
-        let anew := Array.make (list_length ls) hd in
-        of_list_aux ls anew 0;
-  anew
-    end.
-  End Array.
-
   Ltac2 rec mkres (n : int) (t : constr) (v : constr) (prop : constr) (and : constr) (conj : constr) (tru : constr) (i : constr) :=
     match Int.lt 0 n with
     | false => Unsafe.make
-                 (Unsafe.LetIn
-                    { binder_name := None ; binder_relevance := Relevant }
-                    t
+                 (Unsafe.mkLetIn
+                    (Binder.make None t)
                     prop
                     v)
     | true
@@ -52,14 +28,12 @@ Module Import WithLtac2.
                            (Unsafe.make (Unsafe.App conj (Array.of_list [tru;Unsafe.make (Unsafe.Rel 3);i;Unsafe.make (Unsafe.Rel 2)])))
                            prop and conj tru i in
          Unsafe.make
-           (Unsafe.LetIn
-              { binder_name := None ; binder_relevance := Relevant }
-              t
+           (Unsafe.mkLetIn
+              (Binder.make None t)
               prop
               (Unsafe.make
-                 (Unsafe.LetIn
-                    { binder_name := None ; binder_relevance := Relevant }
-                    v
+                 (Unsafe.mkLetIn
+                    (Binder.make None v)
                     (Unsafe.make (Unsafe.Rel 1))
                     rest)))
     end.

@@ -4,6 +4,7 @@ Require Import Ltac2.Control.
 Require Ltac2.Notations.
 Require Ltac2.Array.
 Require Ltac2.Int.
+Require PerformanceExperiments.Ltac2Compat.Array.
 Require Import PerformanceExperiments.Harness.
 Require PerformanceExperiments.conj_True_uconstr.
 
@@ -12,31 +13,6 @@ Notation args_of_size := conj_True_uconstr.args_of_size.
 
 Module Import WithLtac2.
   Import Ltac2.Notations.
-
-  Module Array.
-    (** modified from https://github.com/coq/coq/blob/227520b14e978e19d58368de873521a283aecedd/user-contrib/Ltac2/Array.v#L161-L182 *)
-    Ltac2 rec of_list_aux (ls : 'a list) (dst : 'a array) (pos : int) :=
-      match ls with
-      | [] => ()
-      | hd::tl =>
-        Array.set dst pos hd;
-  of_list_aux tl dst (Int.add pos 1)
-    end.
-
-    Ltac2 of_list (ls : 'a list) :=
-      let rec list_length (ls : 'a list) :=
-          match ls with
-          | [] => 0
-          | _ :: tl => Int.add 1 (list_length tl)
-          end in
-      match ls with
-      | [] => Array.make 0 'I
-      | hd::tl =>
-        let anew := Array.make (list_length ls) hd in
-        of_list_aux ls anew 0;
-  anew
-    end.
-  End Array.
 
   Ltac2 rec build_conj_true (n : int) (and : constr) (conj : constr) (tru : constr) (i : constr) :=
     match Int.lt 0 n with

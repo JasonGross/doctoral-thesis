@@ -4,35 +4,12 @@ Require Import Ltac2.Control.
 Require Ltac2.Notations.
 Require Ltac2.Array.
 Require Ltac2.Int.
+Require PerformanceExperiments.Ltac2Compat.Array.
+Require Import PerformanceExperiments.Ltac2Compat.Constr.
 Require Import PerformanceExperiments.make_nested_sig_common.
 
 Module Import WithLtac2.
   Import Ltac2.Notations.
-
-  Module Array.
-    (** modified from https://github.com/coq/coq/blob/227520b14e978e19d58368de873521a283aecedd/user-contrib/Ltac2/Array.v#L161-L182 *)
-    Ltac2 rec of_list_aux (ls : 'a list) (dst : 'a array) (pos : int) :=
-      match ls with
-      | [] => ()
-      | hd::tl =>
-        Array.set dst pos hd;
-  of_list_aux tl dst (Int.add pos 1)
-    end.
-
-    Ltac2 of_list (ls : 'a list) :=
-      let rec list_length (ls : 'a list) :=
-          match ls with
-          | [] => 0
-          | _ :: tl => Int.add 1 (list_length tl)
-          end in
-      match ls with
-      | [] => Array.make 0 'I
-      | hd::tl =>
-        let anew := Array.make (list_length ls) hd in
-        of_list_aux ls anew 0;
-  anew
-    end.
-  End Array.
 
   Ltac2 Type assoc := [ Left | Right ].
 
@@ -58,9 +35,8 @@ Module Import WithLtac2.
     | (ty, term_cps)
       => let term := term_cps (Unsafe.make (Unsafe.Rel 1)) in
          Unsafe.make
-           (Unsafe.Prod
-              { binder_name := None ; binder_relevance := Relevant }
-              ty
+           (Unsafe.mkProd
+              (Binder.make None ty)
               (Unsafe.make
                  (Unsafe.App eqT (Array.of_list [unitT; term; term]))))
     end.
@@ -75,13 +51,15 @@ Module Import WithLtac2.
     end.
 
   Ltac2 extract_prod_and_projections (c : constr) :=
-    match Unsafe.kind c with
-    | Unsafe.Lambda _ ty body
-      => (match Unsafe.kind ty with
+    match Unsafe.match_Lambda (Unsafe.kind c) with
+    | Some l
+      => (let (b, body) := l in
+          let ty := Binder.type b in
+          match Unsafe.kind ty with
           | Unsafe.App t args
             => (t,
-                match Unsafe.kind (Array.get args 1) with
-                | Unsafe.Lambda _ _ _ => true
+                match Unsafe.match_Lambda (Unsafe.kind (Array.get args 1)) with
+                | Some _ => true
                 | _ => false
                 end)
           | _ => Control.zero (Invalid_argument (Some (Message.of_constr ty)))
@@ -104,7 +82,7 @@ Module Import WithLtac2.
     let eqT := '(@Logic.eq) in
     let mkApp2 f x y := Unsafe.make (Unsafe.App f (Array.of_list [x; y])) in
     let mkApp3 f x y z := Unsafe.make (Unsafe.App f (Array.of_list [x; y; z])) in
-    let mkLamConstNoLift x y := Unsafe.make (Unsafe.Lambda { binder_name := None ; binder_relevance := Relevant } x y) in
+    let mkLamConstNoLift x y := Unsafe.make (Unsafe.mkLambda (Binder.make None x) y) in
     let (mkProdT0, mkFstP, mkSndP)
         := match is_sig with
            | true

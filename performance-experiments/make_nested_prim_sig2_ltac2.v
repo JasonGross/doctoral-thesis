@@ -3,6 +3,7 @@ Require Import PerformanceExperiments.make_nested_sig_common_ltac2.
 
 Definition args_of_size (s : size) : list nat
   := match s with
+     | Sanity => seq 0 3
      | SuperFast => List.map (fun x => x * 100) (seq 0 60)
      | Fast => List.map (fun x => x * 100) (seq 0 75)
      | Medium => []

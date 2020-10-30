@@ -63,8 +63,6 @@ DISABLED_FILES += $(addsuffix .v,$(LTAC2_KINDS)) \
 	# end of list
 endif
 
-SH_KINDS :=
-
 SPECIAL_KINDS :=
 
 ALL_VKINDS := $(KINDS) $(SPECIAL_KINDS)

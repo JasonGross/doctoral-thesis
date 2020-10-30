@@ -1,0 +1,18 @@
+Params: n= 1 , #replace-transaction=record
+Finished transaction in 0. secs (0.u,0.s) (successful)
+Tactic call build ran for 0. secs (0.u,0.s)
+Tactic call assert ran for 0. secs (0.u,0.s) (success)
+Tactic call destruct ran for 0. secs (0.u,0.s) (success)
+Tactic call cbn ran for 0. secs (0.u,0.s) (success)
+Params: n= 2 , #replace-transaction=record
+Finished transaction in 0. secs (0.u,0.s) (successful)
+Tactic call build ran for 0. secs (0.u,0.s)
+Tactic call assert ran for 0. secs (0.u,0.s) (success)
+Tactic call destruct ran for 0. secs (0.u,0.s) (success)
+Tactic call cbn ran for 0. secs (0.u,0.s) (success)
+Params: n= 3 , #replace-transaction=record
+Finished transaction in 0. secs (0.u,0.s) (successful)
+Tactic call build ran for 0. secs (0.u,0.s)
+Tactic call assert ran for 0. secs (0.u,0.s) (success)
+Tactic call destruct ran for 0. secs (0.u,0.s) (success)
+Tactic call cbn ran for 0. secs (0.u,0.s) (success)

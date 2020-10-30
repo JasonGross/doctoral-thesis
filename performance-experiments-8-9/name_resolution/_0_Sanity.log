@@ -1,0 +1,6 @@
+Params: n= 0
+Tactic call uconstr-I-1000 ran for 0.022 secs (0.005u,0.016s) (success)
+Params: n= 1
+Tactic call uconstr-I-1000 ran for 0.057 secs (0.053u,0.003s) (success)
+Params: n= 2
+Tactic call uconstr-I-1000 ran for 0.013 secs (0.013u,0.s) (success)

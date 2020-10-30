@@ -267,9 +267,9 @@ If we are careful to construct the certificate manually without duplicating work
         xmin=0,
         scaled x ticks=false,
         scaled y ticks=false]
-        \addplot[only marks,color=black] table[x=param-n,y=repeat-constructor-user]{performance-experiments/conj-True-repeat-constructor.txt};
+        \addplot[only marks,color=black] table[col sep=comma,x=param-n,y=repeat-constructor-user]{performance-experiments/conj-True-repeat-constructor.txt};
         \addlegendentry{\mintinline{coq}{repeat constructor}}
-        \addplotquadraticregression[no markers, black][x=param-n,y=repeat-constructor-user]{performance-experiments/conj-True-repeat-constructor.txt};
+        \addplotquadraticregression[no markers, black][x=param-n,y=repeat-constructor-user][col sep=comma]{performance-experiments/conj-True-repeat-constructor.txt};
         \addlegendentry{
             $\pgfmathprintnumber{\pgfplotstableregressiona}n^2
             \pgfmathprintnumber[print sign]{\pgfplotstableregressionb}n
@@ -292,9 +292,9 @@ If we are careful to construct the certificate manually without duplicating work
         xmin=0,
         scaled x ticks=false,
         scaled y ticks=false]
-        \addplot[only marks,color=blue] table[x=param-n,y=typecheck-user]{performance-experiments/conj-True-ltac2.txt};
+        \addplot[only marks,color=blue] table[col sep=comma,x=param-n,y=typecheck-user]{performance-experiments/conj-True-ltac2.txt};
         \addlegendentry{typecheck}
-        \addplotquadraticregression[no markers, blue][x=param-n,y=typecheck-user]{performance-experiments/conj-True-ltac2.txt};
+        \addplotquadraticregression[no markers, blue][x=param-n,y=typecheck-user][col sep=comma]{performance-experiments/conj-True-ltac2.txt};
         \edef\tca{\pgfplotstableregressiona}
         \edef\tcb{\pgfplotstableregressionb}
         \edef\tcc{\pgfplotstableregressionc}
@@ -303,9 +303,9 @@ If we are careful to construct the certificate manually without duplicating work
             \pgfmathprintnumber[print sign]{\tcb}n
             \pgfmathprintnumber[print sign]{\tcc}$
         }
-        \addplot[only marks,mark=o,color=black] table[x=param-n,y=build-user]{performance-experiments/conj-True-ltac2.txt};
+        \addplot[only marks,mark=o,color=black] table[col sep=comma,x=param-n,y=build-user]{performance-experiments/conj-True-ltac2.txt};
         \addlegendentry{build}
-        \addplot [thick,black] table[x=param-n,
+        \addplot [thick,black] table[col sep=comma,x=param-n,
             y={create col/linear regression={y=build-user}}
             ] % compute a linear regression from the input table
             {performance-experiments/conj-True-ltac2.txt};
@@ -392,9 +392,9 @@ See \autoref{fig:timing-conj-True-let-ltac2} and \autoref{fig:timing-conj-True-a
         xmin=0,
         scaled x ticks=false,
         scaled y ticks=false]
-        \addplot[only marks,color=blue] table[x=param-n,y=typecheck-user]{performance-experiments/conj-True-let-ltac2.txt};
+        \addplot[only marks,color=blue] table[col sep=comma,x=param-n,y=typecheck-user]{performance-experiments/conj-True-let-ltac2.txt};
         \addlegendentry{typecheck}
-        \addplotquadraticregression[no markers, blue][x=param-n,y=typecheck-user]{performance-experiments/conj-True-let-ltac2.txt};
+        \addplotquadraticregression[no markers, blue][x=param-n,y=typecheck-user][col sep=comma]{performance-experiments/conj-True-let-ltac2.txt};
         \edef\tca{\pgfplotstableregressiona}
         \edef\tcb{\pgfplotstableregressionb}
         \edef\tcc{\pgfplotstableregressionc}
@@ -403,9 +403,9 @@ See \autoref{fig:timing-conj-True-let-ltac2} and \autoref{fig:timing-conj-True-a
             \pgfmathprintnumber[print sign]{\tcb}n
             \pgfmathprintnumber[print sign]{\tcc}$
         }
-        \addplot[only marks,mark=o,color=black] table[x=param-n,y=build-user]{performance-experiments/conj-True-let-ltac2.txt};
+        \addplot[only marks,mark=o,color=black] table[col sep=comma,x=param-n,y=build-user]{performance-experiments/conj-True-let-ltac2.txt};
         \addlegendentry{build}
-        \addplot [thick,black] table[x=param-n,
+        \addplot [thick,black] table[col sep=comma,x=param-n,
         y={create col/linear regression={y=build-user}}
         ] % compute a linear regression from the input table
         {performance-experiments/conj-True-let-ltac2.txt};
@@ -431,9 +431,9 @@ See \autoref{fig:timing-conj-True-let-ltac2} and \autoref{fig:timing-conj-True-a
         xmin=0,
         scaled x ticks=false,
         scaled y ticks=false]
-        \addplot[only marks,color=blue] table[x=param-n,y=typecheck-user]{performance-experiments/conj-True-app-ltac2.txt};
+        \addplot[only marks,color=blue] table[col sep=comma,x=param-n,y=typecheck-user]{performance-experiments/conj-True-app-ltac2.txt};
         \addlegendentry{typecheck}
-        \addplotquadraticregression[no markers, blue][x=param-n,y=typecheck-user]{performance-experiments/conj-True-app-ltac2.txt};
+        \addplotquadraticregression[no markers, blue][x=param-n,y=typecheck-user][col sep=comma]{performance-experiments/conj-True-app-ltac2.txt};
         \edef\tca{\pgfplotstableregressiona}
         \edef\tcb{\pgfplotstableregressionb}
         \edef\tcc{\pgfplotstableregressionc}
@@ -442,9 +442,9 @@ See \autoref{fig:timing-conj-True-let-ltac2} and \autoref{fig:timing-conj-True-a
             \pgfmathprintnumber[print sign]{\tcb}n
             \pgfmathprintnumber[print sign]{\tcc}$
         }
-        \addplot[only marks,mark=o,color=black] table[x=param-n,y=build-user]{performance-experiments/conj-True-app-ltac2.txt};
+        \addplot[only marks,mark=o,color=black] table[col sep=comma,x=param-n,y=build-user]{performance-experiments/conj-True-app-ltac2.txt};
         \addlegendentry{build}
-        \addplot [thick,black] table[x=param-n,
+        \addplot [thick,black] table[col sep=comma,x=param-n,
         y={create col/linear regression={y=build-user}}
         ] % compute a linear regression from the input table
         {performance-experiments/conj-True-app-ltac2.txt};
@@ -626,9 +626,9 @@ See \autoref{fig:timing-eq-refl-nat-factorial}.
         xmin=0,
         scaled x ticks=false,
         scaled y ticks=false]
-        \addplot[only marks,color=black] table[x=param-n,y=constr-eq-refl-user]{performance-experiments/eq-refl-nat-factorial.txt};
+        \addplot[only marks,color=black] table[col sep=comma,x=param-n,y=constr-eq-refl-user]{performance-experiments/eq-refl-nat-factorial.txt};
         \addlegendentry{typechecking}
-        \addplotfactorialregression[no markers, black][x=param-n,y=constr-eq-refl-user]{performance-experiments/eq-refl-nat-factorial.txt};
+        \addplotfactorialregression[no markers, black][x=param-n,y=constr-eq-refl-user][col sep=comma]{performance-experiments/eq-refl-nat-factorial.txt};
         \addlegendentry{$\pgfmathprintnumber{\pgfplotstableregressiona}n!$}
     \end{axis}
 \end{tikzpicture}
@@ -684,9 +684,9 @@ See \autoref{fig:timing-nested-lambda-different-name} for the effect on internal
         ylabel style={
             yshift = {width("$8\cdot 1$")}
         }]
-        \addplot[only marks,color=black] table[x=param-n,y=uconstr-I-1000-user]{performance-experiments-8-9/name-resolution.txt};
+        \addplot[only marks,color=black] table[col sep=comma,x=param-n,y=uconstr-I-1000-user]{performance-experiments-8-9/name-resolution.txt};
         \addlegendentry{1000 name resolutions}
-        \addplot [thick,black] table[x=param-n,
+        \addplot [thick,black] table[col sep=comma,x=param-n,
         y={create col/linear regression={y=uconstr-I-1000-user}}
         ]{performance-experiments-8-9/name-resolution.txt};
         \addlegendentry{
@@ -711,9 +711,9 @@ See \autoref{fig:timing-nested-lambda-different-name} for the effect on internal
         ylabel style={
             yshift = {width("$8\cdot{}$")}
         }]
-        \addplot[only marks,color=black] table[x=param-n,y=uconstr-lambda-user]{performance-experiments-8-9/nested-lambda-different-name.txt};
+        \addplot[only marks,color=black] table[col sep=comma,x=param-n,y=uconstr-lambda-user]{performance-experiments-8-9/nested-lambda-different-name.txt};
         \addlegendentry{parsing and internalization}
-        \addplotquadraticregression[no markers, black][x=param-n,y=uconstr-lambda-user]{performance-experiments-8-9/nested-lambda-different-name.txt};
+        \addplotquadraticregression[no markers, black][x=param-n,y=uconstr-lambda-user][col sep=comma]{performance-experiments-8-9/nested-lambda-different-name.txt};
         \addlegendentry{
             $\pgfmathprintnumber{\pgfplotstableregressiona}n^2
             \pgfmathprintnumber[print sign]{\pgfplotstableregressionb}n
@@ -775,9 +775,9 @@ See also \autoref{fig:timing-do-n-open-constr-True} and \autoref{fig:timing-open
         xmin=0,
         scaled x ticks=false,
         scaled y ticks=false]
-        \addplot[only marks,color=black] table[x=param-n,y=open-constr-True-1000-user]{performance-experiments/do-n-open-constr-True.txt};
+        \addplot[only marks,color=black] table[col sep=comma,x=param-n,y=open-constr-True-1000-user]{performance-experiments/do-n-open-constr-True.txt};
         \addlegendentry{construct an evar 1000 times}
-        \addplot [thick,black] table[x=param-n,
+        \addplot [thick,black] table[col sep=comma,x=param-n,
          y={create col/linear regression={y=open-constr-True-1000-user}}
          ] % compute a linear regression from the input table
          {performance-experiments/do-n-open-constr-True.txt};
@@ -804,9 +804,9 @@ See also \autoref{fig:timing-do-n-open-constr-True} and \autoref{fig:timing-open
         xmin=0,
         scaled x ticks=false,
         scaled y ticks=false]
-        \addplot[only marks,mark=*,color=black] table[x=param-n,y=open-constr-user]{performance-experiments/open-constr-n-lambda-no-types-same-names.txt};
+        \addplot[only marks,mark=*,color=black] table[col sep=comma,x=param-n,y=open-constr-user]{performance-experiments/open-constr-n-lambda-no-types-same-names.txt};
         \addlegendentry{same names}
-        \addplotquadraticregression[no markers, black][x=param-n,y=open-constr-user]{performance-experiments/open-constr-n-lambda-no-types-same-names.txt};
+        \addplotquadraticregression[no markers, black][x=param-n,y=open-constr-user][col sep=comma]{performance-experiments/open-constr-n-lambda-no-types-same-names.txt};
         \edef\ocsamea{\pgfplotstableregressiona}
         \edef\ocsameb{\pgfplotstableregressionb}
         \edef\ocsamec{\pgfplotstableregressionc}
@@ -816,9 +816,9 @@ See also \autoref{fig:timing-do-n-open-constr-True} and \autoref{fig:timing-open
             \pgfmathprintnumber[print sign]{\ocsamec}$
         }
 
-        \addplot[only marks,mark=o,color=blue] table[x=param-n,y=open-constr-user]{performance-experiments/open-constr-n-lambda-no-types-no-names.txt};
+        \addplot[only marks,mark=o,color=blue] table[col sep=comma,x=param-n,y=open-constr-user]{performance-experiments/open-constr-n-lambda-no-types-no-names.txt};
         \addlegendentry{no names}
-        \addplotquadraticregression[no markers, blue][x=param-n,y=open-constr-user]{performance-experiments/open-constr-n-lambda-no-types-no-names.txt};
+        \addplotquadraticregression[no markers, blue][x=param-n,y=open-constr-user][col sep=comma]{performance-experiments/open-constr-n-lambda-no-types-no-names.txt};
         \edef\ocnoa{\pgfplotstableregressiona}
         \edef\ocnob{\pgfplotstableregressionb}
         \edef\ocnoc{\pgfplotstableregressionc}
@@ -828,9 +828,9 @@ See also \autoref{fig:timing-do-n-open-constr-True} and \autoref{fig:timing-open
             \pgfmathprintnumber[print sign]{\ocnoc}$
         }
 
-        \addplot[only marks,mark=+,color=red] table[x=param-n,y=open-constr-user]{performance-experiments/open-constr-n-lambda-no-types-different-names.txt};
+        \addplot[only marks,mark=+,color=red] table[col sep=comma,x=param-n,y=open-constr-user]{performance-experiments/open-constr-n-lambda-no-types-different-names.txt};
         \addlegendentry{different names}
-        \addplotquadraticregression[no markers, red][x=param-n,y=open-constr-user]{performance-experiments/open-constr-n-lambda-no-types-different-names.txt};
+        \addplotquadraticregression[no markers, red][x=param-n,y=open-constr-user][col sep=comma]{performance-experiments/open-constr-n-lambda-no-types-different-names.txt};
         \edef\ocdifferenta{\pgfplotstableregressiona}
         \edef\ocdifferentb{\pgfplotstableregressionb}
         \edef\ocdifferentc{\pgfplotstableregressionc}
@@ -871,9 +871,9 @@ See \autoref{fig:timing-app-n}.
         xmin=0,
         scaled x ticks=false,
         scaled y ticks=false]
-        \addplot[only marks,color=black] table[x=param-n,y=typecheck-user]{performance-experiments/app-n-ltac2.txt};
+        \addplot[only marks,color=black] table[col sep=comma,x=param-n,y=typecheck-user]{performance-experiments/app-n-ltac2.txt};
         \addlegendentry{typecheck}
-        \addplotquadraticregression[no markers, black][x=param-n,y=typecheck-user]{performance-experiments/app-n-ltac2.txt};
+        \addplotquadraticregression[no markers, black][x=param-n,y=typecheck-user][col sep=comma]{performance-experiments/app-n-ltac2.txt};
         \addlegendentry{
             $\pgfmathprintnumber{\pgfplotstableregressiona}n^2
             \pgfmathprintnumber[print sign]{\pgfplotstableregressionb}n
@@ -918,17 +918,17 @@ See also \autoref{fig:timing-quadratic-cbv-lazy-PHOAS}.
         xmin=0,
         scaled x ticks=false,
         scaled y ticks=false]
-        \addplot[only marks,mark=o,color=blue] table[x=param-num-binders,y=cbv-user]{performance-experiments/quadratic-cbv-lazy-PHOAS.txt};
+        \addplot[only marks,mark=o,color=blue] table[col sep=comma,x=param-num-binders,y=cbv-user]{performance-experiments/quadratic-cbv-lazy-PHOAS.txt};
         \addlegendentry{\mintinline{coq}{cbv}}
-        \addplotquadraticregression[no markers, blue][x=param-num-binders,y=cbv-user]{performance-experiments/quadratic-cbv-lazy-PHOAS.txt};
+        \addplotquadraticregression[no markers, blue][x=param-num-binders,y=cbv-user][col sep=comma]{performance-experiments/quadratic-cbv-lazy-PHOAS.txt};
         \addlegendentry{
             $\pgfmathprintnumber{\pgfplotstableregressiona}(\text{\# binders})^2
             \pgfmathprintnumber[print sign]{\pgfplotstableregressionb}(\text{\# binders})
             \pgfmathprintnumber[print sign]{\pgfplotstableregressionc}$
         }
-        \addplot[only marks,mark=*,color=black] table[x=param-num-binders,y=lazy-user]{performance-experiments/quadratic-cbv-lazy-PHOAS.txt};
+        \addplot[only marks,mark=*,color=black] table[col sep=comma,x=param-num-binders,y=lazy-user]{performance-experiments/quadratic-cbv-lazy-PHOAS.txt};
         \addlegendentry{\mintinline{coq}{lazy}}
-        \addplotquadraticregression[no markers, black][x=param-num-binders,y=lazy-user]{performance-experiments/quadratic-cbv-lazy-PHOAS.txt};
+        \addplotquadraticregression[no markers, black][x=param-num-binders,y=lazy-user][col sep=comma]{performance-experiments/quadratic-cbv-lazy-PHOAS.txt};
         \addlegendentry{
             $\pgfmathprintnumber{\pgfplotstableregressiona}(\text{\# binders})^2
             \pgfmathprintnumber[print sign]{\pgfplotstableregressionb}(\text{\# binders})
@@ -973,9 +973,9 @@ See also \autoref{fig:timing-quadratic-vm-PHOAS} and \autoref{fig:timing-quadrat
         xmin=0,
         scaled x ticks=false,
         scaled y ticks=false]
-        \addplot[only marks,color=black] table[x=param-num-binders,y=vm-compute-user]{performance-experiments/quadratic-vm-PHOAS.txt};
+        \addplot[only marks,color=black] table[col sep=comma,x=param-num-binders,y=vm-compute-user]{performance-experiments/quadratic-vm-PHOAS.txt};
         \addlegendentry{\mintinline{coq}{vm_compute}}
-        \addplotquadraticregression[no markers, black][x=param-num-binders,y=vm-compute-user]{performance-experiments/quadratic-vm-PHOAS.txt};
+        \addplotquadraticregression[no markers, black][x=param-num-binders,y=vm-compute-user][col sep=comma]{performance-experiments/quadratic-vm-PHOAS.txt};
         \addlegendentry{
             $\pgfmathprintnumber{\pgfplotstableregressiona}(\text{\# binders})^2
             \pgfmathprintnumber[print sign]{\pgfplotstableregressionb}(\text{\# binders})
@@ -998,9 +998,9 @@ See also \autoref{fig:timing-quadratic-vm-PHOAS} and \autoref{fig:timing-quadrat
         xmin=0,
         scaled x ticks=false,
         scaled y ticks=false]
-        \addplot[only marks,color=black] table[x=param-num-binders,y=native-compute-real]{performance-experiments/quadratic-native-PHOAS.txt};
+        \addplot[only marks,color=black] table[col sep=comma,x=param-num-binders,y=native-compute-real]{performance-experiments/quadratic-native-PHOAS.txt};
         \addlegendentry{\mintinline{coq}{native_compute}}
-        \addplotquadraticregression[no markers, black][x=param-num-binders,y=native-compute-real]{performance-experiments/quadratic-native-PHOAS.txt};
+        \addplotquadraticregression[no markers, black][x=param-num-binders,y=native-compute-real][col sep=comma]{performance-experiments/quadratic-native-PHOAS.txt};
         \addlegendentry{
             $\pgfmathprintnumber{\pgfplotstableregressiona}(\text{\# binders})^2
             \pgfmathprintnumber[print sign]{\pgfplotstableregressionb}(\text{\# binders})

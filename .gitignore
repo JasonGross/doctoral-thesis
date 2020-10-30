@@ -278,6 +278,7 @@ jgross-thesis*-figure*.dep
 *.pgf-plot.gnuplot
 *.pgf-plot.table
 *-parameters.dat
+*-regression.table
 /abstract.endpage
 
 # vim
@@ -325,6 +326,7 @@ nra.cache
 .nra.cache
 
 # Generated .v files for perf
+*_Sanity.v
 *_SuperFast.v
 *_Fast.v
 *_Medium.v

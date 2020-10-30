@@ -1,0 +1,9 @@
+Params: n= 0
+Tactic call repeat-destruct ran for 0. secs (0.u,0.s) (success)
+Tactic call cbn ran for 0. secs (0.u,0.s) (success)
+Params: n= 1
+Tactic call repeat-destruct ran for 0. secs (0.u,0.s) (success)
+Tactic call cbn ran for 0. secs (0.u,0.s) (success)
+Params: n= 2
+Tactic call repeat-destruct ran for 0. secs (0.u,0.s) (success)
+Tactic call cbn ran for 0. secs (0.u,0.s) (success)

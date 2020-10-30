@@ -1,105 +1,105 @@
 Params: n= 30
-Tactic call repeat-destruct ran for 0.287 secs (0.223u,0.061s) (success)
+Tactic call repeat-destruct ran for 0.281 secs (0.269u,0.011s) (success)
 Tactic call cbn ran for 0. secs (0.u,0.s) (success)
 Params: n= 31
-Tactic call repeat-destruct ran for 0.228 secs (0.227u,0.s) (success)
+Tactic call repeat-destruct ran for 0.228 secs (0.228u,0.s) (success)
 Tactic call cbn ran for 0. secs (0.u,0.s) (success)
 Params: n= 32
-Tactic call repeat-destruct ran for 0.251 secs (0.251u,0.s) (success)
+Tactic call repeat-destruct ran for 0.255 secs (0.251u,0.003s) (success)
 Tactic call cbn ran for 0. secs (0.u,0.s) (success)
 Params: n= 33
-Tactic call repeat-destruct ran for 0.273 secs (0.273u,0.s) (success)
+Tactic call repeat-destruct ran for 0.282 secs (0.282u,0.s) (success)
 Tactic call cbn ran for 0. secs (0.u,0.s) (success)
 Params: n= 34
-Tactic call repeat-destruct ran for 0.299 secs (0.299u,0.s) (success)
+Tactic call repeat-destruct ran for 0.307 secs (0.307u,0.s) (success)
 Tactic call cbn ran for 0. secs (0.u,0.s) (success)
 Params: n= 35
-Tactic call repeat-destruct ran for 0.328 secs (0.328u,0.s) (success)
+Tactic call repeat-destruct ran for 0.334 secs (0.334u,0.s) (success)
 Tactic call cbn ran for 0. secs (0.u,0.s) (success)
 Params: n= 36
-Tactic call repeat-destruct ran for 0.358 secs (0.358u,0.s) (success)
+Tactic call repeat-destruct ran for 0.372 secs (0.372u,0.s) (success)
 Tactic call cbn ran for 0. secs (0.u,0.s) (success)
 Params: n= 37
-Tactic call repeat-destruct ran for 0.385 secs (0.385u,0.s) (success)
+Tactic call repeat-destruct ran for 0.399 secs (0.399u,0.s) (success)
 Tactic call cbn ran for 0. secs (0.u,0.s) (success)
 Params: n= 38
-Tactic call repeat-destruct ran for 0.427 secs (0.427u,0.s) (success)
+Tactic call repeat-destruct ran for 0.434 secs (0.43u,0.003s) (success)
 Tactic call cbn ran for 0. secs (0.u,0.s) (success)
 Params: n= 39
-Tactic call repeat-destruct ran for 0.462 secs (0.462u,0.s) (success)
+Tactic call repeat-destruct ran for 0.466 secs (0.466u,0.s) (success)
 Tactic call cbn ran for 0. secs (0.u,0.s) (success)
 Params: n= 40
-Tactic call repeat-destruct ran for 0.502 secs (0.502u,0.s) (success)
+Tactic call repeat-destruct ran for 0.512 secs (0.512u,0.s) (success)
 Tactic call cbn ran for 0. secs (0.u,0.s) (success)
 Params: n= 41
-Tactic call repeat-destruct ran for 0.533 secs (0.533u,0.s) (success)
+Tactic call repeat-destruct ran for 0.551 secs (0.551u,0.s) (success)
 Tactic call cbn ran for 0. secs (0.u,0.s) (success)
 Params: n= 42
-Tactic call repeat-destruct ran for 0.567 secs (0.567u,0.s) (success)
+Tactic call repeat-destruct ran for 0.59 secs (0.59u,0.s) (success)
 Tactic call cbn ran for 0. secs (0.u,0.s) (success)
 Params: n= 43
-Tactic call repeat-destruct ran for 0.618 secs (0.618u,0.s) (success)
+Tactic call repeat-destruct ran for 0.638 secs (0.638u,0.s) (success)
 Tactic call cbn ran for 0. secs (0.u,0.s) (success)
 Params: n= 44
-Tactic call repeat-destruct ran for 0.659 secs (0.659u,0.s) (success)
+Tactic call repeat-destruct ran for 0.682 secs (0.682u,0.s) (success)
 Tactic call cbn ran for 0. secs (0.u,0.s) (success)
 Params: n= 45
-Tactic call repeat-destruct ran for 0.704 secs (0.704u,0.s) (success)
+Tactic call repeat-destruct ran for 0.732 secs (0.728u,0.003s) (success)
 Tactic call cbn ran for 0. secs (0.u,0.s) (success)
 Params: n= 46
-Tactic call repeat-destruct ran for 0.758 secs (0.754u,0.003s) (success)
+Tactic call repeat-destruct ran for 0.799 secs (0.799u,0.s) (success)
 Tactic call cbn ran for 0. secs (0.u,0.s) (success)
 Params: n= 47
-Tactic call repeat-destruct ran for 0.819 secs (0.819u,0.s) (success)
+Tactic call repeat-destruct ran for 0.851 secs (0.851u,0.s) (success)
 Tactic call cbn ran for 0. secs (0.u,0.s) (success)
 Params: n= 48
-Tactic call repeat-destruct ran for 0.897 secs (0.889u,0.008s) (success)
+Tactic call repeat-destruct ran for 0.923 secs (0.923u,0.s) (success)
 Tactic call cbn ran for 0. secs (0.u,0.s) (success)
 Params: n= 49
-Tactic call repeat-destruct ran for 0.942 secs (0.942u,0.s) (success)
+Tactic call repeat-destruct ran for 0.981 secs (0.977u,0.003s) (success)
 Tactic call cbn ran for 0. secs (0.u,0.s) (success)
 Params: n= 50
-Tactic call repeat-destruct ran for 1.005 secs (1.001u,0.003s) (success)
+Tactic call repeat-destruct ran for 1.036 secs (1.036u,0.s) (success)
 Tactic call cbn ran for 0. secs (0.u,0.s) (success)
 Params: n= 51
-Tactic call repeat-destruct ran for 1.058 secs (1.058u,0.s) (success)
+Tactic call repeat-destruct ran for 1.107 secs (1.107u,0.s) (success)
 Tactic call cbn ran for 0. secs (0.u,0.s) (success)
 Params: n= 52
-Tactic call repeat-destruct ran for 1.115 secs (1.115u,0.s) (success)
+Tactic call repeat-destruct ran for 1.177 secs (1.177u,0.s) (success)
 Tactic call cbn ran for 0. secs (0.u,0.s) (success)
 Params: n= 53
-Tactic call repeat-destruct ran for 1.184 secs (1.184u,0.s) (success)
+Tactic call repeat-destruct ran for 1.241 secs (1.241u,0.s) (success)
 Tactic call cbn ran for 0. secs (0.u,0.s) (success)
 Params: n= 54
-Tactic call repeat-destruct ran for 1.265 secs (1.265u,0.s) (success)
+Tactic call repeat-destruct ran for 1.325 secs (1.325u,0.s) (success)
 Tactic call cbn ran for 0. secs (0.u,0.s) (success)
 Params: n= 55
-Tactic call repeat-destruct ran for 1.331 secs (1.331u,0.s) (success)
+Tactic call repeat-destruct ran for 1.409 secs (1.405u,0.003s) (success)
 Tactic call cbn ran for 0. secs (0.u,0.s) (success)
 Params: n= 56
-Tactic call repeat-destruct ran for 1.425 secs (1.425u,0.s) (success)
+Tactic call repeat-destruct ran for 1.5 secs (1.5u,0.s) (success)
 Tactic call cbn ran for 0. secs (0.u,0.s) (success)
 Params: n= 57
-Tactic call repeat-destruct ran for 1.523 secs (1.523u,0.s) (success)
+Tactic call repeat-destruct ran for 1.587 secs (1.587u,0.s) (success)
 Tactic call cbn ran for 0. secs (0.u,0.s) (success)
 Params: n= 58
-Tactic call repeat-destruct ran for 1.593 secs (1.593u,0.s) (success)
+Tactic call repeat-destruct ran for 1.686 secs (1.686u,0.s) (success)
 Tactic call cbn ran for 0. secs (0.u,0.s) (success)
 Params: n= 59
-Tactic call repeat-destruct ran for 1.672 secs (1.672u,0.s) (success)
+Tactic call repeat-destruct ran for 1.778 secs (1.778u,0.s) (success)
 Tactic call cbn ran for 0. secs (0.u,0.s) (success)
 Params: n= 60
-Tactic call repeat-destruct ran for 1.754 secs (1.754u,0.s) (success)
+Tactic call repeat-destruct ran for 1.864 secs (1.864u,0.s) (success)
 Tactic call cbn ran for 0. secs (0.u,0.s) (success)
 Params: n= 61
-Tactic call repeat-destruct ran for 1.848 secs (1.848u,0.s) (success)
+Tactic call repeat-destruct ran for 1.974 secs (1.974u,0.s) (success)
 Tactic call cbn ran for 0. secs (0.u,0.s) (success)
 Params: n= 62
-Tactic call repeat-destruct ran for 1.988 secs (1.988u,0.s) (success)
+Tactic call repeat-destruct ran for 2.079 secs (2.079u,0.s) (success)
 Tactic call cbn ran for 0. secs (0.u,0.s) (success)
 Params: n= 63
-Tactic call repeat-destruct ran for 2.101 secs (2.101u,0.s) (success)
+Tactic call repeat-destruct ran for 2.227 secs (2.227u,0.s) (success)
 Tactic call cbn ran for 0. secs (0.u,0.s) (success)
 Params: n= 64
-Tactic call repeat-destruct ran for 2.178 secs (2.178u,0.s) (success)
+Tactic call repeat-destruct ran for 2.346 secs (2.346u,0.s) (success)
 Tactic call cbn ran for 0. secs (0.u,0.s) (success)

@@ -1,62 +1,62 @@
 Params: n= 12000
-Tactic call cbv ran for 9.635 secs (8.993u,0.639s) (success)
+Tactic call cbv ran for 9.522 secs (8.813u,0.708s) (success)
 Params: n= 12100
-Tactic call cbv ran for 10.581 secs (9.947u,0.627s) (success)
+Tactic call cbv ran for 10.853 secs (10.229u,0.623s) (success)
 Params: n= 12200
-Tactic call cbv ran for 12.579 secs (12.065u,0.503s) (success)
+Tactic call cbv ran for 12.442 secs (12.03u,0.411s) (success)
 Params: n= 12300
-Tactic call cbv ran for 8.865 secs (8.864u,0.s) (success)
+Tactic call cbv ran for 8.963 secs (8.963u,0.s) (success)
 Params: n= 12400
-Tactic call cbv ran for 9.48 secs (9.48u,0.s) (success)
+Tactic call cbv ran for 14.918 secs (14.318u,0.599s) (success)
 Params: n= 12500
-Tactic call cbv ran for 15.759 secs (15.256u,0.496s) (success)
+Tactic call cbv ran for 11.253 secs (10.552u,0.7s) (success)
 Params: n= 12600
-Tactic call cbv ran for 11.325 secs (10.641u,0.683s) (success)
+Tactic call cbv ran for 10.678 secs (10.582u,0.095s) (success)
 Params: n= 12700
-Tactic call cbv ran for 10.618 secs (10.526u,0.092s) (success)
+Tactic call cbv ran for 14.698 secs (14.174u,0.524s) (success)
 Params: n= 12800
-Tactic call cbv ran for 15.119 secs (14.871u,0.248s) (success)
+Tactic call cbv ran for 11.792 secs (11.108u,0.683s) (success)
 Params: n= 12900
-Tactic call cbv ran for 12.884 secs (12.552u,0.332s) (success)
+Tactic call cbv ran for 13.331 secs (13.287u,0.043s) (success)
 Params: n= 13000
-Tactic call cbv ran for 13.261 secs (13.261u,0.s) (success)
+Tactic call cbv ran for 11.48 secs (11.432u,0.047s) (success)
 Params: n= 13100
-Tactic call cbv ran for 11.224 secs (10.916u,0.307s) (success)
+Tactic call cbv ran for 14.941 secs (14.456u,0.484s) (success)
 Params: n= 13200
-Tactic call cbv ran for 14.655 secs (14.207u,0.447s) (success)
+Tactic call cbv ran for 10.764 secs (10.764u,0.s) (success)
 Params: n= 13300
-Tactic call cbv ran for 14.597 secs (14.045u,0.552s) (success)
+Tactic call cbv ran for 15.419 secs (14.707u,0.711s) (success)
 Params: n= 13400
-Tactic call cbv ran for 11.812 secs (11.556u,0.255s) (success)
+Tactic call cbv ran for 12.458 secs (11.797u,0.659s) (success)
 Params: n= 13500
-Tactic call cbv ran for 13.165 secs (12.997u,0.168s) (success)
+Tactic call cbv ran for 15.049 secs (14.209u,0.84s) (success)
 Params: n= 13600
-Tactic call cbv ran for 12.258 secs (12.258u,0.s) (success)
+Tactic call cbv ran for 13.076 secs (12.884u,0.191s) (success)
 Params: n= 13700
-Tactic call cbv ran for 12.597 secs (12.372u,0.223s) (success)
+Tactic call cbv ran for 13.347 secs (12.766u,0.58s) (success)
 Params: n= 13800
-Tactic call cbv ran for 12.59 secs (12.59u,0.s) (success)
+Tactic call cbv ran for 12.64 secs (12.496u,0.143s) (success)
 Params: n= 13900
-Tactic call cbv ran for 15.071 secs (15.071u,0.s) (success)
+Tactic call cbv ran for 18.38 secs (17.656u,0.724s) (success)
 Params: n= 14000
-Tactic call cbv ran for 12.393 secs (12.393u,0.s) (success)
+Tactic call cbv ran for 14.129 secs (13.241u,0.887s) (success)
 Params: n= 14100
-Tactic call cbv ran for 13.203 secs (13.203u,0.s) (success)
+Tactic call cbv ran for 14.453 secs (14.453u,0.s) (success)
 Params: n= 14200
-Tactic call cbv ran for 19.53 secs (19.13u,0.399s) (success)
+Tactic call cbv ran for 12.664 secs (12.664u,0.s) (success)
 Params: n= 14300
-Tactic call cbv ran for 14.747 secs (14.559u,0.187s) (success)
+Tactic call cbv ran for 14.664 secs (14.664u,0.s) (success)
 Params: n= 14400
-Tactic call cbv ran for 14.459 secs (13.875u,0.583s) (success)
+Tactic call cbv ran for 13.239 secs (13.239u,0.s) (success)
 Params: n= 14500
-Tactic call cbv ran for 17.876 secs (17.284u,0.591s) (success)
+Tactic call cbv ran for 20.408 secs (19.968u,0.439s) (success)
 Params: n= 14600
-Tactic call cbv ran for 16.828 secs (16.476u,0.352s) (success)
+Tactic call cbv ran for 15.302 secs (15.193u,0.107s) (success)
 Params: n= 14700
-Tactic call cbv ran for 16.329 secs (16.329u,0.s) (success)
+Tactic call cbv ran for 17.943 secs (17.386u,0.555s) (success)
 Params: n= 14800
-Tactic call cbv ran for 16.479 secs (16.479u,0.s) (success)
+Tactic call cbv ran for 14.81 secs (14.518u,0.291s) (success)
 Params: n= 14900
-Tactic call cbv ran for 16.167 secs (16.166u,0.s) (success)
+Tactic call cbv ran for 16.505 secs (16.501u,0.004s) (success)
 Params: n= 15000
-Tactic call cbv ran for 16.108 secs (16.108u,0.s) (success)
+Tactic call cbv ran for 14.433 secs (14.433u,0.s) (success)

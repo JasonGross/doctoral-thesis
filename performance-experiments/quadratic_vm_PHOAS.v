@@ -6,6 +6,7 @@ Local Infix "/" := Nat.div : nat_scope.
 
 Definition args_of_size (s : size) : list nat
   := match s with
+     | Sanity => seq 0 3
      | SuperFast => List.map (fun x => x * 5) (seq 0 (120 / 5))
      | Fast => List.map (fun x => x * 5) (seq 0 (150 / 5))
      | Medium => []

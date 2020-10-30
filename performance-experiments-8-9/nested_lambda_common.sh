@@ -2,8 +2,12 @@
 # USAGE: $0 SIZE
 
 case "$1" in
-    SuperFast)
+    Sanity)
         min=1
+        max=3
+        ;;
+    SuperFast)
+        min=4
         max=1500
         ;;
     Fast)

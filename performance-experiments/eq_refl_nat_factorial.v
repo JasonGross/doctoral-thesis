@@ -10,6 +10,7 @@ Global Strategy 1 [id].
 
 Definition args_of_size (s : size) : list nat
   := match s with
+     | Sanity => seq 0 3
      | SuperFast => seq 0 11
      | Fast => seq 0 12
      | Medium => []

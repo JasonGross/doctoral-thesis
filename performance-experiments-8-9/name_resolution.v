@@ -2,6 +2,7 @@ Require Import PerformanceExperiments.Harness.
 
 Definition args_of_size (s : size) : list nat
   := match s with
+     | Sanity => seq 0 3
      | SuperFast => seq 0 1500
      | Fast => seq 0 4000
      | Medium => seq 0 (4000 + 4000)

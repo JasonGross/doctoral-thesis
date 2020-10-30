@@ -17,6 +17,7 @@ Ltac build_conj_true_cps n k :=
 
 Definition args_of_size (s : size) : list nat
   := match s with
+     | Sanity => seq 1 3
      | SuperFast => seq 1 100
      | Fast => seq 100 200
                    ++ List.map (fun x => 200 + x * 2) (seq 0 50)

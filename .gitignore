@@ -352,3 +352,13 @@ nra.cache
 !/saman-reader-agreement-signed.pdf
 
 !/rewriting/trust*.pdf
+
+native_compute_profile_*.data
+
+performance-experiments*/Ltac2Compat/Array.v
+performance-experiments*/Ltac2Compat/Constr.v
+performance-experiments*/Ltac2Compat/Init.v
+performance-experiments*/*.gnuplot
+performance-experiments*/*.txt-fits.dat
+performance-experiments*/fit.log
+performance-experiments*/_CoqProject

@@ -2,8 +2,11 @@
 # USAGE: $0 SIZE
 
 case "$1" in
+    Sanity)
+        vs="$(seq 1 1 3)"
+        ;;
     SuperFast)
-        vs="$(seq 1 1 200)"
+        vs="$(seq 4 1 200)"
         ;;
     Fast)
         vs="$(seq 205 5 450) $(seq 500 100 1500)"

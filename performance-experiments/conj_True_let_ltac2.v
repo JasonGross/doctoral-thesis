@@ -15,27 +15,34 @@ Notation args_of_size := conj_True_uconstr.args_of_size.
 Module Import WithLtac2.
   Import Ltac2.Notations.
 
-  Ltac2 rec mkres (n : int) (t : constr) (v : constr) (prop : constr) (and : constr) (conj : constr) (tru : constr) (i : constr) :=
+  Ltac2 rec mkres (n : int) (t : constr) (v : constr) (cst : cast) (prop : constr) (and : constr) (conj : constr) (tru : constr) (i : constr) :=
     match Int.lt 0 n with
     | false => Unsafe.make
                  (Unsafe.mkLetIn
-                    (Binder.make None t)
-                    prop
+                    (Binder.make None prop)
+                    t
                     v)
     | true
       => let rest := mkres (Int.sub n 1)
                            (Unsafe.make (Unsafe.App and (Array.of_list [tru;Unsafe.make (Unsafe.Rel 2)])))
                            (Unsafe.make (Unsafe.App conj (Array.of_list [tru;Unsafe.make (Unsafe.Rel 3);i;Unsafe.make (Unsafe.Rel 2)])))
-                           prop and conj tru i in
+                           cst prop and conj tru i in
          Unsafe.make
            (Unsafe.mkLetIn
-              (Binder.make None t)
-              prop
+              (Binder.make None prop)
+              t
               (Unsafe.make
                  (Unsafe.mkLetIn
-                    (Binder.make None v)
-                    (Unsafe.make (Unsafe.Rel 1))
+                    (* work around COQBUG(https://github.com/coq/coq/issues/12601) *)
+                    (Binder.make None (Unsafe.make (Unsafe.Cast (Unsafe.make (Unsafe.Rel 1)) cst prop)))
+                    v
                     rest)))
+    end.
+
+  Ltac2 get_normal_cast () :=
+    match Unsafe.kind '(I : True) with
+    | Unsafe.Cast _ cst _ => cst
+    | _ => Control.throw Not_found
     end.
 
   Ltac2 rec int_of_nat n :=
@@ -46,10 +53,11 @@ Module Import WithLtac2.
   Ltac2 time_solve_goal0 n :=
     let n := int_of_nat n in
     let n' := Int.sub n 1 in
+    let cst := get_normal_cast () in
     let v := Control.time
                (Some "build-and-typecheck")
                (fun _ =>
-                  let v := Control.time (Some "build") (fun _ => mkres n' 'True 'I 'Prop 'and '(@conj) 'True 'I) in
+                  let v := Control.time (Some "build") (fun _ => mkres n' 'True 'I cst 'Prop 'and '(@conj) 'True 'I) in
                   let __ := Control.time (Some "typecheck") (fun _ => Unsafe.check v) in
                   v) in
     Control.time (Some "refine") (fun _ => refine v).

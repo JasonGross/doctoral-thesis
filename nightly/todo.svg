@@ -1,4 +1,4 @@
-<svg xmlns="http://www.w3.org/2000/svg" width="41em" height="928em"><text x="0" y="0">
+<svg xmlns="http://www.w3.org/2000/svg" width="41em" height="927em"><text x="0" y="0">
 <tspan x="0" dy="1.2em">TODO: Make sure to exclude no files (not rewriting) in file jgross-thesis.tex </tspan>
 <tspan x="0" dy="1.2em">&#160;&#160;on input line 55.</tspan>
 <tspan x="0" dy="1.2em">MINOR TODO: More formal wording in file abstract.tex on input line 40.</tspan>
@@ -290,8 +290,7 @@
 <tspan x="0" dy="1.2em">&#160;&#160;chap2-perf-degredation-survey.tex on input line 256.</tspan>
 <tspan x="0" dy="1.2em">MINOR TODO: Find a place for this note:  in file </tspan>
 <tspan x="0" dy="1.2em">&#160;&#160;chap2-perf-degredation-survey.tex on input line 335.</tspan>
-<tspan x="0" dy="1.2em">MINOR TODO: Look into \url </tspan>
-<tspan x="0" dy="1.2em">&#160;&#160;{https://people.eecs.berkeley.edu/~necula/papers.html} and \url </tspan>
+<tspan x="0" dy="1.2em">MINOR TODO: Look into \textcite {Efficient1998Necula} and \url </tspan>
 <tspan x="0" dy="1.2em">&#160;&#160;{http://adam.chlipala.net/papers/StrictTLDI05/} for past work on eliding some </tspan>
 <tspan x="0" dy="1.2em">&#160;&#160;parameters in file chap2-perf-degredation-survey.tex on input line 336.</tspan>
 <tspan x="0" dy="1.2em">MINOR TODO: maybe look into TAPL in file chap2-perf-degredation-survey.tex on </tspan>

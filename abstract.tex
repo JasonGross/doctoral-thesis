@@ -37,24 +37,30 @@
 % 350 words, longer abstracts will be edited by ProQuest
 %
 % https://libraries.mit.edu/distinctive-collections/thesis-specs/#graduate
-\minortodo{More formal wording}
-Formally verified proofs are important.
-Unfortunately, large-scale proofs, especially automated ones, in Coq, can be quite slow.
+Formal verification that programs are bug-free and behave correctly are increasingly valuable as our world comes to rely more on software for critical infrastructure.
+A significant and under-studied cost of developing verification, especially at scale, is the computer performance of proof generation.
 
-This thesis aims to be a partial guide to resolving the issue of slowness.
-We present a survey of the landscape of slowness in Coq, with a number of micro- and macro-benchmarks.
+This thesis aims to be a partial guide to identifying and resolving performance bottlenecks in dependently-typed tactic-driven proof assistants such as Coq.
+We present a survey of the landscape of performance issues in Coq, with a number of micro- and macro-benchmarks.
 We describe various metrics that allow prediction of slowness, such as term size, goal size, and number of binders, and note the occasional surprise-lack-of-bottleneck for some factors, such as total proof term size.
+To our knowledge such a roadmap to performance bottlenecks is a new contribution of this thesis.
 
 We identify three main categories of workarounds and partial solutions to slowness: design of APIs of Gallina libraries; changes to Coq's type theory, implementation, or tooling; and automation design patterns, including proof by reflection.
 We present lessons drawn from the case-studies of a category-theory library, a proof-producing parser-generator, and a verified compiler and code generator for low-level cryptographic primitives.
 
-\minortodo{Fix run-on sentence}
-The central new contribution presented by this thesis, beyond hopefully providing a roadmap to avoid slowness in large Coq developments, is a reflective framework for partial evaluation and rewriting which, in addition to being used to compile a code-generator for field arithmetic cryptographic primitives which generates the code currently used in Google Chrome, can serve as a template for a possibly replacement for tactics such as \texttt{rewrite}, \texttt{rewrite\_strat}, \texttt{autorewrite}, \texttt{simpl}, and \texttt{cbn} which achieves much better performance by running in Coq's VM while still allowing the flexibility of equational reasoning.
+The central new technical contribution presented by this thesis is a reflective framework for partial evaluation and rewriting.
+Partial evaluation is a classic technique for generating lean, customized code from libraries that start with more bells and whistles.
+It is also an attractive approach to creation of formally verified systems, where theorems can be proved about libraries, yielding correctness of all specializations ``for free.''
+However, it can be challenging to make library specialization both performant (at compile time and runtime) and trustworthy.
+We present what we believe is the first scalably performant realization of an approach for specialization at the speed of native-code execution which does not require adding to the trusted code base.
+Our extensible engine, which combines the traditional concepts of tailored term reduction and automatic rewriting from hint databases with on-the-fly generation of inductive codes for constants, is also of interest to replace these ingredients in proof assistants' proof checkers and tactic engines, at the same time as it supports extraction to standalone compilers from library parameters to specialized code.
+%This framework is already used to compile a code-generator for field arithmetic cryptographic primitives which generates the code currently used in Google Chrome.
+%We hope this framework can serve as a template for replacing tactics such as \texttt{rewrite}, \texttt{rewrite\_strat}, \texttt{autorewrite}, \texttt{simpl}, and \texttt{cbn} which achieves much better performance by running in Coq's VM while still allowing the flexibility of equational reasoning.
+Additionally, we use the development of this framework itself as a case-study for the various performance issues that can arise when designing large proof libraries.
 
-
-\minortodo{Maybe instead use the alternative from the thesis-proposal?}
-\begin{minorcomment}
-The proposed research is a study of performance issues that come up in engineering large-scale proof-based systems in Coq.
-The thesis presents lessons learned about achieving acceptable performance in Coq in the course of case-studies on formalizing category theory, developing a parser synthesizer, and constructing a verified compiler for synthesizing efficient low-level cryptographic primitives.
-We also present a novel method of simple and fast reification, and a prototype tool for faster rewriting and customizable reduction which does not require extending Coq's trusted code base.
-\end{minorcomment}
+Finally, we present a novel method of simple and fast reification, developed and published during the course of doctoral study.
+That is, we show how to generate first-class abstract syntax trees from ``native'' terms of Coq's logic, suitable as inputs to verified compilers or procedures in the \emph{proof-by-reflection} style.
+Our new strategy, based on simple generalization of subterms as variables, is straightforward, short, and fast.
+Outperforming 16 of the 18 additional variants of reflection that we benchmarked, only writing an OCaml plugin leads to universally faster reification.
+Our method is the most concise of the strategies we considered, reifying terms using only two to four lines of \Ltac---beyond lists of the identifiers to reify and their reified variants.
+Additionally, our strategy automatically provides error messages that are no less helpful than Coq's own error messages.

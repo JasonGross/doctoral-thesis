@@ -48,6 +48,7 @@ proofy
 redex
 redexes
 repo
+scalably
 simp
 uncurrying
 unswap

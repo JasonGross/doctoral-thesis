@@ -16,6 +16,7 @@ MAIN_PROPOSAL_PDFS := jgross-thesis-proposal.pdf jgross-thesis-proposal-signed.p
 PROPOSAL_PDFS = $(MAIN_PROPOSAL_PDFS) $(READER_AGREEMENT_PDFS)
 UMI_PDFS = extra-title-abstract.pdf umi-proquest-form-adjusted.pdf umi-proquest-form-full.pdf
 THESIS_PDFS = jgross-thesis.pdf jgross-thesis-extra-todos.pdf
+THESIS_EXTRA_PDFS = JGross-PhD-EECS-Feb2021.pdf
 MAIN_TEXS = $(patsubst \include{%},%.tex,$(filter \include{%},$(shell cat appendix-files.tex main-files.tex jgross-thesis.tex)))
 THESIS_TEXS = packages.tex contents.tex mitthesis.cls abstract.tex cover.tex coverinfo.tex new-date.tex todo.tex main-files.tex appendix-files.tex spellcheck-results.tex $(MAIN_TEXS)
 PROPOSAL_TEXS = new-date-proposal.tex abstract-proposal.tex
@@ -26,7 +27,7 @@ THESIS_VS := fragments/CategoryExponentialLaws.v fragments/CategoryExponentialLa
 ALL_TEXS = $(THESIS_TEXS) $(PROPOSAL_TEXS) $(UMI_TEXS) $(COMPLETION_TEXS)
 TEXT_TEXS = $(filter-out spellcheck-results.tex packages.tex mitthesis.cls,$(ALL_TEXS))
 READER_AGREEMENT_SIGNED_PDFS := $(subst unsigned,signed,$(READER_AGREEMENT_PDFS))
-PDFS = $(PROPOSAL_PDFS) $(THESIS_PDFS) $(UMI_PDFS) $(COMPLETION_PDFS)
+PDFS = $(PROPOSAL_PDFS) $(THESIS_PDFS) $(UMI_PDFS) $(COMPLETION_PDFS) $(THESIS_EXTRA_PDFS)
 DICTS = $(addprefix etc/dicts/,abbreviations.txt jargon.txt names.txt words.txt not-words.txt bibkeys.spl labels.spl)
 CUSTOM_DICT := etc/dicts/custom.spl
 
@@ -72,7 +73,7 @@ print-main-contents::
 
 proposal: $(PROPOSAL_PDFS)
 
-thesis: $(THESIS_PDFS)
+thesis: $(THESIS_PDFS) $(THESIS_EXTRA_PDFS)
 
 umi-proquest-form-full: $(UMI_PDFS)
 umi-proquest-form-full.pdf: umi-proquest-form-adjusted.tex
@@ -80,6 +81,9 @@ umi-proquest-form-full.pdf: umi-proquest-form-adjusted.tex
 completion-full: $(COMPLETION_PDFS)
 PhD_CompletionForm-full.pdf: PhD_CompletionForm-adjusted.tex resume/Resume-curriculum-vitae.pdf
 $(COMPLETION_PDFS): new-date-submission.tex coverinfo.tex
+
+$(THESIS_EXTRA_PDFS): jgross-thesis.pdf
+	cp $< $@
 
 .PHONY: update-resume
 update-resume:

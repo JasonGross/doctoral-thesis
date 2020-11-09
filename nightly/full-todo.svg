@@ -1,4 +1,4 @@
-<svg xmlns="http://www.w3.org/2000/svg" width="41em" height="1727em"><text x="0" y="0">
+<svg xmlns="http://www.w3.org/2000/svg" width="41em" height="1720em"><text x="0" y="0">
 <tspan x="0" dy="1.2em">TODO: Make sure to exclude no files (not rewriting) in file jgross-thesis.tex </tspan>
 <tspan x="0" dy="1.2em">&#160;&#160;on input line 55.</tspan>
 <tspan x="0" dy="1.2em">TODO: Some sort of summary of argument-so-far here in file </tspan>
@@ -13,8 +13,6 @@
 <tspan x="0" dy="1.2em">&#160;&#160;chap2-perf-degredation-survey.tex on input line 1308.</tspan>
 <tspan x="0" dy="1.2em">TODO: Maybe another look-forward at what comes next? in file </tspan>
 <tspan x="0" dy="1.2em">&#160;&#160;chap2-perf-degredation-survey.tex on input line 1309.</tspan>
-<tspan x="0" dy="1.2em">TODO: cite \textcite {Deep2015Gu} in this chapter, very relevant in file </tspan>
-<tspan x="0" dy="1.2em">&#160;&#160;chap3-api-design.tex on input line 3.</tspan>
 <tspan x="0" dy="1.2em">TODO: move this paragraph elsewhere in file chap4-reflection.tex on input line </tspan>
 <tspan x="0" dy="1.2em">&#160;&#160;21.</tspan>
 <tspan x="0" dy="1.2em">TODO: what&apos;s a good way to end this chapter? in file chap4-reflection.tex on </tspan>
@@ -428,29 +426,29 @@
 <tspan x="0" dy="1.2em">MINOR TODO: does this need more exposition? in file </tspan>
 <tspan x="0" dy="1.2em">&#160;&#160;chap2-perf-degredation-survey.tex on input line 1305.</tspan>
 <tspan x="0" dy="1.2em">MINOR TODO: adjust the tone of what comes after the colon in the previous </tspan>
-<tspan x="0" dy="1.2em">&#160;&#160;sentence to fit with this paper in file chap3-api-design.tex on input line 22.</tspan>
+<tspan x="0" dy="1.2em">&#160;&#160;sentence to fit with this paper in file chap3-api-design.tex on input line 20.</tspan>
 <tspan x="0" dy="1.2em">MINOR TODO: flesh out this section in file chap3-api-design.tex on input line </tspan>
-<tspan x="0" dy="1.2em">&#160;&#160;44.</tspan>
+<tspan x="0" dy="1.2em">&#160;&#160;42.</tspan>
 <tspan x="0" dy="1.2em">MINOR TODO: More examples from the rewriter? in file chap3-api-design.tex on </tspan>
-<tspan x="0" dy="1.2em">&#160;&#160;input line 45.</tspan>
+<tspan x="0" dy="1.2em">&#160;&#160;input line 43.</tspan>
 <tspan x="0" dy="1.2em">MINOR TODO: forward-cite the rewriter? in file chap3-api-design.tex on input </tspan>
-<tspan x="0" dy="1.2em">&#160;&#160;line 46.</tspan>
+<tspan x="0" dy="1.2em">&#160;&#160;line 44.</tspan>
 <tspan x="0" dy="1.2em">MINOR TODO: this is duplicative with text above in file chap3-api-design.tex </tspan>
-<tspan x="0" dy="1.2em">&#160;&#160;on input line 99.</tspan>
+<tspan x="0" dy="1.2em">&#160;&#160;on input line 97.</tspan>
 <tspan x="0" dy="1.2em">MINOR TODO: maybe this section should come first? in file chap3-api-design.tex </tspan>
-<tspan x="0" dy="1.2em">&#160;&#160;on input line 198.</tspan>
+<tspan x="0" dy="1.2em">&#160;&#160;on input line 196.</tspan>
 <tspan x="0" dy="1.2em">MINOR TODO: figure out why spacing is strange above this code example in file </tspan>
-<tspan x="0" dy="1.2em">&#160;&#160;chap3-api-design.tex on input line 267.</tspan>
+<tspan x="0" dy="1.2em">&#160;&#160;chap3-api-design.tex on input line 265.</tspan>
 <tspan x="0" dy="1.2em">MINOR TODO: remove use of ``you&apos;&apos; in file chap3-api-design.tex on input line </tspan>
-<tspan x="0" dy="1.2em">&#160;&#160;300.</tspan>
-<tspan x="0" dy="1.2em">MINOR TODO: explain reasoning in file chap3-api-design.tex on input line 301.</tspan>
+<tspan x="0" dy="1.2em">&#160;&#160;298.</tspan>
+<tspan x="0" dy="1.2em">MINOR TODO: explain reasoning in file chap3-api-design.tex on input line 299.</tspan>
 <tspan x="0" dy="1.2em">MINOR TODO: Select one of these graphs and use it and give it the label </tspan>
 <tspan x="0" dy="1.2em">&#160;&#160;{fig:timing-make-destruct-record-definition-abstraction} in file </tspan>
-<tspan x="0" dy="1.2em">&#160;&#160;chap3-api-design.tex on input line 403.</tspan>
+<tspan x="0" dy="1.2em">&#160;&#160;chap3-api-design.tex on input line 401.</tspan>
 <tspan x="0" dy="1.2em">MINOR TODO: move figures up to be closer to references in file </tspan>
-<tspan x="0" dy="1.2em">&#160;&#160;chap3-api-design.tex on input line 405.</tspan>
+<tspan x="0" dy="1.2em">&#160;&#160;chap3-api-design.tex on input line 403.</tspan>
 <tspan x="0" dy="1.2em">MINOR TODO: Find more examples to talk about here? in file </tspan>
-<tspan x="0" dy="1.2em">&#160;&#160;chap3-api-design.tex on input line 748.</tspan>
+<tspan x="0" dy="1.2em">&#160;&#160;chap3-api-design.tex on input line 746.</tspan>
 <tspan x="0" dy="1.2em">MINOR TODO: reformat this for flow, right now it&apos;s from </tspan>
 <tspan x="0" dy="1.2em">&#160;&#160;reification-by-parametricity in file chap4-reflection.tex on input line 5.</tspan>
 <tspan x="0" dy="1.2em">MINOR TODO: should we cite this many things here, or remove some of them? in </tspan>
@@ -570,7 +568,7 @@
 <tspan x="0" dy="1.2em">&#160;&#160;http://www.nuprl.org/Publications/? in file chap1-introduction.tex on input </tspan>
 <tspan x="0" dy="1.2em">&#160;&#160;line 330.</tspan>
 <tspan x="0" dy="1.2em">MINOR QUESTION FOR ADAM: how much should I talk about the category theory </tspan>
-<tspan x="0" dy="1.2em">&#160;&#160;library itself in my thesis? in file chap3-api-design.tex on input line 203.</tspan>
+<tspan x="0" dy="1.2em">&#160;&#160;library itself in my thesis? in file chap3-api-design.tex on input line 201.</tspan>
 <tspan x="0" dy="1.2em">MINOR QUESTION FOR ADAM: is this a place to cite POPLMark? What should be said </tspan>
 <tspan x="0" dy="1.2em">&#160;&#160;about it? Should I mention more sorts of representations? in file </tspan>
 <tspan x="0" dy="1.2em">&#160;&#160;chap4-reflection.tex on input line 151.</tspan>
@@ -607,14 +605,14 @@
 <tspan x="0" dy="1.2em">&#160;&#160;input line 1113.</tspan>
 <tspan x="0" dy="1.2em">Warning: Reference `fig:exponential-laws:def:coq&apos; on page 62 undefined on </tspan>
 <tspan x="0" dy="1.2em">&#160;&#160;input line 1113.</tspan>
-<tspan x="0" dy="1.2em">Warning: Reference `sec:categories&apos; on page 71 undefined on input line 92.</tspan>
-<tspan x="0" dy="1.2em">Warning: Reference `sec:other&apos; on page 72 undefined on input line 98.</tspan>
+<tspan x="0" dy="1.2em">Warning: Reference `sec:categories&apos; on page 71 undefined on input line 90.</tspan>
+<tspan x="0" dy="1.2em">Warning: Reference `sec:other&apos; on page 72 undefined on input line 96.</tspan>
 <tspan x="0" dy="1.2em">Warning: Reference `sec:arguments-vs-fields&apos; on page 76 undefined on input </tspan>
-<tspan x="0" dy="1.2em">&#160;&#160;line 220.</tspan>
+<tspan x="0" dy="1.2em">&#160;&#160;line 218.</tspan>
 <tspan x="0" dy="1.2em">Warning: Reference `fig:timing-make-destruct-record&apos; on page 79 undefined on </tspan>
-<tspan x="0" dy="1.2em">&#160;&#160;input line 290.</tspan>
+<tspan x="0" dy="1.2em">&#160;&#160;input line 288.</tspan>
 <tspan x="0" dy="1.2em">Warning: Reference `fig:timing-make-destruct-record&apos; on page 79 undefined on </tspan>
-<tspan x="0" dy="1.2em">&#160;&#160;input line 297.</tspan>
+<tspan x="0" dy="1.2em">&#160;&#160;input line 295.</tspan>
 <tspan x="0" dy="1.2em">Warning: Reference `ch:rewriting&apos; on page 94 undefined on input line 153.</tspan>
 <tspan x="0" dy="1.2em">Warning: Reference `sec:setoid-rewrite-bottlenecks&apos; on page 100 undefined on </tspan>
 <tspan x="0" dy="1.2em">&#160;&#160;input line 372.</tspan>
@@ -716,9 +714,9 @@
 <tspan x="0" dy="1.2em">LaTeX Font Info:    Font shape `TU/lmtt/bx/n&apos; in size &lt;12&gt; not available Font </tspan>
 <tspan x="0" dy="1.2em">&#160;&#160;shape `TU/lmtt/b/n&apos; tried instead on input line 2.</tspan>
 <tspan x="0" dy="1.2em">LaTeX Font Info:    Font shape `TU/latinmodern-math.otf(2)/m/n&apos; will be scaled </tspan>
-<tspan x="0" dy="1.2em">&#160;&#160;to size 14.4002pt on input line 248.</tspan>
+<tspan x="0" dy="1.2em">&#160;&#160;to size 14.4002pt on input line 246.</tspan>
 <tspan x="0" dy="1.2em">LaTeX Font Info:    Font shape `TU/latinmodern-math.otf(3)/m/n&apos; will be scaled </tspan>
-<tspan x="0" dy="1.2em">&#160;&#160;to size 14.39977pt on input line 248.</tspan>
+<tspan x="0" dy="1.2em">&#160;&#160;to size 14.39977pt on input line 246.</tspan>
 <tspan x="0" dy="1.2em">LaTeX Font Info:    Font shape `TU/lmtt/bx/n&apos; in size &lt;10&gt; not available Font </tspan>
 <tspan x="0" dy="1.2em">&#160;&#160;shape `TU/lmtt/b/n&apos; tried instead on input line 2.</tspan>
 <tspan x="0" dy="1.2em">LaTeX Font Info:    Font shape `TU/latinmodern-math.otf(2)/m/n&apos; will be scaled </tspan>
@@ -866,30 +864,26 @@
 <tspan x="0" dy="1.2em">]</tspan>
 <tspan x="0" dy="1.2em">]</tspan>
 <tspan x="0" dy="1.2em">Chapter 3.</tspan>
-<tspan x="0" dy="1.2em">[69]</tspan>
-<tspan x="0" dy="1.2em">Overfull \hbox (44.22382pt too wide) in paragraph at lines 29--29</tspan>
+<tspan x="0" dy="1.2em">Underfull \vbox (badness 10000) has occurred while \output is active []</tspan>
+<tspan x="0" dy="1.2em"> [69]</tspan>
+<tspan x="0" dy="1.2em">Overfull \hbox (44.22382pt too wide) in paragraph at lines 27--27</tspan>
 <tspan x="0" dy="1.2em">[]\TU/lmr/bx/n/17.28 When And How To Use De-pen-dent Types Painlessly </tspan>
 <tspan x="0" dy="1.2em"> []</tspan>
 <tspan x="0" dy="1.2em">[70]</tspan>
-<tspan x="0" dy="1.2em">Overfull \hbox (24.74829pt too wide) in paragraph at lines 73--88</tspan>
+<tspan x="0" dy="1.2em">Overfull \hbox (24.74829pt too wide) in paragraph at lines 71--86</tspan>
 <tspan x="0" dy="1.2em">[]\TU/pcr/bx/n/12 Al-though pre-existing for-mal-iza-tions of cat-e-gory </tspan>
 <tspan x="0" dy="1.2em">&#160;&#160;the-ory in proof as-sis-tants abound [[]AKS13[];</tspan>
 <tspan x="0" dy="1.2em"> []</tspan>
 <tspan x="0" dy="1.2em">[71]</tspan>
-<tspan x="0" dy="1.2em">Underfull \vbox (badness 10000) has occurred while \output is active []</tspan>
-<tspan x="0" dy="1.2em"> [73] [74]</tspan>
-<tspan x="0" dy="1.2em">Overfull \hbox (11.30377pt too wide) in paragraph at lines 184--184</tspan>
+<tspan x="0" dy="1.2em">Overfull \hbox (11.30377pt too wide) in paragraph at lines 182--182</tspan>
 <tspan x="0" dy="1.2em">[]\TU/lmr/bx/n/14.4 Mov-ing For-ward: Com-pu-ta-tion Rules for Pat-tern Match-</tspan>
 <tspan x="0" dy="1.2em"> []</tspan>
-<tspan x="0" dy="1.2em">Underfull \vbox (badness 1019) has occurred while \output is active []</tspan>
-<tspan x="0" dy="1.2em"> [75]</tspan>
+<tspan x="0" dy="1.2em">[75]</tspan>
 <tspan x="0" dy="1.2em">[76]</tspan>
 <tspan x="0" dy="1.2em"> [77]</tspan>
 <tspan x="0" dy="1.2em">Underfull \vbox (badness 10000) has occurred while \output is active []</tspan>
-<tspan x="0" dy="1.2em"> [78]</tspan>
-<tspan x="0" dy="1.2em">Underfull \vbox (badness 10000) has occurred while \output is active []</tspan>
 <tspan x="0" dy="1.2em"> [80])</tspan>
-<tspan x="0" dy="1.2em">Overfull \hbox (7.14569pt too wide) in paragraph at lines 400--404</tspan>
+<tspan x="0" dy="1.2em">Overfull \hbox (7.14569pt too wide) in paragraph at lines 398--402</tspan>
 <tspan x="0" dy="1.2em">[]\TU/pcr/bx/n/12 We can, how-ever, avoid this cost by turn-ing on prim-i-tive </tspan>
 <tspan x="0" dy="1.2em">&#160;&#160;pro-jec-tions via \remove@tlig Set Primitive</tspan>
 <tspan x="0" dy="1.2em"> []</tspan>

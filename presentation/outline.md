@@ -42,14 +42,17 @@
   + The Number of Nested Abstraction Barriers
 - (note that there are others, but these are the major ones of my experience, and I believe they generalize well)
 
-(((Andres suggests:
+-----
+
+Andres suggests:
 for each project:
 - a description of the overall goal of the project
 - state key performance bottleneck
 - relate it to project goals
 - go over methods tried and how they went
 - highlight (verbally and on slides) key takeaways you will refer back to in the end when you make recommendations
-)))
+
+-----
 
 ### Category Theory Library:
 - Explain CT library very briefly

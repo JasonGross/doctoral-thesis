@@ -1,8 +1,8 @@
-# Outline of Defense 
+# Outline of Defense
 
 ## Outline
 
-- Point at the problem, explain why it’s important (standing in the way of verification reaching its promise, no-one seems to be tackling it or even systematically investigating it).  Note that I won’t be solving this problem.
+- Point at the problem, explain why it’s important (standing in the way of verification reaching its promise, no-one seems to be tackling it or even systematically investigating it).  Note that this defense is about describing this problem --- I haven't solved it yet.
 - Share the projects I’ve done in my PhD, how this issue has shown up in them, what I’ve learnt about this problem from them
 - Share what I've learnt about the landscape of this problem
 - Explain why the folklore solutions won't cut it
@@ -22,7 +22,7 @@
 - The problem is asymptotic performance.
 - IMPORTANT: I don't see us closing this gap with the research we're currently doing!
 - I've spent 8 years working in verification, become something of an expert at making verification automation work.
-- More people like me spending more time won't get us there.
+- Simply adding more people like me spending more time won't get us there.
 
 ### Why do I think this?
 - Slide with allocation of PhD time

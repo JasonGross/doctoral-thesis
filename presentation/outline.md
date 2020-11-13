@@ -2,11 +2,11 @@
 
 ## Outline
 
-- Point at the problem, explain why it’s important (standing in the way of verification reaching its promise, no-one seems to be tackling it or even systematically investigating it).  Note that this defense is about describing this problem --- I haven't solved it yet.
-- Share the projects I’ve done in my PhD, how this issue has shown up in them, what I’ve learnt about this problem from them
-- Share what I've learnt about the landscape of this problem
-- Explain why the folklore solutions won't cut it
-- Point to the two angles of attack I see available to us as a field
+- Point at the problem, explain why it’s important (standing in the way of verification reaching its promise)
+  + Note, perhaps, that no-one seems to be tackling it or even systematically investigating it --- I have more to say about this, but only have time to hint at this in the defense
+- Describe what current research progress towards this big problem looks like, using the particular example of the progress I've made towards it (fiat-crypto) with my colleagues during my PhD
+- Share what I've learnt about how this problem can currently be chipped away at with current techniques
+- Share what I've learnt about how the larger problem might need very different research that no-one seems to currently be doing
 
 ## The Problem
 
@@ -15,113 +15,80 @@
 - Verification fix. (Note that I'm talking about ITPs; human help is important for difficult problems)
 
 ### What Done?
-- CompCert, seL4, CertiKOS, Fiat-Crypto
+- CompCert, seL4, CertiKOS (point out Fiat-Crypto as the new project I enabled)
 - scale of these projects vs scale of industry
 
 ### What Problem?
-- The problem is asymptotic performance.
-- IMPORTANT: I don't see us closing this gap with the research we're currently doing!
-- I've spent 8 years working in verification, become something of an expert at making verification automation work.
-- Simply adding more people like me spending more time won't get us there.
+- There's a gap between what academia and industry
+- The bigger problem is asymptotic performance; I'll come back to this in a moment
+- Currently we academics carve off a small chunk of the gap and spend a lot of time verifying it
+  + I'll be talking about the small chunk that I helpped carve off
 
-### Why do I think this?
+TODO: maybe reorganize this next bit?
+- More broadly, though I don't see us closing this gap with the research we're currently doing; let me share a bit of what I mean by this, before coming back to why I think we need a more systematic study at the end of the defense.
 - Slide with allocation of PhD time
-- The performance problems are fundamentally different from those found in most of industry.
 - The performance challenges scale *super-linearly* with the size and complexity of the programs being verified.
 - The problem is asymptotic performance.
-- Somehow (how?) foreshadow discussion of reflection and dropping proof terms (or the myths more generally)
 
-## My Projects:
+## Fiat-Crypto
 
-### What's Next:
-- I'll be going through my projects, sharing what I did and what I learnt about the asymptotic performance problem from each of them
-- Name the four axes that I've found almost all performance issues have on the independent axis:
-  + The Size of the Type
-  + The Size of the Term
-  + The Number of Binders
-  + The Number of Nested Abstraction Barriers
-- (note that there are others, but these are the major ones of my experience, and I believe they generalize well)
+- Carving off another chunk
 
------
+### Which Goal?
 
-Andres suggests:
-for each project:
-- a description of the overall goal of the project
-- state key performance bottleneck
-- relate it to project goals
-- go over methods tried and how they went
-- highlight (verbally and on slides) key takeaways you will refer back to in the end when you make recommendations
+- Low-level cryptographic primitives
+- Desiderata:
+  + the code we verify must be fast and constant time
+    . Justification: server load, security
+  + it should not take too much effort to add & prove a new algorithm, prime, architecture, etc
+    . Justification: scalability of human effort, edit-compile-debug loops are important here
+  + is should not take too much time for Coq to run the verification (asymptotics are important here)
+    . Justification: Needs to be checkable in time for industry deadlines, in time to be usable
+- Our output artifact is actually pretty cool, and can automatically generate basically verified code on the command line, in seconds (not hours or days or weeks), for given just the prime, the bitwidth, and the name of the high-level algorithm
 
------
+### Methodology
+- Carve up the low-level code into neatly-separated conceptually distinct units that are small enough to not hit asymptotic issues during interactive verification
+  + My colleagues did most of this, though I helpped them see how factoring and abstraction impact performance of verification effort
 
-### Category Theory Library:
-- Explain CT library very briefly
-- I learnt a number of things about performance, the one I want to focus on here is what I'm going to call abstraction barriers.
-- Explain type-size dependence briefly
-- Coq easily and excessively inlines and unfolds definitions; the best strategy I've found for avoiding this problem is to have a clear distinction between which proofs are allowed to unfold a given definition, and which proofs are not; I call this an abstraction barrier
-- This segues nicely into the next project I worked on
+TODO: describe abstraction in terms of excessive unfolding, either here or elsewhere
 
-### Parsers:
-- Explain parser synthsis
-- Successfully synthesized a parser for the JSON grammar
-- Ran into insurmountable performance issues with full JS 1.4 grammar (1999)
-  + has 128 non-terminals (https://www-archive.mozilla.org/js/language/grammar14.html)
-  + JSON has only 22 (https://www.json.org/json-en.html)
-- The issue is that if you dump the grammar all at once and try to synthesize a parser for it, it's already too big, you're already sunk
-- Tie into size of type and size of term
-- Here again abstraction barriers could be a solution
-- Why is performance important here?  Both the compile-edit-debug loop is important, but even if I could magically write down the correct solution, the first time, performance sometimes still isn't good enough.  Segue into fiat-crypto.
-- ??? takeaway
+- The remaining chunk is *partial evaluation*
+  + Describe it
+  + Note that it's too big to handle interactively with reasonable performance (include perf plots of rewrite)
+  + The underlying reason for this chunk being hard is that all of the abstraction barriers that we introduced to carve the problem up into managable chunks are broken here, so that we get fast low-level code out (this is a general pattern around performant code)
+  + A large chunk of my PhD work was making this possible in a way that scales
 
-### Fiat-Crypto:
-- Explain fiat-crypto briefly
-- Talk about fesub wbw-montgomery taking estimated 4,000+ millennia due to unfolding order issues
-- Now here we get to the next axis, the number of binders.  Talk about binders = variables in the same function = hypotheses in the context
-- Performance of rewrite
-- Talk about proof by reflection, reflective rewriter+partial evaluator
-(I'm losing track of things here...)
+### Partial Evaluation and Rewriting
+- Requirements:
+  - β-reduction (eliminating function call overhead)
+  - ιδ-reduction + rewrites (inlining defintions to eliminate function call overhead, also arithmetic simplification)
+    . Note that without this we get quartic asymptotics of the # lines of code rather than merely quadratic, so it's not really acceptable to save for a later stage
+  - Code sharing preservation (to avoid exponential blowup in code size)
+- Obvious Requirements:
+  - Verified (and not extending the TCB)
+  - Performant (should not introduce extra super-linear factors --- note that we don't quite manage this one, but we do a lot better than the interactive solutions)
+- Implementation:
+  - Reflective so as to not extend the TCB and to perform fast enough
+    . Side benefit: we can extract it to OCaml to run as a nifty command-line utility
+  - NbE (for β) + let-lifting (code-sharing) + rewriting (ιδ+rewrite)
+    . Note that we use some tricks for speeding up rewriting such as pattern-matching compilation, on-the-fly emitting identifier codes so that we can use Coq's/OCaml's pattern matching compiler
+- Evaluation:
+  - It works!
+  - It's performant!
+  - It seems like it would also solve one of the two performance issues that killed the parser-synthesizer I worked on for my masters.
 
-## Concluding
-
-### Problem, Take 2:
-- Performance of ITPs is super-linear in the complexity and scale of the software being verified.
-- This is important both because having to wait minutes or hours rather than fractions of a second to try out a change severely impacts development time, and because at some point, you just can't get the computer to check the proof (4,000+ millennia)
-- I don't see a path to verification fully realizing its promise without solving this problem
-
-### Problem Details:
-- Often performance issues factor through term size, type size, number of binders, or the number of nested abstraction layers, though there can be others.
-  + (is there time to give short examples of each of these?)
-
-### Myths:
-- ITP performance is slow due to brute force search
-- Coq is just bad by accident
-- Throwing away proof terms will solve everything
-- Reflection will solve everything
-
-### Myth-Dispelling Example: Rewriting
-- Coq's setoid_rewrite tactic is cubic in the number of binders
-  + Even when there are no occurences!
-  + Talk about evar maps
-  + Inefficiency here is baked into the locally-nameless representation of evars + use of general evars for rewrite unification (but this is not unreasonable)
-- There are only linearly many places to "search", so it's not really a search-space explosion.
-  + In general brute-force search can be keyed to patterns, so I haven't really encountered unsurmountable issues of brute-force search being too slow
-- Lean seems to have the same perf as Coq.
-- Moreoever, writing a rewrite tactic which incurs only linear overhead is highly-non-trivial
-  + show obvious rewrite tactic
-  + it's at least quadratic
-  + throwing away the proof term buys us nothing asymptotically as long as we still need to track the theorem statement and have each recursive call be considered to be "proving something"
-    . anecdotally CakeML bootstrapping in HOL might be hitting similar bottlenecks
-- Reflection solves things here because reflection is not proving something at every step.  Reflection is computing the new goal, does not track nor store the old goal, and so isn't really a "proof engine"
-  + reflection success stories are almost all specialized
-  + augmenting reflection to be a proof engine would bring in all the same issues of the proof engine; reflection doesn't magically fix things
-
-### Where does this leave us?
-- As I see it, we could cut industrial software into neatly packaged units which are sufficiently small that we can handle them with current methods.
-  + Seems improbable, I'm told that systems code like drivers, and also symmetric crypto, are developed adversarially/empirically and don't really admit clean factorings.
-- We can try to build reflective automation for all the domains we care about, from scratch each time.
-  + This is hard to scale, and proving the reflective automation itself is subject to all the same scaling issues when it gets big enough.  (The reflective rewriter/partial evaluator/term transformer for fiat-crypto is big enough to hit this, but it was surmountable.)
-- We can tackle this problem head-on, develop a theory of what asymptotic behavior makes for a proof engine that's adequate at scale, and build adequate tools, and live up to the promise of formal verification.
-  + (I of course advocate this last one)
+## Takeaways
+- Asymptotic scaling of interactive proof assistant response is a real problem!
+- Current method---of working around it by breaking the problem into small enough chunks and solving remaining chunks with specialized reflective solutions---does seem to work.
+  . I'm not optimistic about being able to break things down enough to handle them all interactively; even in very abstract math (category theory), I ran into issues where the way mathematicians did it was not sufficient.  Furthermore basically all code that needs to be fast, and a great deal of systems code, inlines definitions in a way that causes performance issues.
+  . And reflective automation requires enormous investment of effort for each new problem.
+  . Because reflection is not a proof engine made of small pieces that can each be said to make progress towards proving a goal, it's not easy to mix-and-match.
+  . I needed let-lifting; prior work had already done NbE and reflective rewriting, but fusing them with let-lifting in a performant way seems to have required re-engineering them almost from scratch.
+- Does it have to be this way?
+  . No! (I hope)
+  . No one seems to be studying why proof engines are asymptotically slow!
+  . It's not just accident; there are good reasons that obvious solutions have the wrong asymptotics, and there's so much going on that it's not even clear yet what the specification of "adequate performance" is.
+  . I think solving this problem---getting the basics right, asymptotically---will drastically accelerate the scale of what we as a field can handle, and bring verification closer to it's promise and potential.
 
 ### Q & A Slide
 
@@ -132,10 +99,7 @@ for each project:
 
 TODO:
 - talk about performance issues as duplicative/needless bookkeeping
-- performance issues are not just for verification, also show up in math
-
-
-
+- moving the proof engine to be reflective won't solve things; where to put this?
 
 
 ----------------------------

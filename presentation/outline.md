@@ -39,11 +39,11 @@ TODO: maybe reorganize this next bit?
 - Low-level cryptographic primitives
 - Desiderata:
   + the code we verify must be fast and constant time
-    . Justification: server load, security
+    - Justification: server load, security
   + it should not take too much effort to add & prove a new algorithm, prime, architecture, etc
-    . Justification: scalability of human effort, edit-compile-debug loops are important here
+    - Justification: scalability of human effort, edit-compile-debug loops are important here
   + is should not take too much time for Coq to run the verification (asymptotics are important here)
-    . Justification: Needs to be checkable in time for industry deadlines, in time to be usable
+    - Justification: Needs to be checkable in time for industry deadlines, in time to be usable
 - Our output artifact is actually pretty cool, and can automatically generate basically verified code on the command line, in seconds (not hours or days or weeks), for given just the prime, the bitwidth, and the name of the high-level algorithm
 
 ### Methodology
@@ -62,16 +62,16 @@ TODO: describe abstraction in terms of excessive unfolding, either here or elsew
 - Requirements:
   - β-reduction (eliminating function call overhead)
   - ιδ-reduction + rewrites (inlining defintions to eliminate function call overhead, also arithmetic simplification)
-    . Note that without this we get quartic asymptotics of the # lines of code rather than merely quadratic, so it's not really acceptable to save for a later stage
+    - Note that without this we get quartic asymptotics of the # lines of code rather than merely quadratic, so it's not really acceptable to save for a later stage
   - Code sharing preservation (to avoid exponential blowup in code size)
 - Obvious Requirements:
   - Verified (and not extending the TCB)
   - Performant (should not introduce extra super-linear factors --- note that we don't quite manage this one, but we do a lot better than the interactive solutions)
 - Implementation:
   - Reflective so as to not extend the TCB and to perform fast enough
-    . Side benefit: we can extract it to OCaml to run as a nifty command-line utility
+    - Side benefit: we can extract it to OCaml to run as a nifty command-line utility
   - NbE (for β) + let-lifting (code-sharing) + rewriting (ιδ+rewrite)
-    . Note that we use some tricks for speeding up rewriting such as pattern-matching compilation, on-the-fly emitting identifier codes so that we can use Coq's/OCaml's pattern matching compiler
+    - Note that we use some tricks for speeding up rewriting such as pattern-matching compilation, on-the-fly emitting identifier codes so that we can use Coq's/OCaml's pattern matching compiler, pre-evaluating the rewriter itself
 - Evaluation:
   - It works!
   - It's performant!
@@ -80,15 +80,15 @@ TODO: describe abstraction in terms of excessive unfolding, either here or elsew
 ## Takeaways
 - Asymptotic scaling of interactive proof assistant response is a real problem!
 - Current method---of working around it by breaking the problem into small enough chunks and solving remaining chunks with specialized reflective solutions---does seem to work.
-  . I'm not optimistic about being able to break things down enough to handle them all interactively; even in very abstract math (category theory), I ran into issues where the way mathematicians did it was not sufficient.  Furthermore basically all code that needs to be fast, and a great deal of systems code, inlines definitions in a way that causes performance issues.
-  . And reflective automation requires enormous investment of effort for each new problem.
-  . Because reflection is not a proof engine made of small pieces that can each be said to make progress towards proving a goal, it's not easy to mix-and-match.
-  . I needed let-lifting; prior work had already done NbE and reflective rewriting, but fusing them with let-lifting in a performant way seems to have required re-engineering them almost from scratch.
+  - I'm not optimistic about being able to break things down enough to handle them all interactively; even in very abstract math (category theory), I ran into issues where the way mathematicians did it was not sufficient.  Furthermore basically all code that needs to be fast, and a great deal of systems code, inlines definitions in a way that causes performance issues.
+  - And reflective automation requires enormous investment of effort for each new problem.
+  - Because reflection is not a proof engine made of small pieces that can each be said to make progress towards proving a goal, it's not easy to mix-and-match.
+  - I needed let-lifting; prior work had already done NbE and reflective rewriting, but fusing them with let-lifting in a performant way seems to have required re-engineering them almost from scratch.
 - Does it have to be this way?
-  . No! (I hope)
-  . No one seems to be studying why proof engines are asymptotically slow!
-  . It's not just accident; there are good reasons that obvious solutions have the wrong asymptotics, and there's so much going on that it's not even clear yet what the specification of "adequate performance" is.
-  . I think solving this problem---getting the basics right, asymptotically---will drastically accelerate the scale of what we as a field can handle, and bring verification closer to it's promise and potential.
+  - No! (I hope)
+  - No one seems to be studying why proof engines are asymptotically slow!
+  - It's not just accident; there are good reasons that obvious solutions have the wrong asymptotics, and there's so much going on that it's not even clear yet what the specification of "adequate performance" is.
+  - I think solving this problem---getting the basics right, asymptotically---will drastically accelerate the scale of what we as a field can handle, and bring verification closer to it's promise and potential.
 
 ### Q & A Slide
 
@@ -100,8 +100,7 @@ TODO: describe abstraction in terms of excessive unfolding, either here or elsew
 TODO:
 - talk about performance issues as duplicative/needless bookkeeping
 - moving the proof engine to be reflective won't solve things; where to put this?
-
-
+- talk about recursive problem
 ----------------------------
 
 look into https://thenounproject.com/

@@ -72,6 +72,7 @@ TODO: describe abstraction in terms of excessive unfolding, either here or elsew
     - Side benefit: we can extract it to OCaml to run as a nifty command-line utility
   - NbE (for β) + let-lifting (code-sharing) + rewriting (ιδ+rewrite)
     - Note that we use some tricks for speeding up rewriting such as pattern-matching compilation, on-the-fly emitting identifier codes so that we can use Coq's/OCaml's pattern matching compiler, pre-evaluating the rewriter itself
+    - TODO: Spend some slides talking about these
 - Evaluation:
   - It works!
   - It's performant!

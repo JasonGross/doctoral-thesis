@@ -10,7 +10,7 @@
 
 ## The Problem
 
-### Why Verfication?
+### Why Verification?
 - Bugs bad.
 - Verification fix. (Note that I'm talking about ITPs; human help is important for difficult problems)
 
@@ -22,7 +22,7 @@
 - There's a gap between what academia and industry
 - The bigger problem is asymptotic performance; I'll come back to this in a moment
 - Currently we academics carve off a small chunk of the gap and spend a lot of time verifying it
-  + I'll be talking about the small chunk that I helpped carve off
+  + I'll be talking about the small chunk that I helped carve off
 
 TODO: maybe reorganize this next bit?
 - More broadly, though I don't see us closing this gap with the research we're currently doing; let me share a bit of what I mean by this, before coming back to why I think we need a more systematic study at the end of the defense.
@@ -48,20 +48,20 @@ TODO: maybe reorganize this next bit?
 
 ### Methodology
 - Carve up the low-level code into neatly-separated conceptually distinct units that are small enough to not hit asymptotic issues during interactive verification
-  + My colleagues did most of this, though I helpped them see how factoring and abstraction impact performance of verification effort
+  + My colleagues did most of this, though I helped them see how factoring and abstraction impact performance of verification effort
 
 TODO: describe abstraction in terms of excessive unfolding, either here or elsewhere
 
 - The remaining chunk is *partial evaluation*
   + Describe it
   + Note that it's too big to handle interactively with reasonable performance (include perf plots of rewrite)
-  + The underlying reason for this chunk being hard is that all of the abstraction barriers that we introduced to carve the problem up into managable chunks are broken here, so that we get fast low-level code out (this is a general pattern around performant code)
+  + The underlying reason for this chunk being hard is that all of the abstraction barriers that we introduced to carve the problem up into manageable chunks are broken here, so that we get fast low-level code out (this is a general pattern around performant code)
   + A large chunk of my PhD work was making this possible in a way that scales
 
 ### Partial Evaluation and Rewriting
 - Requirements:
   - β-reduction (eliminating function call overhead)
-  - ιδ-reduction + rewrites (inlining defintions to eliminate function call overhead, also arithmetic simplification)
+  - ιδ-reduction + rewrites (inlining definitions to eliminate function call overhead, also arithmetic simplification)
     - Note that without this we get quartic asymptotics of the # lines of code rather than merely quadratic, so it's not really acceptable to save for a later stage
   - Code sharing preservation (to avoid exponential blowup in code size)
 - Obvious Requirements:

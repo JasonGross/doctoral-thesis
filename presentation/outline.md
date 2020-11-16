@@ -102,6 +102,7 @@ TODO:
 - talk about performance issues as duplicative/needless bookkeeping
 - moving the proof engine to be reflective won't solve things; where to put this?
 - talk about recursive problem
+- talk about how proof should hopefully scale sublinearly in lines of code as things get really big, maybe talk about how fiat-crypto generates lots of code without scaling proofs (`cloc $(ls ~/Documents/repos/fiat-crypto/fiat-c/src/*.c)` gives 45181 code for 16 primes)
 ----------------------------
 
 look into https://thenounproject.com/

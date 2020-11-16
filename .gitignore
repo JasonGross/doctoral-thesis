@@ -5,6 +5,7 @@
 *.pdf
 *.atfi
 *.swp
+~$*
 
 ## Core latex/pdflatex auxiliary files:
 *.aux

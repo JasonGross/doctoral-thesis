@@ -1,6 +1,7 @@
-Inductive is_even : nat -> Prop :=
+Require Import Coq.Unicode.Utf8.
+Inductive is_even : nat → Prop :=
 | zero_even : is_even 0
-| two_plus_even n : is_even n -> is_even (S (S n)).
+| two_plus_even n : is_even n → is_even (S (S n)).
 Inductive parity := even | odd.
 Definition flip_parity p
   := match p with even => odd | odd => even end.
@@ -10,15 +11,15 @@ Fixpoint parity_of (n : nat) : parity :=
   | S n' => flip_parity (parity_of n')
   end.
 Lemma parity_of_correct_helper
-  : forall n, match parity_of n with
-              | even => is_even n
-              | odd => is_even (S n)
-              end.
+  : ∀ n, match parity_of n with
+         | even => is_even n
+         | odd => is_even (S n)
+         end.
 Proof.
   induction n as [|n IH]; cbn; try constructor.
   destruct (parity_of n); cbn; try constructor; try assumption.
 Qed.
-Lemma parity_of_correct : forall n, parity_of n = even -> is_even n.
+Lemma parity_of_correct : ∀ n, parity_of n = even → is_even n.
 Proof.
   intros n H; pose proof (parity_of_correct_helper n) as H'.
   rewrite H in H'; assumption.

@@ -33,7 +33,25 @@ def write_data(f, all_keys, data):
         fwriter.writerow(['p' + p, int(p)] + [data[p].get(i) for i in all_keys])
     f.close()
 
+def add_old_pipeline_data(all_keys, data, lines):
+    matches = re.findall(r'src/Specific/(montgomery|solinas)([0-9]*)_([^_]*)_([0-9]*)limbs/femul.vo [^)]*?user: ([0-9\.]*)[^\)]*', '\n'.join(sorted(lines.split('\n'))))
+    seen_keys = {}
+    for kind, bitwidth, p, limbc, utime in matches:
+        p_str = p.replace('e', '^').replace('m', '-').replace('p', '+')
+        p = str(eval(p_str.replace('^', '**')))
+        if p not in data.keys(): raise Exception('Could not find %s' % p_str)
+        descr1 = f'{kind} x{bitwidth} old pipeline'
+        seen_keys[descr1] = seen_keys.get(descr1, -1) + 1
+        descr = f'{descr1} ({seen_keys[descr1]})'
+        #data[p]
+
+
+    #src/Specific/montgomery64_2e416m2e208m1_7limbs/femul.vo (real: 856.16, user: 850.25, sys: 5.88, mem: 15530700 ko)\n
+
 if __name__ == '__main__':
     fields, data = readfile(open(os.path.join(DIR, 'fiat-crypto-POPL-2020-rewriting-perf.csv'), 'r'))
     all_keys, new_data = make_data(data)
     write_data(open(os.path.join(DIR, 'fiat-crypto-POPL-2020-rewriting-perf-cols.csv'), 'w'), all_keys, new_data)
+    with open(os.path.join(DIR, 'time-of-build-8.11.1-processed.log'), 'r') as f:
+        old_pipeline_lines = f.read()
+    add_old_pipeline_data(all_keys, new_data, old_pipeline_lines)

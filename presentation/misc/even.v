@@ -10,19 +10,15 @@ Fixpoint parity_of (n : nat) : parity :=
   | O => even
   | S n' => flip_parity (parity_of n')
   end.
-Lemma parity_of_correct_helper
-  : ∀ n, match parity_of n with
-         | even => is_even n
-         | odd => is_even (S n)
-         end.
-Proof.
-  induction n as [|n IH]; cbn; try constructor.
-  destruct (parity_of n); cbn; try constructor; try assumption.
-Qed.
 Lemma parity_of_correct : ∀ n, parity_of n = even → is_even n.
 Proof.
-  intros n H; pose proof (parity_of_correct_helper n) as H'.
-  rewrite H in H'; assumption.
+  intro n; assert (H' : match parity_of n with
+                        | even => is_even n
+                        | odd => is_even (S n)
+                        end).
+  { induction n as [|n IH]; cbn; try constructor.
+    destruct (parity_of n); cbn; try constructor; try assumption. }
+  intro H; rewrite H in H'; assumption.
 Qed.
 Goal is_even 9002. vm_compute; do 10 constructor. Show Proof. Abort.
 Check (two_plus_even 9000

@@ -15,7 +15,7 @@ We saw in \nameref{sec:abstraction-barriers:mismatch} that API mismatch results 
 We saw in \nameref{sec:abstraction-barriers:conversion-troubles} that imperfectly opaque abstraction barriers result in slowdown due to needless calls to the conversion checker.
 We saw in \nameref{sec:abstraction-barriers:packed-records} how the choice of whether to use packed or unpacked records impacts performance.
 
-In this chapter, we will focus primarily on the first of these ways; while it might seem like a simple question of good design, it turns out that good API design in dependently-typed programming languages is significantly harder than in simply-typed programming languages.
+In this chapter, we will focus primarily on the first of these ways;\todonz{[re ``these ways''] what are you referring to?} while it might seem like a simple question of good design, it turns out that good API design in dependently-typed programming languages is significantly harder than in simply-typed programming languages.
 Mitigating the second source of performance bottlenecks, imperfectly opaque abstraction barriers, on the other hand, is actually just a question of meticulous tracking of how abstraction barriers are defined and used, and designing them so that they all unfolding is explicit.
 However, we will present an exception to the rule of opaque abstraction barriers in \autoref{sec:duality-conversion} in which deliberate breaking of all abstraction barriers in a careful way can result in performance gains of up to a factor of two:
 \autoref{sec:duality-conversion} presents one of our favorite design patterns for categorical constructions: a way of coaxing Coq's definitional equality into implementing \emph{proof by duality}, one of the most widely known ideas in category theory.
@@ -27,6 +27,7 @@ As far as I'm aware, there's not really a good way to get the best of all worlds
 Much of this chapter will draw on examples and experience from a category theory library we implemented in Coq~\cite{category-coq-experience}, which we introduce in \autoref{sec:category-theory-library}.
 
 \section{When And How To Use Dependent Types Painlessly}\label{sec:when-how-dependent-types}
+\todonz{[re this whole section] what is this about?  performance or something else?}
 The extremes are relatively easy:
 \begin{itemize}
 \item
@@ -80,6 +81,7 @@ Although pre-existing formalizations of category theory in proof assistants abou
 %fullbib:,caccamo2001higher,aczel1993galois,wilander2005bicategory,logical2001implicit,dyckhoff1985category,wilander2012constructing,harrison1996formalized,agerholm1995experiments,nuo2013second%
 }, %\footnote{This list very incomplete; see also \url{http://mathoverflow.net/questions/152497}% is more comprehensive, but we decided to cap our bibliography at one page, given the page limit.
 %}
+\todonz{citations here missing}
 we chose to implement our library~\cite{HoTT/HoTT-categories} from scratch.
 Beginning from scratch allowed me to familiarize myself with both category theory and Coq, without simultaneously having to familiarize myself with a large pre-existing code base.
 %Additionally, starting from scratch forced us to confront all of the decisions involved in designing such a library, and gave us the confidence to change the definitions of basic concepts multiple times to try out various designs, including fully rewriting the library at least three times.
@@ -89,13 +91,13 @@ Beginning from scratch allowed me to familiarize myself with both category theor
 
 \medskip
 
-We begin our discussion in \autoref{sec:categories} considering a mundane aspect of type definitions that has large consequences for usability and performance.
+We begin our discussion in \autoref{sec:categories}\todonz{?} considering a mundane aspect of type definitions that has large consequences for usability and performance.
 With the expressive power of Coq's logic Gallina, we often face a choice of making \emph{parameters} of a type family explicit arguments to it, which looks like universal quantification; or of including them within values of the type, which looks like existential quantification.
 As a general principle, we found that the universal or \emph{outside} style improves the user experience modulo performance, while the existential or \emph{inside} style speeds up type checking.
 The rule that we settled on was: \emph{inside} definitions for pieces that are usually treated as black boxes by further constructions, and \emph{outside} definitions for pieces whose internal structure is more important later on.
 
 \autoref{sec:duality-conversion} presents one of our favorite design patterns for categorical constructions: a way of coaxing Coq's definitional equality into implementing \emph{proof by duality}, one of the most widely known ideas in category theory.
-In \autoref{sec:other}, we describe a few other design choices that had large impacts on usability and performance, often of a few orders of magnitude.
+In \autoref{sec:other}\todonz{?}, we describe a few other design choices that had large impacts on usability and performance, often of a few orders of magnitude.
 \minortodo{this is duplicative with text above}
 
 

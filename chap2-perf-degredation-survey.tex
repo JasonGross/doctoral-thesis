@@ -4,7 +4,8 @@
 The purpose of this chapter is to convince the reader that the issue of performance in proof assistants is non-trivial in ways that differ from performance bottlenecks in non-dependently-typed languages.
 I intend to do this by first sketching out what I see as the main difference between performance issues in dependently-typed proof assistants vs performance issues in other languages, and then supporting this claim with a palette of real performance issues that have arisen in Coq.
 
-The widespread commonsense in performance engineering~\cite{commonsense-perf-engineering-order-of-operations} is that good performance optimization happens in a particular order:
+The widespread commonsense in performance engineering %~\cite{commonsense-perf-engineering-order-of-operations}
+is that good performance optimization happens in a particular order:
 there is no use micro-optimizing code if you are implementing an algorithm with unacceptable performance characteristics; imagine trying to optimize the pseudorandom number generator used in bogosort~\cite{Sorting2007Gruber}, for example.\footnote{Bogosort, whose name is a portmanteau of the words bogus and sort~\cite{bogosort-name}, sorts a list by randomly permuting the list over and over until it is sorted.}
 Similarly, there is no use trying to find or create a better algorithm if the problem you're solving is more complicated than it needs to be; consider, for example, the difference between ray tracers and physics simulators.
 Ray tracers determine what objects can be seen from a given point essentially by drawing lines from the viewpoint to the object and seeing if it passes through any other object ``in front of'' it.
@@ -27,6 +28,8 @@ The C++ language, for example, has \texttt{constexpr} constructions that allow r
 However, I claim that, in most languages, even as you scale your program, these performance issues are the exception rather than the rule.
 Most code written in C or C++ does not hit unbounded compile-time performance bottlenecks.
 Generally if you write code that compiles in a reasonable amount of time, as you scale up your codebase, your compile time will slowly creep up as well.
+
+\todonz{[About the following paragraph] so what's different?}
 
 In Coq, however, the scaling story is very different.
 Frequently, users will cobble together code that works to prove a toy version of some theorem, or to verify a toy version of some program.
@@ -68,7 +71,7 @@ See \autoref{fig:timing-montgomery-fesub-before-user} and \autoref{fig:timing-mo
         }
     \end{axis}
 \end{tikzpicture}
-\caption{Timing of synthesizing subtraction} \label{fig:timing-montgomery-fesub-before-user}
+\caption{Timing of synthesizing subtraction\todonz{somewhat hard to make sense of these graphs without more explanation...}} \label{fig:timing-montgomery-fesub-before-user}
 \end{figure*}
 \begin{figure*}
     \beginTikzpictureStamped{
@@ -124,6 +127,7 @@ However, tracking down this solution was quite involved, requiring the following
 
     This might seem reasonable at a glance; one expects to have to understand the system being optimized in order to optimize it.
     But I've managed to learn the details of what Coq is doing---including performance characteristics---basically without having to read the source code at all!
+    \todonz{[re ``without having to read the source code at all!''] is this good or bad? why didn't you read Coq src?}
     This is akin to, say, being able to learn how \texttt{gcc} represents various bits of C code, what transformations it does in what order, and what performance characteristics these transformations have, just from using \texttt{gcc} to compile C code and reading the error messages it gives you.
     These are details that should not need to be exposed to the user, but because dependent type theory is so complicated---complicated enough that it's generally assumed that users will get \emph{line-by-line interactive feedback from the compiler} while developing, the numerous design decisions and seemingly reasonable defaults and heuristics lead to subtle performance issues.
     Note, furthermore, that this performance issue is essentially about the algorithm used to implement conversion, and is not even sensible when only talking about only the spec of what it means for two terms to be convertible.
@@ -336,13 +340,13 @@ The first option requires that the proof assistant implement structural typing r
 \minortodo{Look into \textcite{Efficient1998Necula} and \url{http://adam.chlipala.net/papers/StrictTLDI05/} for past work on eliding some parameters}
 \minortodo{maybe look into TAPL}
 \minortodo{explain structural and nominal typing more}
-Morally, the reason for this is that if we have an inductive record type \minortodo{have we explained inductive types yet?} \minortodo{have we explained records yet?} whose fields do not constrain the parameters of the inductive type family \minortodo{have we explained parameters vs indices and inductive type families yet?}, then we need to consider different instantiations of the same inductive type family to be convertible.
+Morally, the reason for this is that if we have an inductive record type\minortodo{have we explained inductive types yet? }\minortodo{have we explained records yet?} whose fields do not constrain the parameters of the inductive type family\minortodo{have we explained parameters vs indices and inductive type families yet?}, then we need to consider different instantiations of the same inductive type family to be convertible.
 That is, if we have a phantom record such as\minortodo{mention where the name ``phantom'' comes from?}
 \begin{minted}{coq}
 Record Phantom (A : Type) := phantom {}.
 \end{minted}
 and our implementation does not include \texttt{A} as an argument to \texttt{phantom}, then we must consider \texttt{phantom} to be both of type \texttt{Phantom nat} and \texttt{Phantom bool}, even though \texttt{nat} and \texttt{bool} are not the same.
-I have requested this feature in \cite{https://github.com/coq/coq/issues/5293}.
+I have requested this feature in \coqissue{5293}.
 Note, however, that sometimes it is important for such phantom types to be considered distinct when doing type-level programming.
 \minortodo{Come up with better justification for having nominal typing available?}
 
@@ -640,7 +644,7 @@ Note that it is by no means obvious that the typechecker can meaningfully do any
 Breath-first search is significantly more complicated than depth-first, is harder to write good heuristics for, can incur enormous space overheads, and can be massively slower in cases where there are many options and the standard heuristics for depth-first unfolding in conversion-checking are sufficient.
 Furthermore, the more heuristics there are to tune conversion-checking, the more ``magic'' the algorithm seems, and the harder it is to debug when the performance is inadequate.
 
-As described in \autoref{sec:fiat-crypto-codegen-numbers}, in fiat-crypto, we got exponential slowdown due to this issue, with an estimated overhead of over four thousand millennia of extra typechecking time in the worst examples we were trying to handle.
+As described in \autoref{sec:fiat-crypto-codegen-numbers}, in fiat-crypto\todonz{first ref to name}, we got exponential slowdown due to this issue, with an estimated overhead of over four thousand millennia of extra typechecking time in the worst examples we were trying to handle.
 
 \minortodo{maybe forward reference to the number of abstraction barriers}
 \minortodo{maybe include more about real-world fiat-crypto example here?}
@@ -667,6 +671,7 @@ However, if looking up which constant or variable is referred to by a name is $\
 See \coqbug{9582} and \coqpr{9586}.
 
 See \autoref{fig:timing-name-resolution} for the timing of name resolution in Coq.
+\todonz{More details about what the graph shows}
 See \autoref{fig:timing-nested-lambda-different-name} for the effect on internalizing a lambda with $n$ arguments.
 
 \minortodo{mention Coq version automatically, mention why we're using a different Coq version}
@@ -732,6 +737,7 @@ If the user is presented with a proof engine interface where all context variabl
 For example, if the user wants to operate inside the hole in \mintinline{coq}{(λ x, let y := x in λ x, _)}, then the user needs to be able to talk about the body of \mintinline{coq}{y}, which is not the same as the innermost \mintinline{coq}{x}.
 However, if the $\alpha$-renaming is even just linear in the existing context, then creating a new hole under $n$ binders will take $\mathcal{O}(n^2)$ time in the worst case, as we may have to do $n$ renamings, each of which take time $\mathcal O(n)$.
 See \coqbug{9582}, perhaps also \coqbug{8245} and \coqbug{8237} and \coqbug{8231}.
+\todonz{?}
 
 This might be the cause of the difference in \autoref{fig:timing-open-constr-n-lambda-no-types} between having different names (which do not need to be renamed) and having either no name (requiring name generation) or having all binders with the same name (requiring renaming in evar substitutions).
 
@@ -859,6 +865,8 @@ Such a function could then be applied to the $n$ proofs of the conjuncts.
 See \coqbug{8232} and \coqbug{12118} and \coqpr{8255}.
 
 See \autoref{fig:timing-app-n}.
+
+\todonz{[previous two paragraphs] say more}
 
 \begin{figure*}
     \beginTikzpictureStamped{
@@ -1038,6 +1046,7 @@ However, most users don't bother to set up hints like this, and dependency analy
 The reason users don't set up hints like this is that usually it's not necessary.
 There's often minimal overhead, and things just work, even when the wrong path is picked---until the number of abstraction barriers or the size of the underlying term gets large enough.
 Then we get noticeable exponential blowup, and everything is sad.
+\todonz{[re ``is sad''] more precise?}
 Furthermore, it's hard to know which part of conversion is incurring exponential blowup, and thus one has to basically get all of the conversion hints right, simultaneously, without any feedback, to see any performance improvement.
 
 
@@ -1142,7 +1151,7 @@ We attribute this to the large types generated and the non-trivial conversion pr
   \end{enumerate}
   While this is a mouthful, there is no insight in any of these definitions; for each component, there is exactly one choice that can be made which has the correct type.
   \caption{%
-    \label{fig:fig:exponential-laws:def:math}%
+    \label{fig:exponential-laws:def:math}%
     The interesting components of $(\mathcal C₁ × \mathcal C₂ → \mathcal D) ≅ (\mathcal C₁ → (\mathcal C₂ → \mathcal D))$.%
   }
 \end{figure}
@@ -1167,9 +1176,10 @@ Time Program Definition curry_iso (C₁ C₂ D : Category)
 (* Finished transaction in 1.958 secs (1.958u,0.s) (successful) *)
 \end{minted}
   \caption{%
-    \label{fig:fig:exponential-laws:def:math}%
+    \label{fig:exponential-laws:def:math}%
     The interesting components of $(\mathcal C₁ × \mathcal C₂ → \mathcal D) ≅ (\mathcal C₁ → (\mathcal C₂ → \mathcal D))$, in Coq.
     The surrounding definitions and notations required for this example to typecheck are given in \autoref{sec:abstraction-barriers:mismatch:example:exponential-laws:full-code}.%
+    \todo{Appendix .1 is a bad ref, how to format?}
   }
 \end{figure}
 

@@ -1,3 +1,7 @@
+Associators
+Electromagnetics
+Equalities
+Formedness
 adjoint
 adjunction
 adjunctions
@@ -7,7 +11,6 @@ anonymized
 applicative
 associativity
 associators
-Associators
 asymptotics
 automata
 automatization
@@ -48,11 +51,9 @@ dualizing
 duals
 duplicative
 electromagnetics
-Electromagnetics
 embeddings
 encodings
 equalities
-Equalities
 equational
 extensibility
 extensionality
@@ -62,7 +63,6 @@ facto
 finiteness
 finitude
 formedness
-Formedness
 functionals
 genericity
 geobiology
@@ -121,8 +121,8 @@ monadic
 monoid
 monomorphic
 morphism
-naïve
 nanoscience
+naïve
 neurosciences
 nitty
 nonlinearity

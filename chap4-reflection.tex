@@ -31,6 +31,7 @@ We benchmark our approach against 18 competitors in \autoref{sec:perf}.
 Basic Coq proofs are often written as lists of steps such as \mintinline{coq}{induction} on some structure, \mintinline{coq}{rewrite} using a known equivalence, or \mintinline{coq}{unfold} of a definition.
 Very quickly, proofs can become long and tedious, both to write and to read, and hence Coq provides \Ltac, a scripting language for proofs.
 As theorems and proofs grow in complexity, users frequently run into performance and maintainability issues with \Ltac.
+\todonz{[re this paragraph, especially ``and hence Coq provides \Ltac, a scripting language for proofs''] seems repetitive and out of place. already introduced Ltac earlier}
 Consider the case where we want to prove that a large algebraic expression, involving many \letindots\space expressions, is even:
 \begin{minted}{coq}
 Inductive is_even : nat -> Prop :=
@@ -56,8 +57,9 @@ Proof terms, in a sense, are traces of a proof script.
 They provide Coq's kernel with a term that it can check to verify that no illegal steps were taken.
 Listing every step results in large traces.
 
-\begin{wrapfigure}[9]{r}{6cm}
-%\vspace{-33pt}
+\todo{fix spacing}
+
+\begin{wrapfigure}[9]{r}{\widthof{\texttt{Fixpoint check\_is\_even (n : nat) : bool}}}
 \begin{minted}{coq}
 Fixpoint check_is_even (n : nat) : bool
   := match n with
@@ -95,7 +97,7 @@ Sometimes, to achieve faster proofs, we must be able to tell, for example, wheth
 %  Sometimes this distinction is necessary for generating a proof at all, as is the case in \mintinline{coq}{nsatz} and \mintinline{coq}{romega}; there is no way to prove that addition is commutative if you cannot identify what things you were adding in the first place.%
 %}
 
-\begin{wrapfigure}[4]{r}{6cm}
+\begin{wrapfigure}[4]{r}{\widthof{\texttt{| NatMul (x y : expr) : expr.}}}
 %\vspace{-45pt}
 \begin{minted}{coq}
 Inductive expr :=
@@ -275,13 +277,14 @@ Fixpoint denote {t} (e : @expr denote_type t) : denote_type t.
 Fixpoint check_is_even_expr {t} (e : @expr even_data_of_type t)
   : even_data_of_type t.
 Inductive related {var1 var2 : type -> Type}
-  : list { t : type & var1 t * var2 t} -> ∀ {t}, @expr var1 t -> @expr var2 t -> Prop.
+  : list { t : type & var1 t * var2 t}
+    -> ∀ {t}, @expr var1 t -> @expr var2 t -> Prop.
 Definition Expr (t : type) := ∀ var, @expr var t.
 Definition Wf {t} (e : Expr t)
   := ∀ var1 var2, related [] (e var1) (e var2).
 \end{minted}
 
-See, e.g., \autocite{PhoasICFP08} for a fuller treatment.
+See, e.g.,\todonz{are there other refs? or just kill ``e.g.''} \autocite{PhoasICFP08} for a fuller treatment.
 
 \subsubsection{de Bruijn Indices} \label{sec:binders:de-bruijn}
 The idea behind \emph{de Bruijn indices} is that variables are encoded by numbers which count up starting from the nearest enclosing binder.
@@ -373,7 +376,7 @@ See also \autoref{sec:setoid-rewrite-bottlenecks}.
 
 \subsection{Performance of Proving Reflective Well-Formedness of PHOAS} \label{sec:wf:perf}
 
-We saw in \autoref{sec:binders:PHOAS} that in order to prove the soundness theorem, we needed a way to relate two PHOASTs, which generalized to a notion of well-formedness for the \mintinline{coq}{Expr} type.
+We saw in \autoref{sec:binders:PHOAS} that in order to prove the soundness theorem, we needed a way to relate two PHOASTs (parametric higher-order abstract syntax trees), which generalized to a notion of well-formedness for the \mintinline{coq}{Expr} type.
 
 Unfortunately, the proof that two \mintinline{coq}{expr}s are \mintinline{coq}{related} is quadratic in the size of the expression, for much the same reason that proving conjunctions in \autoref{sec:quadratic-conj-certificate} resulted in a proof term which was quadratic in the number of conjuncts.
 We present two ways to encode linearly-sized proofs of well-formedness in PHOAS.
@@ -460,8 +463,9 @@ There are many ways of performing reification; in \autoref{ch:reification-by-par
 \autoref{fig:ltac-reify-nobinders} displays the simplest case: an Ltac script to reify a tree of function applications and constants.
 Unfortunately, all methods we surveyed become drastically more complicated or slower (and usually both) when adapted to reify terms with variable bindings such as \texttt{let}-\texttt{in} or \texttt{$\lambda$} nodes.
 
-\begin{wrapfigure}[10]{r}{6.4cm}
-%\vspace{-11pt}
+\todo{fix spacing}
+
+\begin{wrapfigure}[10]{r}{\widthof{\texttt{             constr:(@NatMul v X Y)}}}
 \begin{minted}{coq}
 Ltac f v x := (* reify var term *)
   lazymatch x with

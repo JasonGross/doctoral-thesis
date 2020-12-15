@@ -5,7 +5,7 @@
   [P]remature optimization is the root of all evil
 \end{quote}
 \begin{flushright}
-  --- Donald Knuth
+  --- Donald E.~Knuth~\cite[p.~671]{KnuthPrematureOptimization}
 \end{flushright}
 
 \minortodo{Better chapter title?}
@@ -22,7 +22,7 @@ Note that many of the examples and descriptions in this chapter are highly techn
 
 While the core rewriting engine of the framework is about 1\,300 lines of code, and early simplified versions of the core engine were only about 150 lines of code%
 \footnote{%
-See \href{https://web.archive.org/web/20200716002534/https://github.com/JasonGross/fiat-crypto/blob/3b3e926e4186caa1a4003c81c65dad0a1c04b43d/src/Experiments/RewriteRulesSimpleNat.v}{\texttt{https://github.com/JasonGross/fiat-crypto/blob/3b3e926e4186caa1a4003c81c65dad0a1c04b43d/src/Experiments/RewriteRulesSimpleNat.v}} for the file \texttt{src/Experiments/RewriteRulesSimpleNat.v} from \href{https://github.com/JasonGross/fiat-crypto/tree/experiments-small-rewrite-rule-compilation}{the branch \texttt{experiments-small-rewrite-rule-compilation} on \texttt{JasonGross/fiat-crypto}} on GitHub.%
+See \href{https://web.archive.org/web/20200716002534/https://github.com/JasonGross/fiat-crypto/blob/3b3e926e4186caa1a4003c81c65dad0a1c04b43d/src/Experiments/RewriteRulesSimpleNat.v}{\texttt{https://github.com/JasonGross/fiat-crypto/blob/3b3e926e/src/Experiments/RewriteRulesSimpleNat.v}} for the file \texttt{src/Experiments/RewriteRulesSimpleNat.v} from \href{https://github.com/JasonGross/fiat-crypto/tree/experiments-small-rewrite-rule-compilation}{the branch \texttt{experiments-small-rewrite-rule-compilation} on \texttt{JasonGross/fiat-crypto}} on GitHub.%
 }%
 , the correctness proofs take nearly another 8\,000 lines of code!
 % git ls-files "src/Rewriter/Rewriter/*.v" | grep -o 'src/Rewriter/Rewriter/[^/]*\.v' | xargs coqwc  | sort -h | less

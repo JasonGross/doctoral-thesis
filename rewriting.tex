@@ -10,6 +10,8 @@
 
 \section{Introduction} \label{sec:rewriting:intro}
 
+\todonz{Drop intro}
+
 Mechanized proof is gaining in importance for development of critical software infrastructure.
 Oft-cited examples include the CompCert verified C compiler~\cite{Compcert} and the seL4 verified operating-system microkernel~\cite{seL4SOSP09}.
 Here we have very flexible systems that are ready to adapt to varieties of workloads, be they C source programs for CompCert or application binaries for seL4.
@@ -29,7 +31,7 @@ The challenge is that we are not just implementing algorithms; we also want a pr
 It would seem like an abandonment of the spirit of proof assistants to bake in a reduction strategy per library, yet effective partial evaluation tends to be rather fine-tuned in this way.
 Performance tuning matters when generated code is thousands of lines long.
 
-In this paper, we present an approach to verified partial evaluation in proof assistants, which requires no changes to proof checkers.
+In this paper\todonz{not a paper}, we present an approach to verified partial evaluation in proof assistants, which requires no changes to proof checkers.
 To make the relevance concrete, we use the example of Fiat Cryptography~\cite{FiatCryptoSP19}, a Coq library that generates code for big-integer modular arithmetic at the heart of elliptic-curve-cryptography algorithms.
 This domain-specific compiler has been adopted, for instance, in the Chrome Web browser, such that about half of all HTTPS connections from browsers are now initiated using code generated (with proof) by Fiat Cryptography.
 However, Fiat Cryptography was only used successfully to build C code for the two most widely used curves (P-256 and Curve25519).
@@ -73,8 +75,8 @@ Also notice how we simplified the first two multiplications with $a \cdot 0 = 0$
 
 To set up our partial evaluator, we prove the algebraic laws that it should use for simplification, starting with basic arithmetic identities.
 \begin{minted}[fontsize=\small]{coq}
-Lemma zero_plus : forall n, 0 + n = n.       Lemma times_zero : forall n, n * 0 = 0.
-Lemma plus_zero : forall n, n + 0 = n.       Lemma times_one  : forall n, n * 1 = n.
+Lemma zero_plus : ∀ n, 0 + n = n.    Lemma times_zero : ∀ n, n * 0 = 0.
+Lemma plus_zero : ∀ n, n + 0 = n.    Lemma times_one  : ∀ n, n * 1 = n.
 \end{minted}
 
 Next, we prove a law for each list-related function, connecting it to the primitive-recursion combinator for some inductive type (natural numbers or lists, as appropriate).
@@ -89,7 +91,10 @@ Lemma eval_fold_left A B (f : A -> B -> A) l a
 : fold_left f l a = ident.eagerly list_rect _ _ (λ a, a) (λ x _ r a, r (f a x)) l a.
 Lemma eval_combine A B (la : list A) (lb : list B)
 : combine la lb =
-list_rect _ (λ _, []) (λ x _ r lb, list_case (λ _, _) [] (λ y ys, (x,y)::r ys) lb) la lb.
+  list_rect _
+    (λ _, [])
+    (λ x _ r lb, list_case (λ _, _)
+    [] (λ y ys, (x,y)::r ys) lb) la lb.
 Lemma eval_length A (ls : list A)
 : length ls = list_rect _ 0 (λ _ _ n, S n) ls.
 \end{minted}
@@ -99,9 +104,10 @@ Lemma eval_length A (ls : list A)
 With all the lemmas available, we can package them up into a rewriter, which triggers generation of a specialized rewrite procedure and its soundness proof.
 Our Coq plugin introduces a new command \mintinline{coq}{Make} for building rewriters
 \begin{minted}[fontsize=\small]{coq}
-Make rewriter := Rewriter For (zero_plus, plus_zero, times_zero, times_one, eval_map,
-  eval_fold_left, do_again eval_length, do_again eval_combine,
-  eval_rect nat, eval_rect list, eval_rect prod) (with delta) (with extra idents (seq)).
+Make rewriter := Rewriter For (zero_plus, plus_zero, times_zero, times_one,
+  eval_map, eval_fold_left, do_again eval_length, do_again eval_combine,
+  eval_rect nat, eval_rect list, eval_rect prod)
+  (with delta) (with extra idents (seq)).
 \end{minted}
 Most inputs to \mintinline{coq}{Rewriter For} list quantified equalities to use for left-to-right rewriting.
 However, we also use options \mintinline{coq}{do_again}, to request that some rules trigger an extra bottom-up pass after being used for rewriting; \mintinline{coq}{eval_rect}, to queue up eager evaluation of a call to a primitive-recursion combinator on a known recursive argument; \mintinline{coq}{with delta}, to request evaluation of all monomorphic operations on concrete inputs; and \mintinline{coq}{with extra idents}, to inform the engine of further permitted identifiers that do not appear directly in any of the rewrite rules.
@@ -110,7 +116,7 @@ Our plugin also provides new tactics like \mintinline{coq}{Rewrite_rhs_for}, whi
 That last tactic is just what we need to synthesize a specialized \mintinline{coq}{prefixSums} for list length four, along with a proof of its equivalence to the original function.
 \begin{minted}[fontsize=\small]{coq}
 Definition prefixSums4 :
- {f : nat → nat → nat → nat → list nat | ∀ a b c d, f a b c d = prefixSums [a;b;c;d]}
+ {f:nat→nat→nat→nat→list nat | ∀ a b c d, f a b c d = prefixSums [a;b;c;d]}
   := ltac:(eexists; Rewrite_rhs_for rewriter; reflexivity).
 \end{minted}
 
@@ -746,7 +752,7 @@ We can start from this expression directly, in which case reification alone take
 \end{aligned}$}%
 \caption{\label{fig:micro:Plus0Tree:code}Expressions computing initial code}
 \end{wrapfigure}
-As the reification method was not especially optimized, and there exist fast reification methods~\cite{ReificationITP18}, we instead start from a call to a recursive function that generates such an expression.
+As the reification method was not especially optimized, and there exist fast reification methods~\cite{reification-by-parametricity}, we instead start from a call to a recursive function that generates such an expression.
 
 
 \begin{figure*}[b]
@@ -1010,6 +1016,8 @@ It may be helpful to design an engine that lifts some or all of these limitation
 %\nocite{*}
 %\bibliography{rewriting}
 \clearpage
+
+\todonz{What's the point of all these appendices here?}
 
 \begin{subappendices}
 %\appendix

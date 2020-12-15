@@ -36,13 +36,13 @@ deploy:
     branch: master
 
 env:
-  - EXCLUDE_REWRITING=1  SED_REP='s/\\def\\excludefiles{}/\\def\\excludefiles{rewriting}/g'
-  - EXCLUDE_REWRITING="" SED_REP='s/\\def\\excludefiles{rewriting}/\\def\\excludefiles{}/g'
+  - EXCLUDE_REWRITING=1  EXCLUDE_TARGET="exclude-rewriting"
+  - EXCLUDE_REWRITING="" EXCLUDE_TARGET="exclude-nothing"
 
 before_script:
   - make ubuntu-deps
   - git submodule update --init --recursive
-  - sed "${SED_REP}" -i jgross-thesis.tex
+  - make ${EXCLUDE_TARGET}
 
 script:
   - make OTHERFLAGS="-interaction=nonstopmode"

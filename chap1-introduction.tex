@@ -12,12 +12,12 @@
   --- Charles E.~Leiserson~\cite{Profiling2020Leiserson}
 \end{flushright}
 
-\begin{quote}
-  [P]remature optimization is the root of all evil
-\end{quote}
-\begin{flushright}
-  --- Donald E.~Knuth~\cite[p.~671]{KnuthPrematureOptimization}
-\end{flushright}
+%\begin{quote}
+%  [P]remature optimization is the root of all evil
+%\end{quote}
+%\begin{flushright}
+%  --- Donald E.~Knuth~\cite[p.~671]{KnuthPrematureOptimization}
+%\end{flushright}
 
 \chapter{Introduction}\label{ch:intro}
 
@@ -90,6 +90,8 @@ While many papers mention performance, obliquely or otherwise, and some are even
 % ``While we tackled this project mainly to explore the capabilities of a modern formal proof system—at first, to benchmark speed—'' - gonthier2008formal
 % ``We present a new implementation of a reflexive tactic whichsolves equalities in a ring structure inside the Coq system.The efficiencyis improved to a point that we can now prove equalities that were previ-ously beyond reach.'' - Proving2005Benjamin
 
+\todonz{Seems fine ... but is it really unique to proofs?  C++ compilers in the 90s had the same problems}
+
 Unlike many other performance domains, in our experience, the time it takes to check proofs as we scale the size of the input is almost always super-linear---quadratic at best, commonly cubic or exponential, occasionally even worse.
 Empirically, this might look like a proof script that checks in tens of seconds on the smallest of toy examples; takes about a minute on the smallest real-world example, which might be twice the size of the toy example; takes twenty hours to generate and check the proof of an example only twice that size; and, on a (perhaps not-quite-realistic) example twice the size of the twenty-hour example, the script might not finish within a year, or even a thousand years---see \autoref{sec:fiat-crypto-codegen-numbers} for more details.
 In just three doublings of input size, we might go from tens of seconds to thousands of years.
@@ -142,7 +144,7 @@ In the early 1970s, Boyer and Moore began work on theorem provers which could wo
 This work resulted in a family of theorem provers, collectively known as the Boyer--Moore theorem provers, which includes the first seriously successful automated theorem provers~\cites[p.~8]{Automation2013Moore}{Brief2019Darbari}.
 They developed the Edinburgh Pure LISP Theorem Prover, Thm, and later Nqthm~\cites[p.~8]{Automation2013Moore}{Nqthm,wiki:Nqthm}, the last of which came to be known as \emph{the} Boyer--Moore theorem prover.
 Nqthm has been used to formalize and verify Gödel's first incompleteness theorem in 1986~\cites{Metamathematics1994Shankar}[p.~29]{Milestones2019Moore}, to verify the implementation of an assembler and linker~\cite{moore2007piton} as well as a number of FORTRAN programs, and to formally prove the invertibility of RSA encryption, the undecidability of the halting problem, Gauss' law of quadratic reciprocity~\cite[pp.~28--29]{Milestones2019Moore}.
-Nqthm later evolved into ACL2~\cite{Milestones2019Moore,ACL2Applications,ACL2}, which has been used, among other things, to verify a Motorola digital signal processor, the floating-point arithmetic unit in AMD chips, and some x86 machine code programs~\cite[p.~2]{Milestones2019Moore}.
+Nqthm later evolved into ACL2~\cite{Milestones2019Moore,ACL2Applications,ACL2}\todonz{? blank id?}, which has been used, among other things, to verify a Motorola digital signal processor, the floating-point arithmetic unit in AMD chips, and some x86 machine code programs~\cite[p.~2]{Milestones2019Moore}.
 % More details on the assembler and linker (Piton) at \url{https://www.cs.utexas.edu/~moore/best-ideas/piton/index.html}
 % Also Computational Logic Inc.~which used Nqthm, \url{http://www.computationallogic.com/}
 
@@ -383,7 +385,7 @@ The constructors define the only booleans that exist at the end of the day, afte
 This uniqueness is formally encoded by the \emph{eliminator} of a type, which describes how to use it.
 The eliminator on \texttt{bool} is the \texttt{if}-statement; to use a boolean, one must say what to do if it is \texttt{true}, and what to do if it is \texttt{false}.
 Some eliminators encode recursion: to use a natural number, one must say what to do if it is zero, and also, one must say what to do if it is a successor.
-In the where the given number is the successor of $n$, however, one is allowed to call the function recursively on $n$.
+In the case where the given number is the successor of $n$, however, one is allowed to call the function recursively on $n$.
 For example, we might define the factorial function as
 \begin{minted}{haskell}
 fact m =
@@ -546,7 +548,7 @@ In the remainder of \autoref{part:introduction}, we will finish laying out the l
 \fullref{part:design} is devoted, by and large, to the performance bottlenecks that arise from the use of dependent types as the basis of a proof assistant as introduced in \autoref{sec:why-how-dependent-types};
 in \fullref{ch:design}, we discuss lessons on engineering libraries at scale drawn from our case study in formalizing category theory %~\cite{category-coq-experience}
 and augmented by our other experience.
-The category theory library formalized as part of this doctoral work, available at \textcite{HoTT/HoTT-categories}, is described briefly in this chapter; a more thorough description can be found in the paper we published on our experience formalizing this library~\cite{category-coq-experience}.
+The category theory library formalized as part of this doctoral work, available at \textcite{HoTT/HoTT-categories}\todonz{blank citation}, is described briefly in this chapter; a more thorough description can be found in the paper we published on our experience formalizing this library~\cite{category-coq-experience}.
 
 \fullref{part:rewriting} is devoted, in some sense, to performance bottlenecks that arise from the de Bruijn criterion of \autoref{sec:debruijn-criterion}.
 We investigate one particular method for avoiding these performance bottlenecks.

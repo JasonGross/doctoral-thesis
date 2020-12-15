@@ -365,3 +365,5 @@ performance-experiments*/*.gnuplot
 performance-experiments*/*.txt-fits.dat
 performance-experiments*/fit.log
 performance-experiments*/_CoqProject
+
+/exclude-files-list.tex

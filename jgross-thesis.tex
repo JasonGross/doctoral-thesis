@@ -48,7 +48,7 @@
 %% Krishna Sethuraman (1990).
 \usepackage{excludeonly}
 \def\files{all}
-\def\excludefiles{rewriting}%{}
+\input{exclude-files-list.tex}
 \def\all{all}
 \def\nofiles{}
 \ifx\files\all \typeout{Including all files.} \else \typeout{Including only \files.} \etodo{Make sure to include all files (not just \files)} \includeonly{\files} \fi
@@ -105,7 +105,6 @@
 % applicable.
 % \include{signature}
 \pagestyle{plain}
-\minortodoask{Decide on whether to copyright myself or MIT; Adam, are there considerations to be aware of here?}
 \minortodo{Download and fill out \url{https://libraries.mit.edu/wp-content/uploads/2019/08/umi-proquest-form.pdf}}
 \minortodo{fill out \url{http://www.eecs.mit.edu/docs/grad/PhD_CompletionForm2019_2020.pdf} / \url{https://www.eecs.mit.edu/academics-admissions/graduate-program/graduate-office-materials/september-2020-thesis-procedures}}
 \minortodo{Share thesis with Eric Marion (cf 2020-05-14 15:53 Facebook Messenger)}
@@ -113,7 +112,6 @@
 \minortodo{Share thesis with Talia Ringer and ppedrot}
 \minortodo{share thesis with Ali Caglayan (cf \url{https://coq.zulipchat.com/\#narrow/pm-with/299354,304492-pm/near/208498209})}
 \minortodo{share thesis with Janno (Jan-Oliver Kaiser) cf video chat}
-\minortodo{single space or dobule space?}
 \minortodo{maybe remove ``introduction'' section headings?}
 \minortodo{uniform style: citations always come before periods in sentences}
 \minortodo{spellcheck with make spellcheck}

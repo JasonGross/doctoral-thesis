@@ -18,7 +18,8 @@ UMI_PDFS = extra-title-abstract.pdf umi-proquest-form-adjusted.pdf umi-proquest-
 THESIS_PDFS = jgross-thesis.pdf jgross-thesis-extra-todos.pdf
 THESIS_EXTRA_PDFS = JGross-PhD-EECS-Feb2021.pdf
 MAIN_TEXS = $(patsubst \include{%},%.tex,$(filter \include{%},$(shell cat appendix-files.tex main-files.tex jgross-thesis.tex)))
-THESIS_TEXS = packages.tex contents.tex mitthesis.cls abstract.tex cover.tex coverinfo.tex new-date.tex todo.tex main-files.tex appendix-files.tex spellcheck-results.tex $(MAIN_TEXS)
+EXCLUDE_FILES_LIST_TEX = exclude-files-list.tex
+THESIS_TEXS = packages.tex contents.tex mitthesis.cls abstract.tex cover.tex coverinfo.tex new-date.tex todo.tex main-files.tex appendix-files.tex spellcheck-results.tex $(EXCLUDE_FILES_LIST_TEX) $(MAIN_TEXS)
 PROPOSAL_TEXS = new-date-proposal.tex abstract-proposal.tex
 UMI_TEXS = umi-proquest-form-full.tex umi-proquest-form-adjusted.tex extra-title-abstract.tex
 COMPLETION_TEXS = new-date-submission.tex PhD_CompletionForm-adjusted.tex PhD_CompletionForm-full.tex
@@ -300,6 +301,19 @@ $(THESIS_PDFS): $(THESIS_TEXS) $(THESIS_VS)
 
 $(PROPOSAL_PDFS): $(PROPOSAL_TEXS)
 
+.PHONY: exclude-rewriting exclude-nothing exclude-only
+exclude-rewriting:
+	printf '\\def\\excludefiles{rewriting}\n' > $(EXCLUDE_FILES_LIST_TEX)
+exclude-nothing:
+	printf '\\def\\excludefiles{}\n' > $(EXCLUDE_FILES_LIST_TEX)
+exclude-only:
+	@echo 'Pass FILES=<comma-separated-list> to control exclusion'
+	printf '\\def\\excludefiles{%s}' '$(FILES)' > $(EXCLUDE_FILES_LIST_TEX)
+
+ifeq (,$(wildcard $(EXCLUDE_FILES_LIST_TEX)))
+$(EXCLUDE_FILES_LIST_TEX): exclude-rewriting
+endif
+
 resume:
 	cd resume; $(MAKE)
 
@@ -394,7 +408,7 @@ cleanall:: clean
 	rm -f $(PDFS)
 	rm -rf abstract.endpage *~ *\# .\#* *.atfi *.swp *.aux *.lof ./*.log *.lot *.fls *.out *.toc *.fmt *.fot *.cb *.cb2 .*.lb *.dvi *.xdv *-converted-to.* .pdf *.bbl *.bcf *.blg *-blx.aux *-blx.bib *.run.xml *.fdb_latexmk *.synctex *.synctex'(busy)' *.synctex.gz *.synctex.gz'(busy)' *.pdfsync *.alg *.loa acs-*.bib *.thm *.nav *.pre *.snm *.vrb *.soc *.cpt *.spl *.ent *.lox *.mf *.mp *.t[1-9] *.t[1-9][0-9] *.tfm *.end *.?end *.[1-9] *.[1-9][0-9] *.[1-9][0-9][0-9] *.[1-9]R *.[1-9][0-9]R *.[1-9][0-9][0-9]R *.eledsec[1-9] *.eledsec[1-9]R *.eledsec[1-9][0-9] *.eledsec[1-9][0-9]R *.eledsec[1-9][0-9][0-9] *.eledsec[1-9][0-9][0-9]R *.acn *.acr *.glg *.glo *.gls *.glsdefs *-gnuplottex-* *.gaux *.gtex *.4ct *.4tc *.idv *.lg *.trc *.xref *.brf *-concordance.tex *.tikz *-tikzDictionary *.lol *.idx *.ilg *.ind *.ist *.maf *.mlf *.mlt *.mtc[0-9]* *.slf[0-9]* *.slt[0-9]* *.stc[0-9]* _minted* *.pyg *.mw *.nlg *.nlo *.nls *.pax *.pdfpc *.sagetex.sage *.sagetex.py *.sagetex.scmd *.wrt *.sout *.sympy sympy-plots-for-*.tex/ *.upa *.upb *.pytxcode pythontex-files-*/ *.loe *.dpth *.md5 *.auxlock *.tdo *.lod *.xmpi *.xdy *.xyc *.ttt *.fff TSWLatexianTemp* *.bak *.sav .texpadtmp *.backup *~[0-9]* ./auto/* *.el *-tags.tex *.sta *.spl *.drv *.dtx *.ins *.bbx *.cbx *.lbx *.def *.cfg *.bst mathtools.sty mhsetup.sty mathtools.zip ./mathtools/ biblatex.sty biblatex.zip ./biblatex/ etoolbox.sty etoolbox.tex logreq.sty *.md5 ./todo.svg jgross-thesis*-figure*.dep *.pgf-plot.gnuplot *.pgf-plot.table *-parameters.dat [._]*.s[a-v][a-z] [._]*.sw[a-p] [._]s[a-v][a-z] [._]sw[a-p] *~ \#*\# ./.emacs.desktop ./.emacs.desktop.lock *.elc auto-save-list tramp .\#* *.pyc *.aux *.d *.glob *.vio *.vo *.vos *.vok CoqMakefile.conf Makefile.bak Makefile.coq Makefile.coq.conf Makefile.coq.bak Makefile-old.conf csdp.cache lia.cache nlia.cache nia.cache nra.cache .csdp.cache .lia.cache .nlia.cache .nia.cache .nra.cache *_SuperFast.v *_Fast.v *_Medium.v *_Slow.v *_VerySlow.v
 
-PROCESS_REFS:=sed 's,[_/:+}'"'"'\."\$$= \#0-9],-,g' | tr '-' '\n' | grep -v '^$$' | sort | uniq
+PROCESS_REFS:=sed 's,[_/:+}'"'"'\."\$$= \#0-9],-,g' | tr '-' '\n' | grep -v '^$$' | env LC_COLLATE=C sort | uniq
 etc/dicts/labels.spl: $(TEXT_TEXS) Makefile
 	$(HIDE)cat $(TEXT_TEXS) | grep -o '\\label{[^}]*}' | sed 's/^\\label{//g' | $(PROCESS_REFS) > $@
 
@@ -403,11 +417,13 @@ etc/dicts/bibkeys.spl: jgross-thesis.bib Makefile
 
 DICT_HEADER:=personal_ws-1.1 en 0 utf-8
 $(CUSTOM_DICT): $(DICTS) Makefile
-	$(HIDE)(echo "$(DICT_HEADER)"; (cat $(DICTS) | sort | uniq)) > $@
+	$(HIDE)(echo "$(DICT_HEADER)"; (cat $(DICTS) | env LC_COLLATE=C sort | uniq)) > $@
 
-SPELLCHECK := (cat $(TEXT_TEXS) | aspell --lang=en --mode=tex --extra-dicts=./$(CUSTOM_DICT) list --ignore 2 | LC_COLLATE=C sort | uniq); \
-	(cat $(TEXT_TEXS) | grep -o '[0-9]\+'"'s"); \
+SPELLCHECK_gen = (cat $(1) | aspell --lang=en --mode=tex --extra-dicts=./$(CUSTOM_DICT) list --ignore 2 | env LC_COLLATE=C sort | uniq); \
+	(cat $(1) | grep -o '[0-9]\+'"'s"); \
 	true
+SPELLCHECK := $(call SPELLCHECK_gen,$(TEXT_TEXS))
+SPELLCHECK_EARLY := $(call SPELLCHECK_gen,$(wildcard $(TEXT_TEXS)))
 
 .PHONY: spellcheck
 spellcheck: $(CUSTOM_DICT)
@@ -429,7 +445,7 @@ regenerate-dict: $(CUSTOM_DICT)
 
 .PHONY: sort-dicts
 sort-dicts:
-	for i in $(DICTS); do cat "$$i" | grep -v "$(DICT_HEADER)" | tr ' ' '\n' | grep -v '^$$' | sort | uniq > "$$i.sorted"; mv "$$i.sorted" "$$i"; done
+	for i in $(DICTS); do cat "$$i" | grep -v "$(DICT_HEADER)" | tr ' ' '\n' | grep -v '^$$' | env LC_COLLATE=C sort | uniq > "$$i.sorted"; mv "$$i.sorted" "$$i"; done
 
 ifeq ($(wildcard $(CUSTOM_DICT)),)
 all: $(CUSTOM_DICT)
@@ -439,7 +455,7 @@ endif
 endif
 
 SPELLCHECK_RESULTS_TEX:=$(shell cat spellcheck-results.tex 2>&1)
-SPELLCHECK_RESULTS:=\def\spellcheckresults{$(subst $(SPACE),$(COMMA)$(SPACE),$(sort $(shell $(SPELLCHECK) 2>/dev/null)))}
+SPELLCHECK_RESULTS:=\def\spellcheckresults{$(subst $(SPACE),$(COMMA)$(SPACE),$(sort $(shell $(SPELLCHECK_EARLY) 2>/dev/null)))}
 ifneq ($(SPELLCHECK_RESULTS_TEX),$(SPELLCHECK_RESULTS))
 .PHONY: spellcheck-results.tex
 else
@@ -447,3 +463,7 @@ endif
 
 spellcheck-results.tex:
 	echo "$(SPELLCHECK_RESULTS)" > spellcheck-results.tex
+
+.PHONY: inotify
+inotify:
+	while true; do inotifywait -e modify -e create -e delete -e close_write $(ALL_TEXS) Makefile jgross-thesis.bib; $(MAKE); done

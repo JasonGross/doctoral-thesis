@@ -1,4 +1,21 @@
 \chapter{The Performance Landscape in Type-Theoretic Proof Assistants} \label{ch:perf-failures}
+
+\todofrom[Beta Ziliani]{Hi Jason, let me give you some preliminary feedback on Chapter 2 (the only I got to read so far, sorry!). These are presentation details, with the only big problem being that I felt at times like I was being thrown stuff to the face without much heads-up. But probably it doesn't help that I'm reading it in bits, so don't mind much at this comment.
+
+  About the content, I like it. I'm aware of most of these issues, but having them presented like this gives a nice perspective of the problem. One comment about packed/unpacked records: MathComp decided to pack the records precisely for this reason. I remember in a presentation of MathClasses (I can try to find where it was if you want), Georges bashed the student of Bas Spitters precisely for this reason, claiming MathClasses won't scale to real-world applications. I don't know what the status of MathClasses is now, and if Georges's prediction stands, but I thought you'll find this interesting/amusing.
+
+  Details:
+  In 2.1 I was missing some heads-up of the steps of the program you're measuring, in order to understand where the bottleneck was coming from. In particular this paragraph is confusing, as I thought at this time we were talking JUST about code generation:
+
+  ``Maybe, you might ask, were we generating unreasonable amounts of code? Each
+  example using n machine words generated 3n lines of code. Furthermore, the actual
+  code generation took less than 0.002\% of the total time on the largest examples we
+  tested (just 14 seconds out of about 211 hours). How can this be?''
+
+  In general, I think that the graphics might be scaled significantly, they took an entire page now and it sounds a bit too much (detail).
+
+  There are a few typos, I can give it to you but probably you'll spot them on a next read.}
+
 \section{The Story}\label{sec:perf-failures:story}
 \minortodo{come up with a better name for this section}
 The purpose of this chapter is to convince the reader that the issue of performance in proof assistants is non-trivial in ways that differ from performance bottlenecks in non-dependently-typed languages.

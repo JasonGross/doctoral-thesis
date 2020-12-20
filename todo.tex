@@ -31,7 +31,7 @@
 \newcommand{\todofrom}[2]{%
   \finalwarning{TODO: (FROM #1) \detokenize{#2} in file \currfilename}%
   \NowOrAtBeginDocument{\textcolor{OrangeRed}{[\textbf{TODO FROM #1:} #2]}}}%
-\newcommand{\todonz}[1]{\todofrom[Nickolai]{#1}}
+\newcommand{\todonz}[1]{\todofrom{Nickolai}{#1}}
 \newcommand{\minortodo}[1]{%
   \finalwarning{MINOR TODO: \detokenize{#1} in file \currfilename}%
   \ifthenelse{\boolean{showminortodos}}{%

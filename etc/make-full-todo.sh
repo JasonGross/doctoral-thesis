@@ -16,16 +16,20 @@ if [ ! -z "${UNKNOWN_WORDS}" ]; then
 fi
 
 PREFIX=""
-for i in '^TODO' \
+for i in '^TODO: .FROM A' \
+             '^TODO: .FROM N' \
+             '^TODO: .FROM S' \
+             '^TODO: .FROM' \
+             '^Warning: Label .* multiply defined' \
+             '^Warning: Reference .* undefined' \
+             '^Warning: Citation .* undefined' \
+             '^TODO' \
              '^QUESTION FOR ADAM' \
              '^QUESTION FOR READERS' \
              '^MINOR TODO' \
              '^MINOR QUESTION FOR ADAM' \
              '^MINOR QUESTION FOR READERS' \
              '^Unknown [wW]ords' \
-             '^Warning: Label .* multiply defined' \
-             '^Warning: Reference .* undefined' \
-             '^Warning: Citation .* undefined' \
              '^Warning:' \
              'Warning:' \
              'WARN' \

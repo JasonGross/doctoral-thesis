@@ -358,6 +358,11 @@ print-errors:
 	false
 .PHONY: print-errors
 
+.PHONY: fast
+fast:
+	$(SHOW)"PDFLATEX"
+	$(HIDE)$(PDFLATEX) $(LATEXFLAGS) $(OTHERFLAGS) jgross-thesis.tex
+
 $(MAIN_PROPOSAL_PDFS) $(THESIS_PDFS) : %.pdf : %.tex
 	$(SHOW)"PDFLATEX (run 1)"
 	$(HIDE)$(PDFLATEX) $(LATEXFLAGS) $(OTHERFLAGS) $< || $(MAKE) print-errors

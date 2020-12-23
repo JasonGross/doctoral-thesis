@@ -134,8 +134,8 @@ We discuss the performance issues in more detail in \autoref{sec:setoid-rewrite-
 Which kernel-level reductions \emph{does} Coq support today?
 Currently, the trusted code base knows about four different kinds of reduction: left-to-right conversion, right-to-left conversion, a virtual machine (VM) written in C based on the OCaml compiler, and a compiler to native code.
 Furthermore, the first two are parameterized on an arbitrary user-specified ordering of which constants to unfold when, in addition to internal heuristics about what to do when the user has not specified an unfolding order for given constants.
-Recently, native support for 63-bit integers~\cite{coq-pr-ints} and IEEE 754-2008 binary64 floats~\cite{coq-pr-floats} have been added to the VM and native machines.
-A recent pull request proposes adding support for native arrays~\cite{coq-pr-arrays}.
+Recently, native support for 63-bit integers~\cite{coq-pr-int63} and IEEE 754-2008 binary64 floats~\cite{coq-pr-floats} have been added to the VM and native machines.
+A recent pull request proposes adding support for native arrays~\cite{coq-pr-parray}.
 
 % Not sure if we want to include the following. -Adam
 %% Some users of Coq are concerned by this increase in the TCB.
@@ -1034,7 +1034,7 @@ We found that even when there are no occurrences fully matching the rule, \minti
 Rewriting without any successful matches takes nearly as much time as \mintinline{coq}{setoid_rewrite} in this microbenchmark; by the time we are looking at goals with 400 binders, the difference is less than 5\%.
 
 We posit that this overhead comes from \mintinline{coq}{setoid_rewrite} looking for head-symbol matches and then creating evars (existential variables) to instantiate the arguments of the lemmas for each head-symbol-match location; hence even if there are no matches of the rule as a whole, there may still be head-symbol matches.
-Since Coq uses a locally nameless representation~\cite{LocallyNameless} for its terms, evar contexts are necessarily represented as \emph{named} contexts.
+Since Coq uses a locally nameless representation~\cite{Engineering2008Aydemir} for its terms, evar contexts are necessarily represented as \emph{named} contexts.
 Representing a substitution between named contexts takes linear space, even when the substitution is trivial, and hence each evar incurs overhead linear in the number of binders above it.
 Furthermore, fresh-name generation in Coq is quadratic in the size of the context, and since evar-context creation uses fresh-name generation, the additional multiplicative factor likely comes from fresh-name generation.
 (Note, though, that this pattern suggests that the true performance is quartic rather than merely cubic.  However, doing a linear regression on a $\log$-$\log$ of the data suggests that the performance is genuinely cubic rather than quartic.)

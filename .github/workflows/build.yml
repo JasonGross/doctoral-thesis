@@ -8,7 +8,7 @@ on:
 
 jobs:
   build:
-    runs-on: ubuntu-20.04
+    runs-on: ubuntu-latest
 
     # https://tex.stackexchange.com/a/440271/2066
     # Try to create reproducible .pdfs

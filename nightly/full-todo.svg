@@ -1,4 +1,4 @@
-<svg xmlns="http://www.w3.org/2000/svg" width="41em" height="2187em"><text x="0" y="0">
+<svg xmlns="http://www.w3.org/2000/svg" width="41em" height="2180em"><text x="0" y="0">
 <tspan x="0" dy="1.2em">TODO: (FROM Nickolai) Seems fine ... but is it really unique to proofs? C++ </tspan>
 <tspan x="0" dy="1.2em">&#160;&#160;compilers in the 90s had the same problems in file chap1-introduction.tex on </tspan>
 <tspan x="0" dy="1.2em">&#160;&#160;input line 93.</tspan>
@@ -85,9 +85,6 @@
 <tspan x="0" dy="1.2em">Warning: Reference `fig:timing-make-destruct-record&apos; on page 79 undefined on </tspan>
 <tspan x="0" dy="1.2em">&#160;&#160;input line 299.</tspan>
 <tspan x="0" dy="1.2em">Warning: Reference `sec:intro&apos; on page 149 undefined on input line 1573.</tspan>
-<tspan x="0" dy="1.2em">Warning: Citation &apos;coq-pr-ints&apos; on page 109 undefined on input line 137.</tspan>
-<tspan x="0" dy="1.2em">Warning: Citation &apos;coq-pr-arrays&apos; on page 109 undefined on input line 138.</tspan>
-<tspan x="0" dy="1.2em">Warning: Citation &apos;LocallyNameless&apos; on page 133 undefined on input line 1037.</tspan>
 <tspan x="0" dy="1.2em">TODO: Spellcheck the following words: Georges&apos;s, MathComp in file </tspan>
 <tspan x="0" dy="1.2em">&#160;&#160;jgross-thesis.tex on input line 94.</tspan>
 <tspan x="0" dy="1.2em">TODO: Some sort of summary of argument-so-far here in file </tspan>
@@ -670,7 +667,7 @@
 <tspan x="0" dy="1.2em">&#160;&#160;432.</tspan>
 <tspan x="0" dy="1.2em">Unknown Words: Georges&apos;s, MathComp</tspan>
 <tspan x="0" dy="1.2em">Warning: There were undefined references.</tspan>
-<tspan x="0" dy="1.2em">Warning: There were multiply-defined labels.</tspan>
+<tspan x="0" dy="1.2em">Warning: There were multiply-defined labels.)</tspan>
 <tspan x="0" dy="1.2em">Package gnuplottex Warning: Shell escape not enabled. You&apos;ll need to convert </tspan>
 <tspan x="0" dy="1.2em">&#160;&#160;the graphs yourself..</tspan>
 <tspan x="0" dy="1.2em">LaTeX Font Warning: Font shape `TU/cmr/m/n&apos; undefined using `TU/lmr/m/n&apos; </tspan>
@@ -692,8 +689,6 @@
 <tspan x="0" dy="1.2em">LaTeX Font Warning: Size substitutions with differences up to 2.01157pt have </tspan>
 <tspan x="0" dy="1.2em">&#160;&#160;occurred.</tspan>
 <tspan x="0" dy="1.2em">LaTeX Font Warning: Some font shapes were not available, defaults substituted.</tspan>
-<tspan x="0" dy="1.2em">Package biblatex Warning: Please (re)run Biber on the file: jgross-thesis and </tspan>
-<tspan x="0" dy="1.2em">&#160;&#160;rerun LaTeX afterwards.)</tspan>
 <tspan x="0" dy="1.2em">Missing character: There is no M-IM-* (U+026A) in font [lmroman12-regular]:+tlig;!</tspan>
 <tspan x="0" dy="1.2em">Missing character: There is no M-aM-4M-^O (U+1D0F) in font [lmroman12-regular]:+tlig;!</tspan>
 <tspan x="0" dy="1.2em">Missing character: There is no M-aM-4M-^X (U+1D18) in font [lmroman12-regular]:+tlig;!</tspan>
@@ -966,7 +961,6 @@
 <tspan x="0" dy="1.2em">]</tspan>
 <tspan x="0" dy="1.2em">Underfull \vbox (badness 10000) has occurred while \output is active []</tspan>
 <tspan x="0" dy="1.2em"> [106]</tspan>
-<tspan x="0" dy="1.2em">[109] [110]</tspan>
 <tspan x="0" dy="1.2em">Overfull \hbox (3.08109pt too wide) in paragraph at lines 206--212</tspan>
 <tspan x="0" dy="1.2em">[]\TU/pcr/bx/n/12 Across a va-ri-ety of proof as-sis-tants, sim-pli-fi-ca-tion </tspan>
 <tspan x="0" dy="1.2em">&#160;&#160;of func-tional pro-grams is a workhorse</tspan>

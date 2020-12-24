@@ -116,26 +116,36 @@
 
 \minortodo{uniform style}
 \minortodo{rearrange}
-Thank you, Mom, for encouraging me from my youth and supporting me in all that I do.
-Last, and most of all, thank you, Adam Chlipala, for your patience, guidance, advice, and wisdom, during the writing of this thesis, and through my research career.
+First, thank you, Adam Chlipala, for your patience, guidance, encouragement, advice, and wisdom, during the writing of this thesis, and through my research career.
+I obviously don't know what it's like to have any other PhD advisor, but I can't imagine having a PhD advisor who would have been better for my mental health than you.
+I want to thank my coworkers, with special thanks to you Andres for many engaging conversations and rich and productive collaborations.
+Thank you, Mom, for taking every opportunity to enrich my life and setting me on this path.
+% Thank you, Mom, for encouraging me from my youth and supporting me in all that I do.
+Thank you Rachel, Dad, and the rest of my family, you've always been kind and supportive.
+Thank you, Allison Strandberg, for your friendship through the years.
+Thank you Rajee Agrawal for your faith in me and for everything you've done to help me excel.
+\minortodo{adjust}
 \minortodo{Add more acknowledgments}
+\minortodo{Rajee or Rajashree?}
 
 I want to thank Andres Erbsen for pointing out to me some of the particular performance bottlenecks in Coq that I made use of in this thesis, including those of subsubsection \nameref{sec:sharing} in \autoref{sec:sharing} and those of subsections \nameref{sec:name-resolution}, \nameref{sec:perf:capture-avoiding-subst}, \nameref{sec:perf:quadratic-evar-subst}, and \nameref{sec:perf:quadratic-application} in \autoref{sec:perf:binder-count}.
 
-\minortodo{thank various other people: Pierre-Marie Pédrot, Rajee Agrawal, friends, Allison Strandberg (incl. for chatting with me about thesis), Matthieu Sozeau, coqdevs more generally, maybe András Kovács on perf discussions, thesis committee, maybe my sister/dad/rest of family}
-\minortodo{Rajee or Rajashree?}
+I want to thank the Coq development team---without whom I would not have a proof assistant to use---for their patience and responsiveness to my many, many bug reports, feature requests, and questions.
+Special thanks to Pierre-Marie Pédrot for doing the heavy lifting of tracking down performance issues inside Coq and explaining them to me, and fixing many of them.
+I'd also like to thank Matthieu Sozeau for adding support for universe polymorphism and primitive projections to Coq, and responding to all of my bug reports on the functionality and performance of these features from my work on the HoTT Category Theory library during the development of these features.
 
-\minortodo{cite various grants}
+I'd like to thank the rest of my thesis committee---Professor Saman Amarasinghe and Professor Nickolai Zeldovich---for their support and direction during the editing of this thesis and my defense.
 
-% these from category-coq-experience
-This work was supported in part by the MIT bigdata@CSAIL initiative, NSF grant CCF-1253229, ONR grant N000141310260, and AFOSR grant FA9550-14-1-0031.
-We also thank Benedikt Ahrens, Daniel R.~Grayson, Robert Harper, Bas Spitters, and Edward Z.~Yang for feedback on \citetitle{category-coq-experience}~\cite{category-coq-experience}.
+\minortodo{thank various other people: friends, Allison Strandberg (incl. for chatting with me about thesis), maybe András Kovács on perf discussions}
+
 
 \minortodo{rearrange}
 \minortodo{make sure we didn't miss anything}
 A significant fraction of the text of this thesis is taken from papers I've co-authored during my PhD, sometimes with major edits, other times with only minor edits to conform to the flow of the thesis.
+
 In particular:
 \minortodo{how to format citations here}
+
 \Autoref{sec:category-theory-library,sec:duality-conversion,sec:associators,sec:equality-reflection,sec:abstraction-barriers} are taken from \citetitle{category-coq-experience}~\cite{category-coq-experience}.
 Some of the text in \Autoref{sec:univ-poly,sec:HITs} comes from \citetitle{category-coq-experience}~\cite{category-coq-experience}
 
@@ -146,14 +156,11 @@ Some of the text in \Autoref{sec:univ-poly,sec:HITs} comes from \citetitle{categ
 \Autoref{ch:reification-by-parametricity} is largely taken from \textcite{reification-by-parametricity}, with some new text for this thesis.
 
 \minortodo{do we need/want to mention this?  how to cite it?}
-We would like to thank read and cite Karl Palmskog for pointing us at \textcite{Should1999Lamport} and \textcite{Formalising2018Paulson}.\footnote{@palmskog on gitter \url{https://gitter.im/coq/coq?at=5e5ec0ae4eefc06dcf31943f}}
+We would like to thank read and cite Karl Palmskog for pointing us at \textcite{Should1999Lamport} and \textcite{Formalising2018Paulson}.%
+\footnote{@palmskog on gitter \url{https://gitter.im/coq/coq?at=5e5ec0ae4eefc06dcf31943f}}
 
-\minortodo{should we include acknowledgements from various papers?}
-Acknowledgements from the category theory paper:
-This work was supported in part by the MIT bigdata@CSAIL initiative, NSF grant CCF-1253229, ONR grant N000141310260, and AFOSR grant FA9550-14-1-0031.
 We also thank Benedikt Ahrens, Daniel R.~Grayson, Robert Harper, Bas Spitters, and Edward Z.~Yang for feedback on \textcite{category-coq-experience}, on which we based \autoref{ch:api-design}.
 
-Acknowledgements from the reification by parametricity paper:
 We would like to thank Hugo Herbelin for sharing the trick with \texttt{type of} to propagate universe constraints%
 \footnote{%
     \url{https://github.com/coq/coq/issues/5996\#issuecomment-338405694}%
@@ -162,7 +169,7 @@ as well as useful conversations on Coq's bug tracker that allowed us to track do
 \footnote{%
     \url{https://github.com/coq/coq/issues/6252}%
 }
-We would like to thank Jonathan Leivent for sharing a trick which obsoletes the aforementioned \texttt{type of} trick%
+We would like to thank Jonathan Leivent for sharing the trick of annotating identifiers with \texttt{: Type} to avoid needing to adjust universes%
 \footnote{%
   \url{https://github.com/coq/coq/issues/5996\#issuecomment-670955273}
 }%
@@ -177,8 +184,8 @@ We first made use of \texttt{pattern} to allow \texttt{vm\_compute} to replace \
 We then noticed that in the sequence of doing abstraction; \texttt{vm\_compute}; application; $\beta$-reduction; reification, we could move $\beta$-reduction to the end of the sequence if we fused reification with application, and thus reification by parametricity was born.
 
 This work was supported in part by a Google Research Award and National Science Foundation grants CCF-1253229, CCF-1512611, and CCF-1521584.
-
-
+Work on the category theory library, one of the case studies presented in \autoref{ch:api-design} and presented more fully in \textcite{category-coq-experience}, was supported in part by the MIT bigdata@CSAIL initiative, NSF grant CCF-1253229, ONR grant N000141310260, and AFOSR grant FA9550-14-1-0031.
+\todoask{Are there any other grants to cite?}
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % -*-latex-*-

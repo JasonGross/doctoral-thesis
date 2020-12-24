@@ -1,13 +1,5 @@
 \chapter{A Framework for Building Verified Partial Evaluators} \label{ch:rewriting}
 
-\begin{abstract}
-  \emph{Partial evaluation} is a classic technique for generating lean, customized code from libraries that start with more bells and whistles.
-  It is also an attractive approach to creation of \emph{formally verified} systems, where theorems can be proved about libraries, yielding correctness of all specializations ``for free.''
-  However, it can be challenging to make library specialization both performant (at compile time and runtime) and trustworthy.
-  We present a new approach, prototyped in the Coq proof assistant, which supports specialization at the speed of native-code execution, without adding to the trusted code base.
-  Our extensible engine, which combines the traditional concepts of tailored term reduction and automatic rewriting from hint databases, is also of interest to replace these ingredients in proof assistants' proof checkers and tactic engines, at the same time as it supports extraction to standalone compilers from library parameters to specialized code.
-\end{abstract}
-
 \section{Introduction} \label{sec:rewriting:intro}
 
 \todonz{Drop intro}
@@ -31,7 +23,7 @@ The challenge is that we are not just implementing algorithms; we also want a pr
 It would seem like an abandonment of the spirit of proof assistants to bake in a reduction strategy per library, yet effective partial evaluation tends to be rather fine-tuned in this way.
 Performance tuning matters when generated code is thousands of lines long.
 
-In this paper\todonz{not a paper}, we present an approach to verified partial evaluation in proof assistants, which requires no changes to proof checkers.
+In this chapter, we present an approach to verified partial evaluation in proof assistants, which requires no changes to proof checkers.
 To make the relevance concrete, we use the example of Fiat Cryptography~\cite{FiatCryptoSP19}, a Coq library that generates code for big-integer modular arithmetic at the heart of elliptic-curve-cryptography algorithms.
 This domain-specific compiler has been adopted, for instance, in the Chrome Web browser, such that about half of all HTTPS connections from browsers are now initiated using code generated (with proof) by Fiat Cryptography.
 However, Fiat Cryptography was only used successfully to build C code for the two most widely used curves (P-256 and Curve25519).

@@ -37,7 +37,8 @@ This means that if we want to catch this bug in a ``modest'' twenty years of con
 This is not by accident. 
 If our computers become fast enough to complete this testing in reasonable time, then attackers can use these faster computers to launch brute force attacks. 
 So, however fast our computers get, ensuring security will require scaling up the size of the cryptographic problem proportionally, and testing will continue to be inadequate. 
-
+% https://www.wolframalpha.com/input/?i=%282%5E255%2F19+*+529812+%2F+%285+ghz%29+%2F+%2820+years%29+%2F+%28atoms+in+the+solar+system%29%29+*+1+atom = 533260
+% (2^255/19 * 529812 / (5 ghz) / (20 years) / (atoms in the solar system)) * 1 atom
 
 An appealing solution to this problem is to \emph{prove} critical software correct.
 We do this by specifying in formal mathematics the intended behavior of our software, and showing a correspondence between our math and our code.
@@ -59,20 +60,24 @@ Furthermore, it's very unlikely that bugs in the proof checker will overlap with
 Said another way, we no longer need to write tests for every piece of software separately; writing tests for the proof-checker helps eliminate bugs in \emph{all} software proven by that checker.
 
 
-Tools for machine-checked proofs have  had many successes, in both software verification and traditional mathematics proof formalization.
+Tools for machine-checked proofs have had many successes, in both software verification and traditional mathematics proof formalization.
 Examples abound, from compilers~\cite{Compcert} to microkernels~\cite{seL4SOSP09} to web-servers~\cite{Network2015Chlipala} to cryptography code~\cite{FiatCryptoSP19}, from the Four-Color Theorem~\cite{gonthier2008formal} to the Odd-Order Theorem~\cite{gonthier2013machine} to Homotopy Type Theory~\cite{HoTTBook}.
 
-However, in all of these tools, there is enormous proof overhead over the lines of code being verified. (Insert graph) 
+However, in all of these tools, there is enormous proof overhead over the lines of code being verified.
+\todo{Insert graph}
 
 To decrease the marginal overhead of proof generation, we may automate the proof generation itself. 
-Drawing experience from case studies in category theory~\cite{category-coq-experience}, parsers~\cite{jgross-masters-thesis}, and generation of low-level cryptographic code~\cite{FiatCryptoSP19}, we present the difficulties in automation of proof generation. 
-In the quest to build automated proof generation tools, we encountered several performance bottlenecks in proof-checking. In this thesis, we present design principles in \autoref{part:design} to avoid these performance bottlenecks, and insights about the proof-checking system that the performance bottlenecks reveal. We present a research prototype of a tool and methodology for achieving acceptable performance at scale in \autoref{part:rewriting}. 
+Drawing experience from case studies in category theory~\cite{category-coq-experience}, parsers~\cite{jgross-masters-thesis}, and generation of low-level cryptographic code~\cite{FiatCryptoSP19}, we present difficulties in automation of proof generation. 
+In the quest to build automated proof generation tools, we encountered several performance bottlenecks in proof-checking.
+In this thesis, we present design principles in \autoref{part:design} to avoid these performance bottlenecks, and insights about the proof-checking system that the performance bottlenecks reveal.
+We present a research prototype of a tool and methodology for achieving acceptable performance at scale in \autoref{part:rewriting}. 
 
 Unlike many other performance domains, in our experience, the time it takes to check proofs as we scale the size of the input is almost always super-linear---quadratic at best, commonly cubic or exponential, occasionally even worse.
 Empirically, this might look like a proof script that checks in tens of seconds on the smallest of toy examples; takes about a minute on the smallest real-world example, which might be twice the size of the toy example; takes twenty hours to generate and check the proof of an example only twice that size; and, on a (perhaps not-quite-realistic) example twice the size of the twenty-hour example, the script might not finish within a year, or even a thousand years---see \autoref{sec:fiat-crypto-codegen-numbers} for more details.
 In just three doublings of input size, we might go from tens of seconds to thousands of years.
 Moreover, in proof assistants, this is not an isolated experience.
 This sort of performance behavior is \emph{typical}.
+\minortodo{Nickolai says: Seems fine ... but is it really unique to proofs?  C++ compilers in the 90s had the same problems.  Jason: Maybe see if I can find references.  Or just ignore?}
 
 
 The story that this thesis aims to tell is that in order for proof assistants to scale to industrial uses, \emph{we must get the basics of asymptotic performance of proof-checking right}.

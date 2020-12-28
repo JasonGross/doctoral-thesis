@@ -26,17 +26,17 @@
 
 
 
-In critical software systems, like cryptography, there are opposing pressures to innovate and to let things be as they are. 
-Innovation can help create more performant systems with higher mathematical security. 
-However, if the new code has any bugs, it could leave the system vulnerable to attacks costing billions of dollars. 
+In critical software systems, like cryptography, there are opposing pressures to innovate and to let things be as they are.
+Innovation can help create more performant systems with higher mathematical security.
+However, if the new code has any bugs, it could leave the system vulnerable to attacks costing billions of dollars.
 
 Testing of various kinds is the de facto standard for finding bugs, but it is both expensive and does not guarantee a lack of bugs.
 In adversarial contexts such as this one, fixing 99\% of bugs is not sufficient; attackers have a strong incentive to find the remaining 1\% of bugs and exploit them for gains.
 For example, some bugs in cryptographic code only occur in as few as 19 out of $2^{255}$ cases~\cite{curve25519-donna-commit-correct-bounds}.
 This means that if we want to catch this bug in a ``modest'' twenty years of continuous random testing, then we need to have over a thousand times as many computers as there are atoms in the solar system!
-This is not by accident. 
-If our computers become fast enough to complete this testing in reasonable time, then attackers can use these faster computers to launch brute force attacks. 
-So, however fast our computers get, ensuring security will require scaling up the size of the cryptographic problem proportionally, and testing will continue to be inadequate. 
+This is not by accident.
+If our computers become fast enough to complete this testing in reasonable time, then attackers can use these faster computers to launch brute force attacks.
+So, however fast our computers get, ensuring security will require scaling up the size of the cryptographic problem proportionally, and testing will continue to be inadequate.
 % https://www.wolframalpha.com/input/?i=%282%5E255%2F19+*+529812+%2F+%285+ghz%29+%2F+%2820+years%29+%2F+%28atoms+in+the+solar+system%29%29+*+1+atom = 533260
 % (2^255/19 * 529812 / (5 ghz) / (20 years) / (atoms in the solar system)) * 1 atom
 
@@ -66,11 +66,11 @@ Examples abound, from compilers~\cite{Compcert} to microkernels~\cite{seL4SOSP09
 However, in all of these tools, there is enormous proof overhead over the lines of code being verified.
 \todo{Insert graph}
 
-To decrease the marginal overhead of proof generation, we may automate the proof generation itself. 
-Drawing experience from case studies in category theory~\cite{category-coq-experience}, parsers~\cite{jgross-masters-thesis}, and generation of low-level cryptographic code~\cite{FiatCryptoSP19}, we present difficulties in automation of proof generation. 
+To decrease the marginal overhead of proof generation, we may automate the proof generation itself.
+Drawing experience from case studies in category theory~\cite{category-coq-experience}, parsers~\cite{jgross-masters-thesis}, and generation of low-level cryptographic code~\cite{FiatCryptoSP19}, we present difficulties in automation of proof generation.
 In the quest to build automated proof generation tools, we encountered several performance bottlenecks in proof-checking.
 In this thesis, we present design principles in \autoref{part:design} to avoid these performance bottlenecks, and insights about the proof-checking system that the performance bottlenecks reveal.
-We present a research prototype of a tool and methodology for achieving acceptable performance at scale in \autoref{part:rewriting}. 
+We present a research prototype of a tool and methodology for achieving acceptable performance at scale in \autoref{part:rewriting}.
 
 Unlike many other performance domains, in our experience, the time it takes to check proofs as we scale the size of the input is almost always super-linear---quadratic at best, commonly cubic or exponential, occasionally even worse.
 Empirically, this might look like a proof script that checks in tens of seconds on the smallest of toy examples; takes about a minute on the smallest real-world example, which might be twice the size of the toy example; takes twenty hours to generate and check the proof of an example only twice that size; and, on a (perhaps not-quite-realistic) example twice the size of the twenty-hour example, the script might not finish within a year, or even a thousand years---see \autoref{sec:fiat-crypto-codegen-numbers} for more details.
@@ -136,7 +136,7 @@ In the early 1970s, Boyer and Moore began work on theorem provers which could wo
 This work resulted in a family of theorem provers, collectively known as the Boyer--Moore theorem provers, which includes the first seriously successful automated theorem provers~\cites[p.~8]{Automation2013Moore}{Brief2019Darbari}.
 They developed the Edinburgh Pure LISP Theorem Prover, Thm, and later Nqthm~\cites[p.~8]{Automation2013Moore}{Nqthm,wiki:Nqthm}, the last of which came to be known as \emph{the} Boyer--Moore theorem prover.
 Nqthm has been used to formalize and verify Gödel's first incompleteness theorem in 1986~\cites{Metamathematics1994Shankar}[p.~29]{Milestones2019Moore}, to verify the implementation of an assembler and linker~\cite{moore2007piton} as well as a number of FORTRAN programs, and to formally prove the invertibility of RSA encryption, the undecidability of the halting problem, Gauss' law of quadratic reciprocity~\cite[pp.~28--29]{Milestones2019Moore}.
-Nqthm later evolved into ACL2~\cite{Milestones2019Moore,ACL2Applications,ACL2}\todonz{? blank id?}, which has been used, among other things, to verify a Motorola digital signal processor, the floating-point arithmetic unit in AMD chips, and some x86 machine code programs~\cite[p.~2]{Milestones2019Moore}.
+Nqthm later evolved into ACL2~\cite{Milestones2019Moore,ACL2Applications,ACL2}, which has been used, among other things, to verify a Motorola digital signal processor, the floating-point arithmetic unit in AMD chips, and some x86 machine code programs~\cite[p.~2]{Milestones2019Moore}.
 % More details on the assembler and linker (Piton) at \url{https://www.cs.utexas.edu/~moore/best-ideas/piton/index.html}
 % Also Computational Logic Inc.~which used Nqthm, \url{http://www.computationallogic.com/}
 
@@ -540,7 +540,7 @@ In the remainder of \autoref{part:introduction}, we will finish laying out the l
 \fullref{part:design} is devoted, by and large, to the performance bottlenecks that arise from the use of dependent types as the basis of a proof assistant as introduced in \autoref{sec:why-how-dependent-types};
 in \fullref{ch:design}, we discuss lessons on engineering libraries at scale drawn from our case study in formalizing category theory %~\cite{category-coq-experience}
 and augmented by our other experience.
-The category theory library formalized as part of this doctoral work, available at \textcite{HoTT/HoTT-categories}\todonz{blank citation}, is described briefly in this chapter; a more thorough description can be found in the paper we published on our experience formalizing this library~\cite{category-coq-experience}.
+The category theory library formalized as part of this doctoral work, available at \textcite{HoTT/HoTT-categories}, is described briefly in this chapter; a more thorough description can be found in the paper we published on our experience formalizing this library~\cite{category-coq-experience}.
 
 \fullref{part:rewriting} is devoted, in some sense, to performance bottlenecks that arise from the de Bruijn criterion of \autoref{sec:debruijn-criterion}.
 We investigate one particular method for avoiding these performance bottlenecks.

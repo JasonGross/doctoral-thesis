@@ -566,7 +566,8 @@
 
 % https://groups.google.com/d/msg/latexusersgroup/07qZP63GY3k/cu53DqbAhkYJ
 \makeatletter
-\newcommand{\Chapter}[1]{\split@chapter#1:}
+% also use the \romannumeral-`\q trick from etextools to fully expand leading macros
+\newcommand{\Chapter}[1]{\expandafter\split@chapter\romannumeral-`\q#1:}
 \def\split@chapter#1:#2:{\chapter[#1]{#1\\[1ex]\huge#2}}
 \makeatother
 

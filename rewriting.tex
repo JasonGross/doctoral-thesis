@@ -207,7 +207,7 @@ However, we can often achieve further simplification by using equational rules t
 Coq's \texttt{autorewrite} tactic, as diagrammed in \autoref{subfig:autorewrite}, is a good example: it takes in a database of quantified equalities and applies them repeatedly to rewrite in a goal.
 It is important that Coq's kernel does not trust the \texttt{autorewrite} tactic.
 Instead, the tactic must output a proof term that, in some sense, is the moral equivalent of a line-by-line equational proof.
-It can be challenging to keep these proof terms small enough, as naive rewrite-by-rewrite versions repeatedly copy large parts of proof goals, justifying a rewrite like $C[e_1] = C[e_2]$ for some context $C$ given a proof of $e_1 = e_2$, with the full value of $C$ replicated in the proof term for that single rewrite.
+It can be challenging to keep these proof terms small enough, as naïve rewrite-by-rewrite versions repeatedly copy large parts of proof goals, justifying a rewrite like $C[e_1] = C[e_2]$ for some context $C$ given a proof of $e_1 = e_2$, with the full value of $C$ replicated in the proof term for that single rewrite.
 Overcoming these challenges while retaining decidability of proof checking is tricky, since we may use \texttt{autorewrite} with rule sets that do not always lead to terminating reduction.
 Coq includes more experimental alternatives like \texttt{rewrite\_strat}, which use bottom-up construction of multi-rewrite proofs, with sharing of common contexts.
 Still, as \autoref{sec:evaluation} will show, these methods that generate substantial proof terms are at significant performance disadvantages.
@@ -327,7 +327,7 @@ Indeed, Coq's logic only includes primitive pattern-matching constructs to match
 %The frontend desugars nested pattern matching into trees of matches, but we do not have access to that desugaring within the language.
 %It is arguably a good design decision to keep Coq working this way, since putting efficient nested pattern matching into the kernel would grow the trusted base substantially.
 
-We could follow a naive strategy of repeatedly matching each subterm against a pattern for every rewrite rule, as in the rewriter of \textcite{rtac}, but in that case we do a lot of duplicate work when rewrite rules use overlapping function symbols.
+We could follow a naïve strategy of repeatedly matching each subterm against a pattern for every rewrite rule, as in the rewriter of \textcite{rtac}, but in that case we do a lot of duplicate work when rewrite rules use overlapping function symbols.
 Instead, we adopted the approach of \textcite{maranget2008compiling}, who describes compilation of pattern matches in OCaml to decision trees that eliminate needless repeated work (for example, decomposing an expression into $x + y + z$ only once even if two different rules match on that pattern).
 We have not yet implemented any of the optimizations described therein for finding \emph{minimal} decision trees.
 
@@ -639,7 +639,7 @@ Definition nbeT_with_lets := nbeT' true.
 %%    - `value (Z -> Z -> Z) := expr Z -> expr Z -> UnderLets (expr Z)`
 %%    - `value ((Z -> Z) -> Z) := (expr Z -> UnderLets (expr Z)) -> UnderLets (expr Z)`
 
-There are cases where naive preservation of \texttt{let} binders blocks later rewrites from triggering and leads to suboptimal performance, so we include some heuristics.
+There are cases where naïve preservation of \texttt{let} binders blocks later rewrites from triggering and leads to suboptimal performance, so we include some heuristics.
 For instance, when the expression being bound is a constant, we always inline.
 When the expression being bound is a series of list ``cons'' operations, we introduce a name for each individual list element, since such a list might be traversed multiple times in different ways.
 
@@ -668,7 +668,7 @@ Therefore, matching of rules can safely run side conditions, knowing that Coq's 
 With our limitation that side conditions are decided by executable Boolean procedures, we cannot yet handle directly some of the rewrites needed for realistic partial evaluation.
 For instance, Fiat Cryptography reduces high-level functional to low-level code that only uses integer types available on the target hardware.
 The starting library code works with arbitrary-precision integers, while the generated low-level code should be careful to avoid unintended integer overflow.
-As a result, the setup may be too naive for our running example rule ${?n} + 0 \to n$.
+As a result, the setup may be too naïve for our running example rule ${?n} + 0 \to n$.
 When we get to reducing fixed-precision-integer terms, we must be legalistic:
 \begin{align*}
   \texttt{add\_with\_carry}_{64}({?n}, 0) & \to (0, n)\text{\ \ if\ \ }0 \le n < 2^{64}

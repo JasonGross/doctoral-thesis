@@ -46,7 +46,7 @@ As a workaround, we might write a lemma that talks about evenness of \letindots,
 
 \minortodo{factor some of this with chapter 2}
 Even on smaller terms, though, proof size can quickly become an issue.
-If we give a naive proof that 7000 is even, the proof term will contain all of the even numbers between 0 and 7000, giving a proof-term-size blow-up at least quadratic in size (recalling that natural numbers are represented in unary; the challenges remain for more efficient base encodings).
+If we give a naïve proof that 7000 is even, the proof term will contain all of the even numbers between 0 and 7000, giving a proof-term-size blow-up at least quadratic in size (recalling that natural numbers are represented in unary; the challenges remain for more efficient base encodings).
 Clever readers will notice that Coq could share subterms in the proof tree, recovering a term that is linear in the size of the goal.
 However, such sharing would have to be preserved very carefully, to prevent size blow-up from unexpected loss of sharing, and today's Coq version does not do that sharing.
 Even if it did, tactics that rely on assumptions about Coq's sharing strategy become harder to debug, rather than easier.

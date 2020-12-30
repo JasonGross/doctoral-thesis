@@ -54,7 +54,7 @@ Coq stack-overflows if we try to reduce this goal.
 As a workaround, we might write a lemma that talks about evenness of \letindots, plus one about evenness of multiplication, and we might then write a tactic that composes such lemmas.
 
 Even on smaller terms, though, proof size can quickly become an issue.
-If we give a naive proof that 7000 is even, the proof term will contain all of the even numbers between 0 and 7000, giving a proof-term-size blow-up at least quadratic in size (recalling that natural numbers are represented in unary; the challenges remain for more efficient base encodings).
+If we give a naïve proof that 7000 is even, the proof term will contain all of the even numbers between 0 and 7000, giving a proof-term-size blow-up at least quadratic in size (recalling that natural numbers are represented in unary; the challenges remain for more efficient base encodings).
 Clever readers will notice that Coq could share subterms in the proof tree, recovering a term that is linear in the size of the goal.
 However, such sharing would have to be preserved very carefully, to prevent size blow-up from unexpected loss of sharing, and today's Coq version does not do that sharing.
 Even if it did, tactics that rely on assumptions about Coq's sharing strategy become harder to debug, rather than easier.
@@ -597,7 +597,7 @@ Sorted from slowest to fastest, most of the labels in \autoref{fig:graph-reif-no
     Note that these benchmarks cut off at around 5000 rather than at around 20\,000, because on large terms, Coq crashes with a stack overflow in parsing.
     %For size reasons, we do not include these \texttt{.v} files in the associated code tarball, but they can be made via the \texttt{parsing-test-files} target, which generates some files in \texttt{Benchmarks/}.
 %  \item
-%    In \autoref{sec:ltac2-reif} we mention both a naive transcription of \Ltac1 to \Ltac2 and a procedure using low-level primitives in \Ltac2; ``Ltac2'' benchmarks the former, and ``Ltac2LowLevel'' benchmarks the latter.
+%    In \autoref{sec:ltac2-reif} we mention both a naïve transcription of \Ltac1 to \Ltac2 and a procedure using low-level primitives in \Ltac2; ``Ltac2'' benchmarks the former, and ``Ltac2LowLevel'' benchmarks the latter.
   \item
     We have four variants starting with ``CanonicalStructures'' here.
     The Flat variants reify to \texttt{@expr nat} rather than to \texttt{forall var, @expr var} and benefit from fewer function binders and application nodes.

@@ -34,9 +34,10 @@ As theorems and proofs grow in complexity, users frequently run into performance
 \todonz{[re this paragraph, especially ``and hence Coq provides \Ltac, a scripting language for proofs''] seems repetitive and out of place. already introduced Ltac earlier}
 Consider the case where we want to prove that a large algebraic expression, involving many \letindots\space expressions, is even:
 \begin{minted}{coq}
-Inductive is_even : nat -> Prop :=
+Inductive is_even : nat → Prop :=
 | even_O : is_even O
-| even_SS : forall x, is_even x -> is_even (S (S x)).
+| even_SS : forall x, is_even x → is_even (S (S x)).
+
 Goal is_even (let x := 100 * 100 * 100 * 100 in
               let y := x * x * x * x in
               y * y * y * y).
@@ -57,8 +58,6 @@ Proof terms, in a sense, are traces of a proof script.
 They provide Coq's kernel with a term that it can check to verify that no illegal steps were taken.
 Listing every step results in large traces.
 
-\todo{fix spacing}
-
 \begin{wrapfigure}[9]{r}{\widthof{\texttt{Fixpoint check\_is\_even (n : nat) : bool}}}
 \begin{minted}{coq}
 Fixpoint check_is_even (n : nat) : bool
@@ -77,7 +76,8 @@ We can prove that our checker is correct once and for all, removing the need to 
 A simple evenness checker can just operate on the unary encoding of natural numbers (\autoref{fig:check-is-even}).
 We can use its correctness theorem to prove goals much more quickly:
 \begin{minted}{coq}
-Theorem soundness : forall n, check_is_even n = true -> is_even n.
+Theorem soundness : forall n, check_is_even n = true → is_even n.
+
 Goal is_even 2000.
   Time repeat (apply even_SS || apply even_O). (* 1.8 s *)
   Undo.
@@ -91,13 +91,12 @@ However, even this procedure takes a bit over three minutes to prove the goal \m
 To do better, we need a formal representation of terms or expressions.
 
 \subsection{Reflective-Syntax Primer}
-\minortodo{should the footnote be uncommented here?}
 Sometimes, to achieve faster proofs, we must be able to tell, for example, whether we got a term by multiplication or by addition, and not merely whether its normal form is 0 or a successor.%
-%\footnote{%
-%  Sometimes this distinction is necessary for generating a proof at all, as is the case in \mintinline{coq}{nsatz} and \mintinline{coq}{romega}; there is no way to prove that addition is commutative if you cannot identify what things you were adding in the first place.%
-%}
+\footnote{%
+  Sometimes this distinction is necessary for generating a proof at all, as is the case in \mintinline{coq}{nsatz} and \mintinline{coq}{romega}; there is no way to prove that addition is commutative if you cannot identify what things you were adding in the first place.%
+}
 
-\begin{wrapfigure}[4]{r}{\widthof{\texttt{| NatMul (x y : expr) : expr.}}}
+\begin{wrapfigure}[7]{r}{\widthof{\texttt{| NatMul (x y : expr) : expr.}}}
 %\vspace{-45pt}
 \begin{minted}{coq}
 Inductive expr :=
@@ -138,7 +137,7 @@ Fixpoint denote (t : expr) : nat
      end.
 
 Theorem check_is_even_expr_sound (e : expr)
-  : check_is_even_expr e = true -> is_even (denote e).
+  : check_is_even_expr e = true → is_even (denote e).
 \end{minted}
 
 Given a tactic \mintinline{coq}{Reify} to produce a reified term from a \mintinline{coq}{nat}, we can time \mintinline{coq}{check_is_even_expr}.
@@ -147,7 +146,7 @@ It is instant on the last example.%, \mintinline{coq}{10 * 10 * 10 * 10 * 10 * 1
 Before we proceed to reification, we will introduce one more complexity.
 If we want to support our initial example with \letindots\space efficiently, we must also have \mintinline{coq}{let}-expressions.
 Our current procedure that inlines \mintinline{coq}{let}-expressions takes 19 seconds, for example, on \mintinline{coq}{let x0 := 10 * 10 in let x1 := x0 * x0 in … let x24 := x23 * x23 in x24}.
-The choices of representation of binders, which are essential to encoding \mintinline{coq}{let}-expressions, include higher-order abstract syntax (HOAS)~\cite{HOAS}, parametric higher-order abstract syntax (PHOAS)~\cite{PhoasICFP08} also known as weak HOAS~\cite{weak2013Ciaffaglione}, de Bruijn indices~\cite{debruijn1972}, nominal representations~\cite{Nominal2003Pitts}, locally nameless representations~\cite{Locally2012Chargueraud,locally2007Leroy}, named representations, and nested abstract syntax~\cite{Nested2012Hirschowitz,deBruijn1999Bird}.
+The choices of representation of binders, which are essential to encoding \mintinline{coq}{let}-expressions, include higher-order abstract syntax (HOAS)~\cite{HOAS}, parametric higher-order abstract syntax (PHOAS)~\cite{PhoasICFP08} which is also known as weak HOAS~\cite{weak2013Ciaffaglione}, de Bruijn indices~\cite{debruijn1972}, nominal representations~\cite{Nominal2003Pitts}, locally nameless representations~\cite{Locally2012Chargueraud,locally2007Leroy}, named representations, and nested abstract syntax~\cite{Nested2012Hirschowitz,deBruijn1999Bird}.
 \minortodo{compare citations with those of \cite[p.~122]{ringer2020qed}}
 A survey of a number of options for binding can be found in \autocite{Engineering2008Aydemir}.
 \minortodoask{is this a place to cite POPLMark?  What should be said about it?  Should I mention more sorts of representations?}
@@ -164,13 +163,17 @@ We thus have: \label{sec:phoas-expr-def}
 \begin{minted}{coq}
 Inductive expr {var : Type} :=
 | NatO : expr
-| NatS : expr -> expr
-| NatMul : expr -> expr -> expr
-| Var : var -> expr
-| LetIn : expr -> (var -> expr) -> expr.
-Definition Let_In {A B} (v : A) (f : A -> B) := let x := v in f x.
-Notation "'dlet' x := v 'in' f" := (Let_In v (fun x => f)).
-Notation "'elet' x := v 'in' f" := (LetIn v (fun x => f)).
+| NatS : expr → expr
+| NatMul : expr → expr → expr
+| Var : var → expr
+| LetIn : expr → (var → expr) → expr.
+Notation "'elet' x := v 'in' f" := (LetIn v (fun x => f))
+    (x ident, at level 200).
+
+Definition Let_In {A B} (v : A) (f : A → B) := let x := v in f x.
+Notation "'dlet' x := v 'in' f" := (Let_In v (fun x => f))
+    (x ident, at level 200).
+
 Fixpoint denote (t : @expr nat) : nat
   := match t with
      | NatO => O
@@ -179,6 +182,7 @@ Fixpoint denote (t : @expr nat) : nat
      | Var v => v
      | LetIn v f => dlet x := denote v in denote (f x)
      end.
+
 Fixpoint check_is_even_expr (t : @expr bool) : bool
   := match t with
      | NatO => true
@@ -199,18 +203,19 @@ Such a relatedness predicate has one constructor for each constructor of \mintin
 For the \mintinline{coq}{Var} case, we defer to membership in a list of ``related'' variables, which we extend each time we go underneath a binder.
 \begin{minted}{coq}
 Inductive related {var1 var2 : Type}
-  : list (var1 * var2) -> @expr var1 -> @expr var2 -> Prop :=
+  : list (var1 * var2) → @expr var1 → @expr var2 → Prop :=
 | RelatedNatO {Γ}
  : related Γ NatO NatO
 | RelatedNatS {Γ e1 e2}
- : related Γ e1 e2 -> related Γ (NatS e1) (NatS e2)
+ : related Γ e1 e2 → related Γ (NatS e1) (NatS e2)
 | RelatedNatMul {Γ x1 x2 y1 y2}
- : related Γ x1 x2 -> related Γ y1 y2 -> related Γ (NatMul x1 y1) (NatMul x2 y2)
+ : related Γ x1 x2 → related Γ y1 y2
+   → related Γ (NatMul x1 y1) (NatMul x2 y2)
 | RelatedVar {Γ v1 v2}
- : (v1, v2) ∈ Γ -> related Γ (Var v1) (Var v2)
+ : (v1, v2) ∈ Γ → related Γ (Var v1) (Var v2)
 | RelatedLetIn {Γ e1 e2 f1 f2}
- : related Γ e1 e2 -> (∀ v1 v2, related ((v1, v2) :: Γ) (f1 v1) (f2 v2))
-   -> related Γ (LetIn e1 f1) (LetIn e2 f2).
+ : related Γ e1 e2 → (∀ v1 v2, related ((v1, v2) :: Γ) (f1 v1) (f2 v2))
+   → related Γ (LetIn e1 f1) (LetIn e2 f2).
 \end{minted}
 
 Conventionally, syntax trees are parametric over the value of the \mintinline{coq}{var} parameter, and we require that all instantiations give related ASTs (in the empty context), whence we call the parametric AST \emph{well-formed}:
@@ -223,14 +228,16 @@ Definition Wf (e : Expr) := ∀ var1 var2, related [] (e var1) (e var2)
 We could then prove a modified form of our soundness theorem:
 \begin{minted}{coq}
 Theorem check_is_even_expr_sound (e : Expr) (H : Wf e)
-: check_is_even_expr (e bool) = true -> is_even (denote (e nat)).
+: check_is_even_expr (e bool) = true → is_even (denote (e nat)).
 \end{minted}
 
 To complete the picture, we would need a tactic \mintinline{coq}{Reify} which took in a term of type \mintinline{coq}{nat} and gave back a term of type \mintinline{coq}{forall var, @expr var}, plus a tactic \mintinline{coq}{prove_wf} which solved a goal of the form \mintinline{coq}{Wf e} by repeated application of constructors.
 Given these, we could solve an evenness goal by writing%
 \footnote{%
   Note that for the \mintinline{coq}{refine} to be fast, we must issue something like \mintinline{coq}{Strategy -10 [denote]} to tell Coq to unfold \mintinline{coq}{denote} before \mintinline{coq}{Let_In}.
-  }
+  Alternatively, we may issue something like \mintinline{coq}{Strategy 10 [Let_In]} to tell Coq to unfold \mintinline{coq}{Let_In} only after unfolding any constant with no \mintinline{coq}{Strategy} declaration.
+  This invocation may look familiar to those readers who read the footnotes in \fullref{sec:fiat-crypto-codegen-numbers}, as in fact this is the issue at the root cause of the exponential performance blowup which resulted in numbers like ``over 4\,000 millennia'' in an earlier version of Fiat Cryptography.
+}
 \begin{minted}{coq}
 match goal with
 | [ |- is_even ?v ]
@@ -249,15 +256,15 @@ Since expressions like ``take the successor of this list'' don't make sense, the
 We might write:
 \begin{minted}{coq}
 Inductive type := Nat | List (_ : type).
-Inductive expr {var : type -> Type} : type -> Type :=
+Inductive expr {var : type → Type} : type → Type :=
 | NatO : expr Nat
-| NatS : expr Nat -> expr Nat
-| NatMul : expr Nat -> expr Nat -> expr Nat
-| Var {t} : var t -> expr t
-| LetIn {t1 t2} : expr t1 -> (var t1 -> expr t2) -> expr t2
+| NatS : expr Nat → expr Nat
+| NatMul : expr Nat → expr Nat → expr Nat
+| Var {t} : var t → expr t
+| LetIn {t1 t2} : expr t1 → (var t1 → expr t2) → expr t2
 | Nil {t} : expr (List t)
-| Cons {t} : expr t -> expr (List t) -> expr (List t)
-| Length {t} : expr (List t) -> expr Nat.
+| Cons {t} : expr t → expr (List t) → expr (List t)
+| Length {t} : expr (List t) → expr Nat.
 \end{minted}
 We would then have to adjust the definitions of the other functions accordingly.
 The type signatures of the might functions become
@@ -268,23 +275,29 @@ Fixpoint denote_type (t : type) : Type
      | Nat => nat
      | List t => list (denote_type t)
      end.
+
 Fixpoint even_data_of_type (t : type) : Type
   := match t with
      | Nat => bool (* is the nat even or not? *)
      | List t => list (even_data_of_type t)
      end.
+
 Fixpoint denote {t} (e : @expr denote_type t) : denote_type t.
+
 Fixpoint check_is_even_expr {t} (e : @expr even_data_of_type t)
   : even_data_of_type t.
-Inductive related {var1 var2 : type -> Type}
+
+Inductive related {var1 var2 : type → Type}
   : list { t : type & var1 t * var2 t}
-    -> ∀ {t}, @expr var1 t -> @expr var2 t -> Prop.
+    → ∀ {t}, @expr var1 t → @expr var2 t → Prop.
+
 Definition Expr (t : type) := ∀ var, @expr var t.
+
 Definition Wf {t} (e : Expr t)
   := ∀ var1 var2, related [] (e var1) (e var2).
 \end{minted}
 
-See, e.g.,\todonz{are there other refs? or just kill ``e.g.''} \autocite{PhoasICFP08} for a fuller treatment.
+See \textcite{PhoasICFP08} for a fuller treatment.
 
 \subsubsection{de Bruijn Indices} \label{sec:binders:de-bruijn}
 The idea behind \emph{de Bruijn indices} is that variables are encoded by numbers which count up starting from the nearest enclosing binder.
@@ -292,10 +305,10 @@ We might write
 \begin{minted}{coq}
 Inductive expr :=
 | NatO : expr
-| NatS : expr -> expr
-| NatMul : expr -> expr -> expr
-| Var : nat -> expr
-| LetIn : expr -> expr -> expr.
+| NatS : expr → expr
+| NatMul : expr → expr → expr
+| Var : nat → expr
+| LetIn : expr → expr → expr.
 Fixpoint denote (default : nat) (Γ : list nat) (t : @expr nat) : nat
   := match t with
      | NatO => O
@@ -311,7 +324,7 @@ One particularly convenient choice, in Coq, would be using the efficient \mintin
 
 One unfortunate result is that the natural denotation function is no longer total.
 Here we have chosen to give a denotation function which returns a default element when a variable reference is too large, but we could instead choose to return an \mintinline{coq}{option nat}.
-In general, however, returning an optional result significantly complicates the denotation function when binders are involved, because the types \mintinline{coq}{A -> option B} and \mintinline{coq}{option (A -> B)} are not isomorphic.
+In general, however, returning an optional result significantly complicates the denotation function when binders are involved, because the types \mintinline{coq}{A → option B} and \mintinline{coq}{option (A → B)} are not isomorphic.
 On the other hand, requiring a default denotation prevents syntax trees from being able to represent possibly empty types.
 \minortodoask{Is there a good reference for these sorts of issues?  Are they well-known?  Well-studied?}
 
@@ -324,12 +337,12 @@ On mono-typed ASTs, this looks like encoding the size of the context in the type
 For example, we could use \mintinline{coq}{option} types:~\cite{Nested2012Hirschowitz}
 \begin{minted}{coq}
 Notation "^ V" := (option V).
-Inductive expr : Type -> Type :=
+Inductive expr : Type → Type :=
 | NatO {V} : expr V
-| NatS {V} : expr V -> expr V
-| NatMul {V} : expr V -> expr V -> expr V
-| Var {V} : V -> expr V
-| LetIn {V} : expr V -> expr (^V) -> expr V.
+| NatS {V} : expr V → expr V
+| NatMul {V} : expr V → expr V → expr V
+| Var {V} : V → expr V
+| LetIn {V} : expr V → expr (^V) → expr V.
 \end{minted}
 
 This may seem a bit strange to those accustomed to encodings of terms in proof assistants, but it generalizes to a quite familiar intrinsic encoding of dependent type theory using types, contexts, and terms~\cite{Strongly2012Benton}.
@@ -337,16 +350,16 @@ Namely, when the expressions are multi-typed, we end up with something like
 \begin{minted}{coq}
 Inductive context :=
 | emp : context
-| push : type -> context -> context.
-Inductive var : context -> type -> Type :=
+| push : type → context → context.
+Inductive var : context → type → Type :=
 | Var0 {t Γ} : var (push t Γ) t
-| VarS {t t' Γ} : var Γ t -> var (push t' Γ) t.
-Inductive expr : context -> type -> Type :=
+| VarS {t t' Γ} : var Γ t → var (push t' Γ) t.
+Inductive expr : context → type → Type :=
 | NatO {Γ} : expr Γ Nat
-| NatS {Γ} : expr Γ Nat -> expr Γ Nat
-| NatMul {Γ} : expr Γ Nat -> expr Γ Nat -> expr Γ Nat
-| Var {t Γ} : var Γ t -> expr Γ t
-| LetIn {Γ t1 t2} : expr Γ t1 -> expr (push t1 Γ) t2 -> expr Γ t2.
+| NatS {Γ} : expr Γ Nat → expr Γ Nat
+| NatMul {Γ} : expr Γ Nat → expr Γ Nat → expr Γ Nat
+| Var {t Γ} : var Γ t → expr Γ t
+| LetIn {Γ t1 t2} : expr Γ t1 → expr (push t1 Γ) t2 → expr Γ t2.
 \end{minted}
 
 Note that this generalizes nicely to codes for dependent types if the proof assistant supports induction-induction.
@@ -413,14 +426,14 @@ Fixpoint is_related_elim {var1 var2 : Type} (Γ : list (var1 * var2))
   | NatO, NatO => True
   | NatS e1, NatS e2 => is_related_elim Γ e1 e2
   | NatMul x1 y1, NatMul x2 y2 => forall P : Prop,
-      (is_related_elim Γ x1 x2 -> is_related_elim Γ y1 y2 -> P) -> P
+      (is_related_elim Γ x1 x2 → is_related_elim Γ y1 y2 → P) → P
   | Var v1, Var v2 => forall (P : Prop),
-      (forall n, List.nth_error Γ (N.to_nat n) = Some (v1, v2) -> P) -> P
+      (forall n, List.nth_error Γ (N.to_nat n) = Some (v1, v2) → P) → P
   | LetIn e1 f1, LetIn e2 f2 => forall P : Prop,
       (is_related_elim Γ e1 e2
-       -> (forall v1 v2, is_related_elim ((v1, v2) :: Γ) (f1 v1) (f2 v2))
-       -> P)
-      -> P
+       → (forall v1 v2, is_related_elim ((v1, v2) :: Γ) (f1 v1) (f2 v2))
+       → P)
+      → P
   | _, _ => False
   end.
 \end{minted}

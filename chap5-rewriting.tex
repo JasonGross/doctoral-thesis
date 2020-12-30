@@ -1,4 +1,4 @@
-\chapter{\readyforreadingmod{Engineering Challenges in the Rewriter}{backward references to chapter 3 becoming forward references}}\label{ch:rewriting-more}
+\chapter{\readyforreadingmod{Engineering Challenges in the Rewriter}{backward references to chapter 7 becoming forward references}}\label{ch:rewriting-more}
 \setboolean{zerowidthscripts}{true}%
 
 \begin{quote}
@@ -27,7 +27,7 @@ See \href{https://web.archive.org/web/20200716002534/https://github.com/JasonGro
 , the correctness proofs take nearly another 8\,000 lines of code!
 % git ls-files "src/Rewriter/Rewriter/*.v" | grep -o 'src/Rewriter/Rewriter/[^/]*\.v' | xargs coqwc  | sort -h | less
 % add up totals, subtract off the lines in Rewriter.v
-As such, this tool, developed to solve performance scaling issues in verified syntax transformation, itself serves as a good case study of some of the pain that arises when scaling proof-based engineering projects.
+As such, this tool, developed to solve performance scaling issues in verified syntax transformation, itself serves as a good case study of some of the bottlenecks that arise when scaling proof-based engineering projects.
 
 Our discussion in this section is organized by the conceptual structure of the normalization and pattern matching compilation engine;
 we hope that organizing the discussion in this way will make the examples more understandable, motivated, and incremental.
@@ -64,7 +64,7 @@ Now that we know what the reduction consists of, we can now discuss what goes in
 
 \subsection{CPS}\label{sec:rewriting-more:pre-reduction:cps}
 Due to the pervasive use of Gallina \mintinline{coq}{match} statements on terms which are not known during this compilation phase, we need to write essentially all of the decision-tree-evaluation code in continuation-passing style.
-This causes a moderate amount of pain, distributed over the entire rewriter.
+This causes a moderate amount of proof-engineer-overhead, distributed over the entire rewriter.
 %We will come back to this in \autoref{sec:rewriting-more:pre-reduction-again:cps}, after we have introduced the constructions necessary to understand the code.
 
 \minortodo{find a better transition}

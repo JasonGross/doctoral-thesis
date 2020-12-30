@@ -34,7 +34,7 @@ Testing of various kinds is the de facto standard for finding bugs, but it is bo
 In adversarial contexts such as this one, fixing 99\% of bugs is not sufficient; attackers have a strong incentive to find the remaining 1\% of bugs and exploit them for gains.
 For example, some bugs in cryptographic code only occur in as few as 19 out of $2^{255}$ cases~\cite{curve25519-donna-commit-correct-bounds}.
 This means that if we want to catch this bug in a ``modest'' twenty years of continuous random testing, then we need to have over a thousand times as many computers as there are atoms in the solar system!
-This is not by accident.
+This is not an accident.
 If our computers become fast enough to complete this testing in reasonable time, then attackers can use these faster computers to launch brute force attacks.
 So, however fast our computers get, ensuring security will require scaling up the size of the cryptographic problem proportionally, and testing will continue to be inadequate.
 % https://www.wolframalpha.com/input/?i=%282%5E255%2F19+*+529812+%2F+%285+ghz%29+%2F+%2820+years%29+%2F+%28atoms+in+the+solar+system%29%29+*+1+atom = 533260
@@ -44,7 +44,7 @@ An appealing solution to this problem is to \emph{prove} critical software corre
 We do this by specifying in formal mathematics the intended behavior of our software, and showing a correspondence between our math and our code.
 Ideally, the specification is relatively simple, and easier to trust, than the millions of lines of code.
 
-While proofs of algorithms tend to be done with pen-and-paper (consider the ubiquitous proofs that various sorting algorithms are correct in introductory algorithms classes), proofs of actual code are much harder.
+While proofs of algorithms tend to be done with pen-and-paper (consider the ubiquitous proofs that various sorting algorithms are correct found in introductory algorithms classes), proofs of actual code are much harder.
 Code in the real-world tends to be much more complicated than code in an algorithms textbook.
 This difference could be due to reasons of performance, historical accident, or interfacing with real users, among others.
 Proofs of code-correctness thus tend to be filled with tedious case-analysis with only sparse mathematical insights, and attempts to create and check these proofs by hand are subject to the same issues of human fallibility as writing the programs in the first place.
@@ -69,8 +69,9 @@ However, in all of these tools, there is enormous proof overhead over the lines 
 To decrease the marginal overhead of proof generation, we may automate the proof generation itself.
 Drawing experience from case studies in category theory~\cite{category-coq-experience}, parsers~\cite{jgross-masters-thesis}, and generation of low-level cryptographic code~\cite{FiatCryptoSP19}, we present difficulties in automation of proof generation.
 In the quest to build automated proof generation tools, we encountered several performance bottlenecks in proof-checking.
-In this thesis, we present design principles in \autoref{part:design} to avoid these performance bottlenecks, and insights about the proof-checking system that the performance bottlenecks reveal.
-We present a research prototype of a tool and methodology for achieving acceptable performance at scale in \autoref{part:rewriting}.
+In this thesis, we present in \autoref{part:rewriting} a research prototype of a tool and methodology for achieving acceptable performance at scale in the domain of term term transformation and rewriting.
+We present design principles in \autoref{part:design} to avoid the performance bottlenecks we encountered, and insights about the proof-checking system that these performance bottlenecks reveal.
+
 
 Unlike many other performance domains, in our experience, the time it takes to check proofs as we scale the size of the input is almost always super-linear---quadratic at best, commonly cubic or exponential, occasionally even worse.
 Empirically, this might look like a proof script that checks in tens of seconds on the smallest of toy examples; takes about a minute on the smallest real-world example, which might be twice the size of the toy example; takes twenty hours to generate and check the proof of an example only twice that size; and, on a (perhaps not-quite-realistic) example twice the size of the twenty-hour example, the script might not finish within a year, or even a thousand years---see \autoref{sec:fiat-crypto-codegen-numbers} for more details.
@@ -87,7 +88,7 @@ We distinguish the question of interactive proof assistant performance from that
 As we discuss in \autoref{sec:intro:history}, interactive proof assistants utilize human creativity to handle a greater breadth and depth of problems than fully automated tools, which succeed only on more restricted domains.
 
 This thesis argues that the problem of \emph{compile-time performance} or \emph{proof-checking performance} is both significantly different from the problem of performance of typical programs and that it is nontrivial.
-While many papers mention performance, obliquely or otherwise, and some are even driven by performance concerns of a particular algorithm or part of the system,~\cites[p.~1382]{gonthier2008formal}{Efficiency1994Boulton}{Proving2005Benjamin}{Idris2Faster2020Brady}{Recognizing1989Benanav}{mechanical1990Pierce}{CelikETAL17iCoq}{PalmskogETAL18piCoq}{vmcompute}{thesis-nogin}{Idris2Faster2020Brady}, we have not found any that investigate the performance problems that arise \emph{asymptotically}, when proof assistants are used to verify programs at large scale.
+While many papers mention performance, obliquely or otherwise, and some are even driven by performance concerns of a particular algorithm or part of the system,~\cites[p.~1382]{gonthier2008formal}{Efficiency1994Boulton}{Proving2005Benjamin}{Idris2Faster2020Brady}{Recognizing1989Benanav}{mechanical1990Pierce}{CelikETAL17iCoq}{PalmskogETAL18piCoq}{vmcompute}{thesis-nogin}{Idris2Faster2020Brady}, we have not found any that investigate the performance problems that arise \emph{asymptotically} when proof assistants are used to verify programs at large scale.
 
 Through investigation of this problem, we hope to utilise verification in the software innovation pipeline. We expect that solutions in this domain will enable independence from inadequate testing, and faster iteration and deployment of software.
 
@@ -298,11 +299,11 @@ The domain of classical mathematics required restrictions to the logical languag
 In the mid 1980s, Coq~\cite{Coq}, the proof assistant which we focus most on in this thesis, was born from an integration of features and ideas from a number of the proof assistants we've discussed in this subsection.
 Notably, it was based on the Calculus of Constructions (CoC), a synthesis of Martin-Löf's type theory~\cite{Intuitionistic1975MartinLoef,Constructive1982MartinLoef} with dependent types and polymorphism, which grew out of Dana Scott's logic of computable functions~\cite{Type1993Scott} together with de Bruijn's work on Automath~\cite{CoqArtForward2013Huet}.
 In the late 1980s, some problems were found with the way datatypes were encoded using functions, which lead to the introduction of inductive types, and an extension of CoC called the Calculus of Inductive Constructions (CIC)~\cite{CoqArtForward2013Huet}.
+\textcite{CoqArtForward2013Huet} contains an illuminating and comprehensive discussion of how the threads of Coq's development arose in tandem with the history discussed in the preceding paragraphs, and we highly recommend this read for those interested in Coq's history.
 
-Major accomplishments of verification in Coq~\cite{Coq} include the fully verified optimizing C compiler CompCert~\cite{Compcert}, the proof of the Four Color Theorem~\cite{gonthier2008formal}, and the complete formalization of the Odd Order Theorem, also known as the Feit--Thompson Theorem~\cite{gonthier2013machine}.
+Major accomplishments of verification in Coq include the fully verified optimizing C compiler CompCert~\cite{Compcert}, the proof of the Four Color Theorem~\cite{gonthier2008formal}, and the complete formalization of the Odd Order Theorem, also known as the Feit--Thompson Theorem~\cite{gonthier2013machine}.
 This last development was the of about six years of work formalizing a proof that every finite group of odd order is solvable; the original proof, published in the early 1960s, is about 225 pages long.
 \minortodo{Should I mention the following? ``Computer-verified proofs of versions of the first incompleteness theorem were announced [...] by Russell O'Connor in 2003 using Coq (O'Connor 2005)'' \url{https://en.wikipedia.org/wiki/Gödel's_incompleteness_theorems}}
-\minortodo{Should I say this? We refer readers to \textcite{CoqArtForward2013Huet} for a comprehensive history of the development of Coq.}
 
 \minortodo{Do I need to include anything more from \textcite{Proof2009Geuvers,History2014Harrison}?}
 
@@ -319,10 +320,10 @@ The functional programming language CakeML includes a self-bootstrapping optimiz
 \minortodo{should I say something about the year?}
 \minortodo{should I mention the following? ``Computer-verified proofs of versions of the first incompleteness theorem were announced [...] by John Harrison in 2009 using HOL Light (Harrison 2009). A computer-verified proof of both incompleteness theorems was announced by Lawrence Paulson in 2013 using Isabelle (Paulson 2014). `` \url{https://en.wikipedia.org/wiki/Gödel's_incompleteness_theorems}}
 The Nqthm Boyer--Moore theorem prover eventually evolved into ACL2~\cite{ACL2,ACL2Applications}.
-Other proof assistants include LF~\cite{pfenning1991logic,harper93,Logical2002Pfenning}, Twelf~\cite{pfenning1999system}, Matita~\cite{asperti2007user,Matita2011Asperti}, PVS~\cite{owre1996pvs,PVS1992Owre}, LEGO~\cite{LEGO1994Pollack}, and NuPRL~\cite{nuprl}.
-\minortodo{What should I say abound NuPRL?}
+Other proof assistants include LF~\cite{pfenning1991logic,harper93,Logical2002Pfenning}, Twelf~\cite{pfenning1999system}, Matita~\cite{asperti2007user,Matita2011Asperti}, PVS~\cite{owre1996pvs,PVS1992Owre}, LEGO~\cite{LEGO1994Pollack}, and \NuPRL~\cite{nuprl}.
+\minortodo{What should I say abound \NuPRL?}
 \minortodoask{Which, if any, of the projects on http://www.nuprl.org/html/Projects.html are worth mentioning?  What about http://www.nuprl.org/Publications/?}
-%\todo{Paragraph on Nuprl.  Innovation: type theory and proof checking is type checking (but type checking is undecidable).  Poke around Nuprl project website for 10 minutes to see what they highlight.  Talk about Curry--Howard, Check Martin-Löf.  Maybe email Bob Constable for historical context of Nuprl}
+%\todo{Paragraph on \NuPRL.  Innovation: type theory and proof checking is type checking (but type checking is undecidable).  Poke around \NuPRL\space project website for 10 minutes to see what they highlight.  Talk about Curry--Howard, Check Martin-Löf.  Maybe email Bob Constable for historical context of \NuPRL\space}
 \minortodo{should I mention Agda? Idris? Lean?}
 \minortodo{Do I need to email Randy Pollack(sp?) creator of LEGO, to get historical context?}
 
@@ -330,7 +331,7 @@ Other proof assistants include LF~\cite{pfenning1991logic,harper93,Logical2002Pf
 
 \section{Basic Design Choices}\label{sec:intro:proof-assistant-design-choices}
 Although the design-space of proof assistants is quite large, as we've touched on in \autoref{sec:intro:history}, there are only two main design decisions which we want to assume for the investigations of this thesis.
-The first is the use of dependent type theory as a basis for formal proofs, as is done in Automath~\cite{wiki:AutoMath,mathematical1970Bruijn,Survey1994deBruijn}, Coq~\cite{Coq}, Agda~\cite{Dependently2009Norell}, Idris~\cite{Idris2013Brady}, Lean~\cite{Lean2015Moura}, Nuprl~\cite{nuprl}, Matita~\cite{Matita2011Asperti}, and others, rather than on some other logic, as is done in LCF~\cite{LCF2000Gordon,gordon1979edinburgh,gordon1978metalanguage}, Isabelle/HOL~\cite{LCF2019Paulson,Isabelle/Isar2002Wenzel,Isabelle,paulson1994isabelle}, HOL4~\cite{slind2008brief}, HOL Light~\cite{harrison1996hol}, LF~\cite{pfenning1991logic,harper93}, and Twelf~\cite{pfenning1999system}, among others.
+The first is the use of dependent type theory as a basis for formal proofs, as is done in Automath~\cite{wiki:AutoMath,mathematical1970Bruijn,Survey1994deBruijn}, Coq~\cite{Coq}, Agda~\cite{Dependently2009Norell}, Idris~\cite{Idris2013Brady}, Lean~\cite{Lean2015Moura}, \NuPRL~\cite{nuprl}, Matita~\cite{Matita2011Asperti}, and others, rather than on some other logic, as is done in LCF~\cite{LCF2000Gordon,gordon1979edinburgh,gordon1978metalanguage}, Isabelle/HOL~\cite{LCF2019Paulson,Isabelle/Isar2002Wenzel,Isabelle,paulson1994isabelle}, HOL4~\cite{slind2008brief}, HOL Light~\cite{harrison1996hol}, LF~\cite{pfenning1991logic,harper93}, and Twelf~\cite{pfenning1999system}, among others.
 The second is the \emph{de Bruijn criterion}, mandating independent checking of proofs by a small trusted kernel~\cite{challenge2005Barendregt}.
 We have found that many of the performance bottlenecks are fundamentally a result of one or the other of these two design decisions.
 Readers are advised to consult \textcite[ch.~4]{ringer2020qed} for a more thorough mapping of the design axes.
@@ -394,7 +395,7 @@ Here we see the first glimmer of the the Curry--Howard isomorphism, which identi
 \centering
 \begin{tabular}{c|c|c}
 computation & set theory & logic \\ \hline
-type & set of objects/terms/proofs & proposition \\
+type & set & proposition \\
 term / program & element of a set & proof \\
 eliminator / recursion & & case analysis / induction \\
 type of pairs & cartesian product ($\times$) & conjunction ($\wedge$) \\
@@ -529,18 +530,13 @@ Moreover, in the past year, a checker for Coq's proof objects has been implement
 
 Note that the LCF approach to theorem proving, where proofs have an abstract type and type-safety of the tactics guarantees validity of the proof object, forms a sort-of complementary approach to trust.
 \minortodo{what should I say about LCF here?}
-\minortodo{should I mention formal verification of Nuprl in Coq?}
+\minortodo{should I mention formal verification of \NuPRL\space in Coq?}
 
 \minortodo{is there anything else to say in this subsection?}
 
 \section{Look ahead: Layout and contributions of the thesis}\label{sec:intro:layout}
-In the remainder of \autoref{part:introduction}, we will finish laying out the landscape of performance bottlenecks in dependently-typed proof assistants;
+In the remainder of \autoref{part:introduction}, we will finish laying out the landscape of performance bottlenecks we encountered in dependently-typed proof assistants;
 \fullref{ch:perf-failures} gives a more in-depth investigation into what makes performance optimization in dependent type theory hard, different, and unique, followed by describing major axes of super-linear performance bottlenecks in \fullref{sec:perf-axes}.
-
-\fullref{part:design} is devoted, by and large, to the performance bottlenecks that arise from the use of dependent types as the basis of a proof assistant as introduced in \autoref{sec:why-how-dependent-types};
-in \fullref{ch:design}, we discuss lessons on engineering libraries at scale drawn from our case study in formalizing category theory %~\cite{category-coq-experience}
-and augmented by our other experience.
-The category theory library formalized as part of this doctoral work, available at \textcite{HoTT/HoTT-categories}, is described briefly in this chapter; a more thorough description can be found in the paper we published on our experience formalizing this library~\cite{category-coq-experience}.
 
 \fullref{part:rewriting} is devoted, in some sense, to performance bottlenecks that arise from the de Bruijn criterion of \autoref{sec:debruijn-criterion}.
 We investigate one particular method for avoiding these performance bottlenecks.
@@ -551,6 +547,12 @@ Where \autoref{ch:rewriting} addresses the performance challenges of verified or
 Unlike the other chapters of this thesis, \autoref{ch:rewriting-more} at times assumes a great deal of familiarity with the details of the Coq proof assistant.
 Finally, \fullref{ch:reification-by-parametricity} presents a way to efficiently, elegantly, and easily perform \emph{reification}, the first step of proof by reflection, which is often a bottleneck in its own right.
 We discovered---or invented---this trick in the course of working on our library for synthesis of low-level cryptographic primitives~\cite{FiatCryptoSP19,reification-by-parametricity}.
+
+\fullref{part:design} is devoted, by and large, to the performance bottlenecks that arise from the use of dependent types as the basis of a proof assistant as introduced in \autoref{sec:why-how-dependent-types};
+in \fullref{ch:design}, we discuss lessons on engineering libraries at scale drawn from our case study in formalizing category theory %~\cite{category-coq-experience}
+and augmented by our other experience.
+Many of the lessons presented here are generalizations of examples described in \fullref{ch:rewriting-more}.
+The category theory library formalized as part of this doctoral work, available at \textcite{HoTT/HoTT-categories}, is described briefly in this chapter; a more thorough description can be found in the paper we published on our experience formalizing this library~\cite{category-coq-experience}.
 
 \fullref{part:conclusion} is in some sense the mirror image of \autoref{part:introduction}:
 Where \autoref{ch:perf-failures} is a broad look at what is currently lacking and where performance bottlenecks arise, \fullref{ch:coq-tooling-fixes} takes a historical perspective on what advancements have already been made in the performance of proof assistants, and Coq in particular.

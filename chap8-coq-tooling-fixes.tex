@@ -255,7 +255,7 @@ Definition SmallCat : LargeCategory :=
 It seems a shame to copy-and-paste this definition (and those of \mintinline{coq}{Category}, \mintinline{coq}{Functor}, etc.) $n$ times to define an $n$-level hierarchy.
 
 \emph{Universe polymorphism}\label{sec:universe-polymorphism-def} is a feature that allows definitions to be quantified over their universes.
-While Coq 8.4 supports a restricted flavor of universe polymorphism that allows the universe of a definition to vary as a function of the universes of its arguments, Coq 8.5 and later~\cite{coq-commit-polyproj} support an established kind of more general universe polymorphism~\cite{Harper1991107}, previously implemented only in NuPRL~\cite{nuprl}.
+While Coq 8.4 supports a restricted flavor of universe polymorphism that allows the universe of a definition to vary as a function of the universes of its arguments, Coq 8.5 and later~\cite{coq-commit-polyproj} support an established kind of more general universe polymorphism~\cite{Harper1991107}, previously implemented only in \NuPRL~\cite{nuprl}.
 In these versions of Coq, any definitions declared polymorphic are parametric over their universes.
 
 While judicious use of universe polymorphism can reduce code duplication, careless use can lead to tens of thousands of universe variables which then become a performance bottleneck in their own right.%

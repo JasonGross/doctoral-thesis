@@ -536,27 +536,27 @@ Note that the LCF approach to theorem proving, where proofs have an abstract typ
 
 \section{Look ahead: Layout and contributions of the thesis}\label{sec:intro:layout}
 In the remainder of \autoref{part:introduction}, we will finish laying out the landscape of performance bottlenecks we encountered in dependently-typed proof assistants;
-\fullref{ch:perf-failures} gives a more in-depth investigation into what makes performance optimization in dependent type theory hard, different, and unique, followed by describing major axes of super-linear performance bottlenecks in \fullref{sec:perf-axes}.
+\fullnameref{ch:perf-failures} gives a more in-depth investigation into what makes performance optimization in dependent type theory hard, different, and unique, followed by describing major axes of super-linear performance bottlenecks in \fullnameref{sec:perf-axes}.
 
-\fullref{part:rewriting} is devoted, in some sense, to performance bottlenecks that arise from the de Bruijn criterion of \autoref{sec:debruijn-criterion}.
+\fullnameref{part:rewriting} is devoted, in some sense, to performance bottlenecks that arise from the de Bruijn criterion of \autoref{sec:debruijn-criterion}.
 We investigate one particular method for avoiding these performance bottlenecks.
-We introduce this method, variously called \emph{proof by reflection} or \emph{reflective automation}, in \fullref{ch:reflection}, with a special emphasis on a particularly common use case---transformation of syntax trees.
-\fullref{ch:rewriting} describes our original contribution of a framework for leveraging reflection to perform rewriting and program transformation at scale, driven by our need to synthesize efficient, proven-correct, low-level cryptographic primitives~\cite{FiatCryptoSP19}.
+We introduce this method, variously called \emph{proof by reflection} or \emph{reflective automation}, in \fullnameref{ch:reflection}, with a special emphasis on a particularly common use case---transformation of syntax trees.
+\fullnameref{ch:rewriting} describes our original contribution of a framework for leveraging reflection to perform rewriting and program transformation at scale, driven by our need to synthesize efficient, proven-correct, low-level cryptographic primitives~\cite{FiatCryptoSP19}.
 \minortodo{cite also the rewriter paper }%
-Where \autoref{ch:rewriting} addresses the performance challenges of verified or proof-producing program transformation, \fullref{ch:rewriting-more} is a deep-dive into the performance challenges of engineering the tool itself, and serves as a sort-of microcosm of the performance bottlenecks previously discussed and the solutions we've proposed to them.
+Where \autoref{ch:rewriting} addresses the performance challenges of verified or proof-producing program transformation, \fullnameref{ch:rewriting-more} is a deep-dive into the performance challenges of engineering the tool itself, and serves as a sort-of microcosm of the performance bottlenecks previously discussed and the solutions we've proposed to them.
 Unlike the other chapters of this thesis, \autoref{ch:rewriting-more} at times assumes a great deal of familiarity with the details of the Coq proof assistant.
-Finally, \fullref{ch:reification-by-parametricity} presents a way to efficiently, elegantly, and easily perform \emph{reification}, the first step of proof by reflection, which is often a bottleneck in its own right.
+Finally, \fullnameref{ch:reification-by-parametricity} presents a way to efficiently, elegantly, and easily perform \emph{reification}, the first step of proof by reflection, which is often a bottleneck in its own right.
 We discovered---or invented---this trick in the course of working on our library for synthesis of low-level cryptographic primitives~\cite{FiatCryptoSP19,reification-by-parametricity}.
 
-\fullref{part:design} is devoted, by and large, to the performance bottlenecks that arise from the use of dependent types as the basis of a proof assistant as introduced in \autoref{sec:why-how-dependent-types};
-in \fullref{ch:design}, we discuss lessons on engineering libraries at scale drawn from our case study in formalizing category theory %~\cite{category-coq-experience}
+\fullnameref{part:design} is devoted, by and large, to the performance bottlenecks that arise from the use of dependent types as the basis of a proof assistant as introduced in \autoref{sec:why-how-dependent-types};
+in \fullnameref{ch:design}, we discuss lessons on engineering libraries at scale drawn from our case study in formalizing category theory %~\cite{category-coq-experience}
 and augmented by our other experience.
-Many of the lessons presented here are generalizations of examples described in \fullref{ch:rewriting-more}.
+Many of the lessons presented here are generalizations of examples described in \fullnameref{ch:rewriting-more}.
 The category theory library formalized as part of this doctoral work, available at \textcite{HoTT/HoTT-categories}, is described briefly in this chapter; a more thorough description can be found in the paper we published on our experience formalizing this library~\cite{category-coq-experience}.
 
-\fullref{part:conclusion} is in some sense the mirror image of \autoref{part:introduction}:
-Where \autoref{ch:perf-failures} is a broad look at what is currently lacking and where performance bottlenecks arise, \fullref{ch:coq-tooling-fixes} takes a historical perspective on what advancements have already been made in the performance of proof assistants, and Coq in particular.
-Finally, while the present chapter which we are now concluding has looked back on the present state and history of formal verification, \fullref{ch:conclusion} looks forward to what we believe are the most important next steps in the perhaps-nascent field of proof-assistant performance at scale.
+\fullnameref{part:conclusion} is in some sense the mirror image of \autoref{part:introduction}:
+Where \autoref{ch:perf-failures} is a broad look at what is currently lacking and where performance bottlenecks arise, \fullnameref{ch:coq-tooling-fixes} takes a historical perspective on what advancements have already been made in the performance of proof assistants, and Coq in particular.
+Finally, while the present chapter which we are now concluding has looked back on the present state and history of formal verification, \fullnameref{ch:conclusion} looks forward to what we believe are the most important next steps in the perhaps-nascent field of proof-assistant performance at scale.
 
 \begin{subappendices}
 

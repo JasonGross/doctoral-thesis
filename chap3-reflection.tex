@@ -1,4 +1,4 @@
-\chapter{\readyforreadingmod{Reflective Program Transformation}{introduction}}\label{ch:reflection}
+\chapter{\readyforreadingmod{Reflective Program Transformation}{introduction and conclusion}}\label{ch:reflection}
 
 \section{Introduction}\label{sec:reification-by-parametricity:intro}
 
@@ -58,7 +58,7 @@ Proof terms, in a sense, are traces of a proof script.
 They provide Coq's kernel with a term that it can check to verify that no illegal steps were taken.
 Listing every step results in large traces.
 
-\begin{wrapfigure}[9]{r}{\widthof{\texttt{Fixpoint check\_is\_even (n : nat) : bool}}}
+\begin{wrapfigure}[8]{r}{\widthof{\texttt{Fixpoint check\_is\_even (n : nat) : bool}}}
 \begin{minted}{coq}
 Fixpoint check_is_even (n : nat) : bool
   := match n with
@@ -96,7 +96,11 @@ Sometimes, to achieve faster proofs, we must be able to tell, for example, wheth
   Sometimes this distinction is necessary for generating a proof at all, as is the case in \mintinline{coq}{nsatz} and \mintinline{coq}{romega}; there is no way to prove that addition is commutative if you cannot identify what things you were adding in the first place.%
 }
 
-\begin{wrapfigure}[7]{r}{\widthof{\texttt{| NatMul (x y : expr) : expr.}}}
+A reflective automation procedure generally has two steps.
+The first step is to \emph{reify} the goal into some abstract syntactic representation, which we call the \emph{term language} or an \emph{expression language}.
+The second step is to run the algorithm on the reified syntax.
+
+\begin{wrapfigure}[6]{r}{\widthof{\texttt{| NatMul (x y : expr) : expr.}}}
 %\vspace{-45pt}
 \begin{minted}{coq}
 Inductive expr :=
@@ -107,11 +111,6 @@ Inductive expr :=
 %\vspace{-15pt}
 \caption{Simple Expressions}\label{fig:inductive-expr-no-letin}
 \end{wrapfigure}
-
-A reflective automation procedure generally has two steps.
-The first step is to \emph{reify} the goal into some abstract syntactic representation, which we call the \emph{term language} or an \emph{expression language}.
-The second step is to run the algorithm on the reified syntax.
-
 What should our expression language include?
 At a bare minimum, we must have multiplication nodes, and we must have \mintinline{coq}{nat} literals.
 If we encode \mintinline{coq}{S} and \mintinline{coq}{O} separately, a decision that will become important later in~\autoref{sec:reification-by-parametricity}, we get the inductive type of \autoref{fig:inductive-expr-no-letin}.
@@ -140,7 +139,7 @@ Theorem check_is_even_expr_sound (e : expr)
   : check_is_even_expr e = true → is_even (denote e).
 \end{minted}
 
-Given a tactic \mintinline{coq}{Reify} to produce a reified term from a \mintinline{coq}{nat}, we can time \mintinline{coq}{check_is_even_expr}.
+Given a tactic \mintinline{coq}{Reify} to produce a reified term from a \mintinline{coq}{nat}, we can time the execution of \mintinline{coq}{check_is_even_expr} in Coq's VM.
 It is instant on the last example.%, \mintinline{coq}{10 * 10 * 10 * 10 * 10 * 10 * 10 * 10 * 10}.
 
 Before we proceed to reification, we will introduce one more complexity.
@@ -236,7 +235,7 @@ Given these, we could solve an evenness goal by writing%
 \footnote{%
   Note that for the \mintinline{coq}{refine} to be fast, we must issue something like \mintinline{coq}{Strategy -10 [denote]} to tell Coq to unfold \mintinline{coq}{denote} before \mintinline{coq}{Let_In}.
   Alternatively, we may issue something like \mintinline{coq}{Strategy 10 [Let_In]} to tell Coq to unfold \mintinline{coq}{Let_In} only after unfolding any constant with no \mintinline{coq}{Strategy} declaration.
-  This invocation may look familiar to those readers who read the footnotes in \fullref{sec:fiat-crypto-codegen-numbers}, as in fact this is the issue at the root cause of the exponential performance blowup which resulted in numbers like ``over 4\,000 millennia'' in an earlier version of Fiat Cryptography.
+  This invocation may look familiar to those readers who read the footnotes in \fullnameref{sec:fiat-crypto-codegen-numbers}, as in fact this is the issue at the root cause of the exponential performance blowup which resulted in numbers like ``over 4\,000 millennia'' in an earlier version of Fiat Cryptography.
 }
 \begin{minted}{coq}
 match goal with
@@ -309,6 +308,7 @@ Inductive expr :=
 | NatMul : expr → expr → expr
 | Var : nat → expr
 | LetIn : expr → expr → expr.
+
 Fixpoint denote (default : nat) (Γ : list nat) (t : @expr nat) : nat
   := match t with
      | NatO => O
@@ -334,7 +334,7 @@ In that case, we might annotate each variable node with a type code, mandate dec
 \subsubsection{Nested Abstract Syntax} \label{sec:binders:nested-abstract-syntax}
 If we want a variant of de Bruijn indices which guarantees well-typed syntax trees, we can use nested abstract syntax~\cite{Nested2012Hirschowitz,deBruijn1999Bird}.
 On mono-typed ASTs, this looks like encoding the size of the context in the type of the expressions.
-For example, we could use \mintinline{coq}{option} types:~\cite{Nested2012Hirschowitz}
+For example, we could use \mintinline{coq}{option} types~\cite{Nested2012Hirschowitz}:
 \begin{minted}{coq}
 Notation "^ V" := (option V).
 Inductive expr : Type → Type :=
@@ -351,9 +351,11 @@ Namely, when the expressions are multi-typed, we end up with something like
 Inductive context :=
 | emp : context
 | push : type → context → context.
+
 Inductive var : context → type → Type :=
 | Var0 {t Γ} : var (push t Γ) t
 | VarS {t t' Γ} : var Γ t → var (push t' Γ) t.
+
 Inductive expr : context → type → Type :=
 | NatO {Γ} : expr Γ Nat
 | NatS {Γ} : expr Γ Nat → expr Γ Nat
@@ -408,16 +410,18 @@ Fixpoint is_related {var1 var2 : Type} (Γ : list (var1 * var2))
     => is_related Γ x1 x2 /\ is_related Γ y1 y2
   | Var v1, Var v2 => List.In (v1, v2) Γ
   | LetIn e1 f1, LetIn e2 f2
-    => is_related Γ e1 e2 /\ forall v1 v2, is_related ((v1, v2) :: Γ) (f1 v1) (f2 v2)
+    => is_related Γ e1 e2
+       /\ ∀ v1 v2, is_related ((v1, v2) :: Γ) (f1 v1) (f2 v2)
   | _, _ => False
   end.
 \end{minted}
 This unfortunately isn't quite linear in the size of the syntax tree, though it is significantly smaller.
-One way to achieve truly linear%
+One way to achieve even more compact proof terms is to pick a more optimized representation for list membership and to convert the proposition to be an eliminator.%
 \footnote{%
-Actually, the size of the proof term will still have an extra logarithmic factor in the size of the syntax tree, due to the way we represent list membership proofs.%
+  The size of the proof term will still have an extra logarithmic factor in the size of the syntax tree due to representing variable indices in binary.
+  Moreover, the size of the proof term will sill be quadratic due to the fact that functions store the type of their binders.
+  However, this representation allows proof terms that are significantly faster to construct in Coq's proof engine for reasons that are not entirely clear to us.
 }
-proofs is to pick a more optimized representation for list membership and to convert the proposition to be an eliminator.
 This consists of replacing $A \wedge B$ with $\forall P, A \to B \to P$, and similar.
 \begin{minted}{coq}
 Fixpoint is_related_elim {var1 var2 : Type} (Γ : list (var1 * var2))
@@ -442,7 +446,7 @@ We can now prove that \mintinline{coq}{is_related_elim Γ e1 e2 → is_related �
 Note that making use of the fixpoint is significantly more inconvenient than making use of the inductive; the proof of \mintinline{coq}{check_is_even_expr_sound}, for example, proceeds most naturally by induction on the relatedness hypothesis.
 We could instead induct on one of the ASTs and destruct the other one, but this becomes quite hairy when the ASTs are indexed over their types.
 
-\minortodo{Should I benchmark this and insert graphs?}
+\minortodo{Time permitting, benchmark wf proof methods and insert plots}
 
 \subsubsection{Via de Bruijn} \label{sec:wf:perf:de-bruijn}
 
@@ -453,9 +457,11 @@ Fixpoint is_closed_under (max_idx : nat) (e : expr) : bool :=
   match expr with
   | NatO => true
   | NatS e => is_closed_under max_idx e
-  | NatMul x y => is_closed_under max_idx x && is_closed_under max_idx y
+  | NatMul x y
+     => is_closed_under max_idx x && is_closed_under max_idx y
   | Var n => n <? max_idx
-  | LetIn v f => is_closed_under max_idx v && is_closed_under (S max_idx) f
+  | LetIn v f
+     => is_closed_under max_idx v && is_closed_under (S max_idx) f
   end.
 Definition is_closed := is_closed_under 0.
 \end{minted}
@@ -469,16 +475,9 @@ The easiest way is to write a converter from PHOAS to de Bruijn.
 Hence we can prove the theorem \texttt{∀ e, is\_closed (PHOAS\_to\_deBruijn e) = true ∧ e = deBruijn\_to\_PHOAS (PHOAS\_to\_deBruijn e) → Wf e}.
 The hypothesis of this theorem is quite easy to check; we simply run \mintinline{coq}{vm_compute} and then instantiate it with the proof term \mintinline{coq}{conj (eq_refl true) (eq_refl e)}, which is linear in the size of \mintinline{coq}{e}.
 
-\section{Reification} \label{sec:reif-survey}
+\section{Reification}\label{sec:reif-survey}
 
-The one part of proof by reflection that we've neglected up to this point is reification.
-There are many ways of performing reification; in \autoref{ch:reification-by-parametricity}, we discuss 18 different ways of implementing reification, using 6 different metaprogramming facilities in the Coq ecosystem: \Ltac, \LtacTwo, \Mtac~\cite{lessadhoc,Mtac2}, type classes~\cite{sozeau2008first}, canonical structures~\cite{gonthier2016small}, and reification-specific OCaml plugins (quote~\cite{quote-plugin}, template-coq~\cite{TemplateCoq}, ours).
-\autoref{fig:ltac-reify-nobinders} displays the simplest case: an Ltac script to reify a tree of function applications and constants.
-Unfortunately, all methods we surveyed become drastically more complicated or slower (and usually both) when adapted to reify terms with variable bindings such as \texttt{let}-\texttt{in} or \texttt{$\lambda$} nodes.
-
-\todo{fix spacing}
-
-\begin{wrapfigure}[10]{r}{\widthof{\texttt{             constr:(@NatMul v X Y)}}}
+\begin{wrapfigure}[12]{r}{\widthof{\texttt{~~~~~~~~~~~~~constr:(@NatMul v X Y)}}}
 \begin{minted}{coq}
 Ltac f v x := (* reify var term *)
   lazymatch x with
@@ -491,8 +490,13 @@ Ltac f v x := (* reify var term *)
   end.
 \end{minted}
 %\vspace{-20pt}
-\caption{Reification Without Binders in \Ltac}\label{fig:ltac-reify-nobinders}
+\caption{Reification Without Binders in~\Ltac}\label{fig:ltac-reify-nobinders}
 \end{wrapfigure}
+
+The one part of proof by reflection that we've neglected up to this point is reification.
+There are many ways of performing reification; in \autoref{ch:reification-by-parametricity}, we discuss 18 different ways of implementing reification, using 6 different metaprogramming facilities in the Coq ecosystem: \Ltac, \LtacTwo, \Mtac~\cite{lessadhoc,Mtac2}, type classes~\cite{sozeau2008first}, canonical structures~\cite{gonthier2016small}, and reification-specific OCaml plugins (quote~\cite{quote-plugin}, template-coq~\cite{TemplateCoq}, ours).
+\autoref{fig:ltac-reify-nobinders} displays the simplest case: an Ltac script to reify a tree of function applications and constants.
+Unfortunately, all methods we surveyed become drastically more complicated or slower (and usually both) when adapted to reify terms with variable bindings such as \texttt{let}-\texttt{in} or \texttt{$\lambda$} nodes.
 
 We have made detailed walkthroughs and source code of these implementations available\footnote{\url{https://github.com/mit-plv/reification-by-parametricity}} in hope that they will be useful for others considering implementing reification using one of these metaprogramming mechanisms, instructive as nontrivial examples of multiple metaprogramming facilities, or helpful as a case study in Coq performance engineering.
 \minortodo{Maybe include detailed walkthroughs in the appendix?}

@@ -36,8 +36,8 @@ We will demonstrate a new Coq library that corrects both weaknesses, while maint
 We are interested in partial-evaluation examples that mix higher-order functions, inductive datatypes, and arithmetic simplification.
 For instance, consider the following Coq code.
 
-\begin{minted}[fontsize=\small]{coq}
-Definition prefixSums (ls:list nat) : list nat :=
+\begin{minted}{coq}
+Definition prefixSums (ls : list nat) : list nat :=
   let ls' := combine ls (seq 0 (length ls)) in
   let ls'' := map (λ p, fst p * snd p) ls' in
   let '(_, ls''') := fold_left (λ '(acc, ls''') n,
@@ -55,10 +55,10 @@ We would like to specialize this function to particular list lengths.
 That is, we know in advance how many list elements we will pass in, but we do not know the values of those elements.
 For a given length, we can construct a schematic list with one free variable per element.
 For example, to specialize to length four, we can apply the function to list \mintinline{coq}{[a; b; c; d]}, and we expect this output:
-\begin{minted}[fontsize=\small]{coq}
-let acc := b + c * 2 in
+\begin{minted}{coq}
+let acc  := b + c * 2   in
 let acc' := acc + d * 3 in
-  [acc'; acc; b; 0]
+[acc'; acc; b; 0]
 \end{minted}
 
 Notice how subterm sharing via \mintinline{coq}{let}s is important.
@@ -66,9 +66,9 @@ As list length grows, we avoid quadratic blowup in term size through sharing.
 Also notice how we simplified the first two multiplications with $a \cdot 0 = 0$ and $b \cdot 1 = b$ (each of which requires explicit proof in Coq), using other arithmetic identities to avoid introducing new variables for the first two prefix sums of \mintinline{coq}{ls''}, as they are themselves constants or variables, after simplification.
 
 To set up our partial evaluator, we prove the algebraic laws that it should use for simplification, starting with basic arithmetic identities.
-\begin{minted}[fontsize=\small]{coq}
-Lemma zero_plus : ∀ n, 0 + n = n.    Lemma times_zero : ∀ n, n * 0 = 0.
-Lemma plus_zero : ∀ n, n + 0 = n.    Lemma times_one  : ∀ n, n * 1 = n.
+\begin{minted}{coq}
+Lemma zero_plus : ∀ n, 0 + n = n.  Lemma times_zero : ∀ n, n * 0 = 0.
+Lemma plus_zero : ∀ n, n + 0 = n.  Lemma times_one  : ∀ n, n * 1 = n.
 \end{minted}
 
 Next, we prove a law for each list-related function, connecting it to the primitive-recursion combinator for some inductive type (natural numbers or lists, as appropriate).
@@ -76,11 +76,12 @@ We use a special apostrophe marker to indicate a quantified variable that may on
 We also use a further marker \mintinline{coq}{ident.eagerly} to ask the reducer to simplify a case of primitive recursion by complete traversal of the designated argument's constructor tree.
 %\todo{Hey, it sure would be nice to generate all of these to-eliminator lemmas automatically, too!  Next step for the plugin?}
 %\todo{Reply from Jason: This is actually quite tricky, and I want to claim that it is significantly beyond the scope of the rewriter.  If you have a constant which is already defined in terms of the eliminator, it's quite easy for me to write a tactic that makes the one-step unfolding lemma.  And it's also quite easy to throw \mintinline{coq}{ident.eagerly} in front.  However, if the constant is not already defined in terms of the eliminator constant, and is instead a fixpoint, then you need something that is basically as powerful as Lean's elaborator to figure out the right recursion principle.}
-\begin{minted}[fontsize=\small]{coq}
+\begin{minted}{coq}
 Lemma eval_map A B (f : A -> B) l
 : map f l = ident.eagerly list_rect _ _ [] (λ x _ l', f x :: l') l.
 Lemma eval_fold_left A B (f : A -> B -> A) l a
-: fold_left f l a = ident.eagerly list_rect _ _ (λ a, a) (λ x _ r a, r (f a x)) l a.
+: fold_left f l a
+  = ident.eagerly list_rect _ _ (λ a, a) (λ x _ r a, r (f a x)) l a.
 Lemma eval_combine A B (la : list A) (lb : list B)
 : combine la lb =
   list_rect _
@@ -95,7 +96,7 @@ Lemma eval_length A (ls : list A)
 
 With all the lemmas available, we can package them up into a rewriter, which triggers generation of a specialized rewrite procedure and its soundness proof.
 Our Coq plugin introduces a new command \mintinline{coq}{Make} for building rewriters
-\begin{minted}[fontsize=\small]{coq}
+\begin{minted}{coq}
 Make rewriter := Rewriter For (zero_plus, plus_zero, times_zero, times_one,
   eval_map, eval_fold_left, do_again eval_length, do_again eval_combine,
   eval_rect nat, eval_rect list, eval_rect prod)
@@ -106,9 +107,10 @@ However, we also use options \mintinline{coq}{do_again}, to request that some ru
 
 Our plugin also provides new tactics like \mintinline{coq}{Rewrite_rhs_for}, which applies a rewriter to the right-hand side of an equality goal.
 That last tactic is just what we need to synthesize a specialized \mintinline{coq}{prefixSums} for list length four, along with a proof of its equivalence to the original function.
-\begin{minted}[fontsize=\small]{coq}
+\begin{minted}{coq}
 Definition prefixSums4 :
- {f:nat→nat→nat→nat→list nat | ∀ a b c d, f a b c d = prefixSums [a;b;c;d]}
+ { f : nat → nat → nat → nat → list nat
+ | ∀ a b c d, f a b c d = prefixSums [a; b; c; d] }
   := ltac:(eexists; Rewrite_rhs_for rewriter; reflexivity).
 \end{minted}
 
@@ -363,11 +365,11 @@ We embed them in an AST type for patterns, which largely follows our ASTs for ex
 1. App (Ident fst) (App (App (Ident pair) Wildcard) Wildcard)
 \end{verbatim}
 The decision tree produced is \label{sec:compiled-pattern}
-\[\resizebox{230px}{!}{\xymatrix@R-1pc{
+\[\xymatrix@C+0.5pc@R-1pc{
   *++[o][F-]\txt{} \ar[d]_{\txt{App}} \\
   *++[o][F-]\txt{} \ar[r]^-{\txt{App}} \ar@/_1.5pc/[dr]_{\txt{\texttt{fst}}} & *++[o][F-]\txt{} \ar[r]^-{+} & *++[o][F-]\txt{Swap 0$\leftrightarrow$1} \ar[r] & *++[o][F-]\txt{} \ar[rr]^-{\txt{\texttt{Literal~0}}} && *++[o][F-]\txt{TryLeaf 0} \\
   & *++[o][F-]\txt{} \ar[r]_-{\txt{App}} & *++[o][F-]\txt{} \ar[r]_-{\txt{App}} & *++[o][F-]\txt{} \ar[rr]_-{\txt{\texttt{pair}}} && *++[o][F-]\txt{TryLeaf 1}
-}}\]
+}\]
 \noindent where every non-swap node implicitly has a ``default'' case arrow to \texttt{Failure} and circles represent \texttt{Switch} nodes.
 
 We implement, in Coq's logic, an evaluator for these trees against terms.
@@ -375,7 +377,7 @@ Note that we use Coq's normal partial evaluation to turn our general decision-tr
 Although this partial evaluation of our partial evaluator is subject to the same performance challenges we highlighted in the introduction, it only has to be done once for each set of rewrite rules, and we are targeting cases where the time of per-goal reduction dominates this time of meta-compilation.
 
 For our running example of two rules, specializing gives us this match expression.
-\begin{minted}[fontsize=\small]{coq}
+\begin{minted}{coq}
 match e with
 | App f y => match f with
   | Ident fst => match y with
@@ -487,20 +489,22 @@ It allows for relatively easy implementation and proof for NbE, so we adopted it
 Here is the actual inductive definition of term syntax for our object language, PHOAS-style.
 The characteristic oddity is that the core syntax type \texttt{expr} is parameterized on a dependent type family for representing variables.
 However, the final representation type \texttt{Expr} uses first-class polymorphism over choices of variable type, bootstrapping on the metalanguage's parametricity to ensure that a syntax tree is agnostic to variable type.
-\begin{minted}[fontsize=\small]{coq}
-  Inductive type := arrow (s d : type) | base (b : base_type).
-  Infix "→" := arrow.
-  Inductive expr (var : type -> Type) : type -> Type :=
-  | Var {t} (v : var t) : expr var t
-  | Abs {s d} (f : var s -> expr var d) : expr var (s → d)
-  | App {s d} (f : expr var (s → d)) (x : expr var s) : expr var d
-  | Const {t} (c : const t) : expr var t
-  Definition Expr (t : type) : Type := forall var, expr var t.
+\begin{minted}{coq}
+Inductive type := arrow (s d : type) | base (b : base_type).
+Infix "→" := arrow.
+
+Inductive expr (var : type -> Type) : type -> Type :=
+| Var {t} (v : var t) : expr var t
+| Abs {s d} (f : var s -> expr var d) : expr var (s → d)
+| App {s d} (f : expr var (s → d)) (x : expr var s) : expr var d
+| Const {t} (c : const t) : expr var t
+
+Definition Expr (t : type) : Type := forall var, expr var t.
 \end{minted}
 
 A good example of encoding adequacy is assigning a simple denotational semantics.
 First, a simple recursive function assigns meanings to types.
-\begin{minted}[fontsize=\small]{coq}
+\begin{minted}{coq}
 Fixpoint denoteT (t : type) : Type
   := match t with
      | arrow s d => denoteT s -> denoteT d
@@ -511,7 +515,7 @@ Fixpoint denoteT (t : type) : Type
 Next we see the convenience of being able to \emph{use} an expression by choosing how it should represent variables.
 Specifically, it is natural to choose \emph{the type-denotation function itself} as the variable representation.
 Especially note how this choice makes rigorous the convention we followed in the prior section (e.g., in the suspicious function-abstraction clause of function reduce), where a recursive function enforces that values have always been substituted for variables early enough.
-\begin{minted}[fontsize=\small]{coq}
+\begin{minted}{coq}
 Fixpoint denoteE {t} (e : expr denoteT t) : denoteT t
   := match e with
      | Var v     => v
@@ -527,12 +531,13 @@ It is now easy to follow the same script in making our rewriting-enabled NbE ful
 Note especially the first clause of \texttt{reduce}, where we avoid variable substitution precisely because we have chosen to represent variables with normalized semantic values.
 The subtlety there is that base-type semantic values are themselves expression syntax trees, which depend on a nested choice of variable representation, which we retain as a parameter throughout these recursive functions.
 The final definition $\lambda$-quantifies over that choice.
-\begin{minted}[fontsize=\small]{coq}
+\begin{minted}{coq}
 Fixpoint nbeT var (t : type) : Type
   := match t with
      | arrow s d => nbeT var s -> nbeT var d
      | base b    => expr var b
      end.
+
 Fixpoint reify {var t} : nbeT var t -> expr var t
   := match t with
      | arrow s d => λ f, Abs (λ x, reify (f (reflect (Var x))))
@@ -543,6 +548,7 @@ with reflect {var t} : expr var t -> nbeT var t
      | arrow s d => λ e, λ x, reflect (App e (reify x))
      | base b    => rewrite_head
      end.
+
 Fixpoint reduce {var t}
   (e : expr (nbeT var) t) : nbeT var t
   := match e with
@@ -551,6 +557,7 @@ Fixpoint reduce {var t}
      | Var x     => x
      | Ident c   => reflect (Ident c)
      end.
+
 Definition Rewrite {t} (E : Expr t) : Expr t
   := λ var, reify (reduce (E (nbeT var t))).
 \end{minted}
@@ -611,7 +618,7 @@ using the rules
 \end{align*}
 
 Our approach is to define a telescope-style type family called \mintinline{coq}{UnderLets}:
-\begin{minted}[fontsize=\small]{coq}
+\begin{minted}{coq}
 Inductive UnderLets {var} (T : Type) :=
 | Base (v : T)
 | UnderLet {A}(e : @expr var A)(f : var A -> UnderLets T).
@@ -623,12 +630,13 @@ Such constructors are used to implement an NbE strategy that outputs \mintinline
 Recall that the NbE type interpretation mapped base types to expression syntax trees.
 We now parameterize that type interpretation by a Boolean declaring whether we want to introduce telescopes.
 
-\begin{minted}[fontsize=\small]{coq}
-Fixpoint nbeT' {var} (with_lets : bool) (t : type)
-  := match t with
-     | base t => if with_lets then @UnderLets var (@expr var t) else @expr var t
-     | arrow s d => nbeT' false s -> nbeT' true d
-     end.
+\begin{minted}{coq}
+Fixpoint nbeT' {var} (with_lets : bool) (t : type) :=
+  match t with
+  | base t
+    => if with_lets then @UnderLets var (@expr var t) else @expr var t
+  | arrow s d => nbeT' false s -> nbeT' true d
+  end.
 Definition nbeT := nbeT' false.
 Definition nbeT_with_lets := nbeT' true.
 \end{minted}
@@ -684,7 +692,7 @@ Therefore, at the end of this phase, we assume all variable occurrences have bee
 
 Second, we proceed with our example rule refactored:
 \begin{align*}
-  \texttt{add\_with\_carry}_{64}(\texttt{clip}_{'{?l},'{?u}}({?n}), 0) & \to (0, \texttt{clip}_{l,u}(n)) %\\
+  \texttt{add\_with\_carry}_{64}(\texttt{clip}_{\texttt{'}{?l},\texttt{'}{?u}}({?n}), 0) & \to (0, \texttt{clip}_{l,u}(n)) %\\
   %&
   \text{\ \ if\ \ }u < 2^{64}
 \end{align*}
@@ -727,15 +735,10 @@ We report here on experiments to isolate performance benefits for rewriting unde
 
 We start with microbenchmarks focusing attention on particular aspects of reduction and rewriting, with \autoref{sec:additionalMicro} going into more detail.
 
-\subsubsection{Rewriting Without Binders} \label{sec:micro:Plus0Tree}
+\bgroup
+\interlinepenalty 10000
+\subsubsection{Rewriting Without Binders}\label{sec:micro:Plus0Tree}
 
-Consider the code defined by the expression $\text{tree}_{n,m}(v)$ in \autoref{fig:micro:Plus0Tree:code}.
-%\todo{make sure the figure spacing is okay}
-%RSolve[{t[0]==m, t[n]==2*t[n-1] + m},t[n],n]
-%t[n]=m(2^{n+1}-1)
-We want to remove all of the${}+0$s.
-There are $\Theta(m \cdot 2^n)$ such rewriting locations.
-We can start from this expression directly, in which case reification alone takes as much time as Coq's \texttt{rewrite}.
 \begin{wrapfigure}[7]{r}{0pt}
 {\small $\begin{aligned}
 \text{iter}_m(v) & = v + \underbrace{0 + 0 + \cdots + 0}_m \\
@@ -744,8 +747,16 @@ We can start from this expression directly, in which case reification alone take
 \end{aligned}$}%
 \caption{\label{fig:micro:Plus0Tree:code}Expressions computing initial code}
 \end{wrapfigure}
+Consider the code defined by the expression $\text{tree}_{n,m}(v)$ in \autoref{fig:micro:Plus0Tree:code}.
+%\todo{make sure the figure spacing is okay}
+%RSolve[{t[0]==m, t[n]==2*t[n-1] + m},t[n],n]
+%t[n]=m(2^{n+1}-1)
+We want to remove all of the${}+0$s.
+There are $\Theta(m \cdot 2^n)$ such rewriting locations.
+We can start from this expression directly, in which case reification alone takes as much time as Coq's \texttt{rewrite}.
 As the reification method was not especially optimized, and there exist fast reification methods~\cite{reification-by-parametricity}, we instead start from a call to a recursive function that generates such an expression.
 
+\egroup
 
 \begin{figure*}[b]
   \newsavebox{\NestedBindersSubfloat}%
@@ -851,7 +862,7 @@ As the reification method was not especially optimized, and there exist fast rei
 
 %RSolve[{t[0]==m, t[n]==2*t[n-1] + m},t[n],n]
 %t[n]=m(2^{n+1}-1)
-\autoref{fig:timing-Plus0Tree} shows the results for $n = \NoBindersSubfloatNval$ as we scale $m$.
+\autoref{fig:timing-Plus0Tree}\vref{fig:timing-Plus0Tree} shows the results for $n = \NoBindersSubfloatNval$ as we scale $m$.
 The comparison points are Coq's \texttt{rewrite!}, \texttt{setoid\_rewrite}, and \texttt{rewrite\_strat}.
 The first two perform one rewrite at a time, taking minimal advantage of commonalities across them and thus generating quite large, redundant proof terms.
 The third makes top-down or bottom-up passes with combined generation of proof terms.
@@ -1246,7 +1257,7 @@ Recall that we are removing all of the${}+0$s from
 \end{align*}}%
 
 The code used to define this microbenchmark is
-\begin{minted}[fontsize=\small]{coq}
+\begin{minted}{coq}
 Definition make_lets_def (n:nat) (v acc : Z) :=
  @nat_rect (fun _ => Z * Z -> Z)
    (fun '(v, acc) => acc + acc + v)
@@ -1265,12 +1276,12 @@ We can reduce this expression in three ways.
 
 \subsubsection{Our Rewriter}
 One lemma is required for rewriting with our rewriter:
-\begin{minted}[fontsize=\small]{coq}
+\begin{minted}{coq}
 Lemma Z.add_0_r : forall z, z + 0 = z.
 \end{minted}
 
 Creating the rewriter takes about 12 seconds on the machine we used for running the performance experiments:
-\begin{minted}[fontsize=\small]{coq}
+\begin{minted}{coq}
 Make myrew := Rewriter For (Z.add_0_r, eval_rect nat, eval_rect prod).
 \end{minted}
 Recall from \autoref{sec:explain-eval-rect} that \mintinline{coq}{eval_rect} is a definition provided by our framework for eagerly evaluating recursion associated with certain types.
@@ -1288,7 +1299,7 @@ Rewriting itself is easy; we may use any of \texttt{repeat setoid\_rewrite Z.add
 This is a version of \autoref{sec:UnderLetsPlus0-more} without any let binders, discussed in \autoref{sec:micro:Plus0Tree} but not displayed in \autoref{fig:multi-timing}.
 
 We use two definitions for this microbenchmark:
-\begin{minted}[fontsize=\small]{coq}
+\begin{minted}{coq}
 Definition iter (m : nat) (acc v : Z) :=
   @nat_rect (fun _ => Z -> Z)
     (fun acc => acc)
@@ -1322,7 +1333,7 @@ The expression we want to get out at the end looks like:
 \end{align*}
 
 Recall that we make this example with the code
-\begin{minted}[fontsize=\small]{coq}
+\begin{minted}{coq}
 Definition map_double (ls : list Z) :=
   list_rect _ [] (λ x xs rec, let y := x + x in y :: rec) ls.
 Definition make (n : nat) (m : nat) (v : Z) :=
@@ -1333,7 +1344,7 @@ We can perform this rewriting in four ways; see \autoref{fig:timing-LiftLetsMap}
 
 \subsubsection{Our Rewriter}
 One lemma is required for rewriting with our rewriter:
-\begin{minted}[fontsize=\small]{coq}
+\begin{minted}{coq}
 Lemma eval_repeat A x n
 : @List.repeat A x ('n) = ident.eagerly nat_rect _ [] (λ k repeat_k, x :: repeat_k) ('n).
 \end{minted}
@@ -1349,7 +1360,7 @@ Our current version only allows a limited, hard-coded set of eliminators with \m
 % That is, the rewrite rule \emph{must} bind the thunked cases as part of the pattern.
 
 We construct our rewriter with
-\begin{minted}[fontsize=\small]{coq}
+\begin{minted}{coq}
 Make myrew := Rewriter For (eval_repeat, eval_rect list, eval_rect nat)
   (with extra idents (Z.add)).
 \end{minted}
@@ -1363,7 +1374,7 @@ We support rewriting on only the left-hand-side and on only the right-hand-side 
 \subsubsection{\texorpdfstring{\texttt{rewrite\_strat}}{rewrite\_strat}}
 
 To reduce adequately using \texttt{rewrite\_strat}, we need the following two lemmas:
-\begin{minted}[fontsize=\small]{coq}
+\begin{minted}{coq}
 Lemma lift_let_list_rect T A P N C (v : A) fls
 : @list_rect T P N C (Let_In v fls) = Let_In v (fun v => @list_rect T P N C (fls v)).
 Lemma lift_let_cons T A x (v : A) f
@@ -1412,7 +1423,7 @@ We are additionally bottlenecked on \texttt{cbv}, which is used to unfold the go
 \subsection{SieveOfEratosthenes} \label{sec:Eratosthenes}
 
 We define the sieve using \mintinline{coq}{PositiveMap.t} and \mintinline{coq}{list Z}:
-\begin{minted}[fontsize=\small]{coq}
+\begin{minted}{coq}
 Definition sieve' (fuel : nat) (max : Z) :=
  List.rev
   (fst
@@ -1447,7 +1458,7 @@ Definition sieve (n : Z)
 \end{minted}
 
 We need four lemmas and an additional instance to create the rewriter:
-\begin{minted}[fontsize=\small]{coq}
+\begin{minted}{coq}
 Lemma eval_fold_right A B f x ls :
 @List.fold_right A B f x ls
 = ident.eagerly list_rect _ _
@@ -1489,7 +1500,7 @@ Global Instance PositiveSet_reflect_eqb
 \end{minted}
 
 We then create the rewriter with
-\begin{minted}[fontsize=\small]{coq}
+\begin{minted}{coq}
 Make myrew := Rewriter For
   (eval_rect nat, eval_rect prod, eval_fold_right,
    eval_map, do_again eval_rev, eval_rect bool,
@@ -1504,7 +1515,7 @@ Make myrew := Rewriter For
 \end{minted}
 
 To get \texttt{cbn} and \texttt{simpl} to unfold our term fully, we emit
-\begin{minted}[fontsize=\small]{coq}
+\begin{minted}{coq}
 Global Arguments Pos.to_nat !_ / .
 \end{minted}
 
@@ -1571,7 +1582,7 @@ Note that we use \texttt{dlet} rather than \mintinline{coq}{let} in binding \tex
 Because we attempt to isolate the dependency on the axiom of functional extensionality as much as possible, we also in practice require \texttt{Proper} instances for each higher-order identifier saying that each constant respects function extensionality.
 We hope to remove the dependency on function extensionality altogether in the future.
 Although we glossed over this detail in the body of this paper, we also prove
-\begin{minted}[fontsize=\small]{coq}
+\begin{minted}{coq}
 Global Instance: forall A B,
  Proper ((eq ==> eq ==> eq) ==> eq ==> eq ==> eq)
         (@fold_left A B).
@@ -1786,7 +1797,7 @@ The correspondence of the code to the various steps in rewriting is described in
 \subsubsection{Code from \autocommanameref{sec:under-lets}}
 
 To run the P-256 example in the copy of Fiat Cryptography attached as a code supplement, after building the library, run the code
-\begin{minted}[fontsize=\small]{coq}
+\begin{minted}{coq}
 Require Import Crypto.Rewriter.PerfTesting.Core.
 Require Import Crypto.Util.Option.
 

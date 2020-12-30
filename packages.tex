@@ -2,7 +2,10 @@
 \usepackage{amsmath}
 \usepackage{amssymb}
 \usepackage{amsthm}
+% order matters, see https://tex.stackexchange.com/a/83051/2066
+\usepackage{varioref}
 \usepackage{hyperref}
+\usepackage[nameinlink]{cleveref}
 \usepackage{eforms}
 \usepackage{xargs}
 \usepackage{soul}
@@ -285,6 +288,8 @@
 \newcommand{\textmintinline}[3][]{\text{\oldmintinline[#1]{#2}{#3}}}
 \def\mintinline{\relax\ifmmode\expandafter\textmintinline\else\expandafter\oldmintinline\fi}
 \makeatother
+% kludge to eliminate top spacing in minted
+\def\FancyVerbVspace{0pt}
 
 \renewcommand{\chapterautorefname}{Chapter}
 \renewcommand{\sectionautorefname}{Section}
@@ -562,7 +567,7 @@
 }}
 
 % https://tex.stackexchange.com/a/121871/2066
-\newcommand*{\fullref}[1]{\hyperref[{#1}]{\autoref*{#1} (\nameref*{#1})}} % One single link
+\newcommand*{\fullnameref}[1]{\hyperref[{#1}]{\autoref*{#1} (\nameref*{#1})}} % One single link
 
 % https://groups.google.com/d/msg/latexusersgroup/07qZP63GY3k/cu53DqbAhkYJ
 \makeatletter

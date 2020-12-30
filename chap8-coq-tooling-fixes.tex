@@ -27,7 +27,7 @@ There are two subtleties:
 \item
   Evars may be under binders.
   Coq uses a locally nameless representation of terms (c.f.~\autoref{sec:binders:locally-nameless}), where closed terms use de Bruijn indices, but open terms, i.e., evars, refer to the variables in their context by name.
-  Hence each evar carries with it a named context, which causes a great deal of trouble as described in \fullref{sec:perf:quadratic-evar-subst}.
+  Hence each evar carries with it a named context, which causes a great deal of trouble as described in \fullnameref{sec:perf:quadratic-evar-subst}.
 \item
   Coq supports backtracking, so we must remember the history of partial proof terms.
   In particular, we cannot simply mutate partial proof terms to instantiate the evars, and copying the entire partial proof term just to update a small part of it would also incur a great deal of overhead.
@@ -154,13 +154,13 @@ Work enabling primitive recursion over these native datatypes is still underway,
 
 \subsection{Primitive Projections for Record Types}\label{sec:fixes:theory:primitive-projections}\label{sec:primitive-projections}
 Since version 8.5, Coq has had the ability to define record types with projections whose arguments are not stored in the term representation~\cite{coq-commit-polyproj}.
-This allows asymptotic speedups, as discussed in \fullref{sec:prim-record-proj}.
+This allows asymptotic speedups, as discussed in \fullnameref{sec:prim-record-proj}.
 \minortodo{what should be said in this section?}
 
 Note that this is a specific instance of a more general theory of implicit arguments~\cite{logical2001implicit,barras2008implicit}, and there has been other work on how to eliminate useless arguments from term representations~\cite{Inductive2003Brady}.
 
 \subsection{Fast Typing of Application Nodes}
-In \fullref{sec:perf:quadratic-application}, we discussed how the typing rule for function application resulted in quadratic performance behavior when there was in fact only linear work that needed to be done.
+In \fullnameref{sec:perf:quadratic-application}, we discussed how the typing rule for function application resulted in quadratic performance behavior when there was in fact only linear work that needed to be done.
 As of Coq 8.10, when typechecking applications in the kernel, substitution is delayed so as to achieve linear performance~\cite{coq-pr-fast-application-typing}.
 \minortodo{does this need more of a recap?}
 Unfortunately, the pretyping and type inference algorithm is still quadratic, due to the type theory rules used for type inference.
@@ -271,7 +271,7 @@ While judicious use of universe polymorphism can reduce code duplication, carele
 
 \subsection{Judgmental η for Record Types}\label{sec:fixes:theory:record-eta}\label{sec:record-eta}
 The same commit that introduced universe polymorphism in Coq 8.5 also introduced judgmental $\eta$ conversion for records with primitive projections~\cite{coq-commit-polyproj}.
-We have already discussed the advantages of primitive projections in \autoref{sec:primitive-projections}, and we have talked a bit about judgmental $\eta$ in \fullref{sec:no-judgmental-eta} and \fullref{sec:duality-conversion}.
+We have already discussed the advantages of primitive projections in \autoref{sec:primitive-projections}, and we have talked a bit about judgmental $\eta$ in \fullnameref{sec:no-judgmental-eta} and \fullnameref{sec:duality-conversion}.
 
 \minortodo{make sure we've talked about judgmental equality and conversion}
 The $\eta$ conversion rule for records says that every term $x$ of record type $T$ is convertible with the constructor of $T$ applied to the projections of $T$ applied to $x$.
@@ -281,7 +281,7 @@ As discussed in \autoref{sec:duality-conversion}, having records with judgmental
 \minortodo{should more be said here?}
 
 \subsection{SProp: The Definitionally Proof Irrelevant Universe}\label{sec:fixes:theory:sprop}\label{sec:sprop}
-We discussed in \fullref{sec:term-size} how irrelevant proof arguments tended to cause performance issues just by existing as part of the goal.
+We discussed in \fullnameref{sec:term-size} how irrelevant proof arguments tended to cause performance issues just by existing as part of the goal.
 While there is as-yet no way to erase these arguments, Coq versions 8.10 and later have the ability to define types as judgmentally irrelevant, paving the way for more aggressive erasure~\cite{coq-pr-sprop,sprop}.
 \minortodo{should more be said here?}
 
@@ -363,7 +363,7 @@ This principle, encoded formally as the \emph{univalence axiom}, allows reasonin
 \Citeauthor*{Equivalences2018Tabareau} built a framework on top of the insights of univalence, combined with parametricity~\cite{reynolds1983types,wadler1989theorems}, for automatically porting definitions and theorems to equivalent types~\cite{Equivalences2018Tabareau,Tabareau2019TheMO}.
 
 What is the application to performance?
-As we saw, for example, in \fullref{sec:rewriting-more:AST:choices}, the choice of representation of a datatype can have drastic consequences on how easy it is to encode algorithms and write correctness proofs.
+As we saw, for example, in \fullnameref{sec:rewriting-more:AST:choices}, the choice of representation of a datatype can have drastic consequences on how easy it is to encode algorithms and write correctness proofs.
 These design choices can also be intricately entwined with both the compile-time and run-time performance characteristics of the code.
 One central message of both \autoref{ch:rewriting-more} and \autoref{ch:design} is that picking the right API really matters when writing code with dependent types.
 The promise of univalence, still in its infancy, is that we could pick the right API for each algorithmic chunk, prove the APIs isomorphic, and use some version of univalence to compose the APIs and reason about the algorithms as easily as if we had used the same interface everywhere.

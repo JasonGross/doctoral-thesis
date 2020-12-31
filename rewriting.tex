@@ -1,4 +1,4 @@
-\chapter{\readyforreadingmod{A Framework for Building Verified Partial Evaluators}{intro and appendices}} \label{ch:rewriting}
+\chapter{\readyforreadingmod{A Framework for Building Verified Partial Evaluators}{intro, appendices, and fusing compiler passes}} \label{ch:rewriting}
 
 \section{Introduction}\label{sec:rewriting:intro}
 
@@ -177,12 +177,20 @@ First, we rework the approach of \textcite{Aehlig} to function \emph{without ext
 
 Second, using partial evaluation to generate residual terms thousands of lines long raises \emph{new scaling challenges}:
 \begin{itemize}
-\item Output terms may contain so \emph{many nested variable binders} that we expect it to be performance-prohibitive to perform bookkeeping operations on first-order-encoded terms (e.g., with de Bruijn indices, as is done in \Rtac{} by \textcite{rtac}).  For instance, while the reported performance experiments of \textcite{Aehlig} generate only closed terms with no binders, Fiat Cryptography may generate a single routine (e.g., multiplication for curve P-384) with nearly a thousand nested binders.
+\item
+  Output terms may contain so \emph{many nested variable binders} that we expect it to be performance-prohibitive to perform bookkeeping operations on first-order-encoded terms (e.g., with de Bruijn indices, as is done in \Rtac{} by \textcite{rtac}).
+  For instance, while the reported performance experiments of \textcite{Aehlig} generate only closed terms with no binders, Fiat Cryptography may generate a single routine (e.g., multiplication for curve P-384) with nearly a thousand nested binders.
 %\todo{Consider being more specific here about expected cost of first-order representation, maybe using some experiment.}
 %  \todo{Note from Jason: We haven't actually checked that the bookkeeping is performance-prohibitive.  I suspect there will be a cost, but that if when we made fiat-crypto there was an existing system that used de Bruijn indices and did this, (along with built-in let-lifting, etc), I suspect we might have been a bit more sad, but not prohibitively more sad.  I think we should be much more tentative with this bullet point.}
-\item Naive representation of terms without proper \emph{sharing of common subterms} can lead to fatal term-size blow-up.  Fiat Cryptography's arithmetic routines rely on significant sharing of this kind.
-\item Unconditional rewrite rules are in general insufficient, and we need \emph{rules with side conditions}.  For instance, in Fiat Cryptography, some rules for simplifying modular arithmetic depend on proofs that operations in subterms do not overflow.
-\item However, it is also not reasonable to expect a general engine to discharge all side conditions on the spot.  We need integration with \emph{abstract interpretation} that can analyze whole programs to support reduction.
+\item
+  Naive representation of terms without proper \emph{sharing of common subterms} can lead to fatal term-size blow-up.
+  Fiat Cryptography's arithmetic routines rely on significant sharing of this kind.
+\item
+  Unconditional rewrite rules are in general insufficient, and we need \emph{rules with side conditions}.
+  For instance, in Fiat Cryptography, some rules for simplifying modular arithmetic depend on proofs that operations in subterms do not overflow.
+\item
+  However, it is also not reasonable to expect a general engine to discharge all side conditions on the spot.
+  We need integration with \emph{abstract interpretation} that can analyze whole programs to support reduction.
 \end{itemize}
 
 Briefly, our respective solutions to these problems are the \emph{parametric higher-order abstract syntax (PHOAS)}~\cite{PhoasICFP08} term encoding, a \emph{let-lifting} transformation threaded throughout reduction, extension of rewrite rules with executable Boolean side conditions, and a design pattern that uses decorator function calls to include analysis results in a program.
@@ -598,8 +606,8 @@ Then we modified reduction to inline \mintinline{coq}{let} binders instead of pr
 (The successful run uses under 2 GB.)
 
 We see a tension here between performance and niceness of library implementation.
-The Fiat Cryptography authors found it necessary to CPS-convert their code to coax Coq into adequate reduction performance.
-Then all of their correctness theorems were complicated by reasoning about continuations.
+In our original implementation of Fiat Cryptography, we found it necessary to CPS-convert our code to coax Coq into adequate reduction performance.
+Then all of our correctness theorems were complicated by reasoning about continuations.
 It feels like a slippery slope on the path to implementing a domain-specific compiler, rather than taking advantage of the pleasing simplicity of partial evaluation on natural functional programs.
 Our reduction engine takes shared-subterm preservation seriously while applying to libraries in direct style.
 
@@ -724,8 +732,7 @@ It would alternatively be possible to extend the reification preprocessor to aut
 
 \section{Evaluation}\label{sec:evaluation}
 
-% TODO: Presumably ``attached to this submission as an anonymized supplement'' will change for the final submission
-Our implementation, attached to this submission as an anonymized supplement with a roadmap in \autoref{sec:CodeSupplement-more}, includes a mix of Coq code for the proved core of rewriting, tactic code for setting up proper use of that core, and OCaml plugin code for the manipulations beyond the current capabilities of the tactic language.
+Our implementation, available at \url{https://github.com/mit-plv/rewriter/tree/v0.0.1} with a roadmap in \autoref{sec:CodeSupplement-more}, includes a mix of Coq code for the proved core of rewriting, tactic code for setting up proper use of that core, and OCaml plugin code for the manipulations beyond the current capabilities of the tactic language.
 We report here on experiments to isolate performance benefits for rewriting under binders and reducing higher-order structure.
 
 \subsection{Microbenchmarks} \label{sec:micro}
@@ -862,7 +869,7 @@ As the reification method was not especially optimized, and there exist fast rei
 
 %RSolve[{t[0]==m, t[n]==2*t[n-1] + m},t[n],n]
 %t[n]=m(2^{n+1}-1)
-\autoref{fig:timing-Plus0Tree}\vref{fig:timing-Plus0Tree} shows the results for $n = \NoBindersSubfloatNval$ as we scale $m$.
+\Vref{fig:timing-Plus0Tree} shows the results for $n = \NoBindersSubfloatNval$ as we scale $m$.
 The comparison points are Coq's \texttt{rewrite!}, \texttt{setoid\_rewrite}, and \texttt{rewrite\_strat}.
 The first two perform one rewrite at a time, taking minimal advantage of commonalities across them and thus generating quite large, redundant proof terms.
 The third makes top-down or bottom-up passes with combined generation of proof terms.
@@ -875,7 +882,7 @@ See \autoref{sec:additionalPlots:Plus0Tree}\footnote{Like several forward refere
 
 \subsubsection{Rewriting Under Binders} \label{sec:micro:UnderLetsPlus0}
 
-\begin{wrapfigure}[7]{r}{0pt}
+\begin{wrapfigure}[5]{r}{0pt}
 {\small $\begin{aligned}
   & \letin[{v_1 := v_0 + v_0 + 0}{}] \\ \noalign{\vskip-7pt}
   & \vdots \\ \noalign{\vskip-3pt}
@@ -888,7 +895,7 @@ See \autoref{sec:additionalPlots:Plus0Tree}\footnote{Like several forward refere
 
 Consider now the code in \autoref{fig:micro:UnderLetsPlus0:code}, which is a version of the code above where redundant expressions are shared via \mintinline{coq}{let} bindings.
 
-\autoref{fig:timing-UnderLetsPlus0} shows the results.
+\Vref{fig:timing-UnderLetsPlus0} shows the results.
 The comparison here is again very favorable for our approach.
 The competing tactics spike upward toward timeouts at just a few hundred generated binders, while our engine is only taking about 10 seconds for examples with 5,000 nested binders.
 
@@ -899,7 +906,7 @@ Detailed debugging reveals five performance bottlenecks in the existing rewritin
 
 \subsubsection{Binders and Recursive Functions} \label{sec:micro:LiftLetsMap}
 
-\begin{wrapfigure}[11]{r}{0pt}
+\begin{wrapfigure}[10]{r}{0pt}
 {\small %\allowdisplaybreaks
 $\begin{aligned}
   \text{map\_dbl}(\ell) & \defeq \begin{cases} [] & \text{if }\ell = [] \\
@@ -918,19 +925,21 @@ The next experiment uses the code in \autoref{fig:micro:LiftLetsMap:code}.
 %Note that the ${}=[]$ at the end is just a dummy placeholder to allow us to check reduction and rewriting of this term.
 Note that the \letin{} binding blocks further reduction of map\_dbl when we iterate it $m$ times in make, and so we need to take care to preserve sharing when reducing here.
 
-\autoref{fig:timing-LiftLetsMap} compares performance between our approach, \texttt{repeat setoid\_rewrite}, and two variants of \texttt{rewrite\_strat}.
+\Vref{fig:timing-LiftLetsMap} compares performance between our approach, \texttt{repeat setoid\_rewrite}, and two variants of \texttt{rewrite\_strat}.
 Additionally, we consider another option, which was adopted by Fiat Cryptography at a larger scale: rewrite our functions to improve reduction behavior.
 Specifically, both functions are rewritten in continuation-passing style, which makes them harder to read and reason about but allows standard VM-based reduction to achieve good performance.
 The figure shows that \texttt{rewrite\_strat} variants are essentially unusable for this example, with \texttt{setoid\_rewrite} performing only marginally better, while our approach applied to the original, more readable definitions loses ground steadily to VM-based reduction on CPS'd code.
 On the largest terms ($n \cdot m > 20,000$), the gap is 6s vs.\ 0.1s of compilation time, which should often be acceptable in return for simplified coding and proofs, plus the ability to mix proved rewrite rules with built-in reductions.
 Note that about 99\% of the difference between the full time of our method and just the rewriting is spent in the final \texttt{cbv} at the end, used to denote our output term from reified syntax.
-We blame this performance on the unfortunate fact that reduction in Coq is quadratic in the number of nested binders present; see Coq bug \coqbug{11151}.
+We blame this performance on the unfortunate fact that reduction in Coq is quadratic in the number of nested binders present; see \coqbug{11151}.
 %traded for simplified coding and proofs, plus the ability to mix proved rewrite rules with built-in reductions.
 See \autoref{sec:LiftLetsMap-more} for more on this microbenchmark.
 
+\bgroup
+\interlinepenalty 10000
 \subsubsection{Full Reduction} \label{sec:micro:Eratosthenes}
 
-\begin{wrapfigure}[18]{r}{0pt}
+\begin{wrapfigure}[16]{r}{0pt}
   \resizebox{0.4\textwidth}{!}{\beginTikzpictureStamped[only marks]{
       \einput{rewriting/perf-SieveOfEratosthenes-simpl.txt}
       \einput{rewriting/perf-SieveOfEratosthenes-cbn.txt}
@@ -942,7 +951,7 @@ See \autoref{sec:LiftLetsMap-more} for more on this microbenchmark.
       \einput{rewriting/perf-SieveOfEratosthenes-native(2)(real).txt}
   }
     \pgfplotsset{every axis legend/.append style={
-        at={(0.5,-0.2)},
+        at={(0.5,-0.3)},
         anchor=north}}
     \begin{axis}[xlabel=upper bound,ylabel=time (s),ymax=65]
       \addplot[mark=square,color=red] table{rewriting/perf-SieveOfEratosthenes-simpl.txt};
@@ -962,28 +971,37 @@ See \autoref{sec:LiftLetsMap-more} for more on this microbenchmark.
 The final experiment involves full reduction in computing the Sieve of Eratosthenes, taking inspiration on benchmark choice from \textcite{Aehlig}.
 We find in \autoref{fig:timing-SieveOfEratosthenes} that we are slower than \texttt{vm\_compute}, \mintinline{coq}{native_compute}, and \texttt{cbv}, but faster than \mintinline{coq}{lazy}, and of course much faster than \texttt{simpl} and \texttt{cbn}, which are quite slow.
 
-\subsection{Macrobenchmark: Fiat Cryptography} \label{sec:macro}
+\bgroup
+\raggedright
+\subsection{Macrobenchmark: Fiat~\mbox{Cryptography}}\label{sec:macro}
+\egroup
 
 Finally, we consider an experiment (described in more detail in \autoref{sec:additionalMacro}) replicating the generation of performance-competitive finite-field-arithmetic code for all popular elliptic curves by \textcite{FiatCryptoSP19}.
-In all cases, we generate essentially the same code as they did, so we only measure performance of the code-generation process.
+In all cases, we generate essentially the same code as we did at the time of publishing that paper, so we only measure performance of the code-generation process.
 We stage partial evaluation with three different reduction engines (i.e., three \mintinline{coq}{Make} invocations), respectively applying 85, 56, and 44 rewrite rules (with only 2 rules shared across engines), taking total time of about 5 minutes to generate all three engines.
 These engines support 95 distinct function symbols.
 
-\autoref{fig:scaling} graphs running time of three different partial-evaluation methods for Fiat Cryptography, as the prime modulus of arithmetic scales up.
+\egroup
+
+\Vref{fig:scaling} graphs running time of three different partial-evaluation methods for Fiat Cryptography, as the prime modulus of arithmetic scales up.
 Times are normalized to the performance of the original method, which relied entirely on standard Coq reduction.
 Actually, in the course of running this experiment, we found a way to improve the old approach for a fairer comparison.
-It had relied on Coq's configurable \texttt{cbv} tactic to perform reduction with selected rules of the definitional equality, which the Fiat Cryptography developers had applied to blacklist identifiers that should be left for compile-time execution.
+It had relied on Coq's configurable \texttt{cbv} tactic to perform reduction with selected rules of the definitional equality, which we had applied to blacklist identifiers that should be left for compile-time execution.
 By instead hiding those identifiers behind opaque module-signature ascription, we were able to run Coq's more-optimized virtual-machine-based reducer.
 
-As the figure shows, our approach running partial evaluation inside Coq's kernel begins with about a 10$\times$ performance disadvantage vs.\ the original method.
+As the figure shows, our approach running partial evaluation inside Coq's kernel begins with about a 10$\times$ performance disadvantage {vs.} the original method.
 With log scale on both axes, we see that this disadvantage narrows to become nearly negligible for the largest primes, of around 500 bits.
 (We used the same set of prime moduli as in the experiments run by \textcite{FiatCryptoSP19}, which were chosen based on searching the archives of an elliptic-curves mailing list for all prime numbers.)
 It makes sense that execution inside Coq leaves our new approach at a disadvantage, as we are essentially running an interpreter (our normalizer) within an interpreter (Coq's kernel), while the old approach ran just the latter directly.
 Also recall that the old approach required rewriting Fiat Cryptography's library of arithmetic functions in continuation-passing style, enduring this complexity in library correctness proofs, while our new approach applies to a direct-style library.
 Finally, the old approach included a custom reflection-based arithmetic simplifier for term syntax, run after traditional reduction, whereas now we are able to apply a generic engine that combines both, without requiring more than proving traditional rewrite rules.
+\todo{Mention issue with wbw montgomery code blowup without fusing compiler passes}
+\todo{rephrase into fusing compiler passes}
 
 The figure also confirms clear performance advantage of running reduction in code extracted to OCaml, which is possible because our plugin produces verified code in Coq's functional language.
 By the time we reach middle-of-the-pack prime size around 300 bits, the extracted version is running about 10$\times$ as quickly as the baseline.
+
+
 
 
 \section{Related Work}\label{sec:related}
@@ -1025,7 +1043,7 @@ It may be helpful to design an engine that lifts some or all of these limitation
 \begin{subappendices}
 %\appendix
 
-\section{Performance Bottlenecks of Proof-Producing Rewriting} \label{sec:setoid-rewrite-bottlenecks}
+\section{Performance Bottlenecks of Proof-Producing Rewriting}\label{sec:setoid-rewrite-bottlenecks}
 
 Although we have made our performance comparison against the built-in Coq tactics \mintinline{coq}{setoid_rewrite} and \mintinline{coq}{rewrite_strat}, by analyzing the performance in detail, we can argue that these performance bottlenecks are likely to hold for any proof assistant designed like Coq.
 Detailed debugging reveals five performance bottlenecks in the existing rewriting tactics.
@@ -1386,7 +1404,7 @@ Throughout most of this paper, anywhere that \letin{} appears, we have actually 
 It would alternatively be possible to extend the reification preprocessor to automatically convert \letin{} to \mintinline{coq}{Let_In}, but this may cause problems when converting the interpretation of the reified term with the pre-reified term, as Coq's conversion does not allow fine-tuning of when to inline or unfold \mintinline{coq}{let}s.
 
 To rewrite, we start with \mintinline{coq}{cbv [example make map_dbl]} to expose the underlying term to rewriting.
-One would hope that one could just add these two hints to a database \mintinline{coq}{db} and then write \texttt{rewrite\_strat (repeat (eval cbn [list\_rect]; try bottomup hints db))}, but unfortunately this does not work due to a number of bugs in Coq: \coqbug{10934}, \coqbug{10923}, \coqbug{4175}, \coqbug{10955}, and the potential to hit \coqbug{10972}.
+One would hope that one could just add these two hints to a database \mintinline{coq}{db} and then write \texttt{rewrite\_strat (repeat (eval cbn [list\_rect]; try bottomup hints db))}, but unfortunately this does not work due to a number of bugs in Coq: \coqbug[]{10934}, \coqbug[]{10923}, \coqbug[]{4175}, \coqbug[]{10955}, and the potential to hit \coqbug[]{10972}.
 Instead, we must put the two lemmas in separate databases, and then write \texttt{repeat (cbn [list\_rect]; (rewrite\_strat (try repeat bottomup hints db1)); (rewrite\_strat (try repeat bottomup hints db2)))}.
 Note that the rewriting with \mintinline{coq}{lift_let_cons} can be done either top-down or bottom-up, but \texttt{rewrite\_strat} breaks if the rewriting with \mintinline{coq}{lift_let_list_rect} is done top-down.
 
@@ -1418,7 +1436,7 @@ Our framework can handle terms of this size but stack-overflows on only slightly
 From this example, we conclude that \texttt{rewrite\_strat} is unsuitable for computations involving large terms with many binders, especially in cases where reduction and rewriting need to be interwoven, and that the many bugs in \texttt{rewrite\_strat} result in confusing gymnastics required for success.
 The prior state of the art---writing code in CPS---suitably tweaked by using module opacity to allow \texttt{vm\_compute}, remains the best performer here, though the cost of rewriting everything is CPS may be prohibitive.
 Our method soundly beats \texttt{rewrite\_strat}.
-We are additionally bottlenecked on \texttt{cbv}, which is used to unfold the goal post-rewriting and costs about a minute on the largest of terms; see Coq bug \coqbug{11151} for a discussion on what is wrong with Coq's reduction here.
+We are additionally bottlenecked on \texttt{cbv}, which is used to unfold the goal post-rewriting and costs about a minute on the largest of terms; see \coqbug{11151} for a discussion on what is wrong with Coq's reduction here.
 
 \subsection{SieveOfEratosthenes} \label{sec:Eratosthenes}
 
@@ -1523,11 +1541,14 @@ Global Arguments Pos.to_nat !_ / .
 \section{Experience vs.\ Lean and \texorpdfstring{\texttt{setoid\_rewrite}}{setoid\_rewrite}\label{sec:lean}}
 
 Although all of our toy examples work with \texttt{setoid\_rewrite} or \texttt{rewrite\_strat} (until the terms get too big), even the smallest of examples in Fiat Cryptography fell over using these tactics.
-When attempting to use \texttt{rewrite\_strat} for partial evaluation and rewriting on unsaturated Solinas with 1 limb on small primes (such as 29), we were able to get \texttt{rewrite\_strat} to finish after about 90 seconds.
+\todo{here}
+When attempting to use \texttt{rewrite\_strat} for partial evaluation and rewriting on unsaturated Solinas with 1 limb on small primes (such as $2^{61}-1$), we were able to get \texttt{rewrite\_strat} to finish after about 90 seconds.
 The bugs in \texttt{rewrite\_strat} made finding the right magic invocation quite painful, nonetheless; the invocation we settled on involved \emph{sixteen} consecutive calls to \texttt{rewrite\_strat} with varying arguments and strategies.
-Trying to synthesize code for two limbs on slightly larger primes (such as 113, which needs two limbs on a 64-bit machine) took about three hours.
+Trying to synthesize code for two limbs on slightly larger primes (such as $2^{107}-1$, which needs two limbs on a 64-bit machine) took about three hours.
 The widely used primes tend to have around five to ten limbs; we leave extrapolating this slowdown to the reader.
 
+This experiment using \verb|setoid_rewrite| can be found at \url{https://github.com/coq-community/coq-performance-tests/blob/v1.0/src/fiat_crypto_via_setoid_rewrite_standalone.v}.
+The bottom of this file contains a commented-out
 We have attached this experiment using \verb|rewrite_strat| as \verb|fiat_crypto_via_rewrite_strat.v|, which is meant to be run in emacs/PG from inside the \verb|fiat-crypto| directory, or in \verb|coqc| by setting \verb|COQPATH| to the value emitted by \texttt{make printenv} in \verb|fiat-crypto| and then invoking the command \texttt{coqc -q -R /path/to/fiat-crypto/src Crypto /path/to/fiat\_crypto\_via\_rewrite\_strat.v}.
 To test with the two-limb prime 113, change \verb|of_string "2^5-3" 8| in the definition of \verb|p| to \verb|of_string "2^7-15" 64|.
 

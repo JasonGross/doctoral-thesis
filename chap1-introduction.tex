@@ -31,12 +31,14 @@ Innovation can help create more performant systems with higher mathematical secu
 However, if the new code has any bugs, it could leave the system vulnerable to attacks costing billions of dollars.
 
 Testing of various kinds is the de facto standard for finding bugs, but it is both expensive and does not guarantee a lack of bugs.
-In adversarial contexts such as this one, fixing 99\% of bugs is not sufficient; attackers have a strong incentive to find the remaining 1\% of bugs and exploit them for gains.
 For example, some bugs in cryptographic code only occur in as few as 19 out of $2^{255}$ cases~\cite{curve25519-donna-commit-correct-bounds}.
 This means that if we want to catch this bug in a ``modest'' twenty years of continuous random testing, then we need to have over a thousand times as many computers as there are atoms in the solar system!
 This is not an accident.
 If our computers become fast enough to complete this testing in reasonable time, then attackers can use these faster computers to launch brute force attacks.
-So, however fast our computers get, ensuring security will require scaling up the size of the cryptographic problem proportionally, and testing will continue to be inadequate.
+As a result, however fast our computers get, ensuring security will require scaling up the size of the cryptographic problem proportionally, and testing will continue to be inadequate at finding all bugs.
+So, in adversarial contexts where even a single vulnerability in the system could cost us enormously, implementing new, innovative algorithms is a slow and risky process.
+
+
 % https://www.wolframalpha.com/input/?i=%282%5E255%2F19+*+529812+%2F+%285+ghz%29+%2F+%2820+years%29+%2F+%28atoms+in+the+solar+system%29%29+*+1+atom = 533260
 % (2^255/19 * 529812 / (5 ghz) / (20 years) / (atoms in the solar system)) * 1 atom
 
@@ -47,29 +49,25 @@ Ideally, the specification is relatively simple, and easier to trust, than the m
 While proofs of algorithms tend to be done with pen-and-paper (consider the ubiquitous proofs that various sorting algorithms are correct found in introductory algorithms classes), proofs of actual code are much harder.
 Code in the real-world tends to be much more complicated than code in an algorithms textbook.
 This difference could be due to reasons of performance, historical accident, or interfacing with real users, among others.
-Proofs of code-correctness thus tend to be filled with tedious case-analysis with only sparse mathematical insights, and attempts to create and check these proofs by hand are subject to the same issues of human fallibility as writing the programs in the first place.
+Proofs of code-correctness, thus, tend to be filled with tedious case-analysis with only sparse mathematical insights, and attempts to create and check these proofs by hand are subject to the same issues of human fallibility as writing the programs in the first place.
 
-Enter machine-checked proofs, a partial solution to the problem of human fallibility.
+Enter formal verification through machine-checked proofs, a partial solution to the problem of human fallibility.
 Foundational tools allow users to write down theorems and proofs that are then checked by machine.
-These tools free the proof author from error-prone case analysis, as the computer will check that no cases were missed.
-
-Even with machine-checked proofs, it is impossible to gain complete confidence in your software; the layer underneath may be untrustworthy in ways you cannot see~\cite{Reflections1984Thompson}, you can never prove that the mathematical system you're working in is correct~\cite{sep-goedel-incompleteness}, and most proof-checkers are not yet themselves proven correct.
-However, machine-checked proofs allow a drastic reduction in how much code needs to be trusted.
-Rather than trusting the millions of lines of code of the software being verified, you only need to trust the specifications of the software, and the likely-much-smaller codebase of the proof checker.
-Furthermore, it's very unlikely that bugs in the proof checker will overlap with bugs in the proof in just the right way to allow errors to slip through only in one particular piece of software.
-Said another way, we no longer need to write tests for every piece of software separately; writing tests for the proof-checker helps eliminate bugs in \emph{all} software proven by that checker.
-
+These tools free the proof author from error-prone case analysis, as the computer can check that no cases were missed.
 
 Tools for machine-checked proofs have had many successes, in both software verification and traditional mathematics proof formalization.
 Examples abound, from compilers~\cite{Compcert} to microkernels~\cite{seL4SOSP09} to web-servers~\cite{Network2015Chlipala} to cryptography code~\cite{FiatCryptoSP19}, from the Four-Color Theorem~\cite{gonthier2008formal} to the Odd-Order Theorem~\cite{gonthier2013machine} to Homotopy Type Theory~\cite{HoTTBook}.
 
-However, in all of these tools, there is enormous proof overhead over the lines of code being verified.
+However, in all examples of software verification successes, there is an enormous overhead in the lines of proof written over the lines of code being verified. The proof is so exorbitant and arduous that it typically requires multiple PhDs worth of work to verify one piece of software. 
 \todo{Insert graph}
 
-To decrease the marginal overhead of proof generation, we may automate the proof generation itself.
-Drawing experience from case studies in category theory~\cite{category-coq-experience}, parsers~\cite{jgross-masters-thesis}, and generation of low-level cryptographic code~\cite{FiatCryptoSP19}, we present difficulties in automation of proof generation.
-In the quest to build automated proof generation tools, we encountered several performance bottlenecks in proof-checking.
-In this thesis, we present in \autoref{part:rewriting} a research prototype of a tool and methodology for achieving acceptable performance at scale in the domain of term term transformation and rewriting.
+We may automate the proof generation so we no longer need to replicate proof writing effort for iterations of code with the same (or similar) mathematical specification. 
+Through this, we are able to decrease the marginal overhead of proof writing, and utilise formal verification to implement innovative code in critical systems. 
+
+
+In this thesis, drawing experience from case studies in category theory~\cite{category-coq-experience}, parsers~\cite{jgross-masters-thesis}, and generation of low-level cryptographic code~\cite{FiatCryptoSP19}, we present difficulties in automation of proof generation.
+In the quest to enable automated proof generation, we encountered several performance bottlenecks in proof-checking.
+We present in \autoref{part:rewriting} a research prototype of a tool and methodology for achieving acceptable performance at scale in the domain of term transformation and rewriting.
 We present design principles in \autoref{part:design} to avoid the performance bottlenecks we encountered, and insights about the proof-checking system that these performance bottlenecks reveal.
 
 
@@ -105,6 +103,9 @@ Through investigation of this problem, we hope to utilise verification in the so
 %\end{itemize}
 %
 Before diving into the details of performance bottlenecks and solutions, we review the history of formal verification and proof assistants to bring the reader up to speed on the context of our work and investigation.
+
+
+
 
 
 %\todo{Maybe say something about the purpose of this section: simultaneously let people know that there's been a lot of thought and effort, let people know about success stories (because it possibly hasn't touched them, and hasn't been adopted mainstream), (and also a bit about how the proof assistants might actually check the proofs)}
@@ -558,7 +559,17 @@ The category theory library formalized as part of this doctoral work, available 
 Where \autoref{ch:perf-failures} is a broad look at what is currently lacking and where performance bottlenecks arise, \fullnameref{ch:coq-tooling-fixes} takes a historical perspective on what advancements have already been made in the performance of proof assistants, and Coq in particular.
 Finally, while the present chapter which we are now concluding has looked back on the present state and history of formal verification, \fullnameref{ch:conclusion} looks forward to what we believe are the most important next steps in the perhaps-nascent field of proof-assistant performance at scale.
 
+
 \begin{subappendices}
+
+\section{deleted paragraphs}
+
+
+Even with machine-checked proofs, it is impossible to gain complete confidence in your software; the layer underneath may be untrustworthy in ways you cannot see~\cite{Reflections1984Thompson}, you can never prove that the mathematical system you're working in is correct~\cite{sep-goedel-incompleteness}, and most proof-checkers are not yet themselves proven correct.
+However, machine-checked proofs allow a drastic reduction in how much code needs to be trusted.
+Rather than trusting the millions of lines of code of the software being verified, you only need to trust the specifications of the software, and the likely-much-smaller codebase of the proof checker.
+Furthermore, it's very unlikely that bugs in the proof checker will overlap with bugs in the proof in just the right way to allow errors to slip through only in one particular piece of software.
+Said another way, we no longer need to write tests for every piece of software separately; writing tests for the proof-checker helps eliminate bugs in \emph{all} software proven by that checker.
 
 \begin{minorcomment}
 \section{TODOs from \autoref{sec:intro:intro}}

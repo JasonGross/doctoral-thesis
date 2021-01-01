@@ -1070,6 +1070,28 @@ The figure also confirms clear performance advantage of running reduction in cod
 By the time we reach middle-of-the-pack prime size around 300 bits, the extracted version is running about 10$\times$ as quickly as the baseline.
 
 
+\section{Experience vs.\ Lean and \texorpdfstring{\texttt{setoid\_rewrite}}{setoid\_rewrite}\label{sec:lean}}
+
+Although all of our toy examples work with \texttt{setoid\_rewrite} or \texttt{rewrite\_strat} (until the terms get too big), even the smallest of examples in Fiat Cryptography fell over using these tactics.
+
+\todo{here}
+When attempting to use \texttt{rewrite\_strat} for partial evaluation and rewriting on unsaturated Solinas with 1 limb on small primes (such as $2^{61}-1$), we were able to get \texttt{rewrite\_strat} to finish after about 90 seconds.
+The bugs in \texttt{rewrite\_strat} made finding the right magic invocation quite painful, nonetheless; the invocation we settled on involved \emph{sixteen} consecutive calls to \texttt{rewrite\_strat} with varying arguments and strategies.
+Trying to synthesize code for two limbs on slightly larger primes (such as $2^{107}-1$, which needs two limbs on a 64-bit machine) took about three hours.
+The widely used primes tend to have around five to ten limbs; we leave extrapolating this slowdown to the reader.
+
+This experiment using \verb|setoid_rewrite| can be found at \url{https://github.com/coq-community/coq-performance-tests/blob/v1.0/src/fiat_crypto_via_setoid_rewrite_standalone.v}.
+The bottom of this file contains a commented-out
+We have attached this experiment using \verb|rewrite_strat| as \verb|fiat_crypto_via_rewrite_strat.v|, which is meant to be run in emacs/PG from inside the \verb|fiat-crypto| directory, or in \verb|coqc| by setting \verb|COQPATH| to the value emitted by \texttt{make printenv} in \verb|fiat-crypto| and then invoking the command \texttt{coqc -q -R /path/to/fiat-crypto/src Crypto /path/to/fiat\_crypto\_via\_rewrite\_strat.v}.
+To test with the two-limb prime 113, change \verb|of_string "2^5-3" 8| in the definition of \verb|p| to \verb|of_string "2^7-15" 64|.
+
+We also tried Lean, in the hopes that rewriting in Lean, specifically optimized for performance, would be up to the challenge.
+Although Lean performed about 30\% better than Coq on the 1-limb example, taking a bit under a minute, it did not complete on the two-limb example even after four hours (after which we stopped trying), and a five-limb example was still going after 40 hours.
+
+We have attached our experiments with running \texttt{rewrite} in Lean on the Fiat Cryptography code as a supplement as well.
+We used Lean version 3.4.2, commit cbd2b6686ddb, Release.
+Run \texttt{make} in \texttt{fiat-crypto-lean} to run the one-limb example;
+change \texttt{open ex} to \texttt{open ex2} to try the two-limb example, or to \texttt{open ex5} to try the five-limb example.
 
 
 \section{Related Work}\label{sec:related}
@@ -1538,28 +1560,6 @@ To get \texttt{cbn} and \texttt{simpl} to unfold our term fully, we emit
 Global Arguments Pos.to_nat !_ / .
 \end{minted}
 
-
-\section{Experience vs.\ Lean and \texorpdfstring{\texttt{setoid\_rewrite}}{setoid\_rewrite}\label{sec:lean}}
-
-Although all of our toy examples work with \texttt{setoid\_rewrite} or \texttt{rewrite\_strat} (until the terms get too big), even the smallest of examples in Fiat Cryptography fell over using these tactics.
-\todo{here}
-When attempting to use \texttt{rewrite\_strat} for partial evaluation and rewriting on unsaturated Solinas with 1 limb on small primes (such as $2^{61}-1$), we were able to get \texttt{rewrite\_strat} to finish after about 90 seconds.
-The bugs in \texttt{rewrite\_strat} made finding the right magic invocation quite painful, nonetheless; the invocation we settled on involved \emph{sixteen} consecutive calls to \texttt{rewrite\_strat} with varying arguments and strategies.
-Trying to synthesize code for two limbs on slightly larger primes (such as $2^{107}-1$, which needs two limbs on a 64-bit machine) took about three hours.
-The widely used primes tend to have around five to ten limbs; we leave extrapolating this slowdown to the reader.
-
-This experiment using \verb|setoid_rewrite| can be found at \url{https://github.com/coq-community/coq-performance-tests/blob/v1.0/src/fiat_crypto_via_setoid_rewrite_standalone.v}.
-The bottom of this file contains a commented-out
-We have attached this experiment using \verb|rewrite_strat| as \verb|fiat_crypto_via_rewrite_strat.v|, which is meant to be run in emacs/PG from inside the \verb|fiat-crypto| directory, or in \verb|coqc| by setting \verb|COQPATH| to the value emitted by \texttt{make printenv} in \verb|fiat-crypto| and then invoking the command \texttt{coqc -q -R /path/to/fiat-crypto/src Crypto /path/to/fiat\_crypto\_via\_rewrite\_strat.v}.
-To test with the two-limb prime 113, change \verb|of_string "2^5-3" 8| in the definition of \verb|p| to \verb|of_string "2^7-15" 64|.
-
-We also tried Lean, in the hopes that rewriting in Lean, specifically optimized for performance, would be up to the challenge.
-Although Lean performed about 30\% better than Coq on the 1-limb example, taking a bit under a minute, it did not complete on the two-limb example even after four hours (after which we stopped trying), and a five-limb example was still going after 40 hours.
-
-We have attached our experiments with running \texttt{rewrite} in Lean on the Fiat Cryptography code as a supplement as well.
-We used Lean version 3.4.2, commit cbd2b6686ddb, Release.
-Run \texttt{make} in \texttt{fiat-crypto-lean} to run the one-limb example;
-change \texttt{open ex} to \texttt{open ex2} to try the two-limb example, or to \texttt{open ex5} to try the five-limb example.
 
 \section{Reading the Code Supplement}\label{sec:CodeSupplement-more}
 

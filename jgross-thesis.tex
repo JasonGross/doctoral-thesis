@@ -70,23 +70,18 @@
 \setlength{\topsep}{0pt}
 \setlength{\partopsep}{0pt}
 
-\minortodo{Fix spacing in appendix with answer from https://tex.stackexchange.com/questions/577437/how-do-i-move-the-first-line-of-every-paragraph-up-with-everypar-and-vspace}
-%\newif\ifskipunparskip
-%\skipunparskipfalse
-\newcommand{\unparskip}{\vspace{\dimexpr\initialparskip-\parskip\relax}}
-%\newcommand{\unparskip}{\ifskipunparskip\else\vspace{\dimexpr\initialparskip-\parskip\relax}not skipped\fi\global\skipunparskipfalse}
-\newcommand{\preunparskip}{\setlength{\parskip}{\initialparskip}}%\global\skipunparskiptrue}
+\newcommand{\unparskip}{\par\vspace{\dimexpr\initialparskip-\parskip\relax}\noindent}
+\newcommand{\preunparskip}{\setlength{\parskip}{\initialparskip}}
 \newcommand{\postunparskip}{\setlength{\parskip}{\newparskip}\unparskip}
 
 %\let\preunparskip\unparskip
 %\let\postunparskip\unparskip
 
 \makeatletter
-\apptocmd{\@ssect}{\postunparskip}{}{}
-\apptocmd{\@sect}{\postunparskip}{}{}
+%\apptocmd{\@ssect}{\postunparskip}{}{}
+%\apptocmd{\@sect}{\postunparskip}{}{}
 \pretocmd{\@startsection}{\preunparskip}{}{}
-%\patchcmd{\@afterheading}{\setbox\z@\lastbox}{\setbox\z@\lastbox\global\skipunparskipfalse should not skip}{}{}
-
+\patchcmd{\@afterheading}{\setbox\z@\lastbox}{\setbox\z@\lastbox\aftergroup\unparskip}{}{}
 \makeatother
 
 \addbibresource{jgross-thesis.bib}

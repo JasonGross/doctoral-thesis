@@ -59,14 +59,14 @@ Tools for machine-checked proofs have had many successes, in both software verif
 Examples abound, from compilers~\cite{Compcert} to microkernels~\cite{seL4SOSP09} to web-servers~\cite{Network2015Chlipala} to cryptography code~\cite{FiatCryptoSP19}, from the Four-Color Theorem~\cite{gonthier2008formal} to the Odd-Order Theorem~\cite{gonthier2013machine} to Homotopy Type Theory~\cite{HoTTBook}.
 
 However, in all examples of software verification successes, there is an enormous overhead in the lines of proof written over the lines of code being verified.
-The proof is so exorbitant and arduous that it typically requires multiple PhDs worth of work to verify one piece of software. 
+The proof is so exorbitant and arduous that it typically requires multiple PhDs worth of work to verify one piece of software.
 \todo{Insert graph}
 
-We may automate the proof generation so we no longer need to replicate proof writing effort for iterations of code with the same (or similar) mathematical specification. 
-Through this, we are able to decrease the marginal overhead of proof writing, and utilise formal verification to implement innovative code in critical systems. 
+We may automate the proof generation so we no longer need to replicate proof writing effort for iterations of code with the same (or similar) mathematical specification.
+Through this, we are able to decrease the marginal overhead of proof writing, and utilise formal verification to implement innovative code in critical systems.
 
 
-In this thesis, drawing experience from case studies in category theory~\cite{category-coq-experience}, parsers~\cite{jgross-masters-thesis}, and generation of low-level cryptographic code~\cite{FiatCryptoSP19}, we present difficulties in automation of proof generation.
+In this thesis, drawing experience from the generation of verified low-level cryptographic code in the Fiat Cryptography project~\cite{FiatCryptoSP19} as well as auxiliary case studies in category theory~\cite{category-coq-experience} and parsers~\cite{jgross-masters-thesis}, we present difficulties in automation of proof generation.
 In the quest to enable automated proof generation, we encountered several performance bottlenecks in proof-checking.
 We present in \autoref{part:rewriting} a research prototype of a tool and methodology for achieving acceptable performance at scale in the domain of term transformation and rewriting.
 We present design principles in \autoref{part:design} to avoid the performance bottlenecks we encountered, and insights about the proof-checking system that these performance bottlenecks reveal.

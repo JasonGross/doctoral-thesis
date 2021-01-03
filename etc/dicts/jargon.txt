@@ -41,6 +41,7 @@ lia
 macrobenchmark
 matcher
 modus
+nsatz
 performant
 ponens
 pretyping
@@ -48,7 +49,9 @@ proofy
 redex
 redexes
 repo
+romega
 scalably
 simp
+subcall
 uncurrying
 unswap

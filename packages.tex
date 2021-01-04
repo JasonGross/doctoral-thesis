@@ -168,6 +168,12 @@
 \newunicodecharpdftex{ℤ}{\ensuremath{\mathbb{Z}}}
 \newunicodecharpdftex{·}{\ensuremath{\cdot}}
 \newunicodecharpdftex{↦}{\ensuremath{\mapsto}}
+\newunicodecharpdftex{∈}{\ensuremath{\in}}
+\newunicodecharpdftex{⟨}{\ensuremath{\langle}}
+\newunicodecharpdftex{⟩}{\ensuremath{\rangle}}
+\newunicodecharpdftex{ᴏ}{\textsc{o}}
+\newunicodecharpdftex{ᴘ}{\textsc{p}}
+\newunicodecharpdftex{ɪ}{\textsc{i}}
 
 \newcommand{\aswidthof}[2]{\rlap{#1}\hphantom{#2}}
 
@@ -262,6 +268,7 @@
 \newunicodecharpdftex{…}{\ldots}
 \newunicodecharpdftex{⋯}{\cdots}
 \newunicodecharpdftex{⋮}{\vdots}
+\todo{fix vdots character as per https://tex.stackexchange.com/questions/577469/how-can-i-use-vdots-in-the-presence-of-unicode-math}
 \newunicodecharpdftex{≔}{\coloneq}
 
 \usepgfplotslibrary{units}
@@ -829,6 +836,7 @@
 %\def\signature#1#2{\par\noindent#1\dotfill\null\\*
 %  {\raggedleft #2\par}}
 \makeatletter
+\providecommand{\signature}{}
 \renewcommand{\signature}[2]{\par\noindent#1%
   {\def\\{}%
    \xdef\sigature@descr{#2}%

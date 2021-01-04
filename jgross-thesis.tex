@@ -59,10 +59,12 @@
 \newlength{\initialparindent}
 \newlength{\initialtopsep}
 \newlength{\initialpartopsep}
+\newlength{\lastunparskip}
 \setlength{\initialparskip}{\parskip}%
 \setlength{\initialparindent}{\parindent}%
 \setlength{\initialtopsep}{\topsep}%
 \setlength{\initialpartopsep}{\partopsep}%
+\setlength{\lastunparskip}{0pt}
 
 \setlength{\newparskip}{\baselineskip}
 \setlength{\parskip}{\newparskip}%
@@ -70,7 +72,13 @@
 \setlength{\topsep}{0pt}
 \setlength{\partopsep}{0pt}
 
-\newcommand{\unparskip}{\par\vspace{\dimexpr\initialparskip-\parskip\relax}\noindent}
+\newboolean{found@paragraph}
+\newcommand{\unparskip}{%
+  \setlength{\lastunparskip}{\dimexpr\initialparskip-\parskip\relax}%
+  \vspace{\lastunparskip}%
+}
+\newcommand{\reparskip}{\vspace{\dimexpr-\lastunparskip\relax}\setlength{\lastunparskip}{0pt}}
+\newcommand{\maybereparskip}{\ifthenelse{\boolean{found@paragraph}}{\reparskip}{}}
 \newcommand{\preunparskip}{\setlength{\parskip}{\initialparskip}}
 \newcommand{\postunparskip}{\setlength{\parskip}{\newparskip}\unparskip}
 
@@ -78,10 +86,10 @@
 %\let\postunparskip\unparskip
 
 \makeatletter
-%\apptocmd{\@ssect}{\postunparskip}{}{}
-%\apptocmd{\@sect}{\postunparskip}{}{}
-\pretocmd{\@startsection}{\preunparskip}{}{}
-\patchcmd{\@afterheading}{\setbox\z@\lastbox}{\setbox\z@\lastbox\aftergroup\unparskip}{}{}
+\apptocmd{\@ssect}{\postunparskip}{}{}
+\apptocmd{\@sect}{\postunparskip}{}{}
+\pretocmd{\@startsection}{\maybereparskip\preunparskip}{}{}
+\patchcmd{\@afterheading}{\setbox\z@\lastbox}{\setbox\z@\lastbox\aftergroup\found@paragraphtrue}{}{}
 \makeatother
 
 \addbibresource{jgross-thesis.bib}

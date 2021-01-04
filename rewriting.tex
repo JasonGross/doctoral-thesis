@@ -769,7 +769,7 @@ As the reification method was not especially optimized, and there exist fast rei
 
 \egroup
 
-\begin{figure*}[b]
+\begin{figure*}[btp]
   \newsavebox{\NestedBindersSubfloat}%
   \sbox{\NestedBindersSubfloat}{%
     \adjustbox{valign=t}{\resizebox{0.4\textwidth}{!}{\beginTikzpictureStamped[only marks]{
@@ -1070,7 +1070,7 @@ The figure also confirms clear performance advantage of running reduction in cod
 By the time we reach middle-of-the-pack prime size around 300 bits, the extracted version is running about 10$\times$ as quickly as the baseline.
 
 
-\section{Experience vs.\ Lean and \texorpdfstring{\texttt{setoid\_rewrite}}{setoid\_rewrite}\label{sec:lean}}
+\subsection{Experience vs.\ Lean and \texorpdfstring{\texttt{setoid\_rewrite}}{setoid\_rewrite}\label{sec:lean}}
 
 Although all of our toy examples work with \texttt{setoid\_rewrite} or \texttt{rewrite\_strat} (until the terms get too big), even the smallest of examples in Fiat Cryptography fell over using these tactics.
 

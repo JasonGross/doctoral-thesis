@@ -303,7 +303,7 @@ $(PROPOSAL_PDFS): $(PROPOSAL_TEXS)
 
 .PHONY: exclude-rewriting exclude-nothing exclude-only
 exclude-rewriting:
-	printf '\\def\\excludefiles{rewriting}\n' > $(EXCLUDE_FILES_LIST_TEX)
+	printf '\\def\\excludefiles{rewriting,rewriting-appendix}\n' > $(EXCLUDE_FILES_LIST_TEX)
 exclude-nothing:
 	printf '\\def\\excludefiles{}\n' > $(EXCLUDE_FILES_LIST_TEX)
 exclude-only:

@@ -94,6 +94,7 @@ interoperation
 intuitionism
 invariants
 invertibility
+invertible
 involutive
 isomorphism
 isomorphisms

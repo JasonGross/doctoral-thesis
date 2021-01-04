@@ -456,7 +456,7 @@ The third option is to use whichever datatype is most naturally suited for each 
 This is the option that we ultimately chose, and the one, we believe, that would be most natural to choose to engineers and developers coming from non-dependently-typed languages.
 
 There are a number of considerations that arose when fleshing out this design, and a number of engineering-pain-points that we encountered.
-The theme to all of these, as we will revist in \autoref{ch:api-design}, is that imperfectly opaque abstraction barriers cause headaches in a non-local manner.
+The theme to all of these, as we will revisit in \autoref{ch:api-design}, is that imperfectly opaque abstraction barriers cause headaches in a non-local manner.
 
 We got lucky, in some sense, that the rewriting pass \emph{always} has a well-typed default option: do no rewriting.
 Hence we do not need to worry about carrying around proofs of well-typedness, and this avoids some of the biggest issues described in \fullnameref{sec:rewriting-more:AST:untyped-nbe}.
@@ -631,7 +631,7 @@ We can now revisit \autoref{sec:rewriting-more:pre-reduction:tracking-unfolding}
 \paragraph{The \mintinline{coq}{known} argument}\label{sec:rewriting-more:rIdent-known}
 We noted in \autoref{sec:rewriting-more:rawexpr-def} the \mintinline{coq}{known} argument of the \mintinline{coq}{rIdent} constructor of \mintinline{coq}{rawexpr}.
 This argument is used to track what sorts of operations can be unfolded early.
-In particular, if a given identifier has no type arguments (for example, the identifer coding for addition on $\mathbb{Z}$s), and we have already matched against it, then when performing further matches to unify with other patterns, we can directly match it against pattern identifiers.
+In particular, if a given identifier has no type arguments (for example, the identifier coding for addition on $\mathbb{Z}$s), and we have already matched against it, then when performing further matches to unify with other patterns, we can directly match it against pattern identifiers.
 By contrast, if the identifier has not yet been matched against, or if it has unknown type arguments, we cannot guarantee that \mintinline{coq}{match}es will reduce.
 Tracking this information adds a not-insignificant amount of pain to the code.
 

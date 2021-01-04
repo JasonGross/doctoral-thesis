@@ -997,7 +997,7 @@ Note that the \letin{} binding blocks further reduction of map\_dbl when we iter
 Additionally, we consider another option, which was adopted by Fiat Cryptography at a larger scale: rewrite our functions to improve reduction behavior.
 Specifically, both functions are rewritten in continuation-passing style, which makes them harder to read and reason about but allows standard VM-based reduction to achieve good performance.
 The figure shows that \texttt{rewrite\_strat} variants are essentially unusable for this example, with \texttt{setoid\_rewrite} performing only marginally better, while our approach applied to the original, more readable definitions loses ground steadily to VM-based reduction on CPS'd code.
-On the largest terms ($n \cdot m > 20,000$), the gap is 6s {vs.} 0.1s of compilation time, which should often be acceptable in return for simplified coding and proofs, plus the ability to mix proved rewrite rules with built-in reductions.
+On the largest terms ($n \cdot m > 20,000$), the gap is 6s vs.\ 0.1s of compilation time, which should often be acceptable in return for simplified coding and proofs, plus the ability to mix proved rewrite rules with built-in reductions.
 Note that about 99\% of the difference between the full time of our method and just the rewriting is spent in the final \texttt{cbv} at the end, used to denote our output term from reified syntax.
 We blame this performance on the unfortunate fact that reduction in Coq is quadratic in the number of nested binders present; see \coqbug{11151}.
 %traded for simplified coding and proofs, plus the ability to mix proved rewrite rules with built-in reductions.
@@ -1057,7 +1057,7 @@ Actually, in the course of running this experiment, we found a way to improve th
 It had relied on Coq's configurable \texttt{cbv} tactic to perform reduction with selected rules of the definitional equality, which we had applied to blacklist identifiers that should be left for compile-time execution.
 By instead hiding those identifiers behind opaque module-signature ascription, we were able to run Coq's more-optimized virtual-machine-based reducer.
 
-As the figure shows, our approach running partial evaluation inside Coq's kernel begins with about a 10$\times$ performance disadvantage {vs.} the original method.
+As the figure shows, our approach running partial evaluation inside Coq's kernel begins with about a 10$\times$ performance disadvantage vs.\ the original method.
 With log scale on both axes, we see that this disadvantage narrows to become nearly negligible for the largest primes, of around 500 bits.
 (We used the same set of prime moduli as in the experiments run by \textcite{FiatCryptoSP19}, which were chosen based on searching the archives of an elliptic-curves mailing list for all prime numbers.)
 It makes sense that execution inside Coq leaves our new approach at a disadvantage, as we are essentially running an interpreter (our normalizer) within an interpreter (Coq's kernel), while the old approach ran just the latter directly.
@@ -1070,7 +1070,7 @@ The figure also confirms clear performance advantage of running reduction in cod
 By the time we reach middle-of-the-pack prime size around 300 bits, the extracted version is running about 10$\times$ as quickly as the baseline.
 
 
-\subsection{Experience {vs.} Lean and \texorpdfstring{\texttt{setoid\_rewrite}}{setoid\_rewrite}\label{sec:lean}}
+\subsection{Experience vs.\ Lean and \texorpdfstring{\texttt{setoid\_rewrite}}{setoid\_rewrite}\label{sec:lean}}
 
 Although all of our toy examples work with \texttt{setoid\_rewrite} or \texttt{rewrite\_strat} (until the terms get too big), even the smallest of examples in Fiat Cryptography fell over using these tactics.
 

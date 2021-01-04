@@ -1,6 +1,4 @@
-\chapter{%\readyforreadingmod{
-  Engineering Challenges in the Rewriter%}{backward references to chapter 7 becoming forward references}
-}\label{ch:rewriting-more}
+\chapter{\readyforreading{Engineering Challenges in the Rewriter}}\label{ch:rewriting-more}
 \setboolean{minted@zerowidthscripts}{true}%
 
 \begin{quote}
@@ -902,14 +900,11 @@ The first is that we cannot simply ``interpret'' the \mintinline{coq}{NbEₜ} va
 
 Second, we cannot simply interpret the expression which surrounds the \mintinline{coq}{Var} node, and must instead ensure that the ``interpretation'' of $\lambda$s in the AST is extensional over all appropriately-related \mintinline{coq}{NbEₜ} values they might be passed.
 Note that it's not even obvious how to materialize the function they must be extensionally related to.
-When trying to prove that the application of \mintinline{coq}{(λ f x. v₁ (f x))} to \mintinline{coq}{NbEₜ} values \mintinline{coq}{v₂} and \mintinline{coq}{v₃} is appropriately related to the interpreted integer $5$, how do we materialize the interpreted functions equivalent to \mintinline{coq}{(λ f x. v₁ (f x))} and \mintinline{coq}{v₂}?
-It's not even clear a priori that there exists any function which is related to this expression, as \mintinline{coq}{v₁} might contain delayed rewriting which results in different outputs
-The answer is ``not very well'', as we were unable to materialize them in a sufficiently constructive manner as to eliminate all uses of the axiom of function extensionality, despite sinking many hours into our attempt to eliminate this axiom.\footnote{%
-  Our current thoughts are that it might be possible to prove that an interpreted function being related to any expression implies that the function respects function extensionality.
-  We invite any brave and masochistic readers to take a stab at eliminating this axiom for us.%
-}
-\todo{Fix this; we managed to eliminate funext}
-See commits \githubref{mit-plv/rewriter}{4d7999ebb66c1497222d024a1d9f9d0f1ecb2356} and \githubref{mit-plv/rewriter}{e9b3505d96cb77b05208b10a0b14b6b2cf99887e} in the \texttt{mit-plv/rewriter} repository on GitHub for more details on the exact changes required for removing the dependence on the axiom of functional extensionality.
+When trying to prove that the application of \mintinline{coq}{(λ f x. v₁ (f x))} to \mintinline{coq}{NbEₜ} values \mintinline{coq}{v₂} and \mintinline{coq}{v₃} is appropriately related to some interpreted function $g$, how do we materialize the interpreted functions equivalent to \mintinline{coq}{(λ f x. v₁ (f x))} and \mintinline{coq}{v₂} which when combined via application give $g$?
+The answer is that we cannot, at least if we are looking for the application to be \emph{equal} to $g$.
+If we require that the application only be \emph{related} to $g$ (where ``related'' in this case means extensionally or pointwise equal), then we can materialize such functions by reading them off our inductive hypotheses.
+While we initially depended on the axiom of functional extensionality, after sinking dozens of hours into understanding the details of these relatedness functions, we were eventually able to extract the insight that two interpreted functions are extensionally equal if and only if there exists an expression to which both functions are related.
+See commits \githubref{mit-plv/rewriter}{4d7999ebb66c1497222d024a1d9f9d0f1ecb2356} and \githubref{mit-plv/rewriter}{e9b3505d96cb77b05208b10a0b14b6b2cf99887e} in the \texttt{mit-plv/rewriter} repository on GitHub for more details on the exact changes required to implement this insight and remove the dependence on the axiom of functional extensionality.
 
 \paragraph{Related Miscellanea}
 While delving into the details of all two-dozen ways of relating objects is beyond the scope of this thesis, we mention a couple of other non-obvious design questions that we found challenging to answer.
@@ -919,8 +914,8 @@ Recall from \autoref{sec:thunk-eval-subst-term} that \mintinline{coq}{NbEₜ} va
   \text{NbE}_t(t_1 \to t_2) & \defeq \text{NbE}_t(t_1) \to \text{NbE}_t(t_2) \\
   \text{NbE}_t(b) & \defeq \texttt{expr}(b)
 \end{align*}
-The PHOAS relatedness condition of \fullnameref{sec:PHOAS:Wf-def} is parameterized over a list of pairs of permitted related variables.
-Design Question: What is the relation between the permitted related variables lists of the terms of types $\text{NbE}_t(t_1)$, $\text{NbE}_t(t_2)$, and $\text{NbE}_t(t_1 \to t_2)$.
+The PHOAS relatedness condition of \fullnameref{sec:PHOAS:Wf-def} is parameterized over a list of pairs of permitted related variables. \\
+Design Question: What is the relation between the permitted related variables lists of the terms of types $\text{NbE}_t(t_1)$, $\text{NbE}_t(t_2)$, and $\text{NbE}_t(t_1 \to t_2)$. \\
 Spoiler: The list for $\text{NbE}_t(t_1)$ is unconstrained, and is prepended to the list for $\text{NbE}_t(t_1 \to t_2)$ (which is given) to get the list for $\text{NbE}_t(t_2)$.
 That is, we write
 \begin{align*}
@@ -930,8 +925,8 @@ That is, we write
 \end{align*}
 
 Some correctness lemmas do not need full-blown relatedness conditions.
-For example, in some places, we do not need that a \mintinline{coq}{rawexpr} is fully consistent with its alternate expression structure, only that the types match and that the top-level structure of each alternate PHOAS expression matches the node of the \mintinline{coq}{rawexpr}.
-Design Question: Is it better to minimize the number of relations and fold these ``self-matching'' or ``goodness'' properties into the definitions of relatedness, which are then used everywhere; or is it better to have separate definitions for goodness and relatedness, and have correctness conditions which more tightly pin down the behavior of the corresponding functions.
+For example, in some places, we do not need that a \mintinline{coq}{rawexpr} is fully consistent with its alternate expression structure, only that the types match and that the top-level structure of each alternate PHOAS expression matches the node of the \mintinline{coq}{rawexpr}. \\
+Design Question: Is it better to minimize the number of relations and fold these ``self-matching'' or ``goodness'' properties into the definitions of relatedness, which are then used everywhere; or is it better to have separate definitions for goodness and relatedness, and have correctness conditions which more tightly pin down the behavior of the corresponding functions. \\
 (Non-Spoiler: We don't have an answer to this one.)
 
 \minortodo{should I talk about anything else here?}
@@ -956,7 +951,7 @@ This interpretation function is itself also severely complicated by the use of d
 This chapter has been a brief survey of the engineering challenges we encountered in designing and implementing a framework for building verified partial evaluators with rewriting.
 We hope that this deep-dive into the details of our framework has fleshed out some of the design principles and challenges we've discussed in previous sections.
 
-If the reader wishes to take only one thing from this chapter, we invite it to be a sense and understanding of just how important good abstraction barriers and API design are to engineering at scale in verified and dependently-typed settings.
+If the reader wishes to take only one thing from this chapter, we invite it to be a sense and understanding of just how important good abstraction barriers and API design are to engineering at scale in verified and dependently-typed settings, which we will come back to in \autoref{ch:api-design}.
 
 \begin{comment}
 \clearpage

@@ -351,7 +351,7 @@ There are two obvious solutions for this problem:
     We can implement some sort of sharing, where common subterms of the type only exist once in the representation.
 \end{enumerate}
 
-\subsubsection{Dropping Type Parameters: Nominal vs.~Structural Typing} \label{sec:nominal-vs-structural} \label{sec:dropping-constructor-parameters}
+\subsubsection{Dropping Type Parameters: Nominal {vs.} Structural Typing} \label{sec:nominal-vs-structural} \label{sec:dropping-constructor-parameters}
 The first option requires that the proof assistant implement structural typing rather than nominal typing~\cite[19.3 Nominal and Structural Type Systems]{tapl}.
 \minortodo{Find a place for this note: }Note that it doesn't actually require structural; we can do it with nominal typing if we enforce everywhere that we can only compare terms who are known to be the same type, because not having structural typing results in having a single kernel term with multiple non-unifiable types.
 \minortodo{Look into \textcite{Efficient1998Necula} and \url{http://adam.chlipala.net/papers/StrictTLDI05/} for past work on eliding some parameters}
@@ -1295,7 +1295,7 @@ Definition vector (n : nat) := {
 \end{minted}
 \end{comment}
 
-\subsubsection{Type Size Blowup: Packed vs.~Unpacked Records} \label{sec:abstraction-barriers:packed-records}
+\subsubsection{Type Size Blowup: Packed {vs.} Unpacked Records} \label{sec:abstraction-barriers:packed-records}
 When designing APIs, especially of mathematical objects, one of the biggest choices is whether to pack the records, or whether to pass arguments in as fields.
 That is, when defining a monoid, for example, there are five ways to go about specifying it:
 \begin{enumerate}

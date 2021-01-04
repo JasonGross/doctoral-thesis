@@ -387,7 +387,9 @@ To perform a \mintinline{coq}{Switch}, we must break apart the first element of 
 Note that even with dependent types, we cannot avoid needing a failure case for when the type-indexed list is empty, even though such a case should never occur because good decision trees will never have a \mintinline{coq}{Switch} node after consuming the entire vector of expressions.
 This failure case cannot be avoided because there is no type-level relation between the expression vector and the decision tree.
 This mismatch---the need to include failure cases that one might expect to be eliminated by dependent typing information---is a sign that the amount of dependency in the types is wrong.
-It may be too little, whence the developer should see if there is a way to incorporate the lack-of-error into the typing information (which in this case would require indexing the type of the decision tree over the length of the vector\footnote{%
+It may be too little, whence the developer should see if there is a way to incorporate the lack-of-error into the typing information (which in this case would require indexing the type of the decision tree over the length of the vector%
+\label{sec:break-abstraction:example:decision-tree-indexing}%
+\footnote{\label{foot:break-abstraction:example:decision-tree-indexing}%
   Note that choosing to index the decision tree over the length of the vector severely complicates our ability to avoid separate \mintinline{coq}{swap} and \mintinline{coq}{unswap} functions by indexing into the middle of the vector.
   We'd need to use some sort of finite type to ensure the indices are not too large, and we'd need to be very careful to write dependently-typed middle-of-the-vector surgery operations which are judgmentally invertible on the effects that they have on the length of the vector.
   Here we see here an example of how dependent types introduce coupling between seemingly unrelated design decisions, which is a large part of why abstraction barriers are so essential, as we'll discuss in \fullnameref{sec:when-how-dependent-types}.
@@ -606,7 +608,7 @@ This design is a historical artifact, from when we expected to be writing rewrit
 This design, however, is absolutely a mistake, especially given the concession we make in \fullnameref{sec:rewriting-more:pre-reduction:type-codes} to not track enough typing information to avoid all typechecking.
 
 While indexing over only the set of permitted type variables would simplify proofs significantly, we'd benefit even more by indexing only over whether or not we permit type variables at all.
-None of our proofs are made simpler by tracking the set of permitted type variables.
+None of our proofs are made simpler by tracking the set of permitted type variables rather than just whether or not that set is empty.
 %
 %\todo{talk about ``There are two steps to rewriting with a rule \ldots''}
 %
@@ -629,14 +631,14 @@ We can now revisit \autoref{sec:rewriting-more:pre-reduction:tracking-unfolding}
 \paragraph{The \mintinline{coq}{known} argument}\label{sec:rewriting-more:rIdent-known}
 We noted in \autoref{sec:rewriting-more:rawexpr-def} the \mintinline{coq}{known} argument of the \mintinline{coq}{rIdent} constructor of \mintinline{coq}{rawexpr}.
 This argument is used to track what sorts of operations can be unfolded early.
-In particular, if a given identifier has no type arguments (for example, addition on $\mathbb{Z}$s), and we have already matched against it, then when performing further matches to unify with other patterns, we can directly match it against pattern identifiers.
+In particular, if a given identifier has no type arguments (for example, the identifer coding for addition on $\mathbb{Z}$s), and we have already matched against it, then when performing further matches to unify with other patterns, we can directly match it against pattern identifiers.
 By contrast, if the identifier has not yet been matched against, or if it has unknown type arguments, we cannot guarantee that \mintinline{coq}{match}es will reduce.
 Tracking this information adds a not-insignificant amount of pain to the code.
 
 Consider the following two cases, where we will make use of both \mintinline{coq}{true} and \mintinline{coq}{false} for the \mintinline{coq}{known} argument.
 
-First, let us consider the simpler case of wanting \mintinline{coq}{known} to be \mintinline{coq}{false}.
-As a toy example, suppose we are rewriting with the rules \mintinline{coq}{@List.map A B f (x::xs) = f x :: List.map f xs} and \mintinline{coq}{@List.map (option A) (option B) (option_map f) (List.map (@Some A) xs) = xs}.
+First, let us consider the simpler case of looking for examples where \mintinline{coq}{known} will be \mintinline{coq}{false}.
+As a toy example, suppose we are rewriting with the rule \mintinline{coq}{@List.map A B f (x::xs) = f x :: List.map f xs} and the rule \mintinline{coq}{@List.map (option A) (option B) (option_map f) (List.map (@Some A) xs) = xs}.
 When decomposing structure for the first rewrite rule, we will match on the head identifier to see if it is \mintinline{coq}{List.map}.
 Supposing that the final argument is not a cons cell, we will fall back to the second rewrite rule.
 While we know that the first identifier is a \mintinline{coq}{List.map}, we do not know its type arguments.
@@ -692,7 +694,7 @@ We could then have a function, not to be unfolded early, which substitutes the e
 
 Instead, we decided to reduce as much as we possibly could.
 Following the common practice of eager students looking to use dependent types, we defined a dependently typed data structure indexed over the pattern type which holds the mapping of each pattern type variable to a corresponding type.
-While this mapping cannot be fully computed at rewrite-rule-compilation time---we may not know enough type structure in the \mintinline{coq}{rawexpr}---we can reduce effectively all of the lookups by turning them into matches on this which \emph{can} be reduced.
+While this mapping cannot be fully computed at rewrite-rule-compilation time---we may not know enough type structure in the \mintinline{coq}{rawexpr}---we can reduce effectively all of the lookups by turning them into matches on this mapping which \emph{can} be reduced.
 This, unfortunately, complicates our proofs significantly while likely not providing any measurable speedup, serving only as yet another example of the pain induced by needless dependency at the type level.
 %\item \todo{talk about whether or not to eliminate PositiveMap.t?} % ``In a possibly-gratuitous use of dependent typing to ensure that''
 \minortodo{is this enough?  does it need more? should we keep it here at all?}
@@ -762,10 +764,10 @@ Lemma wf_eval_decision_tree {T1 T2} G d
      (@eval_decision_tree var2 T2 ctx2 d cont2).
 \end{minted}
 This is one particular way to express the following meaning:
-Suppose that we have two calls to \mintinline{coq}{eval_decision_tree} with different PHOAS \mintinline{coq}{var} types, different return types \mintinline{coq}{T1} and \mintinline{coq}{T2}, different continuations \mintinline{coq}{cont1} and \mintinline{coq}{cont1}, different expression lists \mintinline{coq}{ctx1} and \mintinline{coq}{ctx2}, and the same decision tree.
+Suppose that we have two calls to \mintinline{coq}{eval_decision_tree} with different PHOAS \mintinline{coq}{var} types, different return types \mintinline{coq}{T1} and \mintinline{coq}{T2}, different continuations \mintinline{coq}{cont1} and \mintinline{coq}{cont1}, different untyped expression lists \mintinline{coq}{ctx1} and \mintinline{coq}{ctx2}, and the same decision tree.
 Suppose further that we have two lists of PHOAS expressions, and a relation relating elements of \mintinline{coq}{T1} to elements of \mintinline{coq}{T2}.
 Let us assume the following properties of the expression lists and the continuations:
-The two lists of untyped \mintinline{coq}{rawexpr}s match with each other and the two lists of typed expressions, and all of the types line up.
+The two lists of untyped \mintinline{coq}{rawexpr}s (\mintinline{coq}{ctx1} and \mintinline{coq}{ctx2}) match with each other and the two lists of typed expressions, and all of the types line up.
 The two continuations, when fed identical indices, and fed lists of \mintinline{coq}{rawexpr}s which match with the given lists of typed expressions, either both fail, or both succeed with related outputs.
 Then we can conclude that the calls to \mintinline{coq}{eval_decision_tree} either both fail, or both succeed with related outputs.
 Note, importantly, that we connect the lists of \mintinline{coq}{rawexpr}s fed to the continuations with the lists \mintinline{coq}{rawexpr}s fed to \mintinline{coq}{eval_decision_tree} only via the lists of typed expressions.
@@ -773,11 +775,11 @@ Note, importantly, that we connect the lists of \mintinline{coq}{rawexpr}s fed t
 Why do we need such complication here?
 The \mintinline{coq}{eval_decision_tree} makes no guarantee about how much of the expression it reveals, but we must capture the fact that related PHOAS inputs result in the \emph{same} amount of revealing, however much revealing that is.
 We do, however, also guarantee that the revealed expressions are both related to each other as well as to the original expressions, modulo the amount of revealing.
-Finally, the continuations that we use assume that enough structure is revealed, and hence are not guaranteed to do the same thing regardless of the level of revealing.
+Finally, the continuations that we use assume that enough structure is revealed, and hence are not guaranteed to be independent of the level of revealing.
 
 There are a couple of ways that this correctness condition might be simplified, all of which essentially amount to better enforcement of abstraction barriers.
 
-The function that rewrites with a particular rule relies on the invariant that \mintinline{coq}{eval_decision_tree} reveals enough structure.
+The function that rewrites with a particular rule relies on the invariant that the function \mintinline{coq}{eval_decision_tree} reveals enough structure.
 This breaks the abstraction barrier that rewriting with a particular rule is only supposed to care about the expression structure.
 If we enforced this abstraction barrier, we'd no longer need to talk about whether or not two \mintinline{coq}{rawexpr}s had the same level of revealed structure, which would vastly simplify the definition \mintinline{coq}{wf_rawexpr} (discussed more in the upcoming \autoref{sec:rewriting-more:which-equivalence}).
 Furthermore, we could potentially remove the lists of typed expressions, mandating only that the lists of \mintinline{coq}{rawexpr}s be related to each other.
@@ -787,6 +789,7 @@ Since the behavior of the continuations could be assumed to not depend on the am
 This would bypass the need for this lemma entirely, allowing us to merely strengthen the previous lemma used for interpretation-correctness.
 
 So here we see that a minor leak in an abstraction barrier (allowing the behavior of rewriting to depend on how much structure has been revealed) can vastly complicate correctness proofs, even forcing us to break other abstraction barriers by inlining the behavior of various monads.
+\label{sec:break-abstraction:example:eval-decision-tree}
 
 %\todo{Talk also about the pain of wf statements for, e.g., \texttt{wf\_normalize\_deep\_rewrite\_rule}, having to go underneath multiple monads}
 
@@ -879,7 +882,7 @@ This relation, a beefed up version of the PHOAS definition of \mintinline{coq}{r
 It requires that both \mintinline{coq}{rawexpr}s have the same amount of revealed structure (important only because we broke the abstraction barrier of revealed structure only mattering as an optimization); that the unrevealed structure, the ``alternate'' expression of the \mintinline{coq}{rApp} and \mintinline{coq}{rIdent} nodes, match exactly with the given expressions; and that the structure that is revealed matches as well with the given expressions.
 The only nontrivial case in this definition is what to say about \mintinline{coq}{NbEₜ} values match expressions.
 We say that an \mintinline{coq}{NbEₜ} value is equivalent only to the result of calling NbE's \mintinline{coq}{reify} function on that value.
-That this definition sufficies is highly non-obvious; we refer the reader to our Coq proofs, performed with no axioms other than functional extensionality, as our justification of sufficiency.
+That this definition sufficies is highly non-obvious; we refer the reader to our Coq proofs, performed without any axioms, as our justification of sufficiency.
 That each \mintinline{coq}{NbEₜ} value must match at least the result of calling NbE's \mintinline{coq}{reify} function on that value is a result of how we handle unrevealed forms when building up the arguments to an $\eta$-long identifier application as discussed briefly in \fullnameref{sec:rewriting-more:pre-reduction:what-reduction}.
 Namely, when forming applications of \mintinline{coq}{rawexpr}s to \mintinline{coq}{NbEₜ} values during $\eta$-expansion, we say that the ``unrevealed'' structure of an \mintinline{coq}{NbEₜ} value \mintinline{coq}{v} is \mintinline{coq}{reify v}.
 

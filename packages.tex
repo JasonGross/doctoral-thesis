@@ -5,7 +5,10 @@
 % order matters, see https://tex.stackexchange.com/a/83051/2066
 \usepackage{varioref}
 \usepackage{hyperref}
-\usepackage[nameinlink]{cleveref}
+\usepackage[nameinlink]{cleveref}[2012/02/15]% v0.18.4;
+% 0.16.1 of May 2010 would be sufficient, but what is the exact day?
+% https://tex.stackexchange.com/a/10116/2066
+\crefformat{footnote}{#2\footnotemark[#1]#3}
 \usepackage{eforms}
 \usepackage{xargs}
 \usepackage{soul}

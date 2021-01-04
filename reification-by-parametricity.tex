@@ -1,6 +1,7 @@
 \Chapter{%\readyforreadingmod{
   Reification by Parametricity: Fast Setup for Proof by Reflection, in Two Lines of \Ltac%}{intro and conclusion being removed / reflowed}
 }\label{ch:reification-by-parametricity}
+
 \todo{include the trick from https://github.com/coq/coq/issues/5996\#issuecomment-670955273}
 \begin{abstract}
   We present a new strategy for performing reification in Coq.
@@ -19,33 +20,17 @@
 
 \section{Introduction} \label{sec:reification-by-parametricity:intro}
 
-Proof by reflection~\cite{ReflectionTACS97} is an established method for employing verified proof procedures, within larger proofs.
-There are a number of benefits to using verified functional programs written in the proof assistant's logic, instead of tactic scripts.
-We can often prove that procedures always terminate without attempting fallacious proof steps, and perhaps we can even prove that a procedure gives logically complete answers, for instance telling us definitively whether a proposition is true or false.
-In contrast, tactic-based procedures may encounter runtime errors or loop forever.
-As a consequence, those procedures must output proof terms, justifying their decisions, and these terms can grow large, making for slower proving and requiring transmission of large proof terms to be checked slowly by others.
-A verified procedure need not generate a certificate for each invocation.
-
-The starting point for proof by reflection is \emph{reification}: translating a ``native'' term of the logic into an explicit abstract syntax tree.
-We may then feed that tree to verified procedures or any other functional programs in the logic.
-The benefits listed above are particularly appealing in domains where goals are very large.
-For instance, consider verification of large software systems, where we might want to reify thousands of lines of source code.
+We introduced reification in \autoref{sec:reif-intro} as the starting point for proof by reflection.
+Reification consists of translating a ``native'' term of the logic into an explicit abstract syntax tree, which we may then to verified procedures or any other functional programs in the logic.
+As mentioned in \autoref{sec:reif-not-optimized}, the method of reification used in our framework for reflective partial evaluation and rewriting presented in \autoref{ch:rewriting} was not especially optimized and can be a bottleneck for large terms, especially those with many binders.
 Popular methods turn out to be surprisingly slow, often to the point where, counter-intuitively, the majority of proof-execution time is spent in reification -- unless the proof engineer invests in writing a plugin directly in the proof assistant's metalanguage (e.g., OCaml for Coq).
 
-In this paper, we show that reification can be both simpler and faster than with standard methods.
+In this chapter, we present a new strategy we discovered during my doctoral work, originally presented and published as \cite{reification-by-parametricity}, showing that reification can be both simpler and faster than with standard methods.
 Perhaps surprisingly, we demonstrate how to reify terms almost entirely through reduction in the logic, with a small amount of tactic code for setup and no ML programming.
-Though our techniques should be broadly applicable, especially in proof assistants based on type theory, our experience is with Coq, and we review the requisite background in the remainder of this introduction.
-In \autoref{sec:reif-survey}, we have summarized our survey into prior approaches to reification and provide high-quality implementations and documentation for them, serving a tutorial function independent of our new contributions.
-Experts on the subject might want to skip directly to \autoref{sec:reification-by-parametricity}, which explains our alternative technique.
+%Though our techniques should be broadly applicable, especially in proof assistants based on type theory, our experience is with Coq
+We have already summarized our survey into prior approaches to reification \autoref{sec:reif-survey}, providing high-quality implementations and documentation for them, serving a tutorial function independent of our new contributions.
+We will begin in \autoref{sec:reification-by-parametricity} with an explanation of our alternative technique.
 We benchmark our approach against 18 competitors in \autoref{sec:perf}.
-
-\subsection{Proof-Script Primer}
-
-\subsection{Reflective-Automation Primer}
-
-\subsection{Reflective-Syntax Primer}
-
-\section{Methods of Reification}
 
 \section{Reification by Parametricity}\label{sec:reification-by-parametricity}
 

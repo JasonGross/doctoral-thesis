@@ -766,6 +766,7 @@ We want to remove all of the${}+0$s.
 There are $\Theta(m \cdot 2^n)$ such rewriting locations.
 We can start from this expression directly, in which case reification alone takes as much time as Coq's \texttt{rewrite}.
 As the reification method was not especially optimized, and there exist fast reification methods~\cite{reification-by-parametricity}, we instead start from a call to a recursive function that generates such an expression.
+\label{sec:reif-not-optimized}%
 
 \egroup
 

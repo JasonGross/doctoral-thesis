@@ -1,4 +1,4 @@
-\chapter{\readyforreadingmod{Reflective Program Transformation}{introduction and conclusion}}\label{ch:reflection}
+\chapter{\readyforreadingmod{Reflective Program Transformation}{introduction, Nickolai's todo (not sure what to do about it), and conclusion}}\label{ch:reflection}
 
 \section{Introduction}\label{sec:reification-by-parametricity:intro}
 
@@ -475,7 +475,9 @@ The easiest way is to write a converter from PHOAS to de Bruijn.
 Hence we can prove the theorem \texttt{∀ e, is\_closed (PHOAS\_to\_deBruijn e) = true ∧ e = deBruijn\_to\_PHOAS (PHOAS\_to\_deBruijn e) → Wf e}.
 The hypothesis of this theorem is quite easy to check; we simply run \mintinline{coq}{vm_compute} and then instantiate it with the proof term \mintinline{coq}{conj (eq_refl true) (eq_refl e)}, which is linear in the size of \mintinline{coq}{e}.
 
-\section{Reification}\label{sec:reif-survey}
+\section{Reification}\label{sec:reif-survey}\label{sec:reif-intro}
+
+\todo{check spacing on this figure once the introduction of this chapter is figured out}
 
 \begin{wrapfigure}[12]{r}{\widthof{\texttt{~~~~~~~~~~~~~constr:(@NatMul v X Y)}}}
 \begin{minted}{coq}

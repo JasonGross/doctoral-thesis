@@ -466,7 +466,7 @@ ifneq ($(SPELLCHECK_RESULTS_TEX),$(SPELLCHECK_RESULTS))
 else
 endif
 
-spellcheck-results.tex:
+spellcheck-results.tex: | $(CUSTOM_DICT) $(TEXT_TEXS)
 	echo "$(SPELLCHECK_RESULTS)" > spellcheck-results.tex
 
 .PHONY: inotify

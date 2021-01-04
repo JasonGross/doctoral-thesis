@@ -882,7 +882,7 @@ For our own approach, we list both the total time and the time taken for core ex
 The comparison here is very favorable for our approach so long as $m > 2$.
 The competing tactics spike upward toward timeouts at just around a thousand rewrite locations, while our engine is still under two seconds for examples with tens of thousands of rewrite locations.
 When $m < 2$, Coq's \texttt{rewrite!} tactic does a little bit better than our engine, corresponding roughly to the overhead incurred by our term representation (which, for example, stores the types at every application node) when most of the term is in fact unchanged by rewriting.
-See \autoref{sec:additionalPlots:Plus0Tree}\footnote{Like several forward references in this section, this one goes to an appendix included within the main submission page limit, to avoid interrupting the flow in presenting the most important results.} for more detailed plots.
+See \autoref{sec:additionalPlots:Plus0Tree} for more detailed plots.
 
 \subsubsection{Rewriting Under Binders}\label{sec:micro:UnderLetsPlus0}
 

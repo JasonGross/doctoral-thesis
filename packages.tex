@@ -458,6 +458,15 @@
 % highlight overfull hboxes
 %\overfullrule=5pt
 
+% allow breaks after slashes, for long paths
+{
+  \catcode`\/=\active
+  \gdef\activeslash{/}
+}
+\newcommand{\allowbreakafterslash}{%
+  \catcode`\/=\active
+  \expandafter\def\activeslash{\slash}%
+}
 
 % http://tex.stackexchange.com/a/183682/2066
 \makeatletter

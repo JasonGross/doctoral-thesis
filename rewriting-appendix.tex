@@ -431,8 +431,7 @@ Global Arguments Pos.to_nat !_ / .
 \section{Reading the Code}\label{sec:CodeSupplement-more}
 \bgroup
 % allow breaks after slashes, for long paths
-\catcode`\/=\active
-\def/{\slash}%
+\allowbreakafterslash
 
 As mentioned in \autoref{sec:additionalMicro} the code described and used in \autoref{ch:rewriting} is available at \href{https://github.com/mit-plv/rewriter/tree/v0.0.1}{the v0.0.1 tag of the \texttt{mit-plv/rewriter} repository on GitHub} and \href{https://github.com/mit-plv/fiat-crypto/tree/v0.0.5}{the v0.0.5 tag of the \texttt{mit-plv/fiat-crypto} repository on GitHub}.
 Both repositories build with Coq 8.9, 8.10, 8.11, and 8.12, and they require that whichever OCaml was used to build Coq be installed on the system to permit building plugins.
@@ -462,7 +461,7 @@ The correct value of \verb|COQPATH| can be found by running \verb|make printenv|
 We will now go through \autoref{ch:rewriting} and describe where to find each reference in the code base.
 
 \subsection{Code from \autocommanameref{sec:rewriting:intro}}
-
+\reparskip
 \subsubsection{Code from \autocommanameref{sec:motivating-example}}
 
 The \texttt{prefixSums} example appears in the Coq source file \texttt{rewriter/src/Rewriter/Rewriter/Examples/PrefixSums.v}.

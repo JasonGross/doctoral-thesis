@@ -903,11 +903,13 @@ The first is that we cannot simply ``interpret'' the \mintinline{coq}{NbEₜ} va
 Second, we cannot simply interpret the expression which surrounds the \mintinline{coq}{Var} node, and must instead ensure that the ``interpretation'' of $\lambda$s in the AST is extensional over all appropriately-related \mintinline{coq}{NbEₜ} values they might be passed.
 Note that it's not even obvious how to materialize the function they must be extensionally related to.
 When trying to prove that the application of \mintinline{coq}{(λ f x. v₁ (f x))} to \mintinline{coq}{NbEₜ} values \mintinline{coq}{v₂} and \mintinline{coq}{v₃} is appropriately related to the interpreted integer $5$, how do we materialize the interpreted functions equivalent to \mintinline{coq}{(λ f x. v₁ (f x))} and \mintinline{coq}{v₂}?
+It's not even clear a priori that there exists any function which is related to this expression, as \mintinline{coq}{v₁} might contain delayed rewriting which results in different outputs
 The answer is ``not very well'', as we were unable to materialize them in a sufficiently constructive manner as to eliminate all uses of the axiom of function extensionality, despite sinking many hours into our attempt to eliminate this axiom.\footnote{%
   Our current thoughts are that it might be possible to prove that an interpreted function being related to any expression implies that the function respects function extensionality.
   We invite any brave and masochistic readers to take a stab at eliminating this axiom for us.%
 }
 \todo{Fix this; we managed to eliminate funext}
+See commits \githubref{mit-plv/rewriter}{4d7999ebb66c1497222d024a1d9f9d0f1ecb2356} and \githubref{mit-plv/rewriter}{e9b3505d96cb77b05208b10a0b14b6b2cf99887e} in the \texttt{mit-plv/rewriter} repository on GitHub for more details on the exact changes required for removing the dependence on the axiom of functional extensionality.
 
 \paragraph{Related Miscellanea}
 While delving into the details of all two-dozen ways of relating objects is beyond the scope of this thesis, we mention a couple of other non-obvious design questions that we found challenging to answer.

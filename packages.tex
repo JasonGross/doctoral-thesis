@@ -288,9 +288,20 @@
 \setmintedinline{breaklines}
 \makeatletter
 \def\dontdofcolorbox{\renewcommand\fcolorbox[4][]{##4}}
-\newcommand{\@mintedextraoptions}{\dontdofcolorbox\setboolean{fullwidthscripts}{true}}
-\AtBeginEnvironment{minted}{\@mintedextraoptions}
-\xpatchcmd{\inputminted}{\minted@fvset}{\minted@fvset\@mintedextraoptions}{}{}
+\newboolean{minted@fullwidthscripts}
+\setboolean{minted@fullwidthscripts}{true}
+\newboolean{minted@zerowidthscripts}
+\setboolean{minted@zerowidthscripts}{false}
+\newcommand{\@mintedextraoptions}{%
+  \dontdofcolorbox
+}
+\newcommand{\@mintedextraoptions@block}{%
+  \@mintedextraoptions
+  \let\iffullwidthscripts=\ifminted@fullwidthscripts
+  \let\ifzerowidthscripts=\ifminted@zerowidthscripts
+}
+\AtBeginEnvironment{minted}{\@mintedextraoptions@block}
+\xpatchcmd{\inputminted}{\minted@fvset}{\minted@fvset\@mintedextraoptions@block}{}{}
 \xpatchcmd{\mintinline}{\minted@fvset}{\minted@fvset\@mintedextraoptions}{}{}
 % Work around bug(https://github.com/gpoore/minted/issues/273)
 % Considered https://tex.stackexchange.com/questions/127010/how-can-i-make-lstinline-function-normally-inside-math-mode, but it doesn't work

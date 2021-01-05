@@ -3567,4 +3567,43 @@ Our framework, which we call LF$_i$, inherits from LF the capability to encode v
   urldate      = {2020-11-08},
 }
 
+@InProceedings{certicoq,
+  author    = {Abhishek Anand and Andrew W. Appel and Greg Morrisett and Matthew Weaver and Matthieu Sozeau and Olivier {Savary Belanger} and Randy Pollack and Zoe Paraskevopoulou},
+  booktitle = {CoqPL},
+  date      = {2017},
+  title     = {{CertiCoq}: A verified compiler for {Coq}},
+  url       = {http://www.cs.princeton.edu/~appel/papers/certicoq-coqpl.pdf},
+}
+
+@InProceedings{nuprl-in-coq,
+  author    = {Anand, Abhishek and Rahli, Vincent},
+  booktitle = {Interactive Theorem Proving},
+  date      = {2014},
+  title     = {Towards a Formally Verified Proof Assistant},
+  editor    = {Klein, Gerwin and Gamboa, Ruben},
+  isbn      = {978-3-319-08970-6},
+  location  = {Cham},
+  pages     = {27--44},
+  publisher = {Springer International Publishing},
+  url       = {http://www.nuprl.org/html/Nuprl2Coq/verification.pdf},
+  abstract  = {This paper presents a formalization of Nuprl's metatheory in Coq. It includes a nominal-style definition of the Nuprl language, its reduction rules, a coinductive computational equivalence, and a Curry-style type system where a type is defined as a Partial Equivalence Relation (PER) à la Allen. This type system includes Martin-Löf dependent types, a hierarchy of universes, inductive types and partial types. We then prove that the typehood rules of Nuprl are valid w.r.t. this PER semantics and hence reduce Nuprl's consistency to Coq's consistency.},
+}
+
+@Article{coq-coq-correct,
+  author       = {Sozeau, Matthieu and Boulier, Simon and Forster, Yannick and Tabareau, Nicolas and Winterhalter, Th\'{e}o},
+  date         = {2019-12},
+  journaltitle = {Proceedings of the ACM on Programming Languages},
+  title        = {{C}oq {C}oq Correct! Verification of Type Checking and Erasure for {C}oq, in {C}oq},
+  doi          = {10.1145/3371076},
+  number       = {POPL},
+  volume       = {4},
+  abstract     = {Coq is built around a well-delimited kernel that perfoms typechecking for definitions in a variant of the Calculus of Inductive Constructions (CIC). Although the metatheory of CIC is very stable and reliable, the correctness of its implementation in Coq is less clear. Indeed, implementing an efficient type checker for CIC is a rather complex task, and many parts of the code rely on implicit invariants which can easily be broken by further evolution of the code. Therefore, on average, one critical bug has been found every year in Coq. This paper presents the first implementation of a type checker for the kernel of Coq (without the module system and template polymorphism), which is proven correct in Coq with respect to its formal specification and axiomatisation of part of its metatheory. Note that because of Gödel's incompleteness theorem, there is no hope to prove completely the correctness of the specification of Coq inside Coq (in particular strong normalisation or canonicity), but it is possible to prove the correctness of the implementation assuming the correctness of the specification, thus moving from a trusted code base (TCB) to a trusted theory base (TTB) paradigm. Our work is based on the MetaCoq project which provides metaprogramming facilities to work with terms and declarations at the level of this kernel. Our type checker is based on the specification of the typing relation of the Polymorphic, Cumulative Calculus of Inductive Constructions (PCUIC) at the basis of Coq and the verification of a relatively efficient and sound type-checker for it. In addition to the kernel implementation, an essential feature of Coq is the so-called extraction: the production of executable code in functional languages from Coq definitions. We present a verified version of this subtle type-and-proof erasure step, therefore enabling the verified extraction of a safe type-checker for Coq.},
+  articleno    = {8},
+  issue_date   = {January 2020},
+  keywords     = {type checker, proof assistants, certification},
+  location     = {New York, NY, USA},
+  numpages     = {28},
+  publisher    = {Association for Computing Machinery},
+}
+
 @Comment{jabref-meta: databaseType:biblatex;}

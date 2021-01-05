@@ -17,6 +17,25 @@
   There are a few typos, I can give it to you but probably you'll spot them on a next read.}
 
 \section{The Story}\label{sec:perf-failures:story}
+\todo{fix phrasing}
+Up to this point, I expect I'll have told the reader why proof assistants are important, what they are, and about the main project I worked on of synthesizing crypto code.
+I'll have told them about how manual proof scales with poor constant factors, and automation is the solution.
+I'll have told them that the problem with automation, in my experience, is that it scales super-linearly.
+
+This chapter aims first to convince the reader that sovling these super-linear scaling factors involves more than just ``find the slowness and do the obvious thing to fix it'', and second to demystify the additional structure that's present.
+
+The thrust of the first argument is that, as I understand it, in most performance domains, solutions to performance bottlenecks are either hyper-specialized to the code being optimized or the domain of the algorithm, or else are so general as to be applicable to all performance engineering.
+\todo{examples of both of these}
+In my experience with proof assistants, most performance bottlenecks are far from the code being written and the domain being investigated, and are yet also far from general performance-engineering.
+There is structure specific to dependently typed proof assistants that shows up in performance bottlenecks, and the goal of this chapter, after convincing the reader that such structure exists and is interesting, is to illuminate the structure that I've discovered in the course of my doctoral work.
+
+The reason for this argument is that I want the reader to understand more deeply the solution and tool I'm presenting in \autoref{ch:rewriting}, as well as the other contributions of this thesis.
+Not just ``there was a performance issue, Jason fixed it, here's the solution.''
+I want readers to be able to understand where the performance issue came from, how it fits into a broader structure of performance issues in proof assistants, and how the solution fixes the performance problem.
+
+\todo{old story below, fix flow}
+
+
 \minortodo{come up with a better name for this section}
 The purpose of this chapter is to convince the reader that the issue of performance in proof assistants is non-trivial in ways that differ from performance bottlenecks in non-dependently-typed languages.
 I intend to do this by first sketching out what I see as the main difference between performance issues in dependently-typed proof assistants vs performance issues in other languages, and then supporting this claim with a palette of real performance issues that have arisen in Coq.
@@ -29,7 +48,7 @@ Ray tracers determine what objects can be seen from a given point essentially by
 Alternatively, one could provide a source of light waves and simulate the physical interaction of light with the various objects, to determine what images remain when the light arrives at a particular point.
 There's no use trying to find an efficient algorithm for simulating quantum electrodynamics, though, if all you need to know is ``which parts of which objects need to be drawn on the screen?''
 
-One essential ingredient to allowing this division of concerns---between specifying the problem, picking an efficient algorithm, and optimizing the implementation of the algorithm---is knowledge of what a typical set of input looks like, and what the scope looks like.
+One essential ingredient to allowing this division of concerns---between specifying the problem, picking an efficient algorithm, and optimizing the implementation of the algorithm---is knowledge of what a typical set of inputs looks like, and what the scope looks like.
 In Coq, and other dependently-typed proof assistants, this ingredient is missing.
 When sorting a list, we know that the length of the list and the initial ordering matter; for sorting algorithms that work for sorting lists with any type of elements, it generally doesn't matter, though, whether we're sorting a list of integers or colors or names.
 Furthermore, randomized datasets tend to be reasonably representative for list ordering, though we may also care about some special cases, such as already-sorted lists, nearly sorted lists, and lists in reverse-sorted order.
@@ -241,7 +260,7 @@ no other system has a clear performance-conscious story for how these interfaces
 
 \section{The Four Axes}\label{sec:perf-axes}
 I now present four major axes of performance.
-These are not comprehensive, but after extensive experience with Coq, most performance bottlenecks scaled super-linearly as a function of at least one of these axes.
+These are not comprehensive, but in my extensive experience with Coq, most performance bottlenecks scaled super-linearly as a function of at least one of these axes.
 \minortodo{introduce this section better}
 
 \subsection{The Size of the Type} \label{sec:perf-axis:size-of-type}  \label{sec:quadratic-conj-certificate}

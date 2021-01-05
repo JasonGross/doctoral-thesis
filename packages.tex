@@ -20,7 +20,6 @@
 \usepackage{pgffor}
 \usepackage{pgfplotstable}
 \pgfplotsset{compat=1.15}
-\usepackage{unicode-math}
 \usepackage{calc}
 \usepackage{letltxmacro}
 \usepackage{ifthen}
@@ -38,7 +37,13 @@
 \usepackage{graphicx}
 \usepackage{listings}
 \usepackage{marvosym}
-\usepackage{mathtools}
+\usepackage{mathtools}% must come before unicode-math so that \underbrace is not messed up
+%\let\mathbbalt\mathbb
+\usepackage[math-style=TeX]{unicode-math}
+%\let\mathbb\mathbbalt% https://tex.stackexchange.com/a/360609/2066
+\setmathfont{Latin Modern Math}
+\setmathfont[range=\mathbb]{TeX Gyre Pagella Math}
+%\setmathfont{TeX Gyre Pagella Math}
 \usepackage{bcprules}
 \usepackage{multicol}
 \usepackage{apptools}

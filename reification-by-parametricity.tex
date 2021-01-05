@@ -1,22 +1,7 @@
-\Chapter{%\readyforreadingmod{
-  Reification by Parametricity: Fast Setup for Proof by Reflection, in Two Lines of \Ltac%}{intro and conclusion being removed / reflowed}
-}\label{ch:reification-by-parametricity}
+\Chapter{\readyforreading{Reification by Parametricity: Fast Setup for Proof by Reflection, in Two Lines of \Ltac}}\label{ch:reification-by-parametricity}
 
-\todo{include the trick from https://github.com/coq/coq/issues/5996\#issuecomment-670955273}
-\begin{abstract}
-  We present a new strategy for performing reification in Coq.
-  That is, we show how to generate first-class abstract syntax trees from ``native'' terms of Coq's logic, suitable as inputs to verified compilers or procedures in the \emph{proof-by-reflection} style.
-  Our new strategy, based on simple generalization of subterms as variables, is straightforward, short, and fast.
-  In its pure form, it is only complete for constants and function applications, but ``let'' binders, eliminators, lambdas, and quantifiers can be accommodated through lightweight coding conventions or preprocessing.
-
-  We survey the existing methods of reification across multiple Coq metaprogramming facilities, describing various design choices and tricks that can be used to speed them up, as well as various limitations.
-  We report benchmarking results for 18 variants, in addition to our own, finding that our own reification outperforms 16 of these methods in all cases, and one additional method in some cases; writing an OCaml plugin is the only method tested to be faster.
-  Our method is the most concise of the strategies we considered, reifying terms using only two to four lines of \Ltac---beyond lists of the identifiers to reify and their reified variants.
-  Additionally, our strategy automatically provides error messages that are no less helpful than Coq's own error messages.
-\end{abstract}
-
-\setlength{\belowdisplayskip}{5pt}% \setlength{\belowdisplayshortskip}{0pt}%
-\setlength{\abovedisplayskip}{5pt}% \setlength{\abovedisplayshortskip}{0pt}%
+%\setlength{\belowdisplayskip}{5pt}% \setlength{\belowdisplayshortskip}{0pt}%
+%\setlength{\abovedisplayskip}{5pt}% \setlength{\abovedisplayshortskip}{0pt}%
 
 \section{Introduction} \label{sec:reification-by-parametricity:intro}
 
@@ -37,22 +22,22 @@ We benchmark our approach against 18 competitors in \autoref{sec:perf}.
 We propose factoring reification into two passes, both of which essentially have robust, built-in implementations in Coq: \emph{abstraction} or \emph{generalization}, and \emph{substitution} or \emph{specialization}.
 
 
-\begin{wrapfigure}[10]{r}{7cm}
+\begin{wrapfigure}[10]{r}{7.25cm}
 %    \vspace{-40pt}
     \[
     \xymatrix{
         \txt{term}
-        \ar@<1ex>[ddr]|{\txt{\rotatebox{-40}{generalize}}}
+        \ar@<1ex>[ddr]|-{\txt{\rotatebox{-40}{generalize}}}
         \ar@<-1ex>@{-->}[rr]_{\txt{reify}}
         &&
         \txt{reified \\ syntax}
         \ar@<-1ex>[ll]_{\txt{denote}}
-        \ar@<-1ex>[ddl]|{\txt{\rotatebox{40}{generalize}}}
+        \ar@<-1ex>[ddl]|-{\txt{\rotatebox{40}{generalize}}}
         \\ \\
         &
         \txt{abstracted term}
-        \ar@<1ex>[uul]|{\txt{\rotatebox{-40}{specialize}}}
-        \ar@<-1ex>[uur]|{\txt{\rotatebox{40}{specialize}}}
+        \ar@<1ex>[uul]|-{\txt{\rotatebox{-40}{specialize}}}
+        \ar@<-1ex>[uur]|-{\txt{\rotatebox{40}{specialize}}}
     }
     \]
 %    \vspace{-20pt}
@@ -84,7 +69,7 @@ abstract over all identifiers (and key parts of their types) and specialize to s
 \subsubsection{Wrapped Primitives: ``Let'' Binders, Eliminators, Quantifiers.}\label{sec:walkthrough-wrapped}
 
 The above procedure can be applied to a term that contains ``let'' binders to get a
-PHOAS syntax tree that represents the original term, but doing so would not capture
+PHOAS tree that represents the original term, but doing so would not capture
 sharing. The result would contain native ``let'' bindings of subexpressions, not
 PHOAS let expressions. Call-by-value evaluation of any procedure applied to the
 reification result would first substitute the let-bound subexpressions --
@@ -108,7 +93,7 @@ we get a function of one type argument and four value arguments:
 \ \textsc{LetIn (S O) ($\lambda a.$ Mul $a$ $a$)}
 \end{multline*}
 We may once again specialize this term to obtain either our original term or the reified syntax.
-Note that to obtain reified PHOAS syntax, we must include a \texttt{Var} node in the \texttt{LetIn} expression; we substitute $(\lambda x\ f.\ \texttt{LetIn}\ x\ (\lambda v.\ f\ (\texttt{Var}\ v)))$ for \textsc{LetIn} to obtain the PHOAS syntax tree
+Note that to obtain reified PHOAS, we must include a \texttt{Var} node in the \texttt{LetIn} expression; we substitute $(\lambda x\ f.\ \texttt{LetIn}\ x\ (\lambda v.\ f\ (\texttt{Var}\ v)))$ for \textsc{LetIn} to obtain the PHOAS tree
 \[
   \texttt{LetIn (NatS NatO) ($\lambda v.$ NatMul (Var $v$) (Var $v$))}
 \]
@@ -122,7 +107,7 @@ Existential quantifiers are not primitive in Coq and can be reified directly.
 
 While it would be sufficient to require that, in code to be reified, we write all lambdas with a named wrapper function, that would significantly clutter the code.
 We can do better by making use of the fact that a PHOAS object-language lambda (\texttt{Abs} node) consists of a metalanguage lambda that binds a value of type \texttt{var}, which can be used in expressions through constructor $\mathtt{Var} : \mathtt{var} \to \mathtt{expr}$.
-Naive reification by parametricity would turn a lambda of type $N \to N$ into a lambda of type $\mathtt{expr} \to \mathtt{expr}$.
+Naïve reification by parametricity would turn a lambda of type $N \to N$ into a lambda of type $\mathtt{expr} \to \mathtt{expr}$.
 A reification procedure that explicitly recurses over the metalanguage syntax could just precompose this recursive-call result with \texttt{Var} to get the desired object-language encoding of the lambda, but handling lambdas specially does not fit in the framework of abstraction and specialization.
 
 First, let us handle the common case of lambdas that appear as arguments to higher-order functions.
@@ -165,23 +150,23 @@ Inductive count := none | one_more (how_many : count).
 \end{verbatim}
 It is important that this type be syntactically distinct from $\mathbb N$ for reasons we will see shortly.
 
-\begin{wrapfigure}[3]{r}{7cm}
+\begin{wrapfigure}[5]{r}{8.5cm}
 %    \vspace{-33pt}
     \[
     \xymatrix@C=1pt{
         \txt{unreduced term \\ (big $1$ $n$)} \ar[d]_{\txt{\\reduce}} \\
         \txt{reduced \\ term}
-        \ar@<1ex>[ddr]|{\txt{\rotatebox{-45}{generalize}}}
+        \ar@<1ex>[ddr]|-{\txt{\rotatebox{-45}{generalize}}}
         \ar@<-1ex>@{-->}[rr]_{\txt{reify}}
         &&
         \txt{reified \\ syntax}
         \ar@<-1ex>[ll]_{\txt{denote}}
-        \ar@<-1ex>[ddl]|{\txt{\rotatebox{52}{generalize}}}
+        \ar@<-1ex>[ddl]|-{\txt{\rotatebox{52}{generalize}}}
         \\ \\
         &
         \txt{abstracted term}
-        \ar@<1ex>[uul]|{\txt{\rotatebox{-45}{specialize}}}
-        \ar@<-1ex>[uur]|{\txt{\rotatebox{52}{specialize}}}
+        \ar@<1ex>[uul]|-{\txt{\rotatebox{-45}{specialize}}}
+        \ar@<-1ex>[uur]|-{\txt{\rotatebox{52}{specialize}}}
     }
     \]
 %    \vspace{-10pt}
@@ -291,7 +276,7 @@ Abstracting the small partially reduced term over $(\texttt{@Let\_In $\mathbb N$
 Note that it is essential here that \texttt{count} is not syntactically the same as $\mathbb N$; if they were the same, the abstraction would be ill-typed, as we have not abstracted over \texttt{count\_rec}.
 More generally, it is essential that there is a clear separation between types that we reify and types that we do not, and we must reify \emph{all} operations on the types that we reify.
 
-We can now apply this term to \texttt{expr}, \texttt{NatMul}, \texttt{NatS}, \texttt{NatO}, and, finally, $(\lambda v\ f.\ \texttt{LetIn}\ v\ (\lambda x.\ f\ (\texttt{Var}\ x)))$.
+We can now apply this term to \texttt{expr}, \texttt{NatMul}, \texttt{NatS}, \texttt{NatO}, and, finally, to the term $(\lambda v\ f.\ \texttt{LetIn}\ v\ (\lambda x.\ f\ (\texttt{Var}\ x)))$.
 We get an unreduced reified syntax tree of type \texttt{expr}.
 If we now perform $\beta\iota$ reduction, we get our fully reduced reified term.
 
@@ -308,7 +293,7 @@ For sufficiently large terms and sufficiently many parameter values, this perfor
 
 \subsection{Implementation in \Ltac}
 
-\texttt{ExampleMoreParametricity.v} in the code supplement mirrors the development of reification by parametricity in \autoref{sec:case-by-case-walkthrough}.
+\texttt{ExampleMoreParametricity.v} in the code supplement, available at \url{https://github.com/mit-plv/reification-by-parametricity}, mirrors the development of reification by parametricity in \autoref{sec:case-by-case-walkthrough}.
 
 Unfortunately, Coq does not have a tactic that performs abstraction.%
 \footnote{%
@@ -319,13 +304,14 @@ By chaining \texttt{pattern} with an \Ltac-\texttt{match} statement to peel off 
 % We can write:
 \begin{verbatim}
 Ltac Reify x :=
-match(eval pattern nat, Nat.mul, S, O, (@Let_In nat nat) in x)with
+match (eval pattern nat, Nat.mul, S, O, (@Let_In nat nat) in x) with
 | ?rx _ _ _ _ _ =>
  constr:( fun var => rx (@expr var) NatMul NatS NatO
                         (fun v f => LetIn v (fun x => f (Var x))) )
 end.
 \end{verbatim}
-Note that if \texttt{@expr var} lives in \texttt{Type} rather than \texttt{Set}, an additional step involving retyping the term is needed; we refer the reader to \texttt{Parametricity.v} in the code supplement.
+Note that if \texttt{@expr var} lives in \texttt{Type} rather than \texttt{Set}, we must \texttt{pattern} over \texttt{(nat : Type)} rather than \texttt{nat}.
+In older versions of Coq, an additional step involving retyping the term with the \Ltac\space primitive \texttt{type of} is needed; we refer the reader to \texttt{Parametricity.v} in the code supplement.
 
 The error messages returned by the \texttt{pattern} tactic can be rather opaque at times; in \texttt{ExampleParametricityErrorMessages.v}, we provide a procedure for decoding the error messages.
 
@@ -354,10 +340,10 @@ repeat match goal with
 \end{verbatim}
 
 Briefly, this script replaced the context variables \texttt{a} and \texttt{b} with universal quantifiers in the conclusion, and it replaced the premise \texttt{H} with an implication in the conclusion.
-The syntax-tree datatype used in this example can be found in \texttt{ExampleMoreParametricity.v}.
+The syntax-tree datatype used in this example can be found in the Coq source file \texttt{ExampleMoreParametricity.v}.
 
 \subsection{Advantages and Disadvantages}
-This method is faster than all but \Ltac2 and OCaml reification, and commuting reduction and abstraction makes this method faster even than the low-level \Ltac2 reification in many cases.
+This method is faster than all but \LtacTwo\space and OCaml reification, and commuting reduction and abstraction makes this method faster even than the low-level \LtacTwo\space reification in many cases.
 Additionally, this method is much more concise than nearly every other method we have examined, and it is very simple to implement.
 %Unlike every other method of reification, reification by parametricity does not require us to start from reduced terms, where every term that appears is one that we can handle.
 %We will come back to this point shortly.
@@ -370,7 +356,12 @@ We will emphasize here that this strategy shines when the initial term is small,
 This strategy is not directly applicable for reification of \texttt{match} (rather than eliminators) or \letindots\space (rather than a definition that unfolds to \letindots), \texttt{forall} (rather than a definition that unfolds to \texttt{forall}), or when reification should not be modulo $\beta\iota\zeta$-reduction.
 
 \section{Performance Comparison} \label{sec:perf}
-We have done a performance comparison of the various methods of reification to the PHOAS language \texttt{@expr var} from \autoref{sec:phoas-expr-def} in Coq 8.7.1.
+We have done a performance comparison of the various methods of reification to the PHOAS language \texttt{@expr var} from \autoref{sec:phoas-expr-def} in Coq 8.7.1.%
+\footnote{%
+  Since then, the performance of \MtacTwo\space has improved significantly, and the other benchmarks have remained mostly unchanged.
+  We unfortunately have not had a chance to re-run the benchmarks.
+  \minortodo{re-run benchmarks}
+}
 A typical reification routine will obtain the term to be reified from the goal, reify it, run \texttt{transitivity (denote reified\_term)} (possibly after normalizing the reified term), and solve the side condition with something like \texttt{lazy [denote]; reflexivity}.
 Our testing on a few samples indicated that using \texttt{change} rather than \texttt{transitivity; lazy [denote]; reflexivity} can be around 3X slower; note that we do not test the time of \texttt{Defined}.
 
@@ -426,13 +417,13 @@ The former is just barely faster than OCaml reification; the latter often takes 
 The line for the template-coq plugin cuts off at around 10\,000 rather than around 20\,000 because at that point template-coq starts crashing with stack overflows.
 
 A nontrivial portion of the cost of ``Parametricity (reduced term)'' seems to be due to the fact that looking up the type of a binder is linear in the number of binders in the context, thus resulting in quadratic behavior of the retyping step that comes after abstraction in the \texttt{pattern} tactic.
-In Coq 8.8, this lookup will be $\log n$, and so reification will become even faster~\cite{coq-pr-fast-rel-lookup}.
+In Coq 8.8, this lookup is $\log n$, and so reification has become even faster than the plots indicate~\cite{coq-pr-fast-rel-lookup}.
 
 \section{Future Work, Concluding Remarks} \label{sec:future}
 
 We identify one remaining open question with this method that has the potential of removing the next largest bottleneck in reification: using reduction to show that the reified term is correct.
 
-\begin{wrapfigure}[9]{r}{8cm}
+\begin{wrapfigure}[11]{r}{9cm}
 %\vspace{-36pt}
 \[
 \xymatrix@R=0.5em@C=0em{
@@ -473,7 +464,7 @@ F\ \mathbb{N}\ \text{Mul}\ \text{O}\ \text{S}\ (\text{@Let\_In }\mathbb{N}\textt
 \]
 
 We hypothesize that a form of internalized parametricity would suffice for proving this lemma.
-In particular, we could specialize $F$'s type argument with $\mathbb N \times \texttt{expr}$.
+In particular, we could specialize the type argument of $F$ with $\mathbb N \times \texttt{expr}$.
 Then we would need a proof that for any function $F$ of type
 \[
 \forall (T : \texttt{Type}), (T \to T \to T) \to T \to (T \to T) \to (T \to (T \to T) \to T) \to T

@@ -183,7 +183,7 @@ Second, using partial evaluation to generate residual terms thousands of lines l
 %\todo{Consider being more specific here about expected cost of first-order representation, maybe using some experiment.}
 %  \todo{Note from Jason: We haven't actually checked that the bookkeeping is performance-prohibitive.  I suspect there will be a cost, but that if when we made fiat-crypto there was an existing system that used de Bruijn indices and did this, (along with built-in let-lifting, etc), I suspect we might have been a bit more sad, but not prohibitively more sad.  I think we should be much more tentative with this bullet point.}
 \item
-  Naive representation of terms without proper \emph{sharing of common subterms} can lead to fatal term-size blow-up.
+  Naïve representation of terms without proper \emph{sharing of common subterms} can lead to fatal term-size blow-up.
   Fiat Cryptography's arithmetic routines rely on significant sharing of this kind.
 \item
   Unconditional rewrite rules are in general insufficient, and we need \emph{rules with side conditions}.

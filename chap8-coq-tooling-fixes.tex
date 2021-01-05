@@ -1,7 +1,8 @@
 \chapter{\readyforreading{A Retrospective on Performance Improvements}}\label{ch:coq-tooling-fixes}\label{ch:retrospective}
 Throughout this thesis, we've looked at the problem of performance in proof assistants, especially those based on dependent type theory, with Coq as our primary tool under investigation.
 \autoref{part:introduction} aimed to convince the reader that this problem is interesting, important, challenging, and understudied, as it differs in non-trivial ways from performance bottlenecks in non-dependently-typed languages.
-\autoref{part:design} discussed design principles to avoid performance pitfalls, and \autoref{part:rewriting} took a deep dive into a particular set of performance bottlenecks and presented a tool, and, we hope, exposed the underlying design methodology, that allows eliminating asymptotic bottlenecks in one important part of proof assistant systems.
+\autoref{part:rewriting} took a deep dive into a particular set of performance bottlenecks and presented a tool, and, we hope, exposed the underlying design methodology, that allows eliminating asymptotic bottlenecks in one important part of proof assistant systems.
+\autoref{part:design} zoomed back out to discuss design principles to avoid performance pitfalls.
 
 In this chapter, we will look instead at the successes of the past decade\footnote{%
   Actually, the time span we're considering is the course of the author's experience with Coq, which is a bit less than a decade.%
@@ -67,7 +68,7 @@ The kind of development that can happen when it takes a tenth of a second to see
 In the former case, the proof engine can almost feel like an extension of the coder's mind, responding to thoughts about strategies to try almost as fast as they can be typed.
 In the latter case, development is significantly more clunky and involves much more friction.
 
-In the same vein, bugs such as \coqbug{3691} and \coqbug{4819}, where Coq crawled the entire evar map in \texttt{-emacs} mode (used for ProofGeneral/Emacs) looking at all instantiated evars, resulted in interactive proof times of up to half-a-second for every goal display, even when the goal was small and there was nothing in the context.
+In the same vein, bugs such as \coqbug[]{3691} and \coqbug[]{4819}, where Coq crawled the entire evar map in \texttt{-emacs} mode (used for ProofGeneral/Emacs) looking at all instantiated evars, resulted in interactive proof times of up to half-a-second for every goal display, even when the goal was small and there was nothing in the context.
 Fixed in Coq 8.6, these bugs, too, got in the way of seamless proof development.
 
 \subsection{The \Ltac\space Profiler}\label{sec:ltac-prof}
@@ -150,7 +151,7 @@ Although most of Coq merely used an inductive representation of 31-bit integers,
 After hitting memory limits in storing the inductive representations in proofs involving proof traces from SMT solvers, work was started to allow the use of primitive datatypes that would be stored efficiently in proof terms~\cite{denes2013prim-ints-arrays}.
 
 Some of this work has since been merged into Coq, including IEEE 754-2008 binary64 floating point numbers merged in Coq 8.11~\cite{coq-pr-floats}, 63-bit integers merged in Coq 8.10~\cite{coq-pr-int63}, and persistent arrays~\cite{Persistent2007Conchon} merged into Coq 8.13~\cite{coq-pr-parray}.
-Work enabling primitive recursion over these native datatypes is still underway,~\cite{coq-pr-parray-prim-recursion} and the actual use of these primitive datatypes to reap the performance benefits is still to come as of the writing of this thesis.
+Work enabling primitive recursion over these native datatypes is still underway~\cite{coq-pr-parray-prim-recursion}, and the actual use of these primitive datatypes to reap the performance benefits is still to come as of the writing of this thesis.
 
 \subsection{Primitive Projections for Record Types}\label{sec:fixes:theory:primitive-projections}\label{sec:primitive-projections}
 Since version 8.5, Coq has had the ability to define record types with projections whose arguments are not stored in the term representation~\cite{coq-commit-polyproj}.

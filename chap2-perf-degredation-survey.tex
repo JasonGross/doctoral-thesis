@@ -16,7 +16,7 @@
 %
   There are a few typos, I can give it to you but probably you'll spot them on a next read.}
 
-\section{The Story}\label{sec:perf-failures:story}
+\section{Background}\label{sec:perf-failures:story}
 \todo{fix phrasing}
 Up to this point, I expect I'll have told the reader why proof assistants are important, what they are, and about the main project I worked on of synthesizing crypto code.
 I'll have told them about how manual proof scales with poor constant factors, and automation is the solution.
@@ -24,8 +24,9 @@ I'll have told them that the problem with automation, in my experience, is that 
 
 This chapter aims first to convince the reader that solving these super-linear scaling factors involves more than just ``find the slowness and do the obvious thing to fix it'', and second to demystify the additional structure that's present.
 
-The thrust of the first argument is that, as I understand it, in most performance domains, solutions to performance bottlenecks are either hyper-specialized to the code being optimized or the domain of the algorithm, or else are so general as to be applicable to all performance engineering.
-\todo{examples of both of these}
+The thrust of the first argument is that, as I understand it, in most performance domains, solutions to performance bottlenecks are generally either hyper-specialized to the code being optimized or the domain of the algorithm, or else are so general as to be applicable to all performance engineering.
+For example, solving a performance issue might involving caching the result of a particular computation; caching is a very general solution, while the particular computation being run is hyper-specialized.
+Once factored like this, there is generally no remaining insight to be had about the particular performance bottleneck encountered.
 In my experience with proof assistants, most performance bottlenecks are far from the code being written and the domain being investigated, and are yet also far from general performance-engineering.
 There is structure specific to dependently typed proof assistants that shows up in performance bottlenecks, and the goal of this chapter, after convincing the reader that such structure exists and is interesting, is to illuminate the structure that I've discovered in the course of my doctoral work.
 

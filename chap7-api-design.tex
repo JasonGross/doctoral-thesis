@@ -46,9 +46,9 @@ If you, for example, want to index into, say, the concatenation of two lists, wi
 
 We saw in \cref{foot:break-abstraction:example:decision-tree-indexing} in \fullnameref{sec:break-abstraction:example:decision-tree-indexing} how dependent types cause coupling between otherwise unrelated design decisions.
 This is due to the fact that every single operation needs to declare how it interacts with all of the various indices, and must effectively include a proof for each of these interactions.
-In the example of \autoref{sec:break-abstraction:example:decision-tree-indexing}, we considered indexing the list of terms over a list of types, and indexing both this list of types and the decision tree over a natrual number length.
+In the example of \autoref{sec:break-abstraction:example:decision-tree-indexing}, we considered indexing the list of terms over a list of types, and indexing both this list of types and the decision tree over a natural number length.
 In this case, the choice of whether we operate in the middle of the list or at the front of the list is severely complicated by the length index.
-If we need to insert an unknown number of elements into the middle of a length-indexed list, the length of the resulting list is not judgmentally the sum of the lengths, because addition is not judgmentally comutative.
+If we need to insert an unknown number of elements into the middle of a length-indexed list, the length of the resulting list is not judgmentally the sum of the lengths, because addition is not judgmentally commutative.
 \minortodo{better example? more code?}
 \minortodo{flesh out this section}
 \minortodo{More examples from the rewriter?}

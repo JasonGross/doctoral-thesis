@@ -1,3 +1,18 @@
 [submodule "resume"]
 	path = resume
 	url = https://github.com/JasonGross/resume.git
+[submodule "reification-by-parametricity"]
+	path = reification-by-parametricity
+	url = https://github.com/mit-plv/reification-by-parametricity.git
+[submodule "reification-by-parametricity-deps/unicoq"]
+	path = reification-by-parametricity-deps/unicoq
+	url = https://github.com/unicoq/unicoq.git
+[submodule "reification-by-parametricity-deps/Mtac2"]
+	path = reification-by-parametricity-deps/Mtac2
+	url = https://github.com/Mtac2/Mtac2.git
+[submodule "reification-by-parametricity-deps/Coq-Equations"]
+	path = reification-by-parametricity-deps/Coq-Equations
+	url = https://github.com/mattam82/Coq-Equations.git
+[submodule "reification-by-parametricity-deps/metacoq"]
+	path = reification-by-parametricity-deps/metacoq
+	url = https://github.com/MetaCoq/metacoq.git

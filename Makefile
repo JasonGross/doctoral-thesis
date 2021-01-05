@@ -20,6 +20,8 @@ THESIS_EXTRA_PDFS = JGross-PhD-EECS-Feb2021.pdf
 MAIN_TEXS = $(patsubst \include{%},%.tex,$(filter \include{%},$(shell cat appendix-files.tex main-files.tex jgross-thesis.tex)))
 EXCLUDE_FILES_LIST_TEX = exclude-files-list.tex
 THESIS_TEXS = packages.tex contents.tex mitthesis.cls abstract.tex cover.tex coverinfo.tex new-date.tex todo.tex main-files.tex appendix-files.tex spellcheck-results.tex $(EXCLUDE_FILES_LIST_TEX) $(MAIN_TEXS)
+THESIS_INCLUDE_GRAPHICS_TEXS := reification-by-parametricity.tex
+THESIS_EXTRA_DEPS := $(shell grep -o '\\includegraphics\s*\(\[[^]]*\]\s*\)\?{[^}]*}' $(THESIS_INCLUDE_GRAPHICS_TEXS) | grep -o '{[^}]*}$' | sed 's/[{}]//g')
 PROPOSAL_TEXS = new-date-proposal.tex abstract-proposal.tex
 UMI_TEXS = umi-proquest-form-full.tex umi-proquest-form-adjusted.tex extra-title-abstract.tex
 COMPLETION_TEXS = new-date-submission.tex PhD_CompletionForm-adjusted.tex PhD_CompletionForm-full.tex
@@ -297,7 +299,7 @@ $(PDFS): jgross-thesis.bib
 # note that jgross-thesis.pdf is an order-only dep of jgross-thesis-extra-todos.pdf because if we build them at the same time, then LaTeX will stomp over its own aux files and cause issues
 jgross-thesis-extra-todos.pdf: jgross-thesis.tex | jgross-thesis.pdf
 
-$(THESIS_PDFS): $(THESIS_TEXS) $(THESIS_VS)
+$(THESIS_PDFS): $(THESIS_TEXS) $(THESIS_VS) $(THESIS_EXTRA_DEPS)
 
 $(PROPOSAL_PDFS): $(PROPOSAL_TEXS)
 

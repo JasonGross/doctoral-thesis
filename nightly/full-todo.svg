@@ -1,4 +1,4 @@
-<svg xmlns="http://www.w3.org/2000/svg" width="41em" height="1647em"><text x="0" y="0">
+<svg xmlns="http://www.w3.org/2000/svg" width="41em" height="1645em"><text x="0" y="0">
 <tspan x="0" dy="1.2em">TODO: (FROM Nickolai) [About the following paragraph] so what&apos;s different? in </tspan>
 <tspan x="0" dy="1.2em">&#160;&#160;file chap2-perf-degredation-survey.tex on input line 49.</tspan>
 <tspan x="0" dy="1.2em">TODO: (FROM Nickolai) somewhat hard to make sense of these graphs without more </tspan>
@@ -17,12 +17,10 @@
 <tspan x="0" dy="1.2em">TODO: (FROM Nickolai) [re this paragraph, especially ``and hence Coq provides </tspan>
 <tspan x="0" dy="1.2em">&#160;&#160;\Ltac , a scripting language for proofs&apos;&apos;] seems repetitive and out of place. </tspan>
 <tspan x="0" dy="1.2em">&#160;&#160;already introduced Ltac earlier in file chap3-reflection.tex on input line 34.</tspan>
-<tspan x="0" dy="1.2em">TODO: (FROM Nickolai) [re ``these ways&apos;&apos;] what are you referring to? in file </tspan>
-<tspan x="0" dy="1.2em">&#160;&#160;chap7-api-design.tex on input line 19.</tspan>
 <tspan x="0" dy="1.2em">TODO: (FROM Nickolai) [re this whole section] what is this about? performance </tspan>
 <tspan x="0" dy="1.2em">&#160;&#160;or something else? in file chap7-api-design.tex on input line 31.</tspan>
-<tspan x="0" dy="1.2em">TODO: (FROM Nickolai) ? in file chap7-api-design.tex on input line 94.</tspan>
-<tspan x="0" dy="1.2em">TODO: (FROM Nickolai) ? in file chap7-api-design.tex on input line 100.</tspan>
+<tspan x="0" dy="1.2em">TODO: (FROM Nickolai) ? in file chap7-api-design.tex on input line 101.</tspan>
+<tspan x="0" dy="1.2em">TODO: (FROM Nickolai) ? in file chap7-api-design.tex on input line 107.</tspan>
 <tspan x="0" dy="1.2em">TODO: (FROM Beta Ziliani) Hi Jason, let me give you some preliminary feedback </tspan>
 <tspan x="0" dy="1.2em">&#160;&#160;on Chapter 2 (the only I got to read so far, sorry!). These are presentation </tspan>
 <tspan x="0" dy="1.2em">&#160;&#160;details, with the only big problem being that I felt at times like I was being </tspan>
@@ -36,10 +34,6 @@
 <tspan x="0" dy="1.2em">&#160;&#160;for this reason, claiming MathClasses won&apos;t scale to real-world applications. I </tspan>
 <tspan x="0" dy="1.2em">&#160;&#160;don&apos;t know what the status of MathClasses is now, and if Georges&apos; prediction </tspan>
 <tspan x="0" dy="1.2em">&#160;&#160;stands, but I thought you&apos;ll find this interesting/amusing. D</tspan>
-<tspan x="0" dy="1.2em">Warning: Label `sec:reification-by-parametricity:intro&apos; multiply defined.</tspan>
-<tspan x="0" dy="1.2em">Warning: Label `sec:reification-by-parametricity:intro@cref&apos; multiply defined.</tspan>
-<tspan x="0" dy="1.2em">Warning: Label `sec:category-of-categories&apos; multiply defined.</tspan>
-<tspan x="0" dy="1.2em">Warning: Label `sec:category-of-categories@cref&apos; multiply defined.</tspan>
 <tspan x="0" dy="1.2em">Warning: Reference `ch:rewriting&apos; on page 10 undefined on input line 170.</tspan>
 <tspan x="0" dy="1.2em">Warning: Reference `ch:rewriting&apos; on page 30 undefined on input line 546.</tspan>
 <tspan x="0" dy="1.2em">Warning: Reference `ch:rewriting&apos; on page 30 undefined on input line 548.</tspan>
@@ -74,16 +68,18 @@
 <tspan x="0" dy="1.2em">Warning: Reference `sec:reif-not-optimized&apos; on page 115 undefined on input </tspan>
 <tspan x="0" dy="1.2em">&#160;&#160;line 10.</tspan>
 <tspan x="0" dy="1.2em">Warning: Reference `ch:rewriting&apos; on page 115 undefined on input line 10.</tspan>
-<tspan x="0" dy="1.2em">Warning: Reference `sec:categories&apos; on page 132 undefined on input line 94.</tspan>
-<tspan x="0" dy="1.2em">Warning: Reference `sec:other&apos; on page 132 undefined on input line 100.</tspan>
+<tspan x="0" dy="1.2em">Warning: Reference `sec:categories&apos; on page 132 undefined on input line 101.</tspan>
+<tspan x="0" dy="1.2em">Warning: Reference `sec:other&apos; on page 132 undefined on input line 107.</tspan>
 <tspan x="0" dy="1.2em">Warning: Reference `sec:arguments-vs-fields&apos; on page 137 undefined on input </tspan>
-<tspan x="0" dy="1.2em">&#160;&#160;line 222.</tspan>
-<tspan x="0" dy="1.2em">Warning: Reference `fig:timing-make-destruct-record&apos; on page 139 undefined on </tspan>
-<tspan x="0" dy="1.2em">&#160;&#160;input line 292.</tspan>
+<tspan x="0" dy="1.2em">&#160;&#160;line 229.</tspan>
 <tspan x="0" dy="1.2em">Warning: Reference `fig:timing-make-destruct-record&apos; on page 139 undefined on </tspan>
 <tspan x="0" dy="1.2em">&#160;&#160;input line 299.</tspan>
+<tspan x="0" dy="1.2em">Warning: Reference `fig:timing-make-destruct-record&apos; on page 140 undefined on </tspan>
+<tspan x="0" dy="1.2em">&#160;&#160;input line 306.</tspan>
 <tspan x="0" dy="1.2em">TODO: Make sure to exclude no files (not rewriting,rewriting-appendix) in file </tspan>
 <tspan x="0" dy="1.2em">&#160;&#160;jgross-thesis.tex on input line 56.</tspan>
+<tspan x="0" dy="1.2em">TODO: Spellcheck the following words: comutative, natrual in file </tspan>
+<tspan x="0" dy="1.2em">&#160;&#160;jgross-thesis.tex on input line 104.</tspan>
 <tspan x="0" dy="1.2em">TODO: Insert graph in file chap1-introduction.tex on input line 63.</tspan>
 <tspan x="0" dy="1.2em">TODO: Some sort of summary of argument-so-far here in file </tspan>
 <tspan x="0" dy="1.2em">&#160;&#160;chap2-perf-degredation-survey.tex on input line 220.</tspan>
@@ -557,28 +553,30 @@
 <tspan x="0" dy="1.2em">&#160;&#160;input line 364.</tspan>
 <tspan x="0" dy="1.2em">MINOR TODO: adjust the tone of what comes after the colon in the previous </tspan>
 <tspan x="0" dy="1.2em">&#160;&#160;sentence to fit with this paper in file chap7-api-design.tex on input line 23.</tspan>
+<tspan x="0" dy="1.2em">MINOR TODO: better example? more code? in file chap7-api-design.tex on input </tspan>
+<tspan x="0" dy="1.2em">&#160;&#160;line 52.</tspan>
 <tspan x="0" dy="1.2em">MINOR TODO: flesh out this section in file chap7-api-design.tex on input line </tspan>
-<tspan x="0" dy="1.2em">&#160;&#160;46.</tspan>
+<tspan x="0" dy="1.2em">&#160;&#160;53.</tspan>
 <tspan x="0" dy="1.2em">MINOR TODO: More examples from the rewriter? in file chap7-api-design.tex on </tspan>
-<tspan x="0" dy="1.2em">&#160;&#160;input line 47.</tspan>
-<tspan x="0" dy="1.2em">MINOR TODO: forward-cite the rewriter? in file chap7-api-design.tex on input </tspan>
-<tspan x="0" dy="1.2em">&#160;&#160;line 48.</tspan>
+<tspan x="0" dy="1.2em">&#160;&#160;input line 54.</tspan>
+<tspan x="0" dy="1.2em">MINOR TODO: cite the rewriter more? in file chap7-api-design.tex on input line </tspan>
+<tspan x="0" dy="1.2em">&#160;&#160;55.</tspan>
 <tspan x="0" dy="1.2em">MINOR TODO: this is duplicative with text above in file chap7-api-design.tex </tspan>
-<tspan x="0" dy="1.2em">&#160;&#160;on input line 101.</tspan>
+<tspan x="0" dy="1.2em">&#160;&#160;on input line 108.</tspan>
 <tspan x="0" dy="1.2em">MINOR TODO: maybe this section should come first? in file chap7-api-design.tex </tspan>
-<tspan x="0" dy="1.2em">&#160;&#160;on input line 200.</tspan>
+<tspan x="0" dy="1.2em">&#160;&#160;on input line 207.</tspan>
 <tspan x="0" dy="1.2em">MINOR TODO: figure out why spacing is strange above this code example in file </tspan>
-<tspan x="0" dy="1.2em">&#160;&#160;chap7-api-design.tex on input line 269.</tspan>
+<tspan x="0" dy="1.2em">&#160;&#160;chap7-api-design.tex on input line 276.</tspan>
 <tspan x="0" dy="1.2em">MINOR TODO: remove use of ``you&apos;&apos; in file chap7-api-design.tex on input line </tspan>
-<tspan x="0" dy="1.2em">&#160;&#160;302.</tspan>
-<tspan x="0" dy="1.2em">MINOR TODO: explain reasoning in file chap7-api-design.tex on input line 303.</tspan>
+<tspan x="0" dy="1.2em">&#160;&#160;309.</tspan>
+<tspan x="0" dy="1.2em">MINOR TODO: explain reasoning in file chap7-api-design.tex on input line 310.</tspan>
 <tspan x="0" dy="1.2em">MINOR TODO: Select one of these graphs and use it and give it the label </tspan>
 <tspan x="0" dy="1.2em">&#160;&#160;{fig:timing-make-destruct-record-definition-abstraction} in file </tspan>
-<tspan x="0" dy="1.2em">&#160;&#160;chap7-api-design.tex on input line 405.</tspan>
+<tspan x="0" dy="1.2em">&#160;&#160;chap7-api-design.tex on input line 412.</tspan>
 <tspan x="0" dy="1.2em">MINOR TODO: move figures up to be closer to references in file </tspan>
-<tspan x="0" dy="1.2em">&#160;&#160;chap7-api-design.tex on input line 407.</tspan>
+<tspan x="0" dy="1.2em">&#160;&#160;chap7-api-design.tex on input line 414.</tspan>
 <tspan x="0" dy="1.2em">MINOR TODO: Find more examples to talk about here? in file </tspan>
-<tspan x="0" dy="1.2em">&#160;&#160;chap7-api-design.tex on input line 750.</tspan>
+<tspan x="0" dy="1.2em">&#160;&#160;chap7-api-design.tex on input line 757.</tspan>
 <tspan x="0" dy="1.2em">MINOR TODO: if this is described earlier, refer back to it in file </tspan>
 <tspan x="0" dy="1.2em">&#160;&#160;chap8-coq-tooling-fixes.tex on input line 23.</tspan>
 <tspan x="0" dy="1.2em">MINOR TODO: include performance graphs? in file chap8-coq-tooling-fixes.tex on </tspan>
@@ -648,14 +646,14 @@
 <tspan x="0" dy="1.2em">&#160;&#160;Are they well-known? Well-studied? in file chap5-rewriting.tex on input line </tspan>
 <tspan x="0" dy="1.2em">&#160;&#160;443.</tspan>
 <tspan x="0" dy="1.2em">MINOR QUESTION FOR ADAM: how much should I talk about the category theory </tspan>
-<tspan x="0" dy="1.2em">&#160;&#160;library itself in my thesis? in file chap7-api-design.tex on input line 205.</tspan>
+<tspan x="0" dy="1.2em">&#160;&#160;library itself in my thesis? in file chap7-api-design.tex on input line 212.</tspan>
+<tspan x="0" dy="1.2em">Unknown Words: comutative, natrual</tspan>
 <tspan x="0" dy="1.2em">Warning: Hyper reference `ch:rewriting&apos; on page 30 undefined on input line 546.</tspan>
 <tspan x="0" dy="1.2em">Warning: Hyper reference `sec:under-lets&apos; on page 89 undefined on input line </tspan>
 <tspan x="0" dy="1.2em">&#160;&#160;76.</tspan>
 <tspan x="0" dy="1.2em">Warning: Hyper reference `sec:nine-steps&apos; on page 100 undefined on input line </tspan>
 <tspan x="0" dy="1.2em">&#160;&#160;508.</tspan>
-<tspan x="0" dy="1.2em">Warning: There were undefined references.</tspan>
-<tspan x="0" dy="1.2em">Warning: There were multiply-defined labels.)</tspan>
+<tspan x="0" dy="1.2em">Warning: There were undefined references.)</tspan>
 <tspan x="0" dy="1.2em">Package gnuplottex Warning: Shell escape not enabled. You&apos;ll need to convert </tspan>
 <tspan x="0" dy="1.2em">&#160;&#160;the graphs yourself..</tspan>
 <tspan x="0" dy="1.2em">LaTeX Font Warning: Font shape `TU/cmr/m/n&apos; undefined using `TU/lmr/m/n&apos; </tspan>
@@ -991,28 +989,28 @@
 <tspan x="0" dy="1.2em">[126]) [127] [128</tspan>
 <tspan x="0" dy="1.2em">]</tspan>
 <tspan x="0" dy="1.2em">Chapter 6.</tspan>
-<tspan x="0" dy="1.2em">[129</tspan>
+<tspan x="0" dy="1.2em">Underfull \vbox (badness 4132) has occurred while \output is active []</tspan>
+<tspan x="0" dy="1.2em"> [129</tspan>
 <tspan x="0" dy="1.2em">]</tspan>
 <tspan x="0" dy="1.2em">Overfull \hbox (44.22382pt too wide) in paragraph at lines 30--30</tspan>
 <tspan x="0" dy="1.2em">[]\TU/lmr/bx/n/17.28 When And How To Use De-pen-dent Types Painlessly </tspan>
 <tspan x="0" dy="1.2em"> []</tspan>
 <tspan x="0" dy="1.2em">[130]</tspan>
-<tspan x="0" dy="1.2em">Overfull \hbox (24.74829pt too wide) in paragraph at lines 75--90</tspan>
+<tspan x="0" dy="1.2em">[131]</tspan>
+<tspan x="0" dy="1.2em">Overfull \hbox (24.74829pt too wide) in paragraph at lines 82--97</tspan>
 <tspan x="0" dy="1.2em">[]\TU/pcr/bx/n/12 Al-though pre-existing for-mal-iza-tions of cat-e-gory </tspan>
 <tspan x="0" dy="1.2em">&#160;&#160;the-ory in proof as-sis-tants abound [[]AKS13[];</tspan>
 <tspan x="0" dy="1.2em"> []</tspan>
-<tspan x="0" dy="1.2em">[131]</tspan>
-<tspan x="0" dy="1.2em">Underfull \vbox (badness 10000) has occurred while \output is active []</tspan>
-<tspan x="0" dy="1.2em"> [133] [134]</tspan>
-<tspan x="0" dy="1.2em">Overfull \hbox (11.30377pt too wide) in paragraph at lines 186--186</tspan>
+<tspan x="0" dy="1.2em">[132]</tspan>
+<tspan x="0" dy="1.2em">Overfull \hbox (11.30377pt too wide) in paragraph at lines 193--193</tspan>
 <tspan x="0" dy="1.2em">[]\TU/lmr/bx/n/14.4 Mov-ing For-ward: Com-pu-ta-tion Rules for Pat-tern Match-</tspan>
 <tspan x="0" dy="1.2em"> []</tspan>
-<tspan x="0" dy="1.2em">[135]</tspan>
 <tspan x="0" dy="1.2em">[136]</tspan>
 <tspan x="0" dy="1.2em">[137]</tspan>
+<tspan x="0" dy="1.2em">[139]</tspan>
 <tspan x="0" dy="1.2em">Underfull \vbox (badness 10000) has occurred while \output is active []</tspan>
-<tspan x="0" dy="1.2em"> [140])</tspan>
-<tspan x="0" dy="1.2em">Overfull \hbox (7.14569pt too wide) in paragraph at lines 402--406</tspan>
+<tspan x="0" dy="1.2em"> [141])</tspan>
+<tspan x="0" dy="1.2em">Overfull \hbox (7.14569pt too wide) in paragraph at lines 409--413</tspan>
 <tspan x="0" dy="1.2em">[]\TU/pcr/bx/n/12 We can, how-ever, avoid this cost by turn-ing on prim-i-tive </tspan>
 <tspan x="0" dy="1.2em">&#160;&#160;pro-jec-tions via \remove@tlig Set Primitive</tspan>
 <tspan x="0" dy="1.2em"> []</tspan>

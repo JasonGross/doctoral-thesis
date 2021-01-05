@@ -12,11 +12,11 @@ In this chapter, we will dive further into the performance issues arising from t
 This chapter is primarily geared at the users of proof assistants, and especially at proof-assistant library developers.
 
 We saw in \nameref{sec:axis-nested-abstraction-barriers} three different ways that design choices for abstraction barriers can impact performance:
-We saw in \nameref{sec:abstraction-barriers:mismatch} that API mismatch results in type-size blowup.
+We saw in \nameref{sec:abstraction-barriers:mismatch} that API mismatch results in type-size blowup; we saw a particularly striking example of this in \autoref{sec:break-abstraction:example:eval-decision-tree} where an API mismatch resulted in vastly more complicated theorem statements.
 We saw in \nameref{sec:abstraction-barriers:conversion-troubles} that imperfectly opaque abstraction barriers result in slowdown due to needless calls to the conversion checker.
 We saw in \nameref{sec:abstraction-barriers:packed-records} how the choice of whether to use packed or unpacked records impacts performance.
 
-In this chapter, we will focus primarily on the first of these ways;\todonz{[re ``these ways''] what are you referring to?} while it might seem like a simple question of good design, it turns out that good API design in dependently-typed programming languages is significantly harder than in simply-typed programming languages.
+In this chapter, we will focus primarily on the first of these three ways that design choices for abstraction barriers can impact performance; while it might seem like a simple question of good design, it turns out that good API design in dependently-typed programming languages is significantly harder than in simply-typed programming languages.
 Mitigating the second source of performance bottlenecks, imperfectly opaque abstraction barriers, on the other hand, is actually just a question of meticulous tracking of how abstraction barriers are defined and used, and designing them so that they all unfolding is explicit.
 However, we will present an exception to the rule of opaque abstraction barriers in \autoref{sec:duality-conversion} in which deliberate breaking of all abstraction barriers in a careful way can result in performance gains of up to a factor of two:
 \autoref{sec:duality-conversion} presents one of our favorite design patterns for categorical constructions: a way of coaxing Coq's definitional equality into implementing \emph{proof by duality}, one of the most widely known ideas in category theory.
@@ -35,17 +35,24 @@ The extremes are relatively easy:
   Total separation between proofs and programs, so that programs are simply typed, works relatively well
 \item
   Pre-existing mathematics, where objects are fully bundled with proofs and never need to be separated from them, also works relatively well
-\item
-  The rule of thumb in the middle:
-  it is painful to recombine proofs and programs after you separate them;
-  if you are doing it to define an opaque transformation that acts on proof-carrying code, that is okay, but if you cannot make that abstraction barrier, enormous pain results.
-\item
-  For example, if you have length-indexed lists and want to index into them with elements of a finite type, things are fine until you need to divorce the index from its proof of finiteness.
-  If you, for example, want to index into, say, the concatenation of two lists, with an index into the first of the lists, then you will likely run into trouble, because you are trying to consider the index separately from its proof of finitude, but you have to recombine them to do the indexing.
 \end{itemize}
+
+We present a rule of thumb for being in the middle:
+it is painful to recombine proofs and programs after you separate them;
+if you are doing it to define an opaque transformation that acts on proof-carrying code, that is okay, but if you cannot make that abstraction barrier, enormous pain results.
+
+For example, if you have length-indexed lists and want to index into them with elements of a finite type, things are fine until you need to divorce the index from its proof of finiteness.
+If you, for example, want to index into, say, the concatenation of two lists, with an index into the first of the lists, then you will likely run into trouble, because you are trying to consider the index separately from its proof of finitude, but you have to recombine them to do the indexing.
+
+We saw in \cref{foot:break-abstraction:example:decision-tree-indexing} in \fullnameref{sec:break-abstraction:example:decision-tree-indexing} how dependent types cause coupling between otherwise unrelated design decisions.
+This is due to the fact that every single operation needs to declare how it interacts with all of the various indices, and must effectively include a proof for each of these interactions.
+In the example of \autoref{sec:break-abstraction:example:decision-tree-indexing}, we considered indexing the list of terms over a list of types, and indexing both this list of types and the decision tree over a natrual number length.
+In this case, the choice of whether we operate in the middle of the list or at the front of the list is severely complicated by the length index.
+If we need to insert an unknown number of elements into the middle of a length-indexed list, the length of the resulting list is not judgmentally the sum of the lengths, because addition is not judgmentally comutative.
+\minortodo{better example? more code?}
 \minortodo{flesh out this section}
 \minortodo{More examples from the rewriter?}
-\minortodo{forward-cite the rewriter?}
+\minortodo{cite the rewriter more?}
 
 \section{A Brief Introduction To Our Category Theory Library}\label{sec:category-theory-library}
 \subsection{Introduction}

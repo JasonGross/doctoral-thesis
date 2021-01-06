@@ -121,6 +121,7 @@ Murthy
 Muñoz
 NbE's
 Nickolai
+Nickolai's
 Niklaus
 Nipkow
 Nordström
@@ -185,4 +186,3 @@ palmskog
 pdf
 ppedrot
 École
-Nickolai's

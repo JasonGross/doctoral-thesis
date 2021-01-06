@@ -9,7 +9,7 @@ While automating the generation of proofs solves the overhead of proof-writing t
 The main contribution of this thesis, presented in \autoref{ch:rewriting}, is a tool that solves this problem of unacceptable overhead in proof-generation and proof-checking for the Fiat Cryptography project~\cite{FiatCryptoSP19},  which we believe is broadly applicable to other domains.
 
 In building this work, the author developed a deep understanding of the performance bottlenecks faced and addressed.
-This chapter lays out the groundwork for understanding these performance bottlenecks, where they come from, a broader map of performance issues in proof assistants, and how our solution addressed the relevant performance issues. 
+This chapter lays out the groundwork for understanding these performance bottlenecks, where they come from, a broader map of performance issues in proof assistants, and how our solution addressed the relevant performance issues.
 We hope readers will be able to apply our map to performance bottlenecks they encounter in dependently-typed tactic-driven proof assistants like Coq.
 
 \section{Approach to Performance Engineering}\label{sec:perf-failures:story}
@@ -120,7 +120,7 @@ This may seem a bit silly, but this is actually somewhat common; in a theorem th
 Furthermore, because we often don't want to fully compute results when checking that two things are equal---just imagine having to compute the factorial of $1000$ just to check that $1000!$ is equal to itself---the default method for checking that the code came out of the code generator is different from the method we used to compute the code in the first place.
 
 It turns out that the actual code generation took less than 0.002\% of the total time on the largest examples we tested (just 14 seconds out of about 211 hours).
-The rest of the time was spent checking that the generated code in fact matched what comes out of the verified code generator. 
+The rest of the time was spent checking that the generated code in fact matched what comes out of the verified code generator.
 
 The fix itself is quite simple, only 21 characters long.\footnote{\texttt{Strategy 1 [Let\_In].} for those who are curious.}
 However, tracking down this solution was quite involved, requiring the following pieces:
@@ -1389,7 +1389,7 @@ Thu 7:41pm
   In general, I think that the graphics might be scaled significantly, they took an entire page now and it sounds a bit too much (detail).
 %
   There are a few typos, I can give it to you but probably you'll spot them on a next read.}
-  
+
   %If the reader walks away from this thesis with this level of understanding---that there was a super-linear performance bottleneck in the automation of generating verified low-level cryptographic code, and the project presented in \autoref{ch:rewriting} fixed this problem---that is accurate.
 
 %We want readers to be able to understand where the performance issue came from, how it fits into a broader structure of performance issues in proof assistants, and how the solution fixes the performance problem.

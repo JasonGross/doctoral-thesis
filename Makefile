@@ -474,3 +474,7 @@ spellcheck-results.tex: | $(CUSTOM_DICT) $(TEXT_TEXS)
 .PHONY: inotify
 inotify:
 	while true; do inotifywait -e modify -e create -e delete -e close_write $(ALL_TEXS) Makefile jgross-thesis.bib; $(MAKE); done
+
+.PHONY: update-reification-by-parametricity-graphs
+update-reification-by-parametricity-graphs::
+	cp -f -t reification-by-parametricity-outputs/ reification-by-parametricity/graphs/*.pdf

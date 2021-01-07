@@ -3,14 +3,15 @@
 \section{Introduction}\label{sec:perf-failures:story}
 
 As alluded to in \autoref{sec:manual-proof-long}, when writing non-automated proofs to verifying code in a proof assistant, the number of lines of proof we need to write scales with the number of lines of code being verified, typically resulting to a $10\times$ to $100\times$ overhead.
-With this strategy, proof-generation and proof-checking times are reasonable, often scaling linearly with the number of lines of proof.
-While automating the generation of proofs solves the overhead of proof-writing time, it introduces massive \emph{non-linear} overhead in the time it takes for the computer to generate and check the proof.
+In this strategy, proof-generation and proof-checking times are reasonable, often scaling linearly with the number of lines of proof.
+Automating the generation of proofs solves the overhead of proof-writing time, however, it introduces massive \emph{non-linear} overhead in the time it takes for the computer to generate and check the proof.
 
 The main contribution of this thesis, presented in \autoref{ch:rewriting}, is a tool that solves this problem of unacceptable overhead in proof-generation and proof-checking for the Fiat Cryptography project~\cite{FiatCryptoSP19},  which we believe is broadly applicable to other domains.
 
 In building this work, the author developed a deep understanding of the performance bottlenecks faced and addressed.
-This chapter lays out the groundwork for understanding these performance bottlenecks, where they come from, a broader map of performance issues in proof assistants, and how our solution addressed the relevant performance issues.
-We hope readers will be able to apply our map to performance bottlenecks they encounter in dependently-typed tactic-driven proof assistants like Coq.
+This chapter lays out the groundwork for understanding these performance bottlenecks, where they come from, and how our solution addressed the relevant performance issues.
+We describe what we have seen of the landscape of performance issues in proof assistants, and provide a map for navigation. 
+Our hope is that readers will be able to apply our map to performance bottlenecks they encounter in dependently-typed tactic-driven proof assistants like Coq.
 
 \section{Exponential Domain}\label{sec:perf-failures:exponential-domain}
 
@@ -125,7 +126,7 @@ Each example using $n$ machine words generated $3n$ lines of code.
 How can exponential performance result from linear code?
 
 Our method involved two steps: first generate the code, then check that the generated code matches with what comes out of the verified code generator.
-This may seem a bit silly, but this is actually somewhat common; in a theorem that says ``any code that comes out of this code generator satisfies this property'', you need a proof that the code you feed into the theorem actually came out of the specified code generator, and the easiest way to prove this is, roughly, to tell the proof assistant to just check that fact for you.
+This may seem a bit silly, but this is actually somewhat common; in a theorem that says ``any code that comes out of this code generator satisfies this property'', we need a proof that the code we feed into the theorem actually came out of the specified code generator, and the easiest way to prove this is, roughly, to tell the proof assistant to just check that fact for you.
 (It's possible to be more careful and not do the work twice, but this often makes the code a bit harder to read and understand, and is oftentimes pointless; premature optimization is the root of all evil, as they say.)
 Furthermore, because we often don't want to fully compute results when checking that two things are equal---just imagine having to compute the factorial of $1000$ just to check that $1000!$ is equal to itself---the default method for checking that the code came out of the code generator is different from the method we used to compute the code in the first place.
 
@@ -152,8 +153,9 @@ However, tracking down this solution was quite involved, requiring the following
     But this is because I've managed to internalize most of how Coq runs in my head.
 
     This might seem reasonable at a glance; one expects to have to understand the system being optimized in order to optimize it.
-    But I've managed to learn the details of what Coq is doing---including performance characteristics---basically without having to read the source code at all!
-    \todonz{[re ``without having to read the source code at all!''] is this good or bad? why didn't you read Coq src?}
+    However, the knowledge required here is hard-won and not easily accessible.
+    While I've managed to learn the details of what Coq is doing---including performance characteristics---basically without having to read the source code at all, the relevant performance characteristics are not documented anywhere, and are not even easily interpretable from the source code of Coq.
+%    \todonz{[re ``without having to read the source code at all!''] is this good or bad? why didn't you read Coq src?}
     This is akin to, say, being able to learn how \texttt{gcc} represents various bits of C code, what transformations it does in what order, and what performance characteristics these transformations have, just from using \texttt{gcc} to compile C code and reading the error messages it gives you.
     These are details that should not need to be exposed to the user, but because dependent type theory is so complicated---complicated enough that it's generally assumed that users will get \emph{line-by-line interactive feedback from the compiler} while developing, the numerous design decisions and seemingly reasonable defaults and heuristics lead to subtle performance issues.
     Note, furthermore, that this performance issue is essentially about the algorithm used to implement conversion, and is not even sensible when only talking about only the spec of what it means for two terms to be convertible.
@@ -224,15 +226,19 @@ See \autoref{fig:timing-montgomery-fesub-after-user}.
 \caption{Timing of synthesizing subtraction after fixing the bottleneck}\label{fig:timing-montgomery-fesub-after-user}
 \end{figure}
 
+
 \section{Fixing Performance Bottlenecks in the Proof Assistant Itself is Also Hard}
 
-\todo{Find a place for this (h/t conversation with Andres)}:  because we have a kernel and a proof engine on top of it, you need to simultaneously optimize the kernel and the proof engine to see performance improvements; if the kernel API doesn't give you good enough performance on primitives, then there's no hope to optimizing the proof engine, but at the same time if the proof engine is not optimized right, improvements in the performance of the kernel API don't have noticeable impact.
+In many domains, the performance challenges have been studied and understood, resulting in useful decompositions of the problem into subtasks that can be optimized independently.
+It's rarely the case that disparate parts of a codebase must be simultaneously optimized to see any performance improvement at all.
 
-\todo{find a place for this:}
-In many domains, good performance optimization can be done locally.
-It's rarely the case that disparate parts of the codebase must be simultaneously optimized to see any performance improvement.
-However, in proof assistants satisfying the de Bruijn criterion, there are many seemingly reasonable implementation choices that can be made for the kernel which make performance-optimizing the proof engine next to impossible.
+We have not found any such study of performance challenges in proof assistants.
+It seems to us that there are many disparate parts of any proof assistant satisfying the de Bruijn criterion which are deeply coupled and which cannot be performance-optimized independently.
+There are many seemingly reasonable implementation choices that can be made for the kernel---the trusted proof checker---which make performance-optimizing the proof engine, which generates the proof, next to impossible.
 Worse, if performance optimization is done incrementally, to avoid needless premature optimization, then it can be the case that performance-optimizing the kernel has effectively no visible impact; the most efficient proof engine design for the slower kernel might be inefficient in ways that prevent optimizations in the kernel from showing up in actual use cases, because simple proof engine implementations tend to avoid the performance bottlenecks of the kernel while simultaneously shadowing them with bottlenecks with similar performance characteristics.
+
+\begin{comment}
+\todo{Find a place for this (h/t conversation with Andres)}:  because we have a kernel and a proof engine on top of it, you need to simultaneously optimize the kernel and the proof engine to see performance improvements; if the kernel API doesn't give you good enough performance on primitives, then there's no hope to optimizing the proof engine, but at the same time if the proof engine is not optimized right, improvements in the performance of the kernel API don't have noticeable impact.
 
 \todo{incorporate Andres' suggestions}
 I like the last two sentences.
@@ -241,17 +247,19 @@ I would instead lead with something along the lines of ``in many domains, the pe
 but e g signal processing was a huge mess too before the fast Fourier transform.
 coq abstractions are mostly accidents of history.
 no other system has a clear performance-conscious story for how these interfaces should be designed either.
+\end{comment}
 
-\section{Some sort of transition}
-\todo{Some sort of summary of argument-so-far here}
 
-To finish off the argument about slowness in dependently-typed proof assistants, I want to present four axes of performance bottlenecks.
-These axes are by no means exhaustive, but, in my experience, most interesting performance bottlenecks scale as a super-linear factor of one or more of these axes.
 
-\section{The Four Axes}\label{sec:perf-axes}
-I now present four major axes of performance.
-These are not comprehensive, but in my extensive experience with Coq, most performance bottlenecks scaled super-linearly as a function of at least one of these axes.
-\minortodo{introduce this section better}
+
+\section{The Four Axes of the Landscape}\label{sec:perf-axes}
+
+We've now seen what super-linear scaling in dependently typed proof assistants looks like.
+We've covered general arguments for why proof assistants might have such scaling, and what we believe broadly underpins the challenges of performance engineering in and on proof assistants.
+
+The rest of this chapter is devoted to mapping out the landscape of performance bottlenecks we've encountered in a way that we hope will illuminate structure in the performance bottlenecks which are neither specific to the domain of the proof being checked nor general to all performance engineering.
+We present a map of performance bottlenecks comprising four axes. 
+These axes are by no means exhaustive, but, in our experience, most interesting performance bottlenecks scale as a super-linear factor of one or more of these axes.
 
 \subsection{The Size of the Type} \label{sec:perf-axis:size-of-type}  \label{sec:quadratic-conj-certificate}
 

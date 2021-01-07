@@ -413,7 +413,7 @@ Definition T_rect (P : T -> Type)
 
   \minortodo{move figures up to be closer to references}
 
-  \begin{figure*}
+  \begin{figure}
       \beginTikzpictureStamped{
           \einput{performance-experiments/make-nested-sig2.txt}
           \einput{performance-experiments/destruct-nested-sig2.txt}
@@ -451,9 +451,9 @@ Definition T_rect (P : T -> Type)
   \end{tikzpicture}
   \caption{There are two ways we look at the performance of building a term like \mintinline{coq}{projT1 (projT2 ... (projT2 x))} with $n$ \mintinline{coq}{projT2}s: we can define a recursive function that computes this term and then use \mintinline{coq}{cbv} to reduce away the recursion, and time how long this takes; or we can build the term using \LtacTwo\space and then typecheck it.
     This plot displays both of these methods, and in addition displays the time it takes to run \mintinline{coq}{destruct} to break $x$ into its component fields, as lower bound for how long it takes to prove anything about a nested $\Sigma$ type with $n$ fields.} \label{fig:timing-make-destruct-nested-sig}
-\end{figure*}
+\end{figure}
 
-  \begin{figure*}
+  \begin{figure}
     \beginTikzpictureStamped{
         \einput{performance-experiments/make-nested-prim-sig2.txt}
         \einput{performance-experiments/destruct-nested-prim-sig2.txt}
@@ -491,9 +491,9 @@ Definition T_rect (P : T -> Type)
 \end{tikzpicture}
 \caption{The same graph as \autoref{fig:timing-make-destruct-nested-sig}, but with primitive projections turned on.
 Note that the $x$-axis is $10\times$ larger on this plot.} \label{fig:timing-make-destruct-nested-prim-sig}
-\end{figure*}
+\end{figure}
 
-  \begin{figure*}
+  \begin{figure}
       \beginTikzpictureStamped{
           \einput{performance-experiments/make-destruct-nested-record.txt}
           \einput{performance-experiments/make-destruct-nested-prim-record.txt}
@@ -536,7 +536,7 @@ Note that the $x$-axis is $10\times$ larger on this plot.} \label{fig:timing-mak
 (Presumably for large enough numbers of fields, we'd start getting a logarithmic overhead from parsing the name of the final field, which, when represented as $x$ followed by the field number in base 10, does grow in size as $\log_{10}n$.)
 Note that the non-monotonic timing is \emph{reproducible}, and we have asked the Coq developers about it at \coqbug{12270}.}
 \label{fig:timing-make-destruct-nested-record}
-\end{figure*}
+\end{figure}
 
 %#!/usr/bin/env bash
 %
@@ -549,7 +549,7 @@ Note that the non-monotonic timing is \emph{reproducible}, and we have asked the
 %
 %for kind in performance-experiments/make-nested-*-abstraction.txt; do
 %    cat <<'EOF'
-%\begin{figure*}
+%\begin{figure}
 %    \beginTikzpictureStamped{
 %EOF
 %    echo '        \einput{'"$kind"'}'
@@ -578,10 +578,10 @@ Note that the non-monotonic timing is \emph{reproducible}, and we have asked the
 %EOF
 %    echo '\caption{timing-'"$kind"'} \label{fig:timing-make-destruct-record-definition-abstraction-'"$kind"'}'
 %    cat <<'EOF'
-%\end{figure*}
+%\end{figure}
 %EOF
 %done
-\begin{figure*}
+\begin{figure}
     \beginTikzpictureStamped{
         \einput{performance-experiments/make-nested-prim-prod-abstraction.txt}
     }
@@ -617,8 +617,8 @@ Note that the non-monotonic timing is \emph{reproducible}, and we have asked the
     \end{axis}
 \end{tikzpicture}
 \caption{timing-performance-experiments/make-nested-prim-prod-abstraction.txt} \label{fig:timing-make-destruct-record-definition-abstraction-performance-experiments/make-nested-prim-prod-abstraction.txt}
-\end{figure*}
-\begin{figure*}
+\end{figure}
+\begin{figure}
     \beginTikzpictureStamped{
         \einput{performance-experiments/make-nested-prim-sig-abstraction.txt}
     }
@@ -654,8 +654,8 @@ Note that the non-monotonic timing is \emph{reproducible}, and we have asked the
     \end{axis}
 \end{tikzpicture}
 \caption{timing-performance-experiments/make-nested-prim-sig-abstraction.txt} \label{fig:timing-make-destruct-record-definition-abstraction-performance-experiments/make-nested-prim-sig-abstraction.txt}
-\end{figure*}
-\begin{figure*}
+\end{figure}
+\begin{figure}
     \beginTikzpictureStamped{
         \einput{performance-experiments/make-nested-prod-abstraction.txt}
     }
@@ -703,8 +703,8 @@ Note that the non-monotonic timing is \emph{reproducible}, and we have asked the
     \end{axis}
 \end{tikzpicture}
 \caption{timing-performance-experiments/make-nested-prod-abstraction.txt} \label{fig:timing-make-destruct-record-definition-abstraction-performance-experiments/make-nested-prod-abstraction.txt}
-\end{figure*}
-\begin{figure*}
+\end{figure}
+\begin{figure}
     \beginTikzpictureStamped{
         \einput{performance-experiments/make-nested-sig-abstraction.txt}
     }
@@ -752,7 +752,7 @@ Note that the non-monotonic timing is \emph{reproducible}, and we have asked the
     \end{axis}
 \end{tikzpicture}
 \caption{timing-performance-experiments/make-nested-sig-abstraction.txt} \label{fig:timing-make-destruct-record-definition-abstraction-performance-experiments/make-nested-sig-abstraction.txt}
-\end{figure*}
+\end{figure}
 
 \minortodo{Find more examples to talk about here?}
 

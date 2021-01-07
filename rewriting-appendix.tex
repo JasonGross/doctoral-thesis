@@ -1,7 +1,7 @@
 \chapter{Appendices for \autocommanameref{ch:rewriting}}\label{ch:appendix:rewriting}
 
 % We put this figure here so that the layout is better.
-\begin{figure*}
+\begin{figure}
 \newcommand{\PlusZeroTreeMValSubfloat}[1]{%
   \def\mval{#1}%
   \subfloat[No binders ($m=\mval$)]{%
@@ -33,11 +33,11 @@
 \PlusZeroTreeMValSubfloat{2}\qquad
 \PlusZeroTreeMValSubfloat{3}
   \caption{Timing of different partial-evaluation implementations for code with no binders for fixed $m$.  Note that we have a logarithmic time scale, because term size is proportional to $2^n$.}\label{fig:timing-Plus0Tree-fixed-m}
-\end{figure*}
+\end{figure}
 
 
 % We put this figure here so that the layout is better.
-\begin{figure*}
+\begin{figure}
 \newcommand{\PlusZeroTreeNValSubfloat}[1]{%
   \def\nval{#1}%
   \subfloat[No binders ($n=\nval$)]{%
@@ -75,7 +75,7 @@
 %\PlusZeroTreeNValSubfloat{8}\qquad
 \PlusZeroTreeNValSubfloat{9}
   \caption{Timing of different partial-evaluation implementations for code with no binders for fixed $n$ (1, 2, 3, and then we jump to 9)}\label{fig:timing-Plus0Tree-fixed-n}
-\end{figure*}
+\end{figure}
 
 % \begin{figure}
 %   \begin{tikzpicture}[only marks]
@@ -114,7 +114,7 @@ We can see from these graphs and the ones in \autoref{fig:timing-Plus0Tree-fixed
 
 \subsection{Additional Information on the Fiat Cryptography Benchmark}\label{sec:additionalPlots:FiatCrypto}\label{sec:additionalMacro}
 
-\begin{figure*}[b]
+\begin{figure}[b]
   \newcommand{\MacroSubfloat}[3]{%
     \subfloat[Timing of different partial-evaluation implementations for Fiat Cryptography as prime modulus grows (only #2 #3)]{%
   \resizebox{0.45\textwidth}{!}{\beginTikzpictureStamped[only marks]{
@@ -139,7 +139,7 @@ We can see from these graphs and the ones in \autoref{fig:timing-Plus0Tree-fixed
   \MacroSubfloat{WordByWordMontgomery}{word-by-word Montgomery}{x32}\qquad
   \MacroSubfloat{WordByWordMontgomery}{word-by-word Montgomery}{x64}%
   \caption{\label{fig:timing-macro-various}Timing of different partial-evaluation implementations for Fiat Cryptography vs.\ prime modulus}
-\end{figure*}
+\end{figure}
 
 It may also be useful to see performance results with absolute times, rather than normalized execution ratios vs.\ the original Fiat Cryptography implementation.
 Furthermore, the benchmarks fit into four quite different groupings: elements of the cross product of two algorithms (unsaturated Solinas and word-by-word Montgomery) and bitwidths of target architectures (32-bit or 64-bit).

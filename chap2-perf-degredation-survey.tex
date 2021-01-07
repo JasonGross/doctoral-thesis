@@ -285,7 +285,7 @@ If we are careful to construct the certificate manually without duplicating work
 \minortodo{improve data collection on perf test}
 \minortodo{make a note about more complicated types causing scaling factors to be worse, and not just impacting the leaves}
 
-\begin{figure*}
+\begin{figure}
     \beginTikzpictureStamped{
         \einput{performance-experiments/conj-True-repeat-constructor.txt}
     }
@@ -308,9 +308,9 @@ If we are careful to construct the certificate manually without duplicating work
     \end{axis}
 \end{tikzpicture}
 \caption{Timing of \mintinline{coq}{repeat constructor} to prove a conjunction of $n$ \mintinline{coq}{True}s} \label{fig:timing-conj-True-repeat-constructor}
-\end{figure*}
+\end{figure}
 
-\begin{figure*}
+\begin{figure}
 \beginTikzpictureStamped{
     \einput{performance-experiments/conj-True-ltac2.txt}
 }
@@ -347,7 +347,7 @@ If we are careful to construct the certificate manually without duplicating work
     \end{axis}
 \end{tikzpicture}
 \caption{Timing of manually building and typechecking a certificate to prove a conjunction of $n$ \mintinline{coq}{True}s using \LtacTwo} \label{fig:timing-conj-True-ltac2}
-\end{figure*}
+\end{figure}
 
 Note that for small, and even medium-sized examples, it's pretty reasonable to do duplicative work.
 It's only when we reach very large examples that we start hitting non-linear behavior.
@@ -411,7 +411,7 @@ Unfortunately, both of these incur quadratic typechecking cost, even though the 
 See \autoref{fig:timing-conj-True-let-ltac2} and \autoref{fig:timing-conj-True-app-ltac2}.
 \minortodo{improve data collection on perf test}
 
-\begin{figure*}
+\begin{figure}
     \beginTikzpictureStamped{
         \einput{performance-experiments/conj-True-let-ltac2.txt}
     }
@@ -448,9 +448,9 @@ See \autoref{fig:timing-conj-True-let-ltac2} and \autoref{fig:timing-conj-True-a
     \end{axis}
 \end{tikzpicture}
 \caption{Timing of manually building and typechecking a certificate to prove a conjunction of $n$ \mintinline{coq}{True}s using \mintinline{coq}{let}-binders using \LtacTwo} \label{fig:timing-conj-True-let-ltac2}
-\end{figure*}
+\end{figure}
 
-\begin{figure*}
+\begin{figure}
     \beginTikzpictureStamped{
         \einput{performance-experiments/conj-True-app-ltac2.txt}
     }
@@ -487,7 +487,7 @@ See \autoref{fig:timing-conj-True-let-ltac2} and \autoref{fig:timing-conj-True-a
     \end{axis}
 \end{tikzpicture}
 \caption{Timing of manually building and typechecking a certificate to prove a conjunction of $n$ \mintinline{coq}{True}s using abstraction and application using \LtacTwo} \label{fig:timing-conj-True-app-ltac2}
-\end{figure*}
+\end{figure}
 
 Recall that the typing rules for $\lambda$ and \texttt{let} are as follows:\minortodo{cite appendix with typing rules of Coq?}
 %\todo{maybe look in https://github.com/achlipala/frap and/or TAPL by Benjamin C. Pierce for how to render typing rules}
@@ -645,7 +645,7 @@ If the typechecker either decides to unfold \mintinline{coq}{id} before unfoldin
 However, if the typechecker instead unfolds \mintinline{coq}{id} \emph{last}, then we end up computing the normal form of $100!$, which takes a long time and a lot of memory.
 See \autoref{fig:timing-eq-refl-nat-factorial}.
 
-\begin{figure*}
+\begin{figure}
   \centering
     \beginTikzpictureStamped{
         \einput{performance-experiments/eq-refl-nat-factorial.txt}
@@ -665,7 +665,7 @@ See \autoref{fig:timing-eq-refl-nat-factorial}.
     \end{axis}
 \end{tikzpicture}
 \caption{Timing of typechecking \mintinline{coq}{@eq_refl nat (fact n) : @id nat (fact n) = fact n}} \label{fig:timing-eq-refl-nat-factorial}
-\end{figure*}
+\end{figure}
 
 Note that it is by no means obvious that the typechecker can meaningfully do anything about this.
 Breath-first search is significantly more complicated than depth-first, is harder to write good heuristics for, can incur enormous space overheads, and can be massively slower in cases where there are many options and the standard heuristics for depth-first unfolding in conversion-checking are sufficient.
@@ -702,7 +702,7 @@ See \autoref{fig:timing-name-resolution} for the timing of name resolution in Co
 See \autoref{fig:timing-nested-lambda-different-name} for the effect on internalizing a lambda with $n$ arguments.
 
 \minortodo{mention Coq version automatically, mention why we're using a different Coq version}
-\begin{figure*}
+\begin{figure}
     \beginTikzpictureStamped{
         \einput{performance-experiments-8-9/name-resolution.txt}
     }
@@ -728,8 +728,8 @@ See \autoref{fig:timing-nested-lambda-different-name} for the effect on internal
     \end{axis}
 \end{tikzpicture}
 \caption{Timing of internalizing a name 1000 times under $n$ binders} \label{fig:timing-name-resolution}
-\end{figure*}
-\begin{figure*}
+\end{figure}
+\begin{figure}
     \beginTikzpictureStamped{
         \einput{performance-experiments-8-9/nested-lambda-different-name.txt}
     }
@@ -755,7 +755,7 @@ See \autoref{fig:timing-nested-lambda-different-name} for the effect on internal
     \end{axis}
 \end{tikzpicture}
 \caption{Timing of internalizing a function with $n$ differently-named arguments of type \mintinline{coq}{True}} \label{fig:timing-nested-lambda-different-name}
-\end{figure*}
+\end{figure}
 
 \minortodo{Is this called internalization or is it called elaboration}
 
@@ -796,7 +796,7 @@ See \coqbug{8237} and \coqpr{11896} for a mitigation of some (but not all) issue
 
 See also \autoref{fig:timing-do-n-open-constr-True} and \autoref{fig:timing-open-constr-n-lambda-no-types}.
 
-\begin{figure*}
+\begin{figure}
     \beginTikzpictureStamped{
         \einput{performance-experiments/do-n-open-constr-True.txt}
     }
@@ -821,9 +821,9 @@ See also \autoref{fig:timing-do-n-open-constr-True} and \autoref{fig:timing-open
     \end{axis}
 \end{tikzpicture}
 \caption{Timing of generating 1000 evars in a context of size $n$} \label{fig:timing-do-n-open-constr-True}
-\end{figure*}
+\end{figure}
 
-\begin{figure*}
+\begin{figure}
     \beginTikzpictureStamped{
         \einput{performance-experiments/open-constr-n-lambda-no-types-same-names.txt}
         \einput{performance-experiments/open-constr-n-lambda-no-types-no-names.txt}
@@ -875,7 +875,7 @@ See also \autoref{fig:timing-do-n-open-constr-True} and \autoref{fig:timing-open
     \end{axis}
 \end{tikzpicture}
 \caption{Timing of generating a $\lambda$ with $n$ binders of unknown/evar type, all of which have either no name, the same name, or different names} \label{fig:timing-open-constr-n-lambda-no-types}
-\end{figure*}
+\end{figure}
 
 \subsubsection{Quadratic Substitution in Function Application} \label{sec:perf:quadratic-application}
 Consider the case of typechecking a non-dependent function applied to $n$ arguments.
@@ -894,7 +894,7 @@ See \autoref{fig:timing-app-n}.
 
 \todonz{[previous two paragraphs] say more}
 
-\begin{figure*}
+\begin{figure}
     \beginTikzpictureStamped{
         \einput{performance-experiments/app-n-ltac2.txt}
     }
@@ -917,7 +917,7 @@ See \autoref{fig:timing-app-n}.
     \end{axis}
 \end{tikzpicture}
 \caption{Timing of typechecking a function applied to $n$ arguments} \label{fig:timing-app-n}
-\end{figure*}
+\end{figure}
 
 \subsubsection{Quadratic Normalization by Evaluation} \label{sec:perf:quadratic-NbE} \label{sec:perf:quadratic-cbv}
 Normalization by evaluation (NbE) is a nifty way to implement reduction where function abstraction in the object language is represented by function abstraction in the metalanguage.
@@ -941,7 +941,7 @@ See \coqbug{11151} for an occurrence of this performance issue in the wild in Co
 See also \autoref{fig:timing-quadratic-cbv-lazy-PHOAS}.
 
 
-\begin{figure*}
+\begin{figure}
     \beginTikzpictureStamped{
         \einput{performance-experiments/quadratic-cbv-lazy-PHOAS.txt}
     }
@@ -972,7 +972,7 @@ See also \autoref{fig:timing-quadratic-cbv-lazy-PHOAS}.
     \end{axis}
 \end{tikzpicture}
 \caption{Timing of running \mintinline{coq}{cbv} and \mintinline{coq}{lazy} reduction on interpreting a PHOAS expression as a function of the number of binders} \label{fig:timing-quadratic-cbv-lazy-PHOAS}
-\end{figure*}
+\end{figure}
 
 \subsubsection{Quadratic Closure Compilation} \label{sec:perf:closure-compilation} \label{sec:perf:quadratic-vm-native}
 It's important to be able to perform reduction of terms in an optimized way.
@@ -996,7 +996,7 @@ Hence if we're trying to reuse the work of existing compilers to bootstrap good 
 
 See also \autoref{fig:timing-quadratic-vm-PHOAS} and \autoref{fig:timing-quadratic-native-PHOAS}.
 
-\begin{figure*}
+\begin{figure}
     \beginTikzpictureStamped{
         \einput{performance-experiments/quadratic-vm-PHOAS.txt}
     }
@@ -1019,9 +1019,9 @@ See also \autoref{fig:timing-quadratic-vm-PHOAS} and \autoref{fig:timing-quadrat
     \end{axis}
 \end{tikzpicture}
 \caption{Timing of running \mintinline{coq}{vm_compute} reduction on interpreting a PHOAS expression as a function of the number of binders} \label{fig:timing-quadratic-vm-PHOAS}
-\end{figure*}
+\end{figure}
 
-\begin{figure*}
+\begin{figure}
     \beginTikzpictureStamped{
         \einput{performance-experiments/quadratic-native-PHOAS.txt}
     }
@@ -1044,7 +1044,7 @@ See also \autoref{fig:timing-quadratic-vm-PHOAS} and \autoref{fig:timing-quadrat
     \end{axis}
 \end{tikzpicture}
 \caption{Timing of running \mintinline{coq}{native_compute} reduction on interpreting a PHOAS expression as a function of the number of binders} \label{fig:timing-quadratic-native-PHOAS}
-\end{figure*}
+\end{figure}
 
 \minortodo{maybe more examples here?}
 

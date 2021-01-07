@@ -10,10 +10,10 @@ The main contribution of this thesis, presented in \autoref{ch:rewriting}, is a 
 
 In building this work, the author developed a deep understanding of the performance bottlenecks faced and addressed.
 This chapter lays out the groundwork for understanding these performance bottlenecks, where they come from, and how our solution addressed the relevant performance issues.
-We describe what we have seen of the landscape of performance issues in proof assistants, and provide a map for navigation. 
+We describe what we have seen of the landscape of performance issues in proof assistants, and provide a map for navigation.
 Our hope is that readers will be able to apply our map to performance bottlenecks they encounter in dependently-typed tactic-driven proof assistants like Coq.
 
-\section{Exponential Domain}\label{sec:perf-failures:exponential-domain}
+\section{Exponential Domain}\label{sec:perf-failures:exponential-domain}\label{sec:fiat-crypto-codegen-numbers}
 
 We sketch out the main differences between performance issues we've encountered in dependently-typed proof assistants and performance issues in other languages.
 Some of these differences are showcased through a palette of real performance issues that have arisen in Coq.
@@ -101,7 +101,6 @@ After scaling the example a bit more, the proof-checking time will be noticeably
 Suddenly, though, scaling the example just a tiny bit more will result in the compiler not finishing even if we let it run for a day or more.
 This is what working in an exponential performance domain is like.
 
-\label{sec:fiat-crypto-codegen-numbers}%
 To put numbers on this, let us consider an example from Fiat Cryptography which involved generating C code to do arithmetic on very large numbers.
 The code generation was parameterized on the number of machine words needed to represent a single big integer.
 Our smallest toy example used two machine words; our largest example used 17.
@@ -258,7 +257,7 @@ We've now seen what super-linear scaling in dependently typed proof assistants l
 We've covered general arguments for why proof assistants might have such scaling, and what we believe broadly underpins the challenges of performance engineering in and on proof assistants.
 
 The rest of this chapter is devoted to mapping out the landscape of performance bottlenecks we've encountered in a way that we hope will illuminate structure in the performance bottlenecks which are neither specific to the domain of the proof being checked nor general to all performance engineering.
-We present a map of performance bottlenecks comprising four axes. 
+We present a map of performance bottlenecks comprising four axes.
 These axes are by no means exhaustive, but, in our experience, most interesting performance bottlenecks scale as a super-linear factor of one or more of these axes.
 
 \subsection{The Size of the Type} \label{sec:perf-axis:size-of-type}  \label{sec:quadratic-conj-certificate}
@@ -294,13 +293,21 @@ If we are careful to construct the certificate manually without duplicating work
 \minortodo{make a note about more complicated types causing scaling factors to be worse, and not just impacting the leaves}
 
 \begin{figure}
+  \centering
+  \newsavebox{\RepeatConstructorSubfloat}%
+  \sbox{\RepeatConstructorSubfloat}{%
+    \adjustbox{valign=t}{%
     \beginTikzpictureStamped{
         \einput{performance-experiments/conj-True-repeat-constructor.txt}
     }
+    \small
+    \pgfplotsset{every axis legend/.append style={
+        at={(0.5,-0.3)},
+        anchor=north}}
     \begin{axis}[xlabel=$n$,
         ylabel=time (s),
-        legend pos=north west,
-        width=0.95\textwidth,
+%        legend pos=north west,
+        width=0.4\textwidth,
         axis lines=left,
         xmin=0,
         scaled x ticks=false,
@@ -309,23 +316,28 @@ If we are careful to construct the certificate manually without duplicating work
         \addlegendentry{\mintinline{coq}{repeat constructor}}
         \addplotquadraticregression[no markers, black][x=param-n,y=repeat-constructor-user][col sep=comma]{performance-experiments/conj-True-repeat-constructor.txt};
         \addlegendentry{
-            $\pgfmathprintnumber{\pgfplotstableregressiona}n^2
+            \tiny$\pgfmathprintnumber{\pgfplotstableregressiona}n^2
             \pgfmathprintnumber[print sign]{\pgfplotstableregressionb}n
             \pgfmathprintnumber[print sign]{\pgfplotstableregressionc}$
         }
     \end{axis}
 \end{tikzpicture}
-\caption{Timing of \mintinline{coq}{repeat constructor} to prove a conjunction of $n$ \mintinline{coq}{True}s} \label{fig:timing-conj-True-repeat-constructor}
-\end{figure}
-
-\begin{figure}
-\beginTikzpictureStamped{
+    }%
+  }%
+  \newsavebox{\ConjTrueLtacTwoSubfloat}%
+  \sbox{\ConjTrueLtacTwoSubfloat}{%
+    \adjustbox{valign=t}{%
+  \beginTikzpictureStamped{
     \einput{performance-experiments/conj-True-ltac2.txt}
-}
+  }
+  \small
+    \pgfplotsset{every axis legend/.append style={
+        at={(0.5,-0.3)},
+        anchor=north}}
     \begin{axis}[xlabel=$n$,
         ylabel=time (s),
-        legend pos=north west,
-        width=0.95\textwidth,
+%        legend pos=north west,
+        width=0.4\textwidth,
         axis lines=left,
         xmin=0,
         scaled x ticks=false,
@@ -337,7 +349,7 @@ If we are careful to construct the certificate manually without duplicating work
         \edef\tcb{\pgfplotstableregressionb}
         \edef\tcc{\pgfplotstableregressionc}
         \addlegendentry{
-            $\pgfmathprintnumber{\tca}n^2
+            \tiny$\pgfmathprintnumber{\tca}n^2
             \pgfmathprintnumber[print sign]{\tcb}n
             \pgfmathprintnumber[print sign]{\tcc}$
         }
@@ -350,11 +362,18 @@ If we are careful to construct the certificate manually without duplicating work
         \edef\builda{\pgfplotstableregressiona}
         \edef\buildb{\pgfplotstableregressionb}
         \addlegendentry{
-            $\pgfmathprintnumber{\builda}n
+            \tiny$\pgfmathprintnumber{\builda}n
             \pgfmathprintnumber[print sign]{\buildb}$}
     \end{axis}
-\end{tikzpicture}
-\caption{Timing of manually building and typechecking a certificate to prove a conjunction of $n$ \mintinline{coq}{True}s using \LtacTwo} \label{fig:timing-conj-True-ltac2}
+    \end{tikzpicture}
+    }%
+  }%
+
+  \newcommand{\vphantomSubfloat}{\vphantom{\usebox{\RepeatConstructorSubfloat}}\vphantom{\usebox{\ConjTrueLtacTwoSubfloat}}}%
+  \subfloat[Timing of \mintinline{coq}{repeat constructor}]{\usebox{\RepeatConstructorSubfloat}\vphantomSubfloat\label{fig:timing-conj-True-repeat-constructor}}%
+  \quad
+  \subfloat[Timing of manually building and typechecking a certificate using \LtacTwo]{\usebox{\ConjTrueLtacTwoSubfloat}\vphantomSubfloat\label{fig:timing-conj-True-ltac2}}
+\caption{Proving a conjunction of $n$ \mintinline{coq}{True}s}\label{fig:timing-conj-True}
 \end{figure}
 
 Note that for small, and even medium-sized examples, it's pretty reasonable to do duplicative work.
@@ -392,7 +411,9 @@ There are two ways to do this: either the user can explicitly share subterms so 
 There are two ways for the user to share subterms: using let-binders, and using function abstraction.
 For example, rather than writing
 \begin{minted}{coq}
-@conj True (and True (and True True)) I (@conj True (and True True) I (@conj True True I I))
+@conj True (and True (and True True))
+      I
+      (@conj True (and True True) I (@conj True True I I))
 \end{minted}
 and having roughly $n^2$ occurrences\footnote{The exact count is $n(n+1)/2 - 1$.} of \mintinline{coq}{True} when we are trying to prove a conjunction of $n$ \mintinline{coq}{True}s, the user can instead write
 \begin{minted}{coq}
@@ -416,17 +437,22 @@ Alternatively, the user can write
 \end{minted}
 
 Unfortunately, both of these incur quadratic typechecking cost, even though the size of the term is linear.
-See \autoref{fig:timing-conj-True-let-ltac2} and \autoref{fig:timing-conj-True-app-ltac2}.
+See \autoref{fig:timing-conj-True-ltac2}.
 \minortodo{improve data collection on perf test}
 
 \begin{figure}
+  \subfloat[using \mintinline{coq}{let}-binders]{%
     \beginTikzpictureStamped{
         \einput{performance-experiments/conj-True-let-ltac2.txt}
     }
+    \small
+    \pgfplotsset{every axis legend/.append style={
+        at={(0.5,-0.3)},
+        anchor=north}}
     \begin{axis}[xlabel=$n$,
         ylabel=time (s),
-        legend pos=north west,
-        width=0.95\textwidth,
+%        legend pos=north west,
+        width=0.4\textwidth,
         axis lines=left,
         xmin=0,
         scaled x ticks=false,
@@ -438,7 +464,7 @@ See \autoref{fig:timing-conj-True-let-ltac2} and \autoref{fig:timing-conj-True-a
         \edef\tcb{\pgfplotstableregressionb}
         \edef\tcc{\pgfplotstableregressionc}
         \addlegendentry{
-            $\pgfmathprintnumber{\tca}n^2
+            \tiny$\pgfmathprintnumber{\tca}n^2
             \pgfmathprintnumber[print sign]{\tcb}n
             \pgfmathprintnumber[print sign]{\tcc}$
         }
@@ -451,21 +477,24 @@ See \autoref{fig:timing-conj-True-let-ltac2} and \autoref{fig:timing-conj-True-a
         \edef\builda{\pgfplotstableregressiona}
         \edef\buildb{\pgfplotstableregressionb}
         \addlegendentry{
-            $\pgfmathprintnumber{\builda}n
+            \tiny$\pgfmathprintnumber{\builda}n
             \pgfmathprintnumber[print sign]{\buildb}$}
     \end{axis}
 \end{tikzpicture}
-\caption{Timing of manually building and typechecking a certificate to prove a conjunction of $n$ \mintinline{coq}{True}s using \mintinline{coq}{let}-binders using \LtacTwo} \label{fig:timing-conj-True-let-ltac2}
-\end{figure}
-
-\begin{figure}
+\label{fig:timing-conj-True-let-ltac2}}
+  \quad
+  \subfloat[using abstraction and application]{%
     \beginTikzpictureStamped{
         \einput{performance-experiments/conj-True-app-ltac2.txt}
     }
+    \small
+    \pgfplotsset{every axis legend/.append style={
+        at={(0.5,-0.3)},
+        anchor=north}}
     \begin{axis}[xlabel=$n$,
         ylabel=time (s),
-        legend pos=north west,
-        width=0.95\textwidth,
+%        legend pos=north west,
+        width=0.4\textwidth,
         axis lines=left,
         xmin=0,
         scaled x ticks=false,
@@ -477,7 +506,7 @@ See \autoref{fig:timing-conj-True-let-ltac2} and \autoref{fig:timing-conj-True-a
         \edef\tcb{\pgfplotstableregressionb}
         \edef\tcc{\pgfplotstableregressionc}
         \addlegendentry{
-            $\pgfmathprintnumber{\tca}n^2
+            \tiny$\pgfmathprintnumber{\tca}n^2
             \pgfmathprintnumber[print sign]{\tcb}n
             \pgfmathprintnumber[print sign]{\tcc}$
         }
@@ -490,11 +519,12 @@ See \autoref{fig:timing-conj-True-let-ltac2} and \autoref{fig:timing-conj-True-a
         \edef\builda{\pgfplotstableregressiona}
         \edef\buildb{\pgfplotstableregressionb}
         \addlegendentry{
-            $\pgfmathprintnumber{\builda}n
+            \tiny$\pgfmathprintnumber{\builda}n
             \pgfmathprintnumber[print sign]{\buildb}$}
     \end{axis}
-\end{tikzpicture}
-\caption{Timing of manually building and typechecking a certificate to prove a conjunction of $n$ \mintinline{coq}{True}s using abstraction and application using \LtacTwo} \label{fig:timing-conj-True-app-ltac2}
+    \end{tikzpicture}
+\label{fig:timing-conj-True-app-ltac2}}
+  \caption{Timing of manually building and typechecking a certificate to prove a conjunction of $n$ \mintinline{coq}{True}s using \LtacTwo}\label{fig:timing-conj-True-ltac2}
 \end{figure}
 
 Recall that the typing rules for $\lambda$ and \texttt{let} are as follows:\minortodo{cite appendix with typing rules of Coq?}
@@ -653,7 +683,7 @@ If the typechecker either decides to unfold \mintinline{coq}{id} before unfoldin
 However, if the typechecker instead unfolds \mintinline{coq}{id} \emph{last}, then we end up computing the normal form of $100!$, which takes a long time and a lot of memory.
 See \autoref{fig:timing-eq-refl-nat-factorial}.
 
-\begin{figure}
+\begin{wrapfigure}{r}{0.5\textwidth}
   \centering
     \beginTikzpictureStamped{
         \einput{performance-experiments/eq-refl-nat-factorial.txt}
@@ -673,13 +703,13 @@ See \autoref{fig:timing-eq-refl-nat-factorial}.
     \end{axis}
 \end{tikzpicture}
 \caption{Timing of typechecking \mintinline{coq}{@eq_refl nat (fact n) : @id nat (fact n) = fact n}} \label{fig:timing-eq-refl-nat-factorial}
-\end{figure}
+\end{wrapfigure}
 
 Note that it is by no means obvious that the typechecker can meaningfully do anything about this.
 Breath-first search is significantly more complicated than depth-first, is harder to write good heuristics for, can incur enormous space overheads, and can be massively slower in cases where there are many options and the standard heuristics for depth-first unfolding in conversion-checking are sufficient.
 Furthermore, the more heuristics there are to tune conversion-checking, the more ``magic'' the algorithm seems, and the harder it is to debug when the performance is inadequate.
 
-As described in \autoref{sec:fiat-crypto-codegen-numbers}, in fiat-crypto\todonz{first ref to name}, we got exponential slowdown due to this issue, with an estimated overhead of over four thousand millennia of extra typechecking time in the worst examples we were trying to handle.
+As described in \autoref{sec:fiat-crypto-codegen-numbers}, in Fiat Cryptography, we got exponential slowdown due to this issue, with an estimated overhead of over four thousand millennia of extra typechecking time in the worst examples we were trying to handle.
 
 \minortodo{maybe forward reference to the number of abstraction barriers}
 \minortodo{maybe include more about real-world fiat-crypto example here?}
@@ -703,10 +733,13 @@ None of these performance issues are insurmountable, but all of them are either 
 One key component of interactive proof assistants is figuring out which constant is referred to by a given name.
 It may be tempting to keep the context in an array or linked list.
 However, if looking up which constant or variable is referred to by a name is $\mathcal O(n)$, then internalizing a term with $n$ typed binders is going to be $\mathcal O(n^2)$, because we need to do name lookups for each binder.
-See \coqbug{9582} and \coqpr{9586}.
+See \coqbug{9582}; note that Coq 8.10 and later do not show this super-linear behavior due to \coqpr{9586}, and hence our plots in this section use Coq 8.9.1.
 
-See \autoref{fig:timing-name-resolution} for the timing of name resolution in Coq.
-\todonz{More details about what the graph shows}
+See \autoref{fig:timing-name-resolution} for the timing of name resolution in Coq as a function of how many binders are in the context.
+In particular, this plot measures the time it takes to resolve the name \texttt{I} a thousand times in a context with a given number of binders.%
+\footnote{%
+  This is done by measuring the time it takes to execute \mintinline{coq}{do 1000 (let v := uconstr:(I) in idtac)}.
+}
 See \autoref{fig:timing-nested-lambda-different-name} for the effect on internalizing a lambda with $n$ arguments.
 
 \minortodo{mention Coq version automatically, mention why we're using a different Coq version}
@@ -714,10 +747,13 @@ See \autoref{fig:timing-nested-lambda-different-name} for the effect on internal
     \beginTikzpictureStamped{
         \einput{performance-experiments-8-9/name-resolution.txt}
     }
+    \pgfplotsset{every axis legend/.append style={
+        at={(0.5,-0.3)},
+        anchor=north}}
     \begin{axis}[xlabel=\# binders,
         ylabel=time (s),
-        legend pos=north west,
-        width=0.95\textwidth,
+%        legend pos=north west,
+        width=0.4\textwidth,
         axis lines=left,
         xmin=0,
         scaled x ticks=false,
@@ -741,10 +777,13 @@ See \autoref{fig:timing-nested-lambda-different-name} for the effect on internal
     \beginTikzpictureStamped{
         \einput{performance-experiments-8-9/nested-lambda-different-name.txt}
     }
+    \pgfplotsset{every axis legend/.append style={
+        at={(0.5,-0.3)},
+        anchor=north}}
     \begin{axis}[xlabel=$n$,
         ylabel=time (s),
-        legend pos=north west,
-        width=0.95\textwidth,
+%        legend pos=north west,
+        width=0.4\textwidth,
         axis lines=left,
         xmin=0,
         scaled x ticks=false,
@@ -808,12 +847,16 @@ See also \autoref{fig:timing-do-n-open-constr-True} and \autoref{fig:timing-open
     \beginTikzpictureStamped{
         \einput{performance-experiments/do-n-open-constr-True.txt}
     }
+    \pgfplotsset{every axis legend/.append style={
+        at={(0.5,-0.3)},
+        anchor=north}}
     \begin{axis}[xlabel=$n$,
         ylabel=time (s),
-        legend pos=north west,
-        width=0.95\textwidth,
+%        legend pos=north west,
+        width=0.4\textwidth,
         axis lines=left,
         xmin=0,
+        xtick distance=500,
         scaled x ticks=false,
         scaled y ticks=false]
         \addplot[only marks,color=black] table[col sep=comma,x=param-n,y=open-constr-True-1000-user]{performance-experiments/do-n-open-constr-True.txt};
@@ -837,12 +880,16 @@ See also \autoref{fig:timing-do-n-open-constr-True} and \autoref{fig:timing-open
         \einput{performance-experiments/open-constr-n-lambda-no-types-no-names.txt}
         \einput{performance-experiments/open-constr-n-lambda-no-types-different-names.txt}
     }
+    \pgfplotsset{every axis legend/.append style={
+        at={(0.5,-0.3)},
+        anchor=north}}
     \begin{axis}[xlabel=$n$,
         ylabel=time (s),
-        legend pos=north west,
-        width=0.95\textwidth,
+%        legend pos=north west,
+        width=0.4\textwidth,
         axis lines=left,
         xmin=0,
+        xtick distance=500,
         scaled x ticks=false,
         scaled y ticks=false]
         \addplot[only marks,mark=*,color=black] table[col sep=comma,x=param-n,y=open-constr-user]{performance-experiments/open-constr-n-lambda-no-types-same-names.txt};
@@ -1213,7 +1260,6 @@ Time Program Definition curry_iso (C₁ C₂ D : Category)
     \label{fig:exponential-laws:def:coq}%
     The interesting components of $(\mathcal C₁ × \mathcal C₂ → \mathcal D) ≅ (\mathcal C₁ → (\mathcal C₂ → \mathcal D))$, in Coq.
     The surrounding definitions and notations required for this example to typecheck are given in \autoref{sec:abstraction-barriers:mismatch:example:exponential-laws:full-code}.%
-    \todo{Appendix .1 is a bad ref, how to format?}
   }
 \end{figure}
 

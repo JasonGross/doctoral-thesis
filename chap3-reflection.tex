@@ -496,7 +496,7 @@ Ltac f v x := (* reify var term *)
 \end{wrapfigure}
 
 The one part of proof by reflection that we've neglected up to this point is reification.
-There are many ways of performing reification; in \autoref{ch:reification-by-parametricity}, we discuss 18 different ways of implementing reification, using 6 different metaprogramming facilities in the Coq ecosystem: \Ltac, \LtacTwo, \Mtac~\cite{lessadhoc,Mtac2}, type classes~\cite{sozeau2008first}, canonical structures~\cite{gonthier2016small}, and reification-specific OCaml plugins (quote~\cite{quote-plugin}, template-coq~\cite{TemplateCoq}, ours).
+There are many ways of performing reification; in \autoref{ch:reification-by-parametricity}, we discuss 19 different ways of implementing reification, using 6 different metaprogramming facilities in the Coq ecosystem: \Ltac, \LtacTwo, \MtacTwo~\cite{lessadhoc,Mtac2}, type classes~\cite{sozeau2008first}, canonical structures~\cite{gonthier2016small}, and reification-specific OCaml plugins (quote~\cite{quote-plugin}\footnote{Note that this plugin was removed in Coq 8.10~\cite{coq-pr-remove-quote-plugin}, and so our plots no longer include this plugin.}, template-coq~\cite{TemplateCoq}, ours).
 \autoref{fig:ltac-reify-nobinders} displays the simplest case: an Ltac script to reify a tree of function applications and constants.
 Unfortunately, all methods we surveyed become drastically more complicated or slower (and usually both) when adapted to reify terms with variable bindings such as \texttt{let}-\texttt{in} or \texttt{$\lambda$} nodes.
 

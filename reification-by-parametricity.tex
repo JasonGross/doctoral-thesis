@@ -356,12 +356,7 @@ We will emphasize here that this strategy shines when the initial term is small,
 This strategy is not directly applicable for reification of \texttt{match} (rather than eliminators) or \letindots\space (rather than a definition that unfolds to \letindots), \texttt{forall} (rather than a definition that unfolds to \texttt{forall}), or when reification should not be modulo $\beta\iota\zeta$-reduction.
 
 \section{Performance Comparison} \label{sec:perf}
-We have done a performance comparison of the various methods of reification to the PHOAS language \texttt{@expr var} from \autoref{sec:phoas-expr-def} in Coq 8.7.1.%
-\footnote{%
-  Since then, the performance of \MtacTwo\space has improved significantly, and the other benchmarks have remained mostly unchanged.
-  We unfortunately have not had a chance to re-run the benchmarks.
-  \minortodo{re-run benchmarks}
-}
+We have done a performance comparison of the various methods of reification to the PHOAS language \texttt{@expr var} from \autoref{sec:phoas-expr-def} in Coq 8.12.2.
 A typical reification routine will obtain the term to be reified from the goal, reify it, run \texttt{transitivity (denote reified\_term)} (possibly after normalizing the reified term), and solve the side condition with something like \texttt{lazy [denote]; reflexivity}.
 Our testing on a few samples indicated that using \texttt{change} rather than \texttt{transitivity; lazy [denote]; reflexivity} can be around 3X slower; note that we do not test the time of \texttt{Defined}.
 
@@ -398,7 +393,7 @@ Sorted from slowest to fastest, most of the labels in \autoref{fig:graph-reif-no
     Unlike most other reification methods, there is a significant cost associated with handling more sorts of identifiers in canonical structures.
 \end{itemize}
 
-We note that on this benchmark our method is slightly faster than template-coq, which reifies to de Bruijn indices, and slightly slower than the quote plugin in the standard library and the OCaml plugin we wrote by hand.
+We note that on this benchmark our method is slightly faster than template-coq, which reifies to de Bruijn indices, and slightly slower than the quote plugin in the standard library\footnote{This plugin no longer appears in this graph because it was removed in Coq 8.10~\cite{coq-pr-remove-quote-plugin}, though it appears in the graph in \textcite{reification-by-parametricity}.} and the OCaml plugin we wrote by hand.
 
 \subsection{With Binders} \label{sec:perf:binders}
 
@@ -416,6 +411,7 @@ In addition to reification benchmarks, the graph in \autoref{fig:reif-binders} i
 The former is just barely faster than OCaml reification; the latter often takes longer than reification itself.
 The line for the template-coq plugin cuts off at around 10\,000 rather than around 20\,000 because at that point template-coq starts crashing with stack overflows.
 
+\todo{is this still true?}
 A nontrivial portion of the cost of ``Parametricity (reduced term)'' seems to be due to the fact that looking up the type of a binder is linear in the number of binders in the context, thus resulting in quadratic behavior of the retyping step that comes after abstraction in the \texttt{pattern} tactic.
 In Coq 8.8, this lookup is $\log n$, and so reification has become even faster than the plots indicate~\cite{coq-pr-fast-rel-lookup}.
 

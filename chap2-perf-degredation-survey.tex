@@ -12,7 +12,7 @@ In building this work, the author developed a deep understanding of the performa
 This chapter lays out the groundwork for understanding these performance bottlenecks, where they come from, a broader map of performance issues in proof assistants, and how our solution addressed the relevant performance issues.
 We hope readers will be able to apply our map to performance bottlenecks they encounter in dependently-typed tactic-driven proof assistants like Coq.
 
-\section{Approach to Performance Engineering}\label{sec:perf-failures:story}
+\section{Exponential Domain}\label{sec:perf-failures:exponential-domain}
 
 We sketch out the main differences between performance issues we've encountered in dependently-typed proof assistants and performance issues in other languages.
 Some of these differences are showcased through a palette of real performance issues that have arisen in Coq.
@@ -110,6 +110,17 @@ See \autoref{fig:timing-montgomery-fesub-before-user} and \autoref{fig:timing-mo
 \caption{Timing of synthesizing subtraction ($\log$-scale)} \label{fig:timing-montgomery-fesub-before-user-log}
 \end{figure*}
 
+\section{Motivating the Performance Map}%\label{sec:perf-failures:story}
+
+In most performance domains, solutions to performance bottlenecks are generally either hyper-specialized to the code being optimized or the domain of the algorithm, or else are so general as to be applicable to all performance engineering.
+For example, solving a performance issue might involving caching the result of a particular computation; caching is a very general solution, while the particular computation being run is hyper-specialized.
+Once factored like this, there is generally no remaining insight to be had about the particular performance bottleneck encountered.
+In our experience with proof assistants, most performance bottlenecks are far from the code being written and the domain being investigated, and are yet also far from general performance engineering.
+%There is structure specific to dependently typed proof assistants that shows up in performance bottlenecks.
+
+The example above is an instance of a performance bottleneck which is neither specific the domain (in our case, cryptographic code generation) nor general enough to apply to performance engineering outside of proof assistants.
+
+Where \emph{is} the bottleneck?
 Maybe, one might ask, were we generating unreasonable amounts of code?
 Each example using $n$ machine words generated $3n$ lines of code.
 How can exponential performance result from linear code?
@@ -122,7 +133,9 @@ Furthermore, because we often don't want to fully compute results when checking 
 It turns out that the actual code generation took less than 0.002\% of the total time on the largest examples we tested (just 14 seconds out of about 211 hours).
 The rest of the time was spent checking that the generated code in fact matched what comes out of the verified code generator.
 
-The fix itself is quite simple, only 21 characters long.\footnote{\texttt{Strategy 1 [Let\_In].} for those who are curious.}
+\section{Performance Engineering in Proof Assistants is Hard}
+
+The fix to the example is itself quite simple, being only 21 characters long.\footnote{\texttt{Strategy 1 [Let\_In].} for those who are curious.}
 However, tracking down this solution was quite involved, requiring the following pieces:
 \begin{enumerate}
   \item
@@ -214,20 +227,7 @@ See \autoref{fig:timing-montgomery-fesub-after-user} and \autoref{fig:timing-mon
 \caption{Timing of synthesizing subtraction after fixing the bottleneck ($\log$-scale)} \label{fig:timing-montgomery-fesub-after-user-log}
 \end{figure*}
 
-\todo{Some sort of summary of argument-so-far here}
-
-To finish off the argument about slowness in dependently-typed proof assistants, I want to present four axes of performance bottlenecks.
-These axes are by no means exhaustive, but, in my experience, most interesting performance bottlenecks scale as a super-linear factor of one or more of these axes.
-
-\section*{Misc Fragments}
-
-\todo{find place for this}
-In most performance domains, solutions to performance bottlenecks are generally either hyper-specialized to the code being optimized or the domain of the algorithm, or else are so general as to be applicable to all performance engineering.
-For example, solving a performance issue might involving caching the result of a particular computation; caching is a very general solution, while the particular computation being run is hyper-specialized.
-Once factored like this, there is generally no remaining insight to be had about the particular performance bottleneck encountered.
-In our experience with proof assistants, most performance bottlenecks are far from the code being written and the domain being investigated, and are yet also far from general performance engineering.
-%There is structure specific to dependently typed proof assistants that shows up in performance bottlenecks.
-
+\section{Fixing Performance Bottlenecks in the Proof Assistant Itself is Also Hard}
 
 \todo{Find a place for this (h/t conversation with Andres)}:  because we have a kernel and a proof engine on top of it, you need to simultaneously optimize the kernel and the proof engine to see performance improvements; if the kernel API doesn't give you good enough performance on primitives, then there's no hope to optimizing the proof engine, but at the same time if the proof engine is not optimized right, improvements in the performance of the kernel API don't have noticeable impact.
 
@@ -244,6 +244,12 @@ I would instead lead with something along the lines of ``in many domains, the pe
 but e g signal processing was a huge mess too before the fast Fourier transform.
 coq abstractions are mostly accidents of history.
 no other system has a clear performance-conscious story for how these interfaces should be designed either.
+
+\section{Some sort of transition}
+\todo{Some sort of summary of argument-so-far here}
+
+To finish off the argument about slowness in dependently-typed proof assistants, I want to present four axes of performance bottlenecks.
+These axes are by no means exhaustive, but, in my experience, most interesting performance bottlenecks scale as a super-linear factor of one or more of these axes.
 
 \section{The Four Axes}\label{sec:perf-axes}
 I now present four major axes of performance.

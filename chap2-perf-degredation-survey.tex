@@ -169,7 +169,12 @@ However, tracking down this solution was quite involved, requiring the following
     Knowing how to tweak the built-in defaults for parts of the system which most users expect to be able to treat as black-boxes.
 \end{enumerate}
 
-\begin{wrapfigure}{r}{0.5\textwidth}
+\todo{adjust spacing of figure}
+Note that even after this fix, the performance is \emph{still} exponential!
+However, the performance is good enough that we deemed it not currently worth digging into the profile to understand the remaining bottlenecks.
+See \autoref{fig:timing-montgomery-fesub-after-user}.
+
+\begin{figure}[h]
     \beginTikzpictureStamped{
         \einput{fiat-crypto-perf-logs/montgomery-fesub-after.txt}
     }
@@ -192,7 +197,7 @@ However, tracking down this solution was quite involved, requiring the following
         }
     \end{axis}
 \end{tikzpicture}
-\\
+\quad
     \beginTikzpictureStamped{
         \einput{fiat-crypto-perf-logs/montgomery-fesub-after.txt}
     }
@@ -217,11 +222,7 @@ However, tracking down this solution was quite involved, requiring the following
     \end{axis}
 \end{tikzpicture}
 \caption{Timing of synthesizing subtraction after fixing the bottleneck}\label{fig:timing-montgomery-fesub-after-user}
-\end{wrapfigure}
-\todo{adjust spacing of figure}
-Note that even after this fix, the performance is \emph{still} exponential!
-However, the performance is good enough that we deemed it not currently worth digging into the profile to understand the remaining bottlenecks.
-See \autoref{fig:timing-montgomery-fesub-after-user}.
+\end{figure}
 
 \section{Fixing Performance Bottlenecks in the Proof Assistant Itself is Also Hard}
 
@@ -645,13 +646,14 @@ However, if the typechecker instead unfolds \mintinline{coq}{id} \emph{last}, th
 See \autoref{fig:timing-eq-refl-nat-factorial}.
 
 \begin{figure*}
+  \centering
     \beginTikzpictureStamped{
         \einput{performance-experiments/eq-refl-nat-factorial.txt}
     }
     \begin{axis}[xlabel=$n$,
         ylabel=time (s),
         legend pos=north west,
-        width=0.95\textwidth,
+        width=0.4\textwidth,
         axis lines=left,
         xmin=0,
         scaled x ticks=false,

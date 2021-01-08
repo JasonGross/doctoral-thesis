@@ -1,8 +1,9 @@
-\chapter{\readyforreadingmod{A Framework for Building Verified Partial Evaluators}{intro and maybe mentioning fusing compiler passes somewhere (but where?)}}\label{ch:rewriting}
+\chapter{\readyforreadingmod{A Framework for Building Verified Partial Evaluators}{maybe mentioning fusing compiler passes somewhere (but where?)}}\label{ch:rewriting}
 
 \section{Introduction}\label{sec:rewriting:intro}
 
-\todonz{Drop intro}
+\begin{comment}
+%\todonz{Drop intro}
 
 Mechanized proof is gaining in importance for development of critical software infrastructure.
 Oft-cited examples include the CompCert verified C compiler~\cite{Compcert} and the seL4 verified operating-system microkernel~\cite{seL4SOSP09}.
@@ -22,6 +23,7 @@ On the other hand, it is surprisingly difficult to realize the last sentence wit
 The challenge is that we are not just implementing algorithms; we also want a proof to be checked by a small proof checker, and there is tension in designing such a checker, as fancier reduction strategies grow the trusted code base.
 It would seem like an abandonment of the spirit of proof assistants to bake in a reduction strategy per library, yet effective partial evaluation tends to be rather fine-tuned in this way.
 Performance tuning matters when generated code is thousands of lines long.
+\end{comment}
 
 In this chapter, we present an approach to verified partial evaluation in proof assistants, which requires no changes to proof checkers.
 To make the relevance concrete, we use the example of Fiat Cryptography~\cite{FiatCryptoSP19}, a Coq library that generates code for big-integer modular arithmetic at the heart of elliptic-curve-cryptography algorithms.

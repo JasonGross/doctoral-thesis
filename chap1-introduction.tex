@@ -547,6 +547,7 @@ Sufficiently small and well-written programs can more easily be inspected and ve
 
 The proof assistant Coq, which is the primary proof assistant we consider in this thesis, is a decent example of satisfying the de Bruijn criterion.
 There is a large untrusted codebase which includes the proof scripting language \Ltac, used for generating proofs and doing type inference.
+\label{sec:ltac-first-mention}
 There's a much smaller kernel which checks the proofs, and Coq is even shipped with a separate checker program, \texttt{coqchk}, for checking proof objects saved to disk.
 Moreover, in the past year, a checker for Coq's proof objects has been implemented in Coq itself and formally verified with respect to the type theory underlying Coq~\cite{Coq2019Sozeau}.
 

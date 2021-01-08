@@ -1,4 +1,4 @@
-\chapter{\readyforreadingmod{Reflective Program Transformation}{introduction, Nickolai's TODO (not sure what to do about it), and conclusion}}\label{ch:reflection}
+\chapter{\readyforreading{Reflective Program Transformation}}\label{ch:reflection}
 
 \section{Introduction}\label{sec:reflection:intro}\label{sec:reification-by-parametricity:intro:old}
 
@@ -18,20 +18,12 @@ The benefits listed above are particularly appealing in domains where goals are 
 For instance, consider verification of large software systems, where we might want to reify thousands of lines of source code.
 Popular methods turn out to be surprisingly slow, often to the point where, counter-intuitively, the majority of proof-execution time is spent in reification -- unless the proof engineer invests in writing a plugin directly in the proof assistant's metalanguage (e.g., OCaml for Coq).
 
-\todo{move this paragraph elsewhere}
-In this paper, we show that reification can be both simpler and faster than with standard methods.
-Perhaps surprisingly, we demonstrate how to reify terms almost entirely through reduction in the logic, with a small amount of tactic code for setup and no ML programming.
-Though our techniques should be broadly applicable, especially in proof assistants based on type theory, our experience is with Coq, and we review the requisite background in the remainder of this introduction.
-In \autoref{sec:reif-survey}, we summarize our survey into prior approaches to reification and provide high-quality implementations and documentation for them, serving a tutorial function independent of our new contributions.
-Experts on the subject might want to skip directly to \autoref{sec:reification-by-parametricity}, which explains our alternative technique.
-We benchmark our approach against 18 competitors in \autoref{sec:perf}.
-
 \subsection{Proof-Script Primer}
 \minortodo{rename this subsection}
 Basic Coq proofs are often written as lists of steps such as \mintinline{coq}{induction} on some structure, \mintinline{coq}{rewrite} using a known equivalence, or \mintinline{coq}{unfold} of a definition.
-Very quickly, proofs can become long and tedious, both to write and to read, and hence Coq provides \Ltac, a scripting language for proofs.
-As theorems and proofs grow in complexity, users frequently run into performance and maintainability issues with \Ltac.
-\todonz{[re this paragraph, especially ``and hence Coq provides \Ltac, a scripting language for proofs''] seems repetitive and out of place. already introduced Ltac earlier}
+As mentioned in \autoref{sec:intro:intro}, proofs can very quickly become long and tedious, both to write and to read, and hence Coq provides \Ltac, a scripting language for proofs, which we first mentioned in \autoref{sec:ltac-first-mention}.
+As theorems and proofs grow in complexity, users frequently run into performance and maintainability issues with \Ltac, some of which we've seen in \autoref{ch:perf-failures}.
+%\todonz{[re this paragraph, especially ``and hence Coq provides \Ltac, a scripting language for proofs''] seems repetitive and out of place. already introduced Ltac earlier}
 Consider the case where we want to prove that a large algebraic expression, involving many \letindots\space expressions, is even:
 \begin{minted}{coq}
 Inductive is_even : nat → Prop :=
@@ -515,7 +507,12 @@ If the metaprogramming language represents variables as de Bruijn indices, and w
 If the metaprogramming language represents variables as names, and we are reifying to a named representation, then we can reuse the names.
 If the representations mismatch, then we need to do extra work to align the representations, such as keeping some sort of finite map structure from binders in the metalanguage to binders in the AST.
 
-\todo{what's a good way to end this chapter?}
+\section{What's Next?}
+
+Having introduced and explained proof by reflection and reflective automation, we can now introduce the main contribution of this thesis.
+In the next chapter we'll present the reflective framework we developed for achieving adequate performance in the Fiat Cryptography project.
+
+
 %\section{Related Work}
 %\todo{this section}
 %\todo{mention RTac, etc}

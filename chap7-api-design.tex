@@ -1,7 +1,4 @@
-\chapter{Design-based fixes} \label{ch:design} \label{ch:api-design}
-
-\todo{cite \textcite{Deep2015Gu} in this chapter, very relevant}
-\todo{insert references to \cref{foot:break-abstraction:example:decision-tree-indexing} / \autoref{foot:break-abstraction:example:decision-tree-indexing} in \fullnameref{sec:break-abstraction:example:decision-tree-indexing} and to \fullnameref{sec:break-abstraction:example:eval-decision-tree}}
+\chapter{\readyforreadingmod{Abstraction}{minor wording edits}}\label{ch:design}\label{ch:api-design}\label{ch:abstraction}
 
 \section{Introduction}
 In \Autoref{ch:intro,ch:perf-failures}, we talked about two different fundamental sources of performance bottlenecks in proof assistants:
@@ -12,11 +9,12 @@ In this chapter, we will dive further into the performance issues arising from t
 This chapter is primarily geared at the users of proof assistants, and especially at proof-assistant library developers.
 
 We saw in \nameref{sec:axis-nested-abstraction-barriers} three different ways that design choices for abstraction barriers can impact performance:
-We saw in \nameref{sec:abstraction-barriers:mismatch} that API mismatch results in type-size blowup; we saw a particularly striking example of this in \autoref{sec:break-abstraction:example:eval-decision-tree} where an API mismatch resulted in vastly more complicated theorem statements.
+We saw in \nameref{sec:abstraction-barriers:mismatch} that API mismatch results in type-size blowup; we saw a particularly striking example of this in \fullnameref{sec:break-abstraction:example:eval-decision-tree} where an API mismatch resulted in vastly more complicated theorem statements.
 We saw in \nameref{sec:abstraction-barriers:conversion-troubles} that imperfectly opaque abstraction barriers result in slowdown due to needless calls to the conversion checker.
 We saw in \nameref{sec:abstraction-barriers:packed-records} how the choice of whether to use packed or unpacked records impacts performance.
 
 In this chapter, we will focus primarily on the first of these three ways that design choices for abstraction barriers can impact performance; while it might seem like a simple question of good design, it turns out that good API design in dependently-typed programming languages is significantly harder than in simply-typed programming languages.
+We will additionally weave in ways that abstraction barriers have helped us develop our tools and libraries, though this use of abstraction barriers (sometimes called data abstraction) is already well-known in software engineering~\cite{Structure1996Sussman}.
 Mitigating the second source of performance bottlenecks, imperfectly opaque abstraction barriers, on the other hand, is actually just a question of meticulous tracking of how abstraction barriers are defined and used, and designing them so that they all unfolding is explicit.
 However, we will present an exception to the rule of opaque abstraction barriers in \autoref{sec:duality-conversion} in which deliberate breaking of all abstraction barriers in a careful way can result in performance gains of up to a factor of two:
 \autoref{sec:duality-conversion} presents one of our favorite design patterns for categorical constructions: a way of coaxing Coq's definitional equality into implementing \emph{proof by duality}, one of the most widely known ideas in category theory.
@@ -27,14 +25,20 @@ As far as I'm aware, there's not really a good way to get the best of all worlds
 
 Much of this chapter will draw on examples and experience from a category theory library we implemented in Coq~\cite{category-coq-experience}, which we introduce in \autoref{sec:category-theory-library}.
 
+The only prior work we've been able to find where abstraction barriers are mentioned for proof developent performance is \textcite{Deep2015Gu}.
+Though this paper suggests that good abstraction barriers resulted in simpler invariants which alleviated proof burden on the developer, we suspect that their use of abstraction barriers also dodged the proof-generation and proof-checking performance bottlenecks of large types, large terms, large goals, and excessive unfolding that plague developments with leaky abstraction barriers.
+
 \section{When And How To Use Dependent Types Painlessly}\label{sec:when-how-dependent-types}
-\todonz{[re this whole section] what is this about?  performance or something else?}
-The extremes are relatively easy:
+Though abstraction barriers have been studied in the context of simply typed languages~\cite{Structure1996Sussman}, we're not aware of any systematic investigation of abstraction in dependently typed languages.
+Hence we provide in this section some rules of thumb that we've learned for developing good abstraction in dependently typed languages.
+Following these guidelines, in our experience, tends to both allieveiate proof burden by decoupling and simplifying theorem statements, and also to improve the performance of individual proofs, sometimes by an order of magnitude or more, by avoiding the super-linear scaling laid out in \fullnameref{sec:perf-axes}.
+
+The extremes of using dependent types are relatively easy:
 \begin{itemize}
 \item
-  Total separation between proofs and programs, so that programs are simply typed, works relatively well
+  Total separation between proofs and programs, so that programs are simply typed, works relatively well.
 \item
-  Pre-existing mathematics, where objects are fully bundled with proofs and never need to be separated from them, also works relatively well
+  Pre-existing mathematics, where objects are fully bundled with proofs and never need to be separated from them, also works relatively well.
 \end{itemize}
 
 We present a rule of thumb for being in the middle:
@@ -55,7 +59,6 @@ If we need to insert an unknown number of elements into the middle of a length-i
 \minortodo{cite the rewriter more?}
 
 \section{A Brief Introduction To Our Category Theory Library}\label{sec:category-theory-library}
-\subsection{Introduction}
 Category theory~\cite{mac1998categories} is a popular all-encompassing mathematical formalism that casts familiar mathematical ideas from many domains in terms of a few unifying concepts.
 A \emph{category} can be described as a directed graph plus algebraic laws stating equivalences between paths through the graph.
 Because of this spartan philosophical grounding, category theory is sometimes referred to in good humor as ``formal abstract nonsense.''
@@ -80,13 +83,13 @@ Working around slow projections of $\Sigma$ types (\autoref{sec:nested-sigma-typ
 }
 
 Although pre-existing formalizations of category theory in proof assistants abound~\cite{Ahrens2013,megacz-coq-categories,o2004towards,copumpkin/categories,ConCaT%
-%fullbib:,CatsInZFC%
+,CatsInZFC%%fullbib:
 ,spitters2010developing%
-%fullbib:,kozen2006automating%
+,kozen2006automating%%fullbib:
 ,math-overflow-formalizations%
-%fullbib:,benediktahrens/coinductives,benediktahrens-Foundations-typesystems,Carvalho1998,jmchapman/restriction-categories,konn/category-agda,crypto-agda/crypto-agda,mattam82-cat,Coalgebras,Algebra,ahrens2010categorical,weber02program,pcapriotti/agda-categories,huet2000constructive,altucher1990mechanically,Category2-AFP,MathClasses,benediktahrens/rezk-completion,mohri1995formalization,spiwackverified%
+,benediktahrens/coinductives,benediktahrens-Foundations-typesystems,Carvalho1998,jmchapman/restriction-categories,konn/category-agda,crypto-agda/crypto-agda,mattam82-cat,Coalgebras,Algebra,ahrens2010categorical,weber02program,pcapriotti/agda-categories,huet2000constructive,altucher1990mechanically,Category2-AFP,MathClasses,benediktahrens/rezk-completion,mohri1995formalization,spiwackverified%%fullbib:
 %,rs-/triangles%
-%fullbib:,caccamo2001higher,aczel1993galois,wilander2005bicategory,logical2001implicit,dyckhoff1985category,wilander2012constructing,harrison1996formalized,agerholm1995experiments,nuo2013second%
+,caccamo2001higher,aczel1993galois,wilander2005bicategory,logical2001implicit,dyckhoff1985category,wilander2012constructing,harrison1996formalized,agerholm1995experiments,nuo2013second%%fullbib:
 }, %\footnote{This list very incomplete; see also \url{http://mathoverflow.net/questions/152497}% is more comprehensive, but we decided to cap our bibliography at one page, given the page limit.
 %}
 we chose to implement our library~\cite{HoTT/HoTT-categories} from scratch.
@@ -96,163 +99,37 @@ Beginning from scratch allowed me to familiarize myself with both category theor
 %At present, our library subsumes many of the constructions in most other such Coq libraries, and is not lacking any constructions in other libraries that are of a complexity requiring significant type checking time, other than monoidal categories.
 
 
-\medskip
 
-We begin our discussion in \autoref{sec:categories}\todonz{?} considering a mundane aspect of type definitions that has large consequences for usability and performance.
-With the expressive power of Coq's logic Gallina, we often face a choice of making \emph{parameters} of a type family explicit arguments to it, which looks like universal quantification; or of including them within values of the type, which looks like existential quantification.
-As a general principle, we found that the universal or \emph{outside} style improves the user experience modulo performance, while the existential or \emph{inside} style speeds up type checking.
-The rule that we settled on was: \emph{inside} definitions for pieces that are usually treated as black boxes by further constructions, and \emph{outside} definitions for pieces whose internal structure is more important later on.
-
-\autoref{sec:duality-conversion} presents one of our favorite design patterns for categorical constructions: a way of coaxing Coq's definitional equality into implementing \emph{proof by duality}, one of the most widely known ideas in category theory.
-In \autoref{sec:other}\todonz{?}, we describe a few other design choices that had large impacts on usability and performance, often of a few orders of magnitude.
-\minortodo{this is duplicative with text above}
+%\autoref{sec:duality-conversion} presents one of our favorite design patterns for categorical constructions: a way of coaxing Coq's definitional equality into implementing \emph{proof by duality}, one of the most widely known ideas in category theory.
+%In \autoref{sec:other}\todonz{?}, we describe a few other design choices that had large impacts on usability and performance, often of a few orders of magnitude.
+%\minortodo{this is duplicative with text above}
 
 
-\section{Internalizing Duality Arguments in Type Theory} \label{sec:duality-conversion}
-
-  In general, we tried to design our library so that trivial proofs on paper remain trivial when formalized.
-  One of Coq's main tools to make proofs trivial is the definitional equality, where some facts follow by computational reduction of terms.
-  We came up with some small tweaks to core definitions that allow a common family of proofs by \emph{duality} to follow by computation.
-
-  Proof by duality is a common idea in higher mathematics: sometimes, it is productive to flip the directions of all the arrows.
-  For example, if some fact about least upper bounds is provable, chances are that the same kind of fact about greatest lower bounds will also be provable in roughly the same way, by replacing ``greater than''s with ``less than''s and vice versa.
-
-  Concretely, there is a dualizing operation on categories that inverts the directions of the morphisms:
-\begin{minted}{coq}
-Notation "C ᵒᵖ" := ({| Ob := Ob C; Hom x y := Hom C y x; ... |}).
-\end{minted}
-
-  Dualization can be used, roughly, for example, to turn a proof that Cartesian product is an associative operation into a proof that disjoint union is an associative operation; products are dual to disjoint unions.
-
-  One of the simplest examples of duality in category theory is initial and terminal objects.
-  In a category \cat C, an initial object $0$ is one that has a unique morphism $0 \to x$ to every object $x$ in \cat C; a terminal object $1$ is one that has a unique morphism $x \to 1$ from every object $x$ in \cat C.
-  Initial objects in \cat C are terminal objects in $\cat{C}^\text{op}$.
-  The initial object of any category is unique up to isomorphism; for any two initial objects $0$ and $0'$, there is an isomorphism $0 \cong 0'$.
-  By flipping all of the arrows around, we can prove, by duality, that the terminal object is unique up to isomorphism.  More precisely, from a proof that an initial object of $\cat{C}^{\text{op}}$ is unique up to isomorphism, we get that any two terminal objects $1'$ and $1$ in $\cat{C}$, which are initial in $\cat{C}^{\text{op}}$, are isomorphic in $\cat{C}^{\text{op}}$.  Since an isomorphism $x \cong y$ in $\cat{C}^\text{op}$ is an isomorphism $y \cong x$ in \cat C, we get that $1$ and $1'$ are isomorphic in $\cat C$.
-
-  It is generally straightforward to see that there is an isomorphism between a theorem and its dual, and the technique of dualization is well-known to category theorists, among others.  We discovered that, by being careful about how we defined things, we could make theorems be judgmentally equal to their duals!  That is, when we prove a theorem
-  \begin{align*}
-  \mintinline{coq}{initial_ob_unique : ∀ C  } & \mintinline{coq}{(x y : Ob C),} \\
-  & \mintinline{coq}{is_initial_ob x → is_initial_ob y → x ≅ y},
-  \end{align*}
-  we can define another theorem
-  \begin{align*}
-  \mintinline{coq}{terminal_ob_unique : ∀ C  }& \mintinline{coq}{(x y : Ob C),} \\
-  & \mintinline{coq}{is_terminal_ob x → is_terminal_ob y → x ≅ y}
-  \end{align*}
-  as
-  \begin{center}
-  \mintinline{coq}{terminal_ob_unique C x y H H' := initial_ob_unique Cᵒᵖ y x H' H}.
-  \end{center}
-  % In homotopy type theory, we can convey our discovery by saying that not only are theorems homotopic to their duals, but they can be made to be judgmentally equal to their duals.
-  Interestingly, we found that in proofs with sufficiently complicated types, it can take a few seconds or more for Coq to accept such a definition; we are not sure whether this is due to peculiarities of the reduction strategy of our version of Coq, or speed dependency on the size of the normal form of the type (rather than on the size of the unnormalized type), or something else entirely.
-
-  In contrast to the simplicity of witnessing the isomorphism, it takes a significant amount of care in defining concepts, often to get around deficiencies of Coq, to achieve \emph{judgmental} duality.
-  Even now, we were unable to achieve this ideal for some theorems.
-  For example, category theorists typically identify the functor category $\cat{C}^\text{op} \to \cat{D}^\text{op}$ (whose objects are functors $\cat{C}^\text{op} \to \cat{D}^\text{op}$ and whose morphisms are natural transformations) with $(\cat{C} \to \cat{D})^\text{op}$ (whose objects are functors $\cat{C} \to \cat{D}$ and whose morphisms are flipped natural transformations).
-  These categories are canonically isomorphic (by the dualizing natural transformations), and, with the univalence axiom~\cite{HoTTBook}, they are equal as categories!
-  However, to make these categories definitionally equal, we need to define functors as a structural record type (see \autoref{sec:nominal-vs-structural}) rather than a nominal one.
-
-  \subsection{Duality Design Patterns}
-    One of the simplest theorems about duality is that it is involutive; we have that $(\cat{C}^{\text{op}})^{\text{op}} = \cat{C}$.
-    In order to internalize proof by duality via judgmental equality, we sometimes need this equality to be judgmental.
-    Although it is impossible in general in Coq 8.4 (see \hyperref[sec:no-judgmental-eta]{dodging judgmental \texorpdfstring{$\eta$}{η} on records} below), the latest version of Coq available when we were creating this library, we want at least to have it be true for any explicit category (that is, any category specified by giving its objects, morphisms, etc., rather than referred to via a local variable).
-
-    \subsubsection{Removing Symmetry} \label{sec:remove-symmetry}
-      Taking the dual of a category, one constructs a proof that $f \circ (g \circ h) = (f \circ g) \circ h$ from a proof that $(f \circ g) \circ h = f \circ (g \circ h)$.
-      The standard approach is to apply symmetry.
-      However, because applying symmetry twice results in a judgmentally different proof, we decided instead to extend the definition of \texttt{Category} to require both a proof of $f \circ (g \circ h) = (f \circ g) \circ h$ and a proof of $(f \circ g) \circ h = f \circ (g \circ h)$.
-      Then our dualizing operation simply swaps the proofs.
-      We added a convenience constructor for categories that asks only for one of the proofs, and applies symmetry to get the other one.
-      Because we formalized 0-truncated category theory, where the type of morphisms is required to have unique identity proofs, asking for this other proof does not result in any coherence issues.
-
-    \subsubsection{Dualizing the Terminal Category}
-      To make everything work out nicely, we needed the terminal category, which is the category with one object and only the identity morphism, to be the dual of itself.
-      We originally had the terminal category as a special case of the discrete category on $n$ objects.
-      Given a type $T$ with uniqueness of identity proofs, the discrete category on $T$ has as objects inhabitants of $T$, and has as morphisms from $x$ to $y$ proofs that $x = y$.
-      These categories are not judgmentally equal to their duals, because the type $x = y$ is not judgmentally the same as the type $y = x$.
-      As a result, we instead used the indiscrete category, which has \texttt{unit} as its type of morphisms.
-
-    \subsubsection{Which Side Does the Identity Go On?}
-      The last tricky obstacle we encountered was that when defining a functor out of the terminal category, it is necessary to pick whether to use the right identity law or the left identity law to prove that the functor preserves composition; both will prove that the identity composed with itself is the identity.
-      The problem is that dualizing the functor leads to a road block where either concrete choice turns out to be ``wrong,'' because the dual of the functor out of the terminal category will not be judgmentally equal to another instance of itself.
-      To fix this problem, we further extended the definition of category to require a proof that the identity composed with itself is the identity.
-
-    \subsubsection{Dodging Judgmental \texorpdfstring{$\eta$}{η} on Records}  \label{sec:no-judgmental-eta}
-      The last problem we ran into was the fact that sometimes, we really, really wanted judgmental $\eta$ on records.
-      The $\eta$ rule for records says any application of the record constructor to all the projections of an object yields exactly that object; e.g. for pairs, $x \equiv (x_1, x_2)$ (where $x_1$ and $x_2$ are the first and second projections, respectively).
-      For categories, the $\eta$ rule says that given a category \cat C, for a ``new'' category defined by saying that its objects are the objects of \cat C, its morphisms are the morphisms of \cat C, \ldots, the ``new'' category is judgmentally equal to \cat C.
-
-      In particular, we wanted to show that any functor out of the terminal category is the opposite of some other functor; namely, any $F : 1 \to \cat C$ should be equal to $(F^{\text{op}})^{\text{op}} : 1 \to (\cat C^{\text{op}})^{\text{op}}$.
-      However, without the judgmental $\eta$ rule for records, a local variable $\cat C$ cannot be judgmentally equal to $(\cat C^{\text{op}})^{\text{op}}$, which reduces to an application of the constructor for a category, unless the $\eta$ rule is built into the proof assistant.
-      To get around the problem, we made two variants of dual functors: given $F : \cat C \to \cat D$, we have $F^{\text{op}} : \cat C^{\text{op}} \to \cat D^{\text{op}}$, and given $F : C^{\text{op}} \to \cat D^{\text{op}}$, we have $F^{\text{op}'} : \cat C \to \cat D$.
-      There are two other flavors of dual functors, corresponding to the other two pairings of ${}^{\text{op}}$ with domain and codomain, but we have been glad to avoid defining them so far.  As it was, we ended up having four variants of dual natural transformation, and are very glad that we did not need sixteen.
-      When Coq 8.5 was released, we no longer needed to pull this trick, as we could simply enable the $\eta$ rule for records judgmentally.
-
-
-  \subsection{Moving Forward: Computation Rules for Pattern Matching} \label{sec:compute-match}
-    While we were able to work around most of the issues that we had in internalizing proof by duality, things would have been far nicer if we had more $\eta$ rules.
-    The $\eta$ rule for records is explained above.
-    The $\eta$ rule for equality says that the identity function is judgmentally equal to the function $f : \forall x\, y, x = y \to x = y$ defined by pattern matching on the first proof of equality; this rule is necessary to have any hope that applying symmetry twice is judgmentally the identity transformation.
-%    Matthieu Sozeau is currently working on giving Coq judgmental $\eta$ for records with one or more fields, though not for equality%fullbib:~\cite{mattam82/coq-polyproj}%
-%    .
-
-    \autoref{sec:associators} will give more examples of the pain of manipulating pattern matching on equality.
-    Homotopy type theory provides a framework that systematizes reasoning about proofs of equality, turning a seemingly impossible task into a manageable one.
-    However, there is still a significant burden associated with reasoning about equalities, because so few of the rules are judgmental.
-
-    We are currently attempting to divine the appropriate computation rules for pattern matching constructs, in the hopes of making reasoning with proofs of equality more pleasant.\footnote{See \coqbug[Coq Issue ]{3179} and \coqbug[Coq Issue ]{3119}.}
-
-\section{A Sampling of Abstraction Barriers}
+\section{A Sampling of Abstraction Barriers}\label{sec:abstraction-barriers}
 \minortodo{maybe this section should come first?}
 
 We acknowledge that the concept of performance issues arising from choices of abstraction barriers may seem a bit counter-intuitive.
 After all, abstraction barriers generally live in the mind of the developer, in some sense, and it seems a bit insane to say that performance of the code depends on the mental state of the programmer.
 
 Therefore, we will describe a sampling of abstraction barriers and the design choices that went into them, drawn from real examples\minortodoask{how much should I talk about the category theory library itself in my thesis?}, as well as the performance issues that arose from these choices.
+We will also discuss ways that various design choices increased or reduced the effort required of us to define objects and prove theorems.
 
-A few other pervasive strategies made non-trivial differences for proof performance or simplicity.
+%A few other pervasive strategies made non-trivial differences for proof performance or simplicity.
 
-  \subsection{Identities vs.\ Equalities; Associators} \label{sec:associators}
-    There are a number of constructions that are provably equal, but which we found more convenient to construct transformations between instead, despite the increased verbosity of such definitions.
-    This is especially true of constructions that strayed towards higher category theory.
-    For example, when constructing the Grothendieck construction of a functor to the category of categories, we found it easier to first generalize the construction from functors to pseudofunctors.
-    The definition of a pseudofunctor results from replacing various equalities in the definition of a functor with isomorphisms (analogous to bijections between sets or types), together with proofs that the isomorphisms obey various coherence properties.
-    This replacement helped because there are fewer operations on isomorphisms (namely, just composition and inverting), and more operations on proofs of equality (pattern matching, or anything definable via induction); when we were forced to perform all of the operations in the same way, syntactically, it was easier to pick out the operations and reason about them.
+\subsection{Abstraction in Limits and Colimits}\label{sec:abstraction:(co)limits}
 
-    Another example was defining the (co)unit of adjunction composition, where instead of a proof that $F \circ (G \circ H) = (F \circ G) \circ H$, we used a natural transformation, a coherent mapping between the actions of functors.
-    Where equality-based constructions led to computational reduction getting stuck at casts, the constructions with natural transformations reduce in all of the expected contexts.
+In many projects, choosing the right abstraction barriers is essential to reducing mistakes, improving maintainability and readability of code, and cutting down on time wasted by programmers trying to hold too many things in their heads at once.
+This project was no exception; we developed an allergic reaction to constructions with more than four or so arguments, after making one too many mistakes in defining limits and colimits.
+Limits are a generalization, to arbitrary categories, of subsets of Cartesian products.
+Colimits are a generalization, to arbitrary categories, of disjoint unions modulo equivalence relations.
 
-  \subsection{Opacity; Linear Dependence of Speed on Term Size}\label{sec:equality-reflection}\label{sec:term-size}
+Our original flattened definition of limits involved a single definition with 14 nested binders for types and algebraic properties.
+After a particularly frustrating experience hunting down a mistake in one of these components, we decided to factor the definition into a larger number of simpler definitions, including familiar categorical constructs like terminal objects and comma categories.
+This refactoring paid off even further when some months later we discovered the universal morphism definition of adjoint functors~\cite{wiki:adjoint-functors:universal-morphisms,ncatlab:adjoint+functor:UniversalArrows}.
+With a little more abstraction, we were able to reuse the same decomposition to prove the equivalence between universal morphisms and adjoint functors, with minimal effort.
 
-    Coq is slow at dealing with large terms.
-    For goals around 175,000 words long\footnote{When we had objects as arguments rather than fields (see \autoref{sec:arguments-vs-fields}), we encountered goals of about 219,633 words when constructing pointwise Kan extensions.}, we have found that simple tactics like \texttt{apply f\_equal} take around 1 second to execute, which makes interactive theorem proving very frustrating.\footnote{See also \url{https://coq.inria.fr/bugs/show\_bug.cgi?id=3280}.}
-    Even more frustrating is the fact that the largest contribution to this size is often arguments to irrelevant functions, i.e., functions that are provably equal to all other functions of the same type.
-    (These are proofs related to algebraic laws like associativity, carried inside many constructions.)
-
-    Opacification helps by preventing the type checker from unfolding some definitions, but it is not enough: the type checker still has to deal with all of the large arguments to the opaque function.
-    Hash-consing might fix the problem completely.
-
-    Alternatively, it would be nice if, given a proof that all of the inhabitants of a type were equal, we could forget about terms of that type, so that their sizes would not impose any penalties on term manipulation.  %  One could imagine a version of Coq's logic that knows to treat all proofs of an equality as equivalent to each other.  Alternatively, there might be some way to ignore these terms when doing most computation, without changing the underlying theory.
-    One solution might be irrelevant fields, like those of Agda, or implemented via the Implicit CiC~\cite{barras2008implicit,logical2001implicit}.
-
-  \subsection{Abstraction Barriers} \label{sec:abstraction-barriers}
-
-    In many projects, choosing the right abstraction barriers is essential to reducing mistakes, improving maintainability and readability of code, and cutting down on time wasted by programmers trying to hold too many things in their heads at once.
-    This project was no exception; we developed an allergic reaction to constructions with more than four or so arguments, after making one too many mistakes in defining limits and colimits.
-    Limits are a generalization, to arbitrary categories, of subsets of Cartesian products.
-    Colimits are a generalization, to arbitrary categories, of disjoint unions modulo equivalence relations.
-
-    Our original flattened definition of limits involved a single definition with 14 nested binders for types and algebraic properties.
-    After a particularly frustrating experience hunting down a mistake in one of these components, we decided to factor the definition into a larger number of simpler definitions, including familiar categorical constructs like terminal objects and comma categories.
-    This refactoring paid off even further when some months later we discovered the universal morphism definition of adjoint functors%fullbib:~\cite{wiki:adjoint-functors:universal-morphisms%
-    %fullbib:,ncatlab:adjoint+functor:UniversalArrows%
-    %fullbib:}%
-    .
-    With a little more abstraction, we were able to reuse the same decomposition to prove the equivalence between universal morphisms and adjoint functors, with minimal effort.
-
-    Perhaps less typical of programming experience, we found that picking the right abstraction barriers could drastically reduce compile time by keeping details out of sight in large goal formulas.
-    In the instance discussed in the introduction, we got a factor of ten speed-up by plugging holes in a leaky abstraction barrier!\footnote{See \githubref[commit ][ in HoTT/HoTT on GitHub]{HoTT/HoTT}{eb0099005171e642d467047933660980ddc66280} for the exact change.}
+Perhaps less typical of programming experience, we found that picking the right abstraction barriers could drastically reduce compile time by keeping details out of sight in large goal formulas.
+In the instance discussed in the introduction, we got a factor of ten speed-up by plugging holes in a leaky abstraction barrier!\footnote{See \githubref[commit ][ in HoTT/HoTT on GitHub]{HoTT/HoTT}{eb0099005171e642d467047933660980ddc66280} for the exact change.}
 
 \subsection{Nested Σ Types} \label{sec:nested-sigma-types}
   In Coq, there are two ways to represent a data structure with one constructor and many fields:
@@ -282,6 +159,103 @@ A few other pervasive strategies made non-trivial differences for proof performa
   Note that this is a sort-of dual to the problem of \autoref{sec:quadratic-conj-certificate}; there, we encountered quadratic overhead in applying the constructors (which is also a problem here), whereas right now we are discussing quadratic overhead in applying the eliminators.
   See \autoref{fig:timing-make-destruct-nested-sig} for the performance details.
 
+    \begin{figure}
+    \small
+    \subfloat[Normal Record]{
+      \beginTikzpictureStamped{
+          \einput{performance-experiments/make-nested-sig2.txt}
+          \einput{performance-experiments/destruct-nested-sig2.txt}
+          \einput{performance-experiments/make-nested-sig2-ltac2.txt}
+      }
+    \pgfplotsset{every axis legend/.append style={
+        at={(0.5,-0.3)},
+        anchor=north}}
+      \begin{axis}[xlabel=$n$,
+          ylabel=time (s),
+%          legend pos=north west,
+          width=0.4\textwidth,
+          axis lines=left,
+          xmin=0,
+          xmax=1000,
+          ymin=0,
+          ymax=10,
+          scaled x ticks=false,
+          scaled y ticks=false]
+          \addplot[only marks,mark=square,color=black] table[col sep=comma,x=param-n,y=repeat-destruct-user]{performance-experiments/destruct-nested-sig2.txt};
+          \addlegendentry{\tiny \mintinline{coq}{repeat destruct}}
+          \addplotquadraticregression[no markers, black][x=param-n,y=repeat-destruct-user][col sep=comma]{performance-experiments/destruct-nested-sig2.txt};
+          \edef\destructa{\pgfplotstableregressiona}\edef\destructb{\pgfplotstableregressionb}\edef\destructc{\pgfplotstableregressionc}
+          \addlegendentry{\tiny $\pgfmathprintnumber{\destructa}n^2\pgfmathprintnumber[print sign]{\destructb}n\pgfmathprintnumber[print sign]{\destructc}$}
+
+          \addplot[only marks,mark=triangle,color=black] table[col sep=comma,x=param-n,y=type-user]{performance-experiments/make-nested-sig2-ltac2.txt};
+          \addlegendentry{\tiny \mintinline{coq}{Constr.type} on an \LtacTwo-built projection}
+          \addplotcubicregression[no markers, black][x=param-n,y=type-user][col sep=comma]{performance-experiments/make-nested-sig2-ltac2.txt};
+          \edef\typea{\pgfplotstableregressiona}\edef\typeb{\pgfplotstableregressionb}\edef\typec{\pgfplotstableregressionc}\edef\typed{\pgfplotstableregressiond}
+          \addlegendentry{\tiny $\pgfmathprintnumber{\typea}n^3\pgfmathprintnumber[print sign]{\typeb}n^2\pgfmathprintnumber[print sign]{\typec}n\pgfmathprintnumber[print sign]{\typed}$}
+
+          \addplot[only marks,mark=*,color=black] table[col sep=comma,x=param-n,y=cbv-user]{performance-experiments/make-nested-sig2.txt};
+          \addlegendentry{\tiny building the projection via \mintinline{coq}{cbv}}
+          \addplotcubicregression[no markers, black][x=param-n,y=cbv-user][col sep=comma]{performance-experiments/make-nested-sig2.txt};
+          \edef\cbva{\pgfplotstableregressiona}\edef\cbvb{\pgfplotstableregressionb}\edef\cbvc{\pgfplotstableregressionc}\edef\cbvd{\pgfplotstableregressiond}
+          \addlegendentry{\tiny $\pgfmathprintnumber{\cbva}n^3\pgfmathprintnumber[print sign]{\cbvb}n^2\pgfmathprintnumber[print sign]{\cbvc}n\pgfmathprintnumber[print sign]{\cbvd}$}
+      \end{axis}
+  \end{tikzpicture}
+  \label{fig:timing-make-destruct-nested-sig-no-prim}}
+    \quad
+    \subfloat[With Primitive Projections]{%
+      \beginTikzpictureStamped{
+        \einput{performance-experiments/make-nested-prim-sig2.txt}
+        \einput{performance-experiments/destruct-nested-prim-sig2.txt}
+        \einput{performance-experiments/make-nested-prim-sig2-ltac2.txt}
+    }
+    \pgfplotsset{every axis legend/.append style={
+        at={(0.5,-0.3)},
+        anchor=north}}
+    \begin{axis}[xlabel=$n$,
+        ylabel=time (s),
+%        legend pos=north west,
+        width=0.4\textwidth,
+        axis lines=left,
+        xmin=0,
+        xmax=10000,
+        ymin=0,
+        ymax=10,
+        xtick distance=2500,
+        scaled x ticks=false,
+        scaled y ticks=false]
+        \addplot[only marks,mark=square,color=black] table[col sep=comma,x=param-n,y=repeat-destruct-user]{performance-experiments/destruct-nested-prim-sig2.txt};
+        \addlegendentry{\tiny \mintinline{coq}{repeat destruct}}
+        \addplotquadraticregression[no markers, black][x=param-n,y=repeat-destruct-user][col sep=comma]{performance-experiments/destruct-nested-prim-sig2.txt};
+        \edef\destructa{\pgfplotstableregressiona}\edef\destructb{\pgfplotstableregressionb}\edef\destructc{\pgfplotstableregressionc}
+        \addlegendentry{\tiny $\pgfmathprintnumber{\destructa}n^2\pgfmathprintnumber[print sign]{\destructb}n\pgfmathprintnumber[print sign]{\destructc}$}
+
+        \addplot[only marks,mark=triangle,color=black] table[col sep=comma,x=param-n,y=type-user]{performance-experiments/make-nested-prim-sig2-ltac2.txt};
+        \addlegendentry{\tiny \mintinline{coq}{Constr.type} on an \LtacTwo-built projection}
+        \addplotquadraticregression[no markers, black][x=param-n,y=type-user][col sep=comma]{performance-experiments/make-nested-prim-sig2-ltac2.txt};
+        \edef\typea{\pgfplotstableregressiona}\edef\typeb{\pgfplotstableregressionb}\edef\typec{\pgfplotstableregressionc}
+        \addlegendentry{\tiny $\pgfmathprintnumber{\typea}n^2\pgfmathprintnumber[print sign]{\typeb}n\pgfmathprintnumber[print sign]{\typec}$}
+
+        \addplot[only marks,mark=*,color=black] table[col sep=comma,x=param-n,y=cbv-user]{performance-experiments/make-nested-prim-sig2.txt};
+        \addlegendentry{\tiny building the projection via \mintinline{coq}{cbv}}
+        \addplotquadraticregression[no markers, black][x=param-n,y=cbv-user][col sep=comma]{performance-experiments/make-nested-prim-sig2.txt};
+        \edef\cbva{\pgfplotstableregressiona}\edef\cbvb{\pgfplotstableregressionb}\edef\cbvc{\pgfplotstableregressionc}
+        \addlegendentry{\tiny $\pgfmathprintnumber{\cbva}n^2\pgfmathprintnumber[print sign]{\cbvb}n\pgfmathprintnumber[print sign]{\cbvc}$}
+    \end{axis}
+    \end{tikzpicture}
+\label{fig:timing-make-destruct-nested-prim-sig}}
+    \caption{%
+      There are two ways we look at the performance of building a term like \mintinline{coq}{projT1 (projT2 ... (projT2 x))} with $n$ \mintinline{coq}{projT2}s:
+      we can define a recursive function that computes this term and then use \mintinline{coq}{cbv} to reduce away the recursion, and time how long this takes;
+      or we can build the term using \LtacTwo\space and then typecheck it.
+      These plots displays both of these methods, and in addition displays the time it takes to run \mintinline{coq}{destruct} to break $x$ into its component fields, as lower bound for how long it takes to prove anything about a nested $\Sigma$ type with $n$ fields.
+      The second graph displays the timing with primitive projections turned on.
+      Note that the $x$-axis is $10\times$ larger on this plot.%
+    }
+    \label{fig:timing-make-destruct-nested-sig}
+\end{figure}
+
+
+
   We can avoid much of the cost of building the projection term by using \emph{primitive projections} (see \autoref{sec:primitive-projections} for more explanation of this feature).
   Note that this feature is a sort-of dual to the proposed feature of dropping constructor parameters described in \autoref{sec:dropping-constructor-parameters}.
   This does drastically reduce the overhead of building the projection term, but only cuts in half the constant factor in destructing the variable so as to prove something about the projection.
@@ -296,15 +270,61 @@ A few other pervasive strategies made non-trivial differences for proof performa
   Both of these essentially solve the issue of quadratic overhead in projecting out the fields.
   This is the benefit of good abstraction barriers.
 
-  In Coq 8.11, \mintinline{coq}{destruct} is unfortunately still quadratic due to issues with name generation, but the constant factor is much smaller; see \autoref{fig:timing-make-destruct-record} and \coqbug{12271}.
+  In Coq 8.11, \mintinline{coq}{destruct} is unfortunately still quadratic due to issues with name generation, but the constant factor is much smaller; see \autoref{fig:timing-make-destruct-nested-record} and \coqbug{12271}.
+
+    \begin{figure}
+      \beginTikzpictureStamped{
+          \einput{performance-experiments/make-destruct-nested-record.txt}
+          \einput{performance-experiments/make-destruct-nested-prim-record.txt}
+        }
+        \begin{axis}[xlabel=$n$,
+            ylabel=time (s),
+            legend pos=north west,
+            width=0.95\textwidth,
+            axis lines=left,
+            xmin=0,
+            scaled x ticks=false,
+            scaled y ticks=false]
+            \addplot[only marks,mark=triangle,color=black] table[col sep=comma,x=param-n,y=record-user]{performance-experiments/make-destruct-nested-record.txt};
+            \addlegendentry{\mintinline{coq}{Record} command (without primitive projections)}
+            \addplotquadraticregression[no markers, black][x=param-n,y=record-user][col sep=comma]{performance-experiments/make-destruct-nested-record.txt};
+            \edef\recorda{\pgfplotstableregressiona}\edef\recordb{\pgfplotstableregressionb}\edef\recordc{\pgfplotstableregressionc}
+            \addlegendentry{$\pgfmathprintnumber{\recorda}n^2\pgfmathprintnumber[print sign]{\recordb}n\pgfmathprintnumber[print sign]{\recordc}$}
+
+            \addplot[only marks,mark=square*,color=black] table[col sep=comma,x=param-n,y=destruct-user]{performance-experiments/make-destruct-nested-prim-record.txt};
+            \addlegendentry{\mintinline{coq}{destruct} (with primitive projections)}
+            \addplotquadraticregression[no markers, black][x=param-n,y=destruct-user][col sep=comma]{performance-experiments/make-destruct-nested-prim-record.txt};
+            \edef\primdestructa{\pgfplotstableregressiona}\edef\primdestructb{\pgfplotstableregressionb}\edef\primdestructc{\pgfplotstableregressionc}
+            \addlegendentry{$\pgfmathprintnumber{\primdestructa}n^2\pgfmathprintnumber[print sign]{\primdestructb}n\pgfmathprintnumber[print sign]{\primdestructc}$}
+
+            \addplot[only marks,mark=square,color=black] table[col sep=comma,x=param-n,y=destruct-user]{performance-experiments/make-destruct-nested-record.txt};
+            \addlegendentry{\mintinline{coq}{destruct} (without primitive projections)}
+            \addplotquadraticregression[no markers, black][x=param-n,y=destruct-user][col sep=comma]{performance-experiments/make-destruct-nested-record.txt};
+            \edef\destructa{\pgfplotstableregressiona}\edef\destructb{\pgfplotstableregressionb}\edef\destructc{\pgfplotstableregressionc}
+            \addlegendentry{$\pgfmathprintnumber{\destructa}n^2\pgfmathprintnumber[print sign]{\destructb}n\pgfmathprintnumber[print sign]{\destructc}$}
+
+            \addplot[only marks,mark=triangle*,color=black] table[col sep=comma,x=param-n,y=record-user]{performance-experiments/make-destruct-nested-prim-record.txt};
+            \addlegendentry{\mintinline{coq}{Record} command (with primitive projections)}
+            \addplotquadraticregression[no markers, black][x=param-n,y=record-user][col sep=comma]{performance-experiments/make-destruct-nested-prim-record.txt};
+            \edef\primrecorda{\pgfplotstableregressiona}\edef\primrecordb{\pgfplotstableregressionb}\edef\primrecordc{\pgfplotstableregressionc}
+            \addlegendentry{$\pgfmathprintnumber{\primrecorda}n^2\pgfmathprintnumber[print sign]{\primrecordb}n\pgfmathprintnumber[print sign]{\primrecordc}$}
+        \end{axis}
+    \end{tikzpicture}
+    \caption{Timing of running a \mintinline{coq}{Record} command to define a record with $n$ fields, and the time to \mintinline{coq}{destruct} such a record.
+    Note that building the goal involving projecting out the last field takes less than 0.001s for all numbers of fields that we tested.
+(Presumably for large enough numbers of fields, we'd start getting a logarithmic overhead from parsing the name of the final field, which, when represented as $x$ followed by the field number in base 10, does grow in size as $\log_{10}n$.)
+Note that the non-monotonic timing is \emph{reproducible}, and seems to be due to hitting garbage collection; see \coqissue{12270} for more details.}
+\label{fig:timing-make-destruct-nested-record}
+\end{figure}
 
   We now come to the question: how much do we pay for using this abstraction barrier?
   That is, how much is the one-time cost of defining the abstraction barrier.
   Obviously, we can just make definitions for each of the projections and for the eliminator, and pay the cubic (or perhaps even quartic; see the leading term in \autoref{fig:timing-make-destruct-nested-sig}) overhead once.
   There's an interesting question, though, of if we can avoid this overhead all-together.
 
-  As seen in \autoref{fig:timing-make-destruct-record}, using records partially avoids the overhead.
+  As seen in \autoref{fig:timing-make-destruct-nested-record}, using records partially avoids the overhead.
   Defining the record type, though, still incurs a quadratic factor due to hash consing the projections; see \coqbug{12270}.
+
 
   \minortodo{remove use of ``you''}
   If your proof assistant does not support records out-of-the-box, or you want to avoid using them for whatever reason\footnote{Note that the UniMath library~\cite{voevodsky_2015,UniMath,introduction2018Grayson} does this. \minortodo{explain reasoning}}, you can instead define intermediate abstraction barriers by hand.
@@ -402,141 +422,23 @@ Definition T_rect (P : T -> Type)
       Converting between two differently defined projections takes time linear in the number of under-the-hood projections, i.e., linear in the number of fields.
       Doing this once for each projection thus takes quadratic time.
       Using a reflective representation of nested $\Sigma$ types, and thus being able to prove the $\eta$ principle once and for all in constant time, would not help here, because it takes quadratic time to convert between the type of the $\eta$ principle in reflective-land and the type that we want.
-      One thing that might help would be to have a version of conversion checking that was both memoized and could perform in-place reduction; see \coqbug{12269}.%
+      One thing that might help would be to have a version of conversion checking that was both memoized and could perform in-place reduction; see \coqissue{12269}.%
   }
   Worse, though, due to the issue with nested \mintinline{coq}{let}-binders described in \autoref{sec:sharing}, we would still incur a quadratic typechecking cost.
 
   We can, however, avoid this cost by turning on primitive projections via \texttt{Set Primitive Projections} at the top of this block of code:
   this enables judgmental $\eta$-conversion for primitive records, whence we can prove \mintinline{coq}{T_eta} with the proof term \mintinline{coq}{@eq_refl T x}.
-  See \Autoref{fig:timing-make-destruct-record-definition-abstraction-performance-experiments/make-nested-prim-prod-abstraction.txt,fig:timing-make-destruct-record-definition-abstraction-performance-experiments/make-nested-prim-sig-abstraction.txt,fig:timing-make-destruct-record-definition-abstraction-performance-experiments/make-nested-prod-abstraction.txt,fig:timing-make-destruct-record-definition-abstraction-performance-experiments/make-nested-sig-abstraction.txt} for performance details.
+
+  At least, so says the theoretical analysis.
+  Our best stab at implementing this still resulted in at least quadratic asymptotic performance, if not worse.
+
+  \begin{minorcomment}
+    See \Autoref{fig:timing-make-destruct-record-definition-abstraction-performance-experiments/make-nested-prim-prod-abstraction.txt,fig:timing-make-destruct-record-definition-abstraction-performance-experiments/make-nested-prim-sig-abstraction.txt,fig:timing-make-destruct-record-definition-abstraction-performance-experiments/make-nested-prod-abstraction.txt,fig:timing-make-destruct-record-definition-abstraction-performance-experiments/make-nested-sig-abstraction.txt} for performance details.
   \minortodo{Select one of these graphs and use it and give it the label {fig:timing-make-destruct-record-definition-abstraction}}
 
   \minortodo{move figures up to be closer to references}
 
-  \begin{figure}
-      \beginTikzpictureStamped{
-          \einput{performance-experiments/make-nested-sig2.txt}
-          \einput{performance-experiments/destruct-nested-sig2.txt}
-          \einput{performance-experiments/make-nested-sig2-ltac2.txt}
-      }
-      \begin{axis}[xlabel=$n$,
-          ylabel=time (s),
-          legend pos=north west,
-          width=0.95\textwidth,
-          axis lines=left,
-          xmin=0,
-          xmax=1000,
-          ymin=0,
-          ymax=10,
-          scaled x ticks=false,
-          scaled y ticks=false]
-          \addplot[only marks,mark=square,color=black] table[col sep=comma,x=param-n,y=repeat-destruct-user]{performance-experiments/destruct-nested-sig2.txt};
-          \addlegendentry{\mintinline{coq}{repeat destruct}}
-          \addplotquadraticregression[no markers, black][x=param-n,y=repeat-destruct-user][col sep=comma]{performance-experiments/destruct-nested-sig2.txt};
-          \edef\destructa{\pgfplotstableregressiona}\edef\destructb{\pgfplotstableregressionb}\edef\destructc{\pgfplotstableregressionc}
-          \addlegendentry{$\pgfmathprintnumber{\destructa}n^2\pgfmathprintnumber[print sign]{\destructb}n\pgfmathprintnumber[print sign]{\destructc}$}
 
-          \addplot[only marks,mark=triangle,color=black] table[col sep=comma,x=param-n,y=type-user]{performance-experiments/make-nested-sig2-ltac2.txt};
-          \addlegendentry{\mintinline{coq}{Constr.type} on an \LtacTwo-built projection}
-          \addplotcubicregression[no markers, black][x=param-n,y=type-user][col sep=comma]{performance-experiments/make-nested-sig2-ltac2.txt};
-          \edef\typea{\pgfplotstableregressiona}\edef\typeb{\pgfplotstableregressionb}\edef\typec{\pgfplotstableregressionc}\edef\typed{\pgfplotstableregressiond}
-          \addlegendentry{$\pgfmathprintnumber{\typea}n^3\pgfmathprintnumber[print sign]{\typeb}n^2\pgfmathprintnumber[print sign]{\typec}n\pgfmathprintnumber[print sign]{\typed}$}
-
-          \addplot[only marks,mark=*,color=black] table[col sep=comma,x=param-n,y=cbv-user]{performance-experiments/make-nested-sig2.txt};
-          \addlegendentry{building the projection via \mintinline{coq}{cbv}}
-          \addplotcubicregression[no markers, black][x=param-n,y=cbv-user][col sep=comma]{performance-experiments/make-nested-sig2.txt};
-          \edef\cbva{\pgfplotstableregressiona}\edef\cbvb{\pgfplotstableregressionb}\edef\cbvc{\pgfplotstableregressionc}\edef\cbvd{\pgfplotstableregressiond}
-          \addlegendentry{$\pgfmathprintnumber{\cbva}n^3\pgfmathprintnumber[print sign]{\cbvb}n^2\pgfmathprintnumber[print sign]{\cbvc}n\pgfmathprintnumber[print sign]{\cbvd}$}
-      \end{axis}
-  \end{tikzpicture}
-  \caption{There are two ways we look at the performance of building a term like \mintinline{coq}{projT1 (projT2 ... (projT2 x))} with $n$ \mintinline{coq}{projT2}s: we can define a recursive function that computes this term and then use \mintinline{coq}{cbv} to reduce away the recursion, and time how long this takes; or we can build the term using \LtacTwo\space and then typecheck it.
-    This plot displays both of these methods, and in addition displays the time it takes to run \mintinline{coq}{destruct} to break $x$ into its component fields, as lower bound for how long it takes to prove anything about a nested $\Sigma$ type with $n$ fields.} \label{fig:timing-make-destruct-nested-sig}
-\end{figure}
-
-  \begin{figure}
-    \beginTikzpictureStamped{
-        \einput{performance-experiments/make-nested-prim-sig2.txt}
-        \einput{performance-experiments/destruct-nested-prim-sig2.txt}
-        \einput{performance-experiments/make-nested-prim-sig2-ltac2.txt}
-    }
-    \begin{axis}[xlabel=$n$,
-        ylabel=time (s),
-        legend pos=north west,
-        width=0.95\textwidth,
-        axis lines=left,
-        xmin=0,
-        xmax=10000,
-        ymin=0,
-        ymax=10,
-        scaled x ticks=false,
-        scaled y ticks=false]
-        \addplot[only marks,mark=square,color=black] table[col sep=comma,x=param-n,y=repeat-destruct-user]{performance-experiments/destruct-nested-prim-sig2.txt};
-        \addlegendentry{\mintinline{coq}{repeat destruct}}
-        \addplotquadraticregression[no markers, black][x=param-n,y=repeat-destruct-user][col sep=comma]{performance-experiments/destruct-nested-prim-sig2.txt};
-        \edef\destructa{\pgfplotstableregressiona}\edef\destructb{\pgfplotstableregressionb}\edef\destructc{\pgfplotstableregressionc}
-        \addlegendentry{$\pgfmathprintnumber{\destructa}n^2\pgfmathprintnumber[print sign]{\destructb}n\pgfmathprintnumber[print sign]{\destructc}$}
-
-        \addplot[only marks,mark=triangle,color=black] table[col sep=comma,x=param-n,y=type-user]{performance-experiments/make-nested-prim-sig2-ltac2.txt};
-        \addlegendentry{\mintinline{coq}{Constr.type} on an \LtacTwo-built projection}
-        \addplotquadraticregression[no markers, black][x=param-n,y=type-user][col sep=comma]{performance-experiments/make-nested-prim-sig2-ltac2.txt};
-        \edef\typea{\pgfplotstableregressiona}\edef\typeb{\pgfplotstableregressionb}\edef\typec{\pgfplotstableregressionc}
-        \addlegendentry{$\pgfmathprintnumber{\typea}n^2\pgfmathprintnumber[print sign]{\typeb}n\pgfmathprintnumber[print sign]{\typec}$}
-
-        \addplot[only marks,mark=*,color=black] table[col sep=comma,x=param-n,y=cbv-user]{performance-experiments/make-nested-prim-sig2.txt};
-        \addlegendentry{building the projection via \mintinline{coq}{cbv}}
-        \addplotquadraticregression[no markers, black][x=param-n,y=cbv-user][col sep=comma]{performance-experiments/make-nested-prim-sig2.txt};
-        \edef\cbva{\pgfplotstableregressiona}\edef\cbvb{\pgfplotstableregressionb}\edef\cbvc{\pgfplotstableregressionc}
-        \addlegendentry{$\pgfmathprintnumber{\cbva}n^2\pgfmathprintnumber[print sign]{\cbvb}n\pgfmathprintnumber[print sign]{\cbvc}$}
-    \end{axis}
-\end{tikzpicture}
-\caption{The same graph as \autoref{fig:timing-make-destruct-nested-sig}, but with primitive projections turned on.
-Note that the $x$-axis is $10\times$ larger on this plot.} \label{fig:timing-make-destruct-nested-prim-sig}
-\end{figure}
-
-  \begin{figure}
-      \beginTikzpictureStamped{
-          \einput{performance-experiments/make-destruct-nested-record.txt}
-          \einput{performance-experiments/make-destruct-nested-prim-record.txt}
-        }
-        \begin{axis}[xlabel=$n$,
-            ylabel=time (s),
-            legend pos=north west,
-            width=0.95\textwidth,
-            axis lines=left,
-            xmin=0,
-            scaled x ticks=false,
-            scaled y ticks=false]
-            \addplot[only marks,mark=triangle,color=black] table[col sep=comma,x=param-n,y=record-user]{performance-experiments/make-destruct-nested-record.txt};
-            \addlegendentry{\mintinline{coq}{Record} command (without primitive projections)}
-            \addplotquadraticregression[no markers, black][x=param-n,y=record-user][col sep=comma]{performance-experiments/make-destruct-nested-record.txt};
-            \edef\recorda{\pgfplotstableregressiona}\edef\recordb{\pgfplotstableregressionb}\edef\recordc{\pgfplotstableregressionc}
-            \addlegendentry{$\pgfmathprintnumber{\recorda}n^2\pgfmathprintnumber[print sign]{\recordb}n\pgfmathprintnumber[print sign]{\recordc}$}
-
-            \addplot[only marks,mark=square*,color=black] table[col sep=comma,x=param-n,y=destruct-user]{performance-experiments/make-destruct-nested-prim-record.txt};
-            \addlegendentry{\mintinline{coq}{destruct} (with primitive projections)}
-            \addplotquadraticregression[no markers, black][x=param-n,y=destruct-user][col sep=comma]{performance-experiments/make-destruct-nested-prim-record.txt};
-            \edef\primdestructa{\pgfplotstableregressiona}\edef\primdestructb{\pgfplotstableregressionb}\edef\primdestructc{\pgfplotstableregressionc}
-            \addlegendentry{$\pgfmathprintnumber{\primdestructa}n^2\pgfmathprintnumber[print sign]{\primdestructb}n\pgfmathprintnumber[print sign]{\primdestructc}$}
-
-            \addplot[only marks,mark=square,color=black] table[col sep=comma,x=param-n,y=destruct-user]{performance-experiments/make-destruct-nested-record.txt};
-            \addlegendentry{\mintinline{coq}{destruct} (without primitive projections)}
-            \addplotquadraticregression[no markers, black][x=param-n,y=destruct-user][col sep=comma]{performance-experiments/make-destruct-nested-record.txt};
-            \edef\destructa{\pgfplotstableregressiona}\edef\destructb{\pgfplotstableregressionb}\edef\destructc{\pgfplotstableregressionc}
-            \addlegendentry{$\pgfmathprintnumber{\destructa}n^2\pgfmathprintnumber[print sign]{\destructb}n\pgfmathprintnumber[print sign]{\destructc}$}
-
-            \addplot[only marks,mark=triangle*,color=black] table[col sep=comma,x=param-n,y=record-user]{performance-experiments/make-destruct-nested-prim-record.txt};
-            \addlegendentry{\mintinline{coq}{Record} command (with primitive projections)}
-            \addplotquadraticregression[no markers, black][x=param-n,y=record-user][col sep=comma]{performance-experiments/make-destruct-nested-prim-record.txt};
-            \edef\primrecorda{\pgfplotstableregressiona}\edef\primrecordb{\pgfplotstableregressionb}\edef\primrecordc{\pgfplotstableregressionc}
-            \addlegendentry{$\pgfmathprintnumber{\primrecorda}n^2\pgfmathprintnumber[print sign]{\primrecordb}n\pgfmathprintnumber[print sign]{\primrecordc}$}
-        \end{axis}
-    \end{tikzpicture}
-    \caption{Timing of running a \mintinline{coq}{Record} command to define a record with $n$ fields, and the time to \mintinline{coq}{destruct} such a record.
-    Note that building the goal involving projecting out the last field takes less than 0.001s for all numbers of fields that we tested.
-(Presumably for large enough numbers of fields, we'd start getting a logarithmic overhead from parsing the name of the final field, which, when represented as $x$ followed by the field number in base 10, does grow in size as $\log_{10}n$.)
-Note that the non-monotonic timing is \emph{reproducible}, and we have asked the Coq developers about it at \coqbug{12270}.}
-\label{fig:timing-make-destruct-nested-record}
-\end{figure}
 
 %#!/usr/bin/env bash
 %
@@ -753,18 +655,160 @@ Note that the non-monotonic timing is \emph{reproducible}, and we have asked the
 \end{tikzpicture}
 \caption{timing-performance-experiments/make-nested-sig-abstraction.txt} \label{fig:timing-make-destruct-record-definition-abstraction-performance-experiments/make-nested-sig-abstraction.txt}
 \end{figure}
+\end{minorcomment}
 
 \minortodo{Find more examples to talk about here?}
 
+
+\section{Internalizing Duality Arguments in Type Theory} \label{sec:duality-conversion}
+In general, we tried to design our library so that trivial proofs on paper remain trivial when formalized.
+One of Coq's main tools to make proofs trivial is the definitional equality, where some facts follow by computational reduction of terms.
+We came up with some small tweaks to core definitions that allow a common family of proofs by \emph{duality} to follow by computation.
+
+This is an exception to the rule of opaque abstraction barriers.
+Here, deliberate breaking of all abstraction barriers in a careful way can result in performance gains of up to a factor of two!
+
+Proof by duality is a common idea in higher mathematics: sometimes, it is productive to flip the directions of all the arrows.
+For example, if some fact about least upper bounds is provable, chances are that the same kind of fact about greatest lower bounds will also be provable in roughly the same way, by replacing ``greater than''s with ``less than''s and vice versa.
+
+Concretely, there is a dualizing operation on categories that inverts the directions of the morphisms:
+\begin{minted}{coq}
+Notation "C ᵒᵖ" := ({| Ob := Ob C; Hom x y := Hom C y x; ... |}).
+\end{minted}
+
+Dualization can be used, roughly, for example, to turn a proof that Cartesian product is an associative operation into a proof that disjoint union is an associative operation; products are dual to disjoint unions.
+
+One of the simplest examples of duality in category theory is initial and terminal objects.
+In a category \cat C, an initial object $0$ is one that has a unique morphism $0 \to x$ to every object $x$ in \cat C; a terminal object $1$ is one that has a unique morphism $x \to 1$ from every object $x$ in \cat C.
+Initial objects in \cat C are terminal objects in $\cat{C}^\text{op}$.
+The initial object of any category is unique up to isomorphism; for any two initial objects $0$ and $0'$, there is an isomorphism $0 \cong 0'$.
+By flipping all of the arrows around, we can prove, by duality, that the terminal object is unique up to isomorphism.  More precisely, from a proof that an initial object of $\cat{C}^{\text{op}}$ is unique up to isomorphism, we get that any two terminal objects $1'$ and $1$ in $\cat{C}$, which are initial in $\cat{C}^{\text{op}}$, are isomorphic in $\cat{C}^{\text{op}}$.  Since an isomorphism $x \cong y$ in $\cat{C}^\text{op}$ is an isomorphism $y \cong x$ in \cat C, we get that $1$ and $1'$ are isomorphic in $\cat C$.
+
+  It is generally straightforward to see that there is an isomorphism between a theorem and its dual, and the technique of dualization is well-known to category theorists, among others.  We discovered that, by being careful about how we defined things, we could make theorems be judgmentally equal to their duals!  That is, when we prove a theorem
+  \begin{align*}
+  \mintinline{coq}{initial_ob_unique : ∀ C  } & \mintinline{coq}{(x y : Ob C),} \\
+  & \mintinline{coq}{is_initial_ob x → is_initial_ob y → x ≅ y},
+  \end{align*}
+  we can define another theorem
+  \begin{align*}
+  \mintinline{coq}{terminal_ob_unique : ∀ C  }& \mintinline{coq}{(x y : Ob C),} \\
+  & \mintinline{coq}{is_terminal_ob x → is_terminal_ob y → x ≅ y}
+  \end{align*}
+  as
+  \begin{center}
+  \mintinline{coq}{terminal_ob_unique C x y H H' := initial_ob_unique Cᵒᵖ y x H' H}.
+  \end{center}
+  % In homotopy type theory, we can convey our discovery by saying that not only are theorems homotopic to their duals, but they can be made to be judgmentally equal to their duals.
+  Interestingly, we found that in proofs with sufficiently complicated types, it can take a few seconds or more for Coq to accept such a definition; we are not sure whether this is due to peculiarities of the reduction strategy of our version of Coq, or speed dependency on the size of the normal form of the type (rather than on the size of the unnormalized type), or something else entirely.
+
+  In contrast to the simplicity of witnessing the isomorphism, it takes a significant amount of care in defining concepts, often to get around deficiencies of Coq, to achieve \emph{judgmental} duality.
+  Even now, we were unable to achieve this ideal for some theorems.
+  For example, category theorists typically identify the functor category $\cat{C}^\text{op} \to \cat{D}^\text{op}$ (whose objects are functors $\cat{C}^\text{op} \to \cat{D}^\text{op}$ and whose morphisms are natural transformations) with $(\cat{C} \to \cat{D})^\text{op}$ (whose objects are functors $\cat{C} \to \cat{D}$ and whose morphisms are flipped natural transformations).
+  These categories are canonically isomorphic (by the dualizing natural transformations), and, with the univalence axiom~\cite{HoTTBook}, they are equal as categories!
+  However, to make these categories definitionally equal, we need to define functors as a structural record type (see \autoref{sec:nominal-vs-structural}) rather than a nominal one.
+
+  \subsection{Duality Design Patterns}
+    One of the simplest theorems about duality is that it is involutive; we have that $(\cat{C}^{\text{op}})^{\text{op}} = \cat{C}$.
+    In order to internalize proof by duality via judgmental equality, we sometimes need this equality to be judgmental.
+    Although it is impossible in general in Coq 8.4 (see \hyperref[sec:no-judgmental-eta]{dodging judgmental \texorpdfstring{$\eta$}{η} on records} below), the latest version of Coq available when we were creating this library, we want at least to have it be true for any explicit category (that is, any category specified by giving its objects, morphisms, etc., rather than referred to via a local variable).
+
+    \subsubsection{Removing Symmetry} \label{sec:remove-symmetry}
+      Taking the dual of a category, one constructs a proof that $f \circ (g \circ h) = (f \circ g) \circ h$ from a proof that $(f \circ g) \circ h = f \circ (g \circ h)$.
+      The standard approach is to apply symmetry.
+      However, because applying symmetry twice results in a judgmentally different proof, we decided instead to extend the definition of \texttt{Category} to require both a proof of $f \circ (g \circ h) = (f \circ g) \circ h$ and a proof of $(f \circ g) \circ h = f \circ (g \circ h)$.
+      Then our dualizing operation simply swaps the proofs.
+      We added a convenience constructor for categories that asks only for one of the proofs, and applies symmetry to get the other one.
+      Because we formalized 0-truncated category theory, where the type of morphisms is required to have unique identity proofs, asking for this other proof does not result in any coherence issues.
+
+    \subsubsection{Dualizing the Terminal Category}
+      To make everything work out nicely, we needed the terminal category, which is the category with one object and only the identity morphism, to be the dual of itself.
+      We originally had the terminal category as a special case of the discrete category on $n$ objects.
+      Given a type $T$ with uniqueness of identity proofs, the discrete category on $T$ has as objects inhabitants of $T$, and has as morphisms from $x$ to $y$ proofs that $x = y$.
+      These categories are not judgmentally equal to their duals, because the type $x = y$ is not judgmentally the same as the type $y = x$.
+      As a result, we instead used the indiscrete category, which has \texttt{unit} as its type of morphisms.
+
+    \subsubsection{Which Side Does the Identity Go On?}
+      The last tricky obstacle we encountered was that when defining a functor out of the terminal category, it is necessary to pick whether to use the right identity law or the left identity law to prove that the functor preserves composition; both will prove that the identity composed with itself is the identity.
+      The problem is that dualizing the functor leads to a road block where either concrete choice turns out to be ``wrong,'' because the dual of the functor out of the terminal category will not be judgmentally equal to another instance of itself.
+      To fix this problem, we further extended the definition of category to require a proof that the identity composed with itself is the identity.
+
+    \subsubsection{Dodging Judgmental \texorpdfstring{$\eta$}{η} on Records}  \label{sec:no-judgmental-eta}
+      The last problem we ran into was the fact that sometimes, we really, really wanted judgmental $\eta$ on records.
+      The $\eta$ rule for records says any application of the record constructor to all the projections of an object yields exactly that object; e.g. for pairs, $x \equiv (x_1, x_2)$ (where $x_1$ and $x_2$ are the first and second projections, respectively).
+      For categories, the $\eta$ rule says that given a category \cat C, for a ``new'' category defined by saying that its objects are the objects of \cat C, its morphisms are the morphisms of \cat C, \ldots, the ``new'' category is judgmentally equal to \cat C.
+
+      In particular, we wanted to show that any functor out of the terminal category is the opposite of some other functor; namely, any $F : 1 \to \cat C$ should be equal to $(F^{\text{op}})^{\text{op}} : 1 \to (\cat C^{\text{op}})^{\text{op}}$.
+      However, without the judgmental $\eta$ rule for records, a local variable $\cat C$ cannot be judgmentally equal to $(\cat C^{\text{op}})^{\text{op}}$, which reduces to an application of the constructor for a category, unless the $\eta$ rule is built into the proof assistant.
+      To get around the problem, we made two variants of dual functors: given $F : \cat C \to \cat D$, we have $F^{\text{op}} : \cat C^{\text{op}} \to \cat D^{\text{op}}$, and given $F : C^{\text{op}} \to \cat D^{\text{op}}$, we have $F^{\text{op}'} : \cat C \to \cat D$.
+      There are two other flavors of dual functors, corresponding to the other two pairings of ${}^{\text{op}}$ with domain and codomain, but we have been glad to avoid defining them so far.  As it was, we ended up having four variants of dual natural transformation, and are very glad that we did not need sixteen.
+      When Coq 8.5 was released, we no longer needed to pull this trick, as we could simply enable the $\eta$ rule for records judgmentally.
+
+
+  \subsection{Moving Forward: Computation Rules for Pattern Matching} \label{sec:compute-match}
+    While we were able to work around most of the issues that we had in internalizing proof by duality, things would have been far nicer if we had more $\eta$ rules.
+    The $\eta$ rule for records is explained above.
+    The $\eta$ rule for equality says that the identity function is judgmentally equal to the function $f : \forall x\, y, x = y \to x = y$ defined by pattern matching on the first proof of equality; this rule is necessary to have any hope that applying symmetry twice is judgmentally the identity transformation.
+%    Matthieu Sozeau is currently working on giving Coq judgmental $\eta$ for records with one or more fields, though not for equality%fullbib:~\cite{mattam82/coq-polyproj}%
+%    .
+
+    %\autoref{sec:associators} will give more examples of the pain of manipulating pattern matching on equality.
+    Homotopy type theory provides a framework that systematizes reasoning about proofs of equality, turning a seemingly impossible task into a manageable one.
+    However, there is still a significant burden associated with reasoning about equalities, because so few of the rules are judgmental.
+
+    We have spent some time attempting to divine the appropriate computation rules for pattern matching constructs, in the hopes of making reasoning with proofs of equality more pleasant.\footnote{See \coqissue{3179} and \coqissue{3119}.}
+
+
 \begin{comment}
 \begin{subappendices}
- \todo{this chapter}
+  \todo{this chapter}
+
+    \subsection{Opacity; Linear Dependence of Speed on Term Size}\label{sec:equality-reflection}\label{sec:term-size}
+
+    Coq is slow at dealing with large terms.
+    For goals around 175,000 words long\footnote{When we had objects as arguments rather than fields (see \autoref{sec:arguments-vs-fields}), we encountered goals of about 219,633 words when constructing pointwise Kan extensions.}, we have found that simple tactics like \texttt{apply f\_equal} take around 1 second to execute, which makes interactive theorem proving very frustrating.\footnote{See also \coqbug{3280}.}
+    Even more frustrating is the fact that the largest contribution to this size is often arguments to irrelevant functions, i.e., functions that are provably equal to all other functions of the same type.
+    (These are proofs related to algebraic laws like associativity, carried inside many constructions.)
+
+    Opacification helps by preventing the type checker from unfolding some definitions, but it is not enough: the type checker still has to deal with all of the large arguments to the opaque function.
+    Hash-consing might fix the problem completely.
+
+    Alternatively, it would be nice if, given a proof that all of the inhabitants of a type were equal, we could forget about terms of that type, so that their sizes would not impose any penalties on term manipulation.
+    %  One could imagine a version of Coq's logic that knows to treat all proofs of an equality as equivalent to each other.  Alternatively, there might be some way to ignore these terms when doing most computation, without changing the underlying theory.
+    One solution might be irrelevant fields, like those of Agda, or implemented via the Implicit CiC~\cite{barras2008implicit,logical2001implicit}.
+
+
+    This chapter contains a number of miscellaneous fragments of how to design APIs for performance that we could not find a natural place for in any other chapter.
+Readers uninterested in the details should feel free to skip over this chapter, as it is somewhat disconnected from the rest of this thesis.
+
+%\section{Design Decisions in the Category Theory Library}\label{sec:misc:category-theory-design}
+
+All of the design principles in this chapter arose in the course of building the category theory library we implemented in Coq~\cite{category-coq-experience}, introduced in \autoref{sec:category-theory-library}.
+
+\section{Identities vs.\ Equalities; Associators}\label{sec:associators}
+There are a number of constructions that are provably equal, but which we found more convenient to construct transformations between instead, despite the increased verbosity of such definitions.
+This is especially true of constructions that strayed towards higher category theory.
+For example, when constructing the Grothendieck construction of a functor to the category of categories, we found it easier to first generalize the construction from functors to pseudofunctors.
+The definition of a pseudofunctor results from replacing various equalities in the definition of a functor with isomorphisms (analogous to bijections between sets or types), together with proofs that the isomorphisms obey various coherence properties.
+This replacement helped because there are fewer operations on isomorphisms (namely, just composition and inverting), and more operations on proofs of equality (pattern matching, or anything definable via induction); when we were forced to perform all of the operations in the same way, syntactically, it was easier to pick out the operations and reason about them.
+
+Another example was defining the (co)unit of adjunction composition, where instead of a proof that $F \circ (G \circ H) = (F \circ G) \circ H$, we used a natural transformation, a coherent mapping between the actions of functors.
+Where equality-based constructions led to computational reduction getting stuck at casts, the constructions with natural transformations reduce in all of the expected contexts.
+
 
 \section{Abstraction barriers}
 e.g., f (fst x) (snd x) where fst x := let (a, b) := x in a; vs let (a, b) := x in f a b.
 
 
 \section{more stuff from CT performance paper / presentation}
+
+
+\medskip
+
+We begin our discussion in \autoref{sec:categories}\todonz{?} considering a mundane aspect of type definitions that has large consequences for usability and performance.
+With the expressive power of Coq's logic Gallina, we often face a choice of making \emph{parameters} of a type family explicit arguments to it, which looks like universal quantification; or of including them within values of the type, which looks like existential quantification.
+As a general principle, we found that the universal or \emph{outside} style improves the user experience modulo performance, while the existential or \emph{inside} style speeds up type checking.
+The rule that we settled on was: \emph{inside} definitions for pieces that are usually treated as black boxes by further constructions, and \emph{outside} definitions for pieces whose internal structure is more important later on.
+
 \todo{this section}
 \end{subappendices}
 \end{comment}

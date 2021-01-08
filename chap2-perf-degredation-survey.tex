@@ -1373,7 +1373,7 @@ That is, when defining a monoid, for example, there are five ways to go about sp
     \item
     (mostly unpacked)
     A \emph{monoid on a carrier type $A$ under the binary operation $\cdot : A \to A \to A$ with identity element $e$} consists of a proof that $e$ is a left- and right-identity and a proof of associativity.
-    Note that MathClasses~\cite{MathClasses,Type2011Spitters} uses this strategy, as discussed in \textcite{Packaging2009Garillot}.
+    Note that MathClasses~\cite{MathClasses,Type2011Spitters,spitters2010developing} uses this strategy, as discussed in \textcite{Packaging2009Garillot}.
     \item
     (fully unpacked) A monoid on a carrier type $A$ under the binary operation $\cdot : A \to A \to A$ with identity element $e$ using a proof $p$ that $e$ is a left- and right-identity and a proof of $q$ of associativity consists of an element of the one-element unit type.
 \end{enumerate}
@@ -1386,7 +1386,7 @@ In higher category theory, it's common to talk about morphisms between morphisms
 Note that number of type parameters determines the constant factor out front of the exponential growth in the number of layers of mathematical constructions.
 
 How much is this overhead concretely?
-When developing a category theory library~\cite{category-coq-experience}, we sped up overall compilation time by approximately a factor of two, from around 16 minutes to around 8 minutes, by changing one of the two parameters to a field in the definition of a category.%
+When developing a category theory library~\cite{category-coq-experience}, described in more detail in \autoref{sec:category-theory-library}, we sped up overall compilation time by approximately a factor of two, from around 16 minutes to around 8 minutes, by changing one of the two parameters to a field in the definition of a category.%
 \footnote{%
   See \githubref[commit ][ of JasonGross/catdb on GitHub]{JasonGross/catdb}{209231ae3e94d5dbbc678c94930dcf585d53d555} for details.%
 }

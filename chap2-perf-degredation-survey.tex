@@ -1,4 +1,4 @@
-\chapter{The Performance Landscape in Type-Theoretic Proof Assistants} \label{ch:perf-failures}
+\chapter{\readyforreadingmod{The Performance Landscape in Type-Theoretic Proof Assistants}{conclusion and minor word edits}} \label{ch:perf-failures}
 
 \section{Introduction}\label{sec:perf-failures:story}
 
@@ -43,7 +43,7 @@ However, we claim that, in most languages, even as programs scale, these perform
 Most code written in C or C++ does not hit unbounded compile-time performance bottlenecks.
 Generally, for code that compiles in a reasonable amount of time, as the codebase size is scaled up, compile time will creep up linearly.
 
-\begin{wrapfigure}{r}{.5\textwidth}
+\begin{wrapfigure}[24]{r}{.5\textwidth}
   \centering
     \beginTikzpictureStamped{
         \einput{fiat-crypto-perf-logs/montgomery-fesub-before.txt}
@@ -72,7 +72,7 @@ Generally, for code that compiles in a reasonable amount of time, as the codebas
     \beginTikzpictureStamped{
         \einput{fiat-crypto-perf-logs/montgomery-fesub-before.txt}
     }
-    \begin{axis}[title={synthesis time (s) vs.\ \# limbs ($\log$-scale)},
+    \begin{axis}[title={synthesis time (s) ($\log$-scale) vs.\ \# limbs},
 %        legend pos=north west,
         width=0.4\textwidth,
         axis lines=left,
@@ -89,7 +89,8 @@ Generally, for code that compiles in a reasonable amount of time, as the codebas
 %        }
     \end{axis}
 \end{tikzpicture}
-    \caption{Timing of synthesizing subtraction\todonz{somewhat hard to make sense of these graphs without more explanation...}} \label{fig:timing-montgomery-fesub-before-user}
+    \caption{%Timing of
+Synthesizing Subtraction\protect\minortodonz{somewhat hard to make sense of these graphs without more explanation...}} \label{fig:timing-montgomery-fesub-before-user}
 \end{wrapfigure}
 
 In Coq, however, the scaling story is very different.
@@ -170,10 +171,12 @@ However, tracking down this solution was quite involved, requiring the following
     Knowing how to tweak the built-in defaults for parts of the system which most users expect to be able to treat as black-boxes.
 \end{enumerate}
 
-\todo{adjust spacing of figure}
+\minortodo{adjust spacing of figure}
 Note that even after this fix, the performance is \emph{still} exponential!
 However, the performance is good enough that we deemed it not currently worth digging into the profile to understand the remaining bottlenecks.
 See \autoref{fig:timing-montgomery-fesub-after-user}.
+
+$\left.\right.$
 
 \begin{figure}[h]
     \beginTikzpictureStamped{
@@ -202,7 +205,7 @@ See \autoref{fig:timing-montgomery-fesub-after-user}.
     \beginTikzpictureStamped{
         \einput{fiat-crypto-perf-logs/montgomery-fesub-after.txt}
     }
-    \begin{axis}[title={synthesis time (s) vs.\ \# limbs ($\log$-scale)},
+    \begin{axis}[title={synthesis time (s) ($\log$-scale) vs.\ \# limbs},
 %        legend pos=north west,
         width=0.4\textwidth,
         axis lines=left,
@@ -437,7 +440,7 @@ Alternatively, the user can write
 \end{minted}
 
 Unfortunately, both of these incur quadratic typechecking cost, even though the size of the term is linear.
-See \autoref{fig:timing-conj-True-ltac2}.
+See \autoref{fig:timing-conj-True-let-app-ltac2}.
 \minortodo{improve data collection on perf test}
 
 \begin{figure}
@@ -524,7 +527,7 @@ See \autoref{fig:timing-conj-True-ltac2}.
     \end{axis}
     \end{tikzpicture}
 \label{fig:timing-conj-True-app-ltac2}}
-  \caption{Timing of manually building and typechecking a certificate to prove a conjunction of $n$ \mintinline{coq}{True}s using \LtacTwo}\label{fig:timing-conj-True-ltac2}
+  \caption{Timing of manually building and typechecking a certificate to prove a conjunction of $n$ \mintinline{coq}{True}s using \LtacTwo}\label{fig:timing-conj-True-let-app-ltac2}
 \end{figure}
 
 Recall that the typing rules for $\lambda$ and \texttt{let} are as follows:\minortodo{cite appendix with typing rules of Coq?}
@@ -729,56 +732,55 @@ The claim of this subsection is not that any particular application is inherentl
 I will attempt to demonstrate this point with a palette of actual historical performance issues in Coq---some of which persist to this day---where the relevant axis was ``number of binders.''
 None of these performance issues are insurmountable, but all of them are either a result of seemingly reasonable decisions, have subtle interplay with seemingly disparate parts of the system, or else are to this day still mysterious despite the work of developers to investigate them.
 
-\subsubsection{Name Resolution} \label{sec:name-resolution}
-One key component of interactive proof assistants is figuring out which constant is referred to by a given name.
-It may be tempting to keep the context in an array or linked list.
-However, if looking up which constant or variable is referred to by a name is $\mathcal O(n)$, then internalizing a term with $n$ typed binders is going to be $\mathcal O(n^2)$, because we need to do name lookups for each binder.
-See \coqbug{9582}; note that Coq 8.10 and later do not show this super-linear behavior due to \coqpr{9586}, and hence our plots in this section use Coq 8.9.1.
-
-See \autoref{fig:timing-name-resolution} for the timing of name resolution in Coq as a function of how many binders are in the context.
-In particular, this plot measures the time it takes to resolve the name \texttt{I} a thousand times in a context with a given number of binders.%
-\footnote{%
-  This is done by measuring the time it takes to execute \mintinline{coq}{do 1000 (let v := uconstr:(I) in idtac)}.
-}
-See \autoref{fig:timing-nested-lambda-different-name} for the effect on internalizing a lambda with $n$ arguments.
-
-\minortodo{mention Coq version automatically, mention why we're using a different Coq version}
-\begin{figure}
+\begin{wrapfigure}{r}{0.5\textwidth}
+  \noindent
     \beginTikzpictureStamped{
         \einput{performance-experiments-8-9/name-resolution.txt}
     }
     \pgfplotsset{every axis legend/.append style={
-        at={(0.5,-0.3)},
+        at={(0.5,-0.35)},
         anchor=north}}
-    \begin{axis}[xlabel=\# binders,
-        ylabel=time (s),
+    \small
+    \begin{axis}[title={time (s) vs.\ \# binders},
+        xlabel=$n$,
 %        legend pos=north west,
         width=0.4\textwidth,
         axis lines=left,
         xmin=0,
         scaled x ticks=false,
         scaled y ticks=false,
-        ylabel style={
-            yshift = {width("$8\cdot 1$")}
-        }]
+        %ylabel style={
+        %    yshift = {width("$8\cdot 1$")}
+        %}
+      ]
         \addplot[only marks,color=black] table[col sep=comma,x=param-n,y=uconstr-I-1000-user]{performance-experiments-8-9/name-resolution.txt};
         \addlegendentry{1000 name resolutions}
         \addplot [thick,black] table[col sep=comma,x=param-n,
         y={create col/linear regression={y=uconstr-I-1000-user}}
         ]{performance-experiments-8-9/name-resolution.txt};
         \addlegendentry{
-            $\pgfmathprintnumber{\pgfplotstableregressiona}(\text{\# binders})
+            $\pgfmathprintnumber{\pgfplotstableregressiona}n
             \pgfmathprintnumber[print sign]{\pgfplotstableregressionb}$}
     \end{axis}
 \end{tikzpicture}
 \caption{Timing of internalizing a name 1000 times under $n$ binders} \label{fig:timing-name-resolution}
-\end{figure}
-\begin{figure}
+\end{wrapfigure}
+
+\subsubsection{Name Resolution} \label{sec:name-resolution}
+
+One key component of interactive proof assistants is figuring out which constant is referred to by a given name.
+It may be tempting to keep the context in an array or linked list.
+However, if looking up which constant or variable is referred to by a name is $\mathcal O(n)$, then internalizing a term with $n$ typed binders is going to be $\mathcal O(n^2)$, because we need to do name lookups for each binder.
+See \coqbug{9582}; note that Coq 8.10 and later do not show this super-linear behavior due to \coqpr{9586}, and hence our plots in this section use Coq 8.9.1.
+
+\minortodo{mention Coq version automatically, mention why we're using a different Coq version}
+\begin{wrapfigure}[14]{r}{0.5\textwidth}
     \beginTikzpictureStamped{
         \einput{performance-experiments-8-9/nested-lambda-different-name.txt}
     }
+    \small
     \pgfplotsset{every axis legend/.append style={
-        at={(0.5,-0.3)},
+        at={(0.5,-0.35)},
         anchor=north}}
     \begin{axis}[xlabel=$n$,
         ylabel=time (s),
@@ -788,13 +790,14 @@ See \autoref{fig:timing-nested-lambda-different-name} for the effect on internal
         xmin=0,
         scaled x ticks=false,
         scaled y ticks=false,
-        ylabel style={
-            yshift = {width("$8\cdot{}$")}
-        }]
+        %ylabel style={
+        %    yshift = {width("$8\cdot{}$")}
+        %}
+      ]
         \addplot[only marks,color=black] table[col sep=comma,x=param-n,y=uconstr-lambda-user]{performance-experiments-8-9/nested-lambda-different-name.txt};
-        \addlegendentry{parsing and internalization}
+        \addlegendentry{\tiny parsing and internalization}
         \addplotquadraticregression[no markers, black][x=param-n,y=uconstr-lambda-user][col sep=comma]{performance-experiments-8-9/nested-lambda-different-name.txt};
-        \addlegendentry{
+        \addlegendentry{\tiny
             $\pgfmathprintnumber{\pgfplotstableregressiona}n^2
             \pgfmathprintnumber[print sign]{\pgfplotstableregressionb}n
             \pgfmathprintnumber[print sign]{\pgfplotstableregressionc}$
@@ -802,7 +805,15 @@ See \autoref{fig:timing-nested-lambda-different-name} for the effect on internal
     \end{axis}
 \end{tikzpicture}
 \caption{Timing of internalizing a function with $n$ differently-named arguments of type \mintinline{coq}{True}} \label{fig:timing-nested-lambda-different-name}
-\end{figure}
+\end{wrapfigure}
+
+See \autoref{fig:timing-name-resolution} for the timing of name resolution in Coq as a function of how many binders are in the context.
+In particular, this plot measures the time it takes to resolve the name \texttt{I} a thousand times in a context with a given number of binders.%
+\footnote{%
+  This is done by measuring the time it takes to execute \mintinline{coq}{do 1000 (let v := uconstr:(I) in idtac)}.
+}
+See \autoref{fig:timing-nested-lambda-different-name} for the effect on internalizing a lambda with $n$ arguments.
+
 
 \minortodo{Is this called internalization or is it called elaboration}
 
@@ -844,11 +855,16 @@ See \coqbug{8237} and \coqpr{11896} for a mitigation of some (but not all) issue
 See also \autoref{fig:timing-do-n-open-constr-True} and \autoref{fig:timing-open-constr-n-lambda-no-types}.
 
 \begin{figure}
+  \centering
+  \newsavebox{\EvarsSubfloat}%
+  \sbox{\EvarsSubfloat}{%
+    \adjustbox{valign=t}{%
     \beginTikzpictureStamped{
         \einput{performance-experiments/do-n-open-constr-True.txt}
     }
+    \small
     \pgfplotsset{every axis legend/.append style={
-        at={(0.5,-0.3)},
+        at={(0.5,-0.35)},
         anchor=north}}
     \begin{axis}[xlabel=$n$,
         ylabel=time (s),
@@ -856,7 +872,7 @@ See also \autoref{fig:timing-do-n-open-constr-True} and \autoref{fig:timing-open
         width=0.4\textwidth,
         axis lines=left,
         xmin=0,
-        xtick distance=500,
+        xtick distance=1000,
         scaled x ticks=false,
         scaled y ticks=false]
         \addplot[only marks,color=black] table[col sep=comma,x=param-n,y=open-constr-True-1000-user]{performance-experiments/do-n-open-constr-True.txt};
@@ -870,16 +886,17 @@ See also \autoref{fig:timing-do-n-open-constr-True} and \autoref{fig:timing-open
             \pgfmathprintnumber[print sign]{\pgfplotstableregressionb}$
         }
     \end{axis}
-\end{tikzpicture}
-\caption{Timing of generating 1000 evars in a context of size $n$} \label{fig:timing-do-n-open-constr-True}
-\end{figure}
-
-\begin{figure}
+\end{tikzpicture}%
+}}
+  \newsavebox{\LambdaBindersSubfloat}%
+  \sbox{\LambdaBindersSubfloat}{%
+    \adjustbox{valign=t}{%
     \beginTikzpictureStamped{
         \einput{performance-experiments/open-constr-n-lambda-no-types-same-names.txt}
         \einput{performance-experiments/open-constr-n-lambda-no-types-no-names.txt}
         \einput{performance-experiments/open-constr-n-lambda-no-types-different-names.txt}
     }
+    \small
     \pgfplotsset{every axis legend/.append style={
         at={(0.5,-0.3)},
         anchor=north}}
@@ -889,7 +906,7 @@ See also \autoref{fig:timing-do-n-open-constr-True} and \autoref{fig:timing-open
         width=0.4\textwidth,
         axis lines=left,
         xmin=0,
-        xtick distance=500,
+        xtick distance=1000,
         scaled x ticks=false,
         scaled y ticks=false]
         \addplot[only marks,mark=*,color=black] table[col sep=comma,x=param-n,y=open-constr-user]{performance-experiments/open-constr-n-lambda-no-types-same-names.txt};
@@ -928,11 +945,47 @@ See also \autoref{fig:timing-do-n-open-constr-True} and \autoref{fig:timing-open
             \pgfmathprintnumber[print sign]{\ocdifferentc}$
         }
     \end{axis}
-\end{tikzpicture}
-\caption{Timing of generating a $\lambda$ with $n$ binders of unknown/evar type, all of which have either no name, the same name, or different names} \label{fig:timing-open-constr-n-lambda-no-types}
+    \end{tikzpicture}
+  }}
+  \newcommand{\vphantomSubfloat}{\vphantom{\usebox{\EvarsSubfloat}}\vphantom{\usebox{\LambdaBindersSubfloat}}}%
+  \subfloat[Timing of generating 1000 evars in a context of size $n$]{\usebox{\EvarsSubfloat}\vphantomSubfloat\label{fig:timing-do-n-open-constr-True}}%
+  \quad
+  \subfloat[Timing of generating a $\lambda$ with $n$ binders of unknown/evar type, all of which have either no name, the same name, or different names]{\usebox{\LambdaBindersSubfloat}\vphantomSubfloat\label{fig:timing-open-constr-n-lambda-no-types}}%
+\caption{Performance Benchmarks for Substitution}\label{fig:perf:capture-avoiding-subst}
 \end{figure}
 
 \subsubsection{Quadratic Substitution in Function Application} \label{sec:perf:quadratic-application}
+
+\begin{wrapfigure}[13]{r}{0.45\textwidth}
+    \beginTikzpictureStamped{
+        \einput{performance-experiments/app-n-ltac2.txt}
+    }
+    \small
+    \pgfplotsset{every axis legend/.append style={
+        at={(0.5,-0.3)},
+        anchor=north}}
+    \begin{axis}[xlabel=$n$,
+        ylabel=time (s),
+%        legend pos=north west,
+        width=0.4\textwidth,
+        axis lines=left,
+        xmin=0,
+        xtick distance=10000,
+        scaled x ticks=false,
+        scaled y ticks=false]
+        \addplot[only marks,color=black] table[col sep=comma,x=param-n,y=typecheck-user]{performance-experiments/app-n-ltac2.txt};
+        \addlegendentry{\tiny typechecking}
+        \addplotquadraticregression[no markers, black][x=param-n,y=typecheck-user][col sep=comma]{performance-experiments/app-n-ltac2.txt};
+        \addlegendentry{\tiny
+            $\pgfmathprintnumber{\pgfplotstableregressiona}n^2
+            \pgfmathprintnumber[print sign]{\pgfplotstableregressionb}n
+            \pgfmathprintnumber[print sign]{\pgfplotstableregressionc}$
+            }
+    \end{axis}
+\end{tikzpicture}
+\caption{Timing of typechecking a function applied to $n$ arguments} \label{fig:timing-app-n}
+\end{wrapfigure}
+
 Consider the case of typechecking a non-dependent function applied to $n$ arguments.
 If substitution is performed eagerly, following directly the rules of the type theory, \minortodo{cite the rules / reference an appendix, }then typechecking is quadratic.
 This is because the type of the function is $\mathcal{O}(n)$, and doing substitution $n$ times on a term of size $\mathcal{O}(n)$ is quadratic.
@@ -943,38 +996,54 @@ If only unary application nodes exist, it's much harder to solve.
 Note that this is important, for example, if you want to avoid the problem of quadratically-sized certificates by making a $n$-ary conjunction-constructor which is parameterized on a list of the conjuncts.
 Such a function could then be applied to the $n$ proofs of the conjuncts.
 
-See \coqbug{8232} and \coqbug{12118} and \coqpr{8255}.
+We've reported these issues in Coq in \coqbug{8232} and \coqbug{12118}, and a partial solution has been merged in \coqpr{8255}.
 
-See \autoref{fig:timing-app-n}.
+See \autoref{fig:timing-app-n} for timing details on a microbenchmark of this bottleneck, where we use \LtacTwo\space to build an application of a function to $n$ arguments of type \mintinline{coq}{unit}.
 
-\todonz{[previous two paragraphs] say more}
+\minortodonz{[previous two paragraphs] say more}
 
-\begin{figure}
+
+
+\subsubsection{Quadratic Normalization by Evaluation} \label{sec:perf:quadratic-NbE} \label{sec:perf:quadratic-cbv}
+
+\begin{wrapfigure}{r}{0.5\textwidth}
     \beginTikzpictureStamped{
-        \einput{performance-experiments/app-n-ltac2.txt}
+        \einput{performance-experiments/quadratic-cbv-lazy-PHOAS.txt}
     }
-    \begin{axis}[xlabel=$n$,
-        ylabel=time (s),
-        legend pos=north west,
-        width=0.95\textwidth,
+    \small
+    \pgfplotsset{every axis legend/.append style={
+        at={(0.5,-0.3)},
+        anchor=north}}
+    \begin{axis}[title={time (s) vs.\ \# binders},
+        xlabel=$n$,
+%        ylabel=time (s),
+%        legend pos=north west,
+        width=0.4\textwidth,
         axis lines=left,
         xmin=0,
         scaled x ticks=false,
         scaled y ticks=false]
-        \addplot[only marks,color=black] table[col sep=comma,x=param-n,y=typecheck-user]{performance-experiments/app-n-ltac2.txt};
-        \addlegendentry{typecheck}
-        \addplotquadraticregression[no markers, black][x=param-n,y=typecheck-user][col sep=comma]{performance-experiments/app-n-ltac2.txt};
-        \addlegendentry{
+        \addplot[only marks,mark=o,color=blue] table[col sep=comma,x=param-num-binders,y=cbv-user]{performance-experiments/quadratic-cbv-lazy-PHOAS.txt};
+        \addlegendentry{\tiny \mintinline{coq}{cbv}}
+        \addplotquadraticregression[no markers, blue][x=param-num-binders,y=cbv-user][col sep=comma]{performance-experiments/quadratic-cbv-lazy-PHOAS.txt};
+        \addlegendentry{\tiny
             $\pgfmathprintnumber{\pgfplotstableregressiona}n^2
             \pgfmathprintnumber[print sign]{\pgfplotstableregressionb}n
             \pgfmathprintnumber[print sign]{\pgfplotstableregressionc}$
-            }
+        }
+        \addplot[only marks,mark=*,color=black] table[col sep=comma,x=param-num-binders,y=lazy-user]{performance-experiments/quadratic-cbv-lazy-PHOAS.txt};
+        \addlegendentry{\tiny\mintinline{coq}{lazy}}
+        \addplotquadraticregression[no markers, black][x=param-num-binders,y=lazy-user][col sep=comma]{performance-experiments/quadratic-cbv-lazy-PHOAS.txt};
+        \addlegendentry{\tiny
+            $\pgfmathprintnumber{\pgfplotstableregressiona}n^2
+            \pgfmathprintnumber[print sign]{\pgfplotstableregressionb}n
+            \pgfmathprintnumber[print sign]{\pgfplotstableregressionc}$
+        }
     \end{axis}
 \end{tikzpicture}
-\caption{Timing of typechecking a function applied to $n$ arguments} \label{fig:timing-app-n}
-\end{figure}
+\caption{Timing of running \mintinline{coq}{cbv} and \mintinline{coq}{lazy} reduction on interpreting a PHOAS expression as a function of the number of binders} \label{fig:timing-quadratic-cbv-lazy-PHOAS}
+\end{wrapfigure}
 
-\subsubsection{Quadratic Normalization by Evaluation} \label{sec:perf:quadratic-NbE} \label{sec:perf:quadratic-cbv}
 Normalization by evaluation (NbE) is a nifty way to implement reduction where function abstraction in the object language is represented by function abstraction in the metalanguage.
 We discuss the details of how to implement NbE in \autoref{sec:thunk-eval-subst-term}.
 \minortodo{explain NbE?}
@@ -995,39 +1064,6 @@ If the term size is also proportional to $n$, then the result is quadratic blowu
 See \coqbug{11151} for an occurrence of this performance issue in the wild in Coq.
 See also \autoref{fig:timing-quadratic-cbv-lazy-PHOAS}.
 
-
-\begin{figure}
-    \beginTikzpictureStamped{
-        \einput{performance-experiments/quadratic-cbv-lazy-PHOAS.txt}
-    }
-    \begin{axis}[xlabel=\# binders,
-        ylabel=time (s),
-        legend pos=north west,
-        width=0.95\textwidth,
-        axis lines=left,
-        xmin=0,
-        scaled x ticks=false,
-        scaled y ticks=false]
-        \addplot[only marks,mark=o,color=blue] table[col sep=comma,x=param-num-binders,y=cbv-user]{performance-experiments/quadratic-cbv-lazy-PHOAS.txt};
-        \addlegendentry{\mintinline{coq}{cbv}}
-        \addplotquadraticregression[no markers, blue][x=param-num-binders,y=cbv-user][col sep=comma]{performance-experiments/quadratic-cbv-lazy-PHOAS.txt};
-        \addlegendentry{
-            $\pgfmathprintnumber{\pgfplotstableregressiona}(\text{\# binders})^2
-            \pgfmathprintnumber[print sign]{\pgfplotstableregressionb}(\text{\# binders})
-            \pgfmathprintnumber[print sign]{\pgfplotstableregressionc}$
-        }
-        \addplot[only marks,mark=*,color=black] table[col sep=comma,x=param-num-binders,y=lazy-user]{performance-experiments/quadratic-cbv-lazy-PHOAS.txt};
-        \addlegendentry{\mintinline{coq}{lazy}}
-        \addplotquadraticregression[no markers, black][x=param-num-binders,y=lazy-user][col sep=comma]{performance-experiments/quadratic-cbv-lazy-PHOAS.txt};
-        \addlegendentry{
-            $\pgfmathprintnumber{\pgfplotstableregressiona}(\text{\# binders})^2
-            \pgfmathprintnumber[print sign]{\pgfplotstableregressionb}(\text{\# binders})
-            \pgfmathprintnumber[print sign]{\pgfplotstableregressionc}$
-        }
-    \end{axis}
-\end{tikzpicture}
-\caption{Timing of running \mintinline{coq}{cbv} and \mintinline{coq}{lazy} reduction on interpreting a PHOAS expression as a function of the number of binders} \label{fig:timing-quadratic-cbv-lazy-PHOAS}
-\end{figure}
 
 \subsubsection{Quadratic Closure Compilation} \label{sec:perf:closure-compilation} \label{sec:perf:quadratic-vm-native}
 It's important to be able to perform reduction of terms in an optimized way.
@@ -1051,54 +1087,68 @@ Hence if we're trying to reuse the work of existing compilers to bootstrap good 
 
 See also \autoref{fig:timing-quadratic-vm-PHOAS} and \autoref{fig:timing-quadratic-native-PHOAS}.
 
-\begin{figure}
+\begin{figure}[bth]
+  \centering
+  \subfloat[\mintinline{coq}{vm_compute}]{%
     \beginTikzpictureStamped{
         \einput{performance-experiments/quadratic-vm-PHOAS.txt}
     }
-    \begin{axis}[xlabel=\# binders,
-        ylabel=time (s),
-        legend pos=north west,
-        width=0.95\textwidth,
+    \small
+    \pgfplotsset{every axis legend/.append style={
+        at={(0.5,-0.3)},
+        anchor=north}}
+    \begin{axis}[title={time (s) vs.\ \# binders},
+        xlabel=$n$,
+%        xlabel=\# binders,
+%        ylabel=time (s),
+%        legend pos=north west,
+        width=0.4\textwidth,
         axis lines=left,
         xmin=0,
+        xtick distance=10000,
         scaled x ticks=false,
         scaled y ticks=false]
         \addplot[only marks,color=black] table[col sep=comma,x=param-num-binders,y=vm-compute-user]{performance-experiments/quadratic-vm-PHOAS.txt};
-        \addlegendentry{\mintinline{coq}{vm_compute}}
+        \addlegendentry{\tiny \mintinline{coq}{vm_compute}}
         \addplotquadraticregression[no markers, black][x=param-num-binders,y=vm-compute-user][col sep=comma]{performance-experiments/quadratic-vm-PHOAS.txt};
-        \addlegendentry{
-            $\pgfmathprintnumber{\pgfplotstableregressiona}(\text{\# binders})^2
-            \pgfmathprintnumber[print sign]{\pgfplotstableregressionb}(\text{\# binders})
+        \addlegendentry{\tiny
+            $\pgfmathprintnumber{\pgfplotstableregressiona}n^2
+            \pgfmathprintnumber[print sign]{\pgfplotstableregressionb}n
             \pgfmathprintnumber[print sign]{\pgfplotstableregressionc}$
         }
     \end{axis}
 \end{tikzpicture}
-\caption{Timing of running \mintinline{coq}{vm_compute} reduction on interpreting a PHOAS expression as a function of the number of binders} \label{fig:timing-quadratic-vm-PHOAS}
-\end{figure}
-
-\begin{figure}
+\label{fig:timing-quadratic-vm-PHOAS}}
+  \quad
+  \subfloat[\mintinline{coq}{native_compute}]{%
     \beginTikzpictureStamped{
         \einput{performance-experiments/quadratic-native-PHOAS.txt}
     }
-    \begin{axis}[xlabel=\# binders,
-        ylabel=time (s),
-        legend pos=north west,
-        width=0.95\textwidth,
+    \small
+    \pgfplotsset{every axis legend/.append style={
+        at={(0.5,-0.3)},
+        anchor=north}}
+    \begin{axis}[title={time (s) vs.\ \# binders},
+        xlabel=$n$,
+%        ylabel=time (s),
+%        legend pos=north west,
+        width=0.4\textwidth,
         axis lines=left,
         xmin=0,
         scaled x ticks=false,
         scaled y ticks=false]
         \addplot[only marks,color=black] table[col sep=comma,x=param-num-binders,y=native-compute-real]{performance-experiments/quadratic-native-PHOAS.txt};
-        \addlegendentry{\mintinline{coq}{native_compute}}
+        \addlegendentry{\tiny \mintinline{coq}{native_compute}}
         \addplotquadraticregression[no markers, black][x=param-num-binders,y=native-compute-real][col sep=comma]{performance-experiments/quadratic-native-PHOAS.txt};
-        \addlegendentry{
-            $\pgfmathprintnumber{\pgfplotstableregressiona}(\text{\# binders})^2
-            \pgfmathprintnumber[print sign]{\pgfplotstableregressionb}(\text{\# binders})
+        \addlegendentry{\tiny
+            $\pgfmathprintnumber{\pgfplotstableregressiona}n^2
+            \pgfmathprintnumber[print sign]{\pgfplotstableregressionb}n
             \pgfmathprintnumber[print sign]{\pgfplotstableregressionc}$
         }
     \end{axis}
 \end{tikzpicture}
-\caption{Timing of running \mintinline{coq}{native_compute} reduction on interpreting a PHOAS expression as a function of the number of binders} \label{fig:timing-quadratic-native-PHOAS}
+\label{fig:timing-quadratic-native-PHOAS}}
+\caption{Timing of running reduction on interpreting a PHOAS expression as a function of the number of binders}\label{fig:timing-quadratic-vm-native-PHOAS}
 \end{figure}
 
 \minortodo{maybe more examples here?}
@@ -1126,8 +1176,7 @@ Alternatively, it might be possible to carefully craft a system which picks the 
 However, most users don't bother to set up hints like this, and dependency analysis isn't sufficient to determine which abstraction barrier is ``higher up'' when there are many parts of it, only some of which are mentioned in any given part of the next abstraction barrier.
 The reason users don't set up hints like this is that usually it's not necessary.
 There's often minimal overhead, and things just work, even when the wrong path is picked---until the number of abstraction barriers or the size of the underlying term gets large enough.
-Then we get noticeable exponential blowup, and everything is sad.
-\todonz{[re ``is sad''] more precise?}
+Then we get noticeable exponential blowup and our development no longer terminates in reasonable time.
 Furthermore, it's hard to know which part of conversion is incurring exponential blowup, and thus one has to basically get all of the conversion hints right, simultaneously, without any feedback, to see any performance improvement.
 
 
@@ -1432,6 +1481,7 @@ Thu 7:41pm
 \end{comment}
 \end{subappendices}
 
+\begin{comment}
 \todofrom{Beta Ziliani}{Hi Jason, let me give you some preliminary feedback on Chapter 2 (the only I got to read so far, sorry!). These are presentation details, with the only big problem being that I felt at times like I was being thrown stuff to the face without much heads-up. But probably it doesn't help that I'm reading it in bits, so don't mind much at this comment.
 %
   About the content, I like it. I'm aware of most of these issues, but having them presented like this gives a nice perspective of the problem. One comment about packed/unpacked records: MathComp decided to pack the records precisely for this reason. I remember in a presentation of MathClasses (I can try to find where it was if you want), Georges bashed the student of Bas Spitters precisely for this reason, claiming MathClasses won't scale to real-world applications. I don't know what the status of MathClasses is now, and if Georges' prediction stands, but I thought you'll find this interesting/amusing.
@@ -1447,7 +1497,7 @@ Thu 7:41pm
   In general, I think that the graphics might be scaled significantly, they took an entire page now and it sounds a bit too much (detail).
 %
   There are a few typos, I can give it to you but probably you'll spot them on a next read.}
-
+\end{comment}
   %If the reader walks away from this thesis with this level of understanding---that there was a super-linear performance bottleneck in the automation of generating verified low-level cryptographic code, and the project presented in \autoref{ch:rewriting} fixed this problem---that is accurate.
 
 %We want readers to be able to understand where the performance issue came from, how it fits into a broader structure of performance issues in proof assistants, and how the solution fixes the performance problem.

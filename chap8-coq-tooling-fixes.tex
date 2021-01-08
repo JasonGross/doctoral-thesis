@@ -281,8 +281,21 @@ For example, if \mintinline{coq}{x} has type \mintinline{coq}{A * B}, then the $
 As discussed in \autoref{sec:duality-conversion}, having records with judgmental $\eta$ conversion allows de-duplicating code that would otherwise have to be duplicated.
 \minortodo{should more be said here?}
 
-\subsection{SProp: The Definitionally Proof Irrelevant Universe}\label{sec:fixes:theory:sprop}\label{sec:sprop}
-We discussed in \fullnameref{sec:term-size} how irrelevant proof arguments tended to cause performance issues just by existing as part of the goal.
+\subsection{SProp: The Definitionally Proof Irrelevant Universe}\label{sec:fixes:theory:sprop}\label{sec:sprop}\label{sec:term-size}
+Coq is slow at dealing with large terms.
+For goals around 175,000 words long\footnote{When we had objects as arguments rather than fields in our category-theory library (see \autoref{sec:abstraction-barriers:packed-records}), we encountered goals of about 219,633 words when constructing pointwise Kan extensions.}, we have found that simple tactics like \texttt{apply f\_equal} take around 1 second to execute, which makes interactive theorem proving very frustrating.\footnote{See also \coqbug{3280}.}
+Even more frustrating is the fact that the largest contribution to this size is often arguments to irrelevant functions, i.e., functions that are provably equal to all other functions of the same type.
+(These are proofs related to algebraic laws like associativity, carried inside many constructions.)
+
+Opacification helps by preventing the type checker from unfolding some definitions, but it is not enough: the type checker still has to deal with all of the large arguments to the opaque function.
+Hash-consing might fix the problem completely.
+
+Alternatively, it would be nice if, given a proof that all of the inhabitants of a type were equal, we could forget about terms of that type, so that their sizes would not impose any penalties on term manipulation.
+%  One could imagine a version of Coq's logic that knows to treat all proofs of an equality as equivalent to each other.  Alternatively, there might be some way to ignore these terms when doing most computation, without changing the underlying theory.
+One solution might be irrelevant fields, like those of Agda, or implemented via the Implicit CiC~\cite{barras2008implicit,logical2001implicit}.
+%
+%
+%We discussed in \fullnameref{sec:term-size} how irrelevant proof arguments tended to cause performance issues just by existing as part of the goal.
 While there is as-yet no way to erase these arguments, Coq versions 8.10 and later have the ability to define types as judgmentally irrelevant, paving the way for more aggressive erasure~\cite{coq-pr-sprop,sprop}.
 \minortodo{should more be said here?}
 

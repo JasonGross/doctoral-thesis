@@ -25,13 +25,13 @@ As far as I'm aware, there's not really a good way to get the best of all worlds
 
 Much of this chapter will draw on examples and experience from a category theory library we implemented in Coq~\cite{category-coq-experience}, which we introduce in \autoref{sec:category-theory-library}.
 
-The only prior work we've been able to find where abstraction barriers are mentioned for proof developent performance is \textcite{Deep2015Gu}.
+The only prior work we've been able to find where abstraction barriers are mentioned for proof development performance is \textcite{Deep2015Gu}.
 Though this paper suggests that good abstraction barriers resulted in simpler invariants which alleviated proof burden on the developer, we suspect that their use of abstraction barriers also dodged the proof-generation and proof-checking performance bottlenecks of large types, large terms, large goals, and excessive unfolding that plague developments with leaky abstraction barriers.
 
 \section{When And How To Use Dependent Types Painlessly}\label{sec:when-how-dependent-types}
 Though abstraction barriers have been studied in the context of simply typed languages~\cite{Structure1996Sussman}, we're not aware of any systematic investigation of abstraction in dependently typed languages.
 Hence we provide in this section some rules of thumb that we've learned for developing good abstraction in dependently typed languages.
-Following these guidelines, in our experience, tends to both allieveiate proof burden by decoupling and simplifying theorem statements, and also to improve the performance of individual proofs, sometimes by an order of magnitude or more, by avoiding the super-linear scaling laid out in \fullnameref{sec:perf-axes}.
+Following these guidelines, in our experience, tends to both alleviate proof burden by decoupling and simplifying theorem statements, and also to improve the performance of individual proofs, sometimes by an order of magnitude or more, by avoiding the super-linear scaling laid out in \fullnameref{sec:perf-axes}.
 
 The extremes of using dependent types are relatively easy:
 \begin{itemize}

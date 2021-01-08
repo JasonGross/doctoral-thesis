@@ -72,14 +72,40 @@ In order to trust proof-checking programs, we want them to be general so possibl
 Such programs which are general enough to check the statements and proofs of arbitrary mathematical theorems are called foundational tools.
 We also want proof-checking programs to be small so that we have a hope of verifying them by hand (c.f.~\autoref{sec:debruijn-criterion}).
 
+\begin{wrapfigure}{r}{0.5\textwidth}
+  \beginTikzpictureStamped{
+    \einput{proof-overhead-no-fiat-crypto.csv}
+  }
+  \pgfplotsset{every axis legend/.append style={
+      at={(0.5,-0.3)},
+      anchor=north}}
+  \pgfplotstableread[col sep=comma]{proof-overhead-no-fiat-crypto.csv}\datatable
+  \begin{axis}[
+      xbar stacked,   % Stacked horizontal bars
+      xmin=0,         % Start x axis at 0
+      ytick=data,     % Use as many tick labels as y coordinates
+      yticklabels from table={\datatable}{Project},
+      scaled x ticks=false,
+      xmode=log,
+      width=0.4\textwidth,
+     ]
+    \addplot [fill=blue!60]   table [x=Definitions,  meta=Project, col sep=comma, y expr=\coordindex] {proof-overhead-no-fiat-crypto.csv};
+    \addplot [fill=orange!60] table [x=Verification, meta=Project, col sep=comma, y expr=\coordindex] {proof-overhead-no-fiat-crypto.csv};
+    \legend{Lines of Code Being Verified,Lines of Verification}
+  \end{axis}
+  \end{tikzpicture}
+\caption{%
+  Overhead of lines of code of verification over lines of code being verified for some successful projects in microkernels and operating systems (seL4, CertiKOS) and compilers (CompCert).
+  Note the $\log$-scaling.
+}\label{fig:proof-overhead}
+\end{wrapfigure}
 
 Proof-checking programs have had many successes, in both software verification and traditional mathematics proof formalization.
 Examples abound, from compilers~\cite{Compcert} to microkernels~\cite{seL4SOSP09} to web-servers~\cite{Network2015Chlipala} to cryptography code~\cite{FiatCryptoSP19}, from the Four-Color Theorem~\cite{gonthier2008formal} to the Odd-Order Theorem~\cite{gonthier2013machine} to Homotopy Type Theory~\cite{HoTTBook}.
 
 However, in almost all examples of software verification successes, there is an enormous overhead in the lines of proof written over the lines of code being verified.
-The proofs are so long and arduous to write that it typically requires multiple PhDs worth of work to verify one piece of software.
+The proofs are so long and arduous to write that it typically requires multiple PhDs worth of work to verify one piece of software---see \autoref{fig:proof-overhead} for some examples.
 \label{sec:manual-proof-long}
-\todo{Insert graph}
 
 In order to utilise verification in the innovation pipeline, we need verification to provide fast feedback about the correctness of code.
 If we have to write each proof, this is not feasible.
@@ -88,11 +114,41 @@ In this manner, we can decrease the marginal overhead of manual proof writing, b
 
 \section{Our Work}\label{sec:problem}
 
+\begin{wrapfigure}{r}{.5\textwidth}
+  \centering
+    \beginTikzpictureStamped{
+        \einput{fiat-crypto-perf-logs/montgomery-fesub-before.txt}
+    }
+    \begin{axis}[title={compile time (s) vs.\ input size},
+        xlabel=$n$,
+        legend pos=north west,
+        width=0.4\textwidth,
+        axis lines=left,
+        xmin=0,
+        xmax=9.5,
+        scaled x ticks=false,
+        scaled y ticks=false,
+        xtick distance=1,
+        ylabel style={
+            yshift = {width("10")}
+        }]
+        \addplot[only marks,color=black] table[x=nlimbs,y=user]{fiat-crypto-perf-logs/montgomery-fesub-before.txt};
+        \addplotexponentialregression[no markers, black][x=nlimbs,y=user,a=0.0001,b=2.5]{fiat-crypto-perf-logs/montgomery-fesub-before.txt};
+        \addlegendentry{synthesis}
+        \addlegendentry{
+            $\pgfmathprintnumber{\pgfplotstableregressiona} e^{\pgfmathprintnumber{\pgfplotstableregressionb} n} $
+        }
+    \end{axis}
+\end{tikzpicture}
+    \caption{Example of super-linear performance scaling} \label{fig:timing-montgomery-fesub-before-user:ch1}
+\end{wrapfigure}
+
+
 In the quest to enable automated proof generation, the author encountered several performance bottlenecks in proof-checking across projects.
 We draw particularly from the project in generation of verified low-level cryptographic code in Fiat Cryptography~\cite{FiatCryptoSP19}, with auxiliary case studies in category theory~\cite{category-coq-experience}, and parsers~\cite{jgross-masters-thesis}.
 \label{sec:first-fiat-crypto}%
 Unlike many other performance domains, the time it takes to check proofs as we scale the size of the input is almost always super-linear---quadratic at best, commonly cubic or exponential, occasionally even worse.
-Empirically, this might look like a proof script that checks in tens of seconds on the smallest of toy examples; takes about a minute on the smallest real-world example, which might be twice the size of the toy example; takes twenty hours to generate and check the proof of an example only twice that size; and, on a (perhaps not-quite-realistic) example twice the size of the twenty-hour example, the script might not finish within a year, or even a thousand years---see \autoref{sec:fiat-crypto-codegen-numbers} for more details.
+Empirically, this might look like a proof script that checks in tens of seconds on the smallest of toy examples; takes about a minute on the smallest real-world example, which might be twice the size of the toy example; takes twenty hours to generate and check the proof of an example only twice that size; and, on a (perhaps not-quite-realistic) example twice the size of the twenty-hour example, the script might not finish within a year, or even a thousand years---see \autoref{sec:fiat-crypto-codegen-numbers} for more details, which we preview here in \autoref{fig:timing-montgomery-fesub-before-user:ch1}.
 In just three doublings of input size, we might go from tens of seconds to thousands of years.
 Moreover, in proof assistants, this is not an isolated experience.
 This sort of performance behavior is common across projects.

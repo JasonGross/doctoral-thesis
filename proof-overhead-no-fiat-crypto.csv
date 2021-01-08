@@ -1,0 +1,4 @@
+Project,Definitions,Specification,Proofs,Verification
+seL4,8700,10600,1081521,1092121
+CertiKOS,6500,6642,90000,96642
+CompCert,5880,4200,31920,36120

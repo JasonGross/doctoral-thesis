@@ -28,12 +28,13 @@
 \AtBeginDocument{\renewcommand{\NowOrAtBeginDocument}[1]{#1}}%
 \fi
 \newboolean{readingreadymarks}
-\setboolean{readingreadymarks}{true}
+\setboolean{readingreadymarks}{false}
 \ifthenelse{\boolean{readingreadymarks} \and \not \boolean{final}}{
   \newcommand{\sectionreadingmark}[1]{\texorpdfstring{\textcolor{olive}{#1}}{#1}}
   \newcommand{\readyforreading}[1]{#1 \sectionreadingmark{(Ready for Final Reading)}}
   \newcommand{\readyforreadingmod}[2]{#1 \sectionreadingmark{(Ready for Final Reading modulo #2)}}
 }{
+  \newcommand{\sectionreadingmark}[1]{}
   \newcommand{\readyforreading}[1]{#1}
   \newcommand{\readyforreadingmod}[2]{#1}
 }

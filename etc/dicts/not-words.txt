@@ -230,5 +230,10 @@ uul
 uur
 uuuull
 valign
+xmax
+xmin
+xtick
+ylabel
+ymode
 yshift
 zerowidthscripts

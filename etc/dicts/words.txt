@@ -91,6 +91,7 @@ instantiations
 intensional
 interoperate
 interoperation
+interpretable
 intuitionism
 invariants
 invertibility

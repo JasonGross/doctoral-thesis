@@ -233,6 +233,7 @@ valign
 xlabel
 xmax
 xmin
+xmode
 xtick
 ylabel
 ymode

@@ -223,6 +223,7 @@ succ
 tac
 tauto
 thm
+ticklabels
 topdown
 uconstr
 upto
@@ -238,4 +239,5 @@ xtick
 ylabel
 ymode
 yshift
+yticklabels
 zerowidthscripts

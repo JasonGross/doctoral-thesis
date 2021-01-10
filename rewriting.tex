@@ -601,7 +601,7 @@ Finally, where $E'$ is the result of that reduction, we simplify $\llbracket E' 
 %% \item In that setting, all bookkeeping about variable binding and environments is handled by the kernel, whose implementation in OCaml allows certain efficient implementation strategies not available to us in the logic.
 %% \end{enumerate}
 
-\subsection{Subterm Sharing is Crucial}\label{sec:under-lets}
+\subsection{Subterm Sharing Is Crucial}\label{sec:under-lets}
 
 For some large-scale partial-evaluation problems, it is important to represent output programs with sharing of common subterms.
 Redundantly inlining shared subterms can lead to exponential increase in space requirements.
@@ -973,7 +973,7 @@ Note that there is a similar issue that crops up for function application and ab
 \paragraph{Inherent advantages of reflection}
 
 Finally, even if this quadratic bottleneck were fixed, \textcite{Aehlig} reported a $10\times$--$100\times$ speed-up over the \emph{simp} tactic in Isabelle, which performs all of the intermediate rewriting steps via the kernel API.
-Their results suggest that even if all of the super-linear bottlenecks were fixed---no small undertaking---rewriting and partial evaluation via reflection might still be orders of magnitude faster than any proof-term-generating tactic.
+Their results suggest that even if all of the superlinear bottlenecks were fixed---no small undertaking---rewriting and partial evaluation via reflection might still be orders of magnitude faster than any proof-term-generating tactic.
 
 \subsubsection{Binders and Recursive Functions}\label{sec:micro:LiftLetsMap}
 

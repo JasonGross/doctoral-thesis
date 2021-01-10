@@ -443,7 +443,7 @@ We could instead induct on one of the ASTs and destruct the other one, but this 
 \subsubsection{Via de Bruijn} \label{sec:wf:perf:de-bruijn}
 
 An alternative, ultimately superior, method of constructing compact proofs of relatedness involves a translation to a de Bruijn representation.
-We can define a boolean predicate on de Bruijn syntax representing well-formedness.
+We can define a Boolean predicate on de Bruijn syntax representing well-formedness.
 \begin{minted}{coq}
 Fixpoint is_closed_under (max_idx : nat) (e : expr) : bool :=
   match expr with

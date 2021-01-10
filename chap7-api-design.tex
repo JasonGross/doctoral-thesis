@@ -13,7 +13,7 @@ We saw in \nameref{sec:abstraction-barriers:mismatch} that API mismatch results 
 We saw in \nameref{sec:abstraction-barriers:conversion-troubles} that imperfectly opaque abstraction barriers result in slowdown due to needless calls to the conversion checker.
 We saw in \nameref{sec:abstraction-barriers:packed-records} how the choice of whether to use packed or unpacked records impacts performance.
 
-In this chapter, we will focus primarily on the first of these three ways that design choices for abstraction barriers can impact performance; while it might seem like a simple question of good design, it turns out that good API design in dependently-typed programming languages is significantly harder than in simply-typed programming languages.
+In this chapter, we will focus primarily on the first of these three ways that design choices for abstraction barriers can impact performance; while it might seem like a simple question of good design, it turns out that good API design in dependently typed programming languages is significantly harder than in simply-typed programming languages.
 We will additionally weave in ways that abstraction barriers have helped us develop our tools and libraries, though this use of abstraction barriers (sometimes called data abstraction) is already well-known in software engineering~\cite{Structure1996Sussman}.
 Mitigating the second source of performance bottlenecks, imperfectly opaque abstraction barriers, on the other hand, is actually just a question of meticulous tracking of how abstraction barriers are defined and used, and designing them so that they all unfolding is explicit.
 However, we will present an exception to the rule of opaque abstraction barriers in \autoref{sec:duality-conversion} in which deliberate breaking of all abstraction barriers in a careful way can result in performance gains of up to a factor of two:
@@ -28,10 +28,10 @@ Much of this chapter will draw on examples and experience from a category theory
 The only prior work we've been able to find where abstraction barriers are mentioned for proof development performance is \textcite{Deep2015Gu}.
 Though this paper suggests that good abstraction barriers resulted in simpler invariants which alleviated proof burden on the developer, we suspect that their use of abstraction barriers also dodged the proof-generation and proof-checking performance bottlenecks of large types, large terms, large goals, and excessive unfolding that plague developments with leaky abstraction barriers.
 
-\section{When And How To Use Dependent Types Painlessly}\label{sec:when-how-dependent-types}
+\section{When and How To Use Dependent Types Painlessly}\label{sec:when-how-dependent-types}
 Though abstraction barriers have been studied in the context of simply typed languages~\cite{Structure1996Sussman}, we're not aware of any systematic investigation of abstraction in dependently typed languages.
 Hence we provide in this section some rules of thumb that we've learned for developing good abstraction in dependently typed languages.
-Following these guidelines, in our experience, tends to both alleviate proof burden by decoupling and simplifying theorem statements, and also to improve the performance of individual proofs, sometimes by an order of magnitude or more, by avoiding the super-linear scaling laid out in \fullnameref{sec:perf-axes}.
+Following these guidelines, in our experience, tends to both alleviate proof burden by decoupling and simplifying theorem statements, and also to improve the performance of individual proofs, sometimes by an order of magnitude or more, by avoiding the superlinear scaling laid out in \fullnameref{sec:perf-axes}.
 
 The extremes of using dependent types are relatively easy:
 \begin{itemize}
@@ -114,7 +114,7 @@ After all, abstraction barriers generally live in the mind of the developer, in 
 Therefore, we will describe a sampling of abstraction barriers and the design choices that went into them, drawn from real examples\minortodoask{how much should I talk about the category theory library itself in my thesis?}, as well as the performance issues that arose from these choices.
 We will also discuss ways that various design choices increased or reduced the effort required of us to define objects and prove theorems.
 
-%A few other pervasive strategies made non-trivial differences for proof performance or simplicity.
+%A few other pervasive strategies made nontrivial differences for proof performance or simplicity.
 
 \subsection{Abstraction in Limits and Colimits}\label{sec:abstraction:(co)limits}
 
@@ -412,7 +412,7 @@ Definition T_rect (P : T -> Type)
      f (proj_T_1 x) (proj_T_2 x) (proj_T_3 x) (proj_T_4 x).
 \end{minted}
   It only almost works because, although the overall size of the terms, even accounting for implicits, is linear in the number of fields, we still incur a quadratic number of unfoldings in the final cast node in the proof of \mintinline{coq}{T_eta}.
-  Note that this cast node is only present to make explicit the conversion problem that must happen; removing it does not break anything, but then the quadratic cost is hidden in non-trivial substitutions of the \mintinline{coq}{let}-binders into the types.
+  Note that this cast node is only present to make explicit the conversion problem that must happen; removing it does not break anything, but then the quadratic cost is hidden in nontrivial substitutions of the \mintinline{coq}{let}-binders into the types.
   It might be possible to avoid this quadratic factor by being even more careful, but I was unable to find a way to do it.%
   \footnote{%
       Note that even reflective automation (see \autoref{ch:reflection}) is not sufficient to solve this issue.
@@ -784,11 +784,11 @@ Another example was defining the (co)unit of adjunction composition, where inste
 Where equality-based constructions led to computational reduction getting stuck at casts, the constructions with natural transformations reduce in all of the expected contexts.
 
 
-\section{Abstraction barriers}
+\section{Abstraction Barriers}
 e.g., f (fst x) (snd x) where fst x := let (a, b) := x in a; vs let (a, b) := x in f a b.
 
 
-\section{more stuff from CT performance paper / presentation}
+\section{More Stuff from CT Performance Paper / Presentation}
 
 
 \medskip

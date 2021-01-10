@@ -1,4 +1,5 @@
 Bogosort
+Booleans
 CBV
 COQPATH
 CPS'd
@@ -17,8 +18,6 @@ biomechanics
 biostatistics
 bogosort
 bool
-boolean
-booleans
 bottlenecked
 bottomup
 bytecode
@@ -55,3 +54,4 @@ simp
 subcall
 uncurrying
 unswap
+wrapfig

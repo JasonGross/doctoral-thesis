@@ -1,6 +1,6 @@
 \chapter{\readyforreading{A Retrospective on Performance Improvements}}\label{ch:coq-tooling-fixes}\label{ch:retrospective}
 Throughout this thesis, we've looked at the problem of performance in proof assistants, especially those based on dependent type theory, with Coq as our primary tool under investigation.
-\autoref{part:introduction} aimed to convince the reader that this problem is interesting, important, challenging, and understudied, as it differs in non-trivial ways from performance bottlenecks in non-dependently-typed languages.
+\autoref{part:introduction} aimed to convince the reader that this problem is interesting, important, challenging, and understudied, as it differs in nontrivial ways from performance bottlenecks in non-dependently typed languages.
 \autoref{part:rewriting} took a deep dive into a particular set of performance bottlenecks and presented a tool, and, we hope, exposed the underlying design methodology, that allows eliminating asymptotic bottlenecks in one important part of proof assistant systems.
 \autoref{part:design} zoomed back out to discuss design principles to avoid performance pitfalls.
 
@@ -184,7 +184,7 @@ How is such a large performance gain achievable?
 Without this feature, called \emph{universe polymorphism}, encoding some mathematical objects requires \emph{duplicating} the entire library!
 Removing this duplication of code will halve the compile-time.
 
-\subsubsection{What are universes?}\label{sec:universes-def}
+\subsubsection{What Are Universes?}\label{sec:universes-def}
 Universes are type theory's answer to Russell's paradox~\cite{sep-russell-paradox}.
 Russell's paradox, a famous paradox discovered in 1901, proceeds as follows.
 A \emph{set} is an unordered collection of distinct objects.
@@ -340,7 +340,7 @@ However, we ran into significant trouble when attempting to prove that the categ
 \paragraph{Higher Inductive Types}\label{sec:hit}
 The recent emergence of higher inductive types allows the best of both worlds.
  The idea of higher inductive types~\cite{HoTTBook} is to allow inductive types to be equipped with extra proofs of equality between constructors.
-They originated as a way to allow homotopy type theorists to construct types with non-trivial higher paths.
+They originated as a way to allow homotopy type theorists to construct types with nontrivial higher paths.
 A very simple example is the interval type, from which functional extensionality can be proven~\cite{interval-implies-funext}.
 The interval type consists of two inhabitants \mintinline{coq}{zero : Interval} and \mintinline{coq}{one : Interval}, and a proof \mintinline{coq}{seg : zero = one}.
 In a hypothetical type theory with higher inductive types, the type checker does the work of carrying around an equivalence relation on each type for us, and forbids users from constructing functions that do not respect the equivalence relation of any input type.
@@ -394,7 +394,7 @@ The proof of function extensionality, for example, relies on the elimination rul
 }
 
 \minortodo{define point vs path constructors}
-Higher inductive types whose eliminators compute on the point constructors can be hacked into dependently-typed proof assistants by adding inconsistent axioms and then hiding them behind opaque APIs so that inconsistency cannot be proven~\cite{Running2011Licata,Bertot2013}.
+Higher inductive types whose eliminators compute on the point constructors can be hacked into dependently typed proof assistants by adding inconsistent axioms and then hiding them behind opaque APIs so that inconsistency cannot be proven~\cite{Running2011Licata,Bertot2013}.
 This is unsatisfactory, however, on two counts:
 \begin{enumerate}
 \item
@@ -405,11 +405,11 @@ This is unsatisfactory, however, on two counts:
 \end{enumerate}
 
 Cubical type theory is the solution to both of these problems, for both higher inductive types and univalence~\cite{Cubical2016Cohen}.
-Unlike most other type theories, computation in cubical type theory is implemented by appealing to the category theoretic model, and the insights that allow such computation are slowly making their way into more mainstream dependently-typed proof assistants~\cite{Cubical2019Vezzosi}.
+Unlike most other type theories, computation in cubical type theory is implemented by appealing to the category theoretic model, and the insights that allow such computation are slowly making their way into more mainstream dependently typed proof assistants~\cite{Cubical2019Vezzosi}.
 
 \begin{comment}
 \begin{subappendices}
-    \section{Fragments from the category theory paper}
+    \section{Fragments from the Category Theory Paper}
     For reasons that we present in the course of the paper, we were unsatisfied with the feature set of released Coq version 8.4.  We wound up adopting the Coq version under development by homotopy type theorists~\cite{HoTT/coq}, making critical use of its stronger universe polymorphism (\autoref{sec:category-of-categories}) and higher inductive types (\autoref{sec:hit}).  We hope that our account here provides useful data points for proof assistant designers about which features can have serious impact on proving convenience or performance in very abstract developments.  The two features we mentioned earlier in the paragraph can simplify the Coq user experience dramatically, while a number of other features, at various stages of conception or implementation by Coq team members, can make proving much easier or improve proof script performance by orders of magnitude, generally by reducing term size (\autoref{sec:term-size}): primitive record projections (\autoref{sec:prim-record-proj}), internalized proof irrelevance for equalities (\autoref{sec:equality-reflection}), and $\eta$ rules for records (\autoref{sec:no-judgmental-eta}) and equality proofs (\autoref{sec:compute-match}).
 
     \hrule

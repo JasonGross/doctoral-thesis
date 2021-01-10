@@ -1,5 +1,5 @@
 \begin{quote}
-  Testing shows the presence, not the absence of bugs
+  Testing shows the presence, not the absence of bugs.
 \end{quote}
 \begin{flushright}
   --- Edsger Wybe Dijkstra, 1969~\cite{naur1969software}
@@ -26,7 +26,7 @@
 
 
 
-In critical software systems, like cryptography, there are opposing pressures to innovate and to let things be as they are.
+In critical software systems, like cryptography\todoac{I'm not sure ``cryptography'' can be ``a software system.''}, there are opposing pressures to innovate and to let things be as they are.
 Innovation can help create more performant systems with higher security.
 But, if the new code has any bugs at all, it could leave the system vulnerable to attacks costing billions of dollars.
 
@@ -53,41 +53,55 @@ So, in critical software systems, implementing new, innovative algorithms is a s
 % (2^255/19 * 529812 / (5 ghz) / (20 years) / (atoms in the solar system)) * 1 atom
 
 An appealing solution to this problem is to \emph{prove} critical software correct.
-We do this by specifying in formal mathematics the intended behavior of the software, and showing a correspondence between our math and the code.
-Ideally, the specification is relatively simple, and easier to trust than the thousands of lines of code.
+We do this by specifying in formal mathematics the intended behavior of the software and showing a correspondence between our math and the code.
+Ideally, the specification is relatively simple and easier to trust than the thousands of lines of code.
 Once we show a correspondence between our math and any new piece of code, we can confidently deploy the software in the world.
 This is known as verification.
 
-While proofs of algorithms tend to be done with pen-and-paper (consider the ubiquitous proofs that various sorting algorithms are correct found in introductory algorithms classes), writing proofs of actual code is much harder.
-Proofs of code-correctness tend to be filled with tedious case-analysis and only sparse mathematical insights, and attempts to create and check these proofs by hand are subject to the same issues of human fallibility as writing the code in the first place.
+While proofs of algorithms tend to be done with pen and paper (consider the ubiquitous proofs that various sorting algorithms are correct found in introductory algorithms classes), writing proofs of actual code is much harder.
+Proofs of code correctness tend to be filled with tedious case analysis and only sparse mathematical insights, and attempts to create and check these proofs by hand are subject to the same issues of human fallibility as writing the code in the first place.
 To avoid the problems from human fallibility, we use proof-checking programs; to cope with tediousness, we use proof assistants which are proof-checking programs that can also help us write the proof itself.
-Such programs are called \emph{proof assistants}; they assist users in writing code which, when run, generates a proof that can be checked by the proof-checker.
+Such programs are called \emph{proof assistants}; they assist users in writing code which, when run, generates a proof that can be checked by the proof checker.
 
 But now we are back where we started, with proof-checking programs as our critical software, and the question of how they could possibly give us the confidence to deploy new software in the world.%
 \footnote{%
-  We cannot solve this problem with programs to check our proof checking programs, under pain of infinite regress, Gödelian paradoxes~\cite{sep-goedel-incompleteness}, and invisible untrustworthiness~\cite{Reflections1984Thompson}.
+  We cannot solve this problem with programs to check our proof-checking programs, under pain of infinite regress, Gödelian paradoxes~\cite{sep-goedel-incompleteness}, and invisible untrustworthiness~\cite{Reflections1984Thompson}.
   However, the mathematically inclined reader might be interested to note that adding one more layer of meta does in fact help, and there are projects underway to verify proof checkers~\cite{nuprl-in-coq,coq-coq-correct,certicoq}.
 }
 In order to trust proof-checking programs, we want them to be general so possible bugs in the proof-checking program are unlikely to line up with mistakes that we make in any individual proof (c.f.~\autoref{sec:why-how-dependent-types}).
 Such programs which are general enough to check the statements and proofs of arbitrary mathematical theorems are called foundational tools.
 We also want proof-checking programs to be small so that we have a hope of verifying them by hand (c.f.~\autoref{sec:debruijn-criterion}).
 
-\begin{wrapfigure}{r}{0.5\textwidth}
+Proof-checking programs have had many successes, in both software verification and traditional mathematics proof formalization.
+Examples abound, from compilers~\cite{Compcert} to microkernels~\cite{seL4SOSP09} to web servers~\cite{Network2015Chlipala} to cryptography code~\cite{FiatCryptoSP19}, from the Four-Color Theorem~\cite{gonthier2008formal} to the Odd-Order Theorem~\cite{gonthier2013machine} to Homotopy Type Theory~\cite{HoTTBook}.
+
+However, in almost all examples of software verification successes, there is an enormous overhead in the lines of proof written over the lines of code being verified.
+The proofs are so long and arduous to write that it typically requires multiple PhDs worth of work to verify one piece of software---see \autoref{fig:proof-overhead} for some examples.
+\label{sec:manual-proof-long}
+
+\begin{figure}[bht]
+  \centering
   \beginTikzpictureStamped{
     \einput{proof-overhead-no-fiat-crypto.csv}
   }
-  \pgfplotsset{every axis legend/.append style={
-      at={(0.5,-0.3)},
-      anchor=north}}
   \pgfplotstableread[col sep=comma]{proof-overhead-no-fiat-crypto.csv}\datatable
+  \pgfplotsset{every axis legend/.append style={
+      at={(0.5,-0.1)},
+      anchor=north}}
   \begin{axis}[
       xbar stacked,   % Stacked horizontal bars
-      xmin=0,         % Start x axis at 0
       ytick=data,     % Use as many tick labels as y coordinates
       yticklabels from table={\datatable}{Project},
       scaled x ticks=false,
+%      legend pos=outer north east,
+%      xmin=0,         % Start x axis at 0 (but not on log mode)
+%      xtick distance=200000,
+%      xmin=1,
       xmode=log,
-      width=0.4\textwidth,
+%      enlarge y limits=0.1,
+%      nodes near coords,
+%      nodes near coords align=horizontal,
+      width=0.9\textwidth,
      ]
     \addplot [fill=blue!60]   table [x=Definitions,  meta=Project, col sep=comma, y expr=\coordindex] {proof-overhead-no-fiat-crypto.csv};
     \addplot [fill=orange!60] table [x=Verification, meta=Project, col sep=comma, y expr=\coordindex] {proof-overhead-no-fiat-crypto.csv};
@@ -97,19 +111,13 @@ We also want proof-checking programs to be small so that we have a hope of verif
 \caption{%
   Overhead of lines of code of verification over lines of code being verified for some successful projects in microkernels and operating systems (seL4, CertiKOS) and compilers (CompCert).
   Note the $\log$-scaling.
+  \todo{Integrate vertical spacing fix from \url{https://tex.stackexchange.com/questions/578270/how-do-i-decrease-vertical-spacing-in-xbar-stacked-pgfplots-charts} once answered}
 }\label{fig:proof-overhead}
-\end{wrapfigure}
+\end{figure}
 
-Proof-checking programs have had many successes, in both software verification and traditional mathematics proof formalization.
-Examples abound, from compilers~\cite{Compcert} to microkernels~\cite{seL4SOSP09} to web-servers~\cite{Network2015Chlipala} to cryptography code~\cite{FiatCryptoSP19}, from the Four-Color Theorem~\cite{gonthier2008formal} to the Odd-Order Theorem~\cite{gonthier2013machine} to Homotopy Type Theory~\cite{HoTTBook}.
-
-However, in almost all examples of software verification successes, there is an enormous overhead in the lines of proof written over the lines of code being verified.
-The proofs are so long and arduous to write that it typically requires multiple PhDs worth of work to verify one piece of software---see \autoref{fig:proof-overhead} for some examples.
-\label{sec:manual-proof-long}
-
-In order to utilise verification in the innovation pipeline, we need verification to provide fast feedback about the correctness of code.
+In order to utilize verification in the innovation pipeline, we need verification to provide fast feedback about the correctness of code.
 If we have to write each proof, this is not feasible.
-One proposal is to automate proof generation so we no longer need to replicate proof writing effort for iterations of code with the same (or similar) mathematical specification.
+One proposal is to automate proof generation so we no longer need to replicate proof-writing effort for iterations of code with the same (or similar) mathematical specification.
 In this manner, we can decrease the marginal overhead of manual proof writing, by reusing proofs on several variations and optimizations of an algorithm, and deploy new code in the world with confidence.
 
 \section{Our Work}\label{sec:problem}
@@ -140,35 +148,35 @@ In this manner, we can decrease the marginal overhead of manual proof writing, b
         }
     \end{axis}
 \end{tikzpicture}
-    \caption{Example of super-linear performance scaling} \label{fig:timing-montgomery-fesub-before-user:ch1}
+    \caption{Example of superlinear performance scaling} \label{fig:timing-montgomery-fesub-before-user:ch1}
 \end{wrapfigure}
 
 
-In the quest to enable automated proof generation, the author encountered several performance bottlenecks in proof-checking across projects.
-We draw particularly from the project in generation of verified low-level cryptographic code in Fiat Cryptography~\cite{FiatCryptoSP19}, with auxiliary case studies in category theory~\cite{category-coq-experience}, and parsers~\cite{jgross-masters-thesis}.
+In the quest to enable automated proof generation, the author encountered several performance bottlenecks in proof checking across projects.
+We draw particularly from the project in generation of verified low-level cryptographic code in Fiat Cryptography~\cite{FiatCryptoSP19}, with auxiliary case studies in category theory~\cite{category-coq-experience} and parsers~\cite{jgross-masters-thesis}.
 \label{sec:first-fiat-crypto}%
-Unlike many other performance domains, the time it takes to check proofs as we scale the size of the input is almost always super-linear---quadratic at best, commonly cubic or exponential, occasionally even worse.
+Unlike many other performance domains, the time it takes to check proofs as we scale the size of the input is almost always superlinear---quadratic at best, commonly cubic or exponential, occasionally even worse.
 Empirically, this might look like a proof script that checks in tens of seconds on the smallest of toy examples; takes about a minute on the smallest real-world example, which might be twice the size of the toy example; takes twenty hours to generate and check the proof of an example only twice that size; and, on a (perhaps not-quite-realistic) example twice the size of the twenty-hour example, the script might not finish within a year, or even a thousand years---see \autoref{sec:fiat-crypto-codegen-numbers} for more details, which we preview here in \autoref{fig:timing-montgomery-fesub-before-user:ch1}.
 In just three doublings of input size, we might go from tens of seconds to thousands of years.
 Moreover, in proof assistants, this is not an isolated experience.
 This sort of performance behavior is common across projects.
 \minortodo{Nickolai says: Seems fine ... but is it really unique to proofs?  C++ compilers in the 90s had the same problems.  Jason: Maybe see if I can find references.  Or just ignore?}
 
-While compiler performance---both the time it takes to compile code and the time it takes to run the generated code---has long been an active field of study~\cite{CC++Performance2017,georges2007statistically,mytkowicz-wrong-data}\minortodo{find more citations here}, to our knowledge there is no existing body of work systematically investigating the performance of proof assistants, nor even any work primarily focused on the problem of proof assistant performance.
-We distinguish the question of interactive proof assistant performance from that of performance of fully automated reasoning tools such as SAT and SMT solvers, on which there has been a great deal of research~\cite{Efficiency1994Boulton}.
+While compiler performance---both the time it takes to compile code and the time it takes to run the generated code---has long been an active field of study~\cite{CC++Performance2017,georges2007statistically,mytkowicz-wrong-data}\minortodo{find more citations here}, to our knowledge there is no existing body of work systematically investigating the performance of proof assistants, nor even any work primarily focused on the problem of proof-assistant performance.
+We distinguish the question of interactive-proof-assistant performance from that of performance of fully automated reasoning tools such as SAT and SMT solvers, on which there has been a great deal of research~\cite{Efficiency1994Boulton}.
 As we discuss in \autoref{sec:intro:history}, interactive proof assistants utilize human creativity to handle a greater breadth and depth of problems than fully automated tools, which succeed only on more restricted domains.
 
-This thesis argues that the problem of \emph{compile-time performance} or \emph{proof-checking performance} is both significantly different from the problem of performance of typical programs and that it is nontrivial.
+This thesis argues that the problem of \emph{compile-time performance} or \emph{proof-checking performance} is both nontrivial and significantly different from the problem of performance of typical programs.
 While many papers mention performance, obliquely or otherwise, and some are even driven by performance concerns of a particular algorithm or part of the system,~\cites[p.~1382]{gonthier2008formal}{Efficiency1994Boulton}{Proving2005Benjamin}{Idris2Faster2020Brady}{Recognizing1989Benanav}{mechanical1990Pierce}{CelikETAL17iCoq}{PalmskogETAL18piCoq}{vmcompute}{thesis-nogin}{Idris2Faster2020Brady}, we have not found any that investigate the performance problems that arise \emph{asymptotically} when proof assistants are used to verify programs at large scale.
 
 We present in \autoref{part:rewriting} a research prototype of a tool and methodology for achieving acceptable performance at scale in the domain of term transformation and rewriting.
-We present design principles in \autoref{part:design} to avoid the performance bottlenecks we encountered, and insights about the proof assistants that these performance bottlenecks reveal.
+We present in \autoref{part:design} design principles to avoid the performance bottlenecks we encountered and insights about the proof assistants that these performance bottlenecks reveal.
 
-We argue that for proof assistants to scale to industrial uses, \emph{we must get the basics of asymptotic performance of proof-checking right}.
-Through work in this domain, we hope to utilise verification in the software innovation pipeline.
+We argue that for proof assistants to scale to industrial uses, \emph{we must get the basics of asymptotic performance of proof checking right}.
+Through work in this domain, we hope to utilize verification in the software innovation pipeline.
 
 
-\subsection{What are proof assistants?}\label{sec:intro:history}
+\subsection{What Are Proof Assistants?}\label{sec:intro:history}
 \minortodo{is it Nuprl or NuPRL? make sure to be consistent}
 %{The structure of this section:}
 %\begin{itemize}
@@ -192,11 +200,12 @@ While we intend to cover a wide swath of the history and development in this sub
 
 Formal verification can be traced back to the early 1950s~\cite{Brief2019Darbari}.
 The first formally verified proof, in some sense, achieved in 1954, was of the theorem that the sum of two even numbers is even~\cite{davis2001early}.
-The ``proof'' was an implementation in a vacuum-tube computer of the algorithm of \textcite{Uber1929Presburger}, which could decide, for any first order formula of natural number arithmetic, whether the formula represented a true theorem or a false one;
+The ``proof'' was an implementation in a vacuum-tube computer of the algorithm of \textcite{Uber1929Presburger}, which could decide, for any first-order formula of natural number arithmetic, whether the formula represented a true theorem or a false one;
 by implementing this algorithm and verifying that it returns ``true'' on a formula such as $\forall a\ b\ x\ y,\ \exists z,\ a = x + x \to b = y + y \to a + b = z + z$, the machine can be said to prove that this formula is true.
 
-While complete decision procedures exist for arithmetic, propositional logic (the fragment of logic without quantifiers, i.e., consisting only of $\to$, $\wedge$, $\vee$, $\neg$, and $\iff$), and elementary geometry, there is no complete decision procedure for first-order logic, which allows predicates, as well as universal and existential quantification over objects~\cite{davis2001early}.
-In fact, first-order logic is sufficiently expressive to encode systems that reason about themselves, such as Peano arithmetic, and Gödel's incompleteness theorem proves that there must be some statements which are neither provably true nor provably false.
+While complete decision procedures exist for arithmetic, propositional logic (the fragment of logic without quantifiers, i.e., consisting only of $\to$, $\wedge$, $\vee$, $\neg$, and $\leftrightarrow$), and elementary geometry, there is no complete decision procedure for first-order logic, which allows predicates, as well as universal and existential quantification over objects~\cite{davis2001early}.
+In fact, first-order logic is sufficiently expressive to encode the halting problem~\cite{Church1936,Turing1937}.
+The problem gets worse in higher-order logic, where we can encode systems that reason about themselves, such as Peano arithmetic, and Gödel's incompleteness theorem proves that there must be some statements which are neither provably true nor provably false.
 In fact, we cannot even decide which statements are undecidable~\cite{Are2011Makholm}!
 
 This incompleteness, however, does not sink the project of automated proof search.
@@ -204,7 +213,7 @@ Consider, for example, the very simple program that merely lists out all possibl
 While this procedure will run forever on statements which are neither provably true nor provably false, it will in fact be able to output proofs for all provable statements.
 This procedure, however, is uselessly slow.
 
-More efficient procedures for proof search exist, however.
+More efficient procedures for proof search exist.
 \minortodo{Should I cite \textcite{Computing1960Davis}, which was an earlier form of the resolution rule that proved infeasible?}
 Early systems such as the Stanford Pascal Verifier~\cite{luckham1979stanford} and Stanford Resolution Prover were based on what is now known as Robinson's resolution rule~\cite{Machine1965Robinson}, which, when coupled with syntactic unification, resulted in tolerable performance on sufficiently simple problems~\cite{davis2001early,Brief2019Darbari}.
 A particularly clear description of the resolution method can be found in \textcite[pp.~17--18]{Metamathematics1994Shankar}.
@@ -220,9 +229,9 @@ Nqthm later evolved into ACL2~\cite{Milestones2019Moore,ACL2Applications,ACL2}, 
 % Also Computational Logic Inc.~which used Nqthm, \url{http://www.computationallogic.com/}
 
 In 1967, at around the same time that Robinson published his resolution principle, N.~G.~de Bruijn developed the Automath system~\cite{Automath2002Kamareddine,Survey1994deBruijn,mathematical1970Bruijn,wiki:AutoMath}.
-Unlike the Boyer--Moore theorem provers, Automath checked the validity of sequences of human-generated proof steps, and hence was more of a proof checker or proof assistant than an automated theorem prover~\cite{ringer2020qed}.
+Unlike the Boyer--Moore theorem provers, Automath checked the validity of sequences of human-generated proof steps and hence was more of a proof checker or proof assistant than an automated theorem prover~\cite{ringer2020qed}.
 Automath is notable for being the first system to represent both theorems and proofs in the same formal system, reducing the problem of proof checking to that of type checking~\cite{ringer2020qed} by exploiting what came to be known as the Curry--Howard correspondence~\cite{Automath2002Kamareddine}; we will discuss this more in \autoref{sec:why-how-dependent-types}.
-The legacy of Automath also includes de Bruijn indices, a method for encoding function arguments which we describe in \autoref{sec:binders:de-bruijn}, dependent types, which we explain in \autoref{sec:why-how-dependent-types}, and the \emph{de Bruijn principle}---stating that proof checkers should be as small and as simple as possible---which we discuss in \autoref{sec:debruijn-criterion}~\cite{ringer2020qed,Automath2002Kamareddine}.
+The legacy of Automath also includes de Bruijn indices, a method for encoding function arguments which we describe in \autoref{sec:binders:de-bruijn}; dependent types, which we explain in \autoref{sec:why-how-dependent-types}; and the \emph{de Bruijn principle}---stating that proof checkers should be as small and as simple as possible---which we discuss in \autoref{sec:debruijn-criterion}~\cite{ringer2020qed,Automath2002Kamareddine}.
 We are deferring the explanation of these important concepts for the time being because, unlike the methods of theorem proving described above, these methods are at the heart of Coq, the primary theorem prover used in this thesis, as well as proof assistants like it.
 One notable accomplishment in the Automath system was the translation and checking of the entirety of Edmund Landau's \emph{Foundations of Analysis} in the early 1970s~\cite{Automath2002Kamareddine}.
 
@@ -376,11 +385,11 @@ The domain of classical mathematics required restrictions to the logical languag
 
 In the mid 1980s, Coq~\cite{Coq}, the proof assistant which we focus most on in this thesis, was born from an integration of features and ideas from a number of the proof assistants we've discussed in this subsection.
 Notably, it was based on the Calculus of Constructions (CoC), a synthesis of Martin-Löf's type theory~\cite{Intuitionistic1975MartinLoef,Constructive1982MartinLoef} with dependent types and polymorphism, which grew out of Dana Scott's logic of computable functions~\cite{Type1993Scott} together with de Bruijn's work on Automath~\cite{CoqArtForward2013Huet}.
-In the late 1980s, some problems were found with the way datatypes were encoded using functions, which lead to the introduction of inductive types, and an extension of CoC called the Calculus of Inductive Constructions (CIC)~\cite{CoqArtForward2013Huet}.
+In the late 1980s, some problems were found with the way datatypes were encoded using functions, which lead to the introduction of inductive types and an extension of CoC called the Calculus of Inductive Constructions (CIC)~\cite{CoqArtForward2013Huet}.
 \textcite{CoqArtForward2013Huet} contains an illuminating and comprehensive discussion of how the threads of Coq's development arose in tandem with the history discussed in the preceding paragraphs, and we highly recommend this read for those interested in Coq's history.
 
 Major accomplishments of verification in Coq include the fully verified optimizing C compiler CompCert~\cite{Compcert}, the proof of the Four Color Theorem~\cite{gonthier2008formal}, and the complete formalization of the Odd Order Theorem, also known as the Feit--Thompson Theorem~\cite{gonthier2013machine}.
-This last development was the of about six years of work formalizing a proof that every finite group of odd order is solvable; the original proof, published in the early 1960s, is about 225 pages long.
+This last development was the result of about six years of work formalizing a proof that every finite group of odd order is solvable; the original proof, published in the early 1960s, is about 225 pages long.
 \minortodo{Should I mention the following? ``Computer-verified proofs of versions of the first incompleteness theorem were announced [...] by Russell O'Connor in 2003 using Coq (O'Connor 2005)'' \url{https://en.wikipedia.org/wiki/Gödel's_incompleteness_theorems}}
 
 \minortodo{Do I need to include anything more from \textcite{Proof2009Geuvers,History2014Harrison}?}
@@ -389,8 +398,8 @@ We now briefly mention a number of other proof assistants, calling out some part
 Undoubtedly we will miss some proof assistants and accomplishments, for which we refer the reader to the rich existing literature, some of which is cited in the first paragraph of this subsection, as well as scattered among other papers which describe a variety of proof assistants~\cite{Formalizing2009Wiedijk}.
 
 Inspired by Automath, the Mizar~\cite{harrison-mizar,Rudnicki92anoverview,Matuszewski05mizar:the} proof checker was designed to assist mathematicians in preparing mathematical papers~\cite{Rudnicki92anoverview}.
-The Mizar Mathematical Library had already 55 thousand formally verified lemmas in 2009 and was at the time (and might still be \minortodoask{is this accurate?}) the largest library of formal mathematics~\cite{Formalizing2009Wiedijk}.
-LCF~\cite{LCF2000Gordon,gordon1979edinburgh,gordon1978metalanguage} spawned a number of other closely related proof assistants, such as HOL~\cite{Programming2000Barras,LCF2000Gordon}, Isabelle/HOL~\cite{LCF2019Paulson,Isabelle/Isar2002Wenzel,Isabelle,paulson1994isabelle}, HOL4~\cite{slind2008brief}, HOL Light~\cite{harrison1996hol}.
+The Mizar Mathematical Library already had 55 thousand formally verified lemmas in 2009 and was at the time (and might still be\minortodoask{is this accurate?}) the largest library of formal mathematics~\cite{Formalizing2009Wiedijk}.
+LCF~\cite{LCF2000Gordon,gordon1979edinburgh,gordon1978metalanguage} spawned a number of other closely related proof assistants, such as HOL~\cite{Programming2000Barras,LCF2000Gordon}, Isabelle/HOL~\cite{LCF2019Paulson,Isabelle/Isar2002Wenzel,Isabelle,paulson1994isabelle}, HOL4~\cite{slind2008brief}, and HOL Light~\cite{harrison1996hol}.
 Among other accomplishments, a complete OS microkernel, seL4, was fully verified in Isabelle/HOL by 2009~\cite{seL4SOSP09}.
 In 2014, a complete proof of the Kepler conjecture on optimal packing of spheres was formalized in a combination of Isabelle and HOL Light~\cite{flyspeck,flyspeck2014Hales}.
 \minortodo{should I say anything about the Kepler conjecture? ``In 1998 Thomas Hales, following an approach suggested by Fejes Tóth (1953), announced that he had a proof of the Kepler conjecture. Hales' proof is a proof by exhaustion involving the checking of many individual cases using complex computer calculations. Referees said that they were ``99\% certain'' of the correctness of Hales' proof, and the Kepler conjecture was accepted as a theorem.'' \url{https://en.wikipedia.org/wiki/Kepler_conjecture}}
@@ -408,14 +417,14 @@ Other proof assistants include LF~\cite{pfenning1991logic,harper93,Logical2002Pf
 \minortodo{How should I conclude this section?}
 
 \section{Basic Design Choices}\label{sec:intro:proof-assistant-design-choices}
-Although the design-space of proof assistants is quite large, as we've touched on in \autoref{sec:intro:history}, there are only two main design decisions which we want to assume for the investigations of this thesis.
+Although the design space of proof assistants is quite large, as we've touched on in \autoref{sec:intro:history}, there are only two main design decisions which we want to assume for the investigations of this thesis.
 The first is the use of dependent type theory as a basis for formal proofs, as is done in Automath~\cite{wiki:AutoMath,mathematical1970Bruijn,Survey1994deBruijn}, Coq~\cite{Coq}, Agda~\cite{Dependently2009Norell}, Idris~\cite{Idris2013Brady}, Lean~\cite{Lean2015Moura}, \NuPRL~\cite{nuprl}, Matita~\cite{Matita2011Asperti}, and others, rather than on some other logic, as is done in LCF~\cite{LCF2000Gordon,gordon1979edinburgh,gordon1978metalanguage}, Isabelle/HOL~\cite{LCF2019Paulson,Isabelle/Isar2002Wenzel,Isabelle,paulson1994isabelle}, HOL4~\cite{slind2008brief}, HOL Light~\cite{harrison1996hol}, LF~\cite{pfenning1991logic,harper93}, and Twelf~\cite{pfenning1999system}, among others.
 The second is the \emph{de Bruijn criterion}, mandating independent checking of proofs by a small trusted kernel~\cite{challenge2005Barendregt}.
 We have found that many of the performance bottlenecks are fundamentally a result of one or the other of these two design decisions.
 Readers are advised to consult \textcite[ch.~4]{ringer2020qed} for a more thorough mapping of the design axes.
 
 In this section, we will explain these two design choices in detail;
-by the end of this section, the reader should understand what each design choice entails, and, we hope, why these are reasonable choices to make.
+by the end of this section, the reader should understand what each design choice entails and, we hope, why these are reasonable choices to make.
 
 \minortodo{do I need to say any more before the subsections?}
 
@@ -436,7 +445,7 @@ This third conception dates back to the school of intuitionism of Brouwer in the
 
 \minortodo{Work in justification of dependent types ``Randy Pollack, On extensibility of proof checkers, Types for Proofs
 and Programs (LNCS 996) (Baastad, Sweden), June 1994, WWW:
-\url{http://homepages.inf.ed.ac.uk/rpollack/export/extensibility.ps.gz}'' from ``However, Pollack [21] offers reasons why a dependently-typed
+\url{http://homepages.inf.ed.ac.uk/rpollack/export/extensibility.ps.gz}'' from ``However, Pollack [21] offers reasons why a dependently typed
 programming language may be preferable'' from \textcite{TrustedSlind}}
 
 This third conception of proof admits formal frameworks where proof and computation are unified as the same activity.
@@ -450,12 +459,12 @@ A \emph{type} denotes a particular collection of objects, called its \emph{membe
 For example, \texttt{0} is a term of type \texttt{int}, \verb|"abc"| is a term of type \texttt{string}, and \texttt{true} and \texttt{false} are terms of type \texttt{bool}.
 Types define how terms can be built and how they can be used.
 New natural numbers, for example, can be built only as zero or as the successor of another natural number; these two ways of building natural numbers are called the type's \emph{constructors}.
-Similarly, the only ways to get a new boolean are by giving either \texttt{true} or \texttt{false}; these are the two constructors of the type \texttt{bool}.
-Note that there are other ways to get a boolean, such as by calling a function that returns booleans, or by having been given a boolean as a function argument.
-The constructors define the only booleans that exist at the end of the day, after all computation has been run.
+Similarly, the only ways to get a new Boolean are by giving either \texttt{true} or \texttt{false}; these are the two constructors of the type \texttt{bool}.
+Note that there are other ways to get a Boolean, such as by calling a function that returns Booleans, or by having been given a Boolean as a function argument.
+The constructors define the only Booleans that exist at the end of the day, after all computation has been run.
 This uniqueness is formally encoded by the \emph{eliminator} of a type, which describes how to use it.
-The eliminator on \texttt{bool} is the \texttt{if}-statement; to use a boolean, one must say what to do if it is \texttt{true}, and what to do if it is \texttt{false}.
-Some eliminators encode recursion: to use a natural number, one must say what to do if it is zero, and also, one must say what to do if it is a successor.
+The eliminator on \texttt{bool} is the \texttt{if} statement; to use a Boolean, one must say what to do if it is \texttt{true} and what to do if it is \texttt{false}.
+Some eliminators encode recursion: to use a natural number, one must say what to do if it is zero and also one must say what to do if it is a successor.
 In the case where the given number is the successor of $n$, however, one is allowed to call the function recursively on $n$.
 For example, we might define the factorial function as
 \begin{minted}{haskell}
@@ -467,7 +476,7 @@ fact m =
 
 Eliminators in programming correspond to \emph{induction} and case analysis in mathematics.
 To prove a property of all natural numbers, one must prove it of zero, and also prove that if it holds for any number $n$, then it holds for the successor of $n$.
-Here we see the first glimmer of the the Curry--Howard isomorphism, which identifies types with the set of terms of that type, identifiers propositions with the set of proofs of that proposition, and thereby identifies terms with proofs.
+Here we see the first glimmer of the the Curry--Howard isomorphism, which identifies each type with the set of terms of that type, identifies each proposition with the set of proofs of that proposition, and thereby identifies terms with proofs.
 
 \begin{table}[t]
 \centering
@@ -476,7 +485,7 @@ computation & set theory & logic \\ \hline
 type & set & proposition \\
 term / program & element of a set & proof \\
 eliminator / recursion & & case analysis / induction \\
-type of pairs & cartesian product ($\times$) & conjunction ($\wedge$) \\
+type of pairs & Cartesian product ($\times$) & conjunction ($\wedge$) \\
 sum type ($+$) & disjoint union ($\sqcup$) & disjunction ($\vee$) \\
 function type & set of functions & implication ($\to$) \\
 unit type & singleton set & trivial truth \\
@@ -502,38 +511,38 @@ These correspond exactly to the construction and application of functions in pro
 to define a function of type $A \to B$, the programmer gets an argument of type $A$ and must return a value of type $B$.
 To use a function of type $A \to B$, the programmer must \emph{apply} the function to an argument of type $A$; this is also known as \emph{calling} the function.
 
-Here we begin to see how type-checking and proof-checking can be seen as the same task.
-The process of \emph{type-checking} a program consists of ensuring that every variable is given a type, that every expression assigned to a variable has the type of that variable, that every argument to a function has the correct type, etc.
-If we write the boolean negation function which sends \texttt{true} to \texttt{false} and \texttt{false} to \texttt{true} by case analysis (i.e., by an \texttt{if}-statement), the type-checker will reject our program if we try to apply it to, say, an argument of type \texttt{string} such as \verb|"foo"|.
+Here we begin to see how type checking and proof checking can be seen as the same task.
+The process of \emph{type checking} a program consists of ensuring that every variable is given a type, that every expression assigned to a variable has the type of that variable, that every argument to a function has the correct type, etc.
+If we write the Boolean negation function which sends \texttt{true} to \texttt{false} and \texttt{false} to \texttt{true} by case analysis (i.e., by an \texttt{if} statement), the type checker will reject our program if we try to apply it to, say, an argument of type \texttt{string} such as \verb|"foo"|.
 Similarly, if we try to use \emph{modus ponens} to combine a proof that $x = 1 \to 2x = 2$ with a proof that $x = 2$ to obtain a proof that $2x = 2$, the proof checker should complain that $x = 1$ and $x = 2$ are not the same type.
 
-While the correspondence of the unit type to tautologies is relatively trivial, the correspondence of the empty type to falsehood encodes non-trivial principles.
+While the correspondence of the unit type to tautologies is relatively trivial, the correspondence of the empty type to falsehood encodes nontrivial principles.
 By encoding falsehood as the empty type, the principle of explosion---that from a contradiction, everything follows---can be encoded as case analysis on the empty type.
 \minortodo{do I need to explain this bit more?}
 
 The last two rows of \autoref{tab:curry-howard} are especially interesting cases which we will now cover.
 
-Some programming languages allow functions to return values whose type depends on the \emph{value} of the function's arguments.
+Some programming languages allow functions to return values whose types depends on the \emph{value}s of the functions' arguments.
 In these languages, the types of arguments are generally also allowed to depend on the values of previous arguments.
 Such languages are said to support dependent types.
-For example, we might have a function that takes in a boolean, and returns a string if the boolean is \texttt{true}, but an integer if the boolean is \texttt{false}.
-More interestingly, we might have a function that takes in two booleans, and additionally takes in a third argument which is of type \texttt{unit} whenever the two booleans are either both \texttt{true} or both \texttt{false}, but is of type \texttt{empty} when they are not equal.
+For example, we might have a function that takes in a Boolean and returns a string if the Boolean is \texttt{true} but an integer if the Boolean is \texttt{false}.
+More interestingly, we might have a function that takes in two Booleans and additionally takes in a third argument which is of type \texttt{unit} whenever the two Booleans are either both \texttt{true} or both \texttt{false} but is of type \texttt{empty} when they are not equal.
 This third argument serves as a kind of proof that the first two arguments are equal.
-By checking that the third argument is well-typed, that is, that the single inhabitant of the \texttt{unit} type is passed only when in fact the first two arguments are equal, the type-checker is in fact doing proof checking.
-While compilers of languages like C++, which supports dependent types via templates, can be made to do rudimentary proof-checking in this way, proof assistants such as Coq are built around such dependently-typed proof checking.
+By checking that the third argument is well-typed, that is, that the single inhabitant of the \texttt{unit} type is passed only when in fact the first two arguments are equal, the type checker is in fact doing proof checking.
+While compilers of languages like C++, which supports dependent types via templates, can be made to do rudimentary proof checking in this way, proof assistants such as Coq are built around such dependently typed proof checking.
 
 The last two lines of \autoref{tab:curry-howard} can now be understood.
 
 A dependent function type is just one whose return value depends on its arguments.
-For example, we may write the non-dependently-typed function type
+For example, we may write the non-dependently typed function type
 \[
 \texttt{bool} \to \texttt{bool} \to \texttt{unit} \to \texttt{unit}
 \]
-which takes in three arguments of types \texttt{bool}, \texttt{bool}, and \texttt{unit}, and returns a value of type \texttt{unit}.
-Note that we write this function in curried style, with $\to$ associating to the right (i.e., $A \to B \to C$ is $A \to (B \to C)$), where functions take in one argument at a time, and return a function awaiting the next argument.
+which takes in three arguments of types \texttt{bool}, \texttt{bool}, and \texttt{unit} and returns a value of type \texttt{unit}.
+Note that we write this function in curried style, with $\to$ associating to the right (i.e., $A \to B \to C$ is $A \to (B \to C)$), where a function takes in one argument at a time and returns a function awaiting the next argument.
 This function is not very interesting, since it can only return the single element of type \texttt{unit}.
 
-However, if we define $E(b_1, b_2)$ to be the type \mintinline{coq}{if b₁ then (if b₂ then unit else empty) else (if b₂ then empty else unit)}, i.e., the type which is \texttt{unit} when both are \texttt{true} or both are \texttt{false}, and is \texttt{empty} otherwise, then we may write the dependent type
+However, if we define $E(b_1, b_2)$ to be the type \mintinline{coq}{if b₁ then (if b₂ then unit else empty) else (if b₂ then empty else unit)}, i.e., the type which is \texttt{unit} when both are \texttt{true} or both are \texttt{false} and is \texttt{empty} otherwise, then we may write the dependent type
 \[
 (b_1 : \texttt{bool}) \to (b_2 : \texttt{bool}) \to E(b_1, b_2) \to E(b_2, b_1)
 \]
@@ -545,21 +554,21 @@ and
 \[
 \forall (b_1 : \texttt{bool}) (b_2 : \texttt{bool}), E(b_1, b_2) \to E(b_2, b_1).
 \]
-A function of this type witnesses a proof that equality of booleans is symmetric.
+A function of this type witnesses a proof that equality of Booleans is symmetric.
 \minortodo{should I say more?  How to organize this paragraph?}
 
 Similarly, dependent pair types witness existentially quantified proofs.
 Suppose we have a type $T(n)$ which encodes the statement ``$n$ is prime and even''.
 To prove $\exists n, T(n)$, we must provide an explicit $n$ together with a proof that it satisfies $T$.
-This is exactly what a dependent pair is: $\Sigma_n T(n)$ is the type of pairs of numbers $n$ paired with proofs that that particular $n$ satisfies $T$.
+This is exactly what a dependent pair is: $\Sigma_n T(n)$ is the type of consisting of a pair of a number $n$ paired with a proof that that particular $n$ satisfies $T$.
 
 \minortodo{subsection split here?}
 
-As we mentioned above, one feature of basing a proof assistant on dependent type theory is that computation can be done at the type-level, without leaving a trace in the proof term.
+As we mentioned above, one feature of basing a proof assistant on dependent type theory is that computation can be done at the type level, without leaving a trace in the proof term.
 Many proofs require intermediate arguments based solely on the computation of functions.
 For example, a proof in number theory or cryptography might depend on the fact that a particularly large number, raised to some large power, is congruent to 1 modulo some prime.
 As argued by \textcite{stampoulis2013veriml}, if we are required to record all intermediate computation steps in the proof term, they can become prohibitively large.
-The \emph{Poincaré principle} asserts that such arguments should not need to be recorded in formal proofs, but should instead be automatically verified by appeal to computation~\cite[p.~1167]{barendregt2001proof}.
+The \emph{Poincaré principle} asserts that such arguments should not need to be recorded in formal proofs but should instead be automatically verified by appeal to computation~\cite[p.~1167]{barendregt2001proof}.
 The ability to appeal to computation without blowing up the size of the proof term is quite important for so-called reflective (or reflexive) methods of proof, described in great detail in \autoref{ch:reflection}.
 
 \minortodo{I think the original phrasing of \textcite{stampoulis2013veriml} is much clearer:
@@ -607,22 +616,22 @@ There is a large untrusted codebase which includes the proof scripting language 
 There's a much smaller kernel which checks the proofs, and Coq is even shipped with a separate checker program, \texttt{coqchk}, for checking proof objects saved to disk.
 Moreover, in the past year, a checker for Coq's proof objects has been implemented in Coq itself and formally verified with respect to the type theory underlying Coq~\cite{Coq2019Sozeau}.
 
-Note that the LCF approach to theorem proving, where proofs have an abstract type and type-safety of the tactics guarantees validity of the proof object, forms a sort-of complementary approach to trust.
+Note that the LCF approach to theorem proving, where proofs have an abstract type and type safety of the tactics guarantees validity of the proof object, forms a sort-of complementary approach to trust.
 \minortodo{what should I say about LCF here?}
 \minortodo{should I mention formal verification of \NuPRL\space in Coq?}
 
 \minortodo{is there anything else to say in this subsection?}
 
-\section{Look ahead: Layout and contributions of the thesis}\label{sec:intro:layout}
-In the remainder of \autoref{part:introduction}, we will finish laying out the landscape of performance bottlenecks we encountered in dependently-typed proof assistants;
-\fullnameref{ch:perf-failures} gives a more in-depth investigation into what makes performance optimization in dependent type theory hard, different, and unique, followed by describing major axes of super-linear performance bottlenecks in \fullnameref{sec:perf-axes}.
+\section{Look Ahead: Layout and Contributions of the Thesis}\label{sec:intro:layout}
+In the remainder of \autoref{part:introduction}, we will finish laying out the landscape of performance bottlenecks we encountered in dependently typed proof assistants;
+\fullnameref{ch:perf-failures} gives a more in-depth investigation into what makes performance optimization in dependent type theory hard, different, and unique, followed by describing major axes of superlinear performance bottlenecks in \fullnameref{sec:perf-axes}.
 
 \fullnameref{part:rewriting} is devoted, in some sense, to performance bottlenecks that arise from the de Bruijn criterion of \autoref{sec:debruijn-criterion}.
 We investigate one particular method for avoiding these performance bottlenecks.
 We introduce this method, variously called \emph{proof by reflection} or \emph{reflective automation}, in \fullnameref{ch:reflection}, with a special emphasis on a particularly common use case---transformation of syntax trees.
 \fullnameref{ch:rewriting} describes our original contribution of a framework for leveraging reflection to perform rewriting and program transformation at scale, driven by our need to synthesize efficient, proven-correct, low-level cryptographic primitives~\cite{FiatCryptoSP19}.
 \minortodo{cite also the rewriter paper }%
-Where \autoref{ch:rewriting} addresses the performance challenges of verified or proof-producing program transformation, \fullnameref{ch:rewriting-more} is a deep-dive into the performance challenges of engineering the tool itself, and serves as a sort-of microcosm of the performance bottlenecks previously discussed and the solutions we've proposed to them.
+Where \autoref{ch:rewriting} addresses the performance challenges of verified or proof-producing program transformation, \fullnameref{ch:rewriting-more} is a deep-dive into the performance challenges of engineering the tool itself and serves as a sort-of microcosm of the performance bottlenecks previously discussed and the solutions we've proposed to them.
 Unlike the other chapters of this thesis, \autoref{ch:rewriting-more} at times assumes a great deal of familiarity with the details of the Coq proof assistant.
 Finally, \fullnameref{ch:reification-by-parametricity} presents a way to efficiently, elegantly, and easily perform \emph{reification}, the first step of proof by reflection, which is often a bottleneck in its own right.
 We discovered---or invented---this trick in the course of working on our library for synthesis of low-level cryptographic primitives~\cite{FiatCryptoSP19,reification-by-parametricity}.
@@ -634,25 +643,25 @@ Many of the lessons presented here are generalizations of examples described in 
 The category theory library formalized as part of this doctoral work, available at \textcite{HoTT/HoTT-categories}, is described briefly in this chapter; a more thorough description can be found in the paper we published on our experience formalizing this library~\cite{category-coq-experience}.
 
 \fullnameref{part:conclusion} is in some sense the mirror image of \autoref{part:introduction}:
-Where \autoref{ch:perf-failures} is a broad look at what is currently lacking and where performance bottlenecks arise, \fullnameref{ch:coq-tooling-fixes} takes a historical perspective on what advancements have already been made in the performance of proof assistants, and Coq in particular.
+Where \autoref{ch:perf-failures} is a broad look at what is currently lacking and where performance bottlenecks arise, \fullnameref{ch:coq-tooling-fixes} takes a historical perspective on what advancements have already been made in the performance of proof assistants and Coq in particular.
 Finally, while the present chapter which we are now concluding has looked back on the present state and history of formal verification, \fullnameref{ch:conclusion} looks forward to what we believe are the most important next steps in the perhaps-nascent field of proof-assistant performance at scale.
 
 
 \begin{subappendices}
 
 \begin{minorcomment}
-\section{deleted paragraphs}
+\section{Deleted Paragraphs}
 
-Even with machine-checked proofs, it is impossible to gain complete confidence in the software; the layer underneath may be untrustworthy in ways we cannot see~\cite{Reflections1984Thompson}, you can never prove that the mathematical system you're working in is correct~\cite{sep-goedel-incompleteness}, and most proof-checkers are not yet themselves proven correct.
+Even with machine-checked proofs, it is impossible to gain complete confidence in the software; the layer underneath may be untrustworthy in ways we cannot see~\cite{Reflections1984Thompson}, you can never prove that the mathematical system you're working in is correct~\cite{sep-goedel-incompleteness}, and most proof checkers are not yet themselves proven correct.
 However, machine-checked proofs allow a drastic reduction in how much code needs to be trusted.
 Rather than trusting the millions of lines of code of the software being verified, you only need to trust the specifications of the software, and the likely-much-smaller codebase of the proof checker.
 Furthermore, it's very unlikely that bugs in the proof checker will overlap with bugs in the proof in just the right way to allow errors to slip through only in one particular piece of software.
-Said another way, we no longer need to write tests for every piece of software separately; writing tests for the proof-checker helps eliminate bugs in \emph{all} software proven by that checker.
+Said another way, we no longer need to write tests for every piece of software separately; writing tests for the proof checker helps eliminate bugs in \emph{all} software proven by that checker.
 
 While proofs of algorithms tend to be done with pen-and-paper (consider the ubiquitous proofs that various sorting algorithms are correct found in introductory algorithms classes), writing proofs of actual code is much harder.
 Code in the real-world tends to be much more complicated than code in an algorithms textbook.
 This difference could be due to reasons of performance, historical accident, or interfacing with real users, among others.
-Proofs of code-correctness thus tend to be filled with tedious case-analysis with only sparse mathematical insights, and attempts to create and check these proofs by hand are subject to the same issues of human fallibility as writing the code in the first place.
+Proofs of code correctness thus tend to be filled with tedious case analysis with only sparse mathematical insights, and attempts to create and check these proofs by hand are subject to the same issues of human fallibility as writing the code in the first place.
 
 We expect that this will enable independence from inadequate testing, and faster iteration and deployment of software.
 
@@ -713,7 +722,7 @@ I'd be very interested in your findings about proof assistant performance. This 
 \minortodo{look into \textcite{Sealing2020Selsam} Sealing Pointer-Based Optimizations Behind Pure Functions}
 
 \begin{minorcomment}
-\section{Coq's design}
+\section{Coq's Design}
 \end{minorcomment}
 \minortodo{where does this description of Coq's design go?}
 \begin{minorcomment}

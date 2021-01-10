@@ -44,7 +44,6 @@
 \newcommand{\todofrom}[2]{%
   \finalwarning{TODO: (FROM #1) \detokenize{#2} in file \currfilename}%
   \NowOrAtBeginDocument{\textcolor{OrangeRed}{[\textbf{TODO FROM #1:} #2]}}}%
-\newcommand{\todonz}[1]{\todofrom{Nickolai}{#1}}
 \newcommand{\minortodo}[1]{%
   \finalwarning{MINOR TODO: \detokenize{#1} in file \currfilename}%
   \ifthenelse{\boolean{showminortodos}}{%
@@ -55,7 +54,10 @@
   \ifthenelse{\boolean{showminortodos}}{%
     \NowOrAtBeginDocument{\textcolor{OrangeRed}{[\textbf{MINOR TODO FROM #1:} #2]}}%
   }{}}%
+\newcommand{\todonz}[1]{\todofrom{Nickolai}{#1}}
 \newcommand{\minortodonz}[1]{\minortodofrom{Nickolai}{#1}}
+\newcommand{\todoac}[1]{\todofrom{Adam}{#1}}
+\newcommand{\minortodoac}[1]{\minortodofrom{Adam}{#1}}
 \newcommand{\etodo}[1]{\edef\@todotext{#1}\expandafter\todo\expandafter{\@todotext}}%
 \newcommand{\eminortodo}[1]{\edef\@todotext{#1}\expandafter\minortodo\expandafter{\@todotext}}%
 \newcommand{\todoask}[1]{%

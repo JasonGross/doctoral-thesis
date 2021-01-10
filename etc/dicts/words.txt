@@ -129,6 +129,7 @@ naïvely
 neurosciences
 nitty
 nonlinearity
+nonnegative
 normalizer
 opacification
 opacify
@@ -198,6 +199,8 @@ subterm
 subterms
 subtype
 sufficies
+superlinear
+superlinearly
 thunked
 toolchain
 trustable

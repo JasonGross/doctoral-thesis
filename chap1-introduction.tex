@@ -86,7 +86,7 @@ The proofs are so long and arduous to write that it typically requires multiple 
   }
   \pgfplotstableread[col sep=comma]{proof-overhead-no-fiat-crypto.csv}\datatable
   \pgfplotsset{every axis legend/.append style={
-      at={(0.5,-0.1)},
+      at={(0.5,-0.3)},
       anchor=north}}
   \begin{axis}[
       xbar stacked,   % Stacked horizontal bars
@@ -102,6 +102,10 @@ The proofs are so long and arduous to write that it typically requires multiple 
 %      nodes near coords,
 %      nodes near coords align=horizontal,
       width=0.9\textwidth,
+      height=8\baselineskip,
+      enlarge y limits={abs=0.5},
+      % (this sets all labels to the same base)
+      typeset ticklabels with strut,
      ]
     \addplot [fill=blue!60]   table [x=Definitions,  meta=Project, col sep=comma, y expr=\coordindex] {proof-overhead-no-fiat-crypto.csv};
     \addplot [fill=orange!60] table [x=Verification, meta=Project, col sep=comma, y expr=\coordindex] {proof-overhead-no-fiat-crypto.csv};
@@ -111,7 +115,6 @@ The proofs are so long and arduous to write that it typically requires multiple 
 \caption{%
   Overhead of lines of code of verification over lines of code being verified for some successful projects in microkernels and operating systems (seL4, CertiKOS) and compilers (CompCert).
   Note the $\log$-scaling.
-  \todo{Integrate vertical spacing fix from \url{https://tex.stackexchange.com/questions/578270/how-do-i-decrease-vertical-spacing-in-xbar-stacked-pgfplots-charts} once answered}
 }\label{fig:proof-overhead}
 \end{figure}
 

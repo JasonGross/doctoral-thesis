@@ -17,7 +17,7 @@
 However, there was a great deal of engineering effort that went into building this tool which we glossed over.
 Much of the engineering effort was mundane, and we elide the details entirely.
 However, we believe some of the engineering effort serves as a good case-study for the difficulties of building proof-based systems at scale.
-This chapter is about exposing the details relevant to understanding how the bottlenecks and principles identified elsewhere in this thesis played out in designing and implementing this tool.
+This chapter is about exposing the details relevant to understanding how the bottlenecks and principles identified elsewhere in this dissertation played out in designing and implementing this tool.
 Note that many of the examples and descriptions in this chapter are highly technical, and we expect the discussion will only be of interest to the motivated reader, familiar with Coq, who wants to see more concrete non-toy examples of the bottlenecks and principles we've been describing; other readers are encouraged to skip this chapter.
 
 %\section{A Brief Survey of the Engineering Challenges}\label{sec:rewriting-more:challenges-overview}
@@ -36,7 +36,7 @@ As such, this tool, developed to solve performance scaling issues in verified sy
 
 Our discussion in this section is organized by the conceptual structure of the normalization and pattern matching compilation engine;
 we hope that organizing the discussion in this way will make the examples more understandable, motivated, and incremental.
-We note, however, that many of the challenges fall into the same broad categories that are identified elsewhere in this thesis:
+We note, however, that many of the challenges fall into the same broad categories that are identified elsewhere in this dissertation:
 issues arising from the power and (mis)use of dependent types, as introduced in \fullnameref{sec:why-how-dependent-types};
 and issues arising arising from API mismatches, as described in \fullnameref{ch:api-design}.
 
@@ -490,14 +490,14 @@ There are three perhaps-unexpected things to note about this inductive type, whi
 With this inductive type in hand, it's easy to see how \mintinline{coq}{rExpr} allows us $\mathcal{O}(1)$ embedding of intrinsically typed \mintinline{coq}{expr}s into untyped \mintinline{coq}{rawexpr}s.
 
 While it's likely that sufficiently good abstraction barriers around this datatype would allow us to use it with relatively little pain, we did not succeed in designing good enough abstraction barriers.
-The bright side of this failure is that we now have a number of examples for this thesis of ways in which inadequate abstraction barriers cause pain.
+The bright side of this failure is that we now have a number of examples for this dissertation of ways in which inadequate abstraction barriers cause pain.
 
 We will discuss the many issues that arise from leaks in this abstraction barrier in the upcoming subsections.
 %While some of these issues will be discussed in \Autoref{sec:rewriting-more:delayed-rewriting,sec:rewriting-more:revealing-enough-structure,sec:rewriting-more:rIdent-known} where we discuss the perhaps-unexpected additions to the \mintinline{coq}{rawexpr} constructors, we can discuss a few complications here.
 
 %\paragraph{Equivalence Relations}
 %Correctness conditions on PHOAS transformations are frequently stated in terms of two (partial) equivalence relations: the well-formedness relation \mintinline{coq}{Wf} defined in \autoref{sec:PHOAS:Wf-def}; and pointwise equality---that is, equality up to function extensionality---of the interpretations of the expressions.
-%\todo{make sure I'm being consistent about ``interpretation'' vs ``denotation'' across the thesis}
+%\todo{make sure I'm being consistent about ``interpretation'' vs ``denotation'' across the dissertation}
 
 \subsection{Pattern Matching Compilation Made for Intrinsically-Typed Syntax}\label{sec:rewriting-more:AST:better-pattern-matching}
 The cost of this fourth option is the cleverness required to come up with a version of the pattern matching compilation which, rather than being hindered by types in its syntax, instead puts them to good use.
@@ -907,7 +907,7 @@ While we initially depended on the axiom of functional extensionality, after sin
 See commits \githubref{mit-plv/rewriter}{4d7999ebb66c1497222d024a1d9f9d0f1ecb2356} and \githubref{mit-plv/rewriter}{e9b3505d96cb77b05208b10a0b14b6b2cf99887e} in the \texttt{mit-plv/rewriter} repository on GitHub for more details on the exact changes required to implement this insight and remove the dependence on the axiom of functional extensionality.
 
 \paragraph{Related Miscellanea}
-While delving into the details of all two-dozen ways of relating objects is beyond the scope of this thesis, we mention a couple of other non-obvious design questions that we found challenging to answer.
+While delving into the details of all two-dozen ways of relating objects is beyond the scope of this dissertation, we mention a couple of other non-obvious design questions that we found challenging to answer.
 
 Recall from \autoref{sec:thunk-eval-subst-term} that \mintinline{coq}{NbEₜ} values are Gallina functions on arrow types; dropping the subtleties of the \mintinline{coq}{UnderLets} monad, we had
 \begin{align*}

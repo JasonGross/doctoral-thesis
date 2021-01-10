@@ -39,13 +39,13 @@
 % https://libraries.mit.edu/distinctive-collections/thesis-specs/#graduate
 Formal verification is increasingly valuable as our world comes to rely more on software for critical infrastructure.
 A significant and under studied cost of developing mechanized proofs, especially at scale, is the computer performance of proof generation.
-This thesis aims to be a partial guide to identifying and resolving performance bottlenecks in dependently typed tactic-driven proof assistants such as Coq.
+This dissertation aims to be a partial guide to identifying and resolving performance bottlenecks in dependently typed tactic-driven proof assistants such as Coq.
 
 We present a survey of the landscape of performance issues in Coq, with a number of micro- and macro-benchmarks.
 We describe various metrics that allow prediction of performance, such as term size, goal size, and number of binders, and note the occasional surprising lack of a bottleneck for some factors, such as total proof term size.
-To our knowledge such a roadmap to performance bottlenecks is a new contribution of this thesis.
+To our knowledge such a roadmap to performance bottlenecks is a new contribution of this dissertation.
 
-The central new technical contribution presented by this thesis is a reflective framework for partial evaluation and rewriting, already used to compile a code generator for field-arithmetic cryptographic primitives which generates code currently used in Google Chrome.
+The central new technical contribution presented by this dissertation is a reflective framework for partial evaluation and rewriting, already used to compile a code generator for field-arithmetic cryptographic primitives which generates code currently used in Google Chrome.
 We believe this prototype is the first scalably performant realization of an approach for code specialization which does not require adding to the trusted code base.
 Our extensible engine, which combines the traditional concepts of tailored term reduction and automatic rewriting from hint databases with on-the-fly generation of inductive codes for constants, is also of interest to replace these ingredients in proof assistants' proof checkers and tactic engines.
 Additionally, we use the development of this framework itself as a case study for the various performance issues that can arise when designing large proof libraries.

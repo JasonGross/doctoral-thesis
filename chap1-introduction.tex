@@ -172,7 +172,7 @@ While compiler performance---both the time it takes to compile code and the time
 We distinguish the question of interactive-proof-assistant performance from that of performance of fully automated reasoning tools such as SAT and SMT solvers, on which there has been a great deal of research~\cite{Efficiency1994Boulton}.
 As we discuss in \autoref{sec:intro:history}, interactive proof assistants utilize human creativity to handle a greater breadth and depth of problems than fully automated tools, which succeed only on more restricted domains.
 
-This thesis argues that the problem of \emph{compile-time performance} or \emph{proof-checking performance} is both nontrivial and significantly different from the problem of performance of typical programs.
+This dissertation argues that the problem of \emph{compile-time performance} or \emph{proof-checking performance} is both nontrivial and significantly different from the problem of performance of typical programs.
 While many papers mention performance, obliquely or otherwise, and some are even driven by performance concerns of a particular algorithm or part of the system,~\cites[p.~1382]{gonthier2008formal}{Efficiency1994Boulton}{Proving2005Benjamin}{Idris2Faster2020Brady}{Recognizing1989Benanav}{mechanical1990Pierce}{CelikETAL17iCoq}{PalmskogETAL18piCoq}{vmcompute}{thesis-nogin}{Idris2Faster2020Brady}, we have not found any that investigate the performance problems that arise \emph{asymptotically} when proof assistants are used to verify programs at large scale.
 
 We present in \autoref{part:rewriting} a research prototype of a tool and methodology for achieving acceptable performance at scale in the domain of term transformation and rewriting.
@@ -389,7 +389,7 @@ The domain of classical mathematics required restrictions to the logical languag
 \end{flushright}
 \end{comment}
 
-In the mid 1980s, Coq~\cite{Coq}, the proof assistant which we focus most on in this thesis, was born from an integration of features and ideas from a number of the proof assistants we've discussed in this subsection.
+In the mid 1980s, Coq~\cite{Coq}, the proof assistant which we focus most on in this dissertation, was born from an integration of features and ideas from a number of the proof assistants we've discussed in this subsection.
 Notably, it was based on the Calculus of Constructions (CoC), a synthesis of Martin-Löf's type theory~\cite{Intuitionistic1975MartinLoef,Constructive1982MartinLoef} with dependent types and polymorphism, which grew out of Dana Scott's logic of computable functions~\cite{Type1993Scott} together with de Bruijn's work on Automath~\cite{CoqArtForward2013Huet}.
 In the late 1980s, some problems were found with the way datatypes were encoded using functions, which lead to the introduction of inductive types and an extension of CoC called the Calculus of Inductive Constructions (CIC)~\cite{CoqArtForward2013Huet}.
 \textcite{CoqArtForward2013Huet} contains an illuminating and comprehensive discussion of how the threads of Coq's development arose in tandem with the history discussed in the preceding paragraphs, and we highly recommend this read for those interested in Coq's history.
@@ -616,7 +616,7 @@ Sufficiently small and well-written programs can more easily be inspected and ve
 
 %\todo{explain why it's worth following this, and what goes wrong if you don't}
 
-The proof assistant Coq, which is the primary proof assistant we consider in this thesis, is a decent example of satisfying the de Bruijn criterion.
+The proof assistant Coq, which is the primary proof assistant we consider in this dissertation, is a decent example of satisfying the de Bruijn criterion.
 There is a large untrusted codebase which includes the proof scripting language \Ltac, used for generating proofs and doing type inference.
 \label{sec:ltac-first-mention}
 There's a much smaller kernel which checks the proofs, and Coq is even shipped with a separate checker program, \texttt{coqchk}, for checking proof objects saved to disk.
@@ -638,7 +638,7 @@ We introduce this method, variously called \emph{proof by reflection} or \emph{r
 \fullnameref{ch:rewriting} describes our original contribution of a framework for leveraging reflection to perform rewriting and program transformation at scale, driven by our need to synthesize efficient, proven-correct, low-level cryptographic primitives~\cite{FiatCryptoSP19}.
 \minortodo{cite also the rewriter paper }%
 Where \autoref{ch:rewriting} addresses the performance challenges of verified or proof-producing program transformation, \fullnameref{ch:rewriting-more} is a deep-dive into the performance challenges of engineering the tool itself and serves as a sort-of microcosm of the performance bottlenecks previously discussed and the solutions we've proposed to them.
-Unlike the other chapters of this thesis, \autoref{ch:rewriting-more} at times assumes a great deal of familiarity with the details of the Coq proof assistant.
+Unlike the other chapters of this dissertation, \autoref{ch:rewriting-more} at times assumes a great deal of familiarity with the details of the Coq proof assistant.
 Finally, \fullnameref{ch:reification-by-parametricity} presents a way to efficiently, elegantly, and easily perform \emph{reification}, the first step of proof by reflection, which is often a bottleneck in its own right.
 We discovered---or invented---this trick in the course of working on our library for synthesis of low-level cryptographic primitives~\cite{FiatCryptoSP19,reification-by-parametricity}.
 

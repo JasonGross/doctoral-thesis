@@ -1,5 +1,5 @@
 \chapter{Concluding Remarks}\label{ch:conclusion}
-We come, at last, to the closing remarks of this thesis.
+We come, at last, to the closing remarks of this dissertation.
 
 We spent \autoref{part:introduction} mapping out the landscape of the problems of performance we encountered in dependently typed proof assistants.
 In \autoref{part:rewriting} and \autoref{part:design}, we laid out more-or-less systematic principles and tools for avoiding these performance bottlenecks.
@@ -9,7 +9,7 @@ We look now to the future.
 
 The clever reader might have noticed something that we swept under the rug in \Autoref{part:rewriting,part:design}.
 In \autoref{sec:intro:proof-assistant-design-choices} we laid out two basic design choices---dependent types and the de Bruijn criterion---which are responsible for much of the power and much of the trust we can have in a proof assistant like Coq.
-We then spent the next chapters of this thesis investigating the performance bottlenecks that can perhaps be said to result from these choices, and how to ameliorate these performance issues.
+We then spent the next chapters of this dissertation investigating the performance bottlenecks that can perhaps be said to result from these choices, and how to ameliorate these performance issues.
 
 If the strategies we laid out in \Autoref{part:rewriting,part:design} for how to use dependent types and untrusted tactics in a performant way are to be summed up in one word, that word is: ``don't!''
 To avoid the performance issues resulting from tactics being untrusted, the source of much of the trust in proof assistants like Coq, we suggest in \autoref{part:rewriting} that users effectively \emph{throw away the entire tactic engine} and instead code tactics reflectively.
@@ -21,7 +21,7 @@ we are effectively advising users to basically avoid using most of the power and
 We admit that we are not sure what an effective resolution to the performance issue of computation at the type level would look like.
 While \autoref{ch:design} lays out in \fullnameref{sec:when-how-dependent-types} principles for how and when to use dependent types that allow us to recover much of the power of dependent types without running into issues of slow conversion, even at scale, this is nowhere near a complete roadmap for actually using partial computation at the type level.
 
-On the question of using tactics, however, we do know what a resolution would look like, and hence we conclude this thesis with such a call for future research.
+On the question of using tactics, however, we do know what a resolution would look like, and hence we conclude this dissertation with such a call for future research.
 
 As far as we can tell, no one has yet laid out a theory of what are the necessary basic building blocks of a usable tactic engine for proofs.
 Such a theory should include:
@@ -77,4 +77,4 @@ This body of work shows that we can always turn an imperative program into a str
 }
 
 \minortodo{is there a better concluding sentence?}
-We hope the reader leaves this thesis with an improved understanding of the performance landscape of engineering of proof-based software systems, and perhaps goes on to contribute new insight to this perhaps-nascent field themselves.
+We hope the reader leaves this dissertation with an improved understanding of the performance landscape of engineering of proof-based software systems, and perhaps goes on to contribute new insight to this perhaps-nascent field themselves.

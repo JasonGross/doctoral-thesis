@@ -1219,7 +1219,7 @@ For example, suppose we have implemented key-value maps as association lists, re
 Any function which, for example, asks for the first element of the association list has pierced the abstraction barrier of our interface.
 
 We might say that an abstraction barrier is \emph{leaky} if we ever need to pierce it, or perhaps if our program does in fact pierce the abstraction barrier, even if the piercing is needless.
-(Which definition we choose is not of great significance for this thesis.)
+(Which definition we choose is not of great significance for this dissertation.)
 
 In proof assistants like Coq, using \mintinline{coq}{unfold}, \mintinline{coq}{simpl}, or \mintinline{coq}{cbn} can often indicate a leaky abstraction barrier, where in order to prove a property we unfold the interface we are given to see how it is implemented.
 This is all well and good when we are in the process of defining the abstraction barrier---unfolding the definition of sorting a list, for example, to prove that sorting the list gives back a list with all the same elements---but can be problematic when used more pervasively.

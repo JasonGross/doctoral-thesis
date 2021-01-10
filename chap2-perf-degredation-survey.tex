@@ -668,7 +668,7 @@ The essential function of a proof checker is to verify that a given term has a g
 We obviously cannot type-check a term in better than linear time in the size of the representation of the term.
 
 Recall that we cannot place any hard bounds on complexity of typechecking a term, as terms as simple as \mintinline{coq}{@eq_refl bool true} proving that the Boolean \mintinline{coq}{true} is equal to itself can also be typechecked as proofs of arbitrarily complex decision procedures returning success.
-\todoac{[About this entire paragraph] Subtle point here that might benefit from more explanation/example!}
+\todoac{[About this entire paragraph] Subtle point here that might benefit from more explanation/example! [Jason: How much more? / What should I say?]}
 
 We might reasonably hope that typechecking problems which require no interesting computation can be completed in time linear in the size of the term and its type.
 
@@ -852,7 +852,7 @@ One popular representation is the locally nameless representation~\cite{Locally2
 However, if we use a locally nameless term representation, then finding a compact representation for identity and lifting substitutions is quite tricky.
 If the substitution representation takes $\mathcal O(n)$ time to create in a context of size $n$, then having a $\lambda$ with $n$ arguments whose types are not known takes $\mathcal O(n^2)$ time, because we end up creating identity substitutions for $n$ holes, with linear-sized contexts.
 
-Note that fully nameless, i.e., de Bruijn term representations,\todoac{the comma is crossed out, but I think that's wrong} do not suffer from this issue.
+Note that fully nameless, i.e., de Bruijn term representations,\todoac{remove comma [Jason: I think that's wrong]} do not suffer from this issue.
 
 See \coqbug{8237} and \coqpr{11896} for a mitigation of some (but not all) issues.
 
@@ -1210,7 +1210,7 @@ Let us consider things a bit more generally.
 
 \citetitle{Structure1996Sussman} defines abstraction as naming and manipulating compound elements as units~\cite[p.~6]{Structure1996Sussman}.
 An \emph{abstraction barrier} is a collection of definitions and theorems about those definitions that together provide an interface for such a compound element.
-\todoac{to (but that still doesn't seem enough for the sentence to make sense) [Jason: I chose ``for'' instead, it makes sense to me?}
+\todoac{to (but that still doesn't seem enough for the sentence to make sense) [Jason: I chose ``for'' instead, it makes sense to me?]}
 For example, we might define an interface for sorting a list, together with a proof that sorting any list results in a sorted list.
 Or we might define an interface for key-value maps (perhaps implemented as association lists, or hash-maps, or binary search trees, or in some other way).
 

@@ -84,14 +84,12 @@ The proofs are so long and arduous to write that it typically requires multiple 
   \beginTikzpictureStamped{
     \einput{proof-overhead-no-fiat-crypto.csv}
   }
-  \pgfplotstableread[col sep=comma]{proof-overhead-no-fiat-crypto.csv}\datatable
   \pgfplotsset{every axis legend/.append style={
       at={(0.5,-0.3)},
       anchor=north}}
   \begin{axis}[
       xbar stacked,   % Stacked horizontal bars
       ytick=data,     % Use as many tick labels as y coordinates
-      yticklabels from table={\datatable}{Project},
       scaled x ticks=false,
 %      legend pos=outer north east,
 %      xmin=0,         % Start x axis at 0 (but not on log mode)
@@ -106,9 +104,14 @@ The proofs are so long and arduous to write that it typically requires multiple 
       enlarge y limits={abs=0.5},
       % (this sets all labels to the same base)
       typeset ticklabels with strut,
+      %
+      yticklabels from table={proof-overhead-no-fiat-crypto.csv}{Project},
+      table/col sep=comma,
+      table/meta=Project,
+      table/y expr=\coordindex,
      ]
-    \addplot [fill=blue!60]   table [x=Definitions,  meta=Project, col sep=comma, y expr=\coordindex] {proof-overhead-no-fiat-crypto.csv};
-    \addplot [fill=orange!60] table [x=Verification, meta=Project, col sep=comma, y expr=\coordindex] {proof-overhead-no-fiat-crypto.csv};
+    \addplot [fill=blue!60]   table [x=Definitions]  {proof-overhead-no-fiat-crypto.csv};
+    \addplot [fill=orange!60] table [x=Verification] {proof-overhead-no-fiat-crypto.csv};
     \legend{Lines of Code Being Verified,Lines of Verification}
   \end{axis}
   \end{tikzpicture}

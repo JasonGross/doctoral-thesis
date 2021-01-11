@@ -1,56 +1,56 @@
 \chapter{\readyforreadingmod{Abstraction}{minor wording edits}}\label{ch:design}\label{ch:api-design}\label{ch:abstraction}
 
 \section{Introduction}
-In \Autoref{ch:intro,ch:perf-failures}, we talked about two different fundamental sources of performance bottlenecks in proof assistants:
+In \Autoref{ch:intro,ch:perf-failures}, we talked about\todoac{``we talked about'' Too informal / different from normal conventions for technical writing} two different fundamental sources of performance bottlenecks in proof assistants:
 the power that comes from having dependent types, in \autoref{sec:why-how-dependent-types};
 and the de Bruijn criterion of having a small trusted kernel, in \autoref{sec:debruijn-criterion}.
-In this chapter, we will dive further into the performance issues arising from the first of these design decisions, expanding on \fullnameref{sec:axis-nested-abstraction-barriers}, and proposing some general guidelines for handling these performance bottlenecks.
+In this chapter, we will dive further into the performance issues arising from the first of these design decisions, expanding on \fullnameref{sec:axis-nested-abstraction-barriers} and proposing some general guidelines for handling these performance bottlenecks.
 
-This chapter is primarily geared at the users of proof assistants, and especially at proof-assistant library developers.
+This chapter is primarily geared at the users of proof assistants and especially at proof-assistant library developers.
 
 We saw in \nameref{sec:axis-nested-abstraction-barriers} three different ways that design choices for abstraction barriers can impact performance:
 We saw in \nameref{sec:abstraction-barriers:mismatch} that API mismatch results in type-size blowup; we saw a particularly striking example of this in \fullnameref{sec:break-abstraction:example:eval-decision-tree} where an API mismatch resulted in vastly more complicated theorem statements.
 We saw in \nameref{sec:abstraction-barriers:conversion-troubles} that imperfectly opaque abstraction barriers result in slowdown due to needless calls to the conversion checker.
 We saw in \nameref{sec:abstraction-barriers:packed-records} how the choice of whether to use packed or unpacked records impacts performance.
 
-In this chapter, we will focus primarily on the first of these three ways that design choices for abstraction barriers can impact performance; while it might seem like a simple question of good design, it turns out that good API design in dependently typed programming languages is significantly harder than in simply typed programming languages.
+In this chapter, we will focus primarily on the first of these three ways that design choices for abstraction barriers can impact performance; while it might seem like a simple question of good design, it turns out that good API design in dependently typed programming languages is significantly harder than in nondependently typed programming languages.
 We will additionally weave in ways that abstraction barriers have helped us develop our tools and libraries, though this use of abstraction barriers (sometimes called data abstraction) is already well-known in software engineering~\cite{Structure1996Sussman}.
-Mitigating the second source of performance bottlenecks, imperfectly opaque abstraction barriers, on the other hand, is actually just a question of meticulous tracking of how abstraction barriers are defined and used, and designing them so that they all unfolding is explicit.
+Mitigating the second source of performance bottlenecks, imperfectly opaque abstraction barriers, on the other hand, is actually just a question of meticulous tracking of how abstraction barriers are defined and used and designing them so that all unfolding is explicit.
 However, we will present an exception to the rule of opaque abstraction barriers in \autoref{sec:duality-conversion} in which deliberate breaking of all abstraction barriers in a careful way can result in performance gains of up to a factor of two:
-\autoref{sec:duality-conversion} presents one of our favorite design patterns for categorical constructions: a way of coaxing Coq's definitional equality into implementing \emph{proof by duality}, one of the most widely known ideas in category theory.
+\autoref{sec:duality-conversion} presents one of our favorite design patterns for categorical constructions---a way of coaxing Coq's definitional equality into implementing \emph{proof by duality}, one of the most widely known ideas in category theory.
 \minortodo{adjust the tone of what comes after the colon in the previous sentence to fit with this paper}
-Finally, the question of whether to use packed or unpacked records is actually a genuine trade-off in both design-space and performance, as far as I can tell;
+Finally, the question of whether to use packed or unpacked records is actually a genuine trade-off in both design space and performance, as far as I can tell;
 the non-performance design considerations have been discussed before in \textcite{Packaging2009Garillot}, while the performance implications are relatively straightforward.
 As far as I'm aware, there's not really a good way to get the best of all worlds.
 
-Much of this chapter will draw on examples and experience from a category theory library we implemented in Coq~\cite{category-coq-experience}, which we introduce in \autoref{sec:category-theory-library}.
+Much of this chapter will draw on examples and experience from a category-theory library we implemented in Coq~\cite{category-coq-experience}, which we introduce in \autoref{sec:category-theory-library}.
 
 The only prior work we've been able to find where abstraction barriers are mentioned for proof development performance is \textcite{Deep2015Gu}.
 Though this paper suggests that good abstraction barriers resulted in simpler invariants which alleviated proof burden on the developer, we suspect that their use of abstraction barriers also dodged the proof-generation and proof-checking performance bottlenecks of large types, large terms, large goals, and excessive unfolding that plague developments with leaky abstraction barriers.
 
 \section{When and How To Use Dependent Types Painlessly}\label{sec:when-how-dependent-types}
-Though abstraction barriers have been studied in the context of simply typed languages~\cite{Structure1996Sussman}, we're not aware of any systematic investigation of abstraction in dependently typed languages.
+Though abstraction barriers have been studied in the context of nondependently typed languages~\cite{Structure1996Sussman}, we're not aware of any systematic investigation of abstraction in dependently typed languages.
 Hence we provide in this section some rules of thumb that we've learned for developing good abstraction in dependently typed languages.
-Following these guidelines, in our experience, tends to both alleviate proof burden by decoupling and simplifying theorem statements, and also to improve the performance of individual proofs, sometimes by an order of magnitude or more, by avoiding the superlinear scaling laid out in \fullnameref{sec:perf-axes}.
+Following these guidelines, in our experience, tends both to alleviate proof burden by decoupling and simplifying theorem statements and also to improve the performance of individual proofs, sometimes by an order of magnitude or more, by avoiding the superlinear scaling laid out in \fullnameref{sec:perf-axes}.
 
 The extremes of using dependent types are relatively easy:
 \begin{itemize}
 \item
-  Total separation between proofs and programs, so that programs are simply typed, works relatively well.
+  Total separation between proofs and programs, so that programs are nondependently typed, works relatively well.
 \item
-  Pre-existing mathematics, where objects are fully bundled with proofs and never need to be separated from them, also works relatively well.
+  Preexisting mathematics, where objects are fully bundled with proofs and never need to be separated from them, also works relatively well.
 \end{itemize}
 
 We present a rule of thumb for being in the middle:
-it is painful to recombine proofs and programs after you separate them;
-if you are doing it to define an opaque transformation that acts on proof-carrying code, that is okay, but if you cannot make that abstraction barrier, enormous pain results.
+it is painful\todoac{not ``painful''} to recombine proofs and programs after you\todoac{not ``you''} separate them;
+if you\todoac{not ``you''} are doing it to define an opaque transformation that acts on proof-carrying code, that is okay, but if you\todoac{not ``you''} cannot make that abstraction barrier, enormous pain results.
 
-For example, if you have length-indexed lists and want to index into them with elements of a finite type, things are fine until you need to divorce the index from its proof of finiteness.
-If you, for example, want to index into, say, the concatenation of two lists, with an index into the first of the lists, then you will likely run into trouble, because you are trying to consider the index separately from its proof of finitude, but you have to recombine them to do the indexing.
+For example, if you\todoac{not ``you''} have length-indexed lists and want to index into them with elements of a finite type, things are fine until you\todoac{not ``you''} need to divorce the index from its proof of finiteness.
+If you\todoac{not ``you''}, for example, want to index into, say, the concatenation of two lists, with an index into the first of the lists, then you\todoac{not ``you''} will likely run into trouble, because you\todoac{not ``you''} are trying to consider the index separately from its proof of finitude, but you\todoac{not ``you''} have to recombine them to do the indexing.
 
-We saw in \autoref{foot:break-abstraction:example:decision-tree-indexing} in \fullnameref{sec:break-abstraction:example:decision-tree-indexing} how dependent types cause coupling between otherwise unrelated design decisions.
-This is due to the fact that every single operation needs to declare how it interacts with all of the various indices, and must effectively include a proof for each of these interactions.
-In the example of \autoref{sec:break-abstraction:example:decision-tree-indexing}, we considered indexing the list of terms over a list of types, and indexing both this list of types and the decision tree over a natural number length.
+We saw in \autoref{foot:break-abstraction:example:decision-tree-indexing} in \fullnameref{sec:break-abstraction:example:decision-tree-indexing} how dependent types cause coupling between otherwise-unrelated design decisions.
+This is due to the fact that every single operation needs to declare how it interacts with all of the various indices and must effectively include a proof for each of these interactions.
+In the example of \autoref{sec:break-abstraction:example:decision-tree-indexing}, we considered indexing the list of terms over a list of types and indexing both this list of types and the decision tree over a natural-number length.
 In this case, the choice of whether we operate in the middle of the list or at the front of the list is severely complicated by the length index.
 If we need to insert an unknown number of elements into the middle of a length-indexed list, the length of the resulting list is not judgmentally the sum of the lengths, because addition is not judgmentally commutative.
 \minortodo{better example? more code?}
@@ -58,15 +58,15 @@ If we need to insert an unknown number of elements into the middle of a length-i
 \minortodo{More examples from the rewriter?}
 \minortodo{cite the rewriter more?}
 
-\section{A Brief Introduction To Our Category Theory Library}\label{sec:category-theory-library}
+\section{A Brief Introduction to Our Category-Theory Library}\label{sec:category-theory-library}
 Category theory~\cite{mac1998categories} is a popular all-encompassing mathematical formalism that casts familiar mathematical ideas from many domains in terms of a few unifying concepts.
 A \emph{category} can be described as a directed graph plus algebraic laws stating equivalences between paths through the graph.
 Because of this spartan philosophical grounding, category theory is sometimes referred to in good humor as ``formal abstract nonsense.''
 Certainly the popular perception of category theory is quite far from pragmatic issues of implementation.
-Our implementation of category theory has run squarely into issues of design and efficient implementation of type theories, proof assistants, and developments within them.
+Our implementation of category theory ran squarely into issues of design and efficient implementation of type theories, proof assistants, and developments within them.
 
 One might presume that it is a routine exercise to transliterate categorical concepts from the whiteboard to Coq.
-Most category theorists would probably be surprised to learn that standard constructions ``run too slowly,'' but in our experience that is exactly the result of experimenting with naïve first Coq implementations of categorical constructs.
+Most category theorists would probably be surprised to learn that standard constructions ``run too slowly'', but in our experience that is exactly the result of experimenting with naïve first Coq implementations of categorical constructs.
 It is important to tune the library design to minimize the cost of manipulating terms and proving interesting theorems.
 
 Category theory, said to be ``notoriously hard to formalize''~\cite{harrison1996formalized}, provides a good stress test of any proof assistant, highlighting problems in usability and efficiency.
@@ -75,14 +75,14 @@ Formalizing the connection between universal morphisms and adjunctions provides 
 A \emph{universal morphism} is a construct in category theory generalizing extrema from calculus.
 An \emph{adjunction} is a weakened notion of equivalence.
 In the process of rewriting our library to be compatible with homotopy type theory, we discovered that cleaning up this construction conceptually resulted in a significant slow-down, because our first attempted rewrite resulted in a leaky abstraction barrier and, most importantly, large goals (\autoref{sec:term-size}).
-Plugging the holes there reduced goal sizes by two orders of magnitude\footnote{The word count of the larger of the two relevant goals went from 7,312 to 191.}, which led to a factor of ten speedup in that file (from 39s to 3s), but incurred a factor of three slow-down in the file where we defined the abstraction barriers (from 7s to 21s).\footnote{%
+Plugging the holes there reduced goal sizes by two orders of magnitude\footnote{The word count of the larger of the two relevant goals went from 7,312 to 191.}, which led to a factor of ten speedup in that file (from 39s to 3s) but incurred a factor of three slow-down in the file where we defined the abstraction barriers (from 7s to 21s).\footnote{%
   See \githubref[commit ][ in HoTT/HoTT on GitHub]{HoTT/HoTT}{eb0099005171e642d467047933660980ddc66280} for more details.%
 }
 Working around slow projections of $\Sigma$ types (\autoref{sec:nested-sigma-types}) and being more careful about code reuse each gave us back half of that lost time.\footnote{%
   See commits \githubref[][]{HoTT/HoTT}{c1e7ae32e86d51563da7a73b726c5cdd3246794a}, \githubref[][]{HoTT/HoTT}{93a1258becb49a76315663fa7626058a4e1a1959}, \githubref[][]{HoTT/HoTT}{bab2b34719108dbc5da66ac40c6fe01e64f4071b}, and \githubref[][]{HoTT/HoTT}{3b0932f21edc050b17f5e7843357dbcfc57533ce} in HoTT/HoTT on GitHub for more details.%
 }
 
-Although preexisting formalizations of category theory in proof assistants abound~\cite{Ahrens2013,megacz-coq-categories,o2004towards,copumpkin/categories,ConCaT%
+Although preexisting formalizations of category theory in proof assistants abound~\cite{megacz-coq-categories,Ahrens2013,o2004towards,copumpkin/categories,ConCaT%
 ,CatsInZFC%%fullbib:
 ,spitters2010developing%
 ,kozen2006automating%%fullbib:
@@ -108,7 +108,7 @@ Beginning from scratch allowed me to familiarize myself with both category theor
 \section{A Sampling of Abstraction Barriers}\label{sec:abstraction-barriers}
 \minortodo{maybe this section should come first?}
 
-We acknowledge that the concept of performance issues arising from choices of abstraction barriers may seem a bit counter-intuitive.
+We acknowledge that the concept of performance issues arising from choices of abstraction barriers may seem a bit counterintuitive.
 After all, abstraction barriers generally live in the mind of the developer, in some sense, and it seems a bit insane to say that performance of the code depends on the mental state of the programmer.
 
 Therefore, we will describe a sampling of abstraction barriers and the design choices that went into them, drawn from real examples\minortodoask{how much should I talk about the category theory library itself in my thesis?}, as well as the performance issues that arose from these choices.
@@ -133,7 +133,7 @@ In the instance discussed in the introduction, we got a factor of ten speed-up b
 
 \subsection{Nested Σ Types} \label{sec:nested-sigma-types}
   In Coq, there are two ways to represent a data structure with one constructor and many fields:
-  as a single inductive type with one constructor (records), or as a nested $\Sigma$ type.
+  as a single inductive type with one constructor (records) or as a nested $\Sigma$ type.
   For instance, consider a record type with two type fields $A$ and $B$ and a function $f$ from $A$ to $B$.
   A logically equivalent encoding would be $\Sigma A. \; \Sigma B. \; A \to B$.
   There are two important differences between these encodings in Coq.
@@ -142,8 +142,8 @@ In the instance discussed in the introduction, we got a factor of ten speed-up b
   The first is that while a theorem statement may abstract over all possible $\Sigma$ types, it may not abstract over all record types, which somehow have a less first-class status.
   Such a limitation is inconvenient and leads to code duplication.
 
-  The far more pressing problem, overriding the previous point, is that nested $\Sigma$ types have horrendous performance, and are sometimes a few orders of magnitude slower.
-  The culprit is projections from nested $\Sigma$ types, which, when unfolded (as they must be, to do computation), each take almost the entirety of the nested $\Sigma$ type as an argument, and so grow in size very quickly.
+  The far-more-pressing problem, overriding the previous point, is that nested $\Sigma$ types have horrendous performance and are sometimes a few orders of magnitude slower.
+  The culprit is projections from nested $\Sigma$ types, which, when unfolded (as they must be, to do computation), each take almost the entirety of the nested $\Sigma$ type as an argument and so grow in size very quickly.
 
   Let's consider a toy example to see the asymptotic performance.
   To construct a nested $\Sigma$ type with three fields of type \mintinline{coq}{unit}, we can write the type:
@@ -155,7 +155,7 @@ In the instance discussed in the introduction, we got a factor of ten speed-up b
       \mintinline{coq}{@projT2 unit (λ _ : unit, unit) (@projT2 unit (λ _ : unit, { _ : unit & unit }) x)}
   \end{center}
   This term grows quadratically in the number of projections because the type of the $n^\text{th}$ field is repeated approximately $2n$ times.
-  This is even more of a problem when we need to \mintinline{coq}{destruct x} to prove something about the projections, as we need to \mintinline{coq}{destruct} it as many times as their are fields, which adds another factor of $n$ to the performance cost of building the proof from scratch; in Coq, this cost is either avoided due to sharing or else is hidden by a quadratic factor which a much larger constant factor.
+  This is even more of a problem when we need to \mintinline{coq}{destruct x} to prove something about the projections, as we need to \mintinline{coq}{destruct} it as many times as there are fields, which adds another factor of $n$ to the performance cost of building the proof from scratch; in Coq, this cost is either avoided due to sharing or else is hidden by a quadratic factor with a much larger constant coefficient.
   Note that this is a sort-of dual to the problem of \autoref{sec:quadratic-conj-certificate}; there, we encountered quadratic overhead in applying the constructors (which is also a problem here), whereas right now we are discussing quadratic overhead in applying the eliminators.
   See \autoref{fig:timing-make-destruct-nested-sig} for the performance details.
 
@@ -245,9 +245,9 @@ In the instance discussed in the introduction, we got a factor of ten speed-up b
 \label{fig:timing-make-destruct-nested-prim-sig}}
     \caption{%
       There are two ways we look at the performance of building a term like \mintinline{coq}{projT1 (projT2 ... (projT2 x))} with $n$ \mintinline{coq}{projT2}s:
-      we can define a recursive function that computes this term and then use \mintinline{coq}{cbv} to reduce away the recursion, and time how long this takes;
+      we can define a recursive function that computes this term and then use \mintinline{coq}{cbv} to reduce away the recursion and time how long this takes;
       or we can build the term using \LtacTwo\space and then typecheck it.
-      These plots displays both of these methods, and in addition displays the time it takes to run \mintinline{coq}{destruct} to break $x$ into its component fields, as lower bound for how long it takes to prove anything about a nested $\Sigma$ type with $n$ fields.
+      These plots display both of these methods and in addition display the time it takes to run \mintinline{coq}{destruct} to break $x$ into its component fields, as a lower bound for how long it takes to prove anything about a nested $\Sigma$ type with $n$ fields.
       The second graph displays the timing with primitive projections turned on.
       Note that the $x$-axis is $10\times$ larger on this plot.%
     }
@@ -258,7 +258,7 @@ In the instance discussed in the introduction, we got a factor of ten speed-up b
 
   We can avoid much of the cost of building the projection term by using \emph{primitive projections} (see \autoref{sec:primitive-projections} for more explanation of this feature).
   Note that this feature is a sort-of dual to the proposed feature of dropping constructor parameters described in \autoref{sec:dropping-constructor-parameters}.
-  This does drastically reduce the overhead of building the projection term, but only cuts in half the constant factor in destructing the variable so as to prove something about the projection.
+  This does drastically reduce the overhead of building the projection term but only cuts in half the constant factor in destructing the variable so as to prove something about the projection.
   See \autoref{fig:timing-make-destruct-nested-prim-sig} for performance details.
 
   There are two solutions to this issue:
@@ -310,24 +310,24 @@ In the instance discussed in the introduction, we got a factor of ten speed-up b
             \addlegendentry{$\pgfmathprintnumber{\primrecorda}n^2\pgfmathprintnumber[print sign]{\primrecordb}n\pgfmathprintnumber[print sign]{\primrecordc}$}
         \end{axis}
     \end{tikzpicture}
-    \caption{Timing of running a \mintinline{coq}{Record} command to define a record with $n$ fields, and the time to \mintinline{coq}{destruct} such a record.
+    \caption{Timing of running a \mintinline{coq}{Record} command to define a record with $n$ fields and the time to \mintinline{coq}{destruct} such a record.
     Note that building the goal involving projecting out the last field takes less than 0.001s for all numbers of fields that we tested.
 (Presumably for large enough numbers of fields, we'd start getting a logarithmic overhead from parsing the name of the final field, which, when represented as $x$ followed by the field number in base 10, does grow in size as $\log_{10}n$.)
-Note that the non-monotonic timing is \emph{reproducible}, and seems to be due to hitting garbage collection; see \coqissue{12270} for more details.}
+Note that the non-monotonic timing is \emph{reproducible} and seems to be due to hitting garbage collection; see \coqissue{12270} for more details.}
 \label{fig:timing-make-destruct-nested-record}
 \end{figure}
 
   We now come to the question: how much do we pay for using this abstraction barrier?
-  That is, how much is the one-time cost of defining the abstraction barrier.
-  Obviously, we can just make definitions for each of the projections and for the eliminator, and pay the cubic (or perhaps even quartic; see the leading term in \autoref{fig:timing-make-destruct-nested-sig}) overhead once.
-  There's an interesting question, though, of if we can avoid this overhead all-together.
+  That is, how much is the one-time cost of defining the abstraction barrier?
+  Obviously, we can just make definitions for each of the projections and for the eliminator and pay the cubic (or perhaps even quartic; see the leading term in \autoref{fig:timing-make-destruct-nested-sig}) overhead once.
+  There's an interesting question, though, of if we can avoid this overhead altogether.
 
   As seen in \autoref{fig:timing-make-destruct-nested-record}, using records partially avoids the overhead.
   Defining the record type, though, still incurs a quadratic factor due to hash consing the projections; see \coqbug{12270}.
 
 
   \minortodo{remove use of ``you''}
-  If your proof assistant does not support records out-of-the-box, or you want to avoid using them for whatever reason\footnote{Note that the UniMath library~\cite{voevodsky_2015,UniMath,introduction2018Grayson} does this. \minortodo{explain reasoning}}, you can instead define intermediate abstraction barriers by hand.
+  If your\todoac{not ``your''} proof assistant does not support records out-of-the-box, or you\todoac{not ``you''} want to avoid using them for whatever reason\footnote{Note that the UniMath library~\cite{voevodsky_2015,UniMath,introduction2018Grayson} does this. \minortodo{explain reasoning}}, you\todoac{not ``you''} can instead define intermediate abstraction barriers by hand.
   Here is what code that almost works looks like for four fields:
 \begin{minted}{coq}
 Local Set Implicit Arguments.
@@ -412,19 +412,19 @@ Definition T_rect (P : T -> Type)
      f (proj_T_1 x) (proj_T_2 x) (proj_T_3 x) (proj_T_4 x).
 \end{minted}
   It only almost works because, although the overall size of the terms, even accounting for implicits, is linear in the number of fields, we still incur a quadratic number of unfoldings in the final cast node in the proof of \mintinline{coq}{T_eta}.
-  Note that this cast node is only present to make explicit the conversion problem that must happen; removing it does not break anything, but then the quadratic cost is hidden in nontrivial substitutions of the \mintinline{coq}{let}-binders into the types.
+  Note that this cast node is only present to make explicit the conversion problem that must happen; removing it does not break anything, but then the quadratic cost is hidden in nontrivial substitutions of the \mintinline{coq}{let} binders into the types.
   It might be possible to avoid this quadratic factor by being even more careful, but I was unable to find a way to do it.%
   \footnote{%
       Note that even reflective automation (see \autoref{ch:reflection}) is not sufficient to solve this issue.
-      Essentially, the bottleneck is that at the bottom of the chain of \mintinline{coq}{let}-binders in the $\eta$ proof, we have two different types for the $\eta$-principle.
-      One of them uses the globally-defined projections out of \mintinline{coq}{T}, while the other uses the projections of \mintinline{coq}{x} defined in the local context.
+      Essentially, the bottleneck is that at the bottom of the chain of \mintinline{coq}{let} binders in the $\eta$ proof, we have two different types for the $\eta$ principle.
+      One of them uses the globally defined projections out of \mintinline{coq}{T}, while the other uses the projections of \mintinline{coq}{x} defined in the local context.
       We need to convert between these two types in linear time.
       Converting between two differently defined projections takes time linear in the number of under-the-hood projections, i.e., linear in the number of fields.
       Doing this once for each projection thus takes quadratic time.
       Using a reflective representation of nested $\Sigma$ types, and thus being able to prove the $\eta$ principle once and for all in constant time, would not help here, because it takes quadratic time to convert between the type of the $\eta$ principle in reflective-land and the type that we want.
       One thing that might help would be to have a version of conversion checking that was both memoized and could perform in-place reduction; see \coqissue{12269}.%
   }
-  Worse, though, due to the issue with nested \mintinline{coq}{let}-binders described in \autoref{sec:sharing}, we would still incur a quadratic typechecking cost.
+  Worse, though, due to the issue with nested \mintinline{coq}{let} binders described in \autoref{sec:sharing}, we would still incur a quadratic typechecking cost.
 
   We can, however, avoid this cost by turning on primitive projections via \texttt{Set Primitive Projections} at the top of this block of code:
   this enables judgmental $\eta$-conversion for primitive records, whence we can prove \mintinline{coq}{T_eta} with the proof term \mintinline{coq}{@eq_refl T x}.
@@ -684,7 +684,7 @@ Initial objects in \cat C are terminal objects in $\cat{C}^\text{op}$.
 The initial object of any category is unique up to isomorphism; for any two initial objects $0$ and $0'$, there is an isomorphism $0 \cong 0'$.
 By flipping all of the arrows around, we can prove, by duality, that the terminal object is unique up to isomorphism.  More precisely, from a proof that an initial object of $\cat{C}^{\text{op}}$ is unique up to isomorphism, we get that any two terminal objects $1'$ and $1$ in $\cat{C}$, which are initial in $\cat{C}^{\text{op}}$, are isomorphic in $\cat{C}^{\text{op}}$.  Since an isomorphism $x \cong y$ in $\cat{C}^\text{op}$ is an isomorphism $y \cong x$ in \cat C, we get that $1$ and $1'$ are isomorphic in $\cat C$.
 
-  It is generally straightforward to see that there is an isomorphism between a theorem and its dual, and the technique of dualization is well-known to category theorists, among others.  We discovered that, by being careful about how we defined things, we could make theorems be judgmentally equal to their duals!  That is, when we prove a theorem
+  It is generally straightforward to see that there is an isomorphism between a theorem and its dual, and the technique of dualization is well-known to category theorists, among others.  We discovered that, by being careful about how we defined constructions, we could make theorems be judgmentally equal to their duals!  That is, when we prove a theorem
   \begin{align*}
   \mintinline{coq}{initial_ob_unique : ∀ C  } & \mintinline{coq}{(x y : Ob C),} \\
   & \mintinline{coq}{is_initial_ob x → is_initial_ob y → x ≅ y},
@@ -717,13 +717,13 @@ By flipping all of the arrows around, we can prove, by duality, that the termina
       The standard approach is to apply symmetry.
       However, because applying symmetry twice results in a judgmentally different proof, we decided instead to extend the definition of \texttt{Category} to require both a proof of $f \circ (g \circ h) = (f \circ g) \circ h$ and a proof of $(f \circ g) \circ h = f \circ (g \circ h)$.
       Then our dualizing operation simply swaps the proofs.
-      We added a convenience constructor for categories that asks only for one of the proofs, and applies symmetry to get the other one.
+      We added a convenience constructor for categories that asks only for one of the proofs and applies symmetry to get the other one.
       Because we formalized 0-truncated category theory, where the type of morphisms is required to have unique identity proofs, asking for this other proof does not result in any coherence issues.
 
     \subsubsection{Dualizing the Terminal Category}
       To make everything work out nicely, we needed the terminal category, which is the category with one object and only the identity morphism, to be the dual of itself.
       We originally had the terminal category as a special case of the discrete category on $n$ objects.
-      Given a type $T$ with uniqueness of identity proofs, the discrete category on $T$ has as objects inhabitants of $T$, and has as morphisms from $x$ to $y$ proofs that $x = y$.
+      Given a type $T$ with uniqueness of identity proofs, the discrete category on $T$ has as objects inhabitants of $T$ and has as morphisms from $x$ to $y$ proofs that $x = y$.
       These categories are not judgmentally equal to their duals, because the type $x = y$ is not judgmentally the same as the type $y = x$.
       As a result, we instead used the indiscrete category, which has \texttt{unit} as its type of morphisms.
 
@@ -740,12 +740,12 @@ By flipping all of the arrows around, we can prove, by duality, that the termina
       In particular, we wanted to show that any functor out of the terminal category is the opposite of some other functor; namely, any $F : 1 \to \cat C$ should be equal to $(F^{\text{op}})^{\text{op}} : 1 \to (\cat C^{\text{op}})^{\text{op}}$.
       However, without the judgmental $\eta$ rule for records, a local variable $\cat C$ cannot be judgmentally equal to $(\cat C^{\text{op}})^{\text{op}}$, which reduces to an application of the constructor for a category, unless the $\eta$ rule is built into the proof assistant.
       To get around the problem, we made two variants of dual functors: given $F : \cat C \to \cat D$, we have $F^{\text{op}} : \cat C^{\text{op}} \to \cat D^{\text{op}}$, and given $F : C^{\text{op}} \to \cat D^{\text{op}}$, we have $F^{\text{op}'} : \cat C \to \cat D$.
-      There are two other flavors of dual functors, corresponding to the other two pairings of ${}^{\text{op}}$ with domain and codomain, but we have been glad to avoid defining them so far.  As it was, we ended up having four variants of dual natural transformation, and are very glad that we did not need sixteen.
+      There are two other flavors of dual functors, corresponding to the other two pairings of ${}^{\text{op}}$ with domain and codomain, but we have been glad to avoid defining them so far.  As it was, we ended up having four variants of dual natural transformation and are very glad that we did not need sixteen.
       When Coq 8.5 was released, we no longer needed to pull this trick, as we could simply enable the $\eta$ rule for records judgmentally.
 
 
   \subsection{Moving Forward: Computation Rules for Pattern Matching} \label{sec:compute-match}
-    While we were able to work around most of the issues that we had in internalizing proof by duality, things would have been far nicer if we had more $\eta$ rules.
+    While we were able to work around most of the issues that we had in internalizing proof by duality, the experience would have been far nicer if we had more $\eta$ rules.
     The $\eta$ rule for records is explained above.
     The $\eta$ rule for equality says that the identity function is judgmentally equal to the function $f : \forall x\, y, x = y \to x = y$ defined by pattern matching on the first proof of equality; this rule is necessary to have any hope that applying symmetry twice is judgmentally the identity transformation.
 %    Matthieu Sozeau is currently working on giving Coq judgmental $\eta$ for records with one or more fields, though not for equality%fullbib:~\cite{mattam82/coq-polyproj}%
@@ -755,7 +755,7 @@ By flipping all of the arrows around, we can prove, by duality, that the termina
     Homotopy type theory provides a framework that systematizes reasoning about proofs of equality, turning a seemingly impossible task into a manageable one.
     However, there is still a significant burden associated with reasoning about equalities, because so few of the rules are judgmental.
 
-    We have spent some time attempting to divine the appropriate computation rules for pattern matching constructs, in the hopes of making reasoning with proofs of equality more pleasant.\footnote{See \coqissue{3179} and \coqissue{3119}.}
+    We have spent some time attempting to divine the appropriate computation rules for pattern-matching constructs, in the hopes of making reasoning with proofs of equality more pleasant.\footnote{See \coqissue{3179} and \coqissue{3119}.}
 
 
 \begin{comment}

@@ -421,7 +421,7 @@ One way to achieve even more compact proof terms is to pick a more optimized rep
   However, this representation allows proof terms that are significantly faster to construct in Coq's proof engine for reasons that are not entirely clear to us.
 }
 This consists of replacing $A \wedge B$ with $\forall P, (A \to B \to P) \to P$, and similar.
-\todoac{Is this method easier than CPSing the whole definition? [Jason responds: It's not clear to me how to implement ``CPSing the whole definition''.  That was indeed my first thought, but then I tried to figure out how to prove both ``CPS -> normal version'' and how to construct an efficient proof term for the CPS version, and was not able to do both simultaneously (in particular I could not figure out what to pass as the continuation in each theorem).]}
+%\todoac{Is this method easier than CPSing the whole definition? [Jason responds: It's not clear to me how to implement ``CPSing the whole definition''.  That was indeed my first thought, but then I tried to figure out how to prove both ``CPS -> normal version'' and how to construct an efficient proof term for the CPS version, and was not able to do both simultaneously (in particular I could not figure out what to pass as the continuation in each theorem).]}
 \begin{minted}{coq}
 Fixpoint is_related_elim {var1 var2 : Type} (Γ : list (var1 * var2))
    (e1 : @expr var1) (e2 : @expr var2) : Prop :=

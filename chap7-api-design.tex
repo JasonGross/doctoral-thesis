@@ -20,7 +20,7 @@ However, we will present an exception to the rule of opaque abstraction barriers
 \autoref{sec:duality-conversion} presents one of our favorite design patterns for categorical constructions---a way of coaxing Coq's definitional equality into implementing \emph{proof by duality}, one of the most widely known ideas in category theory.
 \minortodo{adjust the tone of what comes after the colon in the previous sentence to fit with this paper}
 Finally, the question of whether to use packed or unpacked records is actually a genuine trade-off in both design space and performance, as far as I can tell;
-the non-performance design considerations have been discussed before in \textcite{Packaging2009Garillot}, while the performance implications are relatively straightforward.
+the nonperformance design considerations have been discussed before in \textcite{Packaging2009Garillot}, while the performance implications are relatively straightforward.
 As far as I'm aware, there's not really a good way to get the best of all worlds.
 
 Much of this chapter will draw on examples and experience from a category-theory library we implemented in Coq~\cite{category-coq-experience}, which we introduce in \autoref{sec:category-theory-library}.
@@ -313,7 +313,7 @@ In the instance discussed in the introduction, we got a factor of ten speed-up b
     \caption{Timing of running a \mintinline{coq}{Record} command to define a record with $n$ fields and the time to \mintinline{coq}{destruct} such a record.
     Note that building the goal involving projecting out the last field takes less than 0.001s for all numbers of fields that we tested.
 (Presumably for large enough numbers of fields, we'd start getting a logarithmic overhead from parsing the name of the final field, which, when represented as $x$ followed by the field number in base 10, does grow in size as $\log_{10}n$.)
-Note that the non-monotonic timing is \emph{reproducible} and seems to be due to hitting garbage collection; see \coqissue{12270} for more details.}
+Note that the nonmonotonic timing is \emph{reproducible} and seems to be due to hitting garbage collection; see \coqissue{12270} for more details.}
 \label{fig:timing-make-destruct-nested-record}
 \end{figure}
 

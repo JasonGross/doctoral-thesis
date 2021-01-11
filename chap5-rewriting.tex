@@ -18,7 +18,7 @@ However, there was a great deal of engineering effort that went into building th
 Much of the engineering effort was mundane, and we elide the details entirely.
 However, we believe some of the engineering effort serves as a good case study for the difficulties of building proof-based systems at scale.
 This chapter is about exposing the details relevant to understanding how the bottlenecks and principles identified elsewhere in this dissertation played out in designing and implementing this tool.
-Note that many of the examples and descriptions in this chapter are highly technical, and we expect the discussion will only be of interest to the motivated reader, familiar with Coq, who wants to see more concrete non-toy\todoac{remove - [Jason: I don't know how to remove the dash and leave behind words]} examples of the bottlenecks and principles we've been describing; other readers are encouraged to skip this chapter.
+Note that many of the examples and descriptions in this chapter are highly technical, and we expect the discussion will only be of interest to the motivated reader, familiar with Coq, who wants to see more concrete nontoy examples of the bottlenecks and principles we've been describing; other readers are encouraged to skip this chapter.
 
 %\section{A Brief Survey of the Engineering Challenges}\label{sec:rewriting-more:challenges-overview}
 
@@ -40,13 +40,13 @@ We note, however, that many of the challenges fall into the same broad categorie
 issues arising from the power and (mis)use of dependent types, as introduced in \fullnameref{sec:why-how-dependent-types};
 and issues arising from API mismatches, as described in \fullnameref{ch:api-design}.
 
-\section{Pre-Reduction}\label{sec:rewriting-more:pre-reduction}
+\section{Pre-Reduction}\label{sec:rewriting-more:prereduction}
 The two biggest underlying causes of engineering challenges are expression--API mismatch, which we'll discuss in \fullnameref{sec:rewriting-more:AST:choices}, and our desire to reduce away known computations in the rewriting engine once and for all when compiling rewriting rules, rather than again and again every time we perform a rewrite.
 In practice, performing this early reduction nets us an approximately $2\times$ speed-up.
 
 \todoac{More transition language saying ``and now we'll discuss the second one.''}
 
-\subsection{What Does This Reduction Consist Of?}\label{sec:rewriting-more:pre-reduction:what-reduction}
+\subsection{What Does This Reduction Consist Of?}\label{sec:rewriting-more:prereduction:what-reduction}
 Recall from \autoref{sec:pattern-matching-compilation-and-evaluation} that the core of our rewriting engine consists of three steps:
 \begin{enumerate}
 \item
@@ -69,10 +69,10 @@ We thus augment the $\text{reduce}(c)$ constant case of \autoref{fig:nbe} in \au
 
 Now that we know what the reduction consists of, we can discuss what goes into making the reduction possible and the engineering challenges that arise.
 
-\subsection{CPS}\label{sec:rewriting-more:pre-reduction:cps}
+\subsection{CPS}\label{sec:rewriting-more:prereduction:cps}
 Due to the pervasive use of Gallina \mintinline{coq}{match} statements on terms which are not known during this compilation phase, we need to write essentially all of the decision-tree-evaluation code in continuation-passing style.
 This causes a moderate amount of proof-engineer overhead, distributed over the entire rewriter.
-%We will come back to this in \autoref{sec:rewriting-more:pre-reduction-again:cps}, after we have introduced the constructions necessary to understand the code.
+%We will come back to this in \autoref{sec:rewriting-more:prereduction-again:cps}, after we have introduced the constructions necessary to understand the code.
 
 \minortodo{find a better transition}
 The way that CPS permits reduction under blocked \mintinline{coq}{match} statements is essentially the same as the way it permits reduction of functions in the presence of unreduced \mintinline{coq}{let} binders in \fullnameref{sec:under-lets}.
@@ -144,7 +144,7 @@ which reduces to
         end
 \end{minted}
 
-\subsection{Type Codes}\label{sec:rewriting-more:pre-reduction:type-codes}
+\subsection{Type Codes}\label{sec:rewriting-more:prereduction:type-codes}
 The pattern-matching-compilation algorithm of \textcite{Aehlig} does not deal with types.
 In general, unification of types is somewhat more complicated than unification of terms, because types are used as indices in terms whereas nothing gets indexed over the terms.
 We have two options, here:
@@ -312,13 +312,13 @@ Due to a lack of foresight and an unfortunate reluctance to take the design back
 We must deal with both the pain of indexing our term unification information over our type unification information, and we must still insert typecasts in places where we have lost the information that the types will line up.
 % \todo{talk about the cost of inconsistent decisions spreading pain elsewhere} % ``Here we pay the price of an imperfect abstraction barrier (that we have types lying around, and we rely in some places on types lining up, but do not track everywhere that types line up).''
 
-\subsection{How Do We Know What We Can Unfold?}\label{sec:rewriting-more:pre-reduction:tracking-unfolding}
+\subsection{How Do We Know What We Can Unfold?}\label{sec:rewriting-more:prereduction:tracking-unfolding}
 Coq's built-in reduction is somewhat limited, especially when we want it to have reasonable performance.
 This is, after all, a large part of the problem this tool is intended to solve.
 
 In practice, we make use of three reduction passes; that we cannot interleave them is a limitation of the built-in reduction:
 \begin{enumerate}
-\item First, we unfold everything except for a specific list of constants; these constants are the ones that contain computations on information not fully known at pre-evaluation time.
+\item First, we unfold everything except for a specific list of constants; these constants are the ones that contain computations on information not fully known at preevaluation time.
 \item Next, we unfold all instances of a particular set of constants; these constants are the ones that we make sure to only use when we know that inlining them won't incur extra overhead.
 \item Finally, we use \mintinline{coq}{cbn} to simplify a small set of constants in only the locations that these constants are applied to constructors.
 \end{enumerate}
@@ -328,11 +328,11 @@ Unfortunately, Coq's reduction is not fast enough to do the former, and the latt
 In particular, the strategy that we'd need to follow is to have two versions of every function which sometimes computes on known data and sometimes computes on unknown data, and we'd need to track in all locations which data is known and which data is unknown.
 
 We already track known and unknown data to some extent (see, for example, the \mintinline{coq}{known} argument to the \mintinline{coq}{rIdent} constructor discussed below).
-Additionally, we have two versions of a couple of functions, such as the bind function of the option monad, where we decide which to use based on, e.g., whether or not the option value that we're binding will definitely be known at pre-reduction time.
+Additionally, we have two versions of a couple of functions, such as the bind function of the option monad, where we decide which to use based on, e.g., whether or not the option value that we're binding will definitely be known at prereduction time.
 
 Note that tracking this sort of information is nontrivial, as there's no help from the typechecker.
 
-We'll come back to this in \autoref{sec:rewriting-more:pre-reduction-again:tracking-unfolding}.
+We'll come back to this in \autoref{sec:rewriting-more:prereduction-again:tracking-unfolding}.
 
 \section{NbE vs.\ Pattern-Matching Compilation: Mismatched Expression APIs and Leaky Abstraction Barriers}\label{sec:rewriting-more:AST:choices}
 \minortodo{should I be consistent about naming syntax that's well-typed by construction?  I call it ``intrinsically typed syntax'', ``syntax that is well-typed by construction'', ``intrinsically well-typed syntax'', and ``type-indexed syntax''\ldots}
@@ -434,7 +434,7 @@ there is no way to preserve the connection between the types of the first two el
 This may not look too bad, but it gets worse.
 Since the \mintinline{coq}{match} on \mintinline{coq}{e} will not be known until we are actually doing the rewriting on a concrete expression, and the continuation is convoyed across this \mintinline{coq}{match}, there is no way to evaluate the continuation during compilation of rewrite rules.
 If we don't want to evaluate the continuation early, we'd have to be very careful not to duplicate it across all of the decision-tree evaluation cases, as we might otherwise incur a superlinear runtime factor in the number of rewrite rules.
-As noted in \autoref{sec:rewriting-more:pre-reduction}, our early reduction nets us a $2\times$ speedup in runtime of rewriting and is therefore relatively important to be able to do.
+As noted in \autoref{sec:rewriting-more:prereduction}, our early reduction nets us a $2\times$ speedup in runtime of rewriting and is therefore relatively important to be able to do.
 \minortodo{redo performance experiments here, maybe insert a plot}
 
 Here we see something interesting, which does not appear to be as much of a concern in other programming languages:
@@ -467,7 +467,7 @@ Hence we do not need to worry about carrying around proofs of well-typedness, an
 The biggest constraint driving our design decisions is that we need conversion between the two representations to be $\mathcal{O}(1)$; if we need to walk the entire syntax tree to convert between typed and untyped representations at every rewriting location, we'll incur quadratic overhead in the size of the term being rewritten.
 We can actually relax this constraint a little bit: by designing the untyped representation to be completely evaluated away during the compilation of rewrite rules, we can allow conversion from the untyped syntax to the typed syntax to walk any part of the term that already needed to be revealed for rewriting, giving us amortized constant time rather than truly constant time.
 \minortodo{is this last sentence understandable?}
-As such, we need to be able to embed well-typed syntax directly into the non-type-indexed representation at cost $\mathcal{O}(1)$.
+As such, we need to be able to embed well-typed syntax directly into the nontype-indexed representation at cost $\mathcal{O}(1)$.
 
 As the entire purpose of the untyped syntax is to (a) allow us to perform matching on the AST to determine which rewrite rule to use, and furthermore (b) allow us to reuse the decomposition work so as to avoid needing to decompose the term multiple times, we need an inductive type which can embed PHOAS expressions and has separate nodes for the structure that we need, namely application and identifiers:
 
@@ -538,7 +538,7 @@ Hence all fully applied identifier codes have simple types (such as \mintinline{
 An additional benefit of this approach is that unification of identifiers is just pattern matching in Gallina, and hence we can rely on the pattern-matching-compilation schemes of Coq's fast reduction machines, or the OCaml compiler itself, to further speed up our rewriting.
 
 \paragraph{Aside: Why Use Pattern-Matching Compilation At All?}
-Given the fact that, after pre-reduction, there is no trace of the decision tree remaining, one might ask why we use pattern-matching compilation at all, rather than just leaving it to the pattern-matching compiler of Coq or OCaml to be performant.
+Given the fact that, after prereduction, there is no trace of the decision tree remaining, one might ask why we use pattern-matching compilation at all, rather than just leaving it to the pattern-matching compiler of Coq or OCaml to be performant.
 We have three answers to this question.
 
 The first, perhaps most honest answer is that it is a historical accident; we prematurely optimized this part of the rewriting engine when writing it.
@@ -607,7 +607,7 @@ This design is a historical artifact, from when we expected to be writing rewrit
 %In order to state the correctness conditions for gathering binding data, we must first talk about applying replacement rules to binding data.''
 %``We can define a transformation that takes in a \texttt{PositiveMap.t} of pattern type variables to types, together with a \texttt{PositiveSet.t} of type variables that we care about, and re-creates a new \texttt{PositiveMap.t} in accordance with the \texttt{PositiveSet.t}.
 %This is required to get some theorem types to line up, and is possibly an indication of a leaky abstraction barrier.''
-This design, however, is absolutely a mistake, especially given the concession we make in \fullnameref{sec:rewriting-more:pre-reduction:type-codes} to not track\todoac{use ``not to track'' [Jason: I think the current version is better]} enough typing information to avoid all typechecking.
+This design, however, is absolutely a mistake, especially given the concession we make in \fullnameref{sec:rewriting-more:prereduction:type-codes} to not track\todoac{use ``not to track'' [Jason: I think the current version is better]} enough typing information to avoid all typechecking.
 
 While indexing over only the set of permitted type variables would simplify proofs significantly, we'd benefit even more by indexing only over whether or not we permit type variables at all.
 None of our proofs are made simpler by tracking the set of permitted type variables rather than just whether or not that set is empty.
@@ -618,17 +618,17 @@ None of our proofs are made simpler by tracking the set of permitted type variab
 %
 %\todo{talk about how we can unify types at all (c.f.~\texttt{preunify\_types})}
 
-\section{Pre-evaluation Revisited}\label{sec:rewriting-more:pre-reduction-again}
+\section{Pre-evaluation Revisited}\label{sec:rewriting-more:prereduction-again}
 
-Having built up enough infrastructure to give a bit more in the way of code examples, we now return to the engineering challenges posed by reducing early, first investigated in \autoref{sec:rewriting-more:pre-reduction}
+Having built up enough infrastructure to give a bit more in the way of code examples, we now return to the engineering challenges posed by reducing early, first investigated in \autoref{sec:rewriting-more:prereduction}
 
-%\subsection{CPS}\label{sec:rewriting-more:pre-reduction-again:cps}
-%Recall from \autoref{sec:rewriting-more:pre-reduction:cps} that we need to write essentially all of the decision-tree-evaluation code in continuation-passing style to allow reduction even in the presence of unreduced Gallina \mintinline{coq}{match} statements on unknown terms.
+%\subsection{CPS}\label{sec:rewriting-more:prereduction-again:cps}
+%Recall from \autoref{sec:rewriting-more:prereduction:cps} that we need to write essentially all of the decision-tree-evaluation code in continuation-passing style to allow reduction even in the presence of unreduced Gallina \mintinline{coq}{match} statements on unknown terms.
 %While this is only a moderate annoyance at the term-level, it becomes a severe headache when mixed with proofs and dependent types.
 %\todo{insert code examples}
 
-\subsection{How Do We Know What We Can Unfold?}\label{sec:rewriting-more:pre-reduction-again:tracking-unfolding}
-We can now revisit \autoref{sec:rewriting-more:pre-reduction:tracking-unfolding} in a bit more detail.
+\subsection{How Do We Know What We Can Unfold?}\label{sec:rewriting-more:prereduction-again:tracking-unfolding}
+We can now revisit \autoref{sec:rewriting-more:prereduction:tracking-unfolding} in a bit more detail.
 
 \paragraph{The \mintinline{coq}{known} argument}\label{sec:rewriting-more:rIdent-known}
 We noted in \autoref{sec:rewriting-more:rawexpr-def} the \mintinline{coq}{known} argument of the \mintinline{coq}{rIdent} constructor of \mintinline{coq}{rawexpr}.
@@ -652,7 +652,7 @@ Note that the first rewrite rule is not really necessary in this example; the es
 }
 
 There are two cases where we want to reduce the \mintinline{coq}{match} on an identifier.
-One of them is when the identifier is known from the initial $\eta$-expansion of identifiers discussed in \autoref{sec:rewriting-more:pre-reduction:what-reduction} (note that this is distinct from the $\eta$-expansion of identifier applications), and the identifier has no type arguments.\footnote{%
+One of them is when the identifier is known from the initial $\eta$-expansion of identifiers discussed in \autoref{sec:rewriting-more:prereduction:what-reduction} (note that this is distinct from the $\eta$-expansion of identifier applications), and the identifier has no type arguments.\footnote{%
   In our current implementation we don't actually check that the identifier has no type arguments in this case.
   This is an oversight, and the correct design would be able to distinguish between ``this identifier is known and it has no type arguments'', ``this identifier is known but it has unknown type arguments'', and ``this identifier is completely unknown''.
   Failure to distinguish these cases does not seem to cause too much trouble, because the way the code is structured luckily ensures that we only match on the type arguments once, and because everything is CPS'd, this matching does not block further reduction.%
@@ -717,11 +717,11 @@ If we didn't store the expression $a + b$ as a PHOAS expression and had it only 
 Instead of incurring this overhead, we store the undecomposed PHOAS expression in the \mintinline{coq}{rawexpr}, allowing us to reuse it when no more decomposition is needed.
 This does, however, complicate proofs: we need to talk about matching the revealed and unrevealed structure, sometimes just on the type level, and other times on both the term level and the type level.
 %\item \todo{talk about rawexpr\_types\_ok}
-%\item \todo{talk about $\eta$-expanding identifier matches, reference \autoref{sec:rewriting-more:pre-reduction}}
+%\item \todo{talk about $\eta$-expanding identifier matches, reference \autoref{sec:rewriting-more:prereduction}}
 
 \section{Monads: Missing Abstraction Barriers at the Type Level}\label{sec:rewriting-more:monads}
 We introduce in \autoref{sec:under-lets} the \mintinline{coq}{UnderLets} monad for \mintinline{coq}{let} lifting, which we inline into the definition of the \mintinline{coq}{NbEₜ} value type.
-We use two other monads in the rewriting engine: the option monad, to encode possible failure of rewrite-rule side conditions and substitutions, and the CPS monad discussed in \autoref{sec:rewriting-more:pre-reduction:cps}.
+We use two other monads in the rewriting engine: the option monad, to encode possible failure of rewrite-rule side conditions and substitutions, and the CPS monad discussed in \autoref{sec:rewriting-more:prereduction:cps}.
 
 Although we introduce a bit of syntactic sugar for monadic binds in an ad-hoc way, we do not fully commit to a monadic abstraction barrier in our code.
 This lack of principle incurs pain\todoac{not pain} when we have to deal with mismatched monads in different functions, especially when we haven't ordered the monadic applications in a principled way.
@@ -885,7 +885,7 @@ It requires that both \mintinline{coq}{rawexpr}s have the same amount of reveale
 The only nontrivial case in this definition is what to say about when \mintinline{coq}{NbEₜ} values match expressions.
 We say that an \mintinline{coq}{NbEₜ} value is equivalent only to the result of calling NbE's \mintinline{coq}{reify} function on that value.
 That this definition suffices is highly nonobvious; we refer the reader to our Coq proofs, performed without any axioms, as our justification of sufficiency.
-That each \mintinline{coq}{NbEₜ} value must match at least the result of calling NbE's \mintinline{coq}{reify} function on that value is a result of how we handle unrevealed forms when building up the arguments to an $\eta$-long identifier application as discussed briefly in \fullnameref{sec:rewriting-more:pre-reduction:what-reduction}.
+That each \mintinline{coq}{NbEₜ} value must match at least the result of calling NbE's \mintinline{coq}{reify} function on that value is a result of how we handle unrevealed forms when building up the arguments to an $\eta$-long identifier application as discussed briefly in \fullnameref{sec:rewriting-more:prereduction:what-reduction}.
 Namely, when forming applications of \mintinline{coq}{rawexpr}s to \mintinline{coq}{NbEₜ} values during $\eta$-expansion, we say that the ``unrevealed'' structure of an \mintinline{coq}{NbEₜ} value \mintinline{coq}{v} is \mintinline{coq}{reify v}.
 
 \paragraph{\texorpdfstring{\mintinline{coq}{interp_maybe_do_again}}{interp\_maybe\_do\_again}}
@@ -949,7 +949,7 @@ While this design is sort-of a historical accident of originally intending to wr
 While we could, in theory, in a better-designed rewriter, indirect through the expressions that each of these came from, the functions turning expressions into patterns and replacement rules are likely to be quite complicated, especially with the support for rewriting again described in \fullnameref{sec:rewriting-more:do-again}.
 
 The way we currently relate these is that we write an interpretation function for patterns, parameterized over unification data, and relate this to the interpretation of the replacement function applied to unification data, suitably restricted to just the type variables of the pattern in question to make various dependent types line up.
-Note that this restriction of the unification data would likely be unnecessary if we stripped out all of the dependent types that we don't actually need; c.f.~\fullnameref{sec:rewriting-more:pre-reduction:type-codes}.
+Note that this restriction of the unification data would likely be unnecessary if we stripped out all of the dependent types that we don't actually need; c.f.~\fullnameref{sec:rewriting-more:prereduction:type-codes}.
 This interpretation function is itself also severely complicated by the use of dependent types in talking about unification data.
 
 \section{What's the Takeaway?}

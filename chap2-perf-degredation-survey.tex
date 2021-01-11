@@ -2,7 +2,7 @@
 
 \section{Introduction}\label{sec:perf-failures:story}
 
-As alluded to in \autoref{sec:manual-proof-long}, when writing non-automated\todoac{crossed out - here [Jason asks: what should it be instead?]} proofs to verify code in a proof assistant, the number of lines of proof we need to write scales with the number of lines of code being verified, typically resulting to a $10\times$ to $100\times$ overhead.
+As alluded to in \autoref{sec:manual-proof-long}, when writing nonautomated proofs to verify code in a proof assistant, the number of lines of proof we need to write scales with the number of lines of code being verified, typically resulting to a $10\times$ to $100\times$ overhead.
 In this strategy, proof generation and proof checking times are reasonable, often scaling linearly with the number of lines of proof.
 Automating the generation of proofs solves the overhead\todoac{Can one ``solve'' an ``overhead''?} of proof-writing time; however, it introduces massive \emph{nonlinear} overhead in the time it takes for the computer to generate and check the proof.
 
@@ -391,7 +391,7 @@ There are two obvious solutions for this problem:
 
 \subsubsection{Dropping Type Parameters: Nominal vs.\ Structural Typing} \label{sec:nominal-vs-structural} \label{sec:dropping-constructor-parameters}
 The first option requires that the proof assistant implement structural typing rather than nominal typing~\cite[19.3 Nominal and Structural Type Systems]{tapl}.
-\minortodo{Find a place for this note: }Note that it doesn't actually require structural; we can do it with nominal typing if we enforce everywhere that we can only compare terms who are known to be the same type, because not having structural typing results in having a single kernel term with multiple non-unifiable\todoac{the - is crossed out [Jason responds: what should be here?]} types.
+\minortodo{Find a place for this note: }Note that it doesn't actually require structural; we can do it with nominal typing if we enforce everywhere that we can only compare terms who are known to be the same type, because not having structural typing results in having a single kernel term with multiple nonunifiable types.
 \minortodo{Look into \textcite{Efficient1998Necula} and \url{http://adam.chlipala.net/papers/StrictTLDI05/} for past work on eliding some parameters}%
 \minortodo{maybe look into TAPL}%
 \minortodo{explain structural and nominal typing more}%
@@ -668,7 +668,7 @@ The essential function of a proof checker is to verify that a given term has a g
 We obviously cannot type-check a term in better than linear time in the size of the representation of the term.
 
 Recall that we cannot place any hard bounds on complexity of typechecking a term, as terms as simple as \mintinline{coq}{@eq_refl bool true} proving that the Boolean \mintinline{coq}{true} is equal to itself can also be typechecked as proofs of arbitrarily complex decision procedures returning success.
-\todoac{[About this entire paragraph] Subtle point here that might benefit from more explanation/example! [Jason: How much more? / What should I say?]}
+\todoac{[About this entire paragraph] Subtle point here that might benefit from more explanation/example! [Jason: How much more? / What should I say?] [Adam responds: I don't know.  This suggestion is way at the bottom of the ranking of importance among those I shared.  If you don't make changes, you should be OK with the knowledge that readers who are not Coq experts won't understand what is up.]}
 
 We might reasonably hope that typechecking problems which require no interesting computation can be completed in time linear in the size of the term and its type.
 
@@ -825,7 +825,7 @@ For example, if the user wants to operate inside the hole in \mintinline{coq}{(�
 However, if the $\alpha$-renaming is even just linear in the existing context, then creating a new hole under $n$ binders will take $\mathcal{O}(n^2)$ time in the worst case, as we may have to do $n$ renamings, each of which take time $\mathcal O(n)$.
 See \coqbug{9582}, perhaps also \coqbug{8245} and \coqbug{8237} and \coqbug{8231}.
 
-\todoac{Another bit of evidence that it isn't worth using wrapfig vs. normal figures in a dissertation! [Response from Jason: But I don't know how to get figures that aren't way too tall/big without using wrapfig]}
+%\minortodoac{Another bit of evidence that it isn't worth using wrapfig vs. normal figures in a dissertation! [Response from Jason: But I don't know how to get figures that aren't way too tall/big without using wrapfig]}
 
 This might be the cause of the difference in \autoref{fig:timing-open-constr-n-lambda-no-types} between having different names (which do not need to be renamed) and having either no name (requiring name generation) or having all binders with the same name (requiring renaming in evar substitutions).
 
@@ -852,7 +852,7 @@ One popular representation is the locally nameless representation~\cite{Locally2
 However, if we use a locally nameless term representation, then finding a compact representation for identity and lifting substitutions is quite tricky.
 If the substitution representation takes $\mathcal O(n)$ time to create in a context of size $n$, then having a $\lambda$ with $n$ arguments whose types are not known takes $\mathcal O(n^2)$ time, because we end up creating identity substitutions for $n$ holes, with linear-sized contexts.
 
-Note that fully nameless, i.e., de Bruijn term representations,\todoac{remove comma [Jason: I think that's wrong]} do not suffer from this issue.
+Note that fully nameless, i.e.\ de Bruijn, term representations do not suffer from this issue.
 
 See \coqbug{8237} and \coqpr{11896} for a mitigation of some (but not all) issues.
 
@@ -1210,7 +1210,6 @@ Let us consider things a bit more generally.
 
 \citetitle{Structure1996Sussman} defines abstraction as naming and manipulating compound elements as units~\cite[p.~6]{Structure1996Sussman}.
 An \emph{abstraction barrier} is a collection of definitions and theorems about those definitions that together provide an interface for such a compound element.
-\todoac{to (but that still doesn't seem enough for the sentence to make sense) [Jason: I chose ``for'' instead, it makes sense to me?]}
 For example, we might define an interface for sorting a list, together with a proof that sorting any list results in a sorted list.
 Or we might define an interface for key-value maps (perhaps implemented as association lists, or hash-maps, or binary search trees, or in some other way).
 
@@ -1235,7 +1234,7 @@ The abstractions used in formalizing this example are as follows
 \begin{itemize}
 \item
   A \emph{category} $\mathcal C$ is a collection of objects and composable arrows (called \emph{morphisms}) between those objects, subject to some algebraic laws.
-  The class of objects is generally denoted $\Ob[\mathcal C]$\todoac{insert ``,'' here [Jason: I think you've told me to remove commas in places like this?]} and the class of morphisms between $x, y\in \Ob[\mathcal C]$ is generally denoted $\Hom[\mathcal C](x, y)$.
+  The class of objects is generally denoted $\Ob[\mathcal C]$, and the class of morphisms between $x, y\in \Ob[\mathcal C]$ is generally denoted $\Hom[\mathcal C](x, y)$.
   Categories are a sort of generalization of sets or types.
 \item
   The \emph{product category} $\mathcal C \times \mathcal D$ generalizes the Cartesian product of sets.
@@ -1254,7 +1253,9 @@ The abstractions used in formalizing this example are as follows
   The category of categories, generally denoted \Cat, is a category whose objects are themselves categories and whose morphisms are functors.
   Much like the set of all sets or the type of all types, the categories in \Cat\space are subject to size restrictions discussed further in \autoref{sec:category-of-categories}.
 \end{itemize}
-Although we eventually go into a bit more of the detail of these definitions throughout \autoref{sec:category-def}, we advise the interested reader to consult the rich existing literature on category theory,\todoac{It could be a bit dangerous to suggest that arbitrary readers pause here to go learn category theory! [Jason says: not sure how to rephrase]} including for example \textcite{awodey2010category} and \textcite{mac1998categories}.
+Although we eventually go into a bit more of the detail of these definitions throughout \autoref{sec:category-def}, we advise the interested reader to consult the rich existing literature on category theory, including for example \textcite{awodey2010category} and \textcite{mac1998categories}.
+These are by no means required reading, though;
+most of this dissertation is unrelated to category theory and we have aimed to make even the parts related to category theory relatively accessible to readers with no category-theoretic background.
 
 There are only seven components of the isomorphism $(\mathcal C₁ × \mathcal C₂ → \mathcal D) ≅ (\mathcal C₁ → (\mathcal C₂ → \mathcal D))$ which are not proofs of algebraic laws.
 Their definition, spelled out in \autoref{fig:exponential-laws:def:math} and given in Gallina Coq code (with suitable notations) in \autoref{fig:exponential-laws:def:coq}, is relatively trivial.

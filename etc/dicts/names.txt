@@ -101,6 +101,7 @@ Kahn
 Kleeblatt's
 Kolodziejski
 Kovács
+Kripke
 LICS
 LNCS
 Laneve

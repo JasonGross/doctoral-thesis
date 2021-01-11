@@ -13,12 +13,12 @@
 \minortodo{Better chapter title?}
 \minortodo{consider replacing ``pain'' with more formal words like ``overhead'', ``bottleneck'', etc (Adam says it's possibly too informal)}
 %\section{Introduction}\label{sec:rewriting-more:intro}
-\autoref{ch:rewriting} discussed in detail our framework for building verified partial evaluators, going into the context, motivation, and the techniques used to put the framework together.
+\autoref{ch:rewriting} discussed in detail our framework for building verified partial evaluators, going into the context, motivation, and techniques used to put the framework together.
 However, there was a great deal of engineering effort that went into building this tool which we glossed over.
 Much of the engineering effort was mundane, and we elide the details entirely.
-However, we believe some of the engineering effort serves as a good case-study for the difficulties of building proof-based systems at scale.
+However, we believe some of the engineering effort serves as a good case study for the difficulties of building proof-based systems at scale.
 This chapter is about exposing the details relevant to understanding how the bottlenecks and principles identified elsewhere in this dissertation played out in designing and implementing this tool.
-Note that many of the examples and descriptions in this chapter are highly technical, and we expect the discussion will only be of interest to the motivated reader, familiar with Coq, who wants to see more concrete non-toy examples of the bottlenecks and principles we've been describing; other readers are encouraged to skip this chapter.
+Note that many of the examples and descriptions in this chapter are highly technical, and we expect the discussion will only be of interest to the motivated reader, familiar with Coq, who wants to see more concrete non-toy\todoac{remove - [Jason: I don't know how to remove the dash and leave behind words]} examples of the bottlenecks and principles we've been describing; other readers are encouraged to skip this chapter.
 
 %\section{A Brief Survey of the Engineering Challenges}\label{sec:rewriting-more:challenges-overview}
 
@@ -34,15 +34,17 @@ While the core rewriting engine of the framework is about 1\,300 lines of code, 
 % add up totals, subtract off the lines in Rewriter.v
 As such, this tool, developed to solve performance scaling issues in verified syntax transformation, itself serves as a good case study of some of the bottlenecks that arise when scaling proof-based engineering projects.
 
-Our discussion in this section is organized by the conceptual structure of the normalization and pattern matching compilation engine;
+Our discussion in this section is organized by the conceptual structure of the normalization and pattern-matching-compilation engine;
 we hope that organizing the discussion in this way will make the examples more understandable, motivated, and incremental.
 We note, however, that many of the challenges fall into the same broad categories that are identified elsewhere in this dissertation:
 issues arising from the power and (mis)use of dependent types, as introduced in \fullnameref{sec:why-how-dependent-types};
-and issues arising arising from API mismatches, as described in \fullnameref{ch:api-design}.
+and issues arising from API mismatches, as described in \fullnameref{ch:api-design}.
 
 \section{Pre-Reduction}\label{sec:rewriting-more:pre-reduction}
-The the two biggest underlying causes of engineering challenges are expression API mismatch, which we'll discuss in \fullnameref{sec:rewriting-more:AST:choices}, and our desire to reduce away known computations in the rewriting engine once and for all when compiling rewriting rules, rather than again and again every time we perform a rewrite.
+The two biggest underlying causes of engineering challenges are expression--API mismatch, which we'll discuss in \fullnameref{sec:rewriting-more:AST:choices}, and our desire to reduce away known computations in the rewriting engine once and for all when compiling rewriting rules, rather than again and again every time we perform a rewrite.
 In practice, performing this early reduction nets us an approximately $2\times$ speed-up.
+
+\todoac{More transition language saying ``and now we'll discuss the second one.''}
 
 \subsection{What Does This Reduction Consist Of?}\label{sec:rewriting-more:pre-reduction:what-reduction}
 Recall from \autoref{sec:pattern-matching-compilation-and-evaluation} that the core of our rewriting engine consists of three steps:
@@ -54,22 +56,22 @@ Recall from \autoref{sec:pattern-matching-compilation-and-evaluation} that the c
 \item
   The third and final step is to actually rewrite with the chosen rule.
 \end{enumerate}
-The first step is performed once and for all; it depends only on the rewrite rules, and not on the expression we are rewriting in.
+The first step is performed once and for all; it depends only on the rewrite rules and not on the expression we are rewriting in.
 The second and third steps do, in fact, depend on the expression being rewritten, and it is in these steps that we seek to eliminate needless work early.
 
-The key insight, which allows us to perform this precompilation at all, is that the most of the decisions we seek to eliminate depend only on the \emph{head identifier} of any application.%
+The key insight, which allows us to perform this precompilation at all, is that most of the decisions we seek to eliminate depend only on the \emph{head identifier} of any application.%
 \footnote{%
   In order to make this simplification, we need to restrict the rewrite rules we support a little bit.
   In particular, we only support rewrite rules operating on $\eta$-long applications of concrete identifiers to arguments.
-  This means that we cannot support identifiers with variable arrow structure (e.g., a variadic \mintinline{coq}{curry} function) nor do we support rewriting things like \mintinline{coq}{List.map f} to \mintinline{coq}{List.map g}---we only support rewriting \mintinline{coq}{List.map f xs} to \mintinline{coq}{List.map g ys}.%
+  This means that we cannot support identifiers with variable arrow structure (e.g., a variadic \mintinline{coq}{curry} function) nor do we support rewriting expressions like \mintinline{coq}{List.map f} to \mintinline{coq}{List.map g}---we only support rewriting \mintinline{coq}{List.map f xs} to \mintinline{coq}{List.map g ys}.%
 }
 We thus augment the $\text{reduce}(c)$ constant case of \autoref{fig:nbe} in \autoref{sec:thunk-eval-subst-term} by first $\eta$-expanding the identifier, before proceeding to $\eta$-expand the identifier application and perform rewriting with \text{rewrite-head} once we have an $\eta$-long form.
 
-Now that we know what the reduction consists of, we can now discuss what goes in to making the reduction possible, and the engineering challenges that arise.
+Now that we know what the reduction consists of, we can discuss what goes into making the reduction possible and the engineering challenges that arise.
 
 \subsection{CPS}\label{sec:rewriting-more:pre-reduction:cps}
 Due to the pervasive use of Gallina \mintinline{coq}{match} statements on terms which are not known during this compilation phase, we need to write essentially all of the decision-tree-evaluation code in continuation-passing style.
-This causes a moderate amount of proof-engineer-overhead, distributed over the entire rewriter.
+This causes a moderate amount of proof-engineer overhead, distributed over the entire rewriter.
 %We will come back to this in \autoref{sec:rewriting-more:pre-reduction-again:cps}, after we have introduced the constructions necessary to understand the code.
 
 \minortodo{find a better transition}
@@ -143,7 +145,7 @@ which reduces to
 \end{minted}
 
 \subsection{Type Codes}\label{sec:rewriting-more:pre-reduction:type-codes}
-The pattern-matching compilation algorithm of \textcite{Aehlig} does not deal with types.
+The pattern-matching-compilation algorithm of \textcite{Aehlig} does not deal with types.
 In general, unification of types is somewhat more complicated than unification of terms, because types are used as indices in terms whereas nothing gets indexed over the terms.
 We have two options, here:
 \begin{enumerate}
@@ -303,7 +305,7 @@ Second, trying to prove anything about functions written like this is an enormou
 Because of the intricate dependencies in typing information involved in the convoy pattern, Coq's \mintinline{coq}{destruct} tactic is useless.
 The \mintinline{coq}{dependent destruction} tactic is sometimes able to handle such goals, but even when it can, it often introduces a dependency on the axiom \mintinline{coq}{JMeq_eq}, which is equivalent to assuming \emph{uniqueness of identity proofs} (UIP), that all proofs of equality are equal---note that this contradicts, for example, the popular univalence axiom of homotopy type theory~\cite{HoTTBook}.
 In order to prove anything about such functions without assuming UIP, the proof effectively needs to replicate the complicated \mintinline{coq}{return} clauses of the function definition.
-However, since they are not to be replicated exactly, but merely be generated from the same insights, such proof terms often have to be written almost entirely by hand.
+However, since they are not to be replicated exactly but merely be generated from the same insights, such proof terms often have to be written almost entirely by hand.
 These proofs are furthermore quite hard to maintain, as even small changes in the structure of the function often require intricate changes in the proof script.
 
 Due to a lack of foresight and an unfortunate reluctance to take the design back to the drawing board after we already had working code, we ended up mixing these two approaches, getting, not quite the worst of both worlds, but definitely a significant fraction of the pain of both worlds:
@@ -332,22 +334,22 @@ Note that tracking this sort of information is nontrivial, as there's no help fr
 
 We'll come back to this in \autoref{sec:rewriting-more:pre-reduction-again:tracking-unfolding}.
 
-\section{NbE vs.\ Pattern Matching Compilation: Mismatched Expression APIs and Leaky Abstraction Barriers}\label{sec:rewriting-more:AST:choices}
-\minortodo{should I be consistent about naming syntax that's well-typed by construction?  I call it ``intrinsically-typed syntax'', ``syntax that is well-typed by construction'', ``intrinsically-well-typed syntax'', and ``type-indexed syntax''\ldots}
+\section{NbE vs.\ Pattern-Matching Compilation: Mismatched Expression APIs and Leaky Abstraction Barriers}\label{sec:rewriting-more:AST:choices}
+\minortodo{should I be consistent about naming syntax that's well-typed by construction?  I call it ``intrinsically typed syntax'', ``syntax that is well-typed by construction'', ``intrinsically well-typed syntax'', and ``type-indexed syntax''\ldots}
 We introduced normalization by evaluation (NbE)~\cite{NbE} in \autoref{sec:our-solution} and expanded on it in \autoref{sec:thunk-eval-subst-term} as a way to support higher-order reduction of $\lambda$-terms.
 The termination argument for NbE proceeds by recursion on the type of the term we're reducing.
 In particular, the most natural way to define these functions in a proof assistant is to proceed by structural recursion on the type of the term being reduced.
 This feature suggests that using intrinsically-typed syntax is more natural for NbE, and we saw in \autoref{sec:binders:de-bruijn} that denotation functions are also simpler on syntax that is well-typed by construction.
 
-However, the pattern-matching compilation algorithm of \textcite{maranget2008compiling} inherently operates on untyped syntax.
+However, the pattern-matching-compilation algorithm of \textcite{maranget2008compiling} inherently operates on untyped syntax.
 We thus have four options:
 \begin{enumerate}[(1)]
 \item
-  use intrinsically-well-typed syntax everywhere, paying the cost in the pattern-matching compilation and evaluation algorithm;
+  use intrinsically well-typed syntax everywhere, paying the cost in the pattern-matching compilation and evaluation algorithm;
 \item
   use untyped syntax in both NbE and rewriting, paying the associated costs in NbE, denotation, and in our proofs;
 \item
-  use intrinsically-well-typed syntax in most passes, and untyped syntax for pattern matching compilation;
+  use intrinsically well-typed syntax in most passes and untyped syntax for pattern-matching compilation;
 \item
   invent a pattern-matching compilation algorithm that is well-suited to type-indexed syntax.
 \end{enumerate}
@@ -356,7 +358,7 @@ I was not clever enough to follow through on option (4), and while options (1) a
 As we'll shortly see, all of these options come with significant costs, and (3) is not as obviously a good choice as it might seem at first glance.
 
 \subsection{Pattern-Matching Evaluation on Type-Indexed Terms}\label{sec:rewriting-more:AST:type-indexed-pattern-matching}
-While the cost of performing pattern-matching compilation on type-indexed terms is noticeable, it's relatively insignificant compared to the cost of evaluating decisions trees directly on type-indexed terms.
+While the cost of performing pattern-matching compilation on type-indexed terms is noticeable, it's relatively insignificant compared to the cost of evaluating decision trees directly on type-indexed terms.
 In particular, pattern-matching compilation effectively throws away the type information whenever it encounters it; whether we do this early or late does not matter much, and we only perform this compilation once for any given set of rewrite rules.
 
 By contrast, evaluation of the decision tree needs to produce \emph{term ASTs} that are used in rewriting, and hence we need to preserve type information in the input.
@@ -370,29 +372,32 @@ This is not so bad, but recall also from \autoref{sec:pattern-matching-compilati
     With the first element of the vector, match on its kind; if it is an identifier matching something in \texttt{icases}, which is a list of pairs of identifiers and decision trees, remove the first element of the vector and run that decision tree; if it is an application and \texttt{app\_case} is not \texttt{None}, try the \texttt{app\_case} decision tree, replacing the first element of each vector with the two elements of the function and the argument it is applied to; otherwise, do not modify the vectors and use the \texttt{default} decision tree.
   \item \texttt{Swap i cont}: Swap the first element of the vector with the $i^\texttt{th}$ element (0-indexed) and keep going with \texttt{cont}.
 \end{itemize}
-The first two constructors are not very interesting, as far as overhead goes, but the third and fourth constructors are quite painful.
+The first two constructors are not very interesting, as far as overhead goes, but the third and fourth constructors are quite painful.\todoac{Not a good word to use in formal writing (for instance, because it's not clear what you mean)}
 
-Note that the type of \mintinline{coq}{eval_decision_tree} would be something like \mintinline{coq}{∀ {T : Type} (d : decision_tree) (ts : list type) (es : exprlist ts) (K : exprlist ts → option T), option T}.
+Note that the type of \mintinline{coq}{eval_decision_tree} would be something like \mintinline{coq}{∀ {T : Type} (d : decision_tree) (ts : list type) (es : exprlist ts) (K : exprlist ts → option T), option T}.\todoac{Mention here that you use CPS for the same reason introduced earlier, though now it is at a more ``meta'' level?}
 
 
 We cover the \mintinline{coq}{Swap} case first, because it is simpler.
 To perform a \mintinline{coq}{Swap}, we must exchange two elements of the type-indexed list.
-Hence we need both two swap the elements of the list of types, and then to have a separate, dependently typed swap function for the vector of expressions.
-Moreover, since we need to undo the swapping inside the continuation\minortodo{does this need more explanation or code?}, we must have an \emph{separate} unswap function on expression vectors which goes from a swapped type list to the original one.
-We could instead elide the swap node, but then we could no longer use matching, \mintinline{coq}{hd}, and \mintinline{coq}{tl} to operate on the expressions, and would instead need special operations to do surgery in the middle of the list, in a way that preserves type-indexing.
+Hence we need both to swap the elements of the list of types and then to have a separate, dependently typed swap function for the vector of expressions.
+Moreover, since we need to undo the swapping inside the continuation\minortodo{does this need more explanation or code?}, we must have a \emph{separate} unswap function on expression vectors which goes from a swapped type list to the original one.
+We could instead elide the swap node, but then we could no longer use matching, \mintinline{coq}{hd}, and \mintinline{coq}{tl} to operate on the expressions and would instead need special operations to do surgery in the middle of the list, in a way that preserves type indexing.
 
 To perform a \mintinline{coq}{Switch}, we must break apart the first element of our type-indexed list, determining whether it is an application, and identifier, or other.
 Note that even with dependent types, we cannot avoid needing a failure case for when the type-indexed list is empty, even though such a case should never occur because good decision trees will never have a \mintinline{coq}{Switch} node after consuming the entire vector of expressions.
 This failure case cannot be avoided because there is no type-level relation between the expression vector and the decision tree.
 This mismatch---the need to include failure cases that one might expect to be eliminated by dependent typing information---is a sign that the amount of dependency in the types is wrong.
-It may be too little, whence the developer should see if there is a way to incorporate the lack-of-error into the typing information (which in this case would require indexing the type of the decision tree over the length of the vector%
+It may be too little, whence the developer should see if there is a way to incorporate the lack of error into the typing information (which in this case would require indexing the type of the decision tree over the length of the vector%
 \label{sec:break-abstraction:example:decision-tree-indexing}%
 \footnote{\label{foot:break-abstraction:example:decision-tree-indexing}%
   Note that choosing to index the decision tree over the length of the vector severely complicates our ability to avoid separate \mintinline{coq}{swap} and \mintinline{coq}{unswap} functions by indexing into the middle of the vector.
   We'd need to use some sort of finite type to ensure the indices are not too large, and we'd need to be very careful to write dependently typed middle-of-the-vector surgery operations which are judgmentally invertible on the effects that they have on the length of the vector.
-  Here we see here an example of how dependent types introduce coupling between seemingly unrelated design decisions, which is a large part of why abstraction barriers are so essential, as we'll discuss in \fullnameref{sec:when-how-dependent-types}.
+  Here we see an example of how dependent types introduce coupling between seemingly unrelated design decisions, which is a large part of why abstraction barriers are so essential, as we'll discuss in
+  \minortodo{integrate answer from \url{https://tex.stackexchange.com/questions/578373/how-do-i-forbid-pagebreaks-inside-urls-without-forbidding-linebreaks}}%
+  \widowpenalties 2 10000 0\relax
+  \fullnameref{sec:when-how-dependent-types}.
 }).
-It may alternatively be to much dependent typing, and the developer might be well-served by removing more dependency from the types and letting more things fall into the error case.
+It may alternatively be too much dependent typing, and the developer might be well-served by removing more dependency from the types and letting more things fall into the error case.
 
 After breaking apart the first element, we must convoy the continuation across the \mintinline{coq}{match} statement so that we can pass an expression vector of the correct type to the continuation \mintinline{coq}{K}.
 In code, this branch might look something like
@@ -428,8 +433,8 @@ there is no way to preserve the connection between the types of the first two el
 
 This may not look too bad, but it gets worse.
 Since the \mintinline{coq}{match} on \mintinline{coq}{e} will not be known until we are actually doing the rewriting on a concrete expression, and the continuation is convoyed across this \mintinline{coq}{match}, there is no way to evaluate the continuation during compilation of rewrite rules.
-If we don't want to evaluate the continuation early, we'd have to be very careful not to duplicate it across all of the decision tree evaluation cases, as we might otherwise incur a superlinear runtime factor in the number of rewrite rules.
-As noted in \autoref{sec:rewriting-more:pre-reduction}, our early reduction nets us a $2\times$ speedup in runtime of rewriting, and is therefore relatively important to be able to do.
+If we don't want to evaluate the continuation early, we'd have to be very careful not to duplicate it across all of the decision-tree evaluation cases, as we might otherwise incur a superlinear runtime factor in the number of rewrite rules.
+As noted in \autoref{sec:rewriting-more:pre-reduction}, our early reduction nets us a $2\times$ speedup in runtime of rewriting and is therefore relatively important to be able to do.
 \minortodo{redo performance experiments here, maybe insert a plot}
 
 Here we see something interesting, which does not appear to be as much of a concern in other programming languages:
@@ -439,22 +444,22 @@ the representation of our data forces our hand about how much efficiency can be 
 There is no good way around the fact that NbE requires typing information to argue termination.
 Since NbE will be called on subterms of the overall term, even if we use syntax that is not guaranteed to be type-correct, we must still store the type information in the nodes of the AST.
 
-Furthermore, as we say in \fullnameref{sec:binders:de-bruijn}, converting from untyped syntax to intrinsically-typed syntax, as well as writing a denotation function, requires either that all types be non-empty, or that we carry around a proof of well-typedness to use during recursion.
+Furthermore, as we say in \fullnameref{sec:binders:de-bruijn}, converting from untyped syntax to intrinsically typed syntax, as well as writing a denotation function, requires either that all types be nonempty or that we carry around a proof of well-typedness to use during recursion.
 \minortodoask{Is there a good reference for these sorts of issues?  Are they well-known?  Well-studied?}
 As discussed in \autoref{ch:design} and specifically in \fullnameref{sec:when-how-dependent-types}, needing to mix proofs with programs is often a big warning flag, unless the mixing can be hidden behind a well-designed API.
 However, if we are going to be hiding the syntax behind an API of being well-typed, it seems like we might as well just use intrinsically well-typed syntax, which naturally inhabits that API.
-Furthermore, unlike in many cases where the API is best treated as opaque everywhere, here the API mixing proofs and programs needs to have adequate behavior under reduction, and ought to have good behavior even under partial reduction.
+Furthermore, unlike in many cases where the API is best treated as opaque everywhere, here the API mixing proofs and programs needs to have adequate behavior under reduction and ought to have good behavior even under partial reduction.
 This severely complicates the task of building a good abstraction barrier, as we not only need to ensure that the abstraction barrier does not need to be broken in the course of term-building and typechecking, but we must also ensure that the abstraction barrier can be broken in a principled way via reduction without introducing significant overhead.
 
 %Despite all of these problems, in retrospect, it seems that this option might in fact be the least-costly option to choose.
 %Admittedly, we have not actually implemented it, so there might remain hidden engineering challenges.
 
 \subsection{Mixing Typed and Untyped Syntax}\label{sec:rewriting-more:AST:both}
-The third option is to use whichever datatype is most naturally suited for each pass, and to convert between them as necessary.
-This is the option that we ultimately chose, and the one, we believe, that would be most natural to choose to engineers and developers coming from non-dependently typed languages.
+The third option is to use whichever datatype is most naturally suited for each pass and to convert between them as necessary.
+This is the option that we ultimately chose, and the one, we believe, that would be most natural to choose to engineers and developers coming from nondependently typed languages.
 
-There are a number of considerations that arose when fleshing out this design, and a number of engineering-pain-points that we encountered.
-The theme to all of these, as we will revisit in \autoref{ch:api-design}, is that imperfectly opaque abstraction barriers cause headaches in a non-local manner.
+There are a number of considerations that arose when fleshing out this design and a number of engineering pain points that we encountered.
+The theme to all of these, as we will revisit in \autoref{ch:api-design}, is that imperfectly opaque abstraction barriers cause headaches in a nonlocal manner.
 
 We got lucky, in some sense, that the rewriting pass \emph{always} has a well-typed default option: do no rewriting.
 Hence we do not need to worry about carrying around proofs of well-typedness, and this avoids some of the biggest issues described in \fullnameref{sec:rewriting-more:AST:untyped-nbe}.
@@ -464,7 +469,7 @@ We can actually relax this constraint a little bit: by designing the untyped rep
 \minortodo{is this last sentence understandable?}
 As such, we need to be able to embed well-typed syntax directly into the non-type-indexed representation at cost $\mathcal{O}(1)$.
 
-As the entire purpose of the untyped syntax is to (a) allow us to perform matching on the AST to determine which rewrite rule to use, and furthermore (b) allow us to reuse the decomposition work so as to avoid needing to decompose the term multiple times, we need an inductive type which can embed PHOAS expressions, and has separate nodes for the structure that we need, namely application and identifiers:
+As the entire purpose of the untyped syntax is to (a) allow us to perform matching on the AST to determine which rewrite rule to use, and furthermore (b) allow us to reuse the decomposition work so as to avoid needing to decompose the term multiple times, we need an inductive type which can embed PHOAS expressions and has separate nodes for the structure that we need, namely application and identifiers:
 
 \begin{minted}{coq}
 Inductive rawexpr : Type :=
@@ -477,7 +482,7 @@ Inductive rawexpr : Type :=
 There are three perhaps-unexpected things to note about this inductive type, which we will discuss in later subsections:
 \begin{enumerate}
 \item
-  The constructor \mintinline{coq}{rValue} holds an NbE-value of the type \mintinline{coq}{NbEₜ} introduced in \autoref{sec:thunk-eval-subst-term}.
+  The constructor \mintinline{coq}{rValue} holds an NbE value of the type \mintinline{coq}{NbEₜ} introduced in \autoref{sec:thunk-eval-subst-term}.
   We will discuss this in \fullnameref{sec:rewriting-more:delayed-rewriting}.
 \item
   The constructors \mintinline{coq}{rIdent} and \mintinline{coq}{rExpr} hold ``alternate'' PHOAS expressions.
@@ -489,8 +494,8 @@ There are three perhaps-unexpected things to note about this inductive type, whi
 
 With this inductive type in hand, it's easy to see how \mintinline{coq}{rExpr} allows us $\mathcal{O}(1)$ embedding of intrinsically typed \mintinline{coq}{expr}s into untyped \mintinline{coq}{rawexpr}s.
 
-While it's likely that sufficiently good abstraction barriers around this datatype would allow us to use it with relatively little pain, we did not succeed in designing good enough abstraction barriers.
-The bright side of this failure is that we now have a number of examples for this dissertation of ways in which inadequate abstraction barriers cause pain.
+While it's likely that sufficiently good abstraction barriers around this datatype would allow us to use it with relatively little pain\todoac{don't use pain}, we did not succeed in designing good enough abstraction barriers.
+The bright side of this failure is that we now have a number of examples for this dissertation of ways in which inadequate abstraction barriers cause pain\todoac{don't use pain}.
 
 We will discuss the many issues that arise from leaks in this abstraction barrier in the upcoming subsections.
 %While some of these issues will be discussed in \Autoref{sec:rewriting-more:delayed-rewriting,sec:rewriting-more:revealing-enough-structure,sec:rewriting-more:rIdent-known} where we discuss the perhaps-unexpected additions to the \mintinline{coq}{rawexpr} constructors, we can discuss a few complications here.
@@ -499,9 +504,9 @@ We will discuss the many issues that arise from leaks in this abstraction barrie
 %Correctness conditions on PHOAS transformations are frequently stated in terms of two (partial) equivalence relations: the well-formedness relation \mintinline{coq}{Wf} defined in \autoref{sec:PHOAS:Wf-def}; and pointwise equality---that is, equality up to function extensionality---of the interpretations of the expressions.
 %\todo{make sure I'm being consistent about ``interpretation'' vs ``denotation'' across the dissertation}
 
-\subsection{Pattern Matching Compilation Made for Intrinsically-Typed Syntax}\label{sec:rewriting-more:AST:better-pattern-matching}
-The cost of this fourth option is the cleverness required to come up with a version of the pattern matching compilation which, rather than being hindered by types in its syntax, instead puts them to good use.
-Lacking this cleverness, we were unable to pay the requisite cost, and hence have not much to say in this section.
+\subsection{Pattern-Matching Compilation Made for Intrinsically Typed Syntax}\label{sec:rewriting-more:AST:better-pattern-matching}
+The cost of this fourth option is the cleverness required to come up with a version of the pattern-matching compilation which, rather than being hindered by types in its syntax, instead puts them to good use.
+Lacking this cleverness, we were unable to pay the requisite cost and hence have not much to say in this section.
 
 \section{Patterns with Type Variables -- The Three Kinds of Identifiers}\label{sec:rewriting-more:three-identifier-inductives}
 We have one final bit of infrastructure to explain and motivate before we have enough of the structure sketched out to give all of the rest of the engineering challenges: representing the identifiers.
@@ -510,43 +515,43 @@ Recall from \fullnameref{sec:nine-steps} that we automatically emit an inductive
 When deciding how to represent identifiers, there are roughly three options we have to choose from:
 \begin{enumerate}
 \item
-  We could use an untyped representation of identifiers, such as Coq strings (as in \textcite{TemplateCoq}, for example), or integers indexing into some finite map.
+  We could use an untyped representation of identifiers, such as Coq strings (as in \textcite{TemplateCoq}, for example) or integers indexing into some finite map.
 \item
-  We could index the expression type over a finite map of valid identifiers, and use dependent typing to ensure that we only have well-typed identifiers.
+  We could index the expression type over a finite map of valid identifiers and use dependent typing to ensure that we only have well-typed identifiers.
 \item
   We could have a fixed set of valid identifiers, using types to ensure that we have only valid expressions.
 \end{enumerate}
 
 The first option results in expressions that are not always well-typed.
-As discussed in \autoref{ch:design} and seen in the preceding sections, having leaky abstraction barriers is often worse than having none at all, and we expect that having partially-well-typed expressions would be no exception.
+As discussed in \autoref{ch:design} and seen in the preceding sections, having leaky abstraction barriers is often worse than having none at all, and we expect that having partially well-typed expressions would be no exception.
 
-The second option is probably the way to go if we want truly extensible identifier-sets.
+The second option is probably the way to go if we want truly extensible identifier sets.
 There are two issues.
 First, this adds a linear overhead in the number of identifiers---or more precisely, in the total size of the types of the identifiers---because every AST node will store a copy of the entire finite map.
 Second, because our expression syntax is simply typed, polymorphic identifiers pose a problem.
 To support identifiers like \mintinline{coq}{fst} and \mintinline{coq}{snd}, which have types \mintinline{coq}{∀ A B, A * B → A} and \mintinline{coq}{∀ A B, A * B → B} respectively, we must either replicate the identifiers with all of the ways they might be applied, or else we must add support in our language for dependent types or for explicit type polymorphism.
 
 Instead, we chose to go with the third option, which we believe is the simplest.
-The inductive type of identifiers is indexed over the type of the identifier, and type polymorphism is expressed via meta-level arguments to the constructor.
-So, for example, the identifier code for \mintinline{coq}{fst} takes two type-code arguments \mintinline{coq}{A} and \mintinline{coq}{B}, and has type \mintinline{coq}{ident (A * B → A)}.
-Hence all fully-applied identifier codes have simple types (such as \mintinline{coq}{A * B → A}), and our inductive type still supports polymorphic constants.
-An additional benefit of this approach is that unification of identifiers is just pattern matching in Gallina, and hence we can rely on the pattern-matching compilation schemes of Coq's fast reduction machines, or the OCaml compiler itself, to further speed up our rewriting.
+The inductive type of identifiers is indexed over the type of the identifier, and type polymorphism is expressed via metalevel arguments to the constructor.
+So, for example, the identifier code for \mintinline{coq}{fst} takes two type-code arguments \mintinline{coq}{A} and \mintinline{coq}{B} and has type \mintinline{coq}{ident (A * B → A)}.
+Hence all fully applied identifier codes have simple types (such as \mintinline{coq}{A * B → A}), and our inductive type still supports polymorphic constants.
+An additional benefit of this approach is that unification of identifiers is just pattern matching in Gallina, and hence we can rely on the pattern-matching-compilation schemes of Coq's fast reduction machines, or the OCaml compiler itself, to further speed up our rewriting.
 
-\paragraph{Aside: Why Use Pattern Matching Compilation At All?}
-Given the fact that, after pre-reduction, there is no trace of the decision tree remaining, one might ask why we use pattern matching compilation at all, rather than just leaving it to the pattern-matching compiler of Coq or OCaml to be performant.
+\paragraph{Aside: Why Use Pattern-Matching Compilation At All?}
+Given the fact that, after pre-reduction, there is no trace of the decision tree remaining, one might ask why we use pattern-matching compilation at all, rather than just leaving it to the pattern-matching compiler of Coq or OCaml to be performant.
 We have three answers to this question.
 
-The first, perhaps most honest answer, is that it is a historical accident; we prematurely optimized this part of the rewriting engine when writing it.
+The first, perhaps most honest answer is that it is a historical accident; we prematurely optimized this part of the rewriting engine when writing it.
 
-The second answer is that pattern matching compilation is a good abstraction barrier for factoring out the work of revealing enough structure from the work of unifying a pattern with an expression.
-Said another way, even though we reduce away the decision tree and its evaluation, there is basically no wasted work; removing pattern matching compilation while preserving all the benefits would effectively just be inlining all of the functions, and there would be no dead code revealed by this inlining.
+The second answer is that pattern-matching compilation is a good abstraction barrier for factoring out the work of revealing enough structure from the work of unifying a pattern with an expression.
+Said another way, even though we reduce away the decision tree and its evaluation, there is basically no wasted work; removing pattern-matching compilation while preserving all the benefits would effectively just be inlining all of the functions, and there would be no dead code revealed by this inlining.
 %\todo{does this need more or better explanation?}
 
 The third and final answer is that it allows us to easily prune useless work.
-The pattern matching compilation algorithm naturally prunes away patterns that can be known to not work, given the structure that we've revealed.
+The pattern-matching-compilation algorithm naturally prunes away patterns that can be known to not work, given the structure that we've revealed.
 By contrast, if we just record what information we've already revealed as we're performing pattern unification, it's quite tricky to avoid decomposition which can be known to be useless based on only the structure that's been revealed already.
 
-Consider, for example, rewriting with two rules whose left-hand-sides are $x + (y + 1)$ and $(a + b) + (c * 2)$.
+Consider, for example, rewriting with two rules whose left-hand sides are $x + (y + 1)$ and $(a + b) + (c * 2)$.
 When revealing structure for the first rewrite rule, the engine will first decompose the (unknown) expression into the application of the $+$ identifier to two arguments, and then decompose the second argument into the application of the $+$ identifier to two arguments, and then finally decompose the second inner argument into a literal identifier to check if it is the literal $1$.
 If the decomposition succeeds, but the literal is not $1$ (or if the second inner argument is not a literal at all), then rewriting will fall back to the second rewrite rule.
 If we are doing structure decomposition in the naïve way, we will then decompose the outer first argument (bound to $x$ in the first rewrite rule) into the application of the identifier $+$ to two arguments.
@@ -554,13 +559,12 @@ We will then attempt to decompose the second outer argument into the application
 Since there is no way an identifier can be both $+$ and $*$, this decomposition will fail.
 However, we could have avoided doing the work of decomposing $x$ into $a + b$ by realizing that the second rewrite rule is incompatible with the first; this is exactly what pattern-matching compilation and decision-tree evaluation does.
 \minortodo{Does this need more explanation?  Is it understandable?}
-\minortodo{be consistent about ``pattern matching compilation'' vs ``pattern-matching compilation''?}
 
 \paragraph{Pattern Matching For Rewriting}
 We now arrive at the question of how to do pattern matching for rewriting with identifiers.
 We want to be able to support type variables, for example to rewrite \mintinline{coq}{@fst ?A ?B (@pair ?A ?B ?x ?y)} to \mintinline{coq}{x}.
 While it would arguably be more elegant to treat term and type variables identically, doing this would require a language supporting dependent types, and we are not aware of any extension of PHOAS to dependent types.
-Extensions of HOAS to dependent types are known~\cite{Outrageous2010McBride}, but the obvious modifications of such syntax that in the simply-typed case turn HOAS into PHOAS result in infinite self-referential types in the dependently typed case.
+Extensions of HOAS to dependent types are known~\cite{Outrageous2010McBride}, but the obvious modifications of such syntax that in the simply typed case turn HOAS into PHOAS result in infinite self-referential types in the dependently typed case.
 
 As such, insofar as we are using intrinsically well-typed syntax at all, we need to treat type variables separately from term variables.
 We need three different sorts of identifiers:
@@ -577,7 +581,7 @@ The third of these is required because pattern-matching compilation proceeds in 
 \minortodo{is this sufficiently understandable?}
 
 We could, in theory, use a single inductive type of type codes for all three of these.
-We could parameterize the inductive of type codes over the set of free type variables (or even just over a Boolean declaring whether or not type variables are allowed), and conventionally use the type code for unit in all type-code arguments when building decision trees.
+We could parameterize the inductive of type codes over the set of free type variables (or even just over a Boolean declaring whether or not type variables are allowed) and conventionally use the type code for unit in all type-code arguments when building decision trees.
 
 This sort of reuse, however, is likely to introduce more problems than it solves.
 
@@ -594,16 +598,16 @@ This might allow us to write type signatures for functions that guarantee some i
 However, it's not clear to us where this would actually be useful; most functions already care only about whether or not we permit type variables at all.
 Our current code in fact performs a poor approximation of this strategy in some places: we index over the entire pattern where indexing over the free variables of the pattern would suffice.
 
-This unneeded indexing causes an enormous amount of pain, and is yet another example of how poorly designed abstraction barriers incur outsized overhead.
-Rewrite rule replacements are expressed as dependently typed towers indexed first over the type variables of a pattern, and then again over the term variables.
-This design is a historical artifact, from when we expected to be writing rewrite rule ASTs by hand rather than reifying them from Gallina, and found the curried towers more convenient to write.
+This unneeded indexing causes an enormous amount of pain\todoac{don't use pain} and is yet another example of how poorly designed abstraction barriers incur outsized overhead.
+Rewrite-rule replacements are expressed as dependently typed towers indexed first over the type variables of a pattern and then again over the term variables.
+This design is a historical artifact, from when we expected to be writing rewrite rule ASTs by hand rather than reifying them from Gallina and found the curried towers more convenient to write.
 \minortodo{should I elaborate more on the pain?}
 %``\ldots\space both conceptually simple but in practice complicated by dependent types.
 %We must unify a pattern with an expression, gathering binding data for the replacement rule as we go; and we must apply the replacement rule to the binding data (which is nontrivial because the rewrite rules are expressed as curried dependently typed towers indexed over the rewrite rule pattern).
 %In order to state the correctness conditions for gathering binding data, we must first talk about applying replacement rules to binding data.''
 %``We can define a transformation that takes in a \texttt{PositiveMap.t} of pattern type variables to types, together with a \texttt{PositiveSet.t} of type variables that we care about, and re-creates a new \texttt{PositiveMap.t} in accordance with the \texttt{PositiveSet.t}.
 %This is required to get some theorem types to line up, and is possibly an indication of a leaky abstraction barrier.''
-This design, however, is absolutely a mistake, especially given the concession we make in \fullnameref{sec:rewriting-more:pre-reduction:type-codes} to not track enough typing information to avoid all typechecking.
+This design, however, is absolutely a mistake, especially given the concession we make in \fullnameref{sec:rewriting-more:pre-reduction:type-codes} to not track\todoac{use ``not to track'' [Jason: I think the current version is better]} enough typing information to avoid all typechecking.
 
 While indexing over only the set of permitted type variables would simplify proofs significantly, we'd benefit even more by indexing only over whether or not we permit type variables at all.
 None of our proofs are made simpler by tracking the set of permitted type variables rather than just whether or not that set is empty.
@@ -631,17 +635,17 @@ We noted in \autoref{sec:rewriting-more:rawexpr-def} the \mintinline{coq}{known}
 This argument is used to track what sorts of operations can be unfolded early.
 In particular, if a given identifier has no type arguments (for example, the identifier coding for addition on $\mathbb{Z}$s), and we have already matched against it, then when performing further matches to unify with other patterns, we can directly match it against pattern identifiers.
 By contrast, if the identifier has not yet been matched against, or if it has unknown type arguments, we cannot guarantee that \mintinline{coq}{match}es will reduce.
-Tracking this information adds a not-insignificant amount of pain to the code.
+Tracking this information adds a not-insignificant amount of pain\todoac{not pain} to the code.
 
 Consider the following two cases, where we will make use of both \mintinline{coq}{true} and \mintinline{coq}{false} for the \mintinline{coq}{known} argument.
 
 First, let us consider the simpler case of looking for examples where \mintinline{coq}{known} will be \mintinline{coq}{false}.
-As a toy example, suppose we are rewriting with the rule \mintinline{coq}{@List.map A B f (x::xs) = f x :: List.map f xs} and the rule \mintinline{coq}{@List.map (option A) (option B) (option_map f) (List.map (@Some A) xs) = xs}.
+As a toy example, suppose we are rewriting with the rule \mintinline{coq}{@List.map A B f (x::xs) = f x :: List.map f xs} and the rule \mintinline{coq}{@List.map (option A) (option B) (option_map f) (List.map (@Some A) xs) = @List.map A (option B) (fun x => Some (f x)) xs}.
 When decomposing structure for the first rewrite rule, we will match on the head identifier to see if it is \mintinline{coq}{List.map}.
 Supposing that the final argument is not a cons cell, we will fall back to the second rewrite rule.
 While we know that the first identifier is a \mintinline{coq}{List.map}, we do not know its type arguments.
 Therefore, when we want to try to substitute with the second rewrite rule, we must match on the type structure of the first type argument to \mintinline{coq}{List.map} to see if it is an option, and, if so, extract the underlying type to put into unification data.
-However, this decomposition will block on the type arguments to \mintinline{coq}{List.map}, so we don't want to fully unfold it during early reduction.
+However, this decomposition will block on the type arguments to \mintinline{coq}{List.map}, so we don't want to unfold it fully during early reduction.
 Note that the first rewrite rule is not really necessary in this example; the essential point is that we don't want to be unfolding complicated recursive matches on the type structure that are not going to reduce.\footnote{%
   In the current codebase, removing the first rewrite rule would, unfortunately, result in unfolding of the matching on the type structure, due to an oversight in how we compute the \mintinline{coq}{known} argument.
   See the next footnote for more details.%
@@ -688,12 +692,12 @@ In this case, we want to reuse the knowledge, from the first rule's decompositio
 When computing the replacement of a given expression, how much do we want to unfold?
 Here we encounter a case of premature optimization being the root of, if not evil, at least headaches.
 The simplest path to take here would be to have unification output a map of type-variable indices to types and a map of expression-variable indices to expressions of unknown types.
-We could then have a function, not to be unfolded early, which substitutes the expressions into some untyped representation of terms, and then performs a typechecking pass to convert back to a well-typed expression.
+We could then have a function, not to be unfolded early, which substitutes the expressions into some untyped representation of terms and then performs a typechecking pass to convert back to a well-typed expression.
 
 Instead, we decided to reduce as much as we possibly could.
 Following the common practice of eager students looking to use dependent types, we defined a dependently typed data structure indexed over the pattern type which holds the mapping of each pattern type variable to a corresponding type.
 While this mapping cannot be fully computed at rewrite-rule-compilation time---we may not know enough type structure in the \mintinline{coq}{rawexpr}---we can reduce effectively all of the lookups by turning them into matches on this mapping which \emph{can} be reduced.
-This, unfortunately, complicates our proofs significantly while likely not providing any measurable speedup, serving only as yet another example of the pain induced by needless dependency at the type level.
+This, unfortunately, complicates our proofs significantly while likely not providing any measurable speedup, serving only as yet another example of the pain\todoac{not pain} induced by needless dependency at the type level.
 %\item \todo{talk about whether or not to eliminate PositiveMap.t?} % ``In a possibly-gratuitous use of dependent typing to ensure that''
 \minortodo{is this enough?  does it need more? should we keep it here at all?}
 
@@ -708,7 +712,7 @@ We now discuss the reason for this.
 
 Consider the example where we have two rewrite rules: that $(x + y) + 1 = x + (y + 1)$ and that $x + 0 = x$.
 If we have the expression $(a + b) + 0$, we would first try to match this against $(x + y) + 1$.
-If we didn't store the expression $a + b$ as a PHOAS expression, and had it only as a \mintinline{coq}{rawexpr}, then we'd have to retypecheck it, inserting casts as necessary, in order to get a PHOAS expression to return from unification of $a + b$ with $x$ in $x + 0$.
+If we didn't store the expression $a + b$ as a PHOAS expression and had it only as a \mintinline{coq}{rawexpr}, then we'd have to retypecheck it, inserting casts as necessary, in order to get a PHOAS expression to return from unification of $a + b$ with $x$ in $x + 0$.
 
 Instead of incurring this overhead, we store the undecomposed PHOAS expression in the \mintinline{coq}{rawexpr}, allowing us to reuse it when no more decomposition is needed.
 This does, however, complicate proofs: we need to talk about matching the revealed and unrevealed structure, sometimes just on the type level, and other times on both the term level and the type level.
@@ -716,23 +720,23 @@ This does, however, complicate proofs: we need to talk about matching the reveal
 %\item \todo{talk about $\eta$-expanding identifier matches, reference \autoref{sec:rewriting-more:pre-reduction}}
 
 \section{Monads: Missing Abstraction Barriers at the Type Level}\label{sec:rewriting-more:monads}
-We introduce in \autoref{sec:under-lets} the \mintinline{coq}{UnderLets} monad for let-lifting, which we inline into the definition of the \mintinline{coq}{NbEₜ} value type.
-We use two other monads in the rewriting engine: the option monad to encode possible failure of rewrite rule side-conditions and substitutions, and the CPS monad discussed in \autoref{sec:rewriting-more:pre-reduction:cps}.
+We introduce in \autoref{sec:under-lets} the \mintinline{coq}{UnderLets} monad for \mintinline{coq}{let} lifting, which we inline into the definition of the \mintinline{coq}{NbEₜ} value type.
+We use two other monads in the rewriting engine: the option monad, to encode possible failure of rewrite-rule side conditions and substitutions, and the CPS monad discussed in \autoref{sec:rewriting-more:pre-reduction:cps}.
 
 Although we introduce a bit of syntactic sugar for monadic binds in an ad-hoc way, we do not fully commit to a monadic abstraction barrier in our code.
-This lack of principle incurs pain when we have to deal with mismatched monads in different functions, especially when we haven't ordered the monadic applications in a principled way.
+This lack of principle incurs pain\todoac{not pain} when we have to deal with mismatched monads in different functions, especially when we haven't ordered the monadic applications in a principled way.
 
-The simplest example of this pain is in our mixing of the option and CPS monads in \mintinline{coq}{eval_decision_tree}.
+The simplest example of this pain\todoac{not pain} is in our mixing of the option and CPS monads in \mintinline{coq}{eval_decision_tree}.
 The type of \mintinline{coq}{eval_decision_tree} is \mintinline{coq}{∀ {T : Type} (es : list rawexpr) (d : decision_tree) (K : ℕ → list rawexpr → option T), option T}.
 Recall that the function of \mintinline{coq}{eval_decision_tree} is to reveal structure on the list of expressions \mintinline{coq}{es} by evaluating the decision tree \mintinline{coq}{d}, calling \mintinline{coq}{K} to perform rewriting with a given rewrite rule (referred to by index) whenever it hits a leaf node, and continuing on when \mintinline{coq}{K} fails with \mintinline{coq}{None}.
 What is the correctness condition for \mintinline{coq}{eval_decision_tree}?
 
 We need two correctness conditions.
 One of them is that, if \mintinline{coq}{eval_decision_tree} succeeds at all, it is equivalent to calling \mintinline{coq}{K} on some index with some list of expressions which is appropriately equivalent to \mintinline{coq}{es}.
-(See \autoref{sec:rewriting-more:values-and-expressions} discussion of what, exactly, ``equivalent'' means in this case.)
+(See \autoref{sec:rewriting-more:values-and-expressions} for discussion of what, exactly, ``equivalent'' means in this case.)
 This is the interpretation correctness condition.
 
-The other correctness condition is significantly more subtle, and corresponds to the property that the rewriter must map related PHOAS expressions to related PHOAS expressions.
+The other correctness condition is significantly more subtle and corresponds to the property that the rewriter must map related PHOAS expressions to related PHOAS expressions.
 This one is a monster.
 We present the code before explaining it to show just how much of a mouthful it is.
 \begin{minted}{coq}
@@ -763,17 +767,17 @@ Lemma wf_eval_decision_tree {T1 T2} G d
 \end{minted}
 This is one particular way to express the following meaning:
 Suppose that we have two calls to \mintinline{coq}{eval_decision_tree} with different PHOAS \mintinline{coq}{var} types, different return types \mintinline{coq}{T1} and \mintinline{coq}{T2}, different continuations \mintinline{coq}{cont1} and \mintinline{coq}{cont1}, different untyped expression lists \mintinline{coq}{ctx1} and \mintinline{coq}{ctx2}, and the same decision tree.
-Suppose further that we have two lists of PHOAS expressions, and a relation relating elements of \mintinline{coq}{T1} to elements of \mintinline{coq}{T2}.
+Suppose further that we have two lists of PHOAS expressions and a relation relating elements of \mintinline{coq}{T1} to elements of \mintinline{coq}{T2}.
 Let us assume the following properties of the expression lists and the continuations:
 The two lists of untyped \mintinline{coq}{rawexpr}s (\mintinline{coq}{ctx1} and \mintinline{coq}{ctx2}) match with each other and the two lists of typed expressions, and all of the types line up.
-The two continuations, when fed identical indices, and fed lists of \mintinline{coq}{rawexpr}s which match with the given lists of typed expressions, either both fail, or both succeed with related outputs.
-Then we can conclude that the calls to \mintinline{coq}{eval_decision_tree} either both fail, or both succeed with related outputs.
-Note, importantly, that we connect the lists of \mintinline{coq}{rawexpr}s fed to the continuations with the lists \mintinline{coq}{rawexpr}s fed to \mintinline{coq}{eval_decision_tree} only via the lists of typed expressions.
+The two continuations, when fed identical indices and fed lists of \mintinline{coq}{rawexpr}s which match with the given lists of typed expressions, either both succeed with related outputs or both fail.
+Then we can conclude that the calls to \mintinline{coq}{eval_decision_tree} either both succeed with related outputs or both fail.
+Note, importantly, that we connect the lists of \mintinline{coq}{rawexpr}s fed to the continuations with the lists of \mintinline{coq}{rawexpr}s fed to \mintinline{coq}{eval_decision_tree} only via the lists of typed expressions.
 
 Why do we need such complication here?
-The \mintinline{coq}{eval_decision_tree} makes no guarantee about how much of the expression it reveals, but we must capture the fact that related PHOAS inputs result in the \emph{same} amount of revealing, however much revealing that is.
+The \mintinline{coq}{eval_decision_tree} function makes no guarantee about how much of the expression it reveals, but we must capture the fact that related PHOAS inputs result in the \emph{same} amount of revealing, however much revealing that is.
 We do, however, also guarantee that the revealed expressions are both related to each other as well as to the original expressions, modulo the amount of revealing.
-Finally, the continuations that we use assume that enough structure is revealed, and hence are not guaranteed to be independent of the level of revealing.
+Finally, the continuations that we use assume that enough structure is revealed and hence are not guaranteed to be independent of the level of revealing.
 
 There are a couple of ways that this correctness condition might be simplified, all of which essentially amount to better enforcement of abstraction barriers.
 
@@ -784,7 +788,7 @@ Furthermore, we could potentially remove the lists of typed expressions, mandati
 
 Finally, we could split apart the behavior of the continuation from the behavior of \mintinline{coq}{eval_decision_tree}.
 Since the behavior of the continuations could be assumed to not depend on the amount of revealed structure, we could prove that invoking \mintinline{coq}{eval_decision_tree} on any such ``good'' continuation returned a result \emph{equal} to invoking the continuation on the same list of \mintinline{coq}{rawexpr}s, rather than merely one equivalent to it modulo the amount of revealing.
-This would bypass the need for this lemma entirely, allowing us to merely strengthen the previous lemma used for interpretation-correctness.
+This would bypass the need for this lemma entirely, allowing us to merely strengthen the previous lemma used for interpretation correctness.
 
 So here we see that a minor leak in an abstraction barrier (allowing the behavior of rewriting to depend on how much structure has been revealed) can vastly complicate correctness proofs, even forcing us to break other abstraction barriers by inlining the behavior of various monads.
 \label{sec:break-abstraction:example:eval-decision-tree}
@@ -792,7 +796,7 @@ So here we see that a minor leak in an abstraction barrier (allowing the behavio
 %\todo{Talk also about the pain of wf statements for, e.g., \texttt{wf\_normalize\_deep\_rewrite\_rule}, having to go underneath multiple monads}
 
 \section{Rewriting Again in the Output of a Rewrite Rule}\label{sec:rewriting-more:do-again}
-We now come to the feature of the rewriter that caused the most pain: allowing some rules to be designated as subject to a second bottomup rewriting pass in their output.
+We now come to the feature of the rewriter that caused the most pain\todoac{not pain}: allowing some rules to be designated as subject to a second bottomup rewriting pass in their output.
 This feature is important for allowing users to express one operation (for example, \mintinline{coq}{List.flat_map}) in terms of other operations (for example, \mintinline{coq}{list_rect}) which are themselves subject to reduction.
 
 The technical challenge, here, is that the PHOAS \mintinline{coq}{var} type of the input of normalization by evaluation is not the same as the \mintinline{coq}{var} type of the output.
@@ -805,13 +809,13 @@ While most of the nitty-gritty details are beyond the scope even of this chapter
 
 \section{Delayed Rewriting in Variable Nodes}\label{sec:rewriting-more:delayed-rewriting}
 We saw in \autoref{sec:rewriting-more:rawexpr-def} that the \mintinline{coq}{rawexpr} inductive has separate constructors for PHOAS expressions and for \mintinline{coq}{NbEₜ} values.
-The reason for this distinction lies at the heart of fusing normalization by evaluation and pattern matching compilation.
+The reason for this distinction lies at the heart of fusing normalization by evaluation and pattern-matching compilation.
 
-Consider rewriting in the expression \mintinline{coq}{List.map (λ x. y + x) [0; 1]} with the rules $x + 0 = x$, and \mintinline{coq}{List.map f [x ; … ; y] = [f x ; … ; f y]}.
+Consider rewriting in the expression \mintinline{coq}{List.map (λ x. y + x) [0; 1]} with the rules \mintinline{coq}{x + 0 = x}, and \mintinline{coq}{List.map f [x ; … ; y] = [f x ; … ; f y]}.
 We want to get out the list \mintinline{coq}{[y; y + 1]} and \emph{not} \mintinline{coq}{[y + 0; y + 1]}.
 In the bottomup approach, we first perform rewriting on the arguments to \mintinline{coq}{List.map} before applying rewriting to \mintinline{coq}{List.map} itself.
 Although it would seem that no rewrite rule applies to either argument, in fact what happens is that \mintinline{coq}{(λ x. y + x)} becomes an \mintinline{coq}{NbEₜ} thunk which is waiting for the structure of \mintinline{coq}{x} before deciding whether or not rewriting applies.
-Hence when doing decision tree evaluation, it's important to keep this thunk waiting, rather than forcing it early with a generic variable node.
+Hence when doing decision-tree evaluation, it's important to keep this thunk waiting, rather than forcing it early with a generic variable node.
 The \mintinline{coq}{rValue} constructor allows us to do this.
 The \mintinline{coq}{rExpr} constructor, by contrast, holds expressions which we are allowed to do further matching on.
 
@@ -821,7 +825,7 @@ When performing this $\eta$-expansion, we build up a \mintinline{coq}{rawexpr}.
 When we encounter an argument with an arrow type, we drop it directly into an \mintinline{coq}{rValue} constructor, marking it as not subject to structure revealing.
 When we encounter an argument whose type is not an arrow, we can guarantee that there is no thunked rewriting, and so we can put the value into an \mintinline{coq}{rExpr} constructor, marking it as subject to structure decomposition.
 
-One might ask: since we distinguish the creation of \mintinline{coq}{rExpr} and \mintinline{coq}{rValue} on the basis of their type, could we not just use the same constructor for both?
+One might ask: since we distinguish the creation of \mintinline{coq}{rExpr} and \mintinline{coq}{rValue} on the basis of the argument's type, could we not just use the same constructor for both?
 The reason we cannot do this is that when revealing structure, we may decompose an expression in an \mintinline{coq}{rExpr} node into an application of an expression to another expression.
 In this case, the first of these will have an arrow type, and both must be placed into the \mintinline{coq}{rExpr} constructor and be marked as subject to further decomposition.
 Hence we cannot distinguish these cases just on the basis of the type, and we do in fact need two constructors.
@@ -831,7 +835,7 @@ First, some background context:
 When writing PHOAS compiler passes, there are in general two correctness conditions that must be proven about them.
 The first is a soundness theorem.
 In \autoref{sec:PHOAS:Wf-def}, we called this theorem \mintinline{coq}{check_is_even_expr_sound}.
-For compiler passes that produce syntax trees, this theorem will relate the denotation of the input AST to the denotation of the output AST, and might hence alternatively be called a \emph{semantics preservation} theorem, or an \emph{interpretation correctness} theorem.
+For compiler passes that produce syntax trees, this theorem will relate the denotation of the input AST to the denotation of the output AST and might hence alternatively be called a \emph{semantics-preservation} theorem, or an \emph{interpretation-correctness} theorem.
 The second theorem, only applicable to compiler passes that produce ASTs (unlike our evenness checker from \autoref{sec:evenness}), is a syntactic well-formedness theorem.
 It will say that if the input AST is well-formed, then the output AST will also be well-formed.
 As seen in \autoref{sec:PHOAS:Wf-def}, the definition of well-formed for PHOAS relates two expressions with different \mintinline{coq}{var} arguments.
@@ -839,11 +843,11 @@ Hence most PHOAS well-formedness theorems are proven by showing that a given com
 
 The fact that NbE values contain thunked rewriting creates a great deal of subtlety in relating \mintinline{coq}{rawexpr}s.
 As the only correctness conditions on the rewriter are that it preserves denotational semantics of expressions and that it maps related expressions to related expressions, these are the only facts that hold about the \mintinline{coq}{NbEₜ} values in \mintinline{coq}{rValue}.
-Since native PHOAS expressions do not permit such thunked values, we can only relate \mintinline{coq}{NbEₜ} values to the interpretation of such expressions.
+Since native PHOAS expressions do not permit such thunked values, we can only relate \mintinline{coq}{NbEₜ} values to the interpretations of such expressions.
 Even this is not straightforward, as we must use an extensional equivalence relation, saying that an \mintinline{coq}{NbEₜ} value of arrow type is equivalent to an interpreted function only when equivalence between the \mintinline{coq}{NbEₜ} value argument and the interpreted function argument implies equivalence of their outputs.
 
 \subsection{Which Equivalence Relation?}\label{sec:rewriting-more:which-equivalence}
-Generalizing the challenge \autoref{sec:rewriting-more:values-and-expressions}, it turns out that describing how to relate two (or more!) objects was one of the most challenging parts of the proof effort.
+Generalizing the challenge from \autoref{sec:rewriting-more:values-and-expressions}, it turns out that describing how to relate two (or more!) objects was one of the most challenging parts of the proof effort.
 All told, we needed approximately \emph{two dozen} ways of relating various objects.
 % wf_rawexpr : list { t : type & var1 t * var2 t }%type -> forall {t}, @rawexpr var1 -> @expr var1 t -> @rawexpr var2 -> @expr var2 t -> Prop :=
 % wf_value' {with_lets : bool} G {t : type} : value'1 with_lets t -> value'2 with_lets t -> Prop
@@ -876,29 +880,29 @@ We begin with the equivalence relations hinted at in previous sections.
 
 \paragraph{\texorpdfstring{\mintinline{coq}{wf_rawexpr}}{wf\_rawexpr}}
 In \autoref{sec:rewriting-more:monads}, we introduced without definition the four-place \mintinline{coq}{wf_rawexpr} relation.
-This relation, a beefed up version of the PHOAS definition of \mintinline{coq}{related} in \autoref{sec:PHOAS:Wf-def}, takes in two \mintinline{coq}{rawexpr}s, two PHOAS expressions (of the same type), and is parameterized over a list of pairs of allowed and related variables, much like the definition of \mintinline{coq}{related}.
+This relation, a beefed-up version of the PHOAS definition of \mintinline{coq}{related} in \autoref{sec:PHOAS:Wf-def}, takes in two \mintinline{coq}{rawexpr}s, two PHOAS expressions (of the same type), and is parameterized over a list of pairs of allowed and related variables, much like the definition of \mintinline{coq}{related}.
 It requires that both \mintinline{coq}{rawexpr}s have the same amount of revealed structure (important only because we broke the abstraction barrier of revealed structure only mattering as an optimization); that the unrevealed structure, the ``alternate'' expression of the \mintinline{coq}{rApp} and \mintinline{coq}{rIdent} nodes, match exactly with the given expressions; and that the structure that is revealed matches as well with the given expressions.
-The only nontrivial case in this definition is what to say about \mintinline{coq}{NbEₜ} values match expressions.
+The only nontrivial case in this definition is what to say about when \mintinline{coq}{NbEₜ} values match expressions.
 We say that an \mintinline{coq}{NbEₜ} value is equivalent only to the result of calling NbE's \mintinline{coq}{reify} function on that value.
-That this definition sufficies is highly non-obvious; we refer the reader to our Coq proofs, performed without any axioms, as our justification of sufficiency.
+That this definition suffices is highly nonobvious; we refer the reader to our Coq proofs, performed without any axioms, as our justification of sufficiency.
 That each \mintinline{coq}{NbEₜ} value must match at least the result of calling NbE's \mintinline{coq}{reify} function on that value is a result of how we handle unrevealed forms when building up the arguments to an $\eta$-long identifier application as discussed briefly in \fullnameref{sec:rewriting-more:pre-reduction:what-reduction}.
 Namely, when forming applications of \mintinline{coq}{rawexpr}s to \mintinline{coq}{NbEₜ} values during $\eta$-expansion, we say that the ``unrevealed'' structure of an \mintinline{coq}{NbEₜ} value \mintinline{coq}{v} is \mintinline{coq}{reify v}.
 
 \paragraph{\texorpdfstring{\mintinline{coq}{interp_maybe_do_again}}{interp\_maybe\_do\_again}}
 In \autoref{sec:rewriting-more:do-again}, we discussed a small subset of the implications of supporting rewriting again in the output of a rewrite rule.
-The most easily describable pain caused by this feature shows up in the definition of what it means for a rewrite rule to preserve denotational semantics.
-At the user-level, this is quite obvious: the left-hand side of the rewrite rule (prior to reification\footnote{%
+The most easily describable pain\todoac{not pain} caused by this feature shows up in the definition of what it means for a rewrite rule to preserve denotational semantics.
+At the user level, this is quite obvious: the left-hand side of the rewrite rule (prior to reification\footnote{%
   Note that this reification is a tactic procedure reifying Gallina to PHOAS, \emph{not} the \mintinline{coq}{reify} function of normalization by evaluation discussed elsewhere in this chapter.%
 }) must equal the right-hand side.
 However, there are two subtleties to expressing the correctness condition to intermediate representations of the rewrite rule.
-We will discuss one of them here, and the other in \fullnameref{sec:rewriting-more:patterns-vs-expressions}.
+We will discuss one of them here and the other in \fullnameref{sec:rewriting-more:patterns-vs-expressions}.
 
 At some point in the rewriting process, the rewrite rule must be expressed in terms of a PHOAS expression whose \mintinline{coq}{var} type is either the output \mintinline{coq}{var} type---if this rule is not subject to more rewriting---or else is the \mintinline{coq}{NbEₜ} value type---if the rule is subject to more rewriting.
 Hence we must be able to relate an object of this type to the denotational interpretation that we are hoping to preserve.
 There are two subtleties here.
 The first is that we cannot simply ``interpret'' the \mintinline{coq}{NbEₜ} values stored in \mintinline{coq}{Var} nodes; we must use the extensional relation described above in \fullnameref{sec:rewriting-more:delayed-rewriting}, saying that an \mintinline{coq}{NbEₜ} value of arrow type is equivalent to an interpreted function only when equivalence between the \mintinline{coq}{NbEₜ} value argument and the interpreted function argument implies equivalence of their outputs.
 
-Second, we cannot simply interpret the expression which surrounds the \mintinline{coq}{Var} node, and must instead ensure that the ``interpretation'' of $\lambda$s in the AST is extensional over all appropriately-related \mintinline{coq}{NbEₜ} values they might be passed.
+Second, we cannot simply interpret the expression which surrounds the \mintinline{coq}{Var} node, and we must instead ensure that the ``interpretation'' of $\lambda$s in the AST is extensional over all appropriately related \mintinline{coq}{NbEₜ} values they might be passed.
 Note that it's not even obvious how to materialize the function they must be extensionally related to.
 When trying to prove that the application of \mintinline{coq}{(λ f x. v₁ (f x))} to \mintinline{coq}{NbEₜ} values \mintinline{coq}{v₂} and \mintinline{coq}{v₃} is appropriately related to some interpreted function $g$, how do we materialize the interpreted functions equivalent to \mintinline{coq}{(λ f x. v₁ (f x))} and \mintinline{coq}{v₂} which when combined via application give $g$?
 The answer is that we cannot, at least if we are looking for the application to be \emph{equal} to $g$.
@@ -907,7 +911,7 @@ While we initially depended on the axiom of functional extensionality, after sin
 See commits \githubref{mit-plv/rewriter}{4d7999ebb66c1497222d024a1d9f9d0f1ecb2356} and \githubref{mit-plv/rewriter}{e9b3505d96cb77b05208b10a0b14b6b2cf99887e} in the \texttt{mit-plv/rewriter} repository on GitHub for more details on the exact changes required to implement this insight and remove the dependence on the axiom of functional extensionality.
 
 \paragraph{Related Miscellanea}
-While delving into the details of all two-dozen ways of relating objects is beyond the scope of this dissertation, we mention a couple of other non-obvious design questions that we found challenging to answer.
+While delving into the details of all two-dozen ways of relating objects is beyond the scope of this dissertation, we mention a couple of other nonobvious design questions that we found challenging to answer.
 
 Recall from \autoref{sec:thunk-eval-subst-term} that \mintinline{coq}{NbEₜ} values are Gallina functions on arrow types; dropping the subtleties of the \mintinline{coq}{UnderLets} monad, we had
 \begin{align*}
@@ -915,25 +919,26 @@ Recall from \autoref{sec:thunk-eval-subst-term} that \mintinline{coq}{NbEₜ} va
   \text{NbE}_t(b) & \defeq \texttt{expr}(b)
 \end{align*}
 The PHOAS relatedness condition of \fullnameref{sec:PHOAS:Wf-def} is parameterized over a list of pairs of permitted related variables. \\
-Design Question: What is the relation between the permitted related variables lists of the terms of types $\text{NbE}_t(t_1)$, $\text{NbE}_t(t_2)$, and $\text{NbE}_t(t_1 \to t_2)$. \\
-Spoiler: The list for $\text{NbE}_t(t_1)$ is unconstrained, and is prepended to the list for $\text{NbE}_t(t_1 \to t_2)$ (which is given) to get the list for $\text{NbE}_t(t_2)$.
+Design Question: What is the relation between the permitted related variables lists of the terms of types $\text{NbE}_t(t_1)$, $\text{NbE}_t(t_2)$, and $\text{NbE}_t(t_1 \to t_2)$? \\
+Spoiler: The list for $\text{NbE}_t(t_1)$ is unconstrained and is prepended to the list for $\text{NbE}_t(t_1 \to t_2)$ (which is given) to get the list for $\text{NbE}_t(t_2)$.
 That is, we write
 \begin{align*}
   \text{related\_NbE}_{t_1 \to t_2}(\Gamma, f_1, f_2) & \defeq \forall\ \Gamma'\ v_1\ v_2, \text{related\_NbE}_{t_1}(\Gamma', v_1, v_2) \\
   & \phantom{\defeq\forall~~}\to \text{related\_NbE}_{t_2}(\Gamma' \mathop{++} \Gamma, f_1(v_1), f_2(v_2)) \\
   \text{related\_NbE}_b(\Gamma, e_1, e_2) & \defeq \text{related}(\Gamma, e_1, e_2)
 \end{align*}
+\todoac{Not surprising!  Matches the buzzword of ``Kripke semantics.'' [Jason: should I say anything about this?  if so, what?]}
 
 Some correctness lemmas do not need full-blown relatedness conditions.
 For example, in some places, we do not need that a \mintinline{coq}{rawexpr} is fully consistent with its alternate expression structure, only that the types match and that the top-level structure of each alternate PHOAS expression matches the node of the \mintinline{coq}{rawexpr}. \\
-Design Question: Is it better to minimize the number of relations and fold these ``self-matching'' or ``goodness'' properties into the definitions of relatedness, which are then used everywhere; or is it better to have separate definitions for goodness and relatedness, and have correctness conditions which more tightly pin down the behavior of the corresponding functions. \\
+Design Question: Is it better to minimize the number of relations and fold these ``self-matching'' or ``goodness'' properties into the definitions of relatedness, which are then used everywhere; or is it better to have separate definitions for goodness and relatedness and have correctness conditions which more tightly pin down the behavior of the corresponding functions? \\
 (Non-Spoiler: We don't have an answer to this one.)
 
 \minortodo{should I talk about anything else here?}
-%\todo{talk about \texttt{rawexpr\_equiv}, 4-place \texttt{wf\_rawexpr}, nuance of revealing structure in CPS'd \texttt{eval\_decision\_tree}, non-obvious \texttt{wf\_value} binding list, \texttt{interp\_related\_gen} unsuccessfully avoiding funext (and also needing to be instantiated with \texttt{value\_interp\_related} sometimes), \texttt{rawexpr\_interp\_related} and separating (or not) goodness from relatedness, \texttt{rawexpr\_types\_ok}?, \texttt{unification\_resultT'\_interp\_related}?, \texttt{interp\_unify\_pattern'}?, interpretation-correctness related to rewriting again}
+%\todo{talk about \texttt{rawexpr\_equiv}, 4-place \texttt{wf\_rawexpr}, nuance of revealing structure in CPS'd \texttt{eval\_decision\_tree}, nonobvious \texttt{wf\_value} binding list, \texttt{interp\_related\_gen} unsuccessfully avoiding funext (and also needing to be instantiated with \texttt{value\_interp\_related} sometimes), \texttt{rawexpr\_interp\_related} and separating (or not) goodness from relatedness, \texttt{rawexpr\_types\_ok}?, \texttt{unification\_resultT'\_interp\_related}?, \texttt{interp\_unify\_pattern'}?, interpretation-correctness related to rewriting again}
 
 \section{What's the Ground Truth: Patterns or Expressions?}\label{sec:rewriting-more:patterns-vs-expressions}
-We mentioned in \fullnameref{sec:rewriting-more:which-equivalence} that there were two subtleties to expressing the interpretation correctness condition for intermediate representations of rewrite rules, and proceeded to discuss only one of them.
+We mentioned in \fullnameref{sec:rewriting-more:which-equivalence} that there were two subtleties to expressing the interpretation-correctness condition for intermediate representations of rewrite rules, and we proceeded to discuss only one of them.
 We discuss the other one here.
 
 We must answer the question, in proving our rewriter correct:
@@ -941,7 +946,7 @@ What denotational semantics do we use for a rewrite rule?
 
 In our current framework, we talk about rewrite rules in terms of patterns, which are special ASTs which contain extra pattern variables in both the types and the terms, and in terms of a replacement function, which takes in unification data and returns either failure or else a PHOAST with the data plugged in.
 While this design is sort-of a historical accident of originally intending to write rewrite rules by hand, there is also a genuine question of how to relate patterns to replacement functions.
-While we could, in theory, in a better designed rewriter, indirect through the expressions that each of these came from, the functions turning expressions into patterns and replacement rules are likely to be quite complicated, especially with the support for rewriting again described in \fullnameref{sec:rewriting-more:do-again}.
+While we could, in theory, in a better-designed rewriter, indirect through the expressions that each of these came from, the functions turning expressions into patterns and replacement rules are likely to be quite complicated, especially with the support for rewriting again described in \fullnameref{sec:rewriting-more:do-again}.
 
 The way we currently relate these is that we write an interpretation function for patterns, parameterized over unification data, and relate this to the interpretation of the replacement function applied to unification data, suitably restricted to just the type variables of the pattern in question to make various dependent types line up.
 Note that this restriction of the unification data would likely be unnecessary if we stripped out all of the dependent types that we don't actually need; c.f.~\fullnameref{sec:rewriting-more:pre-reduction:type-codes}.
@@ -949,7 +954,7 @@ This interpretation function is itself also severely complicated by the use of d
 
 \section{What's the Takeaway?}
 This chapter has been a brief survey of the engineering challenges we encountered in designing and implementing a framework for building verified partial evaluators with rewriting.
-We hope that this deep-dive into the details of our framework has fleshed out some of the design principles and challenges we've discussed in previous sections.
+We hope that this deep dive into the details of our framework has fleshed out some of the design principles and challenges we've discussed in previous sections.
 
 If the reader wishes to take only one thing from this chapter, we invite it to be a sense and understanding of just how important good abstraction barriers and API design are to engineering at scale in verified and dependently typed settings, which we will come back to in \autoref{ch:api-design}.
 

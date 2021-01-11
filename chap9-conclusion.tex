@@ -65,7 +65,7 @@ Gödelian incompleteness did not prove to be a fatal obstacle to verification an
 We can take a second stab at specifying what it might mean to avoid needless overhead:
 Suppose we are given some algorithm $A$ which can sometimes determine the truth of a theorem statement (and will otherwise answer ``I don't know'') in time $\mathcal O(f(n))$, and suppose we are given a proof that $A$ is sound, i.e., a proof that whenever $A$ claims a theorem statement is true, that statement is in fact true.
 Then we would like a proof engine which permits the construction of proofs, without any appeal to computation, of theorems that $A$ claims are true in time $\mathcal O(f(n))$, or perhaps time that is not much worse than $\mathcal O(f(n))$.
-Said another way, we want a proof engine for which reflective proof scripts can be turned into non-reflective proof scripts without incurring overhead, or at least without incurring too much overhead.
+Said another way, we want a proof engine for which reflective proof scripts can be turned into nonreflective proof scripts without incurring overhead, or at least without incurring too much overhead.
 
 Is such a proof engine possible?
 Is such a proof engine sufficient?

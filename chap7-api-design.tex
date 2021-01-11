@@ -13,7 +13,7 @@ We saw in \nameref{sec:abstraction-barriers:mismatch} that API mismatch results 
 We saw in \nameref{sec:abstraction-barriers:conversion-troubles} that imperfectly opaque abstraction barriers result in slowdown due to needless calls to the conversion checker.
 We saw in \nameref{sec:abstraction-barriers:packed-records} how the choice of whether to use packed or unpacked records impacts performance.
 
-In this chapter, we will focus primarily on the first of these three ways that design choices for abstraction barriers can impact performance; while it might seem like a simple question of good design, it turns out that good API design in dependently typed programming languages is significantly harder than in simply-typed programming languages.
+In this chapter, we will focus primarily on the first of these three ways that design choices for abstraction barriers can impact performance; while it might seem like a simple question of good design, it turns out that good API design in dependently typed programming languages is significantly harder than in simply typed programming languages.
 We will additionally weave in ways that abstraction barriers have helped us develop our tools and libraries, though this use of abstraction barriers (sometimes called data abstraction) is already well-known in software engineering~\cite{Structure1996Sussman}.
 Mitigating the second source of performance bottlenecks, imperfectly opaque abstraction barriers, on the other hand, is actually just a question of meticulous tracking of how abstraction barriers are defined and used, and designing them so that they all unfolding is explicit.
 However, we will present an exception to the rule of opaque abstraction barriers in \autoref{sec:duality-conversion} in which deliberate breaking of all abstraction barriers in a careful way can result in performance gains of up to a factor of two:
@@ -82,7 +82,7 @@ Working around slow projections of $\Sigma$ types (\autoref{sec:nested-sigma-typ
   See commits \githubref[][]{HoTT/HoTT}{c1e7ae32e86d51563da7a73b726c5cdd3246794a}, \githubref[][]{HoTT/HoTT}{93a1258becb49a76315663fa7626058a4e1a1959}, \githubref[][]{HoTT/HoTT}{bab2b34719108dbc5da66ac40c6fe01e64f4071b}, and \githubref[][]{HoTT/HoTT}{3b0932f21edc050b17f5e7843357dbcfc57533ce} in HoTT/HoTT on GitHub for more details.%
 }
 
-Although pre-existing formalizations of category theory in proof assistants abound~\cite{Ahrens2013,megacz-coq-categories,o2004towards,copumpkin/categories,ConCaT%
+Although preexisting formalizations of category theory in proof assistants abound~\cite{Ahrens2013,megacz-coq-categories,o2004towards,copumpkin/categories,ConCaT%
 ,CatsInZFC%%fullbib:
 ,spitters2010developing%
 ,kozen2006automating%%fullbib:
@@ -93,7 +93,7 @@ Although pre-existing formalizations of category theory in proof assistants abou
 }, %\footnote{This list very incomplete; see also \url{http://mathoverflow.net/questions/152497}% is more comprehensive, but we decided to cap our bibliography at one page, given the page limit.
 %}
 we chose to implement our library~\cite{HoTT/HoTT-categories} from scratch.
-Beginning from scratch allowed me to familiarize myself with both category theory and Coq, without simultaneously having to familiarize myself with a large pre-existing code base.
+Beginning from scratch allowed me to familiarize myself with both category theory and Coq, without simultaneously having to familiarize myself with a large preexisting code base.
 %Additionally, starting from scratch forced us to confront all of the decisions involved in designing such a library, and gave us the confidence to change the definitions of basic concepts multiple times to try out various designs, including fully rewriting the library at least three times.
 %Although this paper is much more about the design of category theory libraries in general than our library in particular, we include a comparison of our library~\cite{HoTT/HoTT-categories} with selected extant category theory libraries in \autoref{sec:compare-libraries}.
 %At present, our library subsumes many of the constructions in most other such Coq libraries, and is not lacking any constructions in other libraries that are of a complexity requiring significant type checking time, other than monoidal categories.

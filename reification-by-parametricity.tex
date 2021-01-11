@@ -6,11 +6,12 @@
 \section{Introduction} \label{sec:reification-by-parametricity:intro}
 
 We introduced reification in \autoref{sec:reif-intro} as the starting point for proof by reflection.
-Reification consists of translating a ``native'' term of the logic into an explicit abstract syntax tree, which we may then to verified procedures or any other functional programs in the logic.
+Reification consists of translating a ``native'' term of the logic into an explicit abstract syntax tree, which we may then feed to verified procedures or any other functional programs in the logic.
 As mentioned in \autoref{sec:reif-not-optimized}, the method of reification used in our framework for reflective partial evaluation and rewriting presented in \autoref{ch:rewriting} was not especially optimized and can be a bottleneck for large terms, especially those with many binders.
-Popular methods turn out to be surprisingly slow, often to the point where, counter-intuitively, the majority of proof-execution time is spent in reification -- unless the proof engineer invests in writing a plugin directly in the proof assistant's metalanguage (e.g., OCaml for Coq).
+Popular methods turn out to be surprisingly slow, often to the point where, counterintuitively, the majority of proof-execution time is spent in reification -- unless the proof engineer invests in writing a plugin directly in the proof assistant's metalanguage (e.g., OCaml for Coq).
 
 In this chapter, we present a new strategy we discovered during my doctoral work, originally presented and published as \cite{reification-by-parametricity}, showing that reification can be both simpler and faster than with standard methods.
+\todoac{about the previous sentence: These three pronouns are inconsistent. Your coauthors are not presenting the results *here*.}
 Perhaps surprisingly, we demonstrate how to reify terms almost entirely through reduction in the logic, with a small amount of tactic code for setup and no ML programming.
 %Though our techniques should be broadly applicable, especially in proof assistants based on type theory, our experience is with Coq
 We have already summarized our survey into prior approaches to reification \autoref{sec:reif-survey}, providing high-quality implementations and documentation for them, serving a tutorial function independent of our new contributions.
@@ -66,18 +67,18 @@ We can now specialize this term in one of two ways: we may substitute $\mathbb N
 This simple two-step process is the core of our algorithm for reification:
 abstract over all identifiers (and key parts of their types) and specialize to syntax-tree constructors for these identifiers.
 
-\subsubsection{Wrapped Primitives: ``Let'' Binders, Eliminators, Quantifiers.}\label{sec:walkthrough-wrapped}
+\subsubsection{Wrapped Primitives: \texorpdfstring{\mintinline{coq}{let}}{let} Binders, Eliminators, Quantifiers.}\label{sec:walkthrough-wrapped}
 
-The above procedure can be applied to a term that contains ``let'' binders to get a
+The above procedure can be applied to a term that contains \mintinline{coq}{let} binders to get a
 PHOAS tree that represents the original term, but doing so would not capture
-sharing. The result would contain native ``let'' bindings of subexpressions, not
+sharing. The result would contain native \mintinline{coq}{let} bindings of subexpressions, not
 PHOAS let expressions. Call-by-value evaluation of any procedure applied to the
 reification result would first substitute the let-bound subexpressions --
 leading to potentially exponential blowup and, in practice, memory exhaustion.
 
 The abstraction mechanisms in all proof assistants (that we know about) only allow abstracting over terms, not language primitives.
 However, primitives can often be wrapped in explicit definitions, which we \emph{can} abstract over.
-For example, we already used a wrapper for ``let'' binders, and terms that use it can be reified by abstracting over that definition.
+For example, we already used a wrapper for \mintinline{coq}{let} binders, and terms that use it can be reified by abstracting over that definition.
 If we start with the expression
 \[
 \text{\texttt{dlet} }a := 1\texttt{ in }a \times a
@@ -119,14 +120,17 @@ Note that the expression plugged in for \texttt{sum\_upto} differs from the one 
 If we wanted to reify \texttt{LetIn} as just another higher-order function (as opposed to a distinguished wrapper for a primitive), the code would look identical to that for \texttt{sum\_upto}.
 
 It would be convenient if abstracting and substituting for functions that take higher-order arguments were enough to reify lambdas, but here is a counterexample.
+Starting with
 \[
-  \lambda\ x\ y.\ x \times ((\lambda\ z.\ z \times z)\ y)
+  \lambda\ x\ y.\ x \times ((\lambda\ z.\ z \times z)\ y),
 \]
+abstraction gives
 \[
-  \Lambda N. \; \lambda (\textsc{Mul} : N \to N \to N).\ \lambda\ (x\ y : N).\ \texttt{Mul}\ x\ ((\lambda\ (z : N).\ \texttt{Mul}\ z\  z)\ y)
+  \Lambda N. \; \lambda (\textsc{Mul} : N \to N \to N).\ \lambda\ (x\ y : N).\ \texttt{Mul}\ x\ ((\lambda\ (z : N).\ \texttt{Mul}\ z\  z)\ y),
 \]
+and specialization and reduction give
 \[
-  \lambda\ (x\ y : \texttt{expr}).\ \texttt{NatMul}\ x\ (\texttt{NatMul}\ y\  y)
+  \lambda\ (x\ y : \texttt{expr}).\ \texttt{NatMul}\ x\ (\texttt{NatMul}\ y\  y).
 \]
 The result is not even a PHOAS expression. We claim a desirable reified form is
 \[
@@ -141,7 +145,7 @@ Manipulating these is outside of the power of abstraction and specialization; we
 Sometimes, the term we want to reify is the result of reducing another term.
 For example, we might have a function that reduces to a term with a variable number of \texttt{let} binders.\footnote{%
     More realistically, we might have a function that represents big numbers using multiple words of a user-specified width.
-    In this case, we may want to specialize the procedure to a couple of different bitwidths, then reifying the resulting partially reduced term.%
+    In this case, we may want to specialize the procedure to a couple of different bitwidths, then reify the resulting partially reduced terms.%
 }
 We might have an inductive type that counts the number of \letindots\space nodes we want in our output.
 \label{sec:count-def}
@@ -283,7 +287,7 @@ If we now perform $\beta\iota$ reduction, we get our fully reduced reified term.
 We take a moment to emphasize that this technique is not possible with any other method of reification.
 We could just as well have not specialized the function to the \texttt{count} of \texttt{100}, yielding a function of type \texttt{count $\to$ expr}, despite the fact that our reflective language knows nothing about \texttt{count}!
 
-This technique is especially useful for terms that will not reduce without concrete parameters, but which should be reified for many different parameters.
+This technique is especially useful for terms that will not reduce without concrete parameters but which should be reified for many different parameters.
 Running reduction once is slightly faster than running OCaml reification once, and it is more than twice as fast as running reduction followed by OCaml reification.
 For sufficiently large terms and sufficiently many parameter values, this performance beats even OCaml reification.%
 \footnote{%
@@ -293,7 +297,7 @@ For sufficiently large terms and sufficiently many parameter values, this perfor
 
 \subsection{Implementation in \Ltac}
 
-\texttt{ExampleMoreParametricity.v} in the code supplement, available at \url{https://github.com/mit-plv/reification-by-parametricity}, mirrors the development of reification by parametricity in \autoref{sec:case-by-case-walkthrough}.
+\texttt{ExampleMoreParametricity.v} in the associated codebase, available at \url{https://github.com/mit-plv/reification-by-parametricity}, mirrors the development of reification by parametricity in \autoref{sec:case-by-case-walkthrough}.
 
 Unfortunately, Coq does not have a tactic that performs abstraction.%
 \footnote{%
@@ -454,7 +458,7 @@ F\ \mathbb{N}\ \text{Mul}\ \text{O}\ \text{S}\ (\text{@Let\_In }\mathbb{N}\textt
 =
 \texttt{denote}\ \left(F\ \texttt{expr}\ \texttt{NatMul}\ \texttt{NatO}\ \texttt{NatS}\ \texttt{LetIn}\right)
 \]
-
+% spacing is weird if we let there be a paragraph break here, even though there should be one semantically
 We hypothesize that a form of internalized parametricity would suffice for proving this lemma.
 In particular, we could specialize the type argument of $F$ with $\mathbb N \times \texttt{expr}$.
 Then we would need a proof that for any function $F$ of type

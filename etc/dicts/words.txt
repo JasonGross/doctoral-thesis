@@ -29,6 +29,7 @@ composable
 computable
 confounders
 counterintuitive
+counterintuitively
 cryptographic
 customizable
 dataset
@@ -108,6 +109,7 @@ maximality
 memoization
 memoized
 memoizes
+metalevel
 metaprogramming
 metatheory
 metavariable
@@ -130,7 +132,11 @@ neurosciences
 nitty
 nonautomated
 nonlinearity
+nonlocal
+nonlocality
 nonnegative
+nonobvious
+nonreflective
 nonunifiable
 normalizer
 opacification

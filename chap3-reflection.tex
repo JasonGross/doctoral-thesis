@@ -188,7 +188,7 @@ Fixpoint check_is_even_expr (t : @expr bool) : bool
      end.
 \end{minted}
 
-\todoac{Weird to get to this point without introducting polymorphically abstracted expression types. The reader may be wondering where the two instantiated ASTs come from, such that we know they parallel each other.}
+\todoac{Weird to get to this point without introducing polymorphically abstracted expression types. The reader may be wondering where the two instantiated ASTs come from, such that we know they parallel each other.}
 
 Note, importantly, that \mintinline{coq}{check_is_even_expr} and \mintinline{coq}{denote} take \mintinline{coq}{expr}s with \emph{different} instantiations of the \mintinline{coq}{var} parameter.
 This is necessary so that we can store the information about whether or not a particular \mintinline{coq}{let}-bound expression is even (or what its denotation is) in the variable node itself.
@@ -344,7 +344,7 @@ Inductive expr : Type → Type :=
 \end{minted}
 
 This may seem a bit strange to those accustomed to encodings of terms in proof assistants, but it generalizes to a quite familiar intrinsic encoding of dependent type theory using types, contexts, and terms~\cite{Strongly2012Benton}.
-Namely, when the expressions are multi-typed, we end up with something like
+Namely, when the expressions are multityped, we end up with something like
 \begin{minted}{coq}
 Inductive context :=
 | emp : context
@@ -372,12 +372,12 @@ Alternatively, if Coq is extended with support for dropping irrelevant subterms~
 
 \subsubsection{Nominal} \label{sec:binders:nominal}
 Nominal representations~\cite{Nominal2003Pitts} use names rather than indices for binders.
-These representations have the benefit of being more human-readable, but require reasoning about freshness of names and capture-avoiding substitution.
+These representations have the benefit of being more human-readable but require reasoning about freshness of names and capture-avoiding substitution.
 Additionally, if the representation of names is not sufficiently compact, the overhead of storing names at every binder node can become significant.
 
 \subsubsection{Locally Nameless} \label{sec:binders:locally-nameless}
 We mention the locally nameless representation~\cite{Locally2012Chargueraud,locally2007Leroy} because it is the term representation used by Coq itself.
-This representation uses de Bruijn indices for closed terms, and names for variables which are not bound in the current term.
+This representation uses de Bruijn indices for locally-bound variables and names for variables which are not bound in the current term.
 
 Much like nominal representations, locally nameless representations also incur the overhead of generating and storing names.
 Naïve algorithms for generating fresh names, such as the algorithm used in Coq, can easily incur overhead that's linear in the size of the context.
@@ -392,11 +392,11 @@ See also \autoref{sec:setoid-rewrite-bottlenecks}.
 We saw in \autoref{sec:binders:PHOAS} that in order to prove the soundness theorem, we needed a way to relate two PHOASTs (parametric higher-order abstract syntax trees), which generalized to a notion of well-formedness for the \mintinline{coq}{Expr} type.
 
 Unfortunately, the proof that two \mintinline{coq}{expr}s are \mintinline{coq}{related} is quadratic in the size of the expression, for much the same reason that proving conjunctions in \autoref{sec:quadratic-conj-certificate} resulted in a proof term which was quadratic in the number of conjuncts.
-We present two ways to encode linearly-sized proofs of well-formedness in PHOAS.
+We present two ways to encode linearly sized proofs of well-formedness in PHOAS.
 
 \subsubsection{Iterating Reflection} \label{sec:wf:perf:reflective}
 
-The first method of encoding linearly-sized proofs of \mintinline{coq}{related} is itself a good study in how using proof by reflection can compress proof terms.
+The first method of encoding linearly sized proofs of \mintinline{coq}{related} is itself a good study in how using proof by reflection can compress proof terms.
 Rather than constructing the inductive \mintinline{coq}{related} proof, we can instead write a fixed point:
 \begin{minted}{coq}
 Fixpoint is_related {var1 var2 : Type} (Γ : list (var1 * var2))
@@ -417,10 +417,11 @@ This unfortunately isn't quite linear in the size of the syntax tree, though it 
 One way to achieve even more compact proof terms is to pick a more optimized representation for list membership and to convert the proposition to be an eliminator.%
 \footnote{%
   The size of the proof term will still have an extra logarithmic factor in the size of the syntax tree due to representing variable indices in binary.
-  Moreover, the size of the proof term will sill be quadratic due to the fact that functions store the type of their binders.
+  Moreover, the size of the proof term will still be quadratic due to the fact that functions store the types of their binders.
   However, this representation allows proof terms that are significantly faster to construct in Coq's proof engine for reasons that are not entirely clear to us.
 }
-This consists of replacing $A \wedge B$ with $\forall P, A \to B \to P$, and similar.
+This consists of replacing $A \wedge B$ with $\forall P, (A \to B \to P) \to P$, and similar.
+\todoac{Is this method easier than CPSing the whole definition? [Jason responds: It's not clear to me how to implement ``CPSing the whole definition''.  That was indeed my first thought, but then I tried to figure out how to prove both ``CPS -> normal version'' and how to construct an efficient proof term for the CPS version, and was not able to do both simultaneously (in particular I could not figure out what to pass as the continuation in each theorem).]}
 \begin{minted}{coq}
 Fixpoint is_related_elim {var1 var2 : Type} (Γ : list (var1 * var2))
    (e1 : @expr var1) (e2 : @expr var2) : Prop :=
@@ -439,12 +440,14 @@ Fixpoint is_related_elim {var1 var2 : Type} (Γ : list (var1 * var2))
   | _, _ => False
   end.
 \end{minted}
-We can now prove that \mintinline{coq}{is_related_elim Γ e1 e2 → is_related Γ e1 e2}.
+We can now prove \mintinline{coq}{is_related_elim Γ e1 e2 → is_related Γ e1 e2}.
 
 Note that making use of the fixpoint is significantly more inconvenient than making use of the inductive; the proof of \mintinline{coq}{check_is_even_expr_sound}, for example, proceeds most naturally by induction on the relatedness hypothesis.
 We could instead induct on one of the ASTs and destruct the other one, but this becomes quite hairy when the ASTs are indexed over their types.
 
 \minortodo{Time permitting, benchmark wf proof methods and insert plots}
+
+\todoac{This part is interesting for the implicit transition away from ``here are some new tricks that correct deficiencies in prior PHOAS papers.'' At least, my POPL'10 paper *does* produce initial PHOAS well-formedness proofs using a verified-as-well-formed translator from de Bruijn. [Jason's Response: I think the trick here is a bit different (in particular it involves round-tripping rather than just coming from de Bruijn)?  Note also that having a compact representation for this proof term requires that the de Bruijn well-formed predication is a computational function that outputs a Boolean.  Furthermore, indexing the de Bruijn representation over the list of context types (or over the length, as is done in the POPL'10 paper) incurs quadratic overhead in the size of the represented term, so you can't just have this property be true by construction.]}
 
 \subsubsection{Via de Bruijn} \label{sec:wf:perf:de-bruijn}
 
@@ -463,7 +466,7 @@ Fixpoint is_closed_under (max_idx : nat) (e : expr) : bool :=
   end.
 Definition is_closed := is_closed_under 0.
 \end{minted}
-Note that this check generalizes quite nicely to expressions indexed over their types---so long as type codes have decidable equality---where we can pass around a list (or more efficient map structure) of types for each variable, and just check that the types are equal.
+Note that this check generalizes quite nicely to expressions indexed over their types---so long as type codes have decidable equality---where we can pass around a list (or more efficient map structure) of types for each variable and just check that the types are equal.
 
 Now we can prove that whenever a de Bruijn \mintinline{coq}{expr} is closed, any two PHOAS \mintinline{coq}{expr}s created from that AST will be related in the empty context.
 Therefore, if the PHOAS \mintinline{coq}{expr} we start off with is the result of converting some de Bruijn \mintinline{coq}{expr} to PHOAS, we can easily prove that it's well-formed simply by running \mintinline{coq}{vm_compute} on the \mintinline{coq}{is_closed} procedure.
@@ -477,7 +480,7 @@ The hypothesis of this theorem is quite easy to check; we simply run \mintinline
 
 \todo{check spacing on this figure once the introduction of this chapter is figured out}
 
-\begin{wrapfigure}[12]{r}{\widthof{\texttt{~~~~~~~~~~~~~constr:(@NatMul v X Y)}}}
+\begin{wrapfigure}[14]{r}{\widthof{\texttt{~~~~~~~~~~~~~constr:(@NatMul v X Y)}}}
 \begin{minted}{coq}
 Ltac f v x := (* reify var term *)
   lazymatch x with
@@ -495,6 +498,7 @@ Ltac f v x := (* reify var term *)
 
 The one part of proof by reflection that we've neglected up to this point is reification.
 There are many ways of performing reification; in \autoref{ch:reification-by-parametricity}, we discuss 19 different ways of implementing reification, using 6 different metaprogramming facilities in the Coq ecosystem: \Ltac, \LtacTwo, \MtacTwo~\cite{lessadhoc,Mtac2}, type classes~\cite{sozeau2008first}, canonical structures~\cite{gonthier2016small}, and reification-specific OCaml plugins (quote~\cite{quote-plugin}\footnote{Note that this plugin was removed in Coq 8.10~\cite{coq-pr-remove-quote-plugin}, and so our plots no longer include this plugin.}, template-coq~\cite{TemplateCoq}, ours).
+\todoac{The ``)'' at the end of the previous sentence is crossed off. [Jason: Why?]}%
 \autoref{fig:ltac-reify-nobinders} displays the simplest case: an Ltac script to reify a tree of function applications and constants.
 Unfortunately, all methods we surveyed become drastically more complicated or slower (and usually both) when adapted to reify terms with variable bindings such as \texttt{let}-\texttt{in} or \texttt{$\lambda$} nodes.
 
@@ -507,8 +511,8 @@ with significant aspects of the design being driven by surprising behaviors, mis
 \minortodo{should this paragraph be here, or above the last one?}
 There are a couple of complications that arise when reifying binders, which broadly fall into two categories.
 One category is the metaprogramming language's treatment of binders.
-In \Ltac, for example, the body of a function is not a well-typed term, because the variable binder refers to a non-existent name; getting the name to actually refer to something, so that we can inspect the term, is responsible for a great deal of the complexity in reification code in \Ltac.
-The other category is any mismatch between the representation of binders in the metaprogramming language, and the representation of binders in the reified syntax.
+In \Ltac, for example, the body of a function is not a well-typed term, because the variable binder refers to a nonexistent name; getting the name to actually refer to something, so that we can inspect the term, is responsible for a great deal of the complexity in reification code in \Ltac.
+The other category is any mismatch between the representation of binders in the metaprogramming language and the representation of binders in the reified syntax.
 If the metaprogramming language represents variables as de Bruijn indices, and we are reifying to a de Bruijn representation, then we can reuse the indices.
 If the metaprogramming language represents variables as names, and we are reifying to a named representation, then we can reuse the names.
 If the representations mismatch, then we need to do extra work to align the representations, such as keeping some sort of finite map structure from binders in the metalanguage to binders in the AST.
@@ -526,7 +530,7 @@ In the next chapter we'll present the reflective framework we developed for achi
 %\section{Reflective Syntax Tranformation}
 %\todo{prep the reader for the upcoming chapter on the rewriter}
 %\todo{Maybe call this Reflective Syntax Transformation}
-%\todo{should the content on slowness in non-reflective rewriting go here?}
+%\todo{should the content on slowness in nonreflective rewriting go here?}
 
 %\section{related work (incl. RTac)}
 %\todo{talk about related work}

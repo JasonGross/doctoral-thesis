@@ -29,7 +29,7 @@ In this chapter, we present an approach to verified partial evaluation in proof 
 To make the relevance concrete, we use the example of Fiat Cryptography~\cite{FiatCryptoSP19}, a Coq library that generates code for big-integer modular arithmetic at the heart of elliptic-curve-cryptography algorithms.
 This domain-specific compiler has been adopted, for instance, in the Chrome Web browser, such that about half of all HTTPS connections from browsers are now initiated using code generated (with proof) by Fiat Cryptography.
 However, Fiat Cryptography was only used successfully to build C code for the two most widely used curves (P-256 and Curve25519).
-Their method of partial evaluation timed out trying to compile code for the third most widely used curve (P-384).
+Our original method of partial evaluation timed out trying to compile code for the third most widely used curve (P-384).
 Additionally, to achieve acceptable reduction performance, the library code had to be written manually in continuation-passing style.
 We will demonstrate a new Coq library that corrects both weaknesses, while maintaining the generality afforded by allowing rewrite rules to be mixed with partial evaluation.
 
@@ -497,7 +497,7 @@ Unfortunately, it is difficult to integrate arrays soundly in a logic.
 Also, even ignoring performance overheads, tedious binder bookkeeping complicates proofs.
 
 Our strategy is to use a variable encoding that pushes all first-order bookkeeping off on Coq's kernel, which is itself performance-tuned with some crucial pieces of imperative code.
-Parametric higher-order abstract syntax (PHOAS)~\cite{PhoasICFP08} is a dependently typed encoding of syntax where binders are managed by the enclosing type system.
+Parametric higher-order abstract syntax (PHOAS)~\cite{PhoasICFP08}, which we introduced and described in \autoref{sec:binders:PHOAS}, is a dependently typed encoding of syntax where binders are managed by the enclosing type system.
 It allows for relatively easy implementation and proof for NbE, so we adopted it for our framework.
 
 Here is the actual inductive definition of term syntax for our object language, PHOAS-style.
@@ -720,7 +720,7 @@ If the abstract interpreter did its job, then all lower and upper bounds are con
 %\todo{If this section is moved or removed, be sure to restructure \autoref{sec:code-from-implementation-and-usage} accordingly}
 
 We now note some details of the rewriting framework that were previously glossed over, which are useful for using the code or implementing something similar, but which do not add fundamental capabilities to the approach.
-Although the rewriting framework does not support dependently typed constants, we can automatically preprocess uses of eliminators like \mintinline{coq}{nat_rect} and \mintinline{coq}{list_rect} into non-dependent versions.
+Although the rewriting framework does not support dependently typed constants, we can automatically preprocess uses of eliminators like \mintinline{coq}{nat_rect} and \mintinline{coq}{list_rect} into nondependent versions.
 The tactic that does this preprocessing is extensible via \Ltac{}'s reassignment feature.
 Since pattern-matching compilation mixed with NbE requires knowing how many arguments a constant can be applied to, internally we must use a version of the recursion principle whose type arguments do not contain arrows; current preprocessing can handle recursion principles with either no arrows or one arrow in the motive.
 
@@ -734,7 +734,7 @@ Our current version only allows a limited, hard-coded set of eliminators with \m
 
 Note that \mintinline{coq}{Let_In} is the constant we use for writing \letin{} expressions that do not reduce under $\zeta$ (Coq's reduction rule for \mintinline{coq}{let}-inlining).
 Throughout most of this chapter, anywhere that \letin{} appears, we have actually used \mintinline{coq}{Let_In} in the code.
-It would alternatively be possible to extend the reification preprocessor to automatically convert \letin{} to \mintinline{coq}{Let_In}, but this strategy may cause problems when converting the interpretation of the reified term with the pre-reified term, as Coq's conversion does not allow fine-tuning of when to inline or unfold \mintinline{coq}{let}s.
+It would alternatively be possible to extend the reification preprocessor to automatically convert \letin{} to \mintinline{coq}{Let_In}, but this strategy may cause problems when converting the interpretation of the reified term with the pre-reified\todoac{remove - [Jason: and replace with what?]} term, as Coq's conversion does not allow fine-tuning of when to inline or unfold \mintinline{coq}{let}s.
 
 \section{Evaluation}\label{sec:evaluation}
 
@@ -939,9 +939,9 @@ Hence we can conclude that the difference in performance between \mintinline{coq
 
 Setting aside the performance bottleneck in constructing the matches in the first place, we can ask the question: how much cost is associated to the proof terms?
 One way to ask this question in Coq is to see how long it takes to run \mintinline{coq}{Qed}.
-While \mintinline{coq}{Qed}-time is asymptotically better, it is still quadratic in the number of binders.
+While \mintinline{coq}{Qed} time is asymptotically better, it is still quadratic in the number of binders.
 This outcome is unsurprising, because the proof-term size is quadratic in the number of binders.
-On this microbenchmark, we found that \mintinline{coq}{Qed}-time hits one second at about 250 binders, and using the best-fit quadratic line suggests that it would hit 10 seconds at about 800 binders and 100 seconds at about 2\,500 binders.
+On this microbenchmark, we found that \mintinline{coq}{Qed} time hits one second at about 250 binders, and using the best-fit quadratic line suggests that it would hit 10 seconds at about 800 binders and 100 seconds at about 2\,500 binders.
 While this may be reasonable for the microbenchmarks, which only contain as many rewrite occurrences as there are binders, it would become unwieldy to try to build and typecheck such a proof with a rule for every primitive reduction step, which would be required if we want to avoid manually CPS-converting the code in Fiat Cryptography.
 
 The quadratic factor in the proof term comes because we repeat subterms of the goal linearly in the number of rewrites.
@@ -960,11 +960,11 @@ Suppose we had a proof-producing rewriting algorithm that shared subterms even u
 Would it be enough?
 It turns out that even when the proof size is linear in the number of binders, the cost to typecheck it in Coq is still quadratic!
 The reason is that when checking that \texttt{f : T} in a context \mintinline{coq}{x := v}, to check that \mintinline{coq}{let x := v in f} has type \texttt{T} (assuming that \mintinline{coq}{x} does not occur in \texttt{T}), Coq will substitute \mintinline{coq}{v} for \mintinline{coq}{x} in \texttt{T}.
-So if a proof term has $n$ \mintinline{coq}{let} binders (e.g., used for sharing subterms), Coq will perform $n$ substitutions on the type of the proof term, even if none of the \mintinline{coq}{let}-binders are used.
-If the number of \mintinline{coq}{let}-binders is linear in the size of the type, there is quadratic overhead in proof-checking time, even when the proof-term size is linear.
+So if a proof term has $n$ \mintinline{coq}{let} binders (e.g., used for sharing subterms), Coq will perform $n$ substitutions on the type of the proof term, even if none of the \mintinline{coq}{let} binders are used.
+If the number of \mintinline{coq}{let} binders is linear in the size of the type, there is quadratic overhead in proof-checking time, even when the proof-term size is linear.
 
 We performed a microbenchmark on a rewriting goal with no binders (because there is an obvious algorithm for sharing subterms in that case) and found that the proof-checking time reached about one second at about 2\,000 binders and reached 10 seconds at about 7\,000 binders.
-While these results might seem good enough for Fiat Cryptography, we expect that there are hundreds of thousands of primitive reduction/rewriting steps even when there are only a few hundred binders in the output term, and we would need \mintinline{coq}{let}-binders for each of them.
+While these results might seem good enough for Fiat Cryptography, we expect that there are hundreds of thousands of primitive reduction/rewriting steps even when there are only a few hundred binders in the output term, and we would need \mintinline{coq}{let} binders for each of them.
 Furthermore, we expect that getting such an algorithm correct would be quite tricky.
 
 Fixing this quadratic bottleneck would, as far as we can tell, require deep changes in how Coq is implemented; it would either require reworking all of Coq to operate on some efficient representation of delayed substitutions paired with unsubstituted terms, or else it would require changing the typing rules of the type theory itself to remove this substitution from the typing rule for \mintinline{coq}{let}.
@@ -1105,7 +1105,7 @@ change \texttt{open ex} to \texttt{open ex2} to try the two-limb example, or to 
 
 We have already discussed the work of \textcite{Aehlig}, which introduced the basic structure that our engine shares, but which required a substantially larger trusted code base, did not tackle certain challenges in scaling to large partial-evaluation problems, and did not report any performance experiments in partial evaluation.
 
-We have also mentioned \Rtac{}~\cite{rtac}, which implements an experimental reflective version of \texttt{rewrite\_strat} supporting arbitrary setoid relations, unification variables, and arbitrary semi-decidable side conditions solvable by other reflective tactics, using de Bruijn indexing to manage binders.
+We have also mentioned \Rtac{}~\cite{rtac}, which implements an experimental reflective version of \texttt{rewrite\_strat} supporting arbitrary setoid relations, unification variables, and arbitrary semidecidable side conditions solvable by other reflective tactics, using de Bruijn indexing to manage binders.
 We were unfortunately unable to get the rewriter to work with Coq 8.10 and were also not able to determine from the paper how to repurpose the rewriter to handle our benchmarks.
 
 Our implementation builds on fast full reduction in Coq's kernel, via a virtual machine~\cite{vmcompute} or compilation to native code~\cite{nativecompute}.

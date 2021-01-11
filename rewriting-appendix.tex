@@ -177,7 +177,7 @@ Definition make_lets_def (n:nat) (v acc : Z) :=
    (v, acc).
 \end{minted}
 We note some details of the rewriting framework that were glossed over in the main body of \autoref{ch:rewriting}, which are useful for using the code:
-Although the rewriting framework does not support dependently typed constants, we can automatically preprocess uses of eliminators like \mintinline{coq}{nat_rect} and \mintinline{coq}{list_rect} into non-dependent versions.
+Although the rewriting framework does not support dependently typed constants, we can automatically preprocess uses of eliminators like \mintinline{coq}{nat_rect} and \mintinline{coq}{list_rect} into nondependent versions.
 The tactic that does this preprocessing is extensible via \Ltac{}'s reassignment feature.
 Since pattern-matching compilation mixed with NbE requires knowing how many arguments a constant can be applied to, we must internally use a version of the recursion principle whose type arguments do not contain arrows; current preprocessing can handle recursion principles with either no arrows or one arrow in the motive.
 Even though we will eventually plug in 0 for $v$, we jump through some extra hoops to ensure that our rewriter cannot cheat by rewriting away the ${}+0$ before reducing the recursion on $n$.

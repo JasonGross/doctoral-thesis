@@ -990,7 +990,7 @@ See also \autoref{fig:timing-do-n-open-constr-True} and \autoref{fig:timing-open
 \caption{Timing of typechecking a function applied to $n$ arguments} \label{fig:timing-app-n}
 \end{wrapfigure}
 
-Consider the case of typechecking a non-dependent function applied to $n$ arguments.
+Consider the case of typechecking a nondependent function applied to $n$ arguments.
 If substitution is performed eagerly, following directly the rules of the type theory, \minortodo{cite the rules / reference an appendix, }then typechecking is quadratic.
 This is because the type of the function is $\mathcal{O}(n)$, and doing substitution $n$ times on a term of size $\mathcal{O}(n)$ is quadratic.
 
@@ -1463,7 +1463,7 @@ In the chapters to come, we invite the reader to keep in the back of their mind 
 \begin{subappendices}
 \begin{comment}
 \section{Comments from Andres}
-in chapter 2 you start by comparing coq by non-dependently typed languages. perhaps the more appropriate comparison would be between coq and *compilers* of other languages? Ah, you do this later.
+in chapter 2 you start by comparing coq by nondependently typed languages. perhaps the more appropriate comparison would be between coq and *compilers* of other languages? Ah, you do this later.
 "integers or colors or names" -- some hardcore optimization nerds may object. did you know that for all of these it is possible to sort in less than nlogn time using specialized techniques? :P (not a serious objection)
 "3. Being able to run the proof assistant in your head" -- obligatory claim about this finding bugs that the developers didn't see? Also, please emphasize that this is beyond the *spec* of conversion, but about the actual *algorithm*. the GCC example kinda does that, map it back explicitly.
 typechecking of applications definitely was quadratic, but may no longer be
@@ -1473,7 +1473,7 @@ I would like to be explicitly credited for my contributions to this list. Somewh
 "There are three primary ways that nested abstraction barriers can lead to performance bottlenecks: one involving conversion missteps and the other involving exponential blow-up in the size of types."
 "The reason users don’t set up hints like this is that usually it’s not necessary." -- and that is hard to see where the time is spent when it is necessary
 Thu 7:22pm
-and the non-locality of design choices is even across libraries and proof assistant implementations
+and the nonlocality of design choices is even across libraries and proof assistant implementations
 Thu 7:22pm
 see your abstraction layer counting stuff
 Thu 7:22pm

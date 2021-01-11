@@ -16,7 +16,12 @@ if [ ! -z "${UNKNOWN_WORDS}" ]; then
 fi
 
 PREFIX=""
-for i in '^TODO: .FROM A' \
+for i in '^TODO: .FROM A.*High Priority' \
+             '^TODO: .FROM N.*High Priority' \
+             '^TODO: .FROM S.*High Priority' \
+             '^TODO: .FROM.*High Priority' \
+             '^TODO: .*High Priority' \
+             '^TODO: .FROM A' \
              '^TODO: .FROM N' \
              '^TODO: .FROM S' \
              '^TODO: .FROM' \

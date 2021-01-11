@@ -1,15 +1,15 @@
 \chapter{\readyforreading{A Retrospective on Performance Improvements}}\label{ch:coq-tooling-fixes}\label{ch:retrospective}
 Throughout this dissertation, we've looked at the problem of performance in proof assistants, especially those based on dependent type theory, with Coq as our primary tool under investigation.
 \autoref{part:introduction} aimed to convince the reader that this problem is interesting, important, challenging, and understudied, as it differs in nontrivial ways from performance bottlenecks in nondependently typed languages.
-\autoref{part:rewriting} took a deep dive into a particular set of performance bottlenecks and presented a tool, and, we hope, exposed the underlying design methodology, that allows eliminating asymptotic bottlenecks in one important part of proof assistant systems.
+\autoref{part:rewriting} took a deep dive into a particular set of performance bottlenecks and presented a tool and, we hope, exposed the underlying design methodology, which allows eliminating asymptotic bottlenecks in one important part of proof-assistant systems.
 \autoref{part:design} zoomed back out to discuss design principles to avoid performance pitfalls.
 
 In this chapter, we will look instead at the successes of the past decade\footnote{%
   Actually, the time span we're considering is the course of the author's experience with Coq, which is a bit less than a decade.%
 }%
 , ways in which performance has improved in major ways.
-\autoref{sec:fixes:minutiae} will discuss specific improvements in the implementation of Coq which resulted in performance gains, paying special attention to the underlying bottleneck being addressed.
-Those without special interest in the low-level details of proof assistant implementation may want to skip to \autoref{sec:fixes:coq-theory}, which will discuss changes to the underlying type theory of Coq which make possible drastic performance improvements.
+\autoref{sec:fixes:minutiae} will discuss specific improvements in the implementation of Coq which resulted in performance gains, paying special attention to the underlying bottlenecks being addressed.
+Those without special interest in the low-level details of proof-assistant implementation may want to skip to \autoref{sec:fixes:coq-theory}, which will discuss changes to the underlying type theory of Coq which make possible drastic performance improvements.
 While we will again have our eye on Coq in \autoref{sec:fixes:coq-theory}, we will broaden our perspective in \autoref{sec:fixes:theory} to discuss new discoveries of the past decade or so in dependent type theory which enable performance improvements but have not yet made their way into Coq.
 
 \section{Concrete Performance Advancements in Coq}\label{sec:fixes:minutiae}
@@ -21,18 +21,19 @@ The reason for this was pervasive \emph{evar normalization}.
 
 Let us review some details of the way Coq handles proof scripts.
 \minortodo{if this is described earlier, refer back to it}
-Coq a partial proof term, where not-yet-given subterms are \emph{existential variables}, or evars, which may show up as goals.
+In Coq the current state of a proof is represented by a partial proof term, where not-yet-given subterms are \emph{existential variables}, or evars, which may show up as goals.
 For example, when proving the goal \mintinline{coq}{True ∧ True}, after running \mintinline{coq}{split}, the proof term would be \mintinline{coq}{conj ?Goal1 ?Goal2}, where \mintinline{coq}{?Goal1} and \mintinline{coq}{?Goal2} are evars.
 There are two subtleties:
 \begin{enumerate}
 \item
   Evars may be under binders.
-  Coq uses a locally nameless representation of terms (c.f.~\autoref{sec:binders:locally-nameless}), where closed terms use de Bruijn indices, but open terms, i.e., evars, refer to the variables in their context by name.
+  Coq uses a locally nameless representation of terms (c.f.~\autoref{sec:binders:locally-nameless}), where terms use de Bruijn indices to refer to variables bound in the term but use names to refer to variables bound elsewhere.
+  Thus terms generated in the context of a proof goal refer to all context variables by name and evars too refer to all variables by name.
   Hence each evar carries with it a named context, which causes a great deal of trouble as described in \fullnameref{sec:perf:quadratic-evar-subst}.
 \item
   Coq supports backtracking, so we must remember the history of partial proof terms.
   In particular, we cannot simply mutate partial proof terms to instantiate the evars, and copying the entire partial proof term just to update a small part of it would also incur a great deal of overhead.
-  Instead, Coq never mutates the terms, and instead simply keeps a map of which evars have been instantiated with which terms, called the \emph{evar map}.
+  Instead, Coq never mutates the terms and instead simply keeps a map of which evars have been instantiated with which terms, called the \emph{evar map}.
 \end{enumerate}
 
 There is an issue with the straightforward implementation of evars and evar maps.
@@ -42,33 +43,33 @@ Subtle bugs in unification and other areas of Coq resulted from some functions b
   See the discussion at \textcite{coq-pr-econstr} for more details.%
 }
 The fast-and-easy solution used in older versions of Coq was to simply evar-normalize the goal before walking it.
-That is, every tactic that had to walk the goal for any reason whatsoever would create a copy of the type of the goal---and sometimes the proof context as well---replacing all instantiated evars with their instantiation.
+That is, every tactic that had to walk the goal for any reason whatsoever would create a copy of the type of the goal---and sometimes the proof context as well---replacing all instantiated evars with their instantiations.
 Needless to say, this was very expensive when the size of the goal was large.
 
 \minortodo{include performance graphs?}
 
-As of Coq 8.7, most tactics no longer perform useless evar normalization, and instead walk terms using a dedicated API which does on-the-fly normalization as necessary~\cite{coq-pr-econstr}.
-This brought speedups of over 10\% to some developments, and improved asymptotic performance of some tactic scripts and interactive proof development.
+As of Coq 8.7, most tactics no longer perform useless evar normalization and instead walk terms using a dedicated API which does on-the-fly normalization as necessary~\cite{coq-pr-econstr}.
+This brought speedups of over 10\% to some developments and improved asymptotic performance of some tactic scripts and interactive proof development.
 
 \subsection{Delaying the Externalization of Application Arguments}\label{sec:delayed-externalization}
 Coq has many representations of terms.
 There is \texttt{constr\_expr}, the AST produced by Coq's parser.
-Internalization turns \texttt{constr\_expr} into the untyped \texttt{glob\_constr} representation of terms by performing name resolution, bound variable checks, notation desugaring, and implicit argument insertion~\cite{Constrintern}.
+Internalization turns \texttt{constr\_expr} into the untyped \texttt{glob\_constr} representation of terms by performing name resolution, bound-variable checks, notation desugaring, and implicit-argument insertion~\cite{Constrintern}.
 Type inference fills in the holes in untyped \texttt{glob\_constr}s to turn them into typed \texttt{constr}s, possibly with remaining existential variables~\cite{Pretyping}.
 In order to display proof goals, this process must be reversed.
 The internal representation of \texttt{constr} must be ``detyped'' into \texttt{glob\_constr}s, which involves primarily just turning de Bruijn indices into names~\cite{Detyping}.
-Finally, implicit arguments must be erased and notations must be re-sugared when externalizing \texttt{glob\_constr}s into \texttt{constr\_expr}s, which can be printed relatively straightforwardly~\cite{Constrextern,Ppconstr}.
+Finally, implicit arguments must be erased and notations must be resugared when externalizing \texttt{glob\_constr}s into \texttt{constr\_expr}s, which can be printed relatively straightforwardly~\cite{Constrextern,Ppconstr}.
 
 In old versions, Coq would externalize the entire goal, including subterms that were never printed due to being hidden by notations and implicit arguments.
 Starting in version 8.5pl2, lazy externalization of function arguments was implemented~\cite{coq-commit-delayed-externalization}.
 This resulted in massive speed-ups to interactive development involving large goals whose biggest subterms were mostly hidden.
 
-Changes like this one can be a game-changer for interactive proof development.
+Changes like this one can be game-changers for interactive proof development.
 The kind of development that can happen when it takes a tenth of a second to see the goal after executing a tactic is vastly different from the kind of development that can happen when it takes a full second or two.
 In the former case, the proof engine can almost feel like an extension of the coder's mind, responding to thoughts about strategies to try almost as fast as they can be typed.
 In the latter case, development is significantly more clunky and involves much more friction.
 
-In the same vein, bugs such as \coqbug[]{3691} and \coqbug[]{4819}, where Coq crawled the entire evar map in \texttt{-emacs} mode (used for ProofGeneral/Emacs) looking at all instantiated evars, resulted in interactive proof times of up to half-a-second for every goal display, even when the goal was small and there was nothing in the context.
+In the same vein, bugs such as \coqbug[]{3691} and \coqbug[]{4819}, where Coq crawled the entire evar map in \texttt{-emacs} mode (used for ProofGeneral/Emacs) looking at all instantiated evars, resulted in interactive proof times of up to half a second for every goal display, even when the goal was small and there was nothing in the context.
 Fixed in Coq 8.6, these bugs, too, got in the way of seamless proof development.
 
 \subsection{The \Ltac\space Profiler}\label{sec:ltac-prof}
@@ -91,16 +92,16 @@ Although this quote comes from the class I took at MIT, 6.172 --- Performance En
 \end{flushright}
 
 In old versions of Coq, there was no good way to profile tactic execution.
-Users could wrap some invocations in \mintinline{coq}{time} to see how long a given tactic took, or could regularly print some output to see where execution hung.
-Both of these are very low-tech methods of performance debugging, and work well enough for small tactics.
+Users could wrap some invocations in \mintinline{coq}{time} to see how long a given tactic took or could regularly print some output to see where execution hung.
+Both of these are very low-tech methods of performance debugging and work well enough for small tactics.
 For debugging hundreds or thousands of lines of \Ltac\space code, though, these methods are insufficient.
 
 A genuine profiler for \Ltac\space was developed in 2015 and integrated into Coq itself in version 8.6~\cite{coqpl-15-ltac-profiler}.
 
 For those interested in amusing quirks of implementation details, the profiler itself was relatively easy to implement.
 If I recall correctly, Tobias Tebbi, after hearing of my \Ltac\space performance woes, mentioned to me the profiler he implemented over the course of a couple of days.
-Since \Ltac\space already records backtraces for error reporting, it was a relatively simple matter to hook into the stack-trace-recorder and track how much time was spent in each call-stack.
-With some help from the Coq development team, I was able to adapt the patch to the new tactic engine of Coq $\ge$ 8.5, and shepherded it into Coq's codebase.
+Since \Ltac\space already records backtraces for error reporting, it was a relatively simple matter to hook into the stack-trace recorder and track how much time was spent in each call stack.
+With some help from the Coq development team, I was able to adapt the patch to the new tactic engine of Coq $\ge$ 8.5 and shepherded it into Coq's codebase.
 
 \minortodo{should I include more text here, extracting from the abstract submitted to CoqPL?}
 
@@ -143,14 +144,14 @@ Furthermore, when the output is large, both the VM and the native compiler suffe
 \minortodo{Should I add more to this section?  What should I say?}
 
 \subsection{Primitive Integers and Arrays}\label{sec:prim-ints-arrays}
-Primitive 31-bit integer arithmetic operations were added to Coq in 2007~\cite{coq-commit-int31,Extending2010Armand}.
+Primitive 31-bit integer-arithmetic operations were added to Coq in 2007~\cite{coq-commit-int31,Extending2010Armand}.
 Although most of Coq merely used an inductive representation of 31-bit integers, the VM included code for compiling these constants to native machine integers.%
 \footnote{%
   The integer arithmetic is 31-bit rather than 32-bit because OCaml reserves the lowest bit for tagging whether a value is a pointer address to a tagged value or an integer.%
 }
 After hitting memory limits in storing the inductive representations in proofs involving proof traces from SMT solvers, work was started to allow the use of primitive datatypes that would be stored efficiently in proof terms~\cite{denes2013prim-ints-arrays}.
 
-Some of this work has since been merged into Coq, including IEEE 754-2008 binary64 floating point numbers merged in Coq 8.11~\cite{coq-pr-floats}, 63-bit integers merged in Coq 8.10~\cite{coq-pr-int63}, and persistent arrays~\cite{Persistent2007Conchon} merged into Coq 8.13~\cite{coq-pr-parray}.
+Some of this work has since been merged into Coq, including IEEE 754-2008 binary64 floating-point numbers merged in Coq 8.11~\cite{coq-pr-floats}, 63-bit integers merged in Coq 8.10~\cite{coq-pr-int63}, and persistent arrays~\cite{Persistent2007Conchon} merged into Coq 8.13~\cite{coq-pr-parray}.
 Work enabling primitive recursion over these native datatypes is still underway~\cite{coq-pr-parray-prim-recursion}, and the actual use of these primitive datatypes to reap the performance benefits is still to come as of the writing of this dissertation.
 
 \subsection{Primitive Projections for Record Types}\label{sec:fixes:theory:primitive-projections}\label{sec:primitive-projections}
@@ -164,7 +165,7 @@ Note that this is a specific instance of a more general theory of implicit argum
 In \fullnameref{sec:perf:quadratic-application}, we discussed how the typing rule for function application resulted in quadratic performance behavior when there was in fact only linear work that needed to be done.
 As of Coq 8.10, when typechecking applications in the kernel, substitution is delayed so as to achieve linear performance~\cite{coq-pr-fast-application-typing}.
 \minortodo{does this need more of a recap?}
-Unfortunately, the pretyping and type inference algorithm is still quadratic, due to the type theory rules used for type inference.
+Unfortunately, the pretyping and type-inference algorithm is still quadratic, due to the type-theory rules used for type inference.
 
 \minortodo{should I talk about https://github.com/coq/coq/pull/263 - Fast lookup in named contexts?}
 \minortodo{should I talk about https://github.com/coq/coq/pull/6506 - Fast rel lookup?}
@@ -176,13 +177,13 @@ In this section we will review a couple of particularly important changes of thi
 
 \subsection{Universe Polymorphism}\label{sec:fixes:theory:univ-poly}\label{sec:univ-poly}
 
-Recall that the main case study of \autoref{ch:design} was our implementation of a category theory library.
+Recall that the main case study of \autoref{ch:design} was our implementation of a category-theory library.
 Recall also from \nameref{sec:abstraction-barriers:packed-records} how the choice of whether to use packed or unpacked records impacts performance; while unpacked records are more friendly for developing algebraic hierarchies, packed records achieve significantly better performance when large towers of dependent concepts (such as categories, functors between categories, and natural transformations between functors) are formalized.
 
-This section addresses a particular feature which allows an entire-library $2\times$ speed-up when using fully-packed records.
+This section addresses a particular feature which allows an entire-library $2\times$ speed-up when using fully packed records.
 How is such a large performance gain achievable?
 Without this feature, called \emph{universe polymorphism}, encoding some mathematical objects requires \emph{duplicating} the entire library!
-Removing this duplication of code will halve the compile-time.
+Removing this duplication of code will halve the compile time.
 
 \subsubsection{What Are Universes?}\label{sec:universes-def}
 Universes are type theory's answer to Russell's paradox~\cite{sep-russell-paradox}.
@@ -205,7 +206,7 @@ We can nest this construction, as type theory does:
 We have \mintinline{coq}{Type₀}, the \mintinline{coq}{Type₁} of all small types, and we have \mintinline{coq}{Type₁}, the \mintinline{coq}{Type₂} of all \mintinline{coq}{Type₁}s, etc.
 These subscripts are called \emph{universe levels}, and the subscripted \mintinline{coq}{Type}s are sometimes called \emph{universes}.
 
-Most constructions in Coq work just fine if we simply place them in a single, high-enough, universe.
+Most constructions in Coq work just fine if we simply place them in a single, high-enough universe.
 In fact, the entire standard library in Coq effectively uses only three universes.
 Most of the standard library in fact only needs one universe.
 We need a second universe for the few constructions that talk about equality between types, and a third for the encoding of a variant of Russell's paradox in Coq.
@@ -236,12 +237,12 @@ satisfying the following axioms:
     identity: for any morphism $f \in \Hom[C](a, b)$, we have $\Id[b] \circ f = f = f \circ \Id[a]$
 \end{itemize}
 
-Some complications arise in applying the last subsection's definition of categories to the full range of common constructs in category theory.
+Some complications arise in applying this definition of categories to the full range of common constructs in category theory.
 One particularly prominent example formalizes the structure of a collection of categories, showing that this collection itself may be considered as a category.
 
 The morphisms in such a category are \emph{functors},\label{sec:define-functor} maps between categories consisting of a function on objects, a function on hom-types, and proofs that these functions respect composition and identity~\cite{mac1998categories,awodey2010category,HoTTBook}.
 
-The naïve concept of a ``category of all categories'',\label{sec:category-of-categories} which includes even itself, leads into mathematical inconsistencies which manifest as universe inconsistency errors in Coq, much as with the set of all sets discussed above.
+The naïve concept of a ``category of all categories'',\label{sec:category-of-categories} which includes even itself, leads into mathematical inconsistencies which manifest as universe-inconsistency errors in Coq, much as with the set of all sets discussed above.
 
 The standard resolution, as with sets, is to introduce a hierarchy of categories, where, for instance, most intuitive constructions are considered \emph{small} categories, and then we also have \emph{large} categories, one of which is the category of small categories.
 Both definitions wind up with literally the same text in Coq, giving:
@@ -281,7 +282,7 @@ For example, if \mintinline{coq}{x} has type \mintinline{coq}{A * B}, then the $
 As discussed in \autoref{sec:duality-conversion}, having records with judgmental $\eta$ conversion allows de-duplicating code that would otherwise have to be duplicated.
 \minortodo{should more be said here?}
 
-\subsection{SProp: The Definitionally Proof Irrelevant Universe}\label{sec:fixes:theory:sprop}\label{sec:sprop}\label{sec:term-size}
+\subsection{SProp: The Definitionally Proof-Irrelevant Universe}\label{sec:fixes:theory:sprop}\label{sec:sprop}\label{sec:term-size}
 Coq is slow at dealing with large terms.
 For goals around 175,000 words long\footnote{When we had objects as arguments rather than fields in our category-theory library (see \autoref{sec:abstraction-barriers:packed-records}), we encountered goals of about 219,633 words when constructing pointwise Kan extensions.}, we have found that simple tactics like \texttt{apply f\_equal} take around 1 second to execute, which makes interactive theorem proving very frustrating.\footnote{See also \coqbug{3280}.}
 Even more frustrating is the fact that the largest contribution to this size is often arguments to irrelevant functions, i.e., functions that are provably equal to all other functions of the same type.
@@ -306,7 +307,7 @@ We come now to discoveries and inventions of the past decade or so which have no
 \minortodo{is this sentence redundant?}
 \minortodo{fix the intro to this subsection}
 \minortodo{fix flow}
-Recall again that the main case study of \autoref{ch:design} was our implementation of a category theory library.
+Recall again that the main case study of \autoref{ch:design} was our implementation of a category-theory library.
 
 \subsubsection{Equality}\label{sec:equality}
 Equality, which has recently become a very hot topic in type theory~\cite{HoTTBook} and higher category theory~\cite{Leinster2007}, provides another example of a design decision where most usage is independent of the exact implementation details.
@@ -325,7 +326,7 @@ Every function that we use needs to come with a proof that it sends equivalent e
 Even worse, if we need an equivalence relation on the universe of ``types with equivalence relations'', we need to provide a transport function between equivalent types that respects the equivalence relations of those types.
 
 \paragraph{Propositional Equality}
-An alternative to setoids is propositional equality, which carries none of the overhead of setoids, but does not allow an easy formulation of quotient types, and requires assuming functional extensionality to construct the category of sets.
+An alternative to setoids is propositional equality, which carries none of the overhead of setoids but does not allow an easy formulation of quotient types and requires assuming functional extensionality to construct the category of sets.
 
 \minortodo{check if we've defined propositional equality before}
 Intensional type theories like Coq's have a built-in notion of equality, often called definitional equality or judgmental equality, and denoted as $x \equiv y$.
@@ -343,7 +344,7 @@ The recent emergence of higher inductive types allows the best of both worlds.
 They originated as a way to allow homotopy type theorists to construct types with nontrivial higher paths.
 A very simple example is the interval type, from which functional extensionality can be proven~\cite{interval-implies-funext}.
 The interval type consists of two inhabitants \mintinline{coq}{zero : Interval} and \mintinline{coq}{one : Interval}, and a proof \mintinline{coq}{seg : zero = one}.
-In a hypothetical type theory with higher inductive types, the type checker does the work of carrying around an equivalence relation on each type for us, and forbids users from constructing functions that do not respect the equivalence relation of any input type.
+In a hypothetical type theory with higher inductive types, the type checker does the work of carrying around an equivalence relation on each type for us and forbids users from constructing functions that do not respect the equivalence relation of any input type.
 For example, we can, hypothetically, prove functional extensionality as follows:
 \begin{minted}{coq}
 Definition f_equal {A B x y} (f : A → B) : x = y → f x = f y.
@@ -360,7 +361,7 @@ Definition functional_extensionality {A B} (f g : A → B)
 \end{minted}
 Had we neglected to include the branch for \mintinline{coq}{seg}, the type checker should complain about an incomplete match; the function \mintinline{coq}{λ i : Interval ⇒ match i with zero ⇒ true | one ⇒ false end} of type \mintinline{coq}{Interval → bool} should not typecheck for this reason.
 
-The key insight is that most types do not need any special equivalence relation, and, moreover, if we are not explicitly dealing with a type with a special equivalence relation, then it is impossible (by parametricity) to fail to respect the equivalence relation.
+The key insight is that most types do not need special equivalence relations, and, moreover, if we are not explicitly dealing with a type with a special equivalence relation, then it is impossible (by parametricity) to fail to respect the equivalence relation.
 Said another way, the only way to construct a function that might fail to respect the equivalence relation would be by some eliminator like pattern matching, so all we have to do is guarantee that direct invocations of the eliminator result in functions that respect the equivalence relation.
 
 As with the choice involved in defining categories, using propositional equality with higher inductive types rather than setoids derives many of its benefits from not having to deal with all of the overhead of custom equivalence relations in constructions that do not need them.
@@ -399,13 +400,13 @@ This is unsatisfactory, however, on two counts:
 \begin{enumerate}
 \item
   The eliminators do not compute on path constructors.
-  For example, the interval eliminator would compute on \mintinline{coq}{zero} and \mintinline{coq}{one}, but not on \mintinline{coq}{seg}.
+  For example, the interval eliminator would compute on \mintinline{coq}{zero} and \mintinline{coq}{one} but not on \mintinline{coq}{seg}.
 \item
   Adding these axioms compromises the trust story.
 \end{enumerate}
 
 Cubical type theory is the solution to both of these problems, for both higher inductive types and univalence~\cite{Cubical2016Cohen}.
-Unlike most other type theories, computation in cubical type theory is implemented by appealing to the category theoretic model, and the insights that allow such computation are slowly making their way into more mainstream dependently typed proof assistants~\cite{Cubical2019Vezzosi}.
+Unlike most other type theories, computation in cubical type theory is implemented by appealing to the category-theoretic model, and the insights that allow such computation are slowly making their way into more mainstream dependently typed proof assistants~\cite{Cubical2019Vezzosi}.
 
 \begin{comment}
 \begin{subappendices}

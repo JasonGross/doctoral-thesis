@@ -1223,7 +1223,7 @@ We might say that an abstraction barrier is \emph{leaky} if we ever need to pier
 In proof assistants like Coq, using \mintinline{coq}{unfold}, \mintinline{coq}{simpl}, or \mintinline{coq}{cbn} can often indicate a leaky abstraction barrier, where in order to prove a property we unfold the interface we are given to see how it is implemented.
 This is all well and good when we are in the process of defining the abstraction barrier---unfolding the definition of sorting a list, for example, to prove that sorting the list gives back a list with all the same elements---but can be problematic when used more pervasively.
 
-Let us look at an example from a category theory library we implemented in Coq~\cite{category-coq-experience}, which we introduce in \autoref{sec:category-theory-library}.
+Let us look at an example from a category-theory library we implemented in Coq~\cite{category-coq-experience}, which we introduce in \autoref{sec:category-theory-library}.
 Category theory generalizes functions and product types, and the example we present here is a category-theoretic version of the isomorphism between functions of type $C_1 \times C_2 \to D$, which take a pair of elements $c_1 \in C_1$ and $c_2 \in C_2$ and return an element of $D$, and functions of type $C_1 \to (C_2 \to D)$ which take a single argument $c_1 \in C_1$ and return a function from $C_2$ to $D$.
 We write this isomorphism as
 \[

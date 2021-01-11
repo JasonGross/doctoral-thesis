@@ -95,7 +95,7 @@ Although preexisting formalizations of category theory in proof assistants aboun
 we chose to implement our library~\cite{HoTT/HoTT-categories} from scratch.
 Beginning from scratch allowed me to familiarize myself with both category theory and Coq, without simultaneously having to familiarize myself with a large preexisting code base.
 %Additionally, starting from scratch forced us to confront all of the decisions involved in designing such a library, and gave us the confidence to change the definitions of basic concepts multiple times to try out various designs, including fully rewriting the library at least three times.
-%Although this paper is much more about the design of category theory libraries in general than our library in particular, we include a comparison of our library~\cite{HoTT/HoTT-categories} with selected extant category theory libraries in \autoref{sec:compare-libraries}.
+%Although this paper is much more about the design of category-theory libraries in general than our library in particular, we include a comparison of our library~\cite{HoTT/HoTT-categories} with selected extant category-theory libraries in \autoref{sec:compare-libraries}.
 %At present, our library subsumes many of the constructions in most other such Coq libraries, and is not lacking any constructions in other libraries that are of a complexity requiring significant type checking time, other than monoidal categories.
 
 
@@ -111,7 +111,7 @@ Beginning from scratch allowed me to familiarize myself with both category theor
 We acknowledge that the concept of performance issues arising from choices of abstraction barriers may seem a bit counterintuitive.
 After all, abstraction barriers generally live in the mind of the developer, in some sense, and it seems a bit insane to say that performance of the code depends on the mental state of the programmer.
 
-Therefore, we will describe a sampling of abstraction barriers and the design choices that went into them, drawn from real examples\minortodoask{how much should I talk about the category theory library itself in my thesis?}, as well as the performance issues that arose from these choices.
+Therefore, we will describe a sampling of abstraction barriers and the design choices that went into them, drawn from real examples\minortodoask{how much should I talk about the category-theory library itself in my thesis?}, as well as the performance issues that arose from these choices.
 We will also discuss ways that various design choices increased or reduced the effort required of us to define objects and prove theorems.
 
 %A few other pervasive strategies made nontrivial differences for proof performance or simplicity.
@@ -771,7 +771,7 @@ Readers uninterested in the details should feel free to skip over this chapter, 
 
 %\section{Design Decisions in the Category Theory Library}\label{sec:misc:category-theory-design}
 
-All of the design principles in this chapter arose in the course of building the category theory library we implemented in Coq~\cite{category-coq-experience}, introduced in \autoref{sec:category-theory-library}.
+All of the design principles in this chapter arose in the course of building the category-theory library we implemented in Coq~\cite{category-coq-experience}, introduced in \autoref{sec:category-theory-library}.
 
 \section{Identities vs.\ Equalities; Associators}\label{sec:associators}
 There are a number of constructions that are provably equal, but which we found more convenient to construct transformations between instead, despite the increased verbosity of such definitions.

@@ -54,6 +54,7 @@ proofy
 redex
 redexes
 repo
+resugared
 romega
 scalably
 semidecidable

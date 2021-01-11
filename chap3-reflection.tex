@@ -12,6 +12,7 @@ In contrast, tactic-based procedures may encounter runtime errors or loop foreve
 As a consequence, if we want to keep the trusted codebase small, as discussed in \autoref{sec:debruijn-criterion}, these tactic procedures must output proof terms, justifying their decisions, and these terms can grow large, making for slower proving and requiring transmission of large proof terms to be checked slowly by others.
 A verified procedure need not generate a certificate for each invocation.
 
+\todoac{Regarding the entire following paragraph: It's strange to put this discussion of performance in *this* chapter, not the one where you show how to reify well.}
 The starting point for proof by reflection is \emph{reification}: translating a ``native'' term of the logic into an explicit abstract syntax tree.
 We may then feed that tree to verified procedures or any other functional programs in the logic.
 The benefits listed above are particularly appealing in domains where goals are very large.
@@ -50,6 +51,8 @@ Proof terms, in a sense, are traces of a proof script.
 They provide Coq's kernel with a term that it can check to verify that no illegal steps were taken.
 Listing every step results in large traces.
 
+\todoac{Ensure the figure doesn't run off the bottom of the page in final edits}
+
 \begin{wrapfigure}[8]{r}{\widthof{\texttt{Fixpoint check\_is\_even (n : nat) : bool}}}
 \begin{minted}{coq}
 Fixpoint check_is_even (n : nat) : bool
@@ -85,14 +88,14 @@ To do better, we need a formal representation of terms or expressions.
 \subsection{Reflective-Syntax Primer}
 Sometimes, to achieve faster proofs, we must be able to tell, for example, whether we got a term by multiplication or by addition, and not merely whether its normal form is 0 or a successor.%
 \footnote{%
-  Sometimes this distinction is necessary for generating a proof at all, as is the case in \mintinline{coq}{nsatz} and \mintinline{coq}{romega}; there is no way to prove that addition is commutative if you cannot identify what things you were adding in the first place.%
+  Sometimes this distinction is necessary for generating a proof at all, as is the case in \mintinline{coq}{nsatz} and \mintinline{coq}{romega}; there is no way to prove that addition is commutative if you cannot identify what numbers you were adding in the first place.%
 }
 
 A reflective automation procedure generally has two steps.
 The first step is to \emph{reify} the goal into some abstract syntactic representation, which we call the \emph{term language} or an \emph{expression language}.
 The second step is to run the algorithm on the reified syntax.
 
-\begin{wrapfigure}[6]{r}{\widthof{\texttt{| NatMul (x y : expr) : expr.}}}
+\begin{wrapfigure}[7]{r}{\widthof{\texttt{| NatMul (x y : expr) : expr.}}}
 %\vspace{-45pt}
 \begin{minted}{coq}
 Inductive expr :=
@@ -135,9 +138,9 @@ Given a tactic \mintinline{coq}{Reify} to produce a reified term from a \mintinl
 It is instant on the last example.%, \mintinline{coq}{10 * 10 * 10 * 10 * 10 * 10 * 10 * 10 * 10}.
 
 Before we proceed to reification, we will introduce one more complexity.
-If we want to support our initial example with \letindots\space efficiently, we must also have \mintinline{coq}{let}-expressions.
-Our current procedure that inlines \mintinline{coq}{let}-expressions takes 19 seconds, for example, on \mintinline{coq}{let x0 := 10 * 10 in let x1 := x0 * x0 in … let x24 := x23 * x23 in x24}.
-The choices of representation of binders, which are essential to encoding \mintinline{coq}{let}-expressions, include higher-order abstract syntax (HOAS)~\cite{HOAS}, parametric higher-order abstract syntax (PHOAS)~\cite{PhoasICFP08} which is also known as weak HOAS~\cite{weak2013Ciaffaglione}, de Bruijn indices~\cite{debruijn1972}, nominal representations~\cite{Nominal2003Pitts}, locally nameless representations~\cite{Locally2012Chargueraud,locally2007Leroy}, named representations, and nested abstract syntax~\cite{Nested2012Hirschowitz,deBruijn1999Bird}.
+If we want to support our initial example with \letindots\space efficiently, we must also have \mintinline{coq}{let} expressions.
+Our current procedure that inlines \mintinline{coq}{let} expressions takes 19 seconds, for example, on \mintinline{coq}{let x0 := 10 * 10 in let x1 := x0 * x0 in … let x24 := x23 * x23 in x24}.
+The choices of representation of binders, which are essential to encoding \mintinline{coq}{let} expressions, include higher-order abstract syntax (HOAS)~\cite{HOAS}, parametric higher-order abstract syntax (PHOAS)~\cite{PhoasICFP08} which is also known as weak HOAS~\cite{weak2013Ciaffaglione}, de Bruijn indices~\cite{debruijn1972}, nominal representations~\cite{Nominal2003Pitts}, locally nameless representations~\cite{Locally2012Chargueraud,locally2007Leroy}, named representations, and nested abstract syntax~\cite{Nested2012Hirschowitz,deBruijn1999Bird}.
 \minortodo{compare citations with those of \cite[p.~122]{ringer2020qed}}
 A survey of a number of options for binding can be found in \autocite{Engineering2008Aydemir}.
 \minortodoask{is this a place to cite POPLMark?  What should be said about it?  Should I mention more sorts of representations?}
@@ -185,6 +188,8 @@ Fixpoint check_is_even_expr (t : @expr bool) : bool
      end.
 \end{minted}
 
+\todoac{Weird to get to this point without introducting polymorphically abstracted expression types. The reader may be wondering where the two instantiated ASTs come from, such that we know they parallel each other.}
+
 Note, importantly, that \mintinline{coq}{check_is_even_expr} and \mintinline{coq}{denote} take \mintinline{coq}{expr}s with \emph{different} instantiations of the \mintinline{coq}{var} parameter.
 This is necessary so that we can store the information about whether or not a particular \mintinline{coq}{let}-bound expression is even (or what its denotation is) in the variable node itself.
 However, this means that we cannot reuse the same expression as arguments to both functions to formulate the soundness condition.
@@ -210,6 +215,7 @@ Inductive related {var1 var2 : Type}
 \end{minted}
 
 Conventionally, syntax trees are parametric over the value of the \mintinline{coq}{var} parameter, and we require that all instantiations give related ASTs (in the empty context), whence we call the parametric AST \emph{well-formed}:
+\todoac{Here's the part I expected to see earlier}% N.B. no blank line here when this todo is removed
 \begin{minted}{coq}
 Definition Expr := ∀ var, @expr var.
 Definition Wf (e : Expr) := ∀ var1 var2, related [] (e var1) (e var2)
@@ -258,7 +264,7 @@ Inductive expr {var : type → Type} : type → Type :=
 | Length {t} : expr (List t) → expr Nat.
 \end{minted}
 We would then have to adjust the definitions of the other functions accordingly.
-The type signatures of the might functions become
+The type signatures of these functions might become
 
 \begin{minted}{coq}
 Fixpoint denote_type (t : type) : Type
@@ -311,8 +317,8 @@ Fixpoint denote (default : nat) (Γ : list nat) (t : @expr nat) : nat
                     denote default (x :: Γ) f
      end.
 \end{minted}
-If we wanted a more efficient representation, we could choose better data-structures for the context $\Gamma$ and variable indices than linked lists and unary-encoded natural numbers.
-One particularly convenient choice, in Coq, would be using the efficient \mintinline{coq}{PositiveMap.t} data-structure which encodes a finite map of binary-encoded \mintinline{coq}{positive}s to any type.
+If we wanted a more efficient representation, we could choose better data structures for the context $\Gamma$ and variable indices than linked lists and unary-encoded natural numbers.
+One particularly convenient choice, in Coq, would be using the efficient \mintinline{coq}{PositiveMap.t} data structure which encodes a finite map of binary-encoded \mintinline{coq}{positive}s to any type.
 
 One unfortunate result is that the natural denotation function is no longer total.
 Here we have chosen to give a denotation function which returns a default element when a variable reference is too large, but we could instead choose to return an \mintinline{coq}{option nat}.
@@ -325,7 +331,7 @@ In that case, we might annotate each variable node with a type code, mandate dec
 
 \subsubsection{Nested Abstract Syntax} \label{sec:binders:nested-abstract-syntax}
 If we want a variant of de Bruijn indices which guarantees well-typed syntax trees, we can use nested abstract syntax~\cite{Nested2012Hirschowitz,deBruijn1999Bird}.
-On mono-typed ASTs, this looks like encoding the size of the context in the type of the expressions.
+On monotyped ASTs, this looks like encoding the size of the context in the type of the expressions.
 For example, we could use \mintinline{coq}{option} types~\cite{Nested2012Hirschowitz}:
 \begin{minted}{coq}
 Notation "^ V" := (option V).

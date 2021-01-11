@@ -200,7 +200,7 @@ We provide instances for \texttt{nat}, \texttt{prod}, \texttt{list}, \texttt{opt
 Users may add more instances if they desire.
 
 \subsubsection{\texorpdfstring{\texttt{setoid\_rewrite}}{setoid\_rewrite} and \texorpdfstring{\texttt{rewrite\_strat}}{rewrite\_strat}}
-To give as many advantages as we can to the preexisting work on rewriting, we pre-reduce the recursion on \mintinline{coq}{nat}s using \texttt{cbv} before performing \texttt{setoid\_rewrite}.
+To give as many advantages as we can to the preexisting work on rewriting, we prereduce the recursion on \mintinline{coq}{nat}s using \texttt{cbv} before performing \texttt{setoid\_rewrite}.
 (Note that \texttt{setoid\_rewrite} cannot itself perform reduction without generating large proof terms, and \texttt{rewrite\_strat} is not currently capable of sequencing reduction with rewriting internally due to bugs such as \coqbug{10923}.)
 Rewriting itself is easy; we may use any of \texttt{repeat setoid\_rewrite Z.add\_0\_r}, \texttt{rewrite\_strat topdown Z.add\_0\_r}, or \texttt{rewrite\_strat bottomup Z.add\_0\_r}.
 

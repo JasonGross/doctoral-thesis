@@ -40,7 +40,7 @@ We note, however, that many of the challenges fall into the same broad categorie
 issues arising from the power and (mis)use of dependent types, as introduced in \fullnameref{sec:why-how-dependent-types};
 and issues arising from API mismatches, as described in \fullnameref{ch:api-design}.
 
-\section{Pre-Reduction}\label{sec:rewriting-more:prereduction}
+\section{Prereduction}\label{sec:rewriting-more:prereduction}
 The two biggest underlying causes of engineering challenges are expression--API mismatch, which we'll discuss in \fullnameref{sec:rewriting-more:AST:choices}, and our desire to reduce away known computations in the rewriting engine once and for all when compiling rewriting rules, rather than again and again every time we perform a rewrite.
 In practice, performing this early reduction nets us an approximately $2\times$ speed-up.
 
@@ -618,7 +618,7 @@ None of our proofs are made simpler by tracking the set of permitted type variab
 %
 %\todo{talk about how we can unify types at all (c.f.~\texttt{preunify\_types})}
 
-\section{Pre-evaluation Revisited}\label{sec:rewriting-more:prereduction-again}
+\section{Preevaluation Revisited}\label{sec:rewriting-more:prereduction-again}
 
 Having built up enough infrastructure to give a bit more in the way of code examples, we now return to the engineering challenges posed by reducing early, first investigated in \autoref{sec:rewriting-more:prereduction}
 

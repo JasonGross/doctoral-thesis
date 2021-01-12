@@ -193,7 +193,7 @@ Fixpoint check_is_even_expr (t : @expr bool) : bool
 \caption{Two definitions using two different instantiations of the PHOAS \mintinline{coq}{var} parameter.}\label{fig:denote-check-even-PHOAS}
 \end{figure}
 
-Conventionally, syntax trees are parametric over the value of the \mintinline{coq}{var} parameter, which we may instanitate in various ways to allow variable nodes to hold various kinds of information, and we might define a type for these parametric syntax trees:
+Conventionally, syntax trees are parametric over the value of the \mintinline{coq}{var} parameter, which we may instantiate in various ways to allow variable nodes to hold various kinds of information, and we might define a type for these parametric syntax trees:
 \begin{minted}{coq}
 Definition Expr := ∀ var, @expr var.
 \end{minted}
@@ -459,11 +459,12 @@ We could instead induct on one of the ASTs and destruct the other one, but this 
 
 \minortodo{Time permitting, benchmark wf proof methods and insert plots}
 
-\todoac{This part is interesting for the implicit transition away from ``here are some new tricks that correct deficiencies in prior PHOAS papers.'' At least, my POPL'10 paper *does* produce initial PHOAS well-formedness proofs using a verified-as-well-formed translator from de Bruijn. [Jason's Response: I think the trick here is a bit different (in particular it involves round-tripping rather than just coming from de Bruijn)?  Note also that having a compact representation for this proof term requires that the de Bruijn well-formed predication is a computational function that outputs a Boolean.  Furthermore, indexing the de Bruijn representation over the list of context types (or over the length, as is done in the POPL'10 paper) incurs quadratic overhead in the size of the represented term, so you can't just have this property be true by construction.]}
-
 \subsubsection{Via de Bruijn} \label{sec:wf:perf:de-bruijn}
 
 An alternative, ultimately superior, method of constructing compact proofs of relatedness involves a translation to a de Bruijn representation.
+Although producing well-formedness proofs automatically using a verified-as-well-formed translator from de Bruijn was present already in early PHOAS papers~\cite{ImpurePOPL10}, we believe the trick of \emph{round-tripping} through a de Bruijn representation is new.
+Additionally, there are a number of considerations that are important for achieving adequate performance which we believe are not explained elsewhere in the literature, which we discuss at the end of this subsubsection.
+
 We can define a Boolean predicate on de Bruijn syntax representing well-formedness.
 \begin{minted}{coq}
 Fixpoint is_closed_under (max_idx : nat) (e : expr) : bool :=
@@ -488,31 +489,30 @@ The easiest way is to write a converter from PHOAS to de Bruijn.
 Hence we can prove the theorem \texttt{∀ e, is\_closed (PHOAS\_to\_deBruijn e) = true ∧ e = deBruijn\_to\_PHOAS (PHOAS\_to\_deBruijn e) → Wf e}.
 The hypothesis of this theorem is quite easy to check; we simply run \mintinline{coq}{vm_compute} and then instantiate it with the proof term \mintinline{coq}{conj (eq_refl true) (eq_refl e)}, which is linear in the size of \mintinline{coq}{e}.
 
+Note that, unlike the initial term representation of \textcite{ImpurePOPL10}, we cannot have a closed-by-construction de Bruijn representation if we want linear asymptotics.
+If we index each node over the size of the context---or, worse, the list of types of variables in the context---then the term representation incurs quadratic overhead in the size of the context.
+
 \section{Reification}\label{sec:reif-survey}\label{sec:reif-intro}
 
-\todo{check spacing on this figure once the introduction of this chapter is figured out}
-
-\begin{wrapfigure}[14]{r}{\widthof{\texttt{~~~~~~~~~~~~~constr:(@NatMul v X Y)}}}
-\begin{minted}{coq}
-Ltac f v x := (* reify var term *)
-  lazymatch x with
-  | O => constr:(@NatO v)
-  | S ?x => let X := f v x in
-            constr:(@NatS v X)
-  | ?x*?y => let X := f v x in
-             let Y := f v y in
-             constr:(@NatMul v X Y)
-  end.
-\end{minted}
-%\vspace{-20pt}
-\caption{Reification Without Binders in~\Ltac}\label{fig:ltac-reify-nobinders}
-\end{wrapfigure}
+\minortodo{check spacing on this figure once the introduction of this chapter is figured out}
 
 The one part of proof by reflection that we've neglected up to this point is reification.
 There are many ways of performing reification; in \autoref{ch:reification-by-parametricity}, we discuss 19 different ways of implementing reification, using 6 different metaprogramming facilities in the Coq ecosystem: \Ltac, \LtacTwo, \MtacTwo~\cite{lessadhoc,Mtac2}, type classes~\cite{sozeau2008first}, canonical structures~\cite{gonthier2016small}, and reification-specific OCaml plugins (quote~\cite{quote-plugin}\footnote{Note that this plugin was removed in Coq 8.10~\cite{coq-pr-remove-quote-plugin}, and so our plots no longer include this plugin.}, template-coq~\cite{TemplateCoq}, ours).
-\todoac{The ``)'' at the end of the previous sentence is crossed off. [Jason: Why?]}%
-\autoref{fig:ltac-reify-nobinders} displays the simplest case: an Ltac script to reify a tree of function applications and constants.
+\autoref{fig:ltac-reify-nobinders} displays the simplest case: an \Ltac\space script to reify a tree of function applications and constants.
 Unfortunately, all methods we surveyed become drastically more complicated or slower (and usually both) when adapted to reify terms with variable bindings such as \texttt{let}-\texttt{in} or \texttt{$\lambda$} nodes.
+
+\begin{figure}%{wrapfigure}[14]{r}{\widthof{\texttt{~~~~~~~~~~~~~constr:(@NatMul v X Y)}}}
+\begin{minted}{coq}
+Ltac f v term := (* reify var term *)
+ lazymatch term with
+ | O     => constr:(@NatO v)
+ | S ?x  => let X := f v x in constr:(@NatS v X)
+ | ?x*?y => let X := f v x in let Y := f v y in constr:(@NatMul v X Y)
+ end.
+\end{minted}
+%\vspace{-20pt}
+\caption{Reification Without Binders in~\Ltac}\label{fig:ltac-reify-nobinders}
+\end{figure}%{wrapfigure}
 
 We have made detailed walkthroughs and source code of these implementations available\footnote{\url{https://github.com/mit-plv/reification-by-parametricity}} in hope that they will be useful for others considering implementing reification using one of these metaprogramming mechanisms, instructive as nontrivial examples of multiple metaprogramming facilities, or helpful as a case study in Coq performance engineering.
 \minortodo{Maybe include detailed walkthroughs in the appendix?}

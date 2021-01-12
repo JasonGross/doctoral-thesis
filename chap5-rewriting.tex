@@ -371,7 +371,7 @@ This is not so bad, but recall also from \autoref{sec:pattern-matching-compilati
     With the first element of the vector, match on its kind; if it is an identifier matching something in \texttt{icases}, which is a list of pairs of identifiers and decision trees, remove the first element of the vector and run that decision tree; if it is an application and \texttt{app\_case} is not \texttt{None}, try the \texttt{app\_case} decision tree, replacing the first element of each vector with the two elements of the function and the argument it is applied to; otherwise, do not modify the vectors and use the \texttt{default} decision tree.
   \item \texttt{Swap i cont}: Swap the first element of the vector with the $i^\texttt{th}$ element (0-indexed) and keep going with \texttt{cont}.
 \end{itemize}
-The first two constructors are not very interesting, as far as overhead goes, but the third and fourth constructors are quite painful.\todoac{Not a good word to use in formal writing (for instance, because it's not clear what you mean)}
+The first two constructors are not very interesting, as far as overhead goes, but the third and fourth constructors mandate quite involved adaptations for operating on well-typed terms.
 
 Note that the type of \mintinline{coq}{eval_decision_tree} would be something like \mintinline{coq}{∀ {T : Type} (d : decision_tree) (ts : list type) (es : exprlist ts) (K : ℕ → exprlist ts → option T), option T} where the \mintinline{coq}{ℕ} argument to the continuation describes which rewrite rule to invoke.
 Note that we are using continuation-passing style here to achieve adequate reduction behavior inside Coq.
@@ -494,8 +494,8 @@ There are three perhaps-unexpected things to note about this inductive type, whi
 
 With this inductive type in hand, it's easy to see how \mintinline{coq}{rExpr} allows us $\mathcal{O}(1)$ embedding of intrinsically typed \mintinline{coq}{expr}s into untyped \mintinline{coq}{rawexpr}s.
 
-While it's likely that sufficiently good abstraction barriers around this datatype would allow us to use it with relatively little pain\todoac{don't use pain}, we did not succeed in designing good enough abstraction barriers.
-The bright side of this failure is that we now have a number of examples for this dissertation of ways in which inadequate abstraction barriers cause pain\todoac{don't use pain}.
+While it's likely that sufficiently good abstraction barriers around this datatype would allow us to use it with relative ease, we did not succeed in designing good enough abstraction barriers.
+The bright side of this failure is that we now have a number of examples for this dissertation of ways in which inadequate abstraction barriers cause overhead in terms of both the intricacy of definitions and theorems and the size of their statements and proofs as well as, to a lesser extent, the running time of proof generation.
 
 We will discuss the many issues that arise from leaks in this abstraction barrier in the upcoming subsections.
 %While some of these issues will be discussed in \Autoref{sec:rewriting-more:delayed-rewriting,sec:rewriting-more:revealing-enough-structure,sec:rewriting-more:rIdent-known} where we discuss the perhaps-unexpected additions to the \mintinline{coq}{rawexpr} constructors, we can discuss a few complications here.
@@ -598,7 +598,7 @@ This might allow us to write type signatures for functions that guarantee some i
 However, it's not clear to us where this would actually be useful; most functions already care only about whether or not we permit type variables at all.
 Our current code in fact performs a poor approximation of this strategy in some places: we index over the entire pattern where indexing over the free variables of the pattern would suffice.
 
-This unneeded indexing causes an enormous amount of pain\todoac{don't use pain} and is yet another example of how poorly designed abstraction barriers incur outsized overhead.
+This unneeded indexing enormously complicates the code and theorems and is yet another example of how poorly designed abstraction barriers incur outsized overhead.
 Rewrite-rule replacements are expressed as dependently typed towers indexed first over the type variables of a pattern and then again over the term variables.
 This design is a historical artifact, from when we expected to be writing rewrite rule ASTs by hand rather than reifying them from Gallina and found the curried towers more convenient to write.
 \minortodo{should I elaborate more on the pain?}
@@ -607,7 +607,7 @@ This design is a historical artifact, from when we expected to be writing rewrit
 %In order to state the correctness conditions for gathering binding data, we must first talk about applying replacement rules to binding data.''
 %``We can define a transformation that takes in a \texttt{PositiveMap.t} of pattern type variables to types, together with a \texttt{PositiveSet.t} of type variables that we care about, and re-creates a new \texttt{PositiveMap.t} in accordance with the \texttt{PositiveSet.t}.
 %This is required to get some theorem types to line up, and is possibly an indication of a leaky abstraction barrier.''
-This design, however, is absolutely a mistake, especially given the concession we make in \fullnameref{sec:rewriting-more:prereduction:type-codes} to not track\todoac{use ``not to track'' [Jason: I think the current version is better]} enough typing information to avoid all typechecking.
+This design, however, is absolutely a mistake, especially given the concession we make in \fullnameref{sec:rewriting-more:prereduction:type-codes} to not track enough typing information to avoid all typechecking.
 
 While indexing over only the set of permitted type variables would simplify proofs significantly, we'd benefit even more by indexing only over whether or not we permit type variables at all.
 None of our proofs are made simpler by tracking the set of permitted type variables rather than just whether or not that set is empty.
@@ -635,7 +635,7 @@ We noted in \autoref{sec:rewriting-more:rawexpr-def} the \mintinline{coq}{known}
 This argument is used to track what sorts of operations can be unfolded early.
 In particular, if a given identifier has no type arguments (for example, the identifier coding for addition on $\mathbb{Z}$s), and we have already matched against it, then when performing further matches to unify with other patterns, we can directly match it against pattern identifiers.
 By contrast, if the identifier has not yet been matched against, or if it has unknown type arguments, we cannot guarantee that \mintinline{coq}{match}es will reduce.
-Tracking this information adds a not-insignificant amount of pain\todoac{not pain} to the code.
+Tracking this information adds a not-insignificant amount of nuance and intricacy to the code.
 
 Consider the following two cases, where we will make use of both \mintinline{coq}{true} and \mintinline{coq}{false} for the \mintinline{coq}{known} argument.
 
@@ -697,7 +697,7 @@ We could then have a function, not to be unfolded early, which substitutes the e
 Instead, we decided to reduce as much as we possibly could.
 Following the common practice of eager students looking to use dependent types, we defined a dependently typed data structure indexed over the pattern type which holds the mapping of each pattern type variable to a corresponding type.
 While this mapping cannot be fully computed at rewrite-rule-compilation time---we may not know enough type structure in the \mintinline{coq}{rawexpr}---we can reduce effectively all of the lookups by turning them into matches on this mapping which \emph{can} be reduced.
-This, unfortunately, complicates our proofs significantly while likely not providing any measurable speedup, serving only as yet another example of the pain\todoac{not pain} induced by needless dependency at the type level.
+This, unfortunately, complicates our proofs significantly while likely not providing any measurable speedup, serving only as yet another example of the overhead induced by needless dependency at the type level.
 %\item \todo{talk about whether or not to eliminate PositiveMap.t?} % ``In a possibly-gratuitous use of dependent typing to ensure that''
 \minortodo{is this enough?  does it need more? should we keep it here at all?}
 
@@ -724,9 +724,9 @@ We introduce in \autoref{sec:under-lets} the \mintinline{coq}{UnderLets} monad f
 We use two other monads in the rewriting engine: the option monad, to encode possible failure of rewrite-rule side conditions and substitutions, and the CPS monad discussed in \autoref{sec:rewriting-more:prereduction:cps}.
 
 Although we introduce a bit of syntactic sugar for monadic binds in an ad-hoc way, we do not fully commit to a monadic abstraction barrier in our code.
-This lack of principle incurs pain\todoac{not pain} when we have to deal with mismatched monads in different functions, especially when we haven't ordered the monadic applications in a principled way.
+This lack of principle incurs overhead when we have to deal with mismatched monads in different functions, especially when we haven't ordered the monadic applications in a principled way.
 
-The simplest example of this pain\todoac{not pain} is in our mixing of the option and CPS monads in \mintinline{coq}{eval_decision_tree}.
+The simplest example of this overhead is in our mixing of the option and CPS monads in \mintinline{coq}{eval_decision_tree}.
 The type of \mintinline{coq}{eval_decision_tree} is \mintinline{coq}{∀ {T : Type} (es : list rawexpr) (d : decision_tree) (K : ℕ → list rawexpr → option T), option T}.
 Recall that the function of \mintinline{coq}{eval_decision_tree} is to reveal structure on the list of expressions \mintinline{coq}{es} by evaluating the decision tree \mintinline{coq}{d}, calling \mintinline{coq}{K} to perform rewriting with a given rewrite rule (referred to by index) whenever it hits a leaf node, and continuing on when \mintinline{coq}{K} fails with \mintinline{coq}{None}.
 What is the correctness condition for \mintinline{coq}{eval_decision_tree}?
@@ -796,7 +796,7 @@ So here we see that a minor leak in an abstraction barrier (allowing the behavio
 %\todo{Talk also about the pain of wf statements for, e.g., \texttt{wf\_normalize\_deep\_rewrite\_rule}, having to go underneath multiple monads}
 
 \section{Rewriting Again in the Output of a Rewrite Rule}\label{sec:rewriting-more:do-again}
-We now come to the feature of the rewriter that caused the most pain\todoac{not pain}: allowing some rules to be designated as subject to a second bottomup rewriting pass in their output.
+We now come to the feature of the rewriter that took the most time and effort to deal with in our proofs and theorem statements: allowing some rules to be designated as subject to a second bottomup rewriting pass in their output.
 This feature is important for allowing users to express one operation (for example, \mintinline{coq}{List.flat_map}) in terms of other operations (for example, \mintinline{coq}{list_rect}) which are themselves subject to reduction.
 
 The technical challenge, here, is that the PHOAS \mintinline{coq}{var} type of the input of normalization by evaluation is not the same as the \mintinline{coq}{var} type of the output.
@@ -890,7 +890,7 @@ Namely, when forming applications of \mintinline{coq}{rawexpr}s to \mintinline{c
 
 \paragraph{\texorpdfstring{\mintinline{coq}{interp_maybe_do_again}}{interp\_maybe\_do\_again}}
 In \autoref{sec:rewriting-more:do-again}, we discussed a small subset of the implications of supporting rewriting again in the output of a rewrite rule.
-The most easily describable pain\todoac{not pain} caused by this feature shows up in the definition of what it means for a rewrite rule to preserve denotational semantics.
+The most easily describable intricacy and overhead caused by this feature shows up in the definition of what it means for a rewrite rule to preserve denotational semantics.
 At the user level, this is quite obvious: the left-hand side of the rewrite rule (prior to reification\footnote{%
   Note that this reification is a tactic procedure reifying Gallina to PHOAS, \emph{not} the \mintinline{coq}{reify} function of normalization by evaluation discussed elsewhere in this chapter.%
 }) must equal the right-hand side.
@@ -927,7 +927,7 @@ That is, we write
   & \phantom{\defeq\forall~~}\to \text{related\_NbE}_{t_2}(\Gamma' \mathop{++} \Gamma, f_1(v_1), f_2(v_2)) \\
   \text{related\_NbE}_b(\Gamma, e_1, e_2) & \defeq \text{related}(\Gamma, e_1, e_2)
 \end{align*}
-\todoac{Not surprising!  Matches the buzzword of ``Kripke semantics.'' [Jason: should I say anything about this?  if so, what?]}
+\minortodoac{Not surprising!  Matches the buzzword of ``Kripke semantics.'' [Jason: should I say anything about this?  if so, what?]}
 
 Some correctness lemmas do not need full-blown relatedness conditions.
 For example, in some places, we do not need that a \mintinline{coq}{rawexpr} is fully consistent with its alternate expression structure, only that the types match and that the top-level structure of each alternate PHOAS expression matches the node of the \mintinline{coq}{rawexpr}. \\

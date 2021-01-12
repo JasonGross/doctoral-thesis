@@ -1,7 +1,7 @@
 \chapter{\readyforreadingmod{Abstraction}{minor wording edits}}\label{ch:design}\label{ch:api-design}\label{ch:abstraction}
 
 \section{Introduction}
-In \Autoref{ch:intro,ch:perf-failures}, we talked about\todoac{``we talked about'' Too informal / different from normal conventions for technical writing} two different fundamental sources of performance bottlenecks in proof assistants:
+In \Autoref{ch:intro,ch:perf-failures}, we discussed two different fundamental sources of performance bottlenecks in proof assistants:
 the power that comes from having dependent types, in \autoref{sec:why-how-dependent-types};
 and the de Bruijn criterion of having a small trusted kernel, in \autoref{sec:debruijn-criterion}.
 In this chapter, we will dive further into the performance issues arising from the first of these design decisions, expanding on \fullnameref{sec:axis-nested-abstraction-barriers} and proposing some general guidelines for handling these performance bottlenecks.
@@ -42,11 +42,11 @@ The extremes of using dependent types are relatively easy:
 \end{itemize}
 
 We present a rule of thumb for being in the middle:
-it is painful\todoac{not ``painful''} to recombine proofs and programs after you\todoac{not ``you''} separate them;
-if you\todoac{not ``you''} are doing it to define an opaque transformation that acts on proof-carrying code, that is okay, but if you\todoac{not ``you''} cannot make that abstraction barrier, enormous pain results.
+it incurs enormous overhead---both proof-authoring time and often proof-checking time---to recombine proofs and programs after separating them;
+if this separation and recombination is being done to define an opaque transformation that acts on proof-carrying code, that is okay, but if the abstraction barrier cannot be constructed, enormous overhead results.
 
-For example, if you\todoac{not ``you''} have length-indexed lists and want to index into them with elements of a finite type, things are fine until you\todoac{not ``you''} need to divorce the index from its proof of finiteness.
-If you\todoac{not ``you''}, for example, want to index into, say, the concatenation of two lists, with an index into the first of the lists, then you\todoac{not ``you''} will likely run into trouble, because you\todoac{not ``you''} are trying to consider the index separately from its proof of finitude, but you\todoac{not ``you''} have to recombine them to do the indexing.
+For example, if we have length-indexed lists and want to index into them with elements of a finite type, things are fine until we need to divorce the index from its proof of finiteness.
+If, for example, we want to index into the concatenation of two lists with an index into the first of the lists, then we will likely run into trouble, because we are trying to consider the index separately from its proof of finitude, but we have to recombine them to do the indexing.
 
 We saw in \autoref{foot:break-abstraction:example:decision-tree-indexing} in \fullnameref{sec:break-abstraction:example:decision-tree-indexing} how dependent types cause coupling between otherwise-unrelated design decisions.
 This is due to the fact that every single operation needs to declare how it interacts with all of the various indices and must effectively include a proof for each of these interactions.
@@ -326,8 +326,7 @@ Note that the nonmonotonic timing is \emph{reproducible} and seems to be due to 
   Defining the record type, though, still incurs a quadratic factor due to hash consing the projections; see \coqbug{12270}.
 
 
-  \minortodo{remove use of ``you''}
-  If your\todoac{not ``your''} proof assistant does not support records out-of-the-box, or you\todoac{not ``you''} want to avoid using them for whatever reason\footnote{Note that the UniMath library~\cite{voevodsky_2015,UniMath,introduction2018Grayson} does this. \minortodo{explain reasoning}}, you\todoac{not ``you''} can instead define intermediate abstraction barriers by hand.
+  If our proof assistant does not support records out-of-the-box, or we want to avoid using them for whatever reason\footnote{Note that the UniMath library~\cite{voevodsky_2015,UniMath,introduction2018Grayson} does this. \minortodo{explain reasoning}}, we can instead define intermediate abstraction barriers by hand.
   Here is what code that almost works looks like for four fields:
 \begin{minted}{coq}
 Local Set Implicit Arguments.

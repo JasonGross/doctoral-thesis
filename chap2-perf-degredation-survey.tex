@@ -4,7 +4,9 @@
 
 As alluded to in \autoref{sec:manual-proof-long}, when writing nonautomated proofs to verify code in a proof assistant, the number of lines of proof we need to write scales with the number of lines of code being verified, typically resulting to a $10\times$ to $100\times$ overhead.
 In this strategy, proof generation and proof checking times are reasonable, often scaling linearly with the number of lines of proof.
-Automating the generation of proofs solves the overhead\todoac{Can one ``solve'' an ``overhead''?} of proof-writing time; however, it introduces massive \emph{nonlinear} overhead in the time it takes for the computer to generate and check the proof.
+Automating the generation of proofs resolves the issue of overhead of proof-writing time.
+Automation significantly decreases the marginal cost of proving theorems about new code that is similar enough to code already verified.
+However, it introduces massive \emph{nonlinear} overhead in the time it takes for the computer to generate and check the proof.
 
 The main contribution of this thesis, presented in \autoref{ch:rewriting}, is a tool that solves this problem of unacceptable overhead in proof-generation and proof-checking for the Fiat Cryptography project~\cite{FiatCryptoSP19} and which we believe is broadly applicable to other domains.
 
@@ -668,7 +670,8 @@ The essential function of a proof checker is to verify that a given term has a g
 We obviously cannot type-check a term in better than linear time in the size of the representation of the term.
 
 Recall that we cannot place any hard bounds on complexity of typechecking a term, as terms as simple as \mintinline{coq}{@eq_refl bool true} proving that the Boolean \mintinline{coq}{true} is equal to itself can also be typechecked as proofs of arbitrarily complex decision procedures returning success.
-\todoac{[About this entire paragraph] Subtle point here that might benefit from more explanation/example! [Jason: How much more? / What should I say?] [Adam responds: I don't know.  This suggestion is way at the bottom of the ranking of importance among those I shared.  If you don't make changes, you should be OK with the knowledge that readers who are not Coq experts won't understand what is up.]}
+For example, suppose the function \mintinline{coq}{f TM n} takes as arguments a description of a Turing machine \mintinline{coq}{TM} and a number of steps \mintinline{coq}{n} and outputs \mintinline{coq}{false} unless \mintinline{coq}{TM} halts within \mintinline{coq}{n}, in which case it instead outputs \mintinline{coq}{true}.
+Then for any concrete number \mintinline{coq}{n} and any concrete description of a Turing machine \mintinline{coq}{TM} which does in fact halt within \mintinline{coq}{n} steps, the term \mintinline{coq}{@eq_refl bool true} can be typecked as a proof of \mintinline{coq}{f TM n = true} because \mintinline{coq}{f TM n} computes to \mintinline{coq}{true}.
 
 We might reasonably hope that typechecking problems which require no interesting computation can be completed in time linear in the size of the term and its type.
 
@@ -1261,11 +1264,13 @@ There are only seven components of the isomorphism $(\mathcal C₁ × \mathcal C
 Their definition, spelled out in \autoref{fig:exponential-laws:def:math} and given in Gallina Coq code (with suitable notations) in \autoref{fig:exponential-laws:def:coq}, is relatively trivial.
 
 Typechecking the code that defines these components, however, takes nearly two seconds!
-This is more than 200$\times$ slower than defining this data\todoac{This wording throws me for a loop. The fact that ``data'' is plural is probably only part of the reason.} in the particular case of the category of sets.%
+This is more than 200$\times$ slower than it needs to be.
+The essential structure needed to define these components can be defined without any of the categorical indirection, taking $\mathcal C₁$, $\mathcal C₂$, and $\mathcal D$ to be types and taking morphisms in these ``categories'' to be proofs of equality between morphism sources and targets.
+Defining the structure of the seven components in this way nets us a 200$\times$ speedup!%
 \footnote{%
   See \autoref{sec:abstraction-barriers:mismatch:example:exponential-laws:full-code:sets} for the code used to make this timing measurement.%
 }
-We attribute this to the large types generated and the nontrivial conversion problems which require unfolding various definitions, i.e., piercing various abstraction barriers.
+We attribute the overhead of the categorical definition to the large types generated and the nontrivial conversion problems which require unfolding various definitions, i.e., piercing various abstraction barriers.
 
 \begin{figure}
   To define currying, going from $(\mathcal C₁ × \mathcal C₂ → \mathcal D)$ to $(\mathcal C₁ → (\mathcal C₂ → \mathcal D))$:

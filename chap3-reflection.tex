@@ -12,12 +12,10 @@ In contrast, tactic-based procedures may encounter runtime errors or loop foreve
 As a consequence, if we want to keep the trusted codebase small, as discussed in \autoref{sec:debruijn-criterion}, these tactic procedures must output proof terms, justifying their decisions, and these terms can grow large, making for slower proving and requiring transmission of large proof terms to be checked slowly by others.
 A verified procedure need not generate a certificate for each invocation.
 
-\todoac{Regarding the entire following paragraph: It's strange to put this discussion of performance in *this* chapter, not the one where you show how to reify well. [Note: High Priority]}
-The starting point for proof by reflection is \emph{reification}: translating a ``native'' term of the logic into an explicit abstract syntax tree.
-We may then feed that tree to verified procedures or any other functional programs in the logic.
-The benefits listed above are particularly appealing in domains where goals are very large.
-For instance, consider verification of large software systems, where we might want to reify thousands of lines of source code.
-Popular methods turn out to be surprisingly slow, often to the point where, counterintuitively, the majority of proof-execution time is spent in reification -- unless the proof engineer invests in writing a plugin directly in the proof assistant's metalanguage (e.g., OCaml for Coq).
+%The starting point for proof by reflection is \emph{reification}: translating a ``native'' term of the logic into an explicit abstract syntax tree.
+%We may then feed that tree to verified procedures or any other functional programs in the logic.
+%The benefits listed above are particularly appealing in domains where goals are very large.
+%For instance, consider verification of large software systems, where we might want to reify thousands of lines of source code.
 
 \subsection{Proof-Script Primer}
 \minortodo{rename this subsection}
@@ -51,7 +49,7 @@ Proof terms, in a sense, are traces of a proof script.
 They provide Coq's kernel with a term that it can check to verify that no illegal steps were taken.
 Listing every step results in large traces.
 
-\todoac{Ensure the figure doesn't run off the bottom of the page in final edits}
+%\todoac{Ensure the figure doesn't run off the bottom of the page in final edits}
 
 \begin{wrapfigure}[8]{r}{\widthof{\texttt{Fixpoint check\_is\_even (n : nat) : bool}}}
 \begin{minted}{coq}
@@ -95,7 +93,7 @@ A reflective automation procedure generally has two steps.
 The first step is to \emph{reify} the goal into some abstract syntactic representation, which we call the \emph{term language} or an \emph{expression language}.
 The second step is to run the algorithm on the reified syntax.
 
-\begin{wrapfigure}[7]{r}{\widthof{\texttt{| NatMul (x y : expr) : expr.}}}
+\begin{wrapfigure}[6]{r}{\widthof{\texttt{| NatMul (x y : expr) : expr.}}}
 %\vspace{-45pt}
 \begin{minted}{coq}
 Inductive expr :=
@@ -167,7 +165,12 @@ Notation "'elet' x := v 'in' f" := (LetIn v (fun x => f))
 Definition Let_In {A B} (v : A) (f : A → B) := let x := v in f x.
 Notation "'dlet' x := v 'in' f" := (Let_In v (fun x => f))
     (x ident, at level 200).
+\end{minted}
 
+
+\begin{figure}[b!]
+\centering
+\begin{minted}{coq}
 Fixpoint denote (t : @expr nat) : nat
   := match t with
      | NatO => O
@@ -187,16 +190,24 @@ Fixpoint check_is_even_expr (t : @expr bool) : bool
                     check_is_even_expr (f v_even)
      end.
 \end{minted}
+\caption{Two definitions using two different instantiations of the PHOAS \mintinline{coq}{var} parameter.}\label{fig:denote-check-even-PHOAS}
+\end{figure}
 
-\todoac{Weird to get to this point without introducing polymorphically abstracted expression types. The reader may be wondering where the two instantiated ASTs come from, such that we know they parallel each other. [Note: High Priority]}
-
-Note, importantly, that \mintinline{coq}{check_is_even_expr} and \mintinline{coq}{denote} take \mintinline{coq}{expr}s with \emph{different} instantiations of the \mintinline{coq}{var} parameter.
+Conventionally, syntax trees are parametric over the value of the \mintinline{coq}{var} parameter, which we may instanitate in various ways to allow variable nodes to hold various kinds of information, and we might define a type for these parametric syntax trees:
+\begin{minted}{coq}
+Definition Expr := ∀ var, @expr var.
+\end{minted}
+Note, importantly, that \mintinline{coq}{check_is_even_expr} and \mintinline{coq}{denote} will take \mintinline{coq}{expr}s with \emph{different} instantiations of the \mintinline{coq}{var} parameters, as seen in \autoref{fig:denote-check-even-PHOAS}.
 This is necessary so that we can store the information about whether or not a particular \mintinline{coq}{let}-bound expression is even (or what its denotation is) in the variable node itself.
 However, this means that we cannot reuse the same expression as arguments to both functions to formulate the soundness condition.
 Instead, we must introduce a notion of \emph{relatedness} of expressions with different instantiations of the \mintinline{coq}{var} parameter.
 
-Such a relatedness predicate has one constructor for each constructor of \mintinline{coq}{expr}, essentially encoding that the two expressions have the same structure.
+A PHOAS relatedness predicate has one constructor for each constructor of \mintinline{coq}{expr}, essentially encoding that the two expressions have the same structure.
 For the \mintinline{coq}{Var} case, we defer to membership in a list of ``related'' variables, which we extend each time we go underneath a binder.
+See \autoref{fig:PHOAS-related-def} for such an inductive predicate.
+
+\begin{figure}
+\centering
 \begin{minted}{coq}
 Inductive related {var1 var2 : Type}
   : list (var1 * var2) → @expr var1 → @expr var2 → Prop :=
@@ -210,14 +221,15 @@ Inductive related {var1 var2 : Type}
 | RelatedVar {Γ v1 v2}
  : (v1, v2) ∈ Γ → related Γ (Var v1) (Var v2)
 | RelatedLetIn {Γ e1 e2 f1 f2}
- : related Γ e1 e2 → (∀ v1 v2, related ((v1, v2) :: Γ) (f1 v1) (f2 v2))
+ : related Γ e1 e2
+   → (∀ v1 v2, related ((v1, v2) :: Γ) (f1 v1) (f2 v2))
    → related Γ (LetIn e1 f1) (LetIn e2 f2).
 \end{minted}
+\caption{A PHOAS relatedness predicate}\label{fig:PHOAS-related-def}
+\end{figure}
 
-Conventionally, syntax trees are parametric over the value of the \mintinline{coq}{var} parameter, and we require that all instantiations give related ASTs (in the empty context), whence we call the parametric AST \emph{well-formed}:
-\todoac{Here's the part I expected to see earlier [Note: High Priority]}% N.B. no blank line here when this todo is removed
+We require that all instantiations give related ASTs (in the empty context), whence we call the parametric AST \emph{well-formed}:
 \begin{minted}{coq}
-Definition Expr := ∀ var, @expr var.
 Definition Wf (e : Expr) := ∀ var1 var2, related [] (e var1) (e var2)
 \end{minted}
 \label{sec:PHOAS:Wf-def}

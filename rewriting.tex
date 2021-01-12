@@ -31,6 +31,7 @@ This domain-specific compiler has been adopted, for instance, in the Chrome Web 
 However, Fiat Cryptography was only used successfully to build C code for the two most widely used curves (P-256 and Curve25519).
 Our original method of partial evaluation timed out trying to compile code for the third most widely used curve (P-384).
 Additionally, to achieve acceptable reduction performance, the library code had to be written manually in continuation-passing style.
+\label{sec:rewriting:fiat-crypto-CPS}%
 We will demonstrate a new Coq library that corrects both weaknesses, while maintaining the generality afforded by allowing rewrite rules to be mixed with partial evaluation.
 
 \subsection{A Motivating Example}\label{sec:motivating-example}\label{sec:explain-ident.eagerly}\label{sec:explain-eval-rect}\label{sec:explain-'}

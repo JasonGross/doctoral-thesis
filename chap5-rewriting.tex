@@ -43,8 +43,7 @@ and issues arising from API mismatches, as described in \fullnameref{ch:api-desi
 \section{Prereduction}\label{sec:rewriting-more:prereduction}
 The two biggest underlying causes of engineering challenges are expression--API mismatch, which we'll discuss in \fullnameref{sec:rewriting-more:AST:choices}, and our desire to reduce away known computations in the rewriting engine once and for all when compiling rewriting rules, rather than again and again every time we perform a rewrite.
 In practice, performing this early reduction nets us an approximately $2\times$ speed-up.
-
-\todoac{More transition language saying ``and now we'll discuss the second one.'' [Note: High Priority]}
+We'll now discuss this early reduction and what goes into making it work.
 
 \subsection{What Does This Reduction Consist Of?}\label{sec:rewriting-more:prereduction:what-reduction}
 Recall from \autoref{sec:pattern-matching-compilation-and-evaluation} that the core of our rewriting engine consists of three steps:
@@ -374,8 +373,9 @@ This is not so bad, but recall also from \autoref{sec:pattern-matching-compilati
 \end{itemize}
 The first two constructors are not very interesting, as far as overhead goes, but the third and fourth constructors are quite painful.\todoac{Not a good word to use in formal writing (for instance, because it's not clear what you mean)}
 
-Note that the type of \mintinline{coq}{eval_decision_tree} would be something like \mintinline{coq}{∀ {T : Type} (d : decision_tree) (ts : list type) (es : exprlist ts) (K : exprlist ts → option T), option T}.\todoac{Mention here that you use CPS for the same reason introduced earlier, though now it is at a more ``meta'' level? [Note: High Priority; remind the reader that CPS is important here to get the right reduction behavior (Also, should there be a nat index for rewrite rules?)]}
-
+Note that the type of \mintinline{coq}{eval_decision_tree} would be something like \mintinline{coq}{∀ {T : Type} (d : decision_tree) (ts : list type) (es : exprlist ts) (K : ℕ → exprlist ts → option T), option T} where the \mintinline{coq}{ℕ} argument to the continuation describes which rewrite rule to invoke.
+Note that we are using continuation-passing style here to achieve adequate reduction behavior inside Coq.
+Note that this is the same reason we introduced in \autoref{sec:rewriting:fiat-crypto-CPS}, except one metalevel up.
 
 We cover the \mintinline{coq}{Swap} case first, because it is simpler.
 To perform a \mintinline{coq}{Swap}, we must exchange two elements of the type-indexed list.

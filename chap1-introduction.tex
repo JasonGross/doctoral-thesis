@@ -68,7 +68,7 @@ But now we are back where we started, with proof-checking programs as our critic
   We cannot solve this problem with programs to check our proof-checking programs, under pain of infinite regress, Gödelian paradoxes~\cite{sep-goedel-incompleteness}, and invisible untrustworthiness~\cite{Reflections1984Thompson}.
   However, the mathematically inclined reader might be interested to note that adding one more layer of meta does in fact help, and there are projects underway to verify proof checkers~\cite{nuprl-in-coq,coq-coq-correct,certicoq}.
 }
-In order to trust proof-checking programs, we want them to be general so possible bugs in the proof-checking program are unlikely to line up with mistakes that we make in any individual proof (c.f.~\autoref{sec:why-how-dependent-types}).
+In order to trust proof-checking programs, we want them to be general enough that possible bugs in the proof-checking program are unlikely to line up with mistakes that we make in any individual proof (c.f.~\autoref{sec:why-how-dependent-types}).
 Such programs which are general enough to check the statements and proofs of arbitrary mathematical theorems are called foundational tools.
 We also want proof-checking programs to be small so that we have a hope of verifying them by hand (c.f.~\autoref{sec:debruijn-criterion}).
 
@@ -607,7 +607,7 @@ Readers interested in perspectives on how dependent types may be disadvantageous
 
 As described in the beginning of this chapter, the purpose of proving our software correct is that we want to be able to trust that it has no bugs.
 Having a proof checker reduces the problem of software correctness to the problem of the correctness of the specification, together with the correctness of the proof checker.
-If the proof checker is complicated and impenetrable, it might be quite unreasonable to trust it.
+If the proof checker is complicated and impenetrable, it might be quite reasonable not to trust it.
 
 \minortodo{is there a clearer way to express this?}
 Proof assistants satisfying the de Bruijn criterion are, in general, more easily trustable than those which violate it.

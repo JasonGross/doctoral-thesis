@@ -1,6 +1,6 @@
 LOCAL=0
-COQLIB=/home/jgross/.local64/coq/coq-8.12.0/lib/coq/
-DOCDIR=/home/jgross/.local64/coq/coq-8.12.0/share/doc/coq/
+COQLIB=/home/jgross/.local64/coq/coq-8.12.2/lib/coq/
+DOCDIR=/home/jgross/.local64/coq/coq-8.12.2/share/doc/coq/
 OCAMLFIND=/home/jgross/.opam/4.06.1+fp/bin/ocamlfind
 CAMLFLAGS=-thread -rectypes -w +a-4-9-27-41-42-44-45-48-58-67  -bin-annot -safe-string -strict-sequence
 WARN=-warn-error +a-3

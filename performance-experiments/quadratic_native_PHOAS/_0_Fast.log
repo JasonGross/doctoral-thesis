@@ -1,12 +1,12 @@
 Params: n= 35 , num-binders= 1225
-Tactic call native_compute ran for 18.783 secs (0.069u,0.016s) (success)
+Tactic call native_compute ran for 18.867 secs (0.076u,0.012s) (success)
 Params: n= 40 , num-binders= 1600
-Tactic call native_compute ran for 31.58 secs (0.139u,0.051s) (success)
+Tactic call native_compute ran for 32.519 secs (0.152u,0.04s) (success)
 Params: n= 45 , num-binders= 2025
-Tactic call native_compute ran for 49.79 secs (0.186u,0.043s) (success)
+Tactic call native_compute ran for 51.406 secs (0.186u,0.047s) (success)
 Params: n= 50 , num-binders= 2500
-Tactic call native_compute ran for 83.759 secs (0.213u,0.036s) (success)
+Tactic call native_compute ran for 86.692 secs (0.233u,0.032s) (success)
 Params: n= 55 , num-binders= 3025
-Tactic call native_compute ran for 115.474 secs (0.263u,0.019s) (success)
+Tactic call native_compute ran for 117.019 secs (0.237u,0.043s) (success)
 Params: n= 60 , num-binders= 3600
-Tactic call native_compute ran for 138.234 secs (0.26u,0.023s) (success)
+Tactic call native_compute ran for 140.558 secs (0.261u,0.023s) (success)

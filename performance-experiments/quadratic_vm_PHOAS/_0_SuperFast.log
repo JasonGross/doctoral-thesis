@@ -5,42 +5,42 @@ Tactic call vm_compute ran for 0.002 secs (0.002u,0.s) (success)
 Params: n= 15 , num-binders= 225
 Tactic call vm_compute ran for 0.005 secs (0.005u,0.s) (success)
 Params: n= 20 , num-binders= 400
-Tactic call vm_compute ran for 0.067 secs (0.063u,0.003s) (success)
+Tactic call vm_compute ran for 0.067 secs (0.067u,0.s) (success)
 Params: n= 25 , num-binders= 625
-Tactic call vm_compute ran for 0.023 secs (0.023u,0.s) (success)
+Tactic call vm_compute ran for 0.019 secs (0.019u,0.s) (success)
 Params: n= 30 , num-binders= 900
-Tactic call vm_compute ran for 0.046 secs (0.046u,0.s) (success)
+Tactic call vm_compute ran for 0.045 secs (0.041u,0.003s) (success)
 Params: n= 35 , num-binders= 1225
-Tactic call vm_compute ran for 0.048 secs (0.04u,0.007s) (success)
+Tactic call vm_compute ran for 0.046 secs (0.046u,0.s) (success)
 Params: n= 40 , num-binders= 1600
-Tactic call vm_compute ran for 0.105 secs (0.104u,0.s) (success)
+Tactic call vm_compute ran for 0.099 secs (0.099u,0.s) (success)
 Params: n= 45 , num-binders= 2025
-Tactic call vm_compute ran for 0.089 secs (0.089u,0.s) (success)
+Tactic call vm_compute ran for 0.089 secs (0.085u,0.003s) (success)
 Params: n= 50 , num-binders= 2500
-Tactic call vm_compute ran for 0.114 secs (0.114u,0.s) (success)
+Tactic call vm_compute ran for 0.114 secs (0.106u,0.007s) (success)
 Params: n= 55 , num-binders= 3025
-Tactic call vm_compute ran for 0.144 secs (0.14u,0.004s) (success)
+Tactic call vm_compute ran for 0.143 secs (0.143u,0.s) (success)
 Params: n= 60 , num-binders= 3600
-Tactic call vm_compute ran for 0.15 secs (0.146u,0.003s) (success)
+Tactic call vm_compute ran for 0.149 secs (0.145u,0.004s) (success)
 Params: n= 65 , num-binders= 4225
-Tactic call vm_compute ran for 0.217 secs (0.209u,0.008s) (success)
+Tactic call vm_compute ran for 0.216 secs (0.212u,0.003s) (success)
 Params: n= 70 , num-binders= 4900
-Tactic call vm_compute ran for 0.262 secs (0.258u,0.004s) (success)
+Tactic call vm_compute ran for 0.258 secs (0.25u,0.008s) (success)
 Params: n= 75 , num-binders= 5625
-Tactic call vm_compute ran for 0.385 secs (0.373u,0.012s) (success)
+Tactic call vm_compute ran for 0.382 secs (0.374u,0.007s) (success)
 Params: n= 80 , num-binders= 6400
-Tactic call vm_compute ran for 0.352 secs (0.348u,0.004s) (success)
+Tactic call vm_compute ran for 0.352 secs (0.344u,0.007s) (success)
 Params: n= 85 , num-binders= 7225
-Tactic call vm_compute ran for 0.482 secs (0.478u,0.003s) (success)
+Tactic call vm_compute ran for 0.477 secs (0.477u,0.s) (success)
 Params: n= 90 , num-binders= 8100
-Tactic call vm_compute ran for 0.602 secs (0.574u,0.028s) (success)
+Tactic call vm_compute ran for 0.599 secs (0.579u,0.019s) (success)
 Params: n= 95 , num-binders= 9025
-Tactic call vm_compute ran for 0.679 secs (0.659u,0.019s) (success)
+Tactic call vm_compute ran for 0.675 secs (0.651u,0.023s) (success)
 Params: n= 100 , num-binders= 10000
-Tactic call vm_compute ran for 0.774 secs (0.77u,0.003s) (success)
+Tactic call vm_compute ran for 0.776 secs (0.771u,0.003s) (success)
 Params: n= 105 , num-binders= 11025
-Tactic call vm_compute ran for 0.926 secs (0.886u,0.039s) (success)
+Tactic call vm_compute ran for 0.934 secs (0.91u,0.024s) (success)
 Params: n= 110 , num-binders= 12100
-Tactic call vm_compute ran for 1.095 secs (1.087u,0.007s) (success)
+Tactic call vm_compute ran for 1.089 secs (1.089u,0.s) (success)
 Params: n= 115 , num-binders= 13225
-Tactic call vm_compute ran for 1.602 secs (1.57u,0.031s) (success)
+Tactic call vm_compute ran for 1.6 secs (1.584u,0.016s) (success)

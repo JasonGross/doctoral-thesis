@@ -1,208 +1,208 @@
 Params: n= 300
-Tactic call open-constr-True-1000 ran for 0.209 secs (0.205u,0.004s) (success)
+Tactic call open-constr-True-1000 ran for 0.203 secs (0.199u,0.004s) (success)
 Params: n= 302
-Tactic call open-constr-True-1000 ran for 0.119 secs (0.119u,0.s) (success)
+Tactic call open-constr-True-1000 ran for 0.188 secs (0.184u,0.003s) (success)
 Params: n= 304
-Tactic call open-constr-True-1000 ran for 0.098 secs (0.098u,0.s) (success)
+Tactic call open-constr-True-1000 ran for 0.107 secs (0.107u,0.s) (success)
 Params: n= 306
-Tactic call open-constr-True-1000 ran for 0.105 secs (0.101u,0.003s) (success)
-Params: n= 308
 Tactic call open-constr-True-1000 ran for 0.113 secs (0.113u,0.s) (success)
+Params: n= 308
+Tactic call open-constr-True-1000 ran for 0.115 secs (0.115u,0.s) (success)
 Params: n= 310
-Tactic call open-constr-True-1000 ran for 0.121 secs (0.113u,0.008s) (success)
+Tactic call open-constr-True-1000 ran for 0.122 secs (0.118u,0.003s) (success)
 Params: n= 312
-Tactic call open-constr-True-1000 ran for 0.127 secs (0.123u,0.003s) (success)
-Params: n= 314
-Tactic call open-constr-True-1000 ran for 0.132 secs (0.132u,0.s) (success)
-Params: n= 316
-Tactic call open-constr-True-1000 ran for 0.165 secs (0.157u,0.008s) (success)
-Params: n= 318
-Tactic call open-constr-True-1000 ran for 0.222 secs (0.211u,0.011s) (success)
-Params: n= 320
-Tactic call open-constr-True-1000 ran for 0.238 secs (0.226u,0.012s) (success)
-Params: n= 322
-Tactic call open-constr-True-1000 ran for 0.183 secs (0.171u,0.011s) (success)
-Params: n= 324
-Tactic call open-constr-True-1000 ran for 0.174 secs (0.162u,0.011s) (success)
-Params: n= 326
-Tactic call open-constr-True-1000 ran for 0.207 secs (0.203u,0.003s) (success)
-Params: n= 328
-Tactic call open-constr-True-1000 ran for 0.212 secs (0.204u,0.008s) (success)
-Params: n= 330
-Tactic call open-constr-True-1000 ran for 0.198 secs (0.198u,0.s) (success)
-Params: n= 332
-Tactic call open-constr-True-1000 ran for 0.17 secs (0.17u,0.s) (success)
-Params: n= 334
-Tactic call open-constr-True-1000 ran for 0.155 secs (0.155u,0.s) (success)
-Params: n= 336
-Tactic call open-constr-True-1000 ran for 0.145 secs (0.145u,0.s) (success)
-Params: n= 338
 Tactic call open-constr-True-1000 ran for 0.128 secs (0.128u,0.s) (success)
-Params: n= 340
+Params: n= 314
+Tactic call open-constr-True-1000 ran for 0.133 secs (0.133u,0.s) (success)
+Params: n= 316
 Tactic call open-constr-True-1000 ran for 0.136 secs (0.136u,0.s) (success)
+Params: n= 318
+Tactic call open-constr-True-1000 ran for 0.169 secs (0.165u,0.003s) (success)
+Params: n= 320
+Tactic call open-constr-True-1000 ran for 0.215 secs (0.203u,0.011s) (success)
+Params: n= 322
+Tactic call open-constr-True-1000 ran for 0.228 secs (0.216u,0.012s) (success)
+Params: n= 324
+Tactic call open-constr-True-1000 ran for 0.18 secs (0.18u,0.s) (success)
+Params: n= 326
+Tactic call open-constr-True-1000 ran for 0.17 secs (0.158u,0.011s) (success)
+Params: n= 328
+Tactic call open-constr-True-1000 ran for 0.186 secs (0.173u,0.012s) (success)
+Params: n= 330
+Tactic call open-constr-True-1000 ran for 0.191 secs (0.183u,0.007s) (success)
+Params: n= 332
+Tactic call open-constr-True-1000 ran for 0.185 secs (0.185u,0.s) (success)
+Params: n= 334
+Tactic call open-constr-True-1000 ran for 0.163 secs (0.163u,0.s) (success)
+Params: n= 336
+Tactic call open-constr-True-1000 ran for 0.155 secs (0.155u,0.s) (success)
+Params: n= 338
+Tactic call open-constr-True-1000 ran for 0.148 secs (0.148u,0.s) (success)
+Params: n= 340
+Tactic call open-constr-True-1000 ran for 0.142 secs (0.142u,0.s) (success)
 Params: n= 342
-Tactic call open-constr-True-1000 ran for 0.134 secs (0.134u,0.s) (success)
+Tactic call open-constr-True-1000 ran for 0.136 secs (0.136u,0.s) (success)
 Params: n= 344
-Tactic call open-constr-True-1000 ran for 0.129 secs (0.129u,0.s) (success)
+Tactic call open-constr-True-1000 ran for 0.13 secs (0.13u,0.s) (success)
 Params: n= 346
-Tactic call open-constr-True-1000 ran for 0.125 secs (0.125u,0.s) (success)
+Tactic call open-constr-True-1000 ran for 0.184 secs (0.184u,0.s) (success)
 Params: n= 348
-Tactic call open-constr-True-1000 ran for 0.182 secs (0.182u,0.s) (success)
+Tactic call open-constr-True-1000 ran for 0.199 secs (0.187u,0.011s) (success)
 Params: n= 350
-Tactic call open-constr-True-1000 ran for 0.215 secs (0.215u,0.s) (success)
+Tactic call open-constr-True-1000 ran for 0.18 secs (0.172u,0.007s) (success)
 Params: n= 352
-Tactic call open-constr-True-1000 ran for 0.376 secs (0.376u,0.s) (success)
+Tactic call open-constr-True-1000 ran for 0.187 secs (0.183u,0.004s) (success)
 Params: n= 354
-Tactic call open-constr-True-1000 ran for 0.168 secs (0.168u,0.s) (success)
+Tactic call open-constr-True-1000 ran for 0.19 secs (0.186u,0.003s) (success)
 Params: n= 356
-Tactic call open-constr-True-1000 ran for 0.151 secs (0.151u,0.s) (success)
+Tactic call open-constr-True-1000 ran for 0.179 secs (0.179u,0.s) (success)
 Params: n= 358
-Tactic call open-constr-True-1000 ran for 0.135 secs (0.135u,0.s) (success)
-Params: n= 360
-Tactic call open-constr-True-1000 ran for 0.182 secs (0.182u,0.s) (success)
-Params: n= 362
-Tactic call open-constr-True-1000 ran for 0.238 secs (0.238u,0.s) (success)
-Params: n= 364
-Tactic call open-constr-True-1000 ran for 0.166 secs (0.166u,0.s) (success)
-Params: n= 366
-Tactic call open-constr-True-1000 ran for 0.171 secs (0.171u,0.s) (success)
-Params: n= 368
-Tactic call open-constr-True-1000 ran for 0.157 secs (0.157u,0.s) (success)
-Params: n= 370
-Tactic call open-constr-True-1000 ran for 0.156 secs (0.156u,0.s) (success)
-Params: n= 372
-Tactic call open-constr-True-1000 ran for 0.145 secs (0.145u,0.s) (success)
-Params: n= 374
-Tactic call open-constr-True-1000 ran for 0.193 secs (0.193u,0.s) (success)
-Params: n= 376
-Tactic call open-constr-True-1000 ran for 0.2 secs (0.2u,0.s) (success)
-Params: n= 378
 Tactic call open-constr-True-1000 ran for 0.164 secs (0.164u,0.s) (success)
-Params: n= 380
-Tactic call open-constr-True-1000 ran for 0.2 secs (0.2u,0.s) (success)
-Params: n= 382
-Tactic call open-constr-True-1000 ran for 0.243 secs (0.239u,0.003s) (success)
-Params: n= 384
-Tactic call open-constr-True-1000 ran for 0.178 secs (0.174u,0.003s) (success)
-Params: n= 386
-Tactic call open-constr-True-1000 ran for 0.209 secs (0.209u,0.s) (success)
-Params: n= 388
-Tactic call open-constr-True-1000 ran for 0.162 secs (0.162u,0.s) (success)
-Params: n= 390
-Tactic call open-constr-True-1000 ran for 0.205 secs (0.205u,0.s) (success)
-Params: n= 392
-Tactic call open-constr-True-1000 ran for 0.226 secs (0.226u,0.s) (success)
-Params: n= 394
-Tactic call open-constr-True-1000 ran for 0.246 secs (0.246u,0.s) (success)
-Params: n= 396
-Tactic call open-constr-True-1000 ran for 0.28 secs (0.28u,0.s) (success)
-Params: n= 398
-Tactic call open-constr-True-1000 ran for 0.193 secs (0.193u,0.s) (success)
-Params: n= 400
-Tactic call open-constr-True-1000 ran for 0.182 secs (0.182u,0.s) (success)
-Params: n= 410
-Tactic call open-constr-True-1000 ran for 0.221 secs (0.221u,0.s) (success)
-Params: n= 420
-Tactic call open-constr-True-1000 ran for 0.231 secs (0.231u,0.s) (success)
-Params: n= 430
-Tactic call open-constr-True-1000 ran for 0.189 secs (0.189u,0.s) (success)
-Params: n= 440
-Tactic call open-constr-True-1000 ran for 0.21 secs (0.21u,0.s) (success)
-Params: n= 450
-Tactic call open-constr-True-1000 ran for 0.224 secs (0.224u,0.s) (success)
-Params: n= 460
-Tactic call open-constr-True-1000 ran for 0.311 secs (0.311u,0.s) (success)
-Params: n= 470
-Tactic call open-constr-True-1000 ran for 0.217 secs (0.217u,0.s) (success)
-Params: n= 480
-Tactic call open-constr-True-1000 ran for 0.269 secs (0.269u,0.s) (success)
-Params: n= 490
-Tactic call open-constr-True-1000 ran for 0.312 secs (0.312u,0.s) (success)
-Params: n= 500
-Tactic call open-constr-True-1000 ran for 0.326 secs (0.326u,0.s) (success)
-Params: n= 510
-Tactic call open-constr-True-1000 ran for 0.282 secs (0.282u,0.s) (success)
-Params: n= 520
-Tactic call open-constr-True-1000 ran for 0.257 secs (0.257u,0.s) (success)
-Params: n= 530
-Tactic call open-constr-True-1000 ran for 0.343 secs (0.343u,0.s) (success)
-Params: n= 540
-Tactic call open-constr-True-1000 ran for 0.32 secs (0.32u,0.s) (success)
-Params: n= 550
+Params: n= 360
 Tactic call open-constr-True-1000 ran for 0.381 secs (0.381u,0.s) (success)
-Params: n= 560
-Tactic call open-constr-True-1000 ran for 0.372 secs (0.356u,0.015s) (success)
-Params: n= 570
-Tactic call open-constr-True-1000 ran for 0.318 secs (0.302u,0.015s) (success)
-Params: n= 580
-Tactic call open-constr-True-1000 ran for 0.285 secs (0.285u,0.s) (success)
-Params: n= 590
-Tactic call open-constr-True-1000 ran for 0.313 secs (0.313u,0.s) (success)
-Params: n= 600
-Tactic call open-constr-True-1000 ran for 0.336 secs (0.336u,0.s) (success)
-Params: n= 610
-Tactic call open-constr-True-1000 ran for 0.303 secs (0.303u,0.s) (success)
-Params: n= 620
-Tactic call open-constr-True-1000 ran for 0.347 secs (0.347u,0.s) (success)
-Params: n= 630
-Tactic call open-constr-True-1000 ran for 0.341 secs (0.341u,0.s) (success)
-Params: n= 640
-Tactic call open-constr-True-1000 ran for 0.345 secs (0.345u,0.s) (success)
-Params: n= 650
-Tactic call open-constr-True-1000 ran for 0.411 secs (0.411u,0.s) (success)
-Params: n= 660
-Tactic call open-constr-True-1000 ran for 0.332 secs (0.328u,0.004s) (success)
-Params: n= 670
-Tactic call open-constr-True-1000 ran for 0.347 secs (0.335u,0.011s) (success)
-Params: n= 680
+Params: n= 362
+Tactic call open-constr-True-1000 ran for 0.165 secs (0.165u,0.s) (success)
+Params: n= 364
+Tactic call open-constr-True-1000 ran for 0.232 secs (0.232u,0.s) (success)
+Params: n= 366
+Tactic call open-constr-True-1000 ran for 0.207 secs (0.207u,0.s) (success)
+Params: n= 368
+Tactic call open-constr-True-1000 ran for 0.148 secs (0.148u,0.s) (success)
+Params: n= 370
+Tactic call open-constr-True-1000 ran for 0.145 secs (0.145u,0.s) (success)
+Params: n= 372
+Tactic call open-constr-True-1000 ran for 0.189 secs (0.189u,0.s) (success)
+Params: n= 374
+Tactic call open-constr-True-1000 ran for 0.192 secs (0.192u,0.s) (success)
+Params: n= 376
+Tactic call open-constr-True-1000 ran for 0.197 secs (0.197u,0.s) (success)
+Params: n= 378
+Tactic call open-constr-True-1000 ran for 0.217 secs (0.217u,0.s) (success)
+Params: n= 380
+Tactic call open-constr-True-1000 ran for 0.234 secs (0.234u,0.s) (success)
+Params: n= 382
+Tactic call open-constr-True-1000 ran for 0.241 secs (0.241u,0.s) (success)
+Params: n= 384
+Tactic call open-constr-True-1000 ran for 0.179 secs (0.179u,0.s) (success)
+Params: n= 386
+Tactic call open-constr-True-1000 ran for 0.167 secs (0.167u,0.s) (success)
+Params: n= 388
+Tactic call open-constr-True-1000 ran for 0.153 secs (0.153u,0.s) (success)
+Params: n= 390
+Tactic call open-constr-True-1000 ran for 0.192 secs (0.192u,0.s) (success)
+Params: n= 392
+Tactic call open-constr-True-1000 ran for 0.203 secs (0.203u,0.s) (success)
+Params: n= 394
+Tactic call open-constr-True-1000 ran for 0.209 secs (0.209u,0.s) (success)
+Params: n= 396
+Tactic call open-constr-True-1000 ran for 0.168 secs (0.168u,0.s) (success)
+Params: n= 398
+Tactic call open-constr-True-1000 ran for 0.205 secs (0.205u,0.s) (success)
+Params: n= 400
+Tactic call open-constr-True-1000 ran for 0.203 secs (0.203u,0.s) (success)
+Params: n= 410
+Tactic call open-constr-True-1000 ran for 0.208 secs (0.208u,0.s) (success)
+Params: n= 420
+Tactic call open-constr-True-1000 ran for 0.263 secs (0.263u,0.s) (success)
+Params: n= 430
+Tactic call open-constr-True-1000 ran for 0.223 secs (0.223u,0.s) (success)
+Params: n= 440
+Tactic call open-constr-True-1000 ran for 0.262 secs (0.262u,0.s) (success)
+Params: n= 450
+Tactic call open-constr-True-1000 ran for 0.249 secs (0.249u,0.s) (success)
+Params: n= 460
+Tactic call open-constr-True-1000 ran for 0.279 secs (0.279u,0.s) (success)
+Params: n= 470
+Tactic call open-constr-True-1000 ran for 0.324 secs (0.324u,0.s) (success)
+Params: n= 480
+Tactic call open-constr-True-1000 ran for 0.257 secs (0.257u,0.s) (success)
+Params: n= 490
+Tactic call open-constr-True-1000 ran for 0.224 secs (0.224u,0.s) (success)
+Params: n= 500
+Tactic call open-constr-True-1000 ran for 0.265 secs (0.265u,0.s) (success)
+Params: n= 510
+Tactic call open-constr-True-1000 ran for 0.267 secs (0.267u,0.s) (success)
+Params: n= 520
+Tactic call open-constr-True-1000 ran for 0.274 secs (0.274u,0.s) (success)
+Params: n= 530
+Tactic call open-constr-True-1000 ran for 0.274 secs (0.274u,0.s) (success)
+Params: n= 540
 Tactic call open-constr-True-1000 ran for 0.378 secs (0.378u,0.s) (success)
+Params: n= 550
+Tactic call open-constr-True-1000 ran for 0.293 secs (0.293u,0.s) (success)
+Params: n= 560
+Tactic call open-constr-True-1000 ran for 0.289 secs (0.281u,0.007s) (success)
+Params: n= 570
+Tactic call open-constr-True-1000 ran for 0.311 secs (0.303u,0.007s) (success)
+Params: n= 580
+Tactic call open-constr-True-1000 ran for 0.318 secs (0.314u,0.003s) (success)
+Params: n= 590
+Tactic call open-constr-True-1000 ran for 0.555 secs (0.555u,0.s) (success)
+Params: n= 600
+Tactic call open-constr-True-1000 ran for 0.445 secs (0.445u,0.s) (success)
+Params: n= 610
+Tactic call open-constr-True-1000 ran for 0.317 secs (0.317u,0.s) (success)
+Params: n= 620
+Tactic call open-constr-True-1000 ran for 0.342 secs (0.342u,0.s) (success)
+Params: n= 630
+Tactic call open-constr-True-1000 ran for 0.333 secs (0.333u,0.s) (success)
+Params: n= 640
+Tactic call open-constr-True-1000 ran for 0.421 secs (0.421u,0.s) (success)
+Params: n= 650
+Tactic call open-constr-True-1000 ran for 0.378 secs (0.378u,0.s) (success)
+Params: n= 660
+Tactic call open-constr-True-1000 ran for 0.359 secs (0.359u,0.s) (success)
+Params: n= 670
+Tactic call open-constr-True-1000 ran for 0.352 secs (0.352u,0.s) (success)
+Params: n= 680
+Tactic call open-constr-True-1000 ran for 0.445 secs (0.445u,0.s) (success)
 Params: n= 690
-Tactic call open-constr-True-1000 ran for 0.423 secs (0.423u,0.s) (success)
+Tactic call open-constr-True-1000 ran for 0.36 secs (0.36u,0.s) (success)
 Params: n= 700
-Tactic call open-constr-True-1000 ran for 0.449 secs (0.449u,0.s) (success)
+Tactic call open-constr-True-1000 ran for 0.376 secs (0.376u,0.s) (success)
 Params: n= 800
-Tactic call open-constr-True-1000 ran for 0.4 secs (0.392u,0.007s) (success)
+Tactic call open-constr-True-1000 ran for 0.466 secs (0.466u,0.s) (success)
 Params: n= 900
-Tactic call open-constr-True-1000 ran for 0.514 secs (0.502u,0.011s) (success)
+Tactic call open-constr-True-1000 ran for 0.615 secs (0.615u,0.s) (success)
 Params: n= 1000
-Tactic call open-constr-True-1000 ran for 0.661 secs (0.661u,0.s) (success)
+Tactic call open-constr-True-1000 ran for 0.594 secs (0.582u,0.011s) (success)
 Params: n= 1100
-Tactic call open-constr-True-1000 ran for 0.578 secs (0.578u,0.s) (success)
+Tactic call open-constr-True-1000 ran for 0.782 secs (0.782u,0.s) (success)
 Params: n= 1200
-Tactic call open-constr-True-1000 ran for 0.753 secs (0.753u,0.s) (success)
+Tactic call open-constr-True-1000 ran for 0.713 secs (0.713u,0.s) (success)
 Params: n= 1300
-Tactic call open-constr-True-1000 ran for 0.9 secs (0.896u,0.003s) (success)
+Tactic call open-constr-True-1000 ran for 0.888 secs (0.888u,0.s) (success)
 Params: n= 1400
-Tactic call open-constr-True-1000 ran for 0.876 secs (0.848u,0.028s) (success)
+Tactic call open-constr-True-1000 ran for 0.89 secs (0.886u,0.003s) (success)
 Params: n= 1500
-Tactic call open-constr-True-1000 ran for 1.04 secs (1.028u,0.012s) (success)
+Tactic call open-constr-True-1000 ran for 1.107 secs (1.099u,0.007s) (success)
 Params: n= 1600
-Tactic call open-constr-True-1000 ran for 1.003 secs (0.995u,0.007s) (success)
+Tactic call open-constr-True-1000 ran for 1.01 secs (0.994u,0.016s) (success)
 Params: n= 1700
-Tactic call open-constr-True-1000 ran for 1.216 secs (1.216u,0.s) (success)
+Tactic call open-constr-True-1000 ran for 1.103 secs (1.103u,0.s) (success)
 Params: n= 1800
-Tactic call open-constr-True-1000 ran for 1.146 secs (1.114u,0.032s) (success)
+Tactic call open-constr-True-1000 ran for 1.452 secs (1.396u,0.056s) (success)
 Params: n= 1900
-Tactic call open-constr-True-1000 ran for 1.27 secs (1.27u,0.s) (success)
+Tactic call open-constr-True-1000 ran for 1.333 secs (1.309u,0.024s) (success)
 Params: n= 2000
-Tactic call open-constr-True-1000 ran for 1.352 secs (1.308u,0.044s) (success)
+Tactic call open-constr-True-1000 ran for 1.695 secs (1.655u,0.039s) (success)
 Params: n= 2100
-Tactic call open-constr-True-1000 ran for 1.312 secs (1.3u,0.012s) (success)
+Tactic call open-constr-True-1000 ran for 1.53 secs (1.49u,0.039s) (success)
 Params: n= 2200
-Tactic call open-constr-True-1000 ran for 1.595 secs (1.587u,0.007s) (success)
+Tactic call open-constr-True-1000 ran for 1.646 secs (1.634u,0.011s) (success)
 Params: n= 2300
-Tactic call open-constr-True-1000 ran for 1.451 secs (1.435u,0.015s) (success)
+Tactic call open-constr-True-1000 ran for 1.886 secs (1.886u,0.s) (success)
 Params: n= 2400
-Tactic call open-constr-True-1000 ran for 1.563 secs (1.563u,0.s) (success)
+Tactic call open-constr-True-1000 ran for 1.807 secs (1.727u,0.079s) (success)
 Params: n= 2500
-Tactic call open-constr-True-1000 ran for 1.915 secs (1.883u,0.031s) (success)
+Tactic call open-constr-True-1000 ran for 1.977 secs (1.977u,0.s) (success)
 Params: n= 2600
-Tactic call open-constr-True-1000 ran for 1.746 secs (1.658u,0.087s) (success)
+Tactic call open-constr-True-1000 ran for 2.425 secs (2.361u,0.063s) (success)
 Params: n= 2700
-Tactic call open-constr-True-1000 ran for 1.865 secs (1.865u,0.s) (success)
+Tactic call open-constr-True-1000 ran for 1.984 secs (1.944u,0.04s) (success)
 Params: n= 2800
-Tactic call open-constr-True-1000 ran for 2.225 secs (2.185u,0.039s) (success)
+Tactic call open-constr-True-1000 ran for 2.079 secs (2.067u,0.012s) (success)
 Params: n= 2900
-Tactic call open-constr-True-1000 ran for 1.951 secs (1.943u,0.007s) (success)
+Tactic call open-constr-True-1000 ran for 2.453 secs (2.453u,0.s) (success)
 Params: n= 3000
-Tactic call open-constr-True-1000 ran for 2.101 secs (2.101u,0.s) (success)
+Tactic call open-constr-True-1000 ran for 2.229 secs (2.161u,0.067s) (success)

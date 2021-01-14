@@ -1,6 +1,6 @@
 Params: n= 0
-Tactic call open-constr-True-1000 ran for 0.025 secs (0.014u,0.011s) (success)
+Tactic call open-constr-True-1000 ran for 0.025 secs (0.021u,0.004s) (success)
 Params: n= 1
-Tactic call open-constr-True-1000 ran for 0.077 secs (0.065u,0.012s) (success)
+Tactic call open-constr-True-1000 ran for 0.077 secs (0.073u,0.003s) (success)
 Params: n= 2
-Tactic call open-constr-True-1000 ran for 0.018 secs (0.018u,0.s) (success)
+Tactic call open-constr-True-1000 ran for 0.02 secs (0.02u,0.s) (success)

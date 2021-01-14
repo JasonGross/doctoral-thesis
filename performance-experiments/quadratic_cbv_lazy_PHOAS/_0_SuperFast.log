@@ -3,37 +3,37 @@ Tactic call cbv ran for 0. secs (0.u,0.s) (success)
 Tactic call lazy ran for 0. secs (0.u,0.s) (success)
 Params: n= 10 , num-binders= 100
 Tactic call cbv ran for 0.001 secs (0.001u,0.s) (success)
-Tactic call lazy ran for 0.001 secs (0.u,0.001s) (success)
+Tactic call lazy ran for 0.002 secs (0.002u,0.s) (success)
 Params: n= 15 , num-binders= 225
-Tactic call cbv ran for 0.005 secs (0.005u,0.s) (success)
+Tactic call cbv ran for 0.005 secs (0.001u,0.003s) (success)
 Tactic call lazy ran for 0.005 secs (0.005u,0.s) (success)
 Params: n= 20 , num-binders= 400
-Tactic call cbv ran for 0.009 secs (0.008u,0.s) (success)
-Tactic call lazy ran for 0.009 secs (0.008u,0.s) (success)
+Tactic call cbv ran for 0.009 secs (0.009u,0.s) (success)
+Tactic call lazy ran for 0.009 secs (0.009u,0.s) (success)
 Params: n= 25 , num-binders= 625
-Tactic call cbv ran for 0.023 secs (0.023u,0.s) (success)
-Tactic call lazy ran for 0.022 secs (0.022u,0.s) (success)
+Tactic call cbv ran for 0.022 secs (0.022u,0.s) (success)
+Tactic call lazy ran for 0.023 secs (0.023u,0.s) (success)
 Params: n= 30 , num-binders= 900
-Tactic call cbv ran for 0.058 secs (0.058u,0.s) (success)
-Tactic call lazy ran for 0.05 secs (0.05u,0.s) (success)
+Tactic call cbv ran for 0.059 secs (0.059u,0.s) (success)
+Tactic call lazy ran for 0.049 secs (0.049u,0.s) (success)
 Params: n= 35 , num-binders= 1225
-Tactic call cbv ran for 0.123 secs (0.123u,0.s) (success)
-Tactic call lazy ran for 0.138 secs (0.138u,0.s) (success)
+Tactic call cbv ran for 0.124 secs (0.124u,0.s) (success)
+Tactic call lazy ran for 0.137 secs (0.136u,0.s) (success)
 Params: n= 40 , num-binders= 1600
-Tactic call cbv ran for 0.249 secs (0.249u,0.s) (success)
-Tactic call lazy ran for 0.226 secs (0.226u,0.s) (success)
+Tactic call cbv ran for 0.251 secs (0.251u,0.s) (success)
+Tactic call lazy ran for 0.225 secs (0.222u,0.003s) (success)
 Params: n= 45 , num-binders= 2025
-Tactic call cbv ran for 0.451 secs (0.451u,0.s) (success)
-Tactic call lazy ran for 0.432 secs (0.432u,0.s) (success)
+Tactic call cbv ran for 0.453 secs (0.452u,0.s) (success)
+Tactic call lazy ran for 0.433 secs (0.433u,0.s) (success)
 Params: n= 50 , num-binders= 2500
-Tactic call cbv ran for 0.679 secs (0.679u,0.s) (success)
-Tactic call lazy ran for 0.693 secs (0.693u,0.s) (success)
+Tactic call cbv ran for 0.679 secs (0.678u,0.s) (success)
+Tactic call lazy ran for 0.694 secs (0.693u,0.s) (success)
 Params: n= 55 , num-binders= 3025
-Tactic call cbv ran for 1.011 secs (1.011u,0.s) (success)
-Tactic call lazy ran for 1.046 secs (1.046u,0.s) (success)
+Tactic call cbv ran for 1.019 secs (1.018u,0.s) (success)
+Tactic call lazy ran for 1.046 secs (1.045u,0.s) (success)
 Params: n= 60 , num-binders= 3600
-Tactic call cbv ran for 1.473 secs (1.473u,0.s) (success)
-Tactic call lazy ran for 1.444 secs (1.444u,0.s) (success)
+Tactic call cbv ran for 1.48 secs (1.479u,0.s) (success)
+Tactic call lazy ran for 1.452 secs (1.45u,0.s) (success)
 Params: n= 65 , num-binders= 4225
-Tactic call cbv ran for 2. secs (2.u,0.s) (success)
-Tactic call lazy ran for 1.894 secs (1.894u,0.s) (success)
+Tactic call cbv ran for 2.011 secs (2.009u,0.s) (success)
+Tactic call lazy ran for 1.907 secs (1.902u,0.003s) (success)

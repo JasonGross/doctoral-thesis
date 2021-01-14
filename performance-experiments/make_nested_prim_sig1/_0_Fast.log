@@ -1,6 +1,6 @@
 Params: n= 22
-Tactic call cbv ran for 4.753 secs (4.645u,0.107s) (success)
+Tactic call cbv ran for 4.805 secs (4.684u,0.116s) (success)
 Params: n= 23
-Tactic call cbv ran for 9.598 secs (9.479u,0.119s) (success)
+Tactic call cbv ran for 9.696 secs (9.575u,0.111s) (success)
 Params: n= 24
-Tactic call cbv ran for 18.761 secs (18.597u,0.163s) (success)
+Tactic call cbv ran for 18.883 secs (18.662u,0.203s) (success)

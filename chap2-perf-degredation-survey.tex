@@ -671,7 +671,7 @@ We obviously cannot type-check a term in better than linear time in the size of 
 
 Recall that we cannot place any hard bounds on complexity of typechecking a term, as terms as simple as \mintinline{coq}{@eq_refl bool true} proving that the Boolean \mintinline{coq}{true} is equal to itself can also be typechecked as proofs of arbitrarily complex decision procedures returning success.
 For example, suppose the function \mintinline{coq}{f TM n} takes as arguments a description of a Turing machine \mintinline{coq}{TM} and a number of steps \mintinline{coq}{n} and outputs \mintinline{coq}{false} unless \mintinline{coq}{TM} halts within \mintinline{coq}{n}, in which case it instead outputs \mintinline{coq}{true}.
-Then for any concrete number \mintinline{coq}{n} and any concrete description of a Turing machine \mintinline{coq}{TM} which does in fact halt within \mintinline{coq}{n} steps, the term \mintinline{coq}{@eq_refl bool true} can be typecked as a proof of \mintinline{coq}{f TM n = true} because \mintinline{coq}{f TM n} computes to \mintinline{coq}{true}.
+Then for any concrete number \mintinline{coq}{n} and any concrete description of a Turing machine \mintinline{coq}{TM} which does in fact halt within \mintinline{coq}{n} steps, the term \mintinline{coq}{@eq_refl bool true} can be typechecked as a proof of \mintinline{coq}{f TM n = true} because \mintinline{coq}{f TM n} computes to \mintinline{coq}{true}.
 
 We might reasonably hope that typechecking problems which require no interesting computation can be completed in time linear in the size of the term and its type.
 

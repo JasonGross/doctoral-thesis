@@ -466,8 +466,7 @@ We will now go through \autoref{ch:rewriting} and describe where to find each re
 
 The \texttt{prefixSums} example appears in the Coq source file \texttt{rewriter/src/Rewriter/Rewriter/Examples/PrefixSums.v}.
 Note that we use \texttt{dlet} rather than \mintinline{coq}{let} in binding \texttt{acc'} so that we can preserve the \mintinline{coq}{let} binder even under $\iota$ reduction, which much of Coq's infrastructure performs eagerly.
-Because we attempt to isolate the dependency on the axiom of functional extensionality as much as possible, we also in practice require \texttt{Proper} instances for each higher-order identifier saying that each constant respects function extensionality.
-We hope to remove the dependency on function extensionality altogether in the future.
+Because we do not depend on the axiom of functional extensionality, we also in practice require \texttt{Proper} instances for each higher-order identifier saying that each constant respects function extensionality.
 Although we glossed over this detail in the body of \autoref{ch:rewriting}, we also prove
 \begin{minted}{coq}
 Global Instance: forall A B,
@@ -492,9 +491,9 @@ We claimed that our solution meets five criteria.
 We briefly justify each criterion with a sentence or a pointer to code:
 \begin{itemize}
   \item
-    We claimed that we \textbf{did not grow the trusted base} (excepting the axiom of functional extensionality).
+    We claimed that we \textbf{did not grow the trusted base}.
     In any example file (of which a couple can be found in \texttt{rewriter/src/Rewriter/Rewriter/Examples/}), the \mintinline{coq}{Make} command creates a rewriter package.
-    Running \texttt{Print Assumptions} on this new constant (often named \texttt{rewriter} or \texttt{myrew}) should demonstrate a lack of axioms other than functional extensionality.
+    Running \texttt{Print Assumptions} on this new constant (often named \texttt{rewriter} or \texttt{myrew}) should demonstrate a lack of axioms.
     \texttt{Print Assumptions} may also be run on the proof that results from using the rewriter.
   \item
     We claimed \textbf{fast} partial evaluation with reasonable memory use; we assume that the performance graphs stand on their own to support this claim.
@@ -621,7 +620,6 @@ We must trust that the rewriter package we generate from the rewrite rules in fa
 This involves partially trusting the scraper, the reifier, and the glue code.
 We must also trust the VM we use for reduction at various points in rewriting.
 Otherwise, everything is checked by Coq.
-We do, however, depend on the axiom of function extensionality in one place in the rewriter proof; after spending a couple of hours trying to remove this axiom, we temporarily gave up.
 
 
 \subsection{Code from \autocommanameref{sec:structure}}

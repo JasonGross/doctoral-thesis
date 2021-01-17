@@ -85,6 +85,25 @@ Additionally, our strategy automatically provides error messages that are no les
   publisher    = {Cambridge University Press},
 }
 
+@InProceedings{gonthier2011make,
+  author    = {Gonthier, Georges and Ziliani, Beta and Nanevski, Aleksandar and Dreyer, Derek},
+  booktitle = {Proceedings of the 16th ACM SIGPLAN International Conference on Functional Programming},
+  date      = {2011},
+  title     = {How to Make Ad Hoc Proof Automation Less Ad Hoc},
+  doi       = {10.1145/2034773.2034798},
+  isbn      = {9781450308656},
+  location  = {Tokyo, Japan},
+  pages     = {163--175},
+  publisher = {Association for Computing Machinery},
+  series    = {ICFP '11},
+  url       = {http://www.mpi-sws.org/~beta/lessadhoc/lessadhoc.pdf},
+  abstract  = {Most interactive theorem provers provide support for some form of user-customizable proof automation. In a number of popular systems, such as Coq and Isabelle, this automation is achieved primarily through tactics, which are programmed in a separate language from that of the prover's base logic. While tactics are clearly useful in practice, they can be difficult to maintain and compose because, unlike lemmas, their behavior cannot be specified within the expressive type system of the prover itself.We propose a novel approach to proof automation in Coq that allows the user to specify the behavior of custom automated routines in terms of Coq's own type system. Our approach involves a sophisticated application of Coq's canonical structures, which generalize Haskell type classes and facilitate a flexible style of dependently-typed logic programming. Specifically, just as Haskell type classes are used to infer the canonical implementation of an overloaded term at a given type, canonical structures can be used to infer the canonical proof of an overloaded lemma for a given instantiation of its parameters. We present a series of design patterns for canonical structure programming that enable one to carefully and predictably coax Coq's type inference engine into triggering the execution of user-supplied algorithms during unification, and we illustrate these patterns through several realistic examples drawn from Hoare Type Theory. We assume no prior knowledge of Coq and describe the relevant aspects of Coq type inference from first principles.},
+  address   = {New York, NY, USA},
+  keywords  = {canonical structures, custom proof automation, tactics, coq, interactive theorem proving, type classes, hoare type theory},
+  local-url = {http://people.csail.mit.edu/jgross/personal-website/papers/academic-papers-local/lessadhoc.pdf},
+  numpages  = {13},
+}
+
 @InProceedings{MirrorShardITP14,
   author    = {Gregory Malecha and Adam Chlipala and Thomas Braibant},
   booktitle = {ITP'14: Proceedings of the 5th International Conference on Interactive Theorem Proving},
@@ -124,16 +143,19 @@ Additionally, our strategy automatically provides error messages that are no les
   url       = {https://coq.inria.fr/distrib/V8.7.1/refman/tactic-examples.html#quote-examples},
 }
 
-@Article{sozeau2008first,
-  author       = {Sozeau, Matthieu and Oury, Nicolas},
-  date         = {2008},
-  journaltitle = {Lecture Notes in Computer Science},
-  title        = {First-class type classes},
-  doi          = {10.1007/978-3-540-71067-7_23},
-  pages        = {278--293},
-  url          = {https://www.irif.fr/~sozeau/research/publications/First-Class_Type_Classes.pdf},
-  volume       = {5170},
-  publisher    = {Springer},
+@InProceedings{sozeau2008first,
+  author    = {Sozeau, Matthieu and Oury, Nicolas},
+  booktitle = {Theorem Proving in Higher Order Logics},
+  date      = {2008},
+  title     = {First-Class Type Classes},
+  doi       = {10.1007/978-3-540-71067-7_23},
+  editor    = {Mohamed, Otmane Ait and Muñoz, César and Tahar, Sofiène},
+  isbn      = {978-3-540-71067-7},
+  location  = {Berlin, Heidelberg},
+  pages     = {278--293},
+  publisher = {Springer},
+  url       = {https://www.irif.fr/~sozeau/research/publications/First-Class_Type_Classes.pdf},
+  abstract  = {Type Classes have met a large success in Haskell and Isabelle, as a solution for sharing notations by overloading and for specifying with abstract structures by quantification on contexts. However, both systems are limited by second-class implementations of these constructs, and these limitations are only overcomed by ad-hoc extensions to the respective systems. We propose an embedding of type classes into a dependent type theory that is first-class and supports some of the most popular extensions right away. The implementation is correspondingly cheap, general and integrates well inside the system, as we have experimented in Coq. We show how it can be used to help structured programming and proving by way of examples.},
 }
 
 @Article{ziliani2015mtac,
@@ -288,17 +310,19 @@ Additionally, our strategy automatically provides error messages that are no les
   doi       = {10.1007/978-3-319-94821-8_2},
 }
 
-@InBook{rtac,
+@InProceedings{rtac,
   author    = {Malecha, Gregory and Bengtson, Jesper},
+  booktitle = {Programming Languages and Systems},
   date      = {2016},
-  title     = {Programming Languages and Systems: 25th European Symposium on Programming, ESOP 2016, Held as Part of the European Joint Conferences on Theory and Practice of Software, ETAPS 2016, Eindhoven, The Netherlands, April 2-8, 2016, Proceedings},
-  chapter   = {Extensible and Efficient Automation Through Reflective Tactics},
+  title     = {Extensible and Efficient Automation Through Reflective Tactics},
   doi       = {10.1007/978-3-662-49498-1_21},
   editor    = {Thiemann, Peter},
   isbn      = {978-3-662-49498-1},
   location  = {Berlin, Heidelberg},
   pages     = {532--559},
-  publisher = {Springer Berlin Heidelberg},
+  publisher = {Springer},
+  abstract  = {Foundational proof assistants simultaneously offer both expressive logics and strong guarantees. The price they pay for this flexibility is often the need to build and check explicit proof objects which can be expensive. In this work we develop a collection of techniques for building reflective automation, where proofs are witnessed by verified decision procedures rather than verbose proof objects. Our techniques center around a verified domain specific language for proving, $\mathcal{R}_{tac}$, written in Gallina, Coq's logic. The design of tactics makes it easy to combine them into higher-level automation that can be proved sound in a mostly automated way. Furthermore, unlike traditional uses of reflection, $\mathcal{R}_{tac}$ tactics are independent of the underlying problem domain, which allows them to be re-tasked to automate new problems with very little effort. We demonstrate the usability of $\mathcal{R}_{tac}$ through several case studies demonstrating orders of magnitude speedups for relatively little engineering work.},
+  address   = {Berlin, Heidelberg},
 }
 
 @Conference{denes2013prim-ints-arrays,
@@ -357,7 +381,7 @@ Additionally, our strategy automatically provides error messages that are no les
   timestamp    = {2014.03.28},
 }
 
-@Electronic{benediktahrens/coinductives,
+@Online{benediktahrens/coinductives,
   author    = {Benedikt Ahrens},
   title     = {Coinductives},
   url       = {https://github.com/benediktahrens/coinductives},
@@ -365,7 +389,7 @@ Additionally, our strategy automatically provides error messages that are no les
   timestamp = {2013.12.31},
 }
 
-@Electronic{benediktahrens-Foundations-typesystems,
+@Online{benediktahrens-Foundations-typesystems,
   author    = {Benedikt Ahrens},
   title     = {{benediktahrens/Foundations typesystems}},
   url       = {https://github.com/benediktahrens/Foundations/tree/typesystems},
@@ -384,7 +408,7 @@ Additionally, our strategy automatically provides error messages that are no les
   timestamp = {2013.12.24},
 }
 
-@Electronic{benediktahrens/rezk-completion,
+@Online{benediktahrens/rezk-completion,
   author    = {Benedikt Ahrens and Chris Kapulkin and Michael Shulman},
   title     = {{benediktahrens/rezk\_completion}},
   url       = {https://github.com/benediktahrens/rezk_completion},
@@ -484,7 +508,7 @@ Additionally, our strategy automatically provides error messages that are no les
   timestamp = {2014.01.08},
 }
 
-@Electronic{Bertot2013,
+@Online{Bertot2013,
   author    = {Yves Bertot},
   date      = {2013-04},
   title     = {Private Inductive Types: Proposing a language extension},
@@ -543,7 +567,7 @@ Additionally, our strategy automatically provides error messages that are no les
   timestamp = {2014.01.12},
 }
 
-@Electronic{pcapriotti/agda-categories,
+@Online{pcapriotti/agda-categories,
   author    = {Paolo Capriotti},
   title     = {{pcapriotti/agda-categories}},
   url       = {https://github.com/pcapriotti/agda-categories/},
@@ -576,7 +600,7 @@ Additionally, our strategy automatically provides error messages that are no les
   timestamp            = {2013.06.19},
 }
 
-@Electronic{jmchapman/restriction-categories,
+@Online{jmchapman/restriction-categories,
   author    = {James Chapman},
   title     = {jmchapman/restriction-categories},
   url       = {https://github.com/jmchapman/restriction-categories},
@@ -624,22 +648,6 @@ Additionally, our strategy automatically provides error messages that are no les
   series-old = {Lecture Notes in Computer Science},
   timestamp  = {2014.04.10},
   volume-old = {5674},
-}
-
-@InProceedings{gonthier2011make,
-  author           = {Gonthier, Georges and Ziliani, Beta and Nanevski, Aleksandar and Dreyer, Derek},
-  booktitle        = {ACM SIGPLAN Notices},
-  date             = {2011},
-  title            = {How to Make Ad Hoc Proof Automation Less Ad Hoc},
-  doi              = {10.1145/2034574.2034798},
-  organization     = {ACM},
-  pages            = {163--175},
-  url              = {http://www.mpi-sws.org/~beta/lessadhoc/lessadhoc.pdf},
-  volume           = {46},
-  local-url        = {http://people.csail.mit.edu/jgross/personal-website/papers/academic-papers-local/lessadhoc.pdf},
-  number-duplicate = {9},
-  owner            = {Jason},
-  timestamp        = {2014.01.08},
 }
 
 @Article{Harper1991107,
@@ -725,7 +733,7 @@ Additionally, our strategy automatically provides error messages that are no les
   timestamp    = {2013.12.24},
 }
 
-@Electronic{konn/category-agda,
+@Online{konn/category-agda,
   author    = {Hiromi Ishii},
   title     = {{konn/category-agda}},
   url       = {https://github.com/konn/category-agda},
@@ -752,7 +760,7 @@ Additionally, our strategy automatically provides error messages that are no les
   timestamp    = {2014.01.19},
 }
 
-@Electronic{Komendantsky,
+@Online{Komendantsky,
   author       = {Vladimir Komendantsky and Alexander Konovalov and Steve Linton},
   title        = {Connecting {C}oq theorem prover to {GAP}},
   url          = {http://www.symcomp.org/sciencehome-view/images/e/e9/CICM_2010_Komendantsky.pdf},
@@ -777,7 +785,7 @@ Additionally, our strategy automatically provides error messages that are no les
   timestamp = {2013.06.19},
 }
 
-@Electronic{MathClasses,
+@Online{MathClasses,
   author       = {Robbert Krebbers and Bas Spitters and Eelis van der Weegen},
   title        = {Math Classes},
   howpublished = {\url{http://coq.inria.fr/pylons/pylons/contribs/view/MathClasses/v8.4}},
@@ -836,7 +844,7 @@ Additionally, our strategy automatically provides error messages that are no les
   timestamp = {2014.01.17},
 }
 
-@Electronic{megacz-coq-categories,
+@Online{megacz-coq-categories,
   author    = {Adam Megacz},
   title     = {Category Theory Library for {C}oq},
   url       = {http://www.cs.berkeley.edu/~megacz/coq-categories/},
@@ -859,7 +867,7 @@ Additionally, our strategy automatically provides error messages that are no les
   timestamp    = {2013.12.24},
 }
 
-@Electronic{Coalgebras,
+@Online{Coalgebras,
   author    = {Milad Niqui},
   date      = {2010-01},
   title     = {Coalgebras, bisimulation and lambda-coiteration},
@@ -868,7 +876,7 @@ Additionally, our strategy automatically provides error messages that are no les
   timestamp = {2013.12.12},
 }
 
-@Electronic{Norell,
+@Online{Norell,
   author    = {Ulf Norell},
   date      = {2011-08},
   title     = {{A}gda performance improvements},
@@ -903,7 +911,7 @@ Additionally, our strategy automatically provides error messages that are no les
   timestamp    = {2013.12.12},
 }
 
-@Electronic{copumpkin/categories,
+@Online{copumpkin/categories,
   author    = {Daniel Peebles and James Deikun and Andrea Vezzosi and James Cook},
   title     = {{copumpkin/categories}},
   url       = {https://github.com/copumpkin/categories},
@@ -923,7 +931,7 @@ Additionally, our strategy automatically provides error messages that are no les
   year-old        = {1988},
 }
 
-@Electronic{Algebra,
+@Online{Algebra,
   author    = {Lo\"ic Pottier},
   title     = {Algebra},
   url       = {http://coq.inria.fr/pylons/pylons/contribs/view/Algebra/v8.4},
@@ -931,7 +939,7 @@ Additionally, our strategy automatically provides error messages that are no les
   timestamp = {2014.01.01},
 }
 
-@Electronic{crypto-agda/crypto-agda,
+@Online{crypto-agda/crypto-agda,
   author    = {Nicolas Pouillard},
   title     = {{crypto-agda/crypto-agda}},
   url       = {https://github.com/crypto-agda/crypto-agda/tree/master/FunUniverse},
@@ -939,7 +947,7 @@ Additionally, our strategy automatically provides error messages that are no les
   timestamp = {2013.12.12},
 }
 
-@Electronic{ConCaT,
+@Online{ConCaT,
   author    = {Amokrane Sa{\"i}bi},
   title     = {Constructive Category Theory},
   url       = {http://coq.inria.fr/pylons/pylons/contribs/view/ConCaT/v8.4},
@@ -947,7 +955,7 @@ Additionally, our strategy automatically provides error messages that are no les
   timestamp = {2013.12.12},
 }
 
-@Electronic{interval-implies-funext,
+@Online{interval-implies-funext,
   author    = {Michael Shulman},
   title     = {An Interval Type Implies Function Extensionality},
   url       = {http://homotopytypetheory.org/2011/04/04},
@@ -957,7 +965,7 @@ Additionally, our strategy automatically provides error messages that are no les
   year-old  = {2011},
 }
 
-@Electronic{CatsInZFC,
+@Online{CatsInZFC,
   author    = {Carlos Simpson},
   title     = {{C}ats{I}n{ZFC}},
   url       = {http://coq.inria.fr/pylons/pylons/contribs/view/CatsInZFC/v8.4},
@@ -965,7 +973,7 @@ Additionally, our strategy automatically provides error messages that are no les
   timestamp = {2013.12.12},
 }
 
-@Electronic{mattam82/coq-polyproj,
+@Online{mattam82/coq-polyproj,
   author    = {Matthieu Sozeau},
   title     = {{mattam82/coq polyproj}},
   url       = {https://github.com/mattam82/coq/tree/polyproj},
@@ -973,7 +981,7 @@ Additionally, our strategy automatically provides error messages that are no les
   timestamp = {2014.01.03},
 }
 
-@Electronic{mattam82-cat,
+@Online{mattam82-cat,
   author    = {Matthieu Sozeau},
   title     = {Cat},
   url       = {http://mattam.org/repos/coq/cat/},
@@ -981,7 +989,7 @@ Additionally, our strategy automatically provides error messages that are no les
   timestamp = {2013.12.12},
 }
 
-@Electronic{HoTT/coq,
+@Online{HoTT/coq,
   author    = {Matthieu Sozeau and Hugo Herbelin and Pierre Letouzey and Jean-Christophe Filli\^{a}tre and Matthieu Sozeau and anonymous and Pierre-Marie Pédrot and Bruno Barras and Jean-Marc Notin and Pierre Boutillier and Enrico Tassi and St\'ephane Glondu and Arnaud Spiwack and Claudio Sacerdoti Coen and Christine Paulin and Olivier Desmettre and Yves Bertot and Julien Forest and David Delahaye and Pierre Corbineau and Julien Narboux and Matthias Puech and Benjamin Monate and Elie Soubiran and Pierre Courtieu and Vincent Gross and Judica\"el Courant and Lionel Elie Mamane and Cl\'ement Renard and Evgeny Makarov and Claude March\'e and Guillaume Melquiond and Micaela Mayero and Yann R\'egis-Gianas and Benjamin Gr\'egoire and Vincent Siles and Fr\'ed\'eric Besson and Laurent Th\'ery and Florent Kirchner and Maxime D\'en\`es and Xavier Clerc and Lo\"ic Pottier and Russel O'Connor and Assia Mahboubi and Benjamin Werner and xclerc and Huang Guan-Shieng and Jason Gross and Tom Hutchinson and Cezary Kaliszyk and Pierre and Daniel De Rauglaudre and Alexandre Miquel and Damien Doligez and Gregory Malecha and Stephane Glondu and Andrej Bauer},
   title     = {{HoTT/coq}},
   url       = {https://github.com/HoTT/coq},
@@ -1046,15 +1054,16 @@ Additionally, our strategy automatically provides error messages that are no les
 @TechReport{wilander2005bicategory,
   author      = {Wilander, Olov},
   date        = {2005},
-  institution = {Technical report, University of Uppsala},
+  institution = {University of Uppsala},
   title       = {An {E}-bicategory of {E}-categories exemplifying a type-theoretic approach to bicategories},
+  url         = {https://citeseerx.ist.psu.edu/viewdoc/download?doi=10.1.1.63.5498&rep=rep1&type=pdf},
   local-url   = {http://people.csail.mit.edu/jgross/personal-website/papers/academic-papers-local/download_doi=10.1.1.63.5498.pdf},
   owner       = {Jason},
   pdf         = {http://citeseerx.ist.psu.edu/viewdoc/download?doi=10.1.1.63.5498&rep=rep1&type=pdf},
   timestamp   = {2013.12.24},
 }
 
-@Electronic{HoTT/HoTT-categories,
+@Online{HoTT/HoTT-categories,
   author     = {{HoTT Library Authors}},
   date       = {2020-02-23},
   title      = {{HoTT/HoTT} Categories},
@@ -1064,7 +1073,7 @@ Additionally, our strategy automatically provides error messages that are no les
   timestamp  = {2014.01.01},
 }
 
-@Electronic{wiki:adjoint-functors:universal-morphisms,
+@Online{wiki:adjoint-functors:universal-morphisms,
   author       = {{Wikipedia contributors}},
   date         = {2020-09-24},
   title        = {Adjoint functors: Formal definitions: Definition via universal morphisms},
@@ -1075,7 +1084,7 @@ Additionally, our strategy automatically provides error messages that are no les
   timestamp    = {2014.01.07},
 }
 
-@Electronic{ncatlab:adjoint+functor:UniversalArrows,
+@Online{ncatlab:adjoint+functor:UniversalArrows,
   author       = {{nCatLab Authors}},
   date         = {2012-11},
   title        = {adjoint functor: in terms of universal arrows / universal factorization through unit and counit},
@@ -1086,7 +1095,7 @@ Additionally, our strategy automatically provides error messages that are no les
   timestamp    = {2014.01.07},
 }
 
-@Electronic{ncatlab:subobject+classifier,
+@Online{ncatlab:subobject+classifier,
   author       = {{nCatLab Authors}},
   date         = {2012-09},
   title        = {subobject classifier},
@@ -1097,7 +1106,7 @@ Additionally, our strategy automatically provides error messages that are no les
   timestamp    = {2013.12.22},
 }
 
-@Electronic{math-overflow-formalizations,
+@Online{math-overflow-formalizations,
   author       = {Jason Gross},
   date         = {2014-01-19},
   title        = {Formalizations of category theory in proof assistants},
@@ -1219,33 +1228,22 @@ Implementations from our library were included in BoringSSL to replace existing 
   publisher    = {ACM New York, NY, USA},
 }
 
-@Article{mytkowicz-wrong-data,
-  author       = {Mytkowicz, Todd and Diwan, Amer and Hauswirth, Matthias and Sweeney, Peter F.},
-  date         = {2009},
-  journaltitle = {ACM Sigplan Notices},
-  title        = {Producing Wrong Data Without Doing Anything Obviously Wrong!},
-  doi          = {10.1145/1508284.1508275},
-  number       = {3},
-  pages        = {265--276},
-  url          = {https://users.cs.northwestern.edu/~robby/courses/322-2013-spring/mytkowicz-wrong-data.pdf},
-  volume       = {44},
-  abstract     = {This paper presents a surprising result: changing a seemingly
-innocuous aspect of an experimental setup can cause a systems researcher to draw wrong conclusions from an experiment. What appears to be an innocuous aspect in the experimental setup may in fact introduce a significant bias in an
-evaluation. This phenomenon is called \emph{measurement bias} in
-the natural and social sciences.
-Our results demonstrate that measurement bias is significant and commonplace in computer system evaluation. By
-\emph{significant} we mean that measurement bias can lead to a performance analysis that either over-states an effect or even
-yields an incorrect conclusion. By \emph{commonplace} we mean
-that measurement bias occurs in all architectures that we
-tried (Pentium 4, Core 2, and m5 O3CPU), both compilers
-that we tried (gcc and Intel’s C compiler), and most of the
-SPEC CPU2006 C programs. Thus, we cannot ignore measurement bias. Nevertheless, in a literature survey of 133 recent papers from ASPLOS, PACT, PLDI, and CGO, we determined that none of the papers with experimental results
-adequately consider measurement bias.
-Inspired by similar problems and their solutions in other
-sciences, we describe and demonstrate two methods, one
-for detecting (causal analysis) and one for avoiding (setup
-randomization) measurement bias.},
-  publisher    = {ACM New York, NY, USA},
+@InProceedings{mytkowicz-wrong-data,
+  author    = {Mytkowicz, Todd and Diwan, Amer and Hauswirth, Matthias and Sweeney, Peter F.},
+  booktitle = {Proceedings of the 14th International Conference on Architectural Support for Programming Languages and Operating Systems},
+  date      = {2009},
+  title     = {Producing Wrong Data Without Doing Anything Obviously Wrong!},
+  doi       = {10.1145/1508244.1508275},
+  isbn      = {9781605584065},
+  location  = {Washington, DC, USA},
+  pages     = {265--276},
+  publisher = {Association for Computing Machinery},
+  series    = {ASPLOS XIV},
+  url       = {https://users.cs.northwestern.edu/~robby/courses/322-2013-spring/mytkowicz-wrong-data.pdf},
+  abstract  = {This paper presents a surprising result: changing a seemingly innocuous aspect of an experimental setup can cause a systems researcher to draw wrong conclusions from an experiment. What appears to be an innocuous aspect in the experimental setup may in fact introduce a significant bias in an evaluation. This phenomenon is called measurement bias in the natural and social sciences.Our results demonstrate that measurement bias is significant and commonplace in computer system evaluation. By significant we mean that measurement bias can lead to a performance analysis that either over-states an effect or even yields an incorrect conclusion. By commonplace we mean that measurement bias occurs in all architectures that we tried (Pentium 4, Core 2, and m5 O3CPU), both compilers that we tried (gcc and Intel's C compiler), and most of the SPEC CPU2006 C programs. Thus, we cannot ignore measurement bias. Nevertheless, in a literature survey of 133 recent papers from ASPLOS, PACT, PLDI, and CGO, we determined that none of the papers with experimental results adequately consider measurement bias.Inspired by similar problems and their solutions in other sciences, we describe and demonstrate two methods, one for detecting (causal analysis) and one for avoiding (setup randomization) measurement bias.},
+  address   = {New York, NY, USA},
+  keywords  = {measurement, bias, performance},
+  numpages  = {12},
 }
 
 @InProceedings{CelikETAL17iCoq,
@@ -1322,16 +1320,20 @@ the former, and up to 2.8 times faster than the latter.},
   publisher    = {ACM New York, NY, USA},
 }
 
-@Article{Implementing1998Shao,
-  author       = {Shao, Zhong and League, Christopher and Monnier, Stefan},
-  date         = {1998},
-  journaltitle = {ACM SIGPLAN Notices},
-  title        = {Implementing Typed Intermediate Languages},
-  doi          = {10.1145/291251.289460},
-  number       = {1},
-  pages        = {313--323},
-  volume       = {34},
-  publisher    = {ACM New York, NY, USA},
+@InProceedings{Implementing1998Shao,
+  author    = {Shao, Zhong and League, Christopher and Monnier, Stefan},
+  booktitle = {Proceedings of the Third ACM SIGPLAN International Conference on Functional Programming},
+  date      = {1998},
+  title     = {Implementing Typed Intermediate Languages},
+  doi       = {10.1145/289423.289460},
+  isbn      = {1581130244},
+  location  = {Baltimore, Maryland, USA},
+  pages     = {313--323},
+  publisher = {Association for Computing Machinery},
+  series    = {ICFP '98},
+  abstract  = {Recent advances in compiler technology have demonstrated the benefits of using strongly typed intermediate languages to compile richly typed source languages (e.g., ML). A type-preserving compiler can use types to guide advanced optimizations and to help generate provably secure mobile code. Types, unfortunately, are very hard to represent and manipulate efficiently; a naive implementation can easily add exponential overhead to the compilation and execution of a program. This paper describes our experience with implementing the FLINT typed intermediate language in the SML/NJ production compiler. We observe that a type-preserving compiler will not scale to handle large types unless all of its type-preserving stages preserve the asymptotic time and space usage in representing and manipulating types. We present a series of novel techniques for achieving this property and give empirical evidence of their effectiveness.},
+  address   = {New York, NY, USA},
+  numpages  = {11},
 }
 
 @InProceedings{Inductive2003Brady,
@@ -1395,7 +1397,7 @@ of strong reduction in Coq.},
   url         = {https://depositonce.tu-berlin.de/bitstream/11303/3095/1/Dokument_9.pdf},
 }
 
-@Electronic{smallttKovacs,
+@Online{smallttKovacs,
   author = {András Kovács},
   title  = {smalltt: Demo for high-performance type theory elaboration},
   url    = {https://github.com/AndrasKovacs/smalltt},
@@ -1409,13 +1411,13 @@ of strong reduction in Coq.},
   url      = {https://github.com/AndrasKovacs/smalltt/blob/fb56723b098cb1a95e8a5f3f9f5fce30bbcc67da/krakow-pres.pdf},
 }
 
-@Electronic{NormalizationKovacs,
+@Online{NormalizationKovacs,
   author = {András Kovács},
   title  = {Normalization Bench},
   url    = {https://github.com/AndrasKovacs/normalization-bench},
 }
 
-@Article{GluedEvalKovacs,
+@Online{GluedEvalKovacs,
   author = {András Kovács},
   title  = {Non-deterministic normalization-by-evaluation in Olle Fredriksson's flavor},
   url    = {https://gist.github.com/AndrasKovacs/a0e0938113b193d6b9c1c0620d853784},
@@ -1425,6 +1427,8 @@ of strong reduction in Coq.},
   author      = {Daniel Selsam and Sebastian Ullrich and Leonardo de Moura},
   date        = {2020-01-13},
   title       = {Tabled Typeclass Resolution},
+  journal     = {Computing Research Repository},
+  volume      = {abs/2001.04301},
   eprint      = {2001.04301v2},
   eprintclass = {cs.PL},
   eprinttype  = {arXiv},
@@ -1456,7 +1460,7 @@ of strong reduction in Coq.},
   location     = {Berlin, Heidelberg},
   organization = {Springer},
   pages        = {102--116},
-  publisher    = {Springer Berlin Heidelberg},
+  publisher    = {Springer},
   abstract     = {In [As94], a correspondence between Lamping-Gonthier's operators for Optimal Reduction of the $\lambda$-calculus [Lam90, GAL92a] and the operations associated with the comonad ``!'' of Linear Logic was established. In this paper, we put this analogy at work, adding new rewriting rules directly suggested by the categorical equations of the comonad. These rules produce an impressive improvement of the performance of the reduction system, and provide a first step towards the solution of the well known and crucial problem of accumulation of control operators.},
 }
 
@@ -1495,7 +1499,7 @@ of strong reduction in Coq.},
   url       = {http://pauillac.inria.fr/~levy/pubs/80curry.pdf},
 }
 
-@Electronic{SOOnlineTTReferenceKovacs,
+@Online{SOOnlineTTReferenceKovacs,
   author = {András Kovács},
   date   = {2019-12-10},
   title  = {Online reference book for *implementing* concepts in type theory.},
@@ -1520,7 +1524,7 @@ of strong reduction in Coq.},
   isbn      = {978-3-540-44659-0},
   location  = {Berlin, Heidelberg},
   pages     = {17--37},
-  publisher = {Springer Berlin Heidelberg},
+  publisher = {Springer},
   abstract  = {This article describes a set of derived inference rules and an abstract reduction machine using them that allow the inplementation of an interpreter for HOL terms, with the same complexity as with ML code. The latter fact allows us to use HOL as a computer algebra system in which the user can implement algorithms, provided he proved them correct.},
 }
 
@@ -1578,6 +1582,8 @@ of strong reduction in Coq.},
   date        = {2018-04-20},
   title       = {Formalising Mathematics In Simple Type Theory},
   doi         = {10.1007/978-3-030-15655-8_20},
+  journal   = {Computing Research Repository},
+  volume    = {abs/1804.07860},
   eprint      = {1804.07860v1},
   eprintclass = {cs.LO},
   eprinttype  = {arXiv},
@@ -1598,7 +1604,7 @@ of strong reduction in Coq.},
   keywords    = {cs.PL},
 }
 
-@Electronic{CC++Performance2017,
+@Online{CC++Performance2017,
   author       = {Vishal Kasliwal and Andrey Vladimirov},
   date         = {2017-11-19},
   title        = {A Performance-Based Comparison of C/C++ Compilers},
@@ -1616,20 +1622,20 @@ of strong reduction in Coq.},
   isbn      = {978-3-662-49674-9},
   location  = {Berlin, Heidelberg},
   pages     = {316--331},
-  publisher = {Springer Berlin Heidelberg},
+  publisher = {Springer},
   subtitle  = {An {IDE} for Interactive Proof Development in {C}oq},
   url       = {https://hal.inria.fr/hal-01242295/document},
   abstract  = {User interfaces for interactive proof assistants have always lagged behind those for mainstream programming languages. Whereas integrated development environments---IDEs---have support for features like project management, version control, dependency analysis and incremental project compilation, ``IDE''s for proof assistants typically only operate on files in isolation, relying on external tools to integrate those files into larger projects. In this paper we present Coqoon, an IDE for Coq developments integrated into Eclipse. Coqoon manages proofs as projects rather than isolated source files, and compiles these projects using the Eclipse common build system. Coqoon takes advantage of the latest features of Coq, including asynchronous and parallel processing of proofs, and---when used together with a third-party OCaml extension for Eclipse---can even be used to work on large developments containing Coq plugins.},
 }
 
-@Electronic{TypedUntyped2018Malecha,
+@Online{TypedUntyped2018Malecha,
   author = {Gregory Malecha},
   date   = {2018-02-20},
   title  = {To Be Typed and Untyped},
   url    = {https://gmalecha.github.io/reflections/2018/to-be-typed-or-untyped},
 }
 
-@Electronic{Speeding2017Malecha,
+@Online{Speeding2017Malecha,
   author = {Gregory Malecha},
   date   = {2017-06-05},
   title  = {Speeding Up Proofs with Computational Reflection},
@@ -1684,18 +1690,18 @@ of strong reduction in Coq.},
   isbn      = {978-3-540-31897-2},
   location  = {Berlin, Heidelberg},
   pages     = {151--166},
-  publisher = {Springer Berlin Heidelberg},
+  publisher = {Springer},
   abstract  = {In proof systems like Coq [16], proof-checking involves comparing types modulo $\beta$-conversion, which is potentially a time-consuming task. Significant speed-ups are achieved by compiling proof terms, see [9]. Since compilation erases some type information, we have to show that convertibility is preserved by type erasure. This article shows the equivalence of the Calculus of Inductive Constructions (formalism of Coq) and its domain-free version where parameters of inductive types are also erased. It generalizes and strengthens significantly a similar result by Barthe and S{\o}rensen [5] on the class of functional Domain-free Pure Type Systems.},
 }
 
-@Electronic{Idris2Faster2020Brady,
+@Online{Idris2Faster2020Brady,
   author = {Edwin Brady},
   date   = {2020-05-20},
   title  = {Why is {I}dris 2 so much faster than {I}dris 1?},
   url    = {https://www.type-driven.org.uk/edwinb/why-is-idris-2-so-much-faster-than-idris-1.html},
 }
 
-@Electronic{NewCoqTactics2016Pedrot,
+@Online{NewCoqTactics2016Pedrot,
   author = {Pierre-Marie Pédrot},
   date   = {2016-02-14},
   title  = {{C}oq{HoTT}-minute: Ticking like a Clockwork: the New {C}oq Tactics},
@@ -1759,7 +1765,7 @@ of strong reduction in Coq.},
   isbn      = {978-3-540-31820-0},
   location  = {Berlin, Heidelberg},
   pages     = {50--65},
-  publisher = {Springer Berlin Heidelberg},
+  publisher = {Springer},
   abstract  = {How close are we to a world where every paper on programming languages is accompanied by an electronic appendix with machine-checked proofs?},
 }
 
@@ -1969,7 +1975,7 @@ Programming with nested types is only a little more difficult than programming w
   isbn      = {978-3-642-14052-5},
   location  = {Berlin, Heidelberg},
   pages     = {83--98},
-  publisher = {Springer Berlin Heidelberg},
+  publisher = {Springer},
   url       = {https://hal.inria.fr/inria-00502496v2/document},
   abstract  = {Coq has within its logic a programming language that can be used to replace many deduction steps into a single computation, this is the so-called reflection. In this paper, we present two extensions of the evaluation mechanism that preserve its correctness and make it possible to deal with cpu-intensive tasks such as proof checking of SAT traces.},
 }
@@ -2151,16 +2157,29 @@ This chapter describes the simple theory of types and some of its extensions. Th
   pages     = {347--359},
 }
 
-@Article{Cubical2016Cohen,
+@InProceedings{Cubical2016Cohen,
   author      = {Cyril Cohen and Thierry Coquand and Simon Huber and Anders Mörtberg},
-  date        = {2016-11-07},
-  title       = {Cubical Type Theory: a constructive interpretation of the univalence axiom},
+  booktitle   = {21st International Conference on Types for Proofs and Programs (TYPES 2015)},
+  date        = {2018},
+  title       = {Cubical Type Theory: A Constructive Interpretation of the {U}nivalence Axiom},
+  doi         = {10.4230/LIPIcs.TYPES.2015.5},
+  editor      = {Tarmo Uustalu},
   eprint      = {1611.02108v1},
   eprintclass = {cs.LO},
   eprinttype  = {arXiv},
-  abstract    = {This paper presents a type theory in which it is possible to directly manipulate $n$-dimensional cubes (points, lines, squares, cubes, etc.) based on an interpretation of dependent type theory in a cubical set model. This enables new ways to reason about identity types, for instance, function extensionality is directly provable in the system. Further, Voevodsky's univalence axiom is provable in this system. We also explain an extension with some higher inductive types like the circle and propositional truncation. Finally we provide semantics for this cubical type theory in a constructive meta-theory.},
+  isbn        = {978-3-95977-030-9},
+  location    = {Dagstuhl, Germany},
+  pages       = {5:1--5:34},
+  publisher   = {Schloss Dagstuhl--Leibniz-Zentrum fuer Informatik},
+  series      = {Leibniz International Proceedings in Informatics (LIPIcs)},
+  volume      = {69},
+  abstract    = {This paper presents a type theory in which it is possible to directly manipulate n-dimensional cubes (points, lines, squares, cubes, etc.) based on an interpretation of dependent type theory in a cubical set model. This enables new ways to reason about identity types, for instance, function extensionality is directly provable in the system. Further, Voevodsky's univalence axiom is provable in this system. We also explain an extension with some higher inductive types like the circle and propositional truncation. Finally we provide semantics for this cubical type theory in a constructive meta-theory.},
+  arxivdate   = {2016-11-07},
   file        = {:http\://arxiv.org/pdf/1611.02108v1:PDF},
+  issn        = {1868-8969},
   keywords    = {cs.LO, math.LO, F.3.2; F.4.1},
+  skipurl     = {http://drops.dagstuhl.de/opus/volltexte/2018/8475},
+  skipurn     = {urn:nbn:de:0030-drops-84754},
 }
 
 @Online{Running2011Licata,
@@ -2309,7 +2328,7 @@ raised.},
   isbn         = {978-3-540-31820-0},
   location     = {Berlin, Heidelberg},
   pages        = {98--113},
-  publisher    = {Springer Berlin Heidelberg},
+  publisher    = {Springer},
   abstract     = {We present a new implementation of a reflexive tactic which solves equalities in a ring structure inside the Coq system. The efficiency is improved to a point that we can now prove equalities that were previously beyond reach. A special care has been taken to implement efficient algorithms while keeping the complexity of the correctness proofs low. This leads to a single tool, with a single implementation, which can be addressed for a ring or for a semi-ring, abstract or not, using the Leibniz equality or a setoid equality. This example shows that such reflective methods can be effectively used in symbolic computation.},
   journaltitle = {Theorem Proving in Higher Order Logics},
 }
@@ -2337,22 +2356,23 @@ raised.},
   isbn      = {978-3-540-47171-4},
   location  = {Berlin, Heidelberg},
   pages     = {351--365},
-  publisher = {Springer Berlin Heidelberg},
+  publisher = {Springer},
   abstract  = {We present preliminary work on the problem of mechanical proof simplification. Our approach is to take advantage of the correspondence between proofs and programs. Techniques from the field of program transformation may be used to transform the computational content of a proof. Using examples from elementary number theory, we illustrate how such transformations can lead to simpler proofs.},
 }
 
 @InProceedings{Lean2015Moura,
-  author       = {de Moura, Leonardo and Kong, Soonho and Avigad, Jeremy and Van Doorn, Floris and von Raumer, Jakob},
-  booktitle    = {International Conference on Automated Deduction},
-  date         = {2015},
-  title        = {The {L}ean Theorem Prover (System Description)},
-  doi          = {10.1007/978-3-319-21401-6_26},
-  editor       = {Amy P. Felty and Aart Middeldorp},
-  organization = {Springer},
-  pages        = {378--388},
-  publisher    = {Springer},
-  url          = {https://leanprover.github.io/papers/system.pdf},
-  volumes      = {9195},
+  author    = {de Moura, Leonardo and Kong, Soonho and Avigad, Jeremy and Van Doorn, Floris and von Raumer, Jakob},
+  booktitle = {Automated Deduction - CADE-25},
+  date      = {2015},
+  title     = {The {L}ean Theorem Prover (System Description)},
+  doi       = {10.1007/978-3-319-21401-6_26},
+  editor    = {Amy P. Felty and Aart Middeldorp},
+  isbn      = {978-3-319-21401-6},
+  location  = {Cham},
+  pages     = {378--388},
+  publisher = {Springer International Publishing},
+  url       = {https://leanprover.github.io/papers/system.pdf},
+  abstract  = {Lean is a new open source theorem prover being developed at Microsoft Research and Carnegie Mellon University, with a small trusted kernel based on dependent type theory. It aims to bridge the gap between interactive and automated theorem proving, by situating automated tools and methods in a framework that supports user interaction and the construction of fully specified axiomatic proofs. Lean is an ongoing and long-term effort, but it already provides many useful components, integrated development environments, and a rich API which can be used to embed it into other systems. It is currently being used to formalize category theory, homotopy type theory, and abstract algebra. We describe the project goals, system architecture, and main features, and we discuss applications and continuing work.},
 }
 
 @InProceedings{Matita2011Asperti,
@@ -2365,19 +2385,23 @@ raised.},
   isbn      = {978-3-642-22438-6},
   location  = {Berlin, Heidelberg},
   pages     = {64--69},
-  publisher = {Springer Berlin Heidelberg},
+  publisher = {Springer},
   abstract  = {Matita is an interactive theorem prover being developed by the Helm team at the University of Bologna. Its stable version 0.5.x may be downloaded at http://matita.cs.unibo.it. The tool originated in the European project MoWGLI as a set of XML-based tools aimed to provide a mathematician-friendly web-interface to repositories of formal mathematical knoweldge, supporting advanced content-based functionalities for querying, searching and browsing the library. It has since then evolved into a fully fledged ITP, specifically designed as a light-weight, but competitive system, particularly suited for the assessment of innovative ideas, both at foundational and logical level. In this paper, we give an account of the whole system, its peculiarities and its main applications.},
 }
 
 @Article{calculus1988Coquand,
-  author = {Thierry Coquand and Gérard Huet},
-  date   = {1988},
-  title  = {The Calculus of Constructions},
-  doi    = {10.1016/0890-5401(88)90005-3},
-  issn   = {0890-5401},
-  pages  = {95--120},
-  url    = {https://hal.inria.fr/inria-00076024/document},
-  volume = {76},
+  author       = {Thierry Coquand and Gérard Huet},
+  date         = {1988},
+  journaltitle = {Information and Computation},
+  title        = {The Calculus of Constructions},
+  doi          = {10.1016/0890-5401(88)90005-3},
+  issn         = {0890-5401},
+  number       = {2},
+  pages        = {95--120},
+  url          = {https://hal.inria.fr/inria-00076024/document},
+  volume       = {76},
+  skipurl      = {http://www.sciencedirect.com/science/article/pii/0890540188900053},
+  type         = {techreport},
 }
 
 @InProceedings{Inductively1988Coquand,
@@ -2400,7 +2424,7 @@ raised.},
   isbn      = {978-3-642-04652-0},
   location  = {Berlin, Heidelberg},
   pages     = {230--266},
-  publisher = {Springer Berlin Heidelberg},
+  publisher = {Springer},
   abstract  = {In Hindley-Milner style languages, such as Haskell and ML, there is a clear separation between types and values. In a dependently typed language the line is more blurry - types can contain (depend on) arbitrary values and appear as arguments and results of ordinary functions.},
 }
 
@@ -2561,7 +2585,7 @@ raised.},
 }
 
 @Online{flyspeck2014Hales,
-  author = {Thomas Hales and Alexey Solovyevand Hoang Le Truong and {the Flyspeck Team}},
+  author = {Thomas Hales and Alexey Solovyevand and Hoang Le Truong and {the Flyspeck Team}},
   date   = {2014-08-10},
   title  = {flyspeck - AnnouncingCompletion.wiki},
   url    = {https://code.google.com/archive/p/flyspeck/wikis/AnnouncingCompletion.wiki},
@@ -2618,7 +2642,7 @@ raised.},
   isbn      = {978-3-540-71067-7},
   location  = {Berlin, Heidelberg},
   pages     = {28--32},
-  publisher = {Springer Berlin Heidelberg},
+  publisher = {Springer},
   abstract  = {The HOL4 proof assistant supports specification and proof in classical higher order logic. It is the latest in a long line of similar systems. In this short overview, we give an outline of the HOL4 system and how it may be applied in formal verification.},
 }
 
@@ -2645,7 +2669,7 @@ raised.},
   isbn      = {978-3-540-49567-3},
   location  = {Berlin, Heidelberg},
   pages     = {257--264},
-  publisher = {Springer Berlin Heidelberg},
+  publisher = {Springer},
   abstract  = {We claim that no single technique such as rewriting, BDDs, or model checking is effective for all aspects of hardware verification. Many examples need the careful integration of these techniques. We have shown some simple examples to illustrate the integration available in PVS. This combination of techniques has been applied to some larger examples such as an SRT divider and Rockwell-Collins AAMP series of processors. The automation available in PVS on these examples can be further improved through the use of more decision procedures (e.g., bit vectors) and better verification methodologies (e.g., abstraction, induction).},
 }
 
@@ -2665,11 +2689,19 @@ raised.},
   title        = {A Framework for Defining Logics},
 }
 
-@Article{pfenning1999system,
-  author       = {Frank Pfenning and Carsten Schürmann},
-  date         = {1999},
-  journaltitle = {LNCS},
-  title        = {System Description: {Twelf} -- A Meta-Logical Framework for Deductive Systems},
+@InProceedings{pfenning1999system,
+  author    = {Frank Pfenning and Carsten Schürmann},
+  booktitle = {Automated Deduction --- CADE-16: 16th International Conference on Automated Deduction Trento, Italy, July 7--10, 1999 Proceedings},
+  date      = {1999},
+  title     = {System Description: {Twelf} -- A Meta-Logical Framework for Deductive Systems},
+  doi       = {10.1007/3-540-48660-7_14},
+  isbn      = {3540662227},
+  location  = {Berlin, Heidelberg},
+  pages     = {202--206},
+  publisher = {Springer-Verlag},
+  series    = {CADE-16},
+  abstract  = {Twelf is a meta-logical framework for the specification, implementation, and meta-theory of deductive systems from the theory of programming languages and logics. It relies on the LF type theory and the judgments-as-types methodology for specification [HHP93], a constraint logic programming interpreter for implementation [Pfe91], and the meta-logic M2 for reasoning about object languages encoded in LF [SP98]. It is a significant extension and complete reimplementation of the Elf system [Pfe94].Twelf is written in Standard ML and runs under SML of New Jersey and MLWorks on Unix and Window platforms. The current version (1.2) is distributed with a complete manual, example suites, a tutorial in the form of on-line lecture notes [Pfe], and an Emacs interface. Source and binary distributions are accessible via the Twelf home page http://www.cs.cmu.edu/ twelf.},
+  numpages  = {5},
 }
 
 @Article{asperti2007user,
@@ -2782,7 +2814,7 @@ This chapter presents a short survey about the work that has been done on the Au
   isbn      = {978-3-540-36262-3},
   location  = {Berlin, Heidelberg},
   pages     = {29--61},
-  publisher = {Springer Berlin Heidelberg},
+  publisher = {Springer},
 }
 
 @Online{wiki:AutoMath,
@@ -3052,23 +3084,6 @@ So the best answer to the question ``is rigor just a ritual'' is to study rigor 
   url          = {https://books.google.com/books?id=FeklBQAAQBAJ},
 }
 
-@Article{Coq2019Sozeau,
-  author       = {Sozeau, Matthieu and Boulier, Simon and Forster, Yannick and Tabareau, Nicolas and Winterhalter, Théo},
-  date         = {2019-12},
-  journaltitle = {Proceedings of the ACM on Programming Languages},
-  title        = {Coq {C}oq Correct! Verification of Type Checking and Erasure for {C}oq, in {C}oq},
-  doi          = {10.1145/3371076},
-  issue        = {POPL},
-  volume       = {4},
-  abstract     = {Coq is built around a well-delimited kernel that perfoms typechecking for definitions in a variant of the Calculus of Inductive Constructions (CIC). Although the metatheory of CIC is very stable and reliable, the correctness of its implementation in Coq is less clear. Indeed, implementing an efficient type checker for CIC is a rather complex task, and many parts of the code rely on implicit invariants which can easily be broken by further evolution of the code. Therefore, on average, one critical bug has been found every year in Coq.  This paper presents the first implementation of a type checker for the kernel of Coq (without the module system and template polymorphism), which is proven correct in Coq with respect to its formal specification and axiomatisation of part of its metatheory. Note that because of G\"{o}del's incompleteness theorem, there is no hope to prove completely the correctness of the specification of Coq inside Coq (in particular strong normalisation or canonicity), but it is possible to prove the correctness of the implementation assuming the correctness of the specification, thus moving from a trusted code base (TCB) to a trusted theory base (TTB) paradigm.  Our work is based on the MetaCoq project which provides metaprogramming facilities to work with terms and declarations at the level of this kernel. Our type checker is based on the specification of the typing relation of the Polymorphic, Cumulative Calculus of Inductive Constructions (PCUIC) at the basis of Coq and the verification of a relatively efficient and sound type-checker for it. In addition to the kernel implementation, an essential feature of Coq is the so-called extraction: the production of executable code in functional languages from Coq definitions. We present a verified version of this subtle type-and-proof erasure step, therefore enabling the verified extraction of a safe type-checker for Coq.},
-  articleno    = {8},
-  issue_date   = {January 2020},
-  keywords     = {certification, type checker, proof assistants},
-  location     = {New York, NY, USA},
-  numpages     = {28},
-  publisher    = {Association for Computing Machinery},
-}
-
 @InBook{Logical2002Pfenning,
   author    = {Pfenning, Frank},
   booktitle = {Proof and System-Reliability},
@@ -3107,7 +3122,7 @@ So the best answer to the question ``is rigor just a ritual'' is to study rigor 
   subtitle    = {A Proof Checker for the Extended Calculus of Constructions},
 }
 
-@Electronic{Coq,
+@Online{Coq,
   author       = {{C}oq Development Team, The},
   date         = {2020-07},
   title        = {The {C}oq Proof Assistant},
@@ -3222,7 +3237,7 @@ References
   howpublished = {Stack Overflow},
 }
 
-@Article{Logical2016Garrabrant,
+@Online{Logical2016Garrabrant,
   author      = {Scott Garrabrant and Tsvi Benson-Tilsen and Andrew Critch and Nate Soares and Jessica Taylor},
   date        = {2016-09-12},
   title       = {Logical Induction},
@@ -3293,7 +3308,7 @@ The theory of types is intended to be a full-scale system for formalizing intuit
   isbn      = {978-3-540-72914-3},
   location  = {Berlin, Heidelberg},
   pages     = {183--197},
-  publisher = {Springer Berlin Heidelberg},
+  publisher = {Springer},
   url       = {http://www.hermann-gruber.com/pdf/fun07-final.pdf},
   abstract  = {This paper is devoted to the ``Discovery of Slowness.'' The archetypical perversely awful algorithm bogo-sort, which is sometimes referred to as Monkey-sort, is analyzed with elementary methods. Moreover, practical experiments are performed.},
 }
@@ -3329,7 +3344,7 @@ The core topics include the untyped lambda-calculus, simple type systems, type r
   url    = {https://gcc.gnu.org/onlinedocs/gcc-7.5.0/cpp/Implementation-limits.html},
 }
 
-@Article{Infamous2014Gawron,
+@Online{Infamous2014Gawron,
   author = {Nicole Gawron},
   date   = {2014-08-23},
   title  = {Infamous Software Bugs: {FDIV} Bug},
@@ -3512,7 +3527,7 @@ The core topics include the untyped lambda-calculus, simple type systems, type r
   isbn        = {978-3-642-03359-9},
   location    = {Berlin, Heidelberg},
   pages       = {327--342},
-  publisher   = {Springer Berlin Heidelberg},
+  publisher   = {Springer},
   series      = {Lecture Notes in Computer Science},
   url         = {https://hal.inria.fr/inria-00368403},
   volume      = {5674},
@@ -3589,23 +3604,6 @@ Our framework, which we call LF$_i$, inherits from LF the capability to encode v
   abstract  = {This paper presents a formalization of Nuprl's metatheory in Coq. It includes a nominal-style definition of the Nuprl language, its reduction rules, a coinductive computational equivalence, and a Curry-style type system where a type is defined as a Partial Equivalence Relation (PER) à la Allen. This type system includes Martin-Löf dependent types, a hierarchy of universes, inductive types and partial types. We then prove that the typehood rules of Nuprl are valid w.r.t. this PER semantics and hence reduce Nuprl's consistency to Coq's consistency.},
 }
 
-@Article{coq-coq-correct,
-  author       = {Sozeau, Matthieu and Boulier, Simon and Forster, Yannick and Tabareau, Nicolas and Winterhalter, Th\'{e}o},
-  date         = {2019-12},
-  journaltitle = {Proceedings of the ACM on Programming Languages},
-  title        = {{C}oq {C}oq Correct! Verification of Type Checking and Erasure for {C}oq, in {C}oq},
-  doi          = {10.1145/3371076},
-  number       = {POPL},
-  volume       = {4},
-  abstract     = {Coq is built around a well-delimited kernel that perfoms typechecking for definitions in a variant of the Calculus of Inductive Constructions (CIC). Although the metatheory of CIC is very stable and reliable, the correctness of its implementation in Coq is less clear. Indeed, implementing an efficient type checker for CIC is a rather complex task, and many parts of the code rely on implicit invariants which can easily be broken by further evolution of the code. Therefore, on average, one critical bug has been found every year in Coq. This paper presents the first implementation of a type checker for the kernel of Coq (without the module system and template polymorphism), which is proven correct in Coq with respect to its formal specification and axiomatisation of part of its metatheory. Note that because of Gödel's incompleteness theorem, there is no hope to prove completely the correctness of the specification of Coq inside Coq (in particular strong normalisation or canonicity), but it is possible to prove the correctness of the implementation assuming the correctness of the specification, thus moving from a trusted code base (TCB) to a trusted theory base (TTB) paradigm. Our work is based on the MetaCoq project which provides metaprogramming facilities to work with terms and declarations at the level of this kernel. Our type checker is based on the specification of the typing relation of the Polymorphic, Cumulative Calculus of Inductive Constructions (PCUIC) at the basis of Coq and the verification of a relatively efficient and sound type-checker for it. In addition to the kernel implementation, an essential feature of Coq is the so-called extraction: the production of executable code in functional languages from Coq definitions. We present a verified version of this subtle type-and-proof erasure step, therefore enabling the verified extraction of a safe type-checker for Coq.},
-  articleno    = {8},
-  issue_date   = {January 2020},
-  keywords     = {type checker, proof assistants, certification},
-  location     = {New York, NY, USA},
-  numpages     = {28},
-  publisher    = {Association for Computing Machinery},
-}
-
 @Online{coq-pr-remove-quote-plugin,
   author = {Maxime Dénès},
   date   = {2018-09-14},
@@ -3648,6 +3646,24 @@ Our framework, which we call LF$_i$, inherits from LF the capability to encode v
   location  = {Madrid, Spain},
   url       = {http://adam.chlipala.net/papers/ImpurePOPL10/},
   abstract  = {A case study in verifying a compiler to an idealized assembly language from an untyped source language with most of the key dynamic features of ML: functions, products, sums, mutable references, and value-carrying exceptions. Syntax is encoded with parametric higher-order abstract syntax (PHOAS), which makes it possible to avoid almost all bookkeeping having to do with binders and fresh name generation. The semantics of the object languages are encoded in a new substitution-free style. All of the proofs are automated with tactic programs that can keep working even after changing the definitions of the languages.},
+}
+
+@Article{coq-coq-correct,
+  author       = {Sozeau, Matthieu and Boulier, Simon and Forster, Yannick and Tabareau, Nicolas and Winterhalter, Théo},
+  date         = {2019-12},
+  journaltitle = {Proceedings of the ACM on Programming Languages},
+  title        = {Coq {C}oq Correct! Verification of Type Checking and Erasure for {C}oq, in {C}oq},
+  doi          = {10.1145/3371076},
+  issue        = {POPL},
+  number       = {POPL},
+  volume       = {4},
+  abstract     = {Coq is built around a well-delimited kernel that perfoms typechecking for definitions in a variant of the Calculus of Inductive Constructions (CIC). Although the metatheory of CIC is very stable and reliable, the correctness of its implementation in Coq is less clear. Indeed, implementing an efficient type checker for CIC is a rather complex task, and many parts of the code rely on implicit invariants which can easily be broken by further evolution of the code. Therefore, on average, one critical bug has been found every year in Coq. This paper presents the first implementation of a type checker for the kernel of Coq (without the module system and template polymorphism), which is proven correct in Coq with respect to its formal specification and axiomatisation of part of its metatheory. Note that because of Gödel's incompleteness theorem, there is no hope to prove completely the correctness of the specification of Coq inside Coq (in particular strong normalisation or canonicity), but it is possible to prove the correctness of the implementation assuming the correctness of the specification, thus moving from a trusted code base (TCB) to a trusted theory base (TTB) paradigm. Our work is based on the MetaCoq project which provides metaprogramming facilities to work with terms and declarations at the level of this kernel. Our type checker is based on the specification of the typing relation of the Polymorphic, Cumulative Calculus of Inductive Constructions (PCUIC) at the basis of Coq and the verification of a relatively efficient and sound type-checker for it. In addition to the kernel implementation, an essential feature of Coq is the so-called extraction: the production of executable code in functional languages from Coq definitions. We present a verified version of this subtle type-and-proof erasure step, therefore enabling the verified extraction of a safe type-checker for Coq.},
+  articleno    = {8},
+  issue_date   = {January 2020},
+  keywords     = {type checker, proof assistants, certification},
+  location     = {New York, NY, USA},
+  numpages     = {28},
+  publisher    = {Association for Computing Machinery},
 }
 
 @Comment{jabref-meta: databaseType:biblatex;}

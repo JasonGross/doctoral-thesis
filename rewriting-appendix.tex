@@ -281,6 +281,7 @@ Note that all identifiers which appear in any goal to be rewritten must either a
 Rewriting is relatively simple, now.
 Simply invoke the tactic \mintinline{coq}{Rewrite_for myrew}.
 We support rewriting on only the left-hand-side and on only the right-hand-side using either the tactic \mintinline{coq}{Rewrite_lhs_for myrew} or else the tactic \mintinline{coq}{Rewrite_rhs_for myrew}, respectively.
+\minortodoac{Is it strange for this text to appear in an appendix, halfway through the benchmarks?}
 
 \subsubsection{\texorpdfstring{\texttt{rewrite\_strat}}{rewrite\_strat}}
 
@@ -295,12 +296,12 @@ Lemma lift_let_cons T A x (v : A) f
 
 To rewrite, we start with \mintinline{coq}{cbv [example make map_dbl]} to expose the underlying term to rewriting.
 One would hope that one could just add these two hints to a database \mintinline{coq}{db} and then write \texttt{rewrite\_strat (repeat (eval cbn [list\_rect]; try bottomup hints db))}, but unfortunately this does not work due to a number of bugs in Coq: \coqbug[]{10934}, \coqbug[]{10923}, \coqbug[]{4175}, \coqbug[]{10955}, and the potential to hit \coqbug[]{10972}.
-Instead, we must put the two lemmas in separate databases, and then write the code \texttt{repeat (cbn [list\_rect]; (rewrite\_strat (try repeat bottomup hints db1)); (rewrite\_strat (try repeat bottomup hints db2)))}.
+Instead, we must put the two lemmas in separate databases and then write the code \texttt{repeat (cbn [list\_rect]; (rewrite\_strat (try repeat bottomup hints db1)); (rewrite\_strat (try repeat bottomup hints db2)))}.
 Note that the rewriting with \mintinline{coq}{lift_let_cons} can be done either top-down or bottom-up, but \texttt{rewrite\_strat} breaks if the rewriting with \mintinline{coq}{lift_let_list_rect} is done top-down.
 
 \subsubsection{CPS and the VM}
 If we want to use Coq's built-in VM reduction without our rewriter, to achieve the prior state-of-the-art performance, we can do so on this example, because it only involves partial reduction and not equational rewriting.
-However, we must (a) module-opacify the constants which are not to be unfolded, and (b) rewrite all of our code in CPS.
+However, we must (a) module-opacify the constants which are not to be unfolded and (b) rewrite all of our code in CPS.
 
 Then we are looking at
 \begin{align*}
@@ -440,6 +441,9 @@ Both code bases can be built by running \texttt{make} in the top-level directory
 
 The performance data for both repositories are included at the top level as \texttt{.txt} and \texttt{.csv} files on different branches.
 The \texttt{rewriter} repository has performance data available on the branch \href{https://github.com/mit-plv/rewriter/tree/PLDI-2020-perf-data}{\texttt{PLDI-2020-perf-data}}, and the \texttt{fiat-crypto} repository has performance data available on the branch \href{https://github.com/mit-plv/fiat-crypto/tree/perf-testing-data-POPL-2021-rewriting}{\texttt{perf-testing-data-POPL-2021-rewriting}}.
+\todoac{It is probably worth renaming those branches.
+  You don't want anyone to think you're trying to trick them into thinking you had papers accepted at those conferences.
+  (Would probably be fine to leave those ``misleading'' names in history if you don't cite them here.)}
 
 The performance data for the microbenchmarks can be rebuilt using \texttt{make perf-SuperFast perf-Fast perf-Medium} followed by \texttt{make perf-csv} to get the \texttt{.txt} and \texttt{.csv} files.
 The microbenchmarks should run in about 24 hours when run with \texttt{-j5} on a 3.5 GHz machine.
@@ -454,7 +458,7 @@ Again, the \texttt{perf-csv} target will aggregate the logs and turn them into \
 The entry point for the rewriter is the Coq source file \texttt{rewriter/src/Rewriter/Util/plugins/RewriterBuild.v}.
 
 The rewrite rules used in Fiat Cryptography are defined in \texttt{fiat-crypto/src/Rewriter/Rules.v} and proven in \texttt{fiat-crypto/src/Rewriter/RulesProofs.v}.
-Note that the Fiat Cryptography copy uses \verb|COQPATH| for dependency management, and \verb|.dir-locals.el| to set \verb|COQPATH| in emacs/PG; you must accept the setting when opening a file in the directory for interactive compilation to work.
+Note that the Fiat Cryptography copy uses \verb|COQPATH| for dependency management and \verb|.dir-locals.el| to set \verb|COQPATH| in Emacs/PG; you must accept the setting when opening a file in the directory for interactive compilation to work.
 Thus interactive editing either requires ProofGeneral or manual setting of \verb|COQPATH|.
 The correct value of \verb|COQPATH| can be found by running \verb|make printenv|.
 
@@ -601,9 +605,9 @@ When we want to rewrite with a rewriter package in a goal, the following steps a
 \begin{enumerate}
     \item
     We use \mintinline{coq}{etransitivity} to allow rewriting separately on the left- and right-hand-sides of an equality.
-    Note that we do not currently support rewriting in non-equality goals, but this is easily worked around using \texttt{let v := open\_constr:(\_) in replace <some term> with v} and then rewriting in the second goal.
+    Note that we do not currently support rewriting in nonequality goals, but this is easily worked around using \texttt{let v := open\_constr:(\_) in replace <some term> with v} and then rewriting in the second goal.
     \item
-    We revert all hypotheses mentioned in the goal, and change the form of the goal from a universally quantified statement about equality into a statement that two functions are extensionally equal.
+    We revert all hypotheses mentioned in the goal and change the form of the goal from a universally quantified statement about equality into a statement that two functions are extensionally equal.
     Note that this step will fail if any hypotheses are functions not known to respect function extensionality via typeclass search.
     \item
     We reify the side of the goal that is not an existential variable using the inductive codes in the specified package; the resulting goal equates the denotation of the newly reified term with the original evar.
@@ -617,6 +621,7 @@ When we want to rewrite with a rewriter package in a goal, the following steps a
 
 There are a couple of steps that contribute to the trusted base.
 We must trust that the rewriter package we generate from the rewrite rules in fact matches the rewrite rules we want to rewrite with.
+\minortodoac{But we don't really need to trust it if we only care about the result to use as a tactic in some proof, right?}
 This involves partially trusting the scraper, the reifier, and the glue code.
 We must also trust the VM we use for reduction at various points in rewriting.
 Otherwise, everything is checked by Coq.
@@ -632,9 +637,9 @@ The pattern-matching compilation step is done by the tactic \texttt{CompileRewri
 (It should never fail for reasons other than insufficient fuel, unless there is a bug in the code.)
 The workhorse function here is \texttt{compile\_rewrites\_step}.
 
-The decision-tree evaluation step is done by the definition \texttt{eval\_rewrite\_rules}, also in the file \texttt{rewriter/src/Rewriter/Rewriter/Rewriter.v}.
+The decision-tree-evaluation step is done by the definition \texttt{eval\_rewrite\_rules}, also in the file \texttt{rewriter/src/Rewriter/Rewriter/Rewriter.v}.
 The correctness lemmas are the theorem \texttt{eval\_rewrite\_rules\_correct} in the file \texttt{rewriter/src/Rewriter/Rewriter/InterpProofs.v} and the theorem \texttt{wf\_eval\_rewrite\_rules} in \texttt{rewriter/src/Rewriter/Rewriter/Wf.v}.
-Note that the second of these lemmas, not mentioned in the \autoref{ch:rewriting}, is effectively saying that for two related syntax trees, \texttt{eval\_rewrite\_rules} picks the same rewrite rule for both.
+Note that the second of these lemmas, not mentioned in \autoref{ch:rewriting}, is effectively saying that for two related syntax trees, \texttt{eval\_rewrite\_rules} picks the same rewrite rule for both.
 (We actually prove a slightly weaker lemma, which is a bit harder to state in English.)
 
 The third step of rewriting with a given rule is performed by the \texttt{rewrite\_with\_rule} definition in \texttt{rewriter/src/Rewriter/Rewriter/Rewriter.v}.

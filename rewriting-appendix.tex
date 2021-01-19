@@ -616,12 +616,12 @@ When we want to rewrite with a rewriter package in a goal, the following steps a
     Finally, we run \texttt{cbv} to unfold the denotation function, and we instantiate the evar with the resulting rewritten term.
 \end{enumerate}
 
-There are a couple of steps that contribute to the trusted base.
-We must trust that the rewriter package we generate from the rewrite rules in fact matches the rewrite rules we want to rewrite with.
-\minortodoac{But we don't really need to trust it if we only care about the result to use as a tactic in some proof, right?}
-This involves partially trusting the scraper, the reifier, and the glue code.
-We must also trust the VM we use for reduction at various points in rewriting.
-Otherwise, everything is checked by Coq.
+%There are a couple of steps that contribute to the trusted base.
+%We must trust that the rewriter package we generate from the rewrite rules in fact matches the rewrite rules we want to rewrite with.
+%\minortodoac{But we don't really need to trust it if we only care about the result to use as a tactic in some proof, right?}
+%This involves partially trusting the scraper, the reifier, and the glue code.
+%We must also trust the VM we use for reduction at various points in rewriting.
+%Otherwise, everything is checked by Coq.
 
 
 \subsection{Code from \autocommanameref{sec:structure}}

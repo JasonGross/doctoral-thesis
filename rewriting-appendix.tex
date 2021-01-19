@@ -440,10 +440,7 @@ Both repositories build with Coq 8.9, 8.10, 8.11, and 8.12, and they require tha
 Both code bases can be built by running \texttt{make} in the top-level directory.
 
 The performance data for both repositories are included at the top level as \texttt{.txt} and \texttt{.csv} files on different branches.
-The \texttt{rewriter} repository has performance data available on the branch \href{https://github.com/mit-plv/rewriter/tree/PLDI-2020-perf-data}{\texttt{PLDI-2020-perf-data}}, and the \texttt{fiat-crypto} repository has performance data available on the branch \href{https://github.com/mit-plv/fiat-crypto/tree/perf-testing-data-POPL-2021-rewriting}{\texttt{perf-testing-data-POPL-2021-rewriting}}.
-\todoac{It is probably worth renaming those branches.
-  You don't want anyone to think you're trying to trick them into thinking you had papers accepted at those conferences.
-  (Would probably be fine to leave those ``misleading'' names in history if you don't cite them here.)}
+The \texttt{rewriter} repository has performance data available on the branch \href{https://github.com/mit-plv/rewriter/tree/PhD-Dissertation-2021-perf-data}{\texttt{PhD-Dissertation-2021-perf-data}}, and the \texttt{fiat-crypto} repository has performance data available on the branch \href{https://github.com/mit-plv/fiat-crypto/tree/PhD-Dissertation-2021-perf-data}{\texttt{PhD-Dissertation-2021-perf-data}}.
 
 The performance data for the microbenchmarks can be rebuilt using \texttt{make perf-SuperFast perf-Fast perf-Medium} followed by \texttt{make perf-csv} to get the \texttt{.txt} and \texttt{.csv} files.
 The microbenchmarks should run in about 24 hours when run with \texttt{-j5} on a 3.5 GHz machine.

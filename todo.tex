@@ -16,6 +16,7 @@
 \provideboolean{final}
 
 \makeatletter
+\let\finalminorwarning=\@latex@warning
 \iffinal
 \let\finalwarning=\errmessage
 \else
@@ -45,12 +46,12 @@
   \finalwarning{TODO: (FROM #1) \detokenize{#2} on page \thepage\space in file \currfilename}%
   \NowOrAtBeginDocument{\textcolor{OrangeRed}{[\textbf{TODO FROM #1:} #2]}}}%
 \newcommand{\minortodo}[1]{%
-  \finalwarning{MINOR TODO: \detokenize{#1} on page \thepage\space in file \currfilename}%
+  \finalminorwarning{MINOR TODO: \detokenize{#1} on page \thepage\space in file \currfilename}%
   \ifthenelse{\boolean{showminortodos}}{%
     \NowOrAtBeginDocument{\textcolor{red}{[\textbf{MINOR TODO:} #1]}}%
   }{}}%
 \newcommand{\minortodofrom}[2]{%
-  \finalwarning{MINOR TODO: (FROM #1) \detokenize{#2} on page \thepage\space in file \currfilename}%
+  \finalminorwarning{MINOR TODO: (FROM #1) \detokenize{#2} on page \thepage\space in file \currfilename}%
   \ifthenelse{\boolean{showminortodos}}{%
     \NowOrAtBeginDocument{\textcolor{OrangeRed}{[\textbf{MINOR TODO FROM #1:} #2]}}%
   }{}}%
@@ -67,9 +68,14 @@
   \finalwarning{QUESTION FOR READERS: \detokenize{#1} on page \thepage\space in file \currfilename}%
   \NowOrAtBeginDocument{\textcolor{magenta}{[\textbf{QUESTION FOR READERS:} #1]}}}%
 \newcommand{\minortodoask}[1]{%
-  \finalwarning{MINOR QUESTION FOR ADAM: \detokenize{#1} on page \thepage\space in file \currfilename}%
+  \finalminorwarning{MINOR QUESTION FOR ADAM: \detokenize{#1} on page \thepage\space in file \currfilename}%
   \ifthenelse{\boolean{showminortodos}}{%
     \NowOrAtBeginDocument{\textcolor{purple}{[\textbf{QUESTION FOR ADAM:} #1]}}%
+  }{}}%
+\newcommand{\minortodoaskreaders}[1]{%
+  \finalminorwarning{MINOR QUESTION FOR READERS: \detokenize{#1} on page \thepage\space in file \currfilename}%
+  \ifthenelse{\boolean{showminortodos}}{%
+    \NowOrAtBeginDocument{\textcolor{purple}{[\textbf{QUESTION FOR READERS:} #1]}}%
   }{}}%
 \ifthenelse{\boolean{showminortodos}}{
   \includecomment{minorcomment}

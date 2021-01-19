@@ -777,44 +777,41 @@ As the reification method was not especially optimized, and there exist fast rei
   \newsavebox{\NestedBindersSubfloat}%
   \sbox{\NestedBindersSubfloat}{%
     \adjustbox{valign=t}{\resizebox{0.4\textwidth}{!}{\beginTikzpictureStamped[only marks]{
-      \einput{rewriting/perf-UnderLetsPlus0-cbv;rewrite-strat(bottomup).txt}
-      \einput{rewriting/perf-UnderLetsPlus0-cbv;rewrite-strat(topdown).txt}
-      \einput{rewriting/perf-UnderLetsPlus0-cbv;setoid-rewrite.txt}
-      \einput{rewriting/perf-UnderLetsPlus0-Rewrite-for.txt}
-      \einput{rewriting/perf-UnderLetsPlus0-rewriting.txt}
+      \einput{rewriting/UnderLetsPlus0.txt}
     }
       \pgfplotsset{every axis legend/.append style={
           at={(0.5,-0.2)},
           anchor=north}}
-      \begin{axis}[xlabel=\# of let binders,ylabel=time (s),ymax=65]
-        \addplot[mark=o,color=red] table{rewriting/perf-UnderLetsPlus0-cbv;rewrite-strat(bottomup).txt};
-        \addplot[mark=triangle,color=red] table{rewriting/perf-UnderLetsPlus0-cbv;rewrite-strat(topdown).txt};
-        \addplot[mark=square,color=red] table{rewriting/perf-UnderLetsPlus0-cbv;setoid-rewrite.txt};
-        \addplot[mark=+,color=blue] table{rewriting/perf-UnderLetsPlus0-Rewrite-for.txt};
-        \addplot[mark=x,color=ForestGreen] table{rewriting/perf-UnderLetsPlus0-rewriting.txt};
+      \begin{axis}[xlabel=\# of let binders,ylabel=time (s),ymax=65,
+          table/col sep=comma,
+          table/x=param-n,
+        ]
+        \addplot[mark=o,color=red]       table[y=rewrite-strat(bottomup)-regression-exponential-user]{rewriting/UnderLetsPlus0.txt};
+        \addplot[mark=triangle,color=red] table[y=rewrite-strat(topdown)-regression-exponential-user]{rewriting/UnderLetsPlus0.txt};
+        \addplot[mark=square,color=red]   table[y=setoid-rewrite-regression-cubic-user]{rewriting/UnderLetsPlus0.txt};
+        \addplot[mark=+,color=blue]       table[y=Rewrite-for-gen-user]{rewriting/UnderLetsPlus0.txt};
+        \addplot[mark=x,color=ForestGreen]table[y=rewriting-user]{rewriting/UnderLetsPlus0.txt};
         \legend{rewrite\_strat bottomup,rewrite\_strat topdown,setoid\_rewrite,{Our approach including reification, cbv, etc.},Our approach (only rewriting)}
       \end{axis}
     \end{tikzpicture}}}}%
   \newsavebox{\BindersAndRecursiveFunctionsSubfloat}%
   \sbox{\BindersAndRecursiveFunctionsSubfloat}{%
     \adjustbox{valign=t}{\resizebox{0.4\textwidth}{!}{\beginTikzpictureStamped[only marks]{
-        \einput{rewriting/perf-LiftLetsMap-rewrite-strat(bottomup,bottomup).txt}
-        \einput{rewriting/perf-LiftLetsMap-rewrite-strat(topdown,bottomup).txt}
-        \einput{rewriting/perf-LiftLetsMap-setoid-rewrite.txt}
-        \einput{rewriting/perf-LiftLetsMap-Rewrite-for.txt}
-        \einput{rewriting/perf-LiftLetsMap-rewriting.txt}
-        \einput{rewriting/perf-LiftLetsMap-cps+vm-compute.txt}
+        \einput{rewriting/LiftLetsMap.txt}
     }
       \pgfplotsset{every axis legend/.append style={
           at={(0.5,-0.2)},
           anchor=north}}
-      \begin{axis}[xlabel=$n\cdot m$,ylabel=time (s),scaled x ticks=false,ymax=27]
-        \addplot[mark=o,color=red] table{rewriting/perf-LiftLetsMap-rewrite-strat(bottomup,bottomup).txt};
-        \addplot[mark=triangle,color=red] table{rewriting/perf-LiftLetsMap-rewrite-strat(topdown,bottomup).txt};
-        \addplot[mark=square,color=red] table{rewriting/perf-LiftLetsMap-setoid-rewrite.txt};
-        \addplot[mark=+,color=blue] table{rewriting/perf-LiftLetsMap-Rewrite-for.txt};
-        \addplot[mark=x,color=ForestGreen] table{rewriting/perf-LiftLetsMap-rewriting.txt};
-        \addplot[mark=*,color=purple] table{rewriting/perf-LiftLetsMap-cps+vm-compute.txt};
+      \begin{axis}[xlabel=$n\cdot m$,ylabel=time (s),scaled x ticks=false,ymax=27,
+          table/col sep=comma,
+          table/x=param-0-nm,
+        ]
+        \addplot[mark=o,color=red] table[y=rewrite-strat(bottomup-bottomup)-regression-exponential-user]{rewriting/LiftLetsMap.txt};
+        \addplot[mark=triangle,color=red] table[y=rewrite-strat(topdown-bottomup)-regression-exponential-user]{rewriting/LiftLetsMap.txt};
+        \addplot[mark=square,color=red] table[y=setoid-rewrite-regression-cubic-user]{rewriting/LiftLetsMap.txt};
+        \addplot[mark=+,color=blue] table[y=Rewrite-for-gen-user]{rewriting/LiftLetsMap.txt};
+        \addplot[mark=x,color=ForestGreen] table[y=rewriting-user]{rewriting/LiftLetsMap.txt};
+        \addplot[mark=*,color=purple] table[y=cps+vm-compute-regression-quadratic-user]{rewriting/LiftLetsMap.txt};
         \legend{rewrite\_strat bottomup,rewrite\_strat topdown,repeat setoid\_rewrite,{Our approach including reification, cbv, etc.},Our approach (only rewriting),cps+vm\_compute}
       \end{axis}
     \end{tikzpicture}}}}%
@@ -822,12 +819,7 @@ As the reification method was not especially optimized, and there exist fast rei
   \sbox{\NoBindersSubfloat}{%
     \edef\nval{\NoBindersSubfloatNval}%
     \adjustbox{valign=t}{\resizebox{0.4\textwidth}{!}{\beginTikzpictureStamped[only marks]{
-        \einput{rewriting/perf-Plus0Tree-only-n-\nval-cbv;rewrite-strat(bottomup).txt}
-        \einput{rewriting/perf-Plus0Tree-only-n-\nval-cbv;setoid-rewrite.txt}
-        \einput{rewriting/perf-Plus0Tree-only-n-\nval-cbv;rewrite-strat(topdown).txt}
-        \einput{rewriting/perf-Plus0Tree-only-n-\nval-cbv;rewrite!.txt}
-        \einput{rewriting/perf-Plus0Tree-only-n-\nval-Rewrite-for.txt}
-        \einput{rewriting/perf-Plus0Tree-only-n-\nval-rewriting.txt}
+        \einput{rewriting/Plus0Tree.txt}
         \nval
     }
       \pgfplotsset{every axis legend/.append style={
@@ -1013,27 +1005,23 @@ See \autoref{sec:LiftLetsMap-more} for more on this microbenchmark.
 
 \begin{wrapfigure}[16]{r}{0pt}
   \resizebox{0.4\textwidth}{!}{\beginTikzpictureStamped[only marks]{
-      \einput{rewriting/perf-SieveOfEratosthenes-simpl.txt}
-      \einput{rewriting/perf-SieveOfEratosthenes-cbn.txt}
-      \einput{rewriting/perf-SieveOfEratosthenes-lazy.txt}
-      \einput{rewriting/perf-SieveOfEratosthenes-Rewrite-for.txt}
-      \einput{rewriting/perf-SieveOfEratosthenes-rewriting.txt}
-      \einput{rewriting/perf-SieveOfEratosthenes-cbv.txt}
-      \einput{rewriting/perf-SieveOfEratosthenes-vm-compute.txt}
-      \einput{rewriting/perf-SieveOfEratosthenes-native(2)(real).txt}
+      \einput{rewriting/SieveOfEratosthenes.txt}
   }
     \pgfplotsset{every axis legend/.append style={
         at={(0.5,-0.3)},
         anchor=north}}
-    \begin{axis}[xlabel=upper bound,ylabel=time (s),ymax=65]
-      \addplot[mark=square,color=red] table{rewriting/perf-SieveOfEratosthenes-simpl.txt};
-      \addplot[mark=triangle,color=red] table{rewriting/perf-SieveOfEratosthenes-cbn.txt};
-      \addplot[mark=square*,color=red] table{rewriting/perf-SieveOfEratosthenes-lazy.txt};
-      \addplot[mark=+,color=blue] table{rewriting/perf-SieveOfEratosthenes-Rewrite-for.txt};
-      \addplot[mark=x,color=ForestGreen] table{rewriting/perf-SieveOfEratosthenes-rewriting.txt};
-      \addplot[mark=triangle*,color=orange] table{rewriting/perf-SieveOfEratosthenes-cbv.txt};
-      \addplot[mark=*,color=purple] table{rewriting/perf-SieveOfEratosthenes-vm-compute.txt};
-      \addplot[mark=-,color=red] table{rewriting/perf-SieveOfEratosthenes-native(2)(real).txt};
+    \begin{axis}[xlabel=upper bound,ylabel=time (s),ymax=65,
+          table/col sep=comma,
+          table/x=param-n,
+      ]
+      \addplot[mark=square,color=red]          table[y=simpl-regression-cubic-user]   {rewriting/SieveOfEratosthenes.txt};
+      \addplot[mark=triangle,color=red]        table[y=cbn-regression-cubic-user]     {rewriting/SieveOfEratosthenes.txt};
+      \addplot[mark=square*,color=red]         table[y=lazy-regression-quadratic-user]{rewriting/SieveOfEratosthenes.txt};
+      \addplot[mark=+,color=blue]              table[y=Rewrite-for-gen-user]          {rewriting/SieveOfEratosthenes.txt};
+      \addplot[mark=x,color=ForestGreen]       table[y=rewriting-user]                {rewriting/SieveOfEratosthenes.txt};
+      \addplot[mark=triangle*,color=orange]    table[y=cbv-regression-quadratic-user] {rewriting/SieveOfEratosthenes.txt};
+      \addplot[mark=*,color=purple]     table[y=vm-compute-regression-quadratic-user] {rewriting/SieveOfEratosthenes.txt};
+      \addplot[mark=-,color=red] table[y=native-compute(2)-regression-quadratic-real] {rewriting/SieveOfEratosthenes.txt};
       \legend{simpl,cbn,lazy,{Our approach including reification, cbv, etc.},Our approach (only rewriting),cbv,vm\_compute,native\_compute}
     \end{axis}
   \end{tikzpicture}}

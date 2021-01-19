@@ -478,3 +478,7 @@ inotify:
 .PHONY: update-reification-by-parametricity-graphs
 update-reification-by-parametricity-graphs::
 	cp -f -t reification-by-parametricity-outputs/ reification-by-parametricity/graphs/*.pdf
+
+.PHONY: update-rewriter-data
+update-rewriter-data::
+	cp -f -t rewriting/ rewriter/*.txt rewriter/perf.csv rewriter/.{coq,machine}*

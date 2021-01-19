@@ -16,3 +16,7 @@
 [submodule "reification-by-parametricity-deps/metacoq"]
 	path = reification-by-parametricity-deps/metacoq
 	url = https://github.com/MetaCoq/metacoq.git
+[submodule "rewriter"]
+	path = rewriter
+	url = https://github.com/mit-plv/rewriter
+	branch = PhD-Dissertation-2021-perf-data

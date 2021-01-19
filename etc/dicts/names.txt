@@ -92,6 +92,7 @@ Hoare
 Hullot
 ICFP
 INRIA's
+Ilya
 Jacek
 JasonGross
 JavaCard
@@ -154,6 +155,7 @@ SMT
 SProp
 Saman
 Saïbi
+Sergey
 Sixten
 Skolem
 Solinas
@@ -161,6 +163,8 @@ Strandberg
 Supérieure
 TAPL
 TCP
+Talia
+Tatlock
 Tebbi
 Thierry
 Tobias

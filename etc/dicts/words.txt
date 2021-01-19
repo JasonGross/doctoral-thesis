@@ -132,6 +132,7 @@ neurosciences
 nitty
 nonautomated
 nondeterministic
+nonequality
 nonfully
 nonlinearity
 nonlocal

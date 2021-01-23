@@ -777,7 +777,7 @@ However, if looking up which constant or variable is referred to by a name is $\
 See \coqbug{9582}; note that Coq 8.10 and later do not show this superlinear behavior due to \coqpr{9586}, and hence our plots in this section use Coq 8.9.1.
 
 \minortodo{mention Coq version automatically, mention why we're using a different Coq version}%
-\begin{wrapfigure}[14]{r}{0.5\textwidth}
+\begin{wrapfigure}[12]{r}{0.5\textwidth}
     \beginTikzpictureStamped{
         \einput{performance-experiments-8-9/nested-lambda-different-name.txt}
     }
@@ -807,8 +807,7 @@ See \coqbug{9582}; note that Coq 8.10 and later do not show this superlinear beh
         }
     \end{axis}
 \end{tikzpicture}
-\caption{Timing of internalizing a function with $n$ differently named arguments of type \mintinline{coq}{True}%
-\todo{check on figure spacing}%
+\caption{Timing of internalizing a function with $n$ differently named arguments% of type \mintinline{coq}{True}%
 } \label{fig:timing-nested-lambda-different-name}
 \end{wrapfigure}
 

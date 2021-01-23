@@ -1007,12 +1007,13 @@ We blame this performance on the unfortunate fact that reduction in Coq is quadr
 %traded for simplified coding and proofs, plus the ability to mix proved rewrite rules with built-in reductions.
 See \autoref{sec:LiftLetsMap-more} for more on this microbenchmark.
 
-\bgroup
-\interlinepenalty 10000
+%\bgroup
+%\interlinepenalty 10000
 \subsubsection{Full Reduction}\label{sec:micro:Eratosthenes}
 
-\begin{wrapfigure}[16]{r}{0pt}
-  \resizebox{0.4\textwidth}{!}{\beginTikzpictureStamped[only marks]{
+\begin{figure}%[16]{r}{0pt}
+  %\resizebox{0.4\textwidth}{!}{%
+    \beginTikzpictureStamped[only marks]{
       \einput{rewriting/perf-SieveOfEratosthenes-simpl.txt}
       \einput{rewriting/perf-SieveOfEratosthenes-cbn.txt}
       \einput{rewriting/perf-SieveOfEratosthenes-lazy.txt}
@@ -1023,9 +1024,10 @@ See \autoref{sec:LiftLetsMap-more} for more on this microbenchmark.
       \einput{rewriting/perf-SieveOfEratosthenes-native(2)(real).txt}
   }
     \pgfplotsset{every axis legend/.append style={
-        at={(0.5,-0.3)},
-        anchor=north}}
-    \begin{axis}[xlabel=upper bound,ylabel=time (s),ymax=65]
+        at={(1.2,0.5)},
+        font=\small,
+        anchor=west}}
+    \begin{axis}[xlabel=upper bound,ylabel=time (s),ymax=65,width=0.4\textwidth]
       \addplot[mark=square,color=red] table{rewriting/perf-SieveOfEratosthenes-simpl.txt};
       \addplot[mark=triangle,color=red] table{rewriting/perf-SieveOfEratosthenes-cbn.txt};
       \addplot[mark=square*,color=red] table{rewriting/perf-SieveOfEratosthenes-lazy.txt};
@@ -1036,9 +1038,9 @@ See \autoref{sec:LiftLetsMap-more} for more on this microbenchmark.
       \addplot[mark=-,color=red] table{rewriting/perf-SieveOfEratosthenes-native(2)(real).txt};
       \legend{simpl,cbn,lazy,{Our approach including reification, cbv, etc.},Our approach (only rewriting),cbv,vm\_compute,native\_compute}
     \end{axis}
-  \end{tikzpicture}}
+  \end{tikzpicture}%}
   \caption{\label{fig:timing-SieveOfEratosthenes}Full evaluation, Sieve of Eratosthenes}
-\end{wrapfigure}
+\end{figure}
 
 The final experiment involves full reduction in computing the Sieve of Eratosthenes, taking inspiration on benchmark choice from \textcite{Aehlig}.
 We find in \autoref{fig:timing-SieveOfEratosthenes} that we are slower than \texttt{vm\_compute}, \mintinline{coq}{native_compute}, and \texttt{cbv}, but faster than \mintinline{coq}{lazy}, and of course much faster than \texttt{simpl} and \texttt{cbn}, which are quite slow.
@@ -1053,7 +1055,7 @@ In all cases, we generate essentially the same code as we did at the time of pub
 We stage partial evaluation with three different reduction engines (i.e., three \mintinline{coq}{Make} invocations), respectively applying 85, 56, and 44 rewrite rules (with only 2 rules shared across engines), taking total time of about 5 minutes to generate all three engines.
 These engines support 95 distinct function symbols.
 
-\egroup
+%\egroup
 
 \Vref{fig:scaling} graphs running time of three different partial-evaluation methods for Fiat Cryptography, as the prime modulus of arithmetic scales up.
 Times are normalized to the performance of the original method, which relied entirely on standard Coq reduction.

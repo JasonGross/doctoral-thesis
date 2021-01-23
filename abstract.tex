@@ -37,15 +37,14 @@
 % 350 words, longer abstracts will be edited by ProQuest
 %
 % https://libraries.mit.edu/distinctive-collections/thesis-specs/#graduate
-\todo{fix abstract}
-In critical software systems there are opposing pressures to innovate and to let things be as they are.
 
-
+%\todo{fix abstract}
+%In critical software systems there are opposing pressures to innovate and to let things be as they are.
 Formal verification is increasingly valuable as our world comes to rely more on software for critical infrastructure.
 A significant and under studied cost of developing mechanized proofs, especially at scale, is the computer performance of proof generation.
 This dissertation aims to be a partial guide to identifying and resolving performance bottlenecks in dependently typed tactic-driven proof assistants like Coq.
 
-We present a survey of the landscape of performance issues in Coq, with a number of micro- and macro-benchmarks.
+We present a survey of the landscape of performance issues in Coq, with micro- and macro-benchmarks.
 We describe various metrics that allow prediction of performance, such as term size, goal size, and number of binders, and note the occasional surprising lack of a bottleneck for some factors, such as total proof term size.
 To our knowledge such a roadmap to performance bottlenecks is a new contribution of this dissertation.
 
@@ -53,8 +52,9 @@ The central new technical contribution presented by this dissertation is a refle
 We believe this prototype is the first scalably performant realization of an approach for code specialization which does not require adding to the trusted code base.
 Our extensible engine, which combines the traditional concepts of tailored term reduction and automatic rewriting from hint databases with on-the-fly generation of inductive codes for constants, is also of interest to replace these ingredients in proof assistants' proof checkers and tactic engines.
 Additionally, we use the development of this framework itself as a case study for the various performance issues that can arise when designing large proof libraries.
+%
+We also present a novel method of simple and fast reification, developed and published during this PhD.
 
-We identify three main categories of workarounds and partial solutions to performance problems: design of APIs of Gallina libraries; changes to Coq's type theory, implementation, or tooling; and automation design patterns, including proof by reflection.
-We present lessons drawn from the case studies of a category-theory library, a proof-producing parser generator, and a verified compiler and code generator for low-level cryptographic primitives.
-
-Finally, we present a novel method of simple and fast reification, developed and published during the course of doctoral study.
+%We identify three main categories of workarounds and partial solutions to performance problems: design of APIs of Gallina libraries; changes to Coq's type theory, implementation, or tooling; and automation design patterns, including proof by reflection.
+Finally, we present additional lessons drawn from the case studies of a category-theory library, a proof-producing parser generator, and cryptography code generation.
+%verified compiler and code generator for low-level cryptographic primitives.

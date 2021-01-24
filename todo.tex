@@ -104,17 +104,22 @@
 \newcommand{\wantflair}[2][\ctext]{\wantsomething[#1]{Flair}{blue}{#2}}
 \newcommand{\wantclear}[2][\ctext]{\wantsomething[#1]{Unclear/Grammar}{green}{#2}}
 
+\newcommand{\doendofdoctodos}[1]{#1{Run `make update-thesis' before submission to update the date on the cover page}
+
+#1{Update resume submodule before submission of forms}
+
+#1{change \string\finalfalse to \string\finaltrue}}
+
+
 \iffinal
+\doendofdoctodos{\minortodo}
 \else
 \AtEndDocument{%
 \clearpage
 \pagenumbering{roman}
 \cleardoublepage
 
-\todo{Run `make update-thesis' before submission to update the date on the cover page}
-\todo{Update resume submodule before submission of forms}
-
-\todo{change \string\finalfalse to \string\finaltrue}
+\doendofdoctodos{\todo}
 
 \clearpage
 \pagenumbering{arabic}

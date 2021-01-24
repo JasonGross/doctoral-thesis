@@ -15,6 +15,7 @@ READER_AGREEMENT_PDFS := \
 MAIN_PROPOSAL_PDFS := jgross-thesis-proposal.pdf jgross-thesis-proposal-signed.pdf
 PROPOSAL_PDFS = $(MAIN_PROPOSAL_PDFS) $(READER_AGREEMENT_PDFS)
 UMI_PDFS = extra-title-abstract.pdf umi-proquest-form-adjusted.pdf umi-proquest-form-full.pdf
+UMI_GENERIC_PDF = umi-proquest-form-generic.pdf
 THESIS_PDFS = jgross-thesis.pdf jgross-thesis-extra-todos.pdf
 THESIS_EXTRA_PDFS = JGross-PhD-EECS-Feb2021.pdf
 MAIN_TEXS = $(patsubst \include{%},%.tex,$(filter \include{%},$(shell cat appendix-files.tex main-files.tex jgross-thesis.tex)))
@@ -23,14 +24,14 @@ THESIS_TEXS = packages.tex contents.tex mitthesis.cls abstract.tex cover.tex cov
 THESIS_INCLUDE_GRAPHICS_TEXS := reification-by-parametricity.tex
 THESIS_EXTRA_DEPS := $(shell grep -o '\\includegraphics\s*\(\[[^]]*\]\s*\)\?{[^}]*}' $(THESIS_INCLUDE_GRAPHICS_TEXS) | grep -o '{[^}]*}$$' | sed 's/[{}]//g')
 PROPOSAL_TEXS = new-date-proposal.tex abstract-proposal.tex
-UMI_TEXS = umi-proquest-form-full.tex umi-proquest-form-adjusted.tex extra-title-abstract.tex
+UMI_TEXS = umi-proquest-form-full.tex umi-proquest-form-adjusted.tex extra-title-abstract.tex umi-proquest-form-generic.tex
 COMPLETION_TEXS = new-date-submission.tex PhD_CompletionForm-adjusted.tex PhD_CompletionForm-full.tex
 COMPLETION_PDFS = PhD_CompletionForm-adjusted.pdf PhD_CompletionForm-full.pdf
 THESIS_VS := fragments/CategoryExponentialLaws.v fragments/CategoryExponentialLawsSet.v
 ALL_TEXS = $(THESIS_TEXS) $(PROPOSAL_TEXS) $(UMI_TEXS) $(COMPLETION_TEXS)
 TEXT_TEXS = $(filter-out spellcheck-results.tex packages.tex mitthesis.cls,$(ALL_TEXS))
 READER_AGREEMENT_SIGNED_PDFS := $(subst unsigned,signed,$(READER_AGREEMENT_PDFS))
-PDFS = $(PROPOSAL_PDFS) $(THESIS_PDFS) $(UMI_PDFS) $(COMPLETION_PDFS) $(THESIS_EXTRA_PDFS)
+PDFS = $(PROPOSAL_PDFS) $(THESIS_PDFS) $(UMI_PDFS) $(UMI_GENERIC_PDF) $(COMPLETION_PDFS) $(THESIS_EXTRA_PDFS)
 DICTS = $(addprefix etc/dicts/,abbreviations.txt jargon.txt names.txt words.txt not-words.txt bibkeys.spl labels.spl)
 CUSTOM_DICT := etc/dicts/custom.spl
 
@@ -78,7 +79,7 @@ proposal: $(PROPOSAL_PDFS)
 
 thesis: $(THESIS_PDFS) $(THESIS_EXTRA_PDFS)
 
-umi-proquest-form-full: $(UMI_PDFS)
+umi-proquest-form-full: $(UMI_PDFS) $(UMI_GENERIC_PDF)
 umi-proquest-form-full.pdf: umi-proquest-form-adjusted.tex
 
 completion-full: $(COMPLETION_PDFS)
@@ -377,7 +378,7 @@ $(MAIN_PROPOSAL_PDFS) $(THESIS_PDFS) : %.pdf : %.tex
 	$(SHOW)"PDFLATEX (run 3)"
 	$(HIDE)$(PDFLATEX) $(LATEXFLAGS) $(OTHERFLAGS) $< || $(MAKE) print-errors
 
-$(READER_AGREEMENT_PDFS) $(UMI_PDFS) $(COMPLETION_PDFS) : %.pdf : %.tex
+$(READER_AGREEMENT_PDFS) $(UMI_PDFS) $(UMI_GENERIC_PDF) $(COMPLETION_PDFS) : %.pdf : %.tex
 	$(SHOW)"PDFLATEX"
 	$(HIDE)$(PDFLATEX) $(LATEXFLAGS) $(OTHERFLAGS) $<
 

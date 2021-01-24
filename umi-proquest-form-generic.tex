@@ -13,31 +13,26 @@
 \newcommand{\categoryheading}[1]{{\fontsize{8}{11}\selectfont \textbf{\uline{#1}}}}
 \newcommand{\fieldheading}[1]{{\large \textbf{#1}}}
 
-\usepackage{pdfpages}
-\input{abstract.endpage}
-
-\provideboolean{includetitleabstract}
-
-\def\firstname{Jason}
-\def\middlename{S.}
-\def\lastname{Gross}
-\def\birthyear{1991}
-\def\presentaddressone{258 Prospect Street}
-\def\presentaddresstwo{Apt 1L}
-\def\presentaddressthree{Cambridge, MA 02139}
-\def\futureaddressone{c/o Terri Ackerman}
-\def\futureaddresstwo{126 Hayrick Lane}
-\def\futureaddressthree{Commack, NY 11725}
-\def\futureaddresseffectivedate{February 1, 2021}
+\def\firstname{}
+\def\middlename{}
+\def\lastname{}
+\def\birthyear{}
+\def\presentaddressone{}
+\def\presentaddresstwo{}
+\def\presentaddressthree{}
+\def\futureaddressone{}
+\def\futureaddresstwo{}
+\def\futureaddressthree{}
+\def\futureaddresseffectivedate{}
 \def\homephone{}
 \def\businessphone{}
 \newboolean{phd}
-\setboolean{phd}{true}
+\setboolean{phd}{false}
 \newboolean{scd}
 \setboolean{scd}{false}
-\def\degreeyear{2021}
-\def\codeone{0984}
-\def\categoryone{Computer science}
+\def\degreeyear{}
+\def\codeone{}
+\def\categoryone{}
 \def\codetwo{}
 \def\categorytwo{}
 \def\codethree{}
@@ -81,8 +76,8 @@ PERSONAL DATA \\
   \setlength{\interwidth}{0.5\dimexpr\remaining - \interwidth - 1in\relax}%
   Full name (as it appears on dissertation title page) \\
   \parbox{\remaining}{%
-    \hspace*{0.5in}%
-    \textField[\V{\lastname}]{last name}{\widthof{(last)}+0.5\interwidth}{\baselineskip}
+    %\hspace*{0.5in}%
+    \textField[\V{\lastname}\Q{1}]{last name}{\widthof{(last)}+0.5\interwidth+0.5in}{\baselineskip}
     \textField[\V{\firstname}\Q{1}]{first name}{\widthof{(first)}+\interwidth}{\baselineskip}
     \textField[\V{\middlename}\Q{1}]{middle name}{\widthof{(middle)}+0.5\interwidth+0.5in}{\baselineskip}
     %\hspace*{0.5in}%
@@ -122,11 +117,6 @@ DOCTORAL DEGREE DATA
   Year degree awarded \uline{\textField[\V{\degreeyear}]{degree year}{1in}{\baselineskip}}
 \end{enumerate}
 \vspace*{0.5\baselineskip} \hrule \vspace*{0.5\baselineskip}
-\def\keyworda{}
-\def\keywordb{}
-\def\keywordc{}
-\def\keywordd{}
-\def\keyworde{}
 \begin{enumerate}[resume]
 \item
   IMPORTANT: Attach a copy of your dissertation title page and abstract to this form. Please be certain that the
@@ -153,12 +143,6 @@ DOCTORAL DEGREE DATA
     e. \uline{\textField[\V{\keyworde}]{keyword 5}{1.7in}{\keywordheight}} &
   \end{tabular}
 \end{enumerate}
-\ifthenelse{\boolean{includetitleabstract}}{%
-  \clearpage
-  \fancyhf{}
-  \cleardoublepage
-  \includepdf[pages={1-\abstractendpage}]{jgross-thesis}
-}{%
 \clearpage
 \newgeometry{margin=0.5in,bottom=.8in}
 \raggedcolumns
@@ -638,5 +622,4 @@ Theoretical physics \hfill 0753 \\
 \columnbreak \\
 \columnbreak \\
 \end{multicols}
-}
 \end{document}

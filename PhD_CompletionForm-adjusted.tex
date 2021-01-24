@@ -23,7 +23,7 @@
 \node(char)[draw,fill=white,
   shape=rounded rectangle,
 %  drop shadow={opacity=.5,shadow xshift=0pt},
-  minimum width=1.8cm]
+  minimum width=1.2cm]
   {#1};
 \end{tikzpicture}%
 }
@@ -89,6 +89,7 @@
 \cfoot{}
 \renewcommand{\headrulewidth}{0pt}
 \everyTextField{\BC{}}
+\everyCheckBox{\BC{}}
 
 This form is to be completed by EECS graduate students upon submission of a doctoral thesis to the
 department. \textbf{Please attach a CV or resume\ldots{}thank you.}
@@ -113,9 +114,9 @@ CITIZENSHIP (circle) \qquad
       \textovaled{OTHER: \textField[\V{\citizenship}]{citizenship}{\widthof{United States of America of America}}{\realbaselineskip}}} \\ \\
 AREA (circle):
 & {\ifthenelse{\equal{\area}{EE}}{}{\def\textovaled{}}%
-    \textovaled{\fbox{EE}}} \hfill \textbf{or}
+    \textovaled{{\setlength{\fboxsep}{0.1em}\fbox{EE}}}} \hfill \textbf{or}
 & {\ifthenelse{\equal{\area}{CS}}{}{\def\textovaled{}}%
-    \textovaled{\fbox{CS}}} \\ \\
+    \textovaled{{\setlength{\fboxsep}{0.1em}\fbox{CS}}}} \\ \\
 \multicolumn{3}{l}{%
   DATE of THESIS SUBMISSION:\ \textField[\V{\thesissubmissiondate}]{thesis submission date}{25em}{\realbaselineskip}%
 } \\ \\

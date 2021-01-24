@@ -1,5 +1,6 @@
 ACL
 AFOSR
+Ackerman
 Aehlig
 Agrawal
 Ahrens
@@ -41,6 +42,7 @@ Chet
 Christophe
 Chrząszcz
 CoC
+Commack
 CompCert
 Coq's
 Coquand

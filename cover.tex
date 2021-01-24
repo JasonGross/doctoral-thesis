@@ -82,11 +82,15 @@
 \input{abstract}
 \end{abstractpage}
 
+\ifshowminortodos
+\else
 \makeatletter
+\edef\abstractendpage{\the\numexpr\value{truepage}\relax}%
 \newwrite\@abstractpagefile
 \immediate\openout\@abstractpagefile=abstract.endpage
-\immediate\write\@abstractpagefile{\detokenize{\def\abstractendpage}{\the\numexpr\value{truepage}-1\relax}}
+\immediate\write\@abstractpagefile{\detokenize{\def\abstractendpage}{\abstractendpage}}%
 \makeatother
+\fi
 
 % Additional copy: start a new page, and reset the page number.  This way,
 % the second copy of the abstract is not counted as separate pages.

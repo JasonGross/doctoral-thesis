@@ -42,6 +42,8 @@
 \newif\iffinal
 %\finalfalse
 \finaltrue
+% must be before packages so it can update \iffinal
+\input{exclude-files-list.tex}
 
 \input{packages}
 
@@ -50,7 +52,6 @@
 %% Krishna Sethuraman (1990).
 \usepackage{excludeonly}
 \def\files{all}
-\input{exclude-files-list.tex}
 \def\all{all}
 \def\nofiles{}
 \ifx\files\all \typeout{Including all files.} \else \typeout{Including only \files.} \etodo{Make sure to include all files (not just \files)} \includeonly{\files} \fi

@@ -138,22 +138,18 @@
 I'm extremely grateful to my advisor Adam Chlipala for his patience, guidance, encouragement, advice, and wisdom, during the writing of this dissertation, and through my research career.
 I don't know what it's like to have any other PhD advisor, but I can't imagine having a PhD advisor who would have been better for my mental health than Adam.
 I want to thank my coworkers, with special thanks to Andres Erbsen for many engaging conversations and rich and productive collaborations.
-Special thanks to my mom, for taking every opportunity to enrich my life and setting me on this path, for encouraging me from my youth and always supporting me in all that I do.
-I want to thank my sister Rachel, my dad, and the rest of my family for always being kind and supportive.
-My friendship with Allison Strandberg through the years has been invaluable and fulfilling, and early discussions with her helped me shape the initial story I wanted to present with my dissertation.
-I will be eternally grateful to Rajee Agrawal for her faith in me, for everything she's done to help me excel, for her help in finding a much better story for my work than I had ever had, and for helping me find how to present this story in both my defense and this dissertation.
-While the technical work in proof assistants has always been a delight, writing papers has remained a struggle, and the process of completing my PhD with a thesis and a defense would have been a great deal more stressful without Rajee.
+I want to thank Rajashree Agrawal for her help in finding a much better story for my work than I had ever had, and for helping me find how to present this story in both my defense and this dissertation.
 
 I want to thank the Coq development team---without whom I would not have a proof assistant to use---for their patience and responsiveness to my many, many bug reports, feature requests, and questions.
 Special thanks to Pierre-Marie Pédrot for doing the heavy lifting of tracking down performance issues inside Coq and explaining them to me, and fixing many of them.
 I'd also like to thank Matthieu Sozeau for adding support for universe polymorphism and primitive projections to Coq, and responding to all of my bug reports on the functionality and performance of these features from my work on the HoTT Category Theory library during the development of these features.
 
-I'd like to thank the rest of my thesis committee---Professor Saman Amarasinghe and Professor Nickolai Zeldovich---for their support and direction during the editing of this dissertation and my defense.
+I'm grateful to the rest of my thesis committee---Professor Saman Amarasinghe and Professor Nickolai Zeldovich---for their support and direction during the editing of this dissertation and my defense.
 
-Moving on to more specific acknowledgments, I want to thank Andres Erbsen for pointing out to me some of the particular performance bottlenecks in Coq that I made use of in this thesis, including those of subsubsection \nameref{sec:sharing} in \autoref{sec:sharing} and those of subsections \nameref{sec:name-resolution}, \nameref{sec:perf:capture-avoiding-subst}, \nameref{sec:perf:quadratic-evar-subst}, and \nameref{sec:perf:quadratic-application} in \autoref{sec:perf:binder-count}.
-I'd like to thank András Kovács for a brief exchange with me and Andres in which it became clear that we could frame many of the performance issues we were encountering as needing to ``get the basics right.''
+Moving on to more specific acknowledgments, thanks to Andres Erbsen for pointing out to me some of the particular performance bottlenecks in Coq that I made use of in this thesis, including those of subsubsection \nameref{sec:sharing} in \autoref{sec:sharing} and those of subsections \nameref{sec:name-resolution}, \nameref{sec:perf:capture-avoiding-subst}, \nameref{sec:perf:quadratic-evar-subst}, and \nameref{sec:perf:quadratic-application} in \autoref{sec:perf:binder-count}.
+Thanks to András Kovács for a brief exchange with me and Andres in which it became clear that we could frame many of the performance issues we were encountering as needing to ``get the basics right.''
 
-I'd like to thank Hugo Herbelin for sharing the trick with \texttt{type of} to propagate universe constraints%
+Thanks to Hugo Herbelin for sharing the trick with \texttt{type of} to propagate universe constraints%
 \footnote{%
     \url{https://github.com/coq/coq/issues/5996\#issuecomment-338405694}%
 }
@@ -161,25 +157,28 @@ as well as useful conversations on Coq's bug tracker that allowed us to track do
 \footnote{%
     \url{https://github.com/coq/coq/issues/6252}%
 }
-I would like to thank Jonathan Leivent for sharing the trick of annotating identifiers with \texttt{: Type} to avoid needing to adjust universes%
+Thanks to Jonathan Leivent for sharing the trick of annotating identifiers with \texttt{: Type} to avoid needing to adjust universes%
 \footnote{%
   \url{https://github.com/coq/coq/issues/5996\#issuecomment-670955273}
 }%
 .
-I would like to thank Pierre-Marie Pédrot for conversations on Coq's Gitter and his help in tracking down performance bottlenecks in earlier versions of our reification scripts and in Coq's tactics.
-I would like to thank Beta Ziliani for his help in using Mtac2, as well as his invaluable guidance in figuring out how to use canonical structures to reify to PHOAS.
-I also thank John Wiegley for feedback on \ackfirstcite{reification-by-parametricity}, which is included in slightly-modified form distributed between \autoref{ch:reification-by-parametricity} and various sections of \autoref{ch:reflection}.
+Thanks to Pierre-Marie Pédrot for conversations on Coq's Gitter and his help in tracking down performance bottlenecks in earlier versions of our reification scripts and in Coq's tactics.
+Thanks to Beta Ziliani for his help in using Mtac2, as well as his invaluable guidance in figuring out how to use canonical structures to reify to PHOAS.
+Thanks to John Wiegley for feedback on \ackfirstcite{reification-by-parametricity}, which is included in slightly-modified form distributed between \autoref{ch:reification-by-parametricity} and various sections of \autoref{ch:reflection}.
 % \todo{Figure out if anyone else needs mentioning}
 
-I'd like to thank Karl Palmskog for pointing me at \textcite{Should1999Lamport} and \textcite{Formalising2018Paulson}.%
+Thanks to Karl Palmskog for pointing me at \textcite{Should1999Lamport} and \textcite{Formalising2018Paulson}.%
 \footnote{@palmskog on gitter \url{https://gitter.im/coq/coq?at=5e5ec0ae4eefc06dcf31943f}}
-
 
 \minortodo{rearrange}
 \minortodo{make sure we didn't miss anything}
-I'd like to thank Rajee Agrawal for her help in structuring, wording, and copy-editing of this document.
+%Thanks to Rajashree Agrawal for her help in structuring, wording, and copy-editing of this document.
 
-I'd like to thank Karl Palmskog, Talia Ringer, Ilya Sergey, and Zachary Tatlock for making the high-quality \LaTeX\space bibliography file for \ackfirstcite{ringer2020qed} available on GitHub\footnote{\url{https://github.com/proofengineering/proofengineering-bib/blob/master/proof-engineering.bib}} and pointing me at it; it's been quite useful in polishing the bibliography of this document.
+Thanks to Karl Palmskog, Talia Ringer, Ilya Sergey, and Zachary Tatlock for making the high-quality \LaTeX\space bibliography file for \ackfirstcite{ringer2020qed} available on GitHub\footnote{\url{https://github.com/proofengineering/proofengineering-bib/blob/master/proof-engineering.bib}} and pointing me at it; it's been quite useful in polishing the bibliography of this document.
+
+I want to thank all of the people not explicitly named here who have contributed, formally or informally, to these efforts.
+
+\medskip
 
 A significant fraction of the text of this dissertation is taken from papers I've co-authored during my PhD, sometimes with major edits, other times with only minor edits to conform to the flow of the dissertation.
 
@@ -203,6 +202,15 @@ Some of the text in \Autoref{sec:univ-poly,sec:HITs} also comes from \ackshortci
 For those interested in history, our method of reification by parametricity presented in \autoref{ch:reification-by-parametricity} was inspired by the \texttt{evm\_compute} tactic~\cite{MirrorShardITP14}.
 We first made use of \texttt{pattern} to allow \texttt{vm\_compute} to replace \texttt{cbv}-with-an-explicit-blacklist when we discovered \texttt{cbv} was too slow and the blacklist too hard to maintain.
 We then noticed that in the sequence of doing abstraction; \texttt{vm\_compute}; application; $\beta$-reduction; reification, we could move $\beta$-reduction to the end of the sequence if we fused reification with application, and thus reification by parametricity was born.
+
+Finally, I would like to take this opportunity to acknowledge the people in my life who have helped me succeed on this long journey.
+Thanks to my mom, for taking every opportunity to enrich my life and setting me on this path, for encouraging me from my youth and always supporting me in all that I do.
+Thanks also to my sister Rachel, my dad, and the rest of my family for always being kind and supportive.
+Thank you to my several friends, and especially to Allison Strandberg, with whom my friendship through the years has been invaluable and fulfilling.
+%, and early discussions with her helped me shape the initial story I wanted to present with my dissertation.
+Finally, I will be eternally grateful to Rajashree for her faith in me and for everything she's done to help me excel.
+While the technical work in proof assistants has always been a delight, writing papers has remained a struggle, and the process of completing my PhD with a thesis and a defense would have been a great deal more stressful without Rajashree.
+
 
 This work was supported in part by a Google Research Award and National Science Foundation grants CCF-1253229, CCF-1512611, and CCF-1521584.
 Work on the category-theory library, one of the case studies presented in \autoref{ch:api-design} and presented more fully in \ackshortcite{category-coq-experience}, was supported in part by the MIT bigdata@CSAIL initiative, NSF grant CCF-1253229, ONR grant N000141310260, and AFOSR grant FA9550-14-1-0031.

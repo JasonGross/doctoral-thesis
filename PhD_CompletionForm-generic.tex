@@ -1,0 +1,265 @@
+\documentclass[9pt,twoside]{article}
+
+\def\authorname{}
+\def\degreemonth{}
+\def\degreeyear{}
+\def\thesissubmissiondate{}
+\def\citizenship{}%Use exactly United States if you want USA
+\def\area{CS}% EE or CS
+\def\supervisor{}
+\def\newinstitution{}
+\def\newtitle{}
+\def\newlocation{}
+\def\typeofjob{}%Must be one of the listed options e.g., Industry
+\def\otherjob{}
+\def\employmentarea{}%Must be one of the listed options, e.g., Programming Language/Compilers
+\def\otheremployment{}
+
+
+\usepackage{hyperref}
+\usepackage{eforms}
+\usepackage{ifthen}
+\usepackage[left=0.5in,top=1in,right=1in,bottom=0.75in]{geometry}
+\usepackage{amsmath}
+\usepackage[shortlabels]{enumitem}
+\usepackage{multicol}
+\usepackage{xstring}
+\usepackage{fancyhdr}
+\pagestyle{fancy}
+\setlength{\parindent}{0in}
+\usepackage[normalem]{ulem}
+
+\usepackage{tikz}
+\usetikzlibrary{shapes.misc,shadows}
+
+\newcommand{\IfStringInList}[2]{\IfSubStr{,#2,}{,#1,}}
+
+\makeatletter
+\def\radioButtonCircled@JS@Off#1{%
+  #1.display = display.noPrint;
+  #1.borderColor = color.transparent;
+  resetForm(#1.name);
+}
+\def\radioButtonCircled@JS@On#1{%
+  #1.display = display.visible;
+  resetForm(#1.name);
+  #1.borderColor = color.black;
+}
+\def\radioButtonCircled@JS@For#1{%
+if (#1.display == display.visible)
+{
+  \radioButtonCircled@JS@Off{#1}
+}
+else
+{
+  \radioButtonCircled@JS@On{#1}
+}
+}
+\def\radioButtonCircled@JS{\radioButtonCircled@JS@For{event.target}}
+\def\radioButtonCircled@JS@Swap#1#2{%
+if (#1.display == display.visible)
+{
+  \radioButtonCircled@JS@Off{#1}
+}
+else
+{
+  \radioButtonCircled@JS@On{#1}
+  \radioButtonCircled@JS@Off{#2}
+}
+}
+% \radioButtonCircled[value]{title}{width}{name of on state}
+\newcommand{\radioButtonCircled}[4][]{%
+  \ifthenelse{\equal{#1}{Yes}}{%
+    \def\radioButtonCircled@opts{\BC{0 0 0}}%
+  }{%
+    \def\radioButtonCircled@opts{\BC{}\F{\FNoPrint}}%
+  }%
+  \expandafter\radioButton\expandafter[\radioButtonCircled@opts\S{S}\A{\JS{\radioButtonCircled@JS}}\BG{}\symbolchoice{circle}\textSize{2}]{#2}{#3}{#3}{#4}%
+}
+% \radioButtonCircledSwap[value]{title}{other title}{width}{name of on state}
+\newcommand{\radioButtonCircledSwap}[5][]{%
+  \ifthenelse{\equal{#1}{Yes}}{%
+    \def\radioButtonCircled@opts{\BC{0 0 0}}%
+  }{%
+    \def\radioButtonCircled@opts{\BC{}\F{\FNoPrint}}%
+  }%
+  \expandafter\radioButton\expandafter[\radioButtonCircled@opts\S{S}\A{\JS{\radioButtonCircled@JS@Swap{event.target}{getField("#3")}}}\BG{}\symbolchoice{circle}\textSize{2}]{#2}{#4}{#4}{#5}%
+}
+% \radioButtonCircledSwap[value]{title}{other title}{width}{height}{name of on state}
+\newcommand{\radioButtonOvaledSwap}[6][]{%
+  \ifthenelse{\equal{#1}{Yes}}{%
+    \def\radioButtonOvaled@opts{\BC{0 0 0}}%
+  }{%
+    \def\radioButtonOvaled@opts{\BC{}\F{\FNoPrint}}%
+  }%
+  \expandafter\radioButton\expandafter[\radioButtonOvaled@opts\S{S}\A{\JS{\radioButtonCircled@JS@Swap{event.target}{getField("#3")}}}\BG{}\symbolchoice{square}\textSize{2}]{#2}{#4}{#5}{#6}%
+}
+\makeatother
+\newcommand{\textovaled}[1]{%
+\begin{tikzpicture}[baseline=(char.base)]
+\node(char)[draw,fill=white,
+  shape=rounded rectangle,
+%  drop shadow={opacity=.5,shadow xshift=0pt},
+  minimum width=1.2cm]
+  {#1};
+\end{tikzpicture}%
+}
+
+
+
+\def\degreelistdate{\degreemonth\space \degreeyear}
+
+\newcommand{\checkTypeOfJob}[1]{%
+  \IfStringInList{#1}{\typeofjob}{\def\typeV{\V{Yes}}}{\def\typeV{}}%
+  \expandafter\checkBox\expandafter[\typeV]{type of job: #1}{\baselineskip}{\baselineskip}{Yes} #1%
+}
+
+\newcommand{\checkOtherJob}{%
+  \ifthenelse{\equal{\otherjob}{}}{\def\typeV{}}{\def\typeV{\V{Yes}}}%
+  \expandafter\checkBox\expandafter[\typeV]{type of job: Other}{\baselineskip}{\baselineskip}{Yes} Other \\
+  \expandafter\checkBox\expandafter[\typeV]{type of job: Other}{\baselineskip}{\baselineskip}{Yes}\ \textField[\V{\otherjob}]{other job}{15em}{\baselineskip}
+}
+
+\newcommand{\checkEmploymentArea}[1]{%
+  \IfStringInList{#1}{\employmentarea}{\def\employmentV{\V{Yes}}}{\def\employmentV{}}%
+  \expandafter\checkBox\expandafter[\employmentV]{area of employment: #1}{\baselineskip}{\baselineskip}{Yes} #1%
+}
+
+\newcommand{\checkOtherEmployment}{%
+  \ifthenelse{\equal{\otheremployment}{}}{\def\employmentV{}}{\def\employmentV{\V{Yes}}}%
+  \expandafter\checkBox\expandafter[\employmentV]{area of employment: Other}{\baselineskip}{\baselineskip}{Yes} Other: \\
+  \expandafter\checkBox\expandafter[\employmentV]{area of employment: Other}{\baselineskip}{\baselineskip}{Yes}\ \textField[\V{\otheremployment}]{other employment}{15em}{\baselineskip}
+}
+
+\begin{document}
+\lhead{\textbf{PHD/SCD COMPLETION FORM}}
+\rhead{\textbf{2020-2021}}
+\cfoot{}
+\renewcommand{\headrulewidth}{0pt}
+\everyTextField{\BC{}}
+\everyCheckBox{\BC{}}
+
+This form is to be completed by EECS graduate students upon submission of a doctoral thesis to the
+department. \textbf{Please attach a CV or resume\ldots{}thank you.}
+
+\makeatletter
+\edef\citizenshipOtherJS{
+  if (event.value != "") {
+    \radioButtonCircled@JS@Off{getField("United States")}
+    \radioButtonCircled@JS@On{getField("Citizenship Other")}
+  }
+}%
+\makeatother
+
+\fbox{\begin{minipage}{\textwidth}
+{\Large STUDENT NAME:\ \textField[\V{\authorname}]{name}{\textwidth-\widthof{STUDENT NAME:\ }}{\baselineskip}} \\
+\\
+\newlength{\realbaselineskip}%
+\setlength{\realbaselineskip}{\baselineskip}%
+\def\CitizenshipDefaultValue{}%
+\begin{tabular}{lll}
+  CITIZENSHIP (circle) \qquad
+  & {\ifthenelse{\equal{\citizenship}{United States}}{%
+        \textovaled{United States}%
+      }{
+        \makebox[0pt][l]{\makebox[\widthof{~~United States~~}][c]{United States}}%
+        \radioButtonOvaledSwap[\CitizenshipDefaultValue]{United States}{Citizenship Other}{\widthof{~~United States~~}}{1.5\realbaselineskip}{Yes}%
+      }%
+   } \qquad
+  & {%
+      \ifthenelse{\equal{\citizenship}{}}{%
+        \def\textovaled{}%
+        \def\CitizenOtherAA{\AA{\AAValidate{\citizenshipOtherJS}}}%
+        \def\pretextovaled{\makebox[0pt][l]{\radioButtonOvaledSwap[\CitizenshipDefaultValue]{Citizenship Other}{United States}{\widthof{~~\usebox{\othercitizenship}~~}}{1.5\realbaselineskip}{Yes}}}%
+      }{%
+        %\gdef\CitizenshipDefaultValue{Yes}%
+        \def\CitizenOtherAA{}%
+        \def\pretextovaled{}%
+      }%
+      \newsavebox{\othercitizenship}%
+      \ifthenelse{\equal{\citizenship}{United States}}{%
+        \def\citizenship{}%
+        %\gdef\CitizenshipDefaultValue{}%
+        \def\textovaled{}%
+        %\def\CitizenOtherAA{}%
+        %\def\pretextovaled{}%
+        \sbox{\othercitizenship}{OTHER: \phantom{United States of America of America}}%
+      }{%
+        \sbox{\othercitizenship}{OTHER: \expandafter\textField\expandafter[\CitizenOtherAA\V{\citizenship}]{citizenship}{\widthof{United States of America of America}}{\realbaselineskip}}%
+      }%
+      \pretextovaled
+      ~~\textovaled{\usebox{\othercitizenship}}%
+    } \\ \\
+AREA (circle):
+\gdef\AreaDefaultValue{}
+& {\ifthenelse{\equal{\area}{EE}}{\gdef\AreaDefaultValue{Yes}}{}%
+    \makebox[0pt][l]{\makebox[\widthof{~~EE~~}][c]{\setlength{\fboxsep}{0.1em}\fbox{EE}}}\radioButtonCircledSwap[\AreaDefaultValue]{Area EE}{Area CS}{\widthof{~~EE~~}}{Yes}
+  } \hfill \textbf{or}
+& {\ifthenelse{\equal{\area}{CS}}{\gdef\AreaDefaultValue{Yes}}{}%
+    \makebox[0pt][l]{\makebox[\widthof{~~CS~~}][c]{\setlength{\fboxsep}{0.1em}\fbox{CS}}}\radioButtonCircledSwap[\AreaDefaultValue]{Area CS}{Area EE}{\widthof{~~CS~~}}{Yes}%
+  } \\ \\
+\multicolumn{3}{l}{%
+  DATE of THESIS SUBMISSION:\ \textField[\V{\thesissubmissiondate}]{thesis submission date}{25em}{\realbaselineskip}%
+} \\ \\
+\multicolumn{3}{l}{%
+  THESIS SUPERVISOR(S):\ \textField[\V{\supervisor}]{supervisor}{\textwidth-\widthof{THESIS SUPERVISOR(S):\ }-2em}{\realbaselineskip}%
+} \\ \\
+\multicolumn{3}{l}{%
+  DATE of MIT DEGREE LIST:\ \textField[\V{\degreelistdate}]{MIT degree list date}{25em}{\realbaselineskip}%
+}
+\end{tabular}
+\end{minipage}}
+$\left.\right.$ \\ \\
+\uline{Please notify us of your immediate future plans, by responding to the questions below:}
+
+\begin{enumerate}
+  \item
+    Please check the type of job you are taking within the following broad categories:
+    \begin{multicols}{2}
+      \checkTypeOfJob{Academic/faculty position} \\
+      \checkTypeOfJob{Academic/researcher} \\
+      \checkTypeOfJob{Academic/postdoc} \\
+      \checkTypeOfJob{Industry} \\
+      \checkTypeOfJob{Government} \\
+      \checkTypeOfJob{Medical} \\
+      \columnbreak \\
+      \checkTypeOfJob{Financial} \\
+      \checkTypeOfJob{Management Consulting} \\
+      \checkTypeOfJob{Self-Employed} \\
+      \checkOtherJob{} \\
+      \checkTypeOfJob{Un-Employed} \\
+    \end{multicols}
+  \item $\left.\right.$\\
+    \raisebox{\baselineskip}{\fbox{\begin{minipage}{\textwidth-5em}
+        If you can let us know specifically where you are going, that would be most helpful: \\ \\
+        Institution:\ \textField[\V{\newinstitution}]{institution}{\textwidth-3em-\widthof{Institution:\ }}{\baselineskip} \\ \\
+        Title:\ \textField[\V{\newtitle}]{title}{\textwidth-3em-\widthof{Title:\ }}{\baselineskip} \\ \\
+        Location of Employment:\ \textField[\V{\newlocation}]{location of employment}{\textwidth-3em-\widthof{Location Of Employment:\ }}{\baselineskip} \\
+      \end{minipage}}}
+  \item
+    Check the area within EECS that best describes your area of employment:
+    \begin{multicols}{2}
+      \checkEmploymentArea{Communications} \\
+      \checkEmploymentArea{Systems, Decision and Control} \\
+      \checkEmploymentArea{Signal Processing} \\
+      \checkEmploymentArea{Bioelectrical/Medical Engineering} \\
+      \checkEmploymentArea{Circuit Design} \\
+      \checkEmploymentArea{Devices and Materials} \\
+      \checkEmploymentArea{Electromagnetics and Energy} \\
+      \checkEmploymentArea{Artificial Intelligence/Robotics} \\
+      \columnbreak \\
+      \checkEmploymentArea{Hardware/ Architecture} \\
+      \checkEmploymentArea{Numerical Analysis/Scientific} \\
+      \checkEmploymentArea{Programming Language/Compilers} \\
+      \checkEmploymentArea{OS/Networks} \\
+      \checkEmploymentArea{Software Engineering} \\
+      \checkEmploymentArea{Theory/ Algorithms} \\
+      \checkEmploymentArea{Graphics/Human Interface} \\
+      \checkEmploymentArea{Database/Information Systems} \\
+      \checkOtherEmployment{} \\
+    \end{multicols}
+\end{enumerate}
+\begin{center}
+  \textbf{THANK YOU, and ALL GOOD WISHES!}
+\end{center}
+\end{document}

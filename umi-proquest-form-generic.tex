@@ -1,17 +1,7 @@
 \documentclass[9pt,twoside]{article}
-\usepackage{hyperref}
-\usepackage{eforms}
 \usepackage{ifthen}
-\usepackage[margin=1in,bottom=0.25in]{geometry}
-\usepackage{amsmath}
-\usepackage[shortlabels]{enumitem}
-\usepackage{multicol}
-\usepackage{fancyhdr}
-\pagestyle{fancy}
-\setlength{\parindent}{0in}
-\usepackage[normalem]{ulem}
-\newcommand{\categoryheading}[1]{{\fontsize{8}{11}\selectfont \textbf{\uline{#1}}}}
-\newcommand{\fieldheading}[1]{{\large \textbf{#1}}}
+\newboolean{phd}
+\newboolean{scd}
 
 \def\firstname{}
 \def\middlename{}
@@ -26,9 +16,7 @@
 \def\futureaddresseffectivedate{}
 \def\homephone{}
 \def\businessphone{}
-\newboolean{phd}
 \setboolean{phd}{false}
-\newboolean{scd}
 \setboolean{scd}{false}
 \def\degreeyear{}
 \def\codeone{}
@@ -42,6 +30,20 @@
 \def\keywordc{}
 \def\keywordd{}
 \def\keyworde{}
+
+
+\usepackage{hyperref}
+\usepackage{eforms}
+\usepackage[margin=1in,bottom=0.25in]{geometry}
+\usepackage{amsmath}
+\usepackage[shortlabels]{enumitem}
+\usepackage{multicol}
+\usepackage{fancyhdr}
+\pagestyle{fancy}
+\setlength{\parindent}{0in}
+\usepackage[normalem]{ulem}
+\newcommand{\categoryheading}[1]{{\fontsize{8}{11}\selectfont \textbf{\uline{#1}}}}
+\newcommand{\fieldheading}[1]{{\large \textbf{#1}}}
 
 \begin{document}
 \lhead{UNIVERSITY MICROFILMS INC. \\}

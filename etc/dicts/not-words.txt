@@ -104,6 +104,7 @@ becb
 becd
 beq
 bibintoc
+borderColor
 brel
 bwd
 catdb
@@ -149,6 +150,7 @@ exprlist
 fls
 forall
 fst
+getField
 github
 gitter
 gtb
@@ -182,6 +184,7 @@ nbeT
 negb
 nlimbs
 nlogn
+noPrint
 num
 ocaml
 ocamlc
@@ -206,6 +209,7 @@ rExpr
 rValue
 readingreadymarks
 remature
+resetForm
 rew
 rgb
 rhs

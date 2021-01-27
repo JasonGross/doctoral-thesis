@@ -1,4 +1,4 @@
-\documentclass[9pt,twoside]{article}
+\documentclass[9pt]{article}
 \usepackage{ifthen}
 \newboolean{phd}
 \newboolean{scd}
@@ -33,7 +33,7 @@
 
 
 \usepackage{hyperref}
-\usepackage{eforms}
+\usepackage{calc}
 \usepackage[margin=1in,bottom=0.25in]{geometry}
 \usepackage{amsmath}
 \usepackage[shortlabels]{enumitem}
@@ -45,7 +45,21 @@
 \newcommand{\categoryheading}[1]{{\fontsize{8}{11}\selectfont \textbf{\uline{#1}}}}
 \newcommand{\fieldheading}[1]{{\large \textbf{#1}}}
 
+\newcommand{\TextFieldDefault}[2][]{%
+  %https://tex.stackexchange.com/a/286374/2066
+  \raisebox{\dimexpr\depth-\fontchardp\font`y}{%
+    \TextField[bordercolor={},backgroundcolor={},#1]{#2}%
+  }%
+}
+\newcommand{\CheckBoxDefault}[2][]{%
+  %https://tex.stackexchange.com/a/286374/2066
+  \raisebox{\dimexpr\depth-\fontchardp\font`y}{%
+    \CheckBox[bordercolor={0 0 0},backgroundcolor={},#1]{#2}%
+  }%
+}
+
 \begin{document}
+\begin{Form}
 \lhead{UNIVERSITY MICROFILMS INC. \\}
 \rhead{\bf {\huge D} \\ PAO}
 \cfoot{}
@@ -68,9 +82,10 @@ Advisor \hrulefill \\
 \end{center}
 \vspace*{0.5\baselineskip} \hrule \vspace*{\baselineskip}
 PERSONAL DATA \\
-\everyTextField{\BC{}}
 \newlength{\remaining}
 \newlength{\interwidth}
+\newlength{\tempwidth}
+\newsavebox{\tempfieldbox}
 \begin{enumerate}
   \setlength{\remaining}{\dimexpr\linewidth-\itemindent\relax}%
 \item
@@ -79,28 +94,43 @@ PERSONAL DATA \\
   Full name (as it appears on dissertation title page) \\
   \parbox{\remaining}{%
     %\hspace*{0.5in}%
-    \textField[\V{\lastname}\Q{1}]{last name}{\widthof{(last)}+0.5\interwidth+0.5in}{\baselineskip}
-    \textField[\V{\firstname}\Q{1}]{first name}{\widthof{(first)}+\interwidth}{\baselineskip}
-    \textField[\V{\middlename}\Q{1}]{middle name}{\widthof{(middle)}+0.5\interwidth+0.5in}{\baselineskip}
+    \setlength{\tempwidth}{\widthof{(last)}+0.5\interwidth+0.5in}%
+    \TextFieldDefault[value=\lastname,align=1,name=last name,width=\tempwidth,height=\baselineskip]{}%
+    \setlength{\tempwidth}{\widthof{(first)}+\interwidth}%
+    \TextFieldDefault[value=\firstname,align=1,name=first name,width=\tempwidth,height=\baselineskip]{}%
+    \setlength{\tempwidth}{\widthof{(middle)}+0.5\interwidth+0.5in}%
+    \TextFieldDefault[value=\middlename,align=1,name=middle name,width=\tempwidth,height=\baselineskip]{}%
     %\hspace*{0.5in}%
     \setlength{\baselineskip}{0pt} \\
     \hrule
     \hspace*{0.5in}(last)\hfill (first) \hfill (middle)\hspace*{0.5in}
   }
 \item
-  Year of birth (optional) \uline{\textField[\V{\birthyear}]{birth year}{0.8in}{\baselineskip}}
+  \sbox{\tempfieldbox}{\TextFieldDefault[value=\birthyear,name=birth year,width=0.8in,height=\baselineskip]{}}%
+  Year of birth (optional) \uline{\usebox{\tempfieldbox}}
 \item
   \setlength{\interwidth}{\widthof{Present mailing address }}%
-  Present mailing address \uline{\textField[\V{\presentaddressone}]{address line 1}{\remaining - \widthof{Present mailing address }}{\baselineskip}} \\
-  \uline{\hspace*{\interwidth}\textField[\V{\presentaddresstwo}]{address line 2}{\remaining - \widthof{Present mailing address }}{\baselineskip}} \\
-  \uline{\hspace*{\interwidth}\textField[\V{\presentaddressthree}]{address line 3}{\remaining - \widthof{Present mailing address }}{\baselineskip}} \\
+  \setlength{\tempwidth}{\remaining - \widthof{Present mailing address }}%
+  \sbox{\tempfieldbox}{\TextFieldDefault[value=\presentaddressone,name=address line 1,width=\tempwidth,height=\baselineskip]{}}%
+  Present mailing address \uline{\usebox{\tempfieldbox}} \\
+  \sbox{\tempfieldbox}{\TextFieldDefault[value=\presentaddresstwo,name=address line 2,width=\tempwidth,height=\baselineskip]{}}%
+  \uline{\hspace*{\interwidth}\usebox{\tempfieldbox}} \\
+  \sbox{\tempfieldbox}{\TextFieldDefault[value=\presentaddressthree,name=address line 3,width=\tempwidth,height=\baselineskip]{}}%
+  \uline{\hspace*{\interwidth}\usebox{\tempfieldbox}} \\
   \setlength{\interwidth}{\widthof{Future mailing address }}%
-  Future mailing address \uline{\textField[\V{\futureaddressone}]{future address line 1}{\remaining - \widthof{Future mailing address }}{\baselineskip}} \\
-  \uline{\hspace*{\interwidth}\textField[\V{\futureaddresstwo}]{future address line 2}{\remaining - \widthof{Future mailing address }}{\baselineskip}} \\
-  \uline{\hspace*{\interwidth}\textField[\V{\futureaddressthree}]{future address line 3}{\remaining - \widthof{Future mailing address }}{\baselineskip}} \\
-  Effective date of future mailing address \uline{\textField[\V{\futureaddresseffectivedate}]{future address date}{1in}{\baselineskip}} \\
-  Home telephone \uline{\textField[\V{\homephone}]{home phone}{1.5in}{\baselineskip}} \hspace*{0.5in}
-  Business telephone \uline{\textField[\V{\businessphone}]{business phone}{1.5in}{\baselineskip}}
+  \setlength{\tempwidth}{\remaining - \widthof{Future mailing address }}%
+  \sbox{\tempfieldbox}{\TextFieldDefault[value=\futureaddressone,name=future address line 1,width=\tempwidth,height=\baselineskip]{}}%
+  Future mailing address \uline{\usebox{\tempfieldbox}} \\
+  \sbox{\tempfieldbox}{\TextFieldDefault[value=\futureaddresstwo,name=future address line 2,width=\tempwidth,height=\baselineskip]{}}%
+  \uline{\hspace*{\interwidth}\usebox{\tempfieldbox}} \\
+  \sbox{\tempfieldbox}{\TextFieldDefault[value=\futureaddressthree,name=future address line 3,width=\tempwidth,height=\baselineskip]{}}%
+  \uline{\hspace*{\interwidth}\usebox{\tempfieldbox}} \\
+  \sbox{\tempfieldbox}{\TextFieldDefault[value=\futureaddresseffectivedate,name=future address date,width=1in,height=\baselineskip]{}}%
+  Effective date of future mailing address \uline{\usebox{\tempfieldbox}} \\
+  \sbox{\tempfieldbox}{\TextFieldDefault[value=\homephone,name=home phone,width=1.5in,height=\baselineskip]{}}%
+  Home telephone \uline{\usebox{\tempfieldbox}} \hspace*{0.5in}
+  \sbox{\tempfieldbox}{\TextFieldDefault[value=\businessphone,name=business phone,width=1.5in,height=\baselineskip]{}}%
+  Business telephone \uline{\usebox{\tempfieldbox}}
 \end{enumerate}
 \vspace*{0.5\baselineskip} \hrule \vspace*{\baselineskip}
 DOCTORAL DEGREE DATA
@@ -110,13 +140,14 @@ DOCTORAL DEGREE DATA
 \item
   \def\phdV{}%
   \def\scdV{}%
-  \ifthenelse{\boolean{phd}}{\def\phdV{\V{Yes}}}{}%
-  \ifthenelse{\boolean{scd}}{\def\scdV{\V{Yes}}}{}%
+  \ifthenelse{\boolean{phd}}{\def\phdV{checked=true}}{}%
+  \ifthenelse{\boolean{scd}}{\def\scdV{checked=true}}{}%
   Degree awarded (check one)
-  ~~\expandafter\checkBox\expandafter[\phdV]{degree phd}{\baselineskip}{\baselineskip}{Yes} Ph.D.
-  ~~\expandafter\checkBox\expandafter[\scdV]{degree scd}{\baselineskip}{\baselineskip}{Yes} Sc.D.
+  ~~\expandafter\CheckBoxDefault\expandafter[\phdV,name=degree phd,width=\baselineskip,height=\baselineskip]{} Ph.D.
+  ~~\expandafter\CheckBoxDefault\expandafter[\scdV,name=degree scd,width=\baselineskip,height=\baselineskip]{} Sc.D.
 \item
-  Year degree awarded \uline{\textField[\V{\degreeyear}]{degree year}{1in}{\baselineskip}}
+  \sbox{\tempfieldbox}{\TextFieldDefault[value=\degreeyear,name=degree year,width=1in,height=\baselineskip]{}}%
+  Year degree awarded \uline{\usebox{\tempfieldbox}}
 \end{enumerate}
 \vspace*{0.5\baselineskip} \hrule \vspace*{0.5\baselineskip}
 \begin{enumerate}[resume]
@@ -126,30 +157,44 @@ DOCTORAL DEGREE DATA
 \item
   Subject categories for your dissertation. Enter 4-digit code from 'Subject Categories' list found on the opposite side of
   this form, and write in the category selected. You may enter two additional codes and categories on the lines provided. \\
-  Code \uline{\hspace*{0.125in}\textField[\V{\codeone}]{code 1}{.75in}{\baselineskip}\hspace*{0.125in}} \qquad
-  Category \uline{\hspace*{0.125in}\textField[\V{\categoryone}]{category 1}{2.375in}{\baselineskip}} \\
-  Code \uline{\hspace*{0.125in}\textField[\V{\codetwo}]{code 2}{.75in}{\baselineskip}\hspace*{0.125in}} \qquad
-  Category \uline{\hspace*{0.125in}\textField[\V{\categorytwo}]{category 2}{2.375in}{\baselineskip}} \\
-  Code \uline{\hspace*{0.125in}\textField[\V{\codethree}]{code 3}{.75in}{\baselineskip}\hspace*{0.125in}} \qquad
-  Category \uline{\hspace*{0.125in}\textField[\V{\categorythree}]{category 3}{2.375in}{\baselineskip}} \\ \\
+  \sbox{\tempfieldbox}{\TextFieldDefault[value=\codeone,name=code 1,width=.75in,height=\baselineskip]{}}%
+  Code \uline{\hspace*{0.125in}\usebox{\tempfieldbox}\hspace*{0.125in}} \qquad
+  \sbox{\tempfieldbox}{\TextFieldDefault[value=\categoryone,name=category 1,width=2.375in,height=\baselineskip]{}}%
+  Category \uline{\hspace*{0.125in}\usebox{\tempfieldbox}} \\
+  \sbox{\tempfieldbox}{\TextFieldDefault[value=\codetwo,name=code 2,width=.75in,height=\baselineskip]{}}%
+  Code \uline{\hspace*{0.125in}\usebox{\tempfieldbox}\hspace*{0.125in}} \qquad
+  \sbox{\tempfieldbox}{\TextFieldDefault[value=\categorytwo,name=category 2,width=2.375in,height=\baselineskip]{}}%
+  Category \uline{\hspace*{0.125in}\usebox{\tempfieldbox}} \\
+  \sbox{\tempfieldbox}{\TextFieldDefault[value=\codethree,name=code 3,width=.75in,height=\baselineskip]{}}%
+  Code \uline{\hspace*{0.125in}\usebox{\tempfieldbox}\hspace*{0.125in}} \qquad
+  \sbox{\tempfieldbox}{\TextFieldDefault[value=\categorythree,name=category 3,width=2.375in,height=\baselineskip]{}}%
+  Category \uline{\hspace*{0.125in}\usebox{\tempfieldbox}} \\
+  \\
   (Optional) List up to five additional words from your dissertation not already found in \textbf{\emph{either}} your title \textbf{\emph{or}} abstract
   which would be useful for database access. \\
   \\
   \newlength{\keywordheight}%
   \setlength{\keywordheight}{\baselineskip}%
   \begin{tabular}{lll}
-    a. \uline{\textField[\V{\keyworda}]{keyword 1}{1.7in}{\keywordheight}} &
-    b. \uline{\textField[\V{\keywordb}]{keyword 2}{1.7in}{\keywordheight}} &
-    c. \uline{\textField[\V{\keywordc}]{keyword 3}{1.7in}{\keywordheight}} \\ \\
-    d. \uline{\textField[\V{\keywordd}]{keyword 4}{1.7in}{\keywordheight}} &
-    e. \uline{\textField[\V{\keyworde}]{keyword 5}{1.7in}{\keywordheight}} &
+    \sbox{\tempfieldbox}{\TextFieldDefault[value=\keyworda,name=keyword 1,width=1.7in,height=\keywordheight]{}}%
+    a. \uline{\usebox{\tempfieldbox}} &
+    \sbox{\tempfieldbox}{\TextFieldDefault[value=\keywordb,name=keyword 2,width=1.7in,height=\keywordheight]{}}%
+    b. \uline{\usebox{\tempfieldbox}} &
+    \sbox{\tempfieldbox}{\TextFieldDefault[value=\keywordc,name=keyword 3,width=1.7in,height=\keywordheight]{}}%
+    c. \uline{\usebox{\tempfieldbox}} \\ \\
+    \sbox{\tempfieldbox}{\TextFieldDefault[value=\keywordd,name=keyword 4,width=1.7in,height=\keywordheight]{}}%
+    d. \uline{\usebox{\tempfieldbox}} &
+    \sbox{\tempfieldbox}{\TextFieldDefault[value=\keyworde,name=keyword 5,width=1.7in,height=\keywordheight]{}}%
+    e. \uline{\usebox{\tempfieldbox}} &
   \end{tabular}
 \end{enumerate}
+\end{Form}
 \clearpage
 \newgeometry{margin=0.5in,bottom=.8in}
 \raggedcolumns
 \setlength{\parskip}{\baselineskip}
 \fancyhf{}
+\renewcommand{\headrulewidth}{0pt}
 \rfoot{\the\numexpr\thepage-1\relax}
 {\large\textbf{UMI-ProQuest Subject Categories}} \\
 The ProQuest Dissertations and Theses (PQDT) database and the ProQuest/UMI citation indices are arranged by subject categories. Please select

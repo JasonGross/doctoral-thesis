@@ -100,11 +100,13 @@ args
 arith
 ary
 bab
+backgroundcolor
 becb
 becd
 beq
 bibintoc
 borderColor
+bordercolor
 brel
 bwd
 catdb
